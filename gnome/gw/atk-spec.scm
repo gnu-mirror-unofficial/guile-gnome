@@ -33,7 +33,8 @@
   #:use-module (gnome gobject defs-support))
 
 (define-class <atk-wrapset> (<gobject-wrapset-base>)
-  #:id 'gnome-atk)
+  #:id 'gnome-atk
+  #:dependencies '(standard gnome-glib gnome-gobject))
 
 (define-method (global-declarations-cg (self <atk-wrapset>))
   (list
@@ -45,8 +46,6 @@
 
   (next-method ws (append '(#:module (gnome gw atk)) initargs))
 
-  (depends-on! ws 'standard 'gnome-glib 'gnome-gobject)
-  
   (add-type-alias! ws "AtkState" 'long-long)
   
   (load-defs ws "gnome/defs/atk.defs"))

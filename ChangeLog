@@ -1,0 +1,18 @@
+2004-06-13  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/atk-spec.scm: Use #:dependencies instead of
+	depends-on!.
+
+	* ChangeLog: All changelogs have been merged, and the entries that
+	don't deal with the ATK wrapper have been elided. Directories were
+	corrected.
+
+2003-11-25  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gtk/gw-atk-spec.scm: Use gw-standard instead of
+	guile-gnome-gw-standard.
+
+2003-05-03  Andy Wingo  <wingo@pobox.com>
+
+	* *: Completely rewritten, see the release notes (0.5.0) for
+	details.
