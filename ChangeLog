@@ -1,3 +1,8 @@
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
+	versioned directory.
+
 2004-10-14  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/overrides/gtk.defs (set_text, get_as_string)
