@@ -1,5 +1,7 @@
 2004-09-08  Andy Wingo  <wingo@pobox.com>
 
+	* AUTHORS: Updated.
+
 	* NEWS: Updated, and put in a more Guile-like format.
 
 	* TODO: Removed many items.
