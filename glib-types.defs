@@ -1,0 +1,123 @@
+;; -*- scheme -*-
+
+; object definitions ...
+;; Enumerations and flags ...
+
+(define-enum FileError
+  (in-module "G")
+  (c-name "GFileError")
+  (values
+    '("exist" "G_FILE_ERROR_EXIST")
+    '("isdir" "G_FILE_ERROR_ISDIR")
+    '("acces" "G_FILE_ERROR_ACCES")
+    '("nametoolong" "G_FILE_ERROR_NAMETOOLONG")
+    '("noent" "G_FILE_ERROR_NOENT")
+    '("notdir" "G_FILE_ERROR_NOTDIR")
+    '("nxio" "G_FILE_ERROR_NXIO")
+    '("nodev" "G_FILE_ERROR_NODEV")
+    '("rofs" "G_FILE_ERROR_ROFS")
+    '("txtbsy" "G_FILE_ERROR_TXTBSY")
+    '("fault" "G_FILE_ERROR_FAULT")
+    '("loop" "G_FILE_ERROR_LOOP")
+    '("nospc" "G_FILE_ERROR_NOSPC")
+    '("nomem" "G_FILE_ERROR_NOMEM")
+    '("mfile" "G_FILE_ERROR_MFILE")
+    '("nfile" "G_FILE_ERROR_NFILE")
+    '("badf" "G_FILE_ERROR_BADF")
+    '("inval" "G_FILE_ERROR_INVAL")
+    '("pipe" "G_FILE_ERROR_PIPE")
+    '("again" "G_FILE_ERROR_AGAIN")
+    '("intr" "G_FILE_ERROR_INTR")
+    '("io" "G_FILE_ERROR_IO")
+    '("perm" "G_FILE_ERROR_PERM")
+    '("failed" "G_FILE_ERROR_FAILED")
+  )
+)
+
+(define-flags FileTest
+  (in-module "G")
+  (c-name "GFileTest")
+  (values
+    '("is-regular" "G_FILE_TEST_IS_REGULAR")
+    '("is-symlink" "G_FILE_TEST_IS_SYMLINK")
+    '("is-dir" "G_FILE_TEST_IS_DIR")
+    '("is-executable" "G_FILE_TEST_IS_EXECUTABLE")
+    '("exists" "G_FILE_TEST_EXISTS")
+  )
+)
+
+(define-enum IOError
+  (in-module "G")
+  (c-name "GIOError")
+  (values
+    '("none" "G_IO_ERROR_NONE")
+    '("again" "G_IO_ERROR_AGAIN")
+    '("inval" "G_IO_ERROR_INVAL")
+    '("unknown" "G_IO_ERROR_UNKNOWN")
+  )
+)
+
+(define-enum IOChannelError
+  (in-module "G")
+  (c-name "GIOChannelError")
+  (values
+    '("fbig" "G_IO_CHANNEL_ERROR_FBIG")
+    '("inval" "G_IO_CHANNEL_ERROR_INVAL")
+    '("io" "G_IO_CHANNEL_ERROR_IO")
+    '("isdir" "G_IO_CHANNEL_ERROR_ISDIR")
+    '("nospc" "G_IO_CHANNEL_ERROR_NOSPC")
+    '("nxio" "G_IO_CHANNEL_ERROR_NXIO")
+    '("overflow" "G_IO_CHANNEL_ERROR_OVERFLOW")
+    '("pipe" "G_IO_CHANNEL_ERROR_PIPE")
+    '("failed" "G_IO_CHANNEL_ERROR_FAILED")
+  )
+)
+
+(define-enum IOStatus
+  (in-module "G")
+  (c-name "GIOStatus")
+  (values
+    '("error" "G_IO_STATUS_ERROR")
+    '("normal" "G_IO_STATUS_NORMAL")
+    '("eof" "G_IO_STATUS_EOF")
+    '("again" "G_IO_STATUS_AGAIN")
+  )
+)
+
+(define-enum SeekType
+  (in-module "G")
+  (c-name "GSeekType")
+  (values
+    '("cur" "G_SEEK_CUR")
+    '("set" "G_SEEK_SET")
+    '("end" "G_SEEK_END")
+  )
+)
+
+(define-enum IOCondition
+  (in-module "G")
+  (c-name "GIOCondition")
+  (values
+    '("in" "G_IO_IN")
+    '("out" "G_IO_OUT")
+    '("pri" "G_IO_PRI")
+    '("err" "G_IO_ERR")
+    '("hup" "G_IO_HUP")
+    '("nval" "G_IO_NVAL")
+  )
+)
+
+(define-flags IOFlags
+  (in-module "G")
+  (c-name "GIOFlags")
+  (values
+    '("append" "G_IO_FLAG_APPEND")
+    '("nonblock" "G_IO_FLAG_NONBLOCK")
+    '("is-readable" "G_IO_FLAG_IS_READABLE")
+    '("is-writeable" "G_IO_FLAG_IS_WRITEABLE")
+    '("is-seekable" "G_IO_FLAG_IS_SEEKABLE")
+    '("mask" "G_IO_FLAG_MASK")
+    '("get-mask" "G_IO_FLAG_GET_MASK")
+    '("set-mask" "G_IO_FLAG_SET_MASK")
+  )
+)

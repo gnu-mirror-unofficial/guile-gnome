@@ -45,6 +45,11 @@
               "g_idle_add*"
               "g_idle_remove*"
               "g_error_*"
+              "g_child_watch_add*"
+              "g_parse_debug_string"
+              "g_snprintf"
+              "g_vsnprintf"
+              "g_atexit"
               "*win32*")
 
 (ignore "g_main_context_wait"
