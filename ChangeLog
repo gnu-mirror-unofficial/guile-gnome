@@ -1,0 +1,7 @@
+2004-06-24  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/pango-spec.scm: Adapt for G-Wrap "depends-on!" API change.
+
+	* ChangeLog: Old ChangeLogs have been removed, as no entries
+	relevant to pango were in them.
+	
