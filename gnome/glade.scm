@@ -29,7 +29,7 @@
 
 (define-module (gnome glade)
   #:use-module (gnome gtk)
-  #:use-module (gnome gw glade)
+  #:use-module (gnome gw libglade)
   #:use-module (gnome gobject gw-utils))
 
-(re-export-modules (gnome gw glade))
+(re-export-modules (gnome gw libglade))

@@ -1,5 +1,7 @@
 2004-07-01  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/glade.scm (gnome): Fix name.
+
 	* gnome/gw/libglade-spec.scm (initialize): Fix for depends-on!.
 
 	* gnome/glade.scm: New file.
