@@ -7,7 +7,7 @@ EXTRA_DIST = libglade-spec.scm
 # There is one shared library for each wrapset. Each is produced by
 # g-wrap, but also may contain some hand-coded routines.
 
-lib_LTLIBRARIES = libgw-guile-gnome-libglade.la
+guilegnomelib_LTLIBRARIES = libgw-guile-gnome-libglade.la
 
 ########################################################################
 ## glade
