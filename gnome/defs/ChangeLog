@@ -1,3 +1,8 @@
+2004-04-18  Andy Wingo  <wingo@pobox.com>
+
+	* ui.defs (gnome-password-set-remember-label-text): Apparently
+	this has been removed from the API in 2.6. Is this an API break?
+
 2004-02-08  Andy Wingo  <wingo@pobox.com>
 
 	* ui.defs: Revert ui.defs to my local copy. There are still some

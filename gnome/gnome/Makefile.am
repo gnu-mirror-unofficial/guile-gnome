@@ -66,7 +66,7 @@ libguile_gnome_gw_gnome_la_CFLAGS = -I$(top_srcdir)/gnome/gobject \
 	$(G_WRAP_CFLAGS)
 
 libguile_gnome_gw_gnome_la_LIBADD = $(LIBGNOME_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gw-gobject.la
+	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gobject.la
 
 libguile_gnome_gw_gnome_la_LDFLAGS = \
 	-export-dynamic
@@ -97,7 +97,7 @@ libguile_gnome_gw_canvas_la_CFLAGS = -I$(top_srcdir)/gnome/gobject \
 	$(G_WRAP_CFLAGS)
 
 libguile_gnome_gw_canvas_la_LIBADD = $(LIBGNOMECANVAS_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gw-gobject.la
+	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gobject.la
 
 libguile_gnome_gw_canvas_la_LDFLAGS = \
 	-export-dynamic
@@ -128,7 +128,7 @@ libguile_gnome_gw_ui_la_CFLAGS = -I$(top_srcdir)/gnome/gobject \
 	$(G_WRAP_CFLAGS)
 
 libguile_gnome_gw_ui_la_LIBADD = $(LIBGNOMEUI_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gw-gobject.la
+	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gobject.la
 
 libguile_gnome_gw_ui_la_LDFLAGS = \
 	-export-dynamic
@@ -158,7 +158,7 @@ libguile_gnome_gw_vte_la_CFLAGS = -I$(top_srcdir)/gnome/gobject \
 	$(G_WRAP_CFLAGS)
 
 libguile_gnome_gw_vte_la_LIBADD = $(VTE_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gw-gobject.la
+	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gobject.la
 
 libguile_gnome_gw_vte_la_LDFLAGS = \
 	-export-dynamic
@@ -188,7 +188,7 @@ libguile_gnome_gw_source_view_la_CFLAGS = -I$(top_srcdir)/gnome/gobject \
 	$(G_WRAP_CFLAGS)
 
 libguile_gnome_gw_source_view_la_LIBADD = $(GTKSOURCEVIEW_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gw-gobject.la
+	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gobject.la
 
 libguile_gnome_gw_source_view_la_LDFLAGS = \
 	-export-dynamic

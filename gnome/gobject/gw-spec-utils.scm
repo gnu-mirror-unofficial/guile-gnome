@@ -30,10 +30,8 @@
   :use-module (ice-9 optargs)
   :use-module (ice-9 slib)
   :use-module (srfi srfi-13)
-  :export (glib:type-cname->symbol-alist
-           glib:type-cname->symbol
-           glib:func-cname->symbol
-           gobject:gwrap-set-all-types-used
+  :use-module (gnome gobject utils)
+  :export (gobject:gwrap-set-all-types-used
            gobject:gwrap-helper
            gobject:gwrap-helper-with-class
            gobject:gwrap-object
@@ -67,67 +65,10 @@
                             (cdr pair)))
               (wrapset-get-wrapped-types ws))))
 
-;; Based on code from slib's strcase.scm, written 1992 by Dirk
-;; Lutzebaeck (lutzeb@cs.tu-berlin.de). Public domain.
-;;
-;; We're tring to mimic the naming conventions of the C functions here.
-;; Normally a lower case letter preceded by one capital letter forces a
-;; hyphenation before the capital letter: GSource => g-source,
-;; GtkIMContext => gtk-im-context. However, a lower case letter preceded
-;; by exactly two capital letters that is not at the beginning of the
-;; string is treated specially: GtkHBox => gtk-hbox (as the C api does).
-(define (GStudlyCapsExpand nstr)
-  (do ((idx (+ -1 (string-length nstr)) (+ -1 idx)))
-      ((> 1 idx) (string-downcase nstr))
-    (cond ((and (> idx 2)
-                (char-lower-case? (string-ref nstr (+ -3 idx)))
-                (char-upper-case? (string-ref nstr (+ -2 idx)))
-                (char-upper-case? (string-ref nstr (+ -1 idx)))
-                (char-lower-case? (string-ref nstr idx)))
-           (set! idx (1- idx))
-           (set! nstr
-                 (string-append (substring nstr 0 (+ -1 idx))
-                                "-"
-                                (substring nstr (+ -1 idx)
-                                           (string-length nstr)))))
-          ((and (> idx 1)
-                (char-upper-case? (string-ref nstr (+ -1 idx)))
-                (char-lower-case? (string-ref nstr idx)))
-           (set! nstr
-                 (string-append (substring nstr 0 (+ -1 idx))
-                                "-"
-                                (substring nstr (+ -1 idx)
-                                           (string-length nstr)))))
-          ((and (char-lower-case? (string-ref nstr (+ -1 idx)))
-                (char-upper-case? (string-ref nstr idx)))
-           (set! nstr
-                 (string-append (substring nstr 0 idx)
-                                "-"
-                                (substring nstr idx
-                                           (string-length nstr))))))))
-
-;; Default name transformations can be overridden (e.g. "GObject" =>
-;; '<gobject>) by adding entries to this alist.
-(define glib:type-cname->symbol-alist '())
-
-;; (glib:type-cname->symbol "GtkAccelGroup") => <gtk-accel-group>
-;; (glib:type-cname->symbol "GSource*") => <g-source*>
-(define (glib:type-cname->symbol cname)
-  (or (assoc-ref glib:type-cname->symbol-alist cname)
-      (string->symbol
-       (string-append
-        "<"
-        (string-trim-right
-         (GStudlyCapsExpand
-          ;; only change _ to -, other characters are not valid c names
-          (string-map (lambda (c) (if (eq? c #\_) #\- c)) cname))
-         #\-)
-        ">"))))
-
-;; (glib:type-cname->symbol "gtk_accel_group") => gtk-accel-group
-(define (glib:func-cname->symbol cname)
+;; "gtk_accel_group" => gtk-accel-group
+(define (glib-function-name->scheme-name cname)
   ;; only change _ to -, other characters are not valid c names
-  (string->symbol (string-map (lambda (c) (if (eq? c #\_) #\- c)) cname)))
+  (string->symbol (gtype-name->scheme-name cname)))
 
 (define (print-info how-wrapped c-name scm-name ws)
   (printf "%-8.8s|%-18.18s|%-25.25s|%-25.25s\n"
@@ -135,7 +76,7 @@
 
 (define (gwrap-helper ws ctype c-type-name-func scm->c-ccg c->scm-ccg c-destructor
                        how-wrapped)
-  (define wrapped-type (gw:wrap-type ws (glib:type-cname->symbol ctype)))
+  (define wrapped-type (gw:wrap-type ws (gtype-name->class-name ctype)))
   
   (define (typespec-options-parser options-form wrapset)
     (let ((remainder options-form))
@@ -197,7 +138,7 @@
   (gw:type-set-post-call-result-ccg! wrapped-type post-call-result-ccg)
   
   (if how-wrapped
-      (print-info how-wrapped ctype (glib:type-cname->symbol ctype) ws))
+      (print-info how-wrapped ctype (gtype-name->class-name ctype) ws))
 
   wrapped-type)
 (define gobject:gwrap-helper gwrap-helper)
@@ -213,14 +154,13 @@
       (error "Bad arguments to gwrap-helper-with-class."))
   (let ((t (gwrap-helper ws ctype c-type-name-func scm->c-ccg c->scm-ccg
                          c-destructor how-wrapped))
-        (type-string (symbol->string (glib:type-cname->symbol ctype))))
+        (type-string (symbol->string (gtype-name->class-name ctype))))
     (gw:type-set-global-initializations-ccg!
      t
      (lambda (type client-wrapset status-var)
        (if client-wrapset
            (list "scm_c_define (\"" type-string "\",\n"
-                 "              scm_call_1 (scm_sym_gtype_to_class,\n"
-                 "                          scm_c_register_gtype (" gtype-id ")));\n"
+                 "              scm_c_gtype_to_class (" gtype-id "));\n"
                  "scm_c_export (\"" type-string "\", NULL);\n")
            '())))
     t))
@@ -488,7 +428,7 @@
 
 (define (gobject:gwrap-opaque-pointer ws ctype)
   ;; don't print, defs-support writes a list of these to the log file
-  (gw:wrap-as-wct ws (glib:type-cname->symbol ctype)
+  (gw:wrap-as-wct ws (gtype-name->class-name ctype)
                   ctype (string-append "const " ctype)))
 
 (define (gobject:gwrap-class ws ctype gtype-id)

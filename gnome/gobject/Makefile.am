@@ -8,10 +8,12 @@ ETAGS_ARGS = --regex='/SCM_\(GLOBAL_\)?\(G?PROC\|G?PROC1\|SYMBOL\|VCELL\|CONST_L
 
 guilegobjectmoduledir = $(datadir)/guile/gnome/gobject
 
-guilegobjectmodule_DATA = primitives.scm gw-gobject-spec.scm gw-gobject.scm \
+guilegobjectmodule_DATA = gw-gobject-spec.scm gw-gobject.scm \
 	gw-glib-spec.scm gw-glib.scm gw-spec-utils.scm gw-utils.scm \
 	defs-support.scm event-repl.scm generics.scm \
-	gw-standard.scm gw-standard-spec.scm
+	gw-standard.scm gw-standard-spec.scm \
+	gtype.scm gparameter.scm gobject.scm gsignal.scm gvalue.scm gclosure.scm \
+	utils.scm
 
 # There are two shared libraries:
 #
@@ -33,16 +35,17 @@ lib_LTLIBRARIES = libguile-gnome-gobject.la \
 
 # libguile-gnome-gobject (core library)
 
-pkginclude_HEADERS = guile-gnome-gobject.h	\
-	guile-gnome-gobject-primitives.h
+#fixme: install guile-gnome-gobject.h in the proper dir
+pkginclude_HEADERS = gobject.h gtype.c gvalue.h gparameter.h gsignal.h gclosure.h
 
 libguile_gnome_gobject_la_SOURCES = \
-	guile-gnome-gobject.c			\
-	guile-gnome-gobject.h			\
-	guile-gnome-gobject-primitives.c	\
-	guile-gnome-gobject-primitives.h	\
-	guile-support.c				\
-	guile-support.h
+	gobject.c gobject.h			\
+	gtype.c gtype.h				\
+	gvalue.c gvalue.h			\
+	gparameter.c gparameter.h		\
+	gsignal.c gsignal.h			\
+	gclosure.c gclosure.h			\
+	guile-support.c guile-support.h
 
 libguile_gnome_gobject_la_CFLAGS = $(AM_CFLAGS) \
 				   $(GOBJECT_CFLAGS) $(GUILE_CFLAGS) \
@@ -57,10 +60,7 @@ libguile_gnome_gobject_la_LDFLAGS = \
 
 libguile_gnome_gw_gobject_la_SOURCES = \
 	guile-gnome-gw-gobject.c	\
-	guile-gnome-gw-gobject.h	\
-	glib-support.c
-
-noinst_HEADERS=glib-support.h
+	guile-gnome-gw-gobject.h
 
 libguile_gnome_gw_gobject_la_CFLAGS = $(AM_CFLAGS) $(GOBJECT_CFLAGS) \
 	$(GUILE_CFLAGS) $(G_WRAP_CFLAGS)
@@ -75,7 +75,10 @@ libguile_gnome_gw_gobject_la_LDFLAGS = \
 
 libguile_gnome_gw_glib_la_SOURCES = \
 	guile-gnome-gw-glib.c	\
-	guile-gnome-gw-glib.h
+	guile-gnome-gw-glib.h   \
+	glib-support.c
+
+noinst_HEADERS=glib-support.h
 
 libguile_gnome_gw_glib_la_CFLAGS = $(GLIB_CFLAGS) $(GUILE_CFLAGS) \
 	$(G_WRAP_CFLAGS)
@@ -102,12 +105,10 @@ libguile_gnome_gw_standard_la_LDFLAGS = \
 	-export-dynamic
 
 DOT_X_FILES = \
-	guile-gnome-gobject.x			\
-	guile-gnome-gobject-primitives.x
+	gobject.x gsignal.x gclosure.x gvalue.x gparameter.x gtype.x
 
 DOT_DOC_FILES = \
-	guile-gnome-gobject.doc			\
-	guile-gnome-gobject-primitives.doc
+	gobject.doc gsignal.doc gclosure.doc gvalue.doc gparameter.doc gtype.doc
 
 SUFFIXES = .x .doc
 

@@ -57,8 +57,9 @@
    (lambda (wrapset client-wrapset)
      (if (not client-wrapset)
          '("static void\n"
-           "sink_gtkobject (GObject *object)\n"
+           "sink_gtkobject (GTypeInstance *i)\n"
            "{\n"
+           "  GObject *object = (GObject*)i;\n"
            "  if (GTK_OBJECT_FLOATING (object)) {\n"
            "    g_object_ref (object);\n"
            "    gtk_object_sink (GTK_OBJECT (object));\n"
@@ -71,9 +72,9 @@
    (lambda (wrapset client-wrapset status-var)
      (if (not client-wrapset)
          '("gtk_init (NULL, NULL);\n"
-           "guile_gobject_register_sinkfunc (GTK_TYPE_OBJECT, sink_gtkobject);\n"
-           "guile_gobject_register_postmakefunc (GTK_TYPE_WINDOW, g_object_ref);\n"
-           "guile_gobject_register_postmakefunc (GTK_TYPE_INVISIBLE, g_object_ref);\n")
+           "scm_register_gtype_instance_sinkfunc (GTK_TYPE_OBJECT, sink_gtkobject);\n"
+           "scm_register_gobject_postmakefunc (GTK_TYPE_WINDOW, g_object_ref);\n"
+           "scm_register_gobject_postmakefunc (GTK_TYPE_INVISIBLE, g_object_ref);\n")
          '())))
 
   (gobject:gwrap-helper-with-class

@@ -1,3 +1,28 @@
+2004-05-09  Andy Wingo  <wingo@pobox.com>
+
+	* gw-gobject-spec.scm (ws): Don't wrap gtype functions. I'm trying
+	to move away from unnecessary g-wrap usage.
+
+	* types.c (s_scm_gtype_to_class_name, s_scm_gtype_to_method_name):
+	Implemented in scheme now.
+
+	* gw-spec-utils.scm: removed the type name mangling code, going to
+	put it in types.scm.
+
+	* types.c (s_scm_gtype_children): Changed to return a list instead
+	of a vector.
+
+	* parameters.c (s_scm_gparam_spec_p): Removed, it wasn't used
+	anywhere.
+	(s_scm_gparam_primitive_create): Doesn't pre-cache the param
+	struct any more -- should be constructed on demand, i.e. when
+	gparam->param-struct is called.
+
+2004-04-11  Andy Wingo  <wingo@pobox.com>
+
+	* defs-support.scm (load-defs): Cope with slib 3 (and hopefully 2
+	as well) by changing the glob:match?? call to glob:make-matcher.
+
 2004-02-22  Andy Wingo  <wingo@pobox.com>
 
 	* guile-gnome-gobject.c (s_scm_gobject_get_data) 

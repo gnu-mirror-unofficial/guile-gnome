@@ -26,6 +26,7 @@
 
 (define-module (gnome gobject defs-support)
   :use-module (g-wrap)
+  :use-module (gnome gobject utils)
   :use-module (gnome gobject gw-spec-utils)
   :use-module (srfi srfi-13)
   :use-module (ice-9 slib)
@@ -123,6 +124,9 @@
         (if (or-map (lambda (pair) (equal? (car pair) type)) opaque-types)
             (if const? (cons gwrap-type-name '(const)) gwrap-type-name)
             (cons gwrap-type-name options)))))
+
+(define (proc-name-from-cname cname)
+  (string->symbol (gtype-name->scheme-name cname)))
 
 (define (load-defs ws file . already-included)
   (let* ((old-load-path %load-path)
@@ -277,7 +281,7 @@
                         ((of-object)
                          (set! of-object (string-append (cadr arg) "*")))
                         ((overrides)
-                         (set! scm-name (glib:func-cname->symbol (cadr arg)))
+                         (set! scm-name (proc-name-from-cname (cadr arg)))
                          (if (member (cadr arg) overrides)
                              (error "Function ~S already overridden" (cadr arg))
                              (set! overrides (cons (cadr arg) overrides))))
@@ -294,7 +298,7 @@
                    (set! num-functions (1+ num-functions))
 
                    (if (not scm-name)
-                       (set! scm-name (glib:func-cname->symbol c-name)))
+                       (set! scm-name (proc-name-from-cname c-name)))
 
                    (if is-method?
                        (if (not of-object)
@@ -384,7 +388,8 @@
                               (for-each
                                (lambda (glob)
                                  (set! ignore-matchers
-                                       (cons (glob:match?? glob) ignore-matchers)))
+                                       (cons (glob:make-matcher glob char=? char<=?)
+                                             ignore-matchers)))
                                args)))
 
                (include (lambda (file)

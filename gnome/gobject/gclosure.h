@@ -1,7 +1,7 @@
 /* guile-gnome
  * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
  *
- * guile-gnome-gobject.h: Top include for (gnome gobject) headers
+ * gclosure.h: Support for GClosure
  *
  * This program is free software; you can redistribute it and/or    
  * modify it under the terms of the GNU General Public License as   
@@ -21,10 +21,22 @@
  * Boston, MA  02111-1307,  USA       gnu@gnu.org
  */
 
-#ifndef __GUILE_GNOME_GOBJECT_H__
-#define __GUILE_GNOME_GOBJECT_H__
+#ifndef __GUILE_GNOME_GOBJECT_CLOSURES_H__
+#define __GUILE_GNOME_GOBJECT_CLOSURES_H__
 
-/* pulls in everything */
-#include <guile-gnome-gobject/gobject.h>
+#include <guile-gnome-gobject/gvalue.h>
 
-#endif
+G_BEGIN_DECLS
+
+extern SCM scm_class_gclosure;
+
+#define SCM_GCLOSUREP(x) SCM_HACKY_IS_A_P (x, scm_class_gclosure)
+
+/* Although closures are stored as GValues, they cannot be manipulated with the
+   gvalue-primitive API. */
+SCM scm_gclosure_primitive_new (SCM func);
+SCM scm_gclosure_primitive_invoke (SCM instance, SCM return_type, SCM args);
+
+G_END_DECLS
+
+#endif /* __GUILE_GNOME_GOBJECT_CLOSURES_H__ */

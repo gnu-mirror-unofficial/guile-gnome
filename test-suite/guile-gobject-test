@@ -1,5 +1,5 @@
 #!/bin/sh
-exec ${srcdir:-.}/guile-test-env guile -e main -s "$0" "$@"
+exec ${srcdir:-.}/guile-test-env guile --debug -e main -s "$0" "$@"
 !#
 ;;;; guile-gobject-test --- run the guile-gobject test suite
 ;;;;
@@ -81,8 +81,6 @@ exec ${srcdir:-.}/guile-test-env guile -e main -s "$0" "$@"
 
 (use-modules (test-suite lib)
              (oop goops)
-	     (gnome gobject)
-	     (gnome gobject primitives)
              (test-suite gw-test-gobject))
 
 (define (main . args)

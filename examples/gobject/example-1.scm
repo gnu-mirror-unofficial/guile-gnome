@@ -2,8 +2,7 @@
 !#
 
 (use-modules (oop goops)
-             (gnome gobject)
-             (gnome gobject primitives))
+             (gnome gobject))
 
 (debug-enable 'backtrace)
 
@@ -23,19 +22,10 @@
    (gclosure-invoke closure 6 #\a)
    ".\n\n")
 
-(p "We can also use the primitive closure construction interface,\n"
-   "without using objects.\n"
-   "We get the answer "
-   (gclosure-primitive-invoke 
-    (gclosure-primitive-new (lambda (x y) (make <gulong> #:value 8)))
-    gtype:gulong
-    (vector (make <gulong> #:value 5) (make <gchar> #:value #\a)))
-   " from this one.\n\n")
-
 (p "We can derive new object types, like ")
 (define-class <test> (<gobject>)
-  (my-property #:param-spec (list <gparam-long>))
-  #:signal (list 'touch-me gtype:void))
+  (my-property #:gparam (list <gparam-long>))
+  #:gsignal (list 'touch-me gtype:void))
 (p <test> ".\n\n")
 
 (define-method (test:touch-me (obj <test>))

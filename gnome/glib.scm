@@ -26,9 +26,11 @@
 
 (define-module (gnome glib)
   :use-module (gnome gobject)
+  :use-module (gnome gobject gw-gobject)
   :use-module (gnome gobject gw-glib)
   :use-module (gnome gobject gw-utils)
-  :use-module (oop goops))
+  :use-module (oop goops)
+  :re-export  (g-source-set-closure))
 
 (re-export-modules (gnome gobject gw-glib))
 

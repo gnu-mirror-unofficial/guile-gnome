@@ -23,7 +23,7 @@
 
 #include <glade/glade.h>
 #include <libguile.h>
-#include "guile-gnome-gobject-primitives.h"
+#include "guile-gnome-gobject.h"
 
 
 GladeXML* _wrap_glade_xml_new_from_buffer (const char *buffer, const char *root,

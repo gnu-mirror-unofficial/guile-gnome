@@ -1,7 +1,7 @@
 /* guile-gnome
  * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
  *
- * guile-gnome-gobject.h: Top include for (gnome gobject) headers
+ * private.h: Declarations private to guile-gobject
  *
  * This program is free software; you can redistribute it and/or    
  * modify it under the terms of the GNU General Public License as   
@@ -21,10 +21,29 @@
  * Boston, MA  02111-1307,  USA       gnu@gnu.org
  */
 
-#ifndef __GUILE_GNOME_GOBJECT_H__
-#define __GUILE_GNOME_GOBJECT_H__
+#ifndef __GUILE_GNOME_GOBJECT_PRIVATE_H__
+#define __GUILE_GNOME_GOBJECT_PRIVATE_H__
 
-/* pulls in everything */
-#include <guile-gnome-gobject/gobject.h>
 
-#endif
+G_BEGIN_DECLS
+
+
+typedef struct _GuileGTypeClass GuileGTypeClass;
+struct _GuileGTypeClass {
+    /*< private >*/
+    GHashTable *properties_hash;
+
+    guint last_property_id;
+    gboolean first_instance_created;
+
+    SCM class;
+};
+
+
+extern GQuark guile_gobject_quark_instance_wrapper;
+
+
+G_END_DECLS
+
+
+#endif /* __GUILE_GNOME_GOBJECT_PRIVATE_H__ */

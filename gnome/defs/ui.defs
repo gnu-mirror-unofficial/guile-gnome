@@ -4166,14 +4166,14 @@
   )
 )
 
-(define-method set_remember_label_text
-  (of-object "GnomePasswordDialog")
-  (c-name "gnome_password_dialog_set_remember_label_text")
-  (return-type "none")
-  (parameters
-    '("const-char*" "remember_label_text")
-  )
-)
+;(define-method set_remember_label_text
+;  (of-object "GnomePasswordDialog")
+;  (c-name "gnome_password_dialog_set_remember_label_text")
+;  (return-type "none")
+;  (parameters
+;    '("const-char*" "remember_label_text")
+;  )
+;)
 
 (define-method get_username
   (of-object "GnomePasswordDialog")

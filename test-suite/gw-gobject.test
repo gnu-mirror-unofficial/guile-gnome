@@ -5,7 +5,6 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
 (define-module (test-suite test-gw-gobject)
   #:use-module (oop goops)
   #:use-module (gnome gobject)
-  #:use-module (gnome gobject primitives)
   #:use-module (test-suite lib)
   #:use-module (test-suite gw-test-gobject))
 
@@ -18,8 +17,8 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
              (is-a? obj <test-obj>)))
 
   (pass-if "getting the param spec args for the value array property"
-           (let ((args (gparam-spec:args
-                        (gparam->pspec-struct
+           (let ((args (gparam-struct:args
+                        (gparam->param-struct
                          (gobject-class-find-property <test-obj> 'arr)))))
              (and (list? args)
                   (= (length args) 1))))

@@ -81,7 +81,7 @@ libguile_gnome_gw_pango_la_CFLAGS = -I$(top_srcdir)/gnome/gobject \
 	$(G_WRAP_CFLAGS) -DGTK_DISABLE_DEPRECATED
 
 libguile_gnome_gw_pango_la_LIBADD = $(PANGO_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gw-gobject.la
+	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gobject.la
 
 libguile_gnome_gw_pango_la_LDFLAGS = \
 	-export-dynamic
@@ -99,7 +99,7 @@ libguile_gnome_gw_gdk_la_CFLAGS = -I$(top_srcdir)/gnome/gobject \
 	$(G_WRAP_CFLAGS) -DGTK_DISABLE_DEPRECATED
 
 libguile_gnome_gw_gdk_la_LIBADD = $(GDK_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gw-gobject.la
+	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gobject.la
 
 libguile_gnome_gw_gdk_la_LDFLAGS = \
 	-export-dynamic
@@ -114,10 +114,10 @@ libguile_gnome_gw_gtk_la_SOURCES = guile-gnome-gw-gtk.c	guile-gnome-gw-gtk.h \
 
 libguile_gnome_gw_gtk_la_CFLAGS = -I$(top_srcdir)/gnome/gobject \
 	$(AM_CFLAGS) $(GTK_CFLAGS) $(GUILE_CFLAGS) \
-	$(G_WRAP_CFLAGS) -DGTK_DISABLE_DEPRECATED
+	$(G_WRAP_CFLAGS)
 
 libguile_gnome_gw_gtk_la_LIBADD = $(GTK_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gw-gobject.la
+	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gobject.la
 
 libguile_gnome_gw_gtk_la_LDFLAGS = \
 	-export-dynamic
@@ -135,7 +135,7 @@ libguile_gnome_gw_glade_la_CFLAGS = -I$(top_srcdir)/gnome/gobject \
 	$(G_WRAP_CFLAGS)
 
 libguile_gnome_gw_glade_la_LIBADD = $(GLADE_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gw-gobject.la
+	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gobject.la
 
 libguile_gnome_gw_glade_la_LDFLAGS = \
 	-export-dynamic

@@ -5,7 +5,7 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
 (define-module (test-suite test-gobject)
   #:use-module (oop goops)
   #:use-module (gnome gobject)
-  #:use-module (gnome gobject primitives)
+  #:use-module (gnome gobject gtype)
   #:use-module (test-suite lib)
   #:use-module (test-suite exceptions))
 
@@ -25,6 +25,7 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
 	 (and (defined? 'gtype:genum)
 	      (defined? 'gtype:gflags)
 	      (defined? 'gtype:gboxed)
+	      (defined? 'gtype:gboxed-scm)
 	      (defined? 'gtype:gclosure)
 	      (defined? 'gtype:gobject)
               (defined? 'gtype:gvalue-array)))
@@ -199,16 +200,16 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
   
   (define closure-with-retval
     (make <gclosure> #:func (lambda () "Hello World")
-          #:return-type gtype:gchararray))
+          #:return-type <gchararray>))
   
   (define closure-with-boxed-retval
-    (make <gclosure> #:func (lambda () (gclosure-primitive-new (lambda () #t)))
-          #:return-type gtype:gclosure))
+    (make <gclosure> #:func (lambda () (make <gclosure> #:func (lambda () #t)))
+          #:return-type <gclosure>))
   
   (pass-if "invoking gclosure"
            (unspecified? (gclosure-invoke closure-without-args)))
   
-  (pass-if-exception "invoking gclosure"
+  (pass-if-exception "invoking gclosure with incorrect arguments"
                      exception:wrong-number-of-args
                      (gclosure-invoke closure-without-args long-arg))
   

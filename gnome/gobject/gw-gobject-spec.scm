@@ -65,12 +65,7 @@
   (gw:wrapset-add-cs-initializers!
    ws
    (lambda (wrapset client-wrapset status-var)
-     (if (not client-wrapset)
-         (list "g_type_init ();\n"
-               "scm_pre_init_gnome_gobject_primitives ();\n"
-               "scm_pre_init_gnome_gobject ();\n")
-         ;; needed for gtype->class for exporting gobject types
-         (gw:inline-scheme '(use-modules (gnome gobject))))))
+     (gw:inline-scheme '(use-modules (gnome gobject)))))
 
   (gw:wrap-simple-type
    ws '<gtype> "GType"
@@ -84,14 +79,8 @@
    '(c-var " = (GTypeInstance*) SCM_SMOB_DATA (" scm-var ");\n")
    '(scm-var " = scm_c_gtype_instance_to_scm (" c-var ");\n")) ; fixme: unref the scm_var
 
-  ;; should <gobject> really be <g-object>?
-  (set! glib:type-cname->symbol-alist
-        (acons "GObject" '<gobject> glib:type-cname->symbol-alist))
   (gobject:gwrap-object ws "GObject" "G_TYPE_OBJECT")
 
-  (set! glib:type-cname->symbol-alist
-        (acons "GValue" '<gvalue> glib:type-cname->symbol-alist))
-  
   (let* ((c-type-name-func
           (lambda (typespec)
             (if (memq 'const (gw:typespec-get-options typespec))
@@ -132,17 +121,13 @@
                           c->scm-codegen cleanup
                           "Custom"))
   
-  (set! glib:type-cname->symbol-alist
-        (acons "GClosure" '<gclosure> glib:type-cname->symbol-alist))
   (gobject:gwrap-helper
    ws "GClosure"
    (lambda (typespec) "GClosure*")
    (lambda (c-var scm-var typespec status-var)
      (list "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var "))\n"
            "  " c-var " = (GClosure*) g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
-           "else if (SCM_NFALSEP (scm_call_2 (SCM_VARIABLE_REF (scm_c_lookup (\"is-a?\")),\n"
-           "                                  " scm-var ",\n"
-           "                                  SCM_VARIABLE_REF (scm_c_lookup (\"<gclosure>\")))))\n"
+           "else if (SCM_GCLOSUREP (" scm-var "))\n"
            "  " c-var " = (GClosure*) g_value_get_boxed ((GValue*)SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_str2symbol (\"closure\"))));\n"
            "else " `(gw:error ,status-var type ,scm-var)))
    (lambda (scm-var c-var typespec status-var) ; not ideal but ok
@@ -152,8 +137,6 @@
      (list))
    "Custom")
 
-  (set! glib:type-cname->symbol-alist
-        (acons "GParamSpec" '<gparam> glib:type-cname->symbol-alist))
   (gobject:gwrap-helper
    ws "GParamSpec"
    (lambda (typespec) "GParamSpec*")
@@ -172,91 +155,8 @@
      (list))
    "Custom")
 
-  ;; Here we wrap some functions to bootstrap the core library.
-
-  (gw:wrap-function
-   ws
-   '%init-gnome-gobject
-   '<gw:void>
-   "scm_init_gnome_gobject"
-   '()
-   "Export a number of fundamental gtypes and functions to operate on objects.")
-
-  (gw:wrap-function
-   ws
-   '%post-init-gnome-gobject
-   '<gw:void>
-   "scm_post_init_gnome_gobject"
-   '()
-   "Pull scheme definitions back into the C world.")
-
-  (gw:wrap-function
-   ws
-   '%init-gnome-gobject-primitives
-   '<gw:void>
-   "scm_init_gnome_gobject_primitives"
-   '()
-   "Export some functions to operate on primitive data structures, and
-pull scheme definitions back into the C world.")
-
-  ;; And here we wrap the g_type_* functions, just because it's nice and
-  ;; easy with g-wrap.
-
-  (gw:wrap-function
-   ws
-   'gtype-name
-   '(<gw:mchars> callee-owned const)
-   "g_type_name"
-   '((<gtype> type))
-   "Return the name of a gtype.")
-
-  (gw:wrap-function
-   ws
-   'gtype-from-name
-   '<gtype>
-   "g_type_from_name"
-   '(((<gw:mchars> caller-owned const) name))
-   "Given a name, return the corresponding gtype or #f if not found.")
-
-  (gw:wrap-function
-   ws
-   'gtype-from-instance
-   '<gtype>
-   "G_TYPE_FROM_INSTANCE"
-   '((<gtype-instance> instance))
-   "Given a primitive GTypeInstance, return its corresponding gtype.")
-
-  (gw:wrap-function
-   ws
-   'gtype-parent
-   '<gtype>
-   "g_type_parent"
-   '((<gtype> type))
-   "Returns the parent gtype of a gtype.")
-
-  (gw:wrap-function
-   ws
-   'gtype-is-a?
-   '<gw:bool>
-   "g_type_is_a"
-   '((<gtype> type) (<gtype> is-a-type))
-   "Returns #t if IS-A-TYPE is a parent of TYPE, #f otherwise.")
-
-  (gw:wrap-function
-   ws
-   'gtype-is-classed?
-   '<gw:bool>
-   "G_TYPE_IS_CLASSED"
-   '((<gtype> type))
-   "Returns #t if TYPE is classed, #f otherwise.")
-
-  (gw:wrap-function
-   ws
-   'gtype-is-instantiatable?
-   '<gw:bool>
-   "G_TYPE_IS_INSTANTIATABLE"
-   '((<gtype> type))
-   "Returns #t if TYPE is instantiatable, #f otherwise.")
+  ;; Wrap the pariah function of gobject -- can't be done in C, because
+  ;; <g-source*> is a wcp.
 
   (gw:wrap-function
    ws

@@ -25,12 +25,6 @@
 #include <string.h>
 #include "guile-gnome-gobject.h"
 
-#define GRUNTIME_ERROR(format, func_name, args...) \
-  scm_error_scm (scm_str2symbol ("gruntime-error"), scm_makfrom0str (func_name), \
-                 scm_simple_format (SCM_BOOL_F, scm_makfrom0str (format), \
-                                    scm_list_n (args, SCM_UNDEFINED)), \
-                 SCM_EOL, SCM_EOL)
-
 GladeXML*
 _wrap_glade_xml_new_from_buffer (const char *buffer, const char *root,
                                  const char *domain)
@@ -48,8 +42,9 @@ connect_one (const gchar *handler_name, GObject *object, const gchar *signal_nam
 
     if (SCM_FALSEP (gtype_instance_signal_connect_data))
         gtype_instance_signal_connect_data =
-            SCM_VARIABLE_REF (scm_c_module_lookup (scm_module_gobject,
-                                                   "gtype-instance-signal-connect-data"));
+            SCM_VARIABLE_REF (scm_c_module_lookup
+                              (scm_c_resolve_module ("(gnome gobject gsignal)"),
+                               "gtype-instance-signal-connect-data"));
 
     proc = SCM_PACK (GPOINTER_TO_INT (user_data));
     scm_call_4 (gtype_instance_signal_connect_data,
@@ -71,9 +66,11 @@ _wrap_glade_xml_signal_connect (GladeXML *xml, const char *handlername, SCM proc
 
 SCM handle_read_error (char *handler_name, SCM tag, SCM throw_args) 
 {
-    GRUNTIME_ERROR ("Error while reading signal handler ~S: ~A: ~S",
-                    "glade-xml-signal-autoconnect", scm_makfrom0str (handler_name),
-                    tag, throw_args);
+    scm_c_gruntime_error
+        ("glade-xml-signal-autoconnect",
+         "Error while reading signal handler ~S: ~A: ~S",
+         SCM_LIST3 (scm_makfrom0str (handler_name), tag, throw_args));
+    return SCM_UNSPECIFIED; /* won't get here */
 }
 
 static void
@@ -91,9 +88,10 @@ connect_many (const gchar *handler_name, GObject *object, const gchar *signal_na
                                          (void*)handler_name),
                      module);
     if (SCM_FALSEP (scm_procedure_p (proc)))
-        GRUNTIME_ERROR ("Tried to set `~A' to handle signal `~A', but it's not a procedure",
-                        "glade-xml-signal-autoconnect", scm_makfrom0str (handler_name),
-                        scm_makfrom0str (signal_name));
+        scm_c_gruntime_error
+            ("glade-xml-signal-autoconnect",
+             "Tried to set `~A' to handle signal `~A', but it's not a procedure",
+             SCM_LIST2 (scm_makfrom0str (handler_name), scm_makfrom0str (signal_name)));
 
     connect_one (NULL, object, signal_name, NULL, NULL, after,
                  GINT_TO_POINTER (SCM_UNPACK (proc)));

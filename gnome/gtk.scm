@@ -43,7 +43,7 @@
 (display "support")
 
 ;; Support explicit object destruction.
-(use-modules (gnome gobject primitives) (oop goops))
+(use-modules (oop goops) (gnome gobject gtype))
 (define-method (make-gobject-instance class type (instance <gtk-object>) initargs)
   (next-method)
   (connect instance 'destroy
