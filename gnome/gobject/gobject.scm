@@ -29,7 +29,6 @@
 
 (define-module (gnome gobject gobject)
   :use-module (oop goops)
-  :use-module (ice-9 documentation) ;; for define-with-docs
   :use-module (gnome gobject utils)
   :use-module (gnome gobject gtype)
   :use-module (gnome gobject gvalue)

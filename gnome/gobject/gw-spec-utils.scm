@@ -61,7 +61,8 @@
             wrap-pointer!
             wrap-opaque-pointer!
             wrap-interface!
-            wrap-flags!))
+            wrap-flags!
+            wrap-gobject-class!))
 
 (require 'printf)
 
@@ -168,8 +169,9 @@
    (next-method)
    (if (slot-ref type 'define-class?)
        (list
-        "scm_c_define (\"" (symbol->string (class-name type)) "\",\n"
-        "              scm_c_gtype_to_class (" (gtype-id type) "));\n")
+        "gw_guile_make_latent_variable\n"
+        "  (scm_str2symbol (\"" (symbol->string (class-name type)) "\"), "
+        "scm_gtype_to_class, scm_c_register_gtype (" (gtype-id type) "));\n")
        '())))
 
 (define-method (add-type! (ws <gobject-wrapset-base>)
@@ -234,7 +236,7 @@
      (if-typespec-option value 'caller-owned
          ;; the _to_scm will ref the object; if the function is a
          ;; constructor, we don't need that ref
-          (list "if (" c-var ") g_object_ref ((GObject*)" c-var ");\n")))))
+          (list "if (" c-var ") g_object_unref ((GObject*)" c-var ");\n")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Wrap boxed types, represented on the scheme side by GValues.
@@ -410,7 +412,7 @@
      "  " c-var " = g_value_get_enum ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
      "else {\n" ;; we can't use scm_make because we need the special allocate-instance
      "  SCM newval = scm_apply_3 (SCM_VARIABLE_REF (scm_c_lookup (\"make\")),\n"
-     "                            scm_c_gtype_lookup_class (" gtype-id "),\n"
+     "                            scm_c_gtype_to_class (" gtype-id "),\n"
      "                            scm_c_make_keyword (\"value\"),\n"
      "                            " scm-var ", SCM_EOL);\n"
      ;; should throw an exception if the eval fails
@@ -467,7 +469,7 @@
      "  " c-var " = g_value_get_flags ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
      "else {\n" ;; we can't use scm_make because we need the special allocate-instance
      "  SCM newval = scm_apply_3 (SCM_VARIABLE_REF (scm_c_lookup (\"make\")),\n"
-     "                            scm_c_gtype_lookup_class (" gtype-id "),\n"
+     "                            scm_c_gtype_to_class (" gtype-id "),\n"
      "                            scm_c_make_keyword (\"value\"),\n"
      "                            " scm-var ", SCM_EOL);\n"
      ;; should throw an exception if the eval fails
@@ -497,20 +499,48 @@
           (list <gobject-object-type> <gobject-boxed-type>
                 <gobject-interface-type>))
             
+;; Used for functions that operate on classes, e.g.
+;; gtk_widget_class_install_style_property,
+;; gst_element_class_get_pad_template
 
-;; Not used?
+(define-class <gobject-class-type> (<gobject-classed-type>))
 
-; (define (gobject:gwrap-class ws ctype gtype-id)
-;   (let ((c-ptr-type (string-append ctype "*")))
-;     (gobject:gwrap-helper
-;      ws ctype
-;      c-ptr-type c-ptr-type
-;      (lambda (c-var scm-var typespec status-var)
-;        (list "if (g_type_is_a (SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype)), " gtype-id "))\n"
-;              "  " c-var " = (" ctype "*) SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype_class));\n"
-;              "else " `(gw:error ,status-var type ,scm-var)))
-;      (lambda (scm-var c-var typespec status-var) ; not ideal but ok
-;        (list scm-var " = scm_c_gtype_lookup_class (G_TYPE_FROM_CLASS (" c-var "));\n"))
-;      (lambda (c-var typespec status-var force?)
-;        (list))
-;      "GObjectClass")))
+(define-method (initialize (self <gobject-class-type>) initargs)
+  (let-keywords
+   initargs #t (ctype)
+   (next-method self
+                (append!
+                 (list #:c-type-name (string-append ctype "*")
+                       #:ffspec 'pointer)
+                 initargs))))
+
+;; (wrap-gobject-class! ws #:ctype "GstElementClass" #:gtype-id "GST_TYPE_ELEMENT")
+(define-method (wrap-gobject-class! (ws <gobject-wrapset-base>) . args)
+  (let ((type (apply make <gobject-class-type> args)))
+    (slot-set! type 'how-wrapped "GObjectClass")
+    (slot-set! type 'define-class? #f)
+    (add-type! ws type)
+    type))
+
+(define-method (unwrap-value-cg (type <gobject-class-type>)
+                                (value <gw-value>)
+                                status-var)
+  (let ((c-var (var value))
+        (scm-var (scm-var value))
+        (ctype (c-type-name type)))
+    (list
+     (unwrap-null-check value status-var)
+     "if (g_type_is_a (SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype)), " (gtype-id type) "))\n"
+     "  " c-var " = (" ctype ") SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype_class));\n"
+     "else " `(gw:error ,status-var type ,scm-var))))
+
+(define-method (wrap-value-cg (type <gobject-class-type>)
+                              (value <gw-value>)
+                              status-var)
+  (let ((c-var (var value))
+        (scm-var (scm-var value)))
+    (list
+     "if (" c-var " == NULL)\n"
+     "  " scm-var " = SCM_BOOL_F;\n"
+     "else\n"
+     "  " scm-var " = scm_c_gtype_to_class (G_TYPE_FROM_CLASS (" c-var "));\n")))
