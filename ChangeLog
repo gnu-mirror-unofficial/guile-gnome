@@ -1,10 +1,92 @@
+2004-05-19  Andy Wingo  <wingo@pobox.com>
+
+	* ChangeLog: All changelogs have been merged, and the entries that
+	don't deal with the GLib/GObject wrapper have been elided. Some
+	directories were corrected.
+
+	* gnome/gobject/gparameter.scm (gnome): Export gparameter: limits.
+
+	* gnome/gobject/gparameter.c (scm_init_gnome_gobject_parameters):
+	Changed gruntime:int-max and friends to be gparameter:int-max,
+	etc.
+
+	* Makefile.am, files.ac, guile-gobject-uninstalled.pc.in: Revive
+	this pkg-config file. See pkg-config(1) for more info.
+
+	* gnome/gobject/gw-spec-utils.scm: Wrap GObjectClass. This is used
+	in GStreamer, at least, and should be used in GTK.
+
+	* gnome/gw/Makefile.am: Don't link the glib wrapper to the gobject
+	runtime, there's no need.
+
+2004-05-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.c (scm_c_gtype_to_class): Try to prevent a
+	rount-trip to SCM by calling scm_c_lookup_class first.
+
+	* gnome/gobject/gw-spec-utils.scm (unwrap-value-cg for enums and
+	flags): Use scm_c_gtype_to_class instead of lookup_class, because
+	with latent bindings the class might not exist yet.
+
+2004-05-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.c (scm_gtype_to_class): Now exported as part
+	of the C API (formerly static SCM _gtype_to_class).
+
+2004-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/gobject-primitives.test: Removed, this interface is
+	no longer exported. Yay!
+
+2004-05-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gw-gobject-spec.scm (ws): Don't wrap gtype
+	functions. I'm trying to move away from unnecessary g-wrap usage.
+
+	* gnome/gobject/gtype.c (s_scm_gtype_to_class_name,
+	s_scm_gtype_to_method_name): Implemented in scheme now.
+
+	* gnome/gobject/gw-spec-utils.scm: removed the type name mangling
+	code, going to put it in types.scm.
+
+	* gnome/gobject/gtype.c (s_scm_gtype_children): Changed to return
+	a list instead of a vector.
+
+	* gnome/gobject/gparameter.c (s_scm_gparam_spec_p): Removed, it
+	wasn't used anywhere. (s_scm_gparam_primitive_create): Doesn't
+	pre-cache the param struct any more -- should be constructed on
+	demand, i.e. when gparam->param-struct is called.
+
+2004-05-04  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/glib-support.c, glib-support.c
+	(_wrap_g_string_get_str): New function.
+
 2004-04-30  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* package.ac: Depend on glib-2.0 >= 2.4.0.
+	
+2004-04-27  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/Makefile.am: Also distribute and install glib.scm.
+
+	* gnome/gw/glib-spec.scm (initialize): Added a few type aliases
+	for basic C types. Fixed for changed defs directory.
 
 2004-04-12  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* h2def.py: Quick hack to fix G_*_DECLS misparsing.
+
+2004-04-11  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/defs-support.scm (load-defs): Cope with slib 3
+	(and hopefully 2 as well) by changing the glob:match?? call to
+	glob:make-matcher.
+
+2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/defs-support.scm (type-lookup): Recognize "[]" in
+	type strings and treat it like a pointer.
 
 2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
 
@@ -12,8 +94,13 @@
 
 2004-04-02  Andreas Rottmann  <a.rottmann@gmx.at>
 
-	* examples/gtk/guile-gtk-demo/demos/tree-model.scm (on-get-flags):
-	Removed, can use default implementation.
+	* gnome/gobject.scm (gtype-instance:write): Typo fix: logor ->
+	logior.
+
+2004-03-29  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* test-suite/Makefile.am (libgw_test_gobject_la_LIBADD): Link
+	against core instead of wrapset.
 
 2004-03-29  Andreas Rottmann  <a.rottmann@gmx.at>
 
