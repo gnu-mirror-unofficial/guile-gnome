@@ -265,7 +265,7 @@
        "  }\n"
        "  else {\n"
        (destroy-value-cg glist-type value status-var)
-       "  }\n")
+       "  }\n"
        "}\n")))
 
 (define-method (wrap-value-cg (glist-type <glist-of-type>)
@@ -343,7 +343,7 @@
                "  }\n")
          '())
      "}\n")))
-  
+
 ;;; GError
 
 (define-class <gerror-type> (<gw-type>))

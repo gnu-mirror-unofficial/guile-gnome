@@ -1,5 +1,7 @@
 2004-11-11  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/glib-spec.scm (unwrap-value-cg): Whoops, fix parens.
+
 	* gnome/gw/support/defs.scm (type-lookup): Assume that the caller
 	owns generated container types (i.e. GList) if 'const isn't set.
 	Prevents some invalid frees, hanks to Patrick Bernaud for the
