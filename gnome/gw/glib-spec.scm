@@ -226,6 +226,7 @@
 
   (let* ((c-var (var value))
          (scm-var (scm-var value))
+         (options (options (typespec value)))
          (sub-typespec (sub-typespec (typespec value)))
          (sub-type (type sub-typespec))
          (tmp-rest-var (gen-c-tmp "scm_rest"))
@@ -262,21 +263,9 @@
        "  {\n"
        "    " c-var " = " func-prefix "_reverse(" c-var ");\n"
        "  }\n"
-       "  else\n"
-       "  {\n"
-       "    " (c-type-name glist-type (typespec value)) tmp-cursor " = " c-var ";\n"
-       "    while(" tmp-cursor ")\n"
-       "    {\n"
-       "      " sub-item-c-type " " tmp-sub-item-c-var ";\n"
-       "      " tmp-sub-item-c-var " = ( " sub-item-c-type ") "
-       (string-append tmp-cursor "->data") ";\n"
-       ;; FIMXE: had force #t here
-       (destroy-value-cg sub-type tmp-sub-item status-var) 
-       tmp-cursor " = " (string-append tmp-cursor "->next") ";\n"
-       "    }\n"
-       "    " func-prefix "_free(" c-var ");\n"
-       "    " c-var " = NULL;\n"
-       "  }\n"
+       "  else {\n"
+       (destroy-value-cg glist-type value status-var)
+       "  }\n")
        "}\n")))
 
 (define-method (wrap-value-cg (glist-type <glist-of-type>)

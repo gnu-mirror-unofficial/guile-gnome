@@ -62,7 +62,10 @@
             wrap-opaque-pointer!
             wrap-interface!
             wrap-flags!
-            wrap-gobject-class!))
+            wrap-gobject-class!
+            
+            custom-wrap-decls
+            wrap-custom-pointer!))
 
 (require 'printf)
 
@@ -557,3 +560,36 @@
      "  " scm-var " = SCM_BOOL_F;\n"
      "else\n"
      "  " scm-var " = scm_c_gtype_to_class (G_TYPE_FROM_CLASS (" c-var "));\n")))
+
+;; The following two macros were designed to help wrapping of types
+;; represented on the C side by non-simple object, but on the scheme
+;; side with native scheme values. See gtk-spec.scm for an example.
+(define-macro (custom-wrap-decls ctype unwrap wrap)
+  (let ((type (gtype-name->class-name ctype)))
+    `(begin
+       (define-class ,type (<gobject-type-base>))
+       (define-method (unwrap-value-cg (type ,type)
+                                       (value <gw-value>)
+                                       status-var)
+         (let ((c-var (var value))
+               (scm-var (scm-var value)))
+           ,unwrap))
+       (define-method (wrap-value-cg (type ,type)
+                                     (value <gw-value>)
+                                     status-var)
+         (let ((c-var (var value))
+               (scm-var (scm-var value)))
+           ,wrap)))))
+
+(define-macro (wrap-custom-pointer! ctype)
+  (let ((pname (string-append ctype "*"))
+        (class (gtype-name->class-name ctype)))
+    `(begin
+       (add-type! ws (make ,class
+                       #:ctype ,ctype
+                       #:c-type-name ,pname
+                       #:c-const-type-name ,pname
+                       #:ffspec 'pointer
+                       #:wrapped "Custom"))
+       (class-slot-set! ,class 'allowed-options '(null-ok))
+       (add-type-alias! ws ,pname ',class))))

@@ -1,3 +1,19 @@
+2004-11-11  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (type-lookup): Assume that the caller
+	owns generated container types (i.e. GList) if 'const isn't set.
+	Prevents some invalid frees, hanks to Patrick Bernaud for the
+	report.
+	
+	* gnome/gw/glib-spec.scm (unwrap-value-cg): Use destroy-value-cg
+	to free the list after unwrapping.
+
+2004-11-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (custom-wrap-decls)
+	(wrap-custom-pointer!): New exported macros, designed to simplify
+	wrappings of c types represented by native scheme values.
+
 2004-10-28  Andy Wingo  <wingo@pobox.com>
 
 	* defs-checks.ac: Versioned pkg-config check.
