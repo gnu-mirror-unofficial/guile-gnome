@@ -27,6 +27,7 @@
 (define-module (gnome gobject defs-support)
   #:use-module (oop goops)
   #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-11)
   #:use-module (srfi srfi-13)
   #:use-module (ice-9 slib)
   #:use-module (ice-9 optargs)
@@ -88,6 +89,40 @@
           (if (is-a? type-obj <gw-wct>)
               (if const? (cons (name type-obj) '(const)) (name type-obj))
               (cons (name type-obj) options))))))
+
+(define (construct-argument-list ws parameters)
+  
+  (define (parse-restargs restargs)
+    (fold
+     (lambda (restarg options)
+       (case (car restarg)
+         ((null-ok)
+          (cons 'null-ok options))
+         ((callee-owned)
+          (cons 'callee-owned options))
+         ((default)
+          (cons restarg options))))
+       '() restargs))
+  
+  (map (lambda (defs-parameter-spec)
+         (let ((looked-up (type-lookup
+                           ws
+                           (car defs-parameter-spec)
+                           #f))
+               (parsed (parse-restargs
+                        (cddr defs-parameter-spec)))
+               (arg-name (string->symbol
+                          (cadr defs-parameter-spec))))
+           (let-values (((options extras) (partition! symbol? parsed)))
+             ;; Ah, hackery...
+             (if (memq 'callee-owned options)
+                 (set! looked-up
+                       (delq! 'callee-owned
+                              (delq! 'caller-owned looked-up))))
+             (if (list? looked-up)
+                 (append! (list (append looked-up options) arg-name) extras)
+                 (list looked-up arg-name)))))
+       parameters))
 
 (define (load-defs ws file . already-included)
   (let* ((old-load-path %load-path)
@@ -175,7 +210,7 @@
                          ;; after the (is-constructor-of)
                          (set! caller-owns-return #t))
                         ((parameters)
-                         (if (or-map
+                         (if (any
                               (lambda (name)
                                 (eq? (string-ref name 0) #\())
                               (map cadadr (cdr arg)))
@@ -183,7 +218,7 @@
                                (format #t "\nWarning, not binding function ~A because I can't deal with function pointers\n"
                                        name)
                                (exit #f)))
-                         (set! parameters (map cadr (cdr arg))))
+                         (set! parameters (map second (cdr arg))))
                         ((of-object)
                          (set! of-object (string-append (cadr arg) "*")))
                         ((overrides)
@@ -242,37 +277,7 @@
                                                            'caller-owned
                                                            'callee-owned))
                     #:c-name c-name
-                    #:arguments
-                    (let ((parse-restargs
-                           (lambda (restargs)
-                             (let ((options (list)))
-                               (for-each
-                                (lambda (restarg)
-                                  (case (car restarg)
-                                    ((null-ok)
-                                     (set! options (cons 'null-ok options)))
-                                    ((callee-owned)
-                                     (set! options (cons 'callee-owned options)))))
-                                restargs)
-                               options))))
-                      (map (lambda (defs-parameter-spec)
-                             (let ((looked-up (type-lookup
-                                               ws
-                                               (car defs-parameter-spec)
-                                               #f))
-                                   (parsed (parse-restargs
-                                            (cddr defs-parameter-spec)))
-                                   (arg-name (string->symbol
-                                              (cadr defs-parameter-spec))))
-                               ;; Ah, hackery...
-                               (if (memq 'callee-owned parsed)
-                                   (set! looked-up
-                                         (delq! 'callee-owned
-                                                (delq! 'caller-owned looked-up))))
-                               (if (list? looked-up)
-                                   (list (append looked-up parsed) arg-name)
-                                   (list looked-up arg-name))))
-                           parameters))
+                    #:arguments (construct-argument-list ws parameters)
                     #:generic-name generic-name)))))))
 
       (letrec ((define-enum (procedure->syntax
