@@ -7,9 +7,6 @@
   depth
   siblings)
 
-(define-method (on-get-flags (obj <my-tree-model>))
-  #f)
-
 (define-method (on-get-n-columns (obj <my-tree-model>))
   1)
 

@@ -1,3 +1,11 @@
+2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* Makefile.am (libguile_gnome_gw_gtk_la_CFLAGS): Added -O0, to
+	keep gcc from eating loads of memory.
+	
+	* Makefile.am (libguile_gnome_gw_gtk_la_CFLAGS): Removed
+	-DGTK_DISABLE_DEPRECATED.
+
 2004-01-14  Andy Wingo  <wingo@pobox.com>
 
 	* gtk-support.c (_wrap_gtk_tree_model_iter_children): Return a

@@ -16,38 +16,25 @@
   (gtype-id "GTK_TYPE_ACCESSIBLE")
 )
 
-(define-object IconFactory
+(define-object Action
   (in-module "Gtk")
   (parent "GObject")
-  (c-name "GtkIconFactory")
-  (gtype-id "GTK_TYPE_ICON_FACTORY")
+  (c-name "GtkAction")
+  (gtype-id "GTK_TYPE_ACTION")
 )
 
-(define-interface Editable
-  (in-module "Gtk")
-  (c-name "GtkEditable")
-  (gtype-id "GTK_TYPE_EDITABLE")
-)
-
-(define-object Object
+(define-object ActionGroup
   (in-module "Gtk")
   (parent "GObject")
-  (c-name "GtkObject")
-  (gtype-id "GTK_TYPE_OBJECT")
+  (c-name "GtkActionGroup")
+  (gtype-id "GTK_TYPE_ACTION_GROUP")
 )
 
-(define-object ItemFactory
+(define-object EntryCompletion
   (in-module "Gtk")
-  (parent "GtkObject")
-  (c-name "GtkItemFactory")
-  (gtype-id "GTK_TYPE_ITEM_FACTORY")
-)
-
-(define-object IMContext
-  (in-module "Gtk")
-  (parent "GtkObject")
-  (c-name "GtkIMContext")
-  (gtype-id "GTK_TYPE_IM_CONTEXT")
+  (parent "GObject")
+  (c-name "GtkEntryCompletion")
+  (gtype-id "GTK_TYPE_ENTRY_COMPLETION")
 )
 
 (define-object IMContextSimple
@@ -64,17 +51,46 @@
   (gtype-id "GTK_TYPE_IM_MULTICONTEXT")
 )
 
+(define-object IconFactory
+  (in-module "Gtk")
+  (parent "GObject")
+  (c-name "GtkIconFactory")
+  (gtype-id "GTK_TYPE_ICON_FACTORY")
+)
+
+(define-object IconTheme
+  (in-module "Gtk")
+  (parent "GObject")
+  (c-name "GtkIconTheme")
+  (gtype-id "GTK_TYPE_ICON_THEME")
+)
+
+(define-object ListStore
+  (in-module "Gtk")
+  (parent "GObject")
+  (c-name "GtkListStore")
+  (gtype-id "GTK_TYPE_LIST_STORE")
+)
+
+(define-object Object
+  (in-module "Gtk")
+  (parent "GObject")
+  (c-name "GtkObject")
+  (gtype-id "GTK_TYPE_OBJECT")
+)
+
+(define-object ItemFactory
+  (in-module "Gtk")
+  (parent "GtkObject")
+  (c-name "GtkItemFactory")
+  (gtype-id "GTK_TYPE_ITEM_FACTORY")
+)
+
 (define-object CellRenderer
   (in-module "Gtk")
   (parent "GtkObject")
   (c-name "GtkCellRenderer")
   (gtype-id "GTK_TYPE_CELL_RENDERER")
-)
-
-(define-interface CellEditable
-  (in-module "Gtk")
-  (c-name "GtkCellEditable")
-  (gtype-id "GTK_TYPE_CELL_EDITABLE")
 )
 
 (define-object CellRendererToggle
@@ -103,14 +119,6 @@
   (parent "GtkObject")
   (c-name "GtkAdjustment")
   (gtype-id "GTK_TYPE_ADJUSTMENT")
-  (fields
-    '("gfloat" "value")
-    '("gfloat" "lower")
-    '("gfloat" "upper")
-    '("gfloat" "step_increment")
-    '("gfloat" "page_increment")
-    '("gfloat" "page_size")
-  )
 )
 
 (define-object RcStyle
@@ -138,32 +146,6 @@
   (in-module "Gtk")
   (parent "GObject")
   (c-name "GtkStyle")
-  (fields
-    '("GdkColor*" "fg")
-    '("GdkColor*" "bg")
-    '("GdkColor*" "light")
-    '("GdkColor*" "dark")
-    '("GdkColor*" "mid")
-    '("GdkColor*" "text")
-    '("GdkColor*" "base")
-    '("GdkColor*" "text_aa")
-    '("GdkColor" "white")
-    '("GdkColor" "black")
-    '("PangoFontDescription*" "font_desc")
-    '("gint" "xthickness")
-    '("gint" "ythickness")
-    '("GdkGC**" "fg_gc")
-    '("GdkGC**" "bg_gc")
-    '("GdkGC**" "light_gc")
-    '("GdkGC**" "dark_gc")
-    '("GdkGC**" "mid_gc")
-    '("GdkGC**" "text_gc")
-    '("GdkGC**" "base_gc")
-    '("GdkGC**" "text_aa_gc")
-    '("GdkGC*" "white_gc")
-    '("GdkGC*" "black_gc")
-    '("GdkPixmap**" "bg_pixmap")
-  )
   (gtype-id "GTK_TYPE_STYLE")
 )
 
@@ -172,9 +154,6 @@
   (parent "GObject")
   (c-name "GtkTextBuffer")
   (gtype-id "GTK_TYPE_TEXT_BUFFER")
-  (fields
-    '("GtkTextTagTable*" "tag_table")
-  )
 )
 
 (define-object TextChildAnchor
@@ -205,56 +184,32 @@
   (gtype-id "GTK_TYPE_TEXT_TAG_TABLE")
 )
 
+(define-object ToggleAction
+  (in-module "Gtk")
+  (parent "GtkAction")
+  (c-name "GtkToggleAction")
+  (gtype-id "GTK_TYPE_TOGGLE_ACTION")
+)
+
+(define-object RadioAction
+  (in-module "Gtk")
+  (parent "GtkToggleAction")
+  (c-name "GtkRadioAction")
+  (gtype-id "GTK_TYPE_RADIO_ACTION")
+)
+
 (define-object Tooltips
   (in-module "Gtk")
   (parent "GtkObject")
   (c-name "GtkTooltips")
-  (fields
-    '("GtkWidget*" "tip_window")
-    '("GtkWidget*" "tip_label")
-    '("GtkTooltipsData*" "active_tips_data")
-    '("GList*" "tips_data_list")
-    '("guint" "delay")
-    '("guint" "enabled")
-    '("guint" "use_sticky_delay")
-    '("gint" "timer_tag")
-  )
   (gtype-id "GTK_TYPE_TOOLTIPS")
 )
 
-(define-interface TreeModel
-  (in-module "Gtk")
-  (c-name "GtkTreeModel")
-  (gtype-id "GTK_TYPE_TREE_MODEL")
-)
-
-(define-interface TreeDragSource
-  (in-module "Gtk")
-  (c-name "GtkTreeDragSource")
-  (gtype-id "GTK_TYPE_TREE_DRAG_SOURCE")
-)
-
-(define-interface TreeDragDest
-  (in-module "Gtk")
-  (c-name "GtkTreeDragDest")
-  (gtype-id "GTK_TYPE_TREE_DRAG_DEST")
-)
-
-(define-interface TreeSortable
-  (in-module "Gtk")
-  (c-name "GtkTreeSortable")
-  (gtype-id "GTK_TYPE_TREE_SORTABLE")
-)
-
-(define-object ListStore
+(define-object TreeModelFilter
   (in-module "Gtk")
   (parent "GObject")
-  (c-name "GtkListStore")
-  (gtype-id "GTK_TYPE_LIST_STORE")
-  (implements "GtkTreeModel")
-  (implements "GtkTreeDragSource")
-  (implements "GtkTreeDragDest")
-  (implements "GtkTreeSortable")
+  (c-name "GtkTreeModelFilter")
+  (gtype-id "GTK_TYPE_TREE_MODEL_FILTER")
 )
 
 (define-object TreeModelSort
@@ -262,13 +217,11 @@
   (parent "GObject")
   (c-name "GtkTreeModelSort")
   (gtype-id "GTK_TYPE_TREE_MODEL_SORT")
-  (implements "GtkTreeModel")
-  (implements "GtkTreeSortable")
 )
 
 (define-object TreeSelection
   (in-module "Gtk")
-  (parent "GtkObject")
+  (parent "GObject")
   (c-name "GtkTreeSelection")
   (gtype-id "GTK_TYPE_TREE_SELECTION")
 )
@@ -278,10 +231,6 @@
   (parent "GObject")
   (c-name "GtkTreeStore")
   (gtype-id "GTK_TYPE_TREE_STORE")
-  (implements "GtkTreeModel")
-  (implements "GtkTreeDragSource")
-  (implements "GtkTreeDragDest")
-  (implements "GtkTreeSortable")
 )
 
 (define-object TreeViewColumn
@@ -291,20 +240,18 @@
   (gtype-id "GTK_TYPE_TREE_VIEW_COLUMN")
 )
 
+(define-object UIManager
+  (in-module "Gtk")
+  (parent "GObject")
+  (c-name "GtkUIManager")
+  (gtype-id "GTK_TYPE_UI_MANAGER")
+)
+
 (define-object Widget
   (in-module "Gtk")
   (parent "GtkObject")
   (c-name "GtkWidget")
   (gtype-id "GTK_TYPE_WIDGET")
-  (fields
-    '("guint8" "state")
-    '("guint8" "saved_state")
-    '("gchar*" "name")
-    '("GtkStyle*" "style")
-    '("GdkRectangle" "allocation")
-    '("GdkWindow*" "window")
-    '("GtkWidget*" "parent")
-  )
 )
 
 (define-object Separator
@@ -398,6 +345,13 @@
   (gtype-id "GTK_TYPE_HSCALE")
 )
 
+(define-object Progress
+  (in-module "Gtk")
+  (parent "GtkWidget")
+  (c-name "GtkProgress")
+  (gtype-id "GTK_TYPE_PROGRESS")
+)
+
 (define-object ProgressBar
   (in-module "Gtk")
   (parent "GtkProgress")
@@ -405,11 +359,32 @@
   (gtype-id "GTK_TYPE_PROGRESS_BAR")
 )
 
+(define-object Preview
+  (in-module "Gtk")
+  (parent "GtkWidget")
+  (c-name "GtkPreview")
+  (gtype-id "GTK_TYPE_PREVIEW")
+)
+
+(define-object OldEditable
+  (in-module "Gtk")
+  (parent "GtkWidget")
+  (c-name "GtkOldEditable")
+  (gtype-id "GTK_TYPE_OLD_EDITABLE")
+)
+
 (define-object Misc
   (in-module "Gtk")
   (parent "GtkWidget")
   (c-name "GtkMisc")
   (gtype-id "GTK_TYPE_MISC")
+)
+
+(define-object Pixmap
+  (in-module "Gtk")
+  (parent "GtkMisc")
+  (c-name "GtkPixmap")
+  (gtype-id "GTK_TYPE_PIXMAP")
 )
 
 (define-object Arrow
@@ -452,8 +427,6 @@
   (parent "GtkWidget")
   (c-name "GtkEntry")
   (gtype-id "GTK_TYPE_ENTRY")
-  (implements "GtkEditable")
-  (implements "GtkCellEditable")
 )
 
 (define-object SpinButton
@@ -482,16 +455,8 @@
   (parent "GtkWidget")
   (c-name "GtkContainer")
   (gtype-id "GTK_TYPE_CONTAINER")
-  (fields
-    '("GtkWidget*" "focus_child")
-    '("guint" "border_width")
-    '("guint" "need_resize")
-    '("guint" "resize_mode")
-    '("guint" "reallocate_redraws")
-    '("guint" "has_focus_chain")    
-  )
 )
-  
+
 (define-object TreeView
   (in-module "Gtk")
   (parent "GtkContainer")
@@ -553,9 +518,6 @@
   (parent "GtkContainer")
   (c-name "GtkNotebook")
   (gtype-id "GTK_TYPE_NOTEBOOK")
-  (fields
-    '("GtkPositionType" "tab_pos")
-  )
 )
 
 (define-object MenuShell
@@ -579,14 +541,18 @@
   (gtype-id "GTK_TYPE_MENU_BAR")
 )
 
+(define-object List
+  (in-module "Gtk")
+  (parent "GtkContainer")
+  (c-name "GtkList")
+  (gtype-id "GTK_TYPE_LIST")
+)
+
 (define-object Layout
   (in-module "Gtk")
   (parent "GtkContainer")
   (c-name "GtkLayout")
   (gtype-id "GTK_TYPE_LAYOUT")
-  (fields
-   '("GdkWindow*" "bin_window")
-   )
 )
 
 (define-object Fixed
@@ -601,9 +567,6 @@
   (parent "GtkContainer")
   (c-name "GtkBin")
   (gtype-id "GTK_TYPE_BIN")
-  (fields
-    '("GtkWidget*" "child")
-  )
 )
 
 (define-object Viewport
@@ -611,6 +574,41 @@
   (parent "GtkBin")
   (c-name "GtkViewport")
   (gtype-id "GTK_TYPE_VIEWPORT")
+)
+
+(define-object ToolItem
+  (in-module "Gtk")
+  (parent "GtkBin")
+  (c-name "GtkToolItem")
+  (gtype-id "GTK_TYPE_TOOL_ITEM")
+)
+
+(define-object SeparatorToolItem
+  (in-module "Gtk")
+  (parent "GtkToolItem")
+  (c-name "GtkSeparatorToolItem")
+  (gtype-id "GTK_TYPE_SEPARATOR_TOOL_ITEM")
+)
+
+(define-object ToolButton
+  (in-module "Gtk")
+  (parent "GtkToolItem")
+  (c-name "GtkToolButton")
+  (gtype-id "GTK_TYPE_TOOL_BUTTON")
+)
+
+(define-object ToggleToolButton
+  (in-module "Gtk")
+  (parent "GtkToolButton")
+  (c-name "GtkToggleToolButton")
+  (gtype-id "GTK_TYPE_TOGGLE_TOOL_BUTTON")
+)
+
+(define-object RadioToolButton
+  (in-module "Gtk")
+  (parent "GtkToggleToolButton")
+  (c-name "GtkRadioToolButton")
+  (gtype-id "GTK_TYPE_RADIO_TOOL_BUTTON")
 )
 
 (define-object ScrolledWindow
@@ -653,9 +651,6 @@
   (parent "GtkMenuItem")
   (c-name "GtkCheckMenuItem")
   (gtype-id "GTK_TYPE_CHECK_MENU_ITEM")
-  (fields
-    '("gboolean" "active")
-  )
 )
 
 (define-object RadioMenuItem
@@ -670,6 +665,13 @@
   (parent "GtkMenuItem")
   (c-name "GtkImageMenuItem")
   (gtype-id "GTK_TYPE_IMAGE_MENU_ITEM")
+)
+
+(define-object ListItem
+  (in-module "Gtk")
+  (parent "GtkItem")
+  (c-name "GtkListItem")
+  (gtype-id "GTK_TYPE_LIST_ITEM")
 )
 
 (define-object HandleBox
@@ -691,6 +693,13 @@
   (parent "GtkFrame")
   (c-name "GtkAspectFrame")
   (gtype-id "GTK_TYPE_ASPECT_FRAME")
+)
+
+(define-object Expander
+  (in-module "Gtk")
+  (parent "GtkBin")
+  (c-name "GtkExpander")
+  (gtype-id "GTK_TYPE_EXPANDER")
 )
 
 (define-object EventBox
@@ -719,9 +728,6 @@
   (parent "GtkButton")
   (c-name "GtkToggleButton")
   (gtype-id "GTK_TYPE_TOGGLE_BUTTON")
-  (fields
-    '("gboolean" "draw_indicator")
-  )
 )
 
 (define-object CheckButton
@@ -745,6 +751,34 @@
   (gtype-id "GTK_TYPE_OPTION_MENU")
 )
 
+(define-object FontButton
+  (in-module "Gtk")
+  (parent "GtkButton")
+  (c-name "GtkFontButton")
+  (gtype-id "GTK_TYPE_FONT_BUTTON")
+)
+
+(define-object ColorButton
+  (in-module "Gtk")
+  (parent "GtkButton")
+  (c-name "GtkColorButton")
+  (gtype-id "GTK_TYPE_COLOR_BUTTON")
+)
+
+(define-object ComboBox
+  (in-module "Gtk")
+  (parent "GtkBin")
+  (c-name "GtkComboBox")
+  (gtype-id "GTK_TYPE_COMBO_BOX")
+)
+
+(define-object ComboBoxEntry
+  (in-module "Gtk")
+  (parent "GtkComboBox")
+  (c-name "GtkComboBoxEntry")
+  (gtype-id "GTK_TYPE_COMBO_BOX_ENTRY")
+)
+
 (define-object Box
   (in-module "Gtk")
   (parent "GtkContainer")
@@ -766,6 +800,13 @@
   (gtype-id "GTK_TYPE_COLOR_SELECTION")
 )
 
+(define-object FileChooserWidget
+  (in-module "Gtk")
+  (parent "GtkVBox")
+  (c-name "GtkFileChooserWidget")
+  (gtype-id "GTK_TYPE_FILE_CHOOSER_WIDGET")
+)
+
 (define-object FontSelection
   (in-module "Gtk")
   (parent "GtkVBox")
@@ -778,13 +819,6 @@
   (parent "GtkVBox")
   (c-name "GtkGammaCurve")
   (gtype-id "GTK_TYPE_GAMMA_CURVE")
-  (fields
-    '("GtkWidget*" "table")
-    '("GtkWidget*" "curve")
-    '("gfloat" "gamma")
-    '("GtkWidget*" "gamma_dialog")
-    '("GtkWidget*" "gamma_text")
-  )
 )
 
 (define-object HBox
@@ -806,10 +840,6 @@
   (parent "GtkHBox")
   (c-name "GtkCombo")
   (gtype-id "GTK_TYPE_COMBO")
-  (fields
-    '("GtkWidget*" "entry")
-    '("GtkWidget*" "list")
-  )
 )
 
 (define-object ButtonBox
@@ -833,7 +863,19 @@
   (gtype-id "GTK_TYPE_HBUTTON_BOX")
 )
 
-;; no clist or ctree :-)
+(define-object CList
+  (in-module "Gtk")
+  (parent "GtkContainer")
+  (c-name "GtkCList")
+  (gtype-id "GTK_TYPE_CLIST")
+)
+
+(define-object CTree
+  (in-module "Gtk")
+  (parent "GtkCList")
+  (c-name "GtkCTree")
+  (gtype-id "GTK_TYPE_CTREE")
+)
 
 (define-object Calendar
   (in-module "Gtk")
@@ -847,43 +889,6 @@
   (parent "GtkBin")
   (c-name "GtkWindow")
   (gtype-id "GTK_TYPE_WINDOW")
-  (fields
-    '("gchar*" "title")
-    '("gchar*" "wmclass_name")
-    '("gchar*" "wmclass_class")
-    '("gchar*" "wm_role")
-    '("GtkWidget*" "focus_widget")
-    '("GtkWidget*" "default_widget")
-    '("GtkWindow*" "transient_parent")
-;    '("GtkWindowGeometryInfo* "geometry_info")
-    '("GdkWindow*" "frame")
-    '("GtkWindowGroup*" "group")
-    '("guint16" "configure_request_count")
-    '("guint" "allow_shrink")
-    '("guint" "allow_grow")
-    '("guint" "configure_notify_received")
-    '("guint" "need_default_position")
-    '("guint" "need_default_size")
-    '("guint" "position")    
-    '("guint" "type")
-    '("guint" "has_user_ref_count")
-    '("guint" "has_focus")
-    '("guint" "modal")
-    '("guint" "destroy_with_parent")    
-    '("guint" "has_frame")        
-    '("guint" "iconify_initially")            
-    '("guint" "stick_initially")                
-    '("guint" "maximize_initially")    
-    '("guint" "decorated")        
-    '("guint" "type_hint")            
-    '("guint" "gravity")
-    '("guint" "frame_left")
-    '("guint" "frame_top")
-    '("guint" "frame_right")
-    '("guint" "frame_bottom")
-    '("guint" "keys_changed_handler")
-    '("GdkModifierType" "mnemonic_modifier")
-  )
 )
 
 (define-object Plug
@@ -898,10 +903,6 @@
   (parent "GtkWindow")
   (c-name "GtkDialog")
   (gtype-id "GTK_TYPE_DIALOG")
-  (fields
-    '("GtkWidget*" "vbox")
-    '("GtkWidget*" "action_area")
-  )
 )
 
 (define-object MessageDialog
@@ -909,10 +910,6 @@
   (parent "GtkDialog")
   (c-name "GtkMessageDialog")
   (gtype-id "GTK_TYPE_MESSAGE_DIALOG")
-  (fields
-    '("GtkWidget*" "image")
-    '("GtkWidget*" "label")
-  )
 )
 
 (define-object InputDialog
@@ -927,14 +924,6 @@
   (parent "GtkDialog")
   (c-name "GtkFontSelectionDialog")
   (gtype-id "GTK_TYPE_FONT_SELECTION_DIALOG")
-  (fields
-    '("GtkWidget*" "fontsel")
-    '("GtkWidget*" "main_vbox")
-    '("GtkWidget*" "action_area")
-    '("GtkWidget*" "ok_button")
-    '("GtkWidget*" "apply_button")
-    '("GtkWidget*" "cancel_button")
-  )
 )
 
 (define-object FileSelection
@@ -942,26 +931,13 @@
   (parent "GtkDialog")
   (c-name "GtkFileSelection")
   (gtype-id "GTK_TYPE_FILE_SELECTION")
-  (fields
-    '("GtkWidget*" "dir_list")
-    '("GtkWidget*" "file_list")
-    '("GtkWidget*" "selection_entry")
-    '("GtkWidget*" "selection_text")
-    '("GtkWidget*" "main_vbox")
-    '("GtkWidget*" "ok_button")
-    '("GtkWidget*" "cancel_button")
-    '("GtkWidget*" "help_button")
-    '("GtkWidget*" "history_pulldown")
-    '("GtkWidget*" "history_menu")
-    '("GtkWidget*" "fileop_dialog")
-    '("GtkWidget*" "fileop_entry")
-    '("gchar*"     "fileop_file")    
-    '("GtkWidget*" "fileop_c_dir")
-    '("GtkWidget*" "fileop_del_file")    
-    '("GtkWidget*" "fileop_ren_file")        
-    '("GtkWidget*" "button_area")        
-    '("GtkWidget*" "action_area")
-  )
+)
+
+(define-object FileChooserDialog
+  (in-module "Gtk")
+  (parent "GtkDialog")
+  (c-name "GtkFileChooserDialog")
+  (gtype-id "GTK_TYPE_FILE_CHOOSER_DIALOG")
 )
 
 (define-object ColorSelectionDialog
@@ -969,12 +945,6 @@
   (parent "GtkDialog")
   (c-name "GtkColorSelectionDialog")
   (gtype-id "GTK_TYPE_COLOR_SELECTION_DIALOG")
-  (fields
-    '("GtkWidget*" "colorsel")
-    '("GtkWidget*" "ok_button")
-    '("GtkWidget*" "cancel_button")
-    '("GtkWidget*" "help_button")
-  )
 )
 
 (define-object WindowGroup
@@ -983,14 +953,6 @@
   (c-name "GtkWindowGroup")
   (gtype-id "GTK_TYPE_WINDOW_GROUP")
 )
-
-; For Gtk+ 2.2
-;(define-object Clipboard
-;  (in-module "Gtk")
-;  (parent "GObject")
-;  (c-name "GtkClipboard")
-;  (gtype-id "GTK_TYPE_CLIPBOARD")
-;)
 
 ;; Boxed types ...
 
@@ -1055,6 +1017,44 @@
   (release-func "gtk_tree_iter_free")
 )
 
+;; Interfaces
+
+(define-interface Editable
+  (in-module "Gtk")
+  (c-name "GtkEditable")
+  (gtype-id "GTK_TYPE_EDITABLE")
+)
+
+(define-interface CellEditable
+  (in-module "Gtk")
+  (c-name "GtkCellEditable")
+  (gtype-id "GTK_TYPE_CELL_EDITABLE")
+)
+
+(define-interface TreeModel
+  (in-module "Gtk")
+  (c-name "GtkTreeModel")
+  (gtype-id "GTK_TYPE_TREE_MODEL")
+)
+
+(define-interface TreeDragSource
+  (in-module "Gtk")
+  (c-name "GtkTreeDragSource")
+  (gtype-id "GTK_TYPE_TREE_DRAG_SOURCE")
+)
+
+(define-interface TreeDragDest
+  (in-module "Gtk")
+  (c-name "GtkTreeDragDest")
+  (gtype-id "GTK_TYPE_TREE_DRAG_DEST")
+)
+
+(define-interface TreeSortable
+  (in-module "Gtk")
+  (c-name "GtkTreeSortable")
+  (gtype-id "GTK_TYPE_TREE_SORTABLE")
+)
+
 
 ;; Enumerations and flags ...
 
@@ -1064,7 +1064,6 @@
   (gtype-id "GTK_TYPE_ACCEL_FLAGS")
   (values
     '("visible" "GTK_ACCEL_VISIBLE")
-    '("signal-visible" "GTK_ACCEL_SIGNAL_VISIBLE")
     '("locked" "GTK_ACCEL_LOCKED")
     '("mask" "GTK_ACCEL_MASK")
   )
@@ -1092,6 +1091,7 @@
     '("prelit" "GTK_CELL_RENDERER_PRELIT")
     '("insensitive" "GTK_CELL_RENDERER_INSENSITIVE")
     '("sorted" "GTK_CELL_RENDERER_SORTED")
+    '("focused" "GTK_CELL_RENDERER_FOCUSED")
   )
 )
 
@@ -1106,6 +1106,92 @@
   )
 )
 
+(define-enum CellType
+  (in-module "Gtk")
+  (c-name "GtkCellType")
+  (gtype-id "GTK_TYPE_CELL_TYPE")
+  (values
+    '("empty" "GTK_CELL_EMPTY")
+    '("text" "GTK_CELL_TEXT")
+    '("pixmap" "GTK_CELL_PIXMAP")
+    '("pixtext" "GTK_CELL_PIXTEXT")
+    '("widget" "GTK_CELL_WIDGET")
+  )
+)
+
+(define-enum CListDragPos
+  (in-module "Gtk")
+  (c-name "GtkCListDragPos")
+  (gtype-id "GTK_TYPE_CLIST_DRAG_POS")
+  (values
+    '("none" "GTK_CLIST_DRAG_NONE")
+    '("before" "GTK_CLIST_DRAG_BEFORE")
+    '("into" "GTK_CLIST_DRAG_INTO")
+    '("after" "GTK_CLIST_DRAG_AFTER")
+  )
+)
+
+(define-flags ButtonAction
+  (in-module "Gtk")
+  (c-name "GtkButtonAction")
+  (gtype-id "GTK_TYPE_BUTTON_ACTION")
+  (values
+    '("ignored" "GTK_BUTTON_IGNORED")
+    '("selects" "GTK_BUTTON_SELECTS")
+    '("drags" "GTK_BUTTON_DRAGS")
+    '("expands" "GTK_BUTTON_EXPANDS")
+  )
+)
+
+(define-enum CTreePos
+  (in-module "Gtk")
+  (c-name "GtkCTreePos")
+  (gtype-id "GTK_TYPE_CTREE_POS")
+  (values
+    '("before" "GTK_CTREE_POS_BEFORE")
+    '("as-child" "GTK_CTREE_POS_AS_CHILD")
+    '("after" "GTK_CTREE_POS_AFTER")
+  )
+)
+
+(define-enum CTreeLineStyle
+  (in-module "Gtk")
+  (c-name "GtkCTreeLineStyle")
+  (gtype-id "GTK_TYPE_CTREE_LINE_STYLE")
+  (values
+    '("none" "GTK_CTREE_LINES_NONE")
+    '("solid" "GTK_CTREE_LINES_SOLID")
+    '("dotted" "GTK_CTREE_LINES_DOTTED")
+    '("tabbed" "GTK_CTREE_LINES_TABBED")
+  )
+)
+
+(define-enum CTreeExpanderStyle
+  (in-module "Gtk")
+  (c-name "GtkCTreeExpanderStyle")
+  (gtype-id "GTK_TYPE_CTREE_EXPANDER_STYLE")
+  (values
+    '("none" "GTK_CTREE_EXPANDER_NONE")
+    '("square" "GTK_CTREE_EXPANDER_SQUARE")
+    '("triangle" "GTK_CTREE_EXPANDER_TRIANGLE")
+    '("circular" "GTK_CTREE_EXPANDER_CIRCULAR")
+  )
+)
+
+(define-enum CTreeExpansionType
+  (in-module "Gtk")
+  (c-name "GtkCTreeExpansionType")
+  (gtype-id "GTK_TYPE_CTREE_EXPANSION_TYPE")
+  (values
+    '("expand" "GTK_CTREE_EXPANSION_EXPAND")
+    '("expand-recursive" "GTK_CTREE_EXPANSION_EXPAND_RECURSIVE")
+    '("collapse" "GTK_CTREE_EXPANSION_COLLAPSE")
+    '("collapse-recursive" "GTK_CTREE_EXPANSION_COLLAPSE_RECURSIVE")
+    '("toggle" "GTK_CTREE_EXPANSION_TOGGLE")
+    '("toggle-recursive" "GTK_CTREE_EXPANSION_TOGGLE_RECURSIVE")
+  )
+)
+
 (define-flags DebugFlag
   (in-module "Gtk")
   (c-name "GtkDebugFlag")
@@ -1116,6 +1202,8 @@
     '("text" "GTK_DEBUG_TEXT")
     '("tree" "GTK_DEBUG_TREE")
     '("updates" "GTK_DEBUG_UPDATES")
+    '("keybindings" "GTK_DEBUG_KEYBINDINGS")
+    '("multihead" "GTK_DEBUG_MULTIHEAD")
   )
 )
 
@@ -1300,6 +1388,18 @@
   )
 )
 
+(define-enum SideType
+  (in-module "Gtk")
+  (c-name "GtkSideType")
+  (gtype-id "GTK_TYPE_SIDE_TYPE")
+  (values
+    '("top" "GTK_SIDE_TOP")
+    '("bottom" "GTK_SIDE_BOTTOM")
+    '("left" "GTK_SIDE_LEFT")
+    '("right" "GTK_SIDE_RIGHT")
+  )
+)
+
 (define-enum TextDirection
   (in-module "Gtk")
   (c-name "GtkTextDirection")
@@ -1320,6 +1420,20 @@
     '("right" "GTK_JUSTIFY_RIGHT")
     '("center" "GTK_JUSTIFY_CENTER")
     '("fill" "GTK_JUSTIFY_FILL")
+  )
+)
+
+(define-enum MatchType
+  (in-module "Gtk")
+  (c-name "GtkMatchType")
+  (gtype-id "GTK_TYPE_MATCH_TYPE")
+  (values
+    '("all" "GTK_MATCH_ALL")
+    '("all-tail" "GTK_MATCH_ALL_TAIL")
+    '("head" "GTK_MATCH_HEAD")
+    '("tail" "GTK_MATCH_TAIL")
+    '("exact" "GTK_MATCH_EXACT")
+    '("last" "GTK_MATCH_LAST")
   )
 )
 
@@ -1360,6 +1474,21 @@
     '("paragraph-ends" "GTK_MOVEMENT_PARAGRAPH_ENDS")
     '("pages" "GTK_MOVEMENT_PAGES")
     '("buffer-ends" "GTK_MOVEMENT_BUFFER_ENDS")
+    '("horizontal-pages" "GTK_MOVEMENT_HORIZONTAL_PAGES")
+  )
+)
+
+(define-enum ScrollStep
+  (in-module "Gtk")
+  (c-name "GtkScrollStep")
+  (gtype-id "GTK_TYPE_SCROLL_STEP")
+  (values
+    '("steps" "GTK_SCROLL_STEPS")
+    '("pages" "GTK_SCROLL_PAGES")
+    '("ends" "GTK_SCROLL_ENDS")
+    '("horizontal-steps" "GTK_SCROLL_HORIZONTAL_STEPS")
+    '("horizontal-pages" "GTK_SCROLL_HORIZONTAL_PAGES")
+    '("horizontal-ends" "GTK_SCROLL_HORIZONTAL_ENDS")
   )
 )
 
@@ -1443,6 +1572,16 @@
   )
 )
 
+(define-enum PreviewType
+  (in-module "Gtk")
+  (c-name "GtkPreviewType")
+  (gtype-id "GTK_TYPE_PREVIEW_TYPE")
+  (values
+    '("color" "GTK_PREVIEW_COLOR")
+    '("grayscale" "GTK_PREVIEW_GRAYSCALE")
+  )
+)
+
 (define-enum ReliefStyle
   (in-module "Gtk")
   (c-name "GtkReliefStyle")
@@ -1462,6 +1601,20 @@
     '("parent" "GTK_RESIZE_PARENT")
     '("queue" "GTK_RESIZE_QUEUE")
     '("immediate" "GTK_RESIZE_IMMEDIATE")
+  )
+)
+
+(define-enum SignalRunType
+  (in-module "Gtk")
+  (c-name "GtkSignalRunType")
+  (gtype-id "GTK_TYPE_SIGNAL_RUN_TYPE")
+  (values
+    '("first" "GTK_RUN_FIRST")
+    '("last" "GTK_RUN_LAST")
+    '("both" "GTK_RUN_BOTH")
+    '("no-recurse" "GTK_RUN_NO_RECURSE")
+    '("action" "GTK_RUN_ACTION")
+    '("no-hooks" "GTK_RUN_NO_HOOKS")
   )
 )
 
@@ -1498,6 +1651,7 @@
     '("single" "GTK_SELECTION_SINGLE")
     '("browse" "GTK_SELECTION_BROWSE")
     '("multiple" "GTK_SELECTION_MULTIPLE")
+    '("extended" "GTK_SELECTION_EXTENDED")
   )
 )
 
@@ -1524,6 +1678,26 @@
     '("prelight" "GTK_STATE_PRELIGHT")
     '("selected" "GTK_STATE_SELECTED")
     '("insensitive" "GTK_STATE_INSENSITIVE")
+  )
+)
+
+(define-enum SubmenuDirection
+  (in-module "Gtk")
+  (c-name "GtkSubmenuDirection")
+  (gtype-id "GTK_TYPE_SUBMENU_DIRECTION")
+  (values
+    '("left" "GTK_DIRECTION_LEFT")
+    '("right" "GTK_DIRECTION_RIGHT")
+  )
+)
+
+(define-enum SubmenuPlacement
+  (in-module "Gtk")
+  (c-name "GtkSubmenuPlacement")
+  (gtype-id "GTK_TYPE_SUBMENU_PLACEMENT")
+  (values
+    '("top-bottom" "GTK_TOP_BOTTOM")
+    '("left-right" "GTK_LEFT_RIGHT")
   )
 )
 
@@ -1592,6 +1766,7 @@
     '("none" "GTK_WRAP_NONE")
     '("char" "GTK_WRAP_CHAR")
     '("word" "GTK_WRAP_WORD")
+    '("word-char" "GTK_WRAP_WORD_CHAR")
   )
 )
 
@@ -1602,6 +1777,83 @@
   (values
     '("ascending" "GTK_SORT_ASCENDING")
     '("descending" "GTK_SORT_DESCENDING")
+  )
+)
+
+(define-enum IMPreeditStyle
+  (in-module "Gtk")
+  (c-name "GtkIMPreeditStyle")
+  (gtype-id "GTK_TYPE_IM_PREEDIT_STYLE")
+  (values
+    '("nothing" "GTK_IM_PREEDIT_NOTHING")
+    '("callback" "GTK_IM_PREEDIT_CALLBACK")
+    '("none" "GTK_IM_PREEDIT_NONE")
+  )
+)
+
+(define-enum IMStatusStyle
+  (in-module "Gtk")
+  (c-name "GtkIMStatusStyle")
+  (gtype-id "GTK_TYPE_IM_STATUS_STYLE")
+  (values
+    '("nothing" "GTK_IM_STATUS_NOTHING")
+    '("callback" "GTK_IM_STATUS_CALLBACK")
+    '("none" "GTK_IM_STATUS_NONE")
+  )
+)
+
+(define-enum FileChooserAction
+  (in-module "Gtk")
+  (c-name "GtkFileChooserAction")
+  (gtype-id "GTK_TYPE_FILE_CHOOSER_ACTION")
+  (values
+    '("open" "GTK_FILE_CHOOSER_ACTION_OPEN")
+    '("save" "GTK_FILE_CHOOSER_ACTION_SAVE")
+    '("select-folder" "GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER")
+    '("create-folder" "GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER")
+  )
+)
+
+(define-enum FileChooserError
+  (in-module "Gtk")
+  (c-name "GtkFileChooserError")
+  (gtype-id "GTK_TYPE_FILE_CHOOSER_ERROR")
+  (values
+    '("nonexistent" "GTK_FILE_CHOOSER_ERROR_NONEXISTENT")
+    '("bad-filename" "GTK_FILE_CHOOSER_ERROR_BAD_FILENAME")
+  )
+)
+
+(define-flags FileFilterFlags
+  (in-module "Gtk")
+  (c-name "GtkFileFilterFlags")
+  (gtype-id "GTK_TYPE_FILE_FILTER_FLAGS")
+  (values
+    '("filename" "GTK_FILE_FILTER_FILENAME")
+    '("uri" "GTK_FILE_FILTER_URI")
+    '("display-name" "GTK_FILE_FILTER_DISPLAY_NAME")
+    '("mime-type" "GTK_FILE_FILTER_MIME_TYPE")
+  )
+)
+
+(define-flags IconLookupFlags
+  (in-module "Gtk")
+  (c-name "GtkIconLookupFlags")
+  (gtype-id "GTK_TYPE_ICON_LOOKUP_FLAGS")
+  (values
+    '("no-svg" "GTK_ICON_LOOKUP_NO_SVG")
+    '("force-svg" "GTK_ICON_LOOKUP_FORCE_SVG")
+    '("use-builtin" "GTK_ICON_LOOKUP_USE_BUILTIN")
+  )
+)
+
+(define-enum IconThemeError
+  (in-module "Gtk")
+  (c-name "GtkIconThemeError")
+  (gtype-id "GTK_TYPE_ICON_THEME_ERROR")
+  (values
+    '("not-found" "GTK_ICON_THEME_NOT_FOUND")
+    '("failed" "GTK_ICON_THEME_FAILED")
   )
 )
 
@@ -1661,7 +1913,7 @@
   (c-name "GtkObjectFlags")
   (gtype-id "GTK_TYPE_OBJECT_FLAGS")
   (values
-    '("in-destruction" "GTK_IN_DESTRUCTIOND")
+    '("in-destruction" "GTK_IN_DESTRUCTION")
     '("floating" "GTK_FLOATING")
     '("reserved-1" "GTK_RESERVED_1")
     '("reserved-2" "GTK_RESERVED_2")
@@ -1818,7 +2070,7 @@
   )
 )
 
-(define-enum TextSearchFlags
+(define-flags TextSearchFlags
   (in-module "Gtk")
   (c-name "GtkTextSearchFlags")
   (gtype-id "GTK_TYPE_TEXT_SEARCH_FLAGS")
@@ -1886,6 +2138,18 @@
   )
 )
 
+(define-enum TreeViewDropPosition
+  (in-module "Gtk")
+  (c-name "GtkTreeViewDropPosition")
+  (gtype-id "GTK_TYPE_TREE_VIEW_DROP_POSITION")
+  (values
+    '("before" "GTK_TREE_VIEW_DROP_BEFORE")
+    '("after" "GTK_TREE_VIEW_DROP_AFTER")
+    '("into-or-before" "GTK_TREE_VIEW_DROP_INTO_OR_BEFORE")
+    '("into-or-after" "GTK_TREE_VIEW_DROP_INTO_OR_AFTER")
+  )
+)
+
 (define-enum TreeViewColumnSizing
   (in-module "Gtk")
   (c-name "GtkTreeViewColumnSizing")
@@ -1897,15 +2161,21 @@
   )
 )
 
-(define-enum TreeViewDropPosition
+(define-flags UIManagerItemType
   (in-module "Gtk")
-  (c-name "GtkTreeViewDropPosition")
-  (gtype-id "GTK_TYPE_TREE_VIEW_DROP_POSITION")
+  (c-name "GtkUIManagerItemType")
+  (gtype-id "GTK_TYPE_UI_MANAGER_ITEM_TYPE")
   (values
-    '("before" "GTK_TREE_VIEW_DROP_BEFORE")
-    '("after" "GTK_TREE_VIEW_DROP_AFTER")
-    '("into-or-before" "GTK_TREE_VIEW_DROP_INTO_OR_BEFORE")
-    '("into-or-after" "GTK_TREE_VIEW_DROP_INTO_OR_AFTER")
+    '("auto" "GTK_UI_MANAGER_AUTO")
+    '("menubar" "GTK_UI_MANAGER_MENUBAR")
+    '("menu" "GTK_UI_MANAGER_MENU")
+    '("toolbar" "GTK_UI_MANAGER_TOOLBAR")
+    '("placeholder" "GTK_UI_MANAGER_PLACEHOLDER")
+    '("popup" "GTK_UI_MANAGER_POPUP")
+    '("menuitem" "GTK_UI_MANAGER_MENUITEM")
+    '("toolitem" "GTK_UI_MANAGER_TOOLITEM")
+    '("separator" "GTK_UI_MANAGER_SEPARATOR")
+    '("accelerator" "GTK_UI_MANAGER_ACCELERATOR")
   )
 )
 
@@ -1932,6 +2202,7 @@
     '("app-paintable" "GTK_APP_PAINTABLE")
     '("receives-default" "GTK_RECEIVES_DEFAULT")
     '("double-buffered" "GTK_DOUBLE_BUFFERED")
+    '("no-show-all" "GTK_NO_SHOW_ALL")
   )
 )
 

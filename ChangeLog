@@ -1,3 +1,12 @@
+2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* configure.in: Depend on libgnomeui >= 2.6.0 and gtk+ >= 2.4.0.
+
+2004-04-02  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* examples/gtk/guile-gtk-demo/demos/tree-model.scm (on-get-flags):
+	Removed, can use default implementation.
+
 2004-03-29  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* guile-gobject.pc.in, guile-gobject-uninstalled.pc.in: Moved to

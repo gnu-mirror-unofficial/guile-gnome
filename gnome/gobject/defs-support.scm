@@ -30,6 +30,7 @@
   :use-module (srfi srfi-13)
   :use-module (ice-9 slib)
   :use-module (ice-9 optargs)
+  :use-module (ice-9 regex)
   :export (load-defs register-type))
 
 (require 'glob)
@@ -79,6 +80,7 @@
         (options (list))
         (const? #f)
         (gwrap-type-name #f))
+    (set! type (regexp-substitute/global #f "\\[\\]" type 'pre "*" 'post))
     (cond
      ((string-prefix? "const-" type)
       (set! options (cons (or ownership (if return? 'callee-owned 'caller-owned))

@@ -54,7 +54,7 @@
 
 ;; Support tree models written in guile.
 (define-method (on-get-flags (obj <guile-gtk-tree-model>))
-  (error "This method needs to be overridden by a subclass."))
+  (make <gtk-tree-model-flags> #:value 0))
 (define-method (on-get-n-columns (obj <guile-gtk-tree-model>))
   (error "This method needs to be overridden by a subclass."))
 (define-method (on-get-column-type (obj <guile-gtk-tree-model>) index)

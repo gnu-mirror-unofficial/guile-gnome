@@ -1,3 +1,16 @@
+2004-04-02  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* ui.defs: Revised for GNOME 2.6.
+	
+	* gtk.defs: Removed broken functions, fixes.
+	
+	* gtk-types.defs: Removed broken types and re-added boxed types
+	and interfaces.
+
+2004-03-31  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gtk.defs, gtk-types.defs: Adapted for GTK+ 2.4.
+
 2004-03-29  Andreas Rottmann  <a.rottmann@gmx.at>
 	
 	* gdk-types.defs (ColorSpace): Removed, is in gdk-pixbuf and

@@ -112,9 +112,9 @@ CLEANFILES += guile-gnome-gw-gdk.c guile-gnome-gw-gdk.h \
 libguile_gnome_gw_gtk_la_SOURCES = guile-gnome-gw-gtk.c	guile-gnome-gw-gtk.h \
 	guile-gtk-tree-model.c guile-gtk-tree-model.h gtk-support.c gtk-support.h
 
-libguile_gnome_gw_gtk_la_CFLAGS = -I$(top_srcdir)/gnome/gobject \
+libguile_gnome_gw_gtk_la_CFLAGS = -O0 -I$(top_srcdir)/gnome/gobject \
 	$(AM_CFLAGS) $(GTK_CFLAGS) $(GUILE_CFLAGS) \
-	$(G_WRAP_CFLAGS) -DGTK_DISABLE_DEPRECATED
+	$(G_WRAP_CFLAGS)
 
 libguile_gnome_gw_gtk_la_LIBADD = $(GTK_LIBS) $(GUILE_LIBS) \
 	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gw-gobject.la

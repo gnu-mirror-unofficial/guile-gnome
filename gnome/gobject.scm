@@ -708,7 +708,7 @@ magic way to its GType.
 	     (value-text '()))
 	(for-each (lambda (x)
 		    (let ((f (caddr x)))
-		      (if (positive? (logor value f))
+		      (if (positive? (logior value f))
 			  (set! value-text (append! value-text (list x))))))
 		  (vector->list flags-values))
 	(display #\space file)
