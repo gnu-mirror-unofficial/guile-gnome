@@ -306,7 +306,7 @@ Examples:
      85)
 
 "
-  (procedure->macro
+  (procedure->memoizing-macro
    (lambda (exp env)
      (cond ((not (top-level-env? env))
 	    (gruntime-error "gtype-class-define-signal: Only allowed at top level"))

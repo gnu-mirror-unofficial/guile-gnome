@@ -39,7 +39,7 @@
 ;; gw-gobject: a wrapset to assist in wrapping gobject-based apis
 
 (define-class <gobject-wrapset> (<gobject-wrapset-base>)
-  #:id 'gnome-gobject)
+  #:id 'gnome-gobject #:dependencies '(standard gnome-glib))
 
 (define-class <include-item> (<gw-item>))
 
@@ -54,8 +54,6 @@
 (define-method (initialize (ws <gobject-wrapset>) initargs)
   (next-method ws (append '(#:module (gnome gw gobject)) initargs))
   
-  (depends-on! ws 'standard 'gnome-glib)
-
   (let ((item (make <include-item>)))
     (add-item! ws item)
     (add-client-item! ws item))

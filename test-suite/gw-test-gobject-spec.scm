@@ -8,7 +8,7 @@
   #:use-module (gnome gobject defs-support))
 
 (define-class <test-gobject-wrapset> (<gobject-wrapset-base>)
-  #:id 'test-gobject)
+  #:id 'test-gobject #:dependencies '(standard gnome-gobject))
 
 (define-method (global-declarations-cg (ws <test-gobject-wrapset>))
   (list
@@ -18,7 +18,5 @@
 (define-method (initialize (ws <test-gobject-wrapset>) initargs)
   (next-method ws (append '(#:module (test-suite gw-test-gobject)) initargs))
   
-  (depends-on! ws 'standard 'gnome-gobject)
-
   (load-defs ws "test-suite/test-gobject.defs"))
 

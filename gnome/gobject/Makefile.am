@@ -17,8 +17,10 @@ libguile_gnome_gobject_la_CFLAGS = \
 libguile_gnome_gobject_la_LIBADD = $(G_WRAP_LIBS) $(GOBJECT_LIBS) $(GUILE_LIBS)
 libguile_gnome_gobject_la_LDFLAGS = # FIXME: version info
 
-# FIXME: install guile-gnome-gobject.h in the proper dir
-pkginclude_HEADERS = $(H_FILES)
+guile_gnome_includedir = $(includedir)/guile-gnome-gobject
+guile_gnome_include_HEADERS = $(H_FILES)
+
+include_HEADERS = guile-gnome-gobject.h
 
 # Scheme files
 
