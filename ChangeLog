@@ -1,3 +1,8 @@
+2004-09-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (load-defs): Ignore varargs functions,
+	like we used to before the rewrite.
+
 2004-09-12  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gobject.scm: Real keywords, avoid deprecated modules.
