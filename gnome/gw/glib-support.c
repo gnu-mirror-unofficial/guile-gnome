@@ -22,12 +22,14 @@
  * Boston, MA  02111-1307,  USA       gnu@gnu.org
  */
 
-#include <g-wrap-wct.h>
 #include "glib-support.h"
+#include <g-wrap/guile-wct.h>
 
 #define GRUNTIME_ERROR(format, func_name, args...) \
   scm_error (scm_str2symbol ("gruntime-error"), func_name, format, \
              ##args, SCM_EOL)
+
+static SCM iochannel_type;
 
 /* The signal code doesn't work with 1.7 */
 #if (SCM_MAJOR_VERSION == 1) && (SCM_MINOR_VERSION == 6)
@@ -39,6 +41,8 @@ scm_init_glib (void)
 {
     deliver_signals = scm_permanent_object (
             SCM_VARIABLE_REF (scm_c_lookup ("%deliver-signals")));
+    iochannel_type = scm_permanent_object (
+            SCM_VARIABLE_REF (scm_c_lookup ("<gio-channel*>")));
 }
 
 static gboolean
@@ -85,6 +89,8 @@ _wrap_g_main_loop_run (GMainLoop *loop)
 void
 scm_init_glib (void)
 {
+    iochannel_type = scm_permanent_object (
+            SCM_VARIABLE_REF (scm_c_lookup ("<gio-channel*>")));
 }
 
 void
@@ -112,11 +118,7 @@ g_io_func (GIOChannel *source,
 
   proc = SCM_PACK (GPOINTER_TO_INT (data));
   result = scm_call_2 (proc,
-#if 0 /* GIOChannel is not wrapped, assimilate by hand, says Andy -- jcn */		       
-		       scm_c_gtype_instance_to_scm ((GTypeInstance*) source),
-#else		       
-		       gw_wcp_assimilate_ptr (source, SCM_VARIABLE_REF (scm_c_lookup ("<gio-channel*>"))),
-#endif
+		       gw_wcp_assimilate_ptr (source, iochannel_type),
 		       scm_long2num (condition));
   return result == SCM_BOOL_T;
 }
