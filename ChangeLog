@@ -1,5 +1,8 @@
 2004-09-19  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/Makefile.am (libgw_guile_gnome_corba_la_LIBADD): Not
+	G_WRAP_LINK_ARGS, it's G_WRAP_LIBS.
+
 	* gnome/corba/Makefile.am: Install headers into a versioned
 	directory.
 

@@ -19,7 +19,7 @@ libgw_guile_gnome_corba_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(AM_CFLAGS) $(CORBA_CFLAGS) $(GUILE_CFLAGS) -DORBIT2_STUBS_API \
 	$(G_WRAP_CFLAGS) -I$(top_srcdir)/corba/gnome/corba
 libgw_guile_gnome_corba_la_LIBADD = $(CORBA_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LINK_ARGS) $(GUILE_GLIB_LIBS) ../corba/libguile-gnome-corba.la
+	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS) ../corba/libguile-gnome-corba.la
 libgw_guile_gnome_corba_la_LDFLAGS = -module
 
 CLEANFILES += $(wildcard guile-gnome-gw-corba.*) corba.scm
