@@ -1,5 +1,6 @@
 /* -*- Mode: C; c-basic-offset: 4 -*- */
 /* guile-gnome
+ * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
  * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
  *
  * gtype.c: Base support for the GLib type system
@@ -489,7 +490,7 @@ scm_gtype_instance_print (SCM smob, SCM port, scm_print_state *pstate)
     SCM class;
 
     class = g_type_get_qdata (G_TYPE_FROM_INSTANCE (instance), quark_class);
-    if (!class)
+    if (SCM_FALSEP (class))
 	class = scm_c_register_gtype (G_TYPE_FROM_INSTANCE (instance));
 
     scm_call_3 (_gtype_instance_write, class, smob, port);
