@@ -30,8 +30,8 @@
   #:use-module (g-wrap guile)
   #:use-module (gnome gw glib-spec)
   #:use-module (gnome gw gobject-spec)
-  #:use-module (gnome gobject gw-spec-utils)
-  #:use-module (gnome gobject defs-support))
+  #:use-module (gnome gw support gobject)
+  #:use-module (gnome gw support defs))
 
 (define-class <pango-wrapset> (<gobject-wrapset-base>)
   #:id 'gnome-pango
