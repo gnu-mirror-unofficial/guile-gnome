@@ -12,7 +12,9 @@ lib_LTLIBRARIES = libgw-guile-gnome-gnome-vfs.la
 ########################################################################
 ## gnome-vfs
 nodist_libgw_guile_gnome_gnome_vfs_la_SOURCES = guile-gnome-gw-gnome-vfs.c
-libgw_guile_gnome_gnome_vfs_la_SOURCES = gnome-vfs-support.c gnome-vfs-support.h
+libgw_guile_gnome_gnome_vfs_la_SOURCES = \
+	gnome-vfs-support.c gnome-vfs-support.h \
+	gnome-vfs-port.c gnome-vfs-port.h
 
 libgw_guile_gnome_gnome_vfs_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(AM_CFLAGS) $(GNOME_VFS_CFLAGS) $(GUILE_CFLAGS) \

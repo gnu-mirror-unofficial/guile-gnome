@@ -1,3 +1,18 @@
+2004-10-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gnome-vfs.defs: Adjust the prototypes of the
+	open/create procs to return SCM. Add a wrapper for port->handle.
+
+	* gnome/gw/gnome-vfs-support.[ch] (_wrap_gnome_vfs_open)
+	(_wrap_gnome_vfs_open_uri, _wrap_gnome_vfs_create)
+	(_wrap_gnome_vfs_create_uri): Return ports instead of handles.
+	
+	* gnome/gw/Makefile.am, gnome/gw/gnome-vfs-spec.scm: Pull the
+	-port files into the build.
+
+	* gnome/gw/gnome-vfs-port.[ch]: New file which wraps a
+	GnomeVFSHandle into a scheme port. Also implements port->handle.
+
 2004-10-09  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/Makefile.am: Adjusted for (gnome vfs).

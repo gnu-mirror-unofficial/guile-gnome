@@ -21,14 +21,9 @@
  * Boston, MA  02111-1307,  USA       gnu@gnu.org
  */
 
+#include "gnome-vfs-port.h"
 #include "gnome-vfs-support.h"
 #include "guile-gnome-gobject.h"
-
-#define RESULT_ERROR(result) \
-  scm_throw (scm_str2symbol (g_enum_get_value \
-                             ((GEnumClass*)g_type_class_peek \
-                              (GNOME_VFS_TYPE_VFS_RESULT), result)->value_nick), \
-                             SCM_EOL)
 
 GnomeVFSDirectoryHandle*
 _wrap_gnome_vfs_directory_open (const gchar *text_uri,
@@ -58,7 +53,7 @@ _wrap_gnome_vfs_directory_open_from_uri (GnomeVFSURI *uri,
     return handle;
 }
 
-GnomeVFSHandle*
+SCM
 _wrap_gnome_vfs_open (const gchar *text_uri, GnomeVFSOpenMode open_mode)
 {
     GnomeVFSHandle *handle = NULL;
@@ -68,23 +63,28 @@ _wrap_gnome_vfs_open (const gchar *text_uri, GnomeVFSOpenMode open_mode)
     if (res != GNOME_VFS_OK)
         RESULT_ERROR (res);
     
-    return handle;
+    return scm_gnome_vfs_handle_to_port (handle, open_mode, text_uri);
 }
 
-GnomeVFSHandle*
+SCM
 _wrap_gnome_vfs_open_uri (GnomeVFSURI *uri, GnomeVFSOpenMode open_mode)
 {
     GnomeVFSHandle *handle = NULL;
     GnomeVFSResult res;
+    gchar *name;
+    SCM ret;
     
     res = gnome_vfs_open_uri (&handle, uri, open_mode);
     if (res != GNOME_VFS_OK)
         RESULT_ERROR (res);
     
-    return handle;
+    name = gnome_vfs_uri_to_string (uri, GNOME_VFS_URI_HIDE_PASSWORD);
+    ret = scm_gnome_vfs_handle_to_port (handle, open_mode, name);
+    g_free (name);
+    return ret;
 }
 
-GnomeVFSHandle*
+SCM
 _wrap_gnome_vfs_create (const gchar *text_uri, GnomeVFSOpenMode open_mode,
                         gboolean exclusive, guint perm)
 {
@@ -95,20 +95,24 @@ _wrap_gnome_vfs_create (const gchar *text_uri, GnomeVFSOpenMode open_mode,
     if (res != GNOME_VFS_OK)
         RESULT_ERROR (res);
     
-    return handle;
+    return scm_gnome_vfs_handle_to_port (handle, open_mode, text_uri);
 }
 
-GnomeVFSHandle*
+SCM
 _wrap_gnome_vfs_create_uri (GnomeVFSURI *uri, GnomeVFSOpenMode open_mode,
                             gboolean exclusive, guint perm)
 {
     GnomeVFSHandle *handle = NULL;
     GnomeVFSResult res;
+    gchar *name;
+    SCM ret;
     
     res = gnome_vfs_create_uri (&handle, uri, open_mode, exclusive, perm);
     if (res != GNOME_VFS_OK)
         RESULT_ERROR (res);
     
-    return handle;
+    name = gnome_vfs_uri_to_string (uri, GNOME_VFS_URI_HIDE_PASSWORD);
+    ret = scm_gnome_vfs_handle_to_port (handle, open_mode, name);
+    g_free (name);
+    return ret;
 }
-

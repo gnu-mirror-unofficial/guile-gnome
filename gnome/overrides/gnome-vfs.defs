@@ -45,10 +45,11 @@
   )
 )
 
+;; open/create procedures return scheme ports :-)
 (define-function gnome_vfs_open
   (c-name "_wrap_gnome_vfs_open")
   (overrides "gnome_vfs_open")
-  (return-type "GnomeVFSHandle*")
+  (return-type "SCM")
   (parameters
     '("const-gchar*" "text_uri")
     '("GnomeVFSOpenMode" "open_mode")
@@ -58,7 +59,7 @@
 (define-function gnome_vfs_open_uri
   (c-name "_wrap_gnome_vfs_open_uri")
   (overrides "gnome_vfs_open_uri")
-  (return-type "GnomeVFSHandle*")
+  (return-type "SCM")
   (parameters
     '("GnomeVFSURI*" "uri")
     '("GnomeVFSOpenMode" "open_mode")
@@ -68,7 +69,7 @@
 (define-function gnome_vfs_create
   (c-name "_wrap_gnome_vfs_create")
   (overrides "gnome_vfs_create")
-  (return-type "GnomeVFSHandle*")
+  (return-type "SCM")
   (parameters
     '("const-gchar*" "text_uri")
     '("GnomeVFSOpenMode" "open_mode")
@@ -80,7 +81,7 @@
 (define-function gnome_vfs_create_uri
   (c-name "_wrap_gnome_vfs_create_uri")
   (overrides "gnome_vfs_create_uri")
-  (return-type "GnomeVFSHandle*")
+  (return-type "SCM")
   (parameters
     '("GnomeVFSURI*" "uri")
     '("GnomeVFSOpenMode" "open_mode")
@@ -88,6 +89,13 @@
     '("guint" "perm")
   )
 )
+
+(define-function port->handle
+  (c-name "scm_gnome_vfs_port_to_handle")
+  (overrides "port->handle")
+  (return-type "GnomeVFSHandle*")
+  (parameters
+   '("SCM" "port")))
 
 ;; from here on out, just list-of specializations
 

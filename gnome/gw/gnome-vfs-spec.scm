@@ -59,12 +59,14 @@
         "#include <libgnomevfs/gnome-vfs-enum-types.h>\n"
         "#include <libgnomevfs/gnome-vfs-mime-handlers.h>\n"
         "#include <libgnomevfs/gnome-vfs-application-registry.h>\n"
+        "#include \"gnome-vfs-port.h\"\n"
         "#include \"gnome-vfs-support.h\"\n"))
 
 (define-method (initializations-cg (self <gnome-vfs-wrapset>) err)
   (list
    (next-method)
    "gnome_vfs_init ();\n"
+   "scm_init_gnome_vfs_ports ();\n"
    "g_type_class_ref (GNOME_VFS_TYPE_VFS_RESULT);\n"))
 
 ;; if a GnomeVFSResult return value is not GNOME_VFS_OK, throw an error.

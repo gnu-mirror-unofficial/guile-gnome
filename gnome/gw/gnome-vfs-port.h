@@ -23,18 +23,15 @@
 
 #include <libgnomevfs/gnome-vfs.h>
 #include <libguile.h>
-#include "guile-gnome-gobject.h"
 
-#define RESULT_ERROR(result) \
-  scm_throw (scm_str2symbol (g_enum_get_value \
-                             ((GEnumClass*)g_type_class_peek \
-                              (GNOME_VFS_TYPE_VFS_RESULT), result)->value_nick), \
-                             SCM_EOL)
 
-GnomeVFSDirectoryHandle *_wrap_gnome_vfs_directory_open (const gchar *text_uri, GnomeVFSFileInfoOptions options);
-GnomeVFSDirectoryHandle *_wrap_gnome_vfs_directory_open_from_uri (GnomeVFSURI *uri, GnomeVFSFileInfoOptions options);
+#define SCM_VPORTP(x) (!SCM_IMP (x) && (SCM_TYP16 (x) == scm_tc16_vport))
+#define SCM_OPVPORTP(x) (SCM_VPORTP (x) && (SCM_CELL_WORD_0 (x) & SCM_OPN))
+#define SCM_OPINVPORTP(x) (SCM_OPVPORTP (x) && (SCM_CELL_WORD_0 (x) & SCM_RDNG))
+#define SCM_OPOUTVPORTP(x) (SCM_OPVPORTP (x) && (SCM_CELL_WORD_0 (x) & SCM_WRTNG))
 
-SCM _wrap_gnome_vfs_open (const gchar *text_uri, GnomeVFSOpenMode open_mode);
-SCM _wrap_gnome_vfs_open_uri (GnomeVFSURI *uri, GnomeVFSOpenMode open_mode);
-SCM _wrap_gnome_vfs_create (const gchar *text_uri, GnomeVFSOpenMode open_mode, gboolean exclusive, guint perm);
-SCM _wrap_gnome_vfs_create_uri (GnomeVFSURI *uri, GnomeVFSOpenMode open_mode, gboolean exclusive, guint perm);
+SCM scm_gnome_vfs_handle_to_port (GnomeVFSHandle *handle, GnomeVFSOpenMode mode,
+                                  const gchar *name);
+GnomeVFSHandle *scm_gnome_vfs_port_to_handle (SCM port);
+void scm_init_gnome_vfs_ports (void);
+
