@@ -42,7 +42,10 @@
   (list
    (next-method)
 	 "#include <libgnomecanvas/libgnomecanvas.h>\n"
-	 "#include <libgnomecanvas/gnome-canvas-clipgroup.h>\n"))
+	 "#include <libgnomecanvas/gnome-canvas.h>\n"
+	 "#include <libgnomecanvas/gnome-canvas-rect-ellipse.h>\n"
+	 "#include <libgnomecanvas/gnome-canvas-clipgroup.h>\n"
+	 "#include \"libgnomecanvas-support.h\"\n"))
   
 (define-method (initialize (ws <canvas-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gw libgnomecanvas) initargs)))
@@ -50,4 +53,3 @@
   (depends-on! ws 'standard 'gnome-glib 'gnome-gobject 'gnome-gdk)
   
   (load-defs ws "gnome/defs/libgnomecanvas.defs"))
-

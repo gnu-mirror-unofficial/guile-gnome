@@ -13,7 +13,8 @@ lib_LTLIBRARIES = libgw-guile-gnome-libgnomecanvas.la
 
 ########################################################################
 ## canvas
-libgw_guile_gnome_libgnomecanvas_la_SOURCES = guile-gnome-gw-libgnomecanvas.c 
+libgw_guile_gnome_libgnomecanvas_la_SOURCES = guile-gnome-gw-libgnomecanvas.c \
+	libgnomecanvas-support.c libgnomecanvas-support.h
 
 libgw_guile_gnome_libgnomecanvas_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(AM_CFLAGS) $(CANVAS_CFLAGS) $(GUILE_CFLAGS) \

@@ -1,1 +1,1 @@
-SUBDIRS = gnome
+SUBDIRS = gnome examples
