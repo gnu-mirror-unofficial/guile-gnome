@@ -1,5 +1,9 @@
 2004-11-11  Andy Wingo  <wingo@pobox.com>
 
+	* gnome.scm.in (usr-local-hack): Fix..
+
+	* Makefile.am (guilesite): Argh, get the inst dir right.
+
 	* package.ac: Avoid readlink -f, be more portable.
 
 	* gnome.scm.in: New file, basically does what guile-gnome-0 does,

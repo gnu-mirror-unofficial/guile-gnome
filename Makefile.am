@@ -6,7 +6,7 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pcifiles)
 
 # tried to get autoconf to do this, but failed.
-guilesite:=$(shell guile-config info pkgdatadir)/$(shell guile -c '(display (effective-version))')/site
+guilesite:=$(shell guile-config info pkgdatadir)/site
 
 gnome-@API_VERSION@.scm: gnome.scm.in Makefile
 	if test -f $@; then chmod +w $@; fi
