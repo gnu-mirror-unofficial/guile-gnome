@@ -1,5 +1,14 @@
 2004-11-11  Andy Wingo  <wingo@pobox.com>
 
+	* package.ac: Avoid readlink -f, be more portable.
+
+	* gnome.scm.in: New file, basically does what guile-gnome-0 does,
+	but from within scheme.
+
+	* Makefile.am: Add rules so that gnome-$version.scm looks right
+	both installed and uninstalled. Install to the system guile path,
+	regardless of the $prefix of guile-gnome. Build . before subdirs.
+
 	* gnome/gw/glib-spec.scm (unwrap-value-cg): Whoops, fix parens.
 
 	* gnome/gw/support/defs.scm (type-lookup): Assume that the caller

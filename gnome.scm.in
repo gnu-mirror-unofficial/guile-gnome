@@ -1,0 +1,73 @@
+;; guile-gnome        -*- scheme -*-
+;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+
+;; This program is free software; you can redistribute it and/or    
+;; modify it under the terms of the GNU General Public License as   
+;; published by the Free Software Foundation; either version 2 of   
+;; the License, or (at your option) any later version.              
+;;                                                                  
+;; This program is distributed in the hope that it will be useful,  
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of   
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+;; GNU General Public License for more details.                     
+;;                                                                  
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, contact:
+;;
+;; Free Software Foundation           Voice:  +1-617-542-5942
+;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+;; Boston, MA  02111-1307,  USA       gnu@gnu.org
+
+;;; Commentary:
+;;
+;;API version @API_VERSION@ of guile-gnome. Use this module before using
+;;any other guile-gnome modules.
+;;
+;;; Code:
+
+(define-module (gnome-@API_VERSION@))
+
+(define (usr-local-hack)
+  (let ((paths '("/usr/local/share/guile/site"
+                 "/usr/local/share/guile/1.6"
+                 "/usr/local/share/guile")))
+    (if (not (member (car paths %load-path)))
+        (set! %load-path (append paths %load-path)))))
+
+(define (ld-library-path-prepend! path)
+  (let ((ld-library-path (getenv "LD_LIBRARY_PATH")))
+    (if (string-null? ld-library-path)
+        (setenv "LD_LIBRARY_PATH" path)
+        (setenv "LD_LIBRARY_PATH" (format #f "~A:~A"
+                                          path ld-library-path)))))
+
+(define version "@API_VERSION@")
+
+(cond
+ ((module-variable (resolve-module '(gnome)) 'version)
+  =>
+  (lambda (v)
+    (if (not (string=? (variable-ref v) version))
+        (error "Loading guile-gnome version ~A, but ~A was already loaded"
+               (variable-ref v) version))))
+
+ (@running-uninstalled@ ;; #t if we are uninstalled
+  (module-define! (resolve-module '(gnome)) 'version version)
+  #t) ;; we're building guile-gnome, let the build scripts do it
+
+ (else
+  (module-define! (resolve-module '(gnome)) 'version version)
+
+  (let ((guile-gnome-dir "@guilegnomedir@")
+        (guile-gnome-lib-dir "@guilegnomelibdir@")
+        (libdir "@libdir@"))
+    (usr-local-hack)
+
+    (set! %load-path (cons guile-gnome-dir %load-path))
+
+    ;; Probably will always be necessary to resolve libguile-gnome-gobject
+    ;; link.
+    (if (not (member libdir '("/usr/lib" "/usr/local/lib")))
+        (ld-library-path-prepend! libdir))
+  
+    (ld-library-path-prepend! guile-gnome-lib-dir))))
