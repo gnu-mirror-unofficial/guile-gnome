@@ -1,15 +1,15 @@
-guile-gnome-template NEWS --- history of user-visible changes.
+guile-gnome-gnome-vfs NEWS --- history of user-visible changes.
 Copyright (C) 2004 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
 Last updated 16 September 2004.
 
 
-guile-gnome-template is a Guile binding for template. It is part of GNU
+guile-gnome-gnome-vfs is a Guile binding for gnome-vfs. It is part of GNU
 guile-gnome. This file documents the user-visible changes in
-guile-gnome-template only.
+guile-gnome-gnome-vfs only.
 
 
-guile-gnome-template 2.6.0 - <Name>, <Date>
+guile-gnome-gnome-vfs 2.6.0 - <Name>, <Date>
 ==============================================
 
 * Initial release

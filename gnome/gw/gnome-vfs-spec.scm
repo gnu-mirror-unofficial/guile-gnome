@@ -20,11 +20,11 @@
 
 ;;; Commentary:
 ;;
-;;g-wrap specification for template.
+;;g-wrap specification for gnome-vfs.
 ;;
 ;;; Code:
 
-(define-module (gnome gw template-spec)
+(define-module (gnome gw gnome-vfs-spec)
   #:use-module (oop goops)
   #:use-module (g-wrap)
   #:use-module (g-wrap guile)
@@ -32,16 +32,16 @@
   #:use-module (gnome gw support defs)
   #:use-module (gnome gw support gobject))
 
-(define-class <template-wrapset> (<gobject-wrapset-base>)
-  #:id 'gnome-template
+(define-class <gnome-vfs-wrapset> (<gobject-wrapset-base>)
+  #:id 'gnome-gnome-vfs
   #:dependencies '(standard gnome-glib gnome-gobject))
 
-(define-method (initialize (ws <template-wrapset>) initargs)
-  (next-method ws (cons #:module (cons '(gnome gw template) initargs)))
+(define-method (initialize (ws <gnome-vfs-wrapset>) initargs)
+  (next-method ws (cons #:module (cons '(gnome gw gnome-vfs) initargs)))
   
-  (load-defs-with-overrides ws "gnome/defs/template.defs"))
+  (load-defs-with-overrides ws "gnome/defs/gnome-vfs.defs"))
 
-(define-method (global-declarations-cg (self <template-wrapset>))
+(define-method (global-declarations-cg (self <gnome-vfs-wrapset>))
   (list (next-method)
-        "#include <template/template.h>\n"
-        "#include \"template-support.h\"\n"))
+        "#include <gnome-vfs/gnome-vfs.h>\n"
+        "#include \"gnome-vfs-support.h\"\n"))

@@ -5,10 +5,10 @@ Maintainers of GNU Software" (maintain.texi), the section called
 
 <Name>:
 In the directory gnome/gw, wrote:
-    template-spec.scm template-support.c template-support.h
+    gnome-vfs-spec.scm gnome-vfs-support.c gnome-vfs-support.h
 In the directory gnome/overrides, wrote:
-    template.defs
+    gnome-vfs.defs
 In the directory gnome, wrote:
-    template.scm
-In the directory examples/template, wrote:
+    gnome-vfs.scm
+In the directory examples/gnome-vfs, wrote:
     ...
