@@ -20,32 +20,13 @@
 
 ;;; Commentary:
 ;;
-;;g-wrap specification for ATK.
+;;ATK bindings.
 ;;
 ;;; Code:
 
-(define-module (gnome gw atk-spec)
-  #:use-module (oop goops)
-  #:use-module (g-wrap)
-  #:use-module (g-wrap guile)
-  #:use-module (gnome gw gobject-spec)
-  #:use-module (gnome gw support gobject)
-  #:use-module (gnome gw support defs))
+(define-module (gnome atk)
+  #:use-module (gnome gobject)
+  #:use-module (gnome gw atk)
+  #:use-module (gnome gw support modules))
 
-(define-class <atk-wrapset> (<gobject-wrapset-base>)
-  #:id 'gnome-atk
-  #:dependencies '(standard gnome-glib gnome-gobject))
-
-(define-method (global-declarations-cg (self <atk-wrapset>))
-  (list
-   (next-method)
-   "#include <atk/atk.h>\n"
-   "#include <atk/atk-enum-types.h>\n"))
-  
-(define-method (initialize (ws <atk-wrapset>) initargs)
-
-  (next-method ws (append '(#:module (gnome gw atk)) initargs))
-
-  (add-type-alias! ws "AtkState" 'long-long)
-  
-  (load-defs ws "gnome/defs/atk.defs"))
+(re-export-modules (gnome gw atk))
