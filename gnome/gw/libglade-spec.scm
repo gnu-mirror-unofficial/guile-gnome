@@ -49,5 +49,6 @@
 
 (define-method (initializations-cg (self <glade-wrapset>) err)
    (list (next-method)
+         "scm_glade_module = scm_current_module ();\n"
          "glade_set_custom_handler (guile_glade_custom_handler, NULL);\n"))
 

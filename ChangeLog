@@ -1,5 +1,8 @@
 2004-07-01  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/libglade-spec.scm (initializations-cg): Fix module
+	stuff.
+
 	* gnome/glade.scm (gnome): Fix name.
 
 	* gnome/gw/libglade-spec.scm (initialize): Fix for depends-on!.
@@ -13,6 +16,14 @@
 	entries that didn't deal with glade.
 
 	* gtk-checks.ac: New file.
+
+2004-05-22  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/glade-support.c: Evaluate expressions in the (gnome gw
+	glade) module.
+
+	* ChangeLog: Merged all ChangeLogs into this one, and elided
+	entries that didn't deal with glade.
 
 2004-01-14  Andy Wingo  <wingo@pobox.com>
 
