@@ -5,7 +5,7 @@ guilegwmodule_DATA = libgnomeui-spec.scm libgnomeui.scm
 # There is one shared library for each wrapset. Each is produced by
 # g-wrap, but also may contain some hand-coded routines.
 
-lib_LTLIBRARIES = libgw-guile-gnome-libgnomeui.la
+guilegnomelib_LTLIBRARIES = libgw-guile-gnome-libgnomeui.la
 
 ########################################################################
 ## libgnomeui
