@@ -34,14 +34,12 @@
   :use-module (gnome gobject defs-support))
 
 (define-class <gnome-ui-wrapset> (<gobject-wrapset-base>)
-  guile #:id 'gnome-libgnomeui)
+  #:id 'gnome-libgnomeui
+  #:dependencies '(standard gnome-glib gnome-gobject
+                   gnome-atk gnome-gdk gnome-pango gnome-gtk))
 
 (define-method (initialize (ws <gnome-ui-wrapset>) initargs)
   (next-method ws (append '(#:module (gnome gw libgnomeui)) initargs))
-
-  (depends-on! ws
-               'standard 'gnome-glib 'gnome-gobject
-               'gnome-atk 'gnome-gdk 'gnome-pango 'gnome-gtk)
 
   (for-each
    (lambda (elt) (add-type-alias! ws (car elt) (cadr elt)))
