@@ -75,7 +75,9 @@ scm_gclosure_marshal (GClosure *closure, GValue *return_value,
 
     retval = scm_apply (gclosure->func, params, SCM_EOL);
 
-    if (return_value) {
+    if (return_value
+        && G_VALUE_TYPE (return_value) != G_TYPE_NONE
+        && G_VALUE_TYPE (return_value) != G_TYPE_INVALID) {
 	GValue *gvalue;
 
 	if (retval == SCM_UNSPECIFIED) {

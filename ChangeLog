@@ -5,6 +5,19 @@
 	* gnome/gw/glib-spec.scm: Adapt for destruct-value-cg ->
 	destroy-value-cg G-Wrap API change.
 
+2004-08-29  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gclosure.c (%scm-gclosure-marshal): A non-NULL
+	return_value of type G_TYPE_NONE or G_TYPE_INVALID does not need
+	to be filled.
+
+2004-07-28  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/glib-spec.scm (make-typespec): Use raise instead of throw.
+
+	* gnome/gw/glib-spec.scm: Adapt for destruct-value-cg ->
+	destroy-value-cg G-Wrap API change.
+
 2004-07-18  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/glib-spec.scm (<glist-of-type>): Added #:type-cname and
