@@ -51,7 +51,7 @@ for use with @code{<gtk-tree-view>}."
     (if (null? path)
         node
         (let ((children (if node
-                            (or (force-ref node 'children) '())
+                            (force-ref node 'children)
                             (slot-ref obj 'top-nodes))))
           (cond
            ((null? children) ;; can be the case for path == (0)

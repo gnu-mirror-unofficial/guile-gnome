@@ -54,13 +54,14 @@
   #:use-module (srfi srfi-13)
   #:use-module (texinfo)
   #:use-module (texinfo indexing)
+  #:use-module (sxml simple)
   #:use-module (container nodal-tree)
   #:use-module (container delay-tree)
   #:use-module (gnome contrib texinfo-buffer)
   #:use-module (gnome contrib delay-tree-model)
   #:use-module (gnome contrib filtered-list)
   #:export (set-default-help-document! add-help-root! show-help
-           the-help-window))
+            populate-help-hook the-help-window))
 
 (warn "(gnome contrib help-browser) is still in development. ")
 (warn "It might eat your baby! In any case, don't rely on it yet.")
@@ -104,7 +105,7 @@
 ;; exported
 (define (set-default-help-document! document)
   "Doc me"
-  (or (eq? (car document 'texinfo))
+  (or (eq? (car document) 'texinfo)
       (error "The default help document must be stexinfo."))
   (set! default-buffer #f)
   (set! default-document document))
@@ -195,7 +196,8 @@
              (set the-help-window 'title
                   (if iter
                       (get-value the-help-tree iter 0)
-                      (assq-ref (cdadr default-document) 'name)))))))
+                      (sxml->string
+                       (assq-ref (cdadr default-document) 'title))))))))
       (emit selection 'changed)))
 
   (define (add-index-page w notebook)
@@ -219,8 +221,8 @@
       (pack-start column cellrenderer #t)
       (add-attribute column cellrenderer "text" 0)
       (append-column treeview column)
-      ;;(set-text entry "(indexing takes some time)")
-      ;;(select-region entry 0 -1)
+      (set-text entry "(indexing takes some time)")
+      (select-region entry 0 -1)
       (connect
        entry 'changed
        (lambda (entry)
@@ -325,8 +327,13 @@
                        0.15 #f 0 0)
        #f)))
 
+(define populate-help-hook (make-hook 0))
+
 (define (ensure-help-window)
-  (if (not the-help-window) (make-help-window))
+  (if (not the-help-window)
+      (begin
+        (run-hook populate-help-hook)
+        (make-help-window)))
   the-help-window)
 
 (define* (show-help #:optional (node-name #f) (manual-name #f))

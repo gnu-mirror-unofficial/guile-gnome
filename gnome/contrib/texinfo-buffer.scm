@@ -27,6 +27,7 @@
 (define-module (gnome contrib texinfo-buffer)
   #:use-module (texinfo)
   #:use-module (sxml transform)
+  #:use-module (sxml simple)
   #:use-module (scheme documentation)
   #:use-module (gnome gtk)
   #:use-module (gnome gtk gdk-event)
@@ -34,6 +35,14 @@
   #:use-module (gnome pango)
   #:export (stexi->gtk-text-buffer
             stexi-buffer-xref-activated-hook))
+
+;; don't allow the exp to affect the-last-stack
+(define-macro (false-if-exception exp)
+  `(catch #t
+          (lambda ()
+            (with-fluids ((the-last-stack (fluid-ref the-last-stack)))
+              ,exp))
+          (lambda args #f)))
 
 (define url-show
   (or
@@ -91,7 +100,10 @@ manual."
     (vtable . (#:left-margin 50 #:right-margin 25))
     (def-body . (#:right-margin 50)) ;; left is handled by the *nest*
     (quotation . (#:left-margin 50 #:right-margin 50 #:scale 0.9))
+    (entry-header . (#:pixels-above-lines 6 #:pixels-below-lines 0))
+    (entry-body . (#:right-margin 50)) ;; left is handled by the *nest*
 
+    (asis . ())
     (bold . (#:weight 700))
     (item . (#:left-margin 25 #:right-margin 25 #:pixels-below-lines 0))
     (itemx . (#:left-margin 25 #:right-margin 25 #:pixels-below-lines 0))
@@ -130,13 +142,16 @@ manual."
   (lookup tag-table (symbol->string name)))
 
 (define (arg-ref name args)
-  (and=> (assq name (cdr args)) cdr))
+  (assq-ref (cdr args) name))
 (define (arg-req name args)
   (or (arg-ref name args)
       (error "Required argument missing" name args)))
 (define (arg-req* names args)
   (or (or-map (lambda (name) (arg-ref name args)) names)
       (error "Required argument missing" names args)))
+
+(define (identity tag . body)
+  body)
 
 ;; We can't have after-paragraph space, because there are newlines in
 ;; examples. Hack around it by putting an extra newline at the end.
@@ -174,7 +189,7 @@ manual."
         (car (arg-req* '(node section) args))))
 
 (define-class <stexi-uref-tag> (<gtk-text-tag>)
-  (uri #:gparam `(,<gparam-string> #:flags (read write))))
+  (url #:gparam `(,<gparam-string> #:flags (read write))))
 
 (define-method (initialize (obj <stexi-uref-tag>) initargs)
   (next-method)
@@ -187,16 +202,16 @@ manual."
            (lambda (tag object event iter)
              (if (eq? (gdk-event:type event) 'button-press)
                  (begin
-                   (format #t "\nshowing ~A in new window\n" (slot-ref obj 'uri))
-                   (url-show (slot-ref obj 'uri) #f)))
+                   (format #t "\nshowing ~A in new window\n" (slot-ref obj 'url))
+                   (url-show (slot-ref obj 'url))))
              #f)))
 
 (define (uref tag args)
   (list (let ((tag (make <stexi-uref-tag>
-                     #:uri (car (arg-req 'url args)))))
+                     #:url (car (arg-req 'url args)))))
           (add tag-table tag)
           tag)
-        (car (arg-req* '(title uri) args))))
+        (car (arg-req* '(title url) args))))
 
 (define (node tag args)
   `(*mark* ,(string-append "node-" (car (arg-req 'name args)))))
@@ -232,9 +247,21 @@ manual."
       (*nest* (def-body ,@body)))))
 
 
+(define *table-formatter* (make-fluid))
+(fluid-set! *table-formatter* 'asis) ;; just in case
+(define (table tag args . body)
+  (with-fluids ((*table-formatter* (arg-req 'formatter args)))
+    (nest body)))
+(define (entry tag args . body)
+  `((entry-header (,(fluid-ref *table-formatter*)
+                   ,(stexi->text-tagged-tree (arg-req 'heading args))
+                   #\newline))
+    (*nest* (entry-body ,@body))))
+
 (define ignore-list
   '(page setfilename setchapternewpage iftex ifhtml ifplaintext ifxml sp vskip
-    menu ignore syncodeindex))
+    menu ignore syncodeindex comment c ifinfo cindex findex vindex tindex
+    kindex pindex))
 
 (define (default-handler tag . body)
   (cond
@@ -256,6 +283,7 @@ manual."
 ;; then display the document.
 (define rules
   `((% *preorder*        . ,(lambda args args))
+    (texinfo             . ,identity)
     (example             . ,example)
     (lisp                . ,example)
     (verbatim            . ,example)
@@ -267,11 +295,12 @@ manual."
     (uref                . ,uref)
     (node                . ,node)
     (anchor              . ,node)
-    (table               . ,nest)
+    (table               . ,table)
+    (entry               . ,entry)
     (enumerate           . ,nest)
     (itemize             . ,nest)
     (copyright           . ,(lambda args (string #\302 #\251)))
-    (results             . ,(lambda args (string #\342 #\207 #\222)))
+    (result              . ,(lambda args (string #\342 #\207 #\222)))
     (deftp               . ,def)
     (defcv               . ,def)
     (defivar             . ,def)
@@ -309,9 +338,11 @@ manual."
    (make <gtk-text-tag> #:left-margin (fluid-ref *indent*))))
 
 (define (with-nesting buffer proc . args)
-  (with-fluids ((*indent* (+ (fluid-ref *indent*) 25)))
+  (with-fluids ((*indent* (+ (fluid-ref *indent*) 35)))
     (apply with-tag (make-nesting-tag) buffer proc args)))
 
+;; Note that errors in this file are caused by inconsistencies produced
+;; in the transformation stage, not by problems in the stexi.
 (define (fill-buffer buffer tree)
   (define (handle-body l)
     (for-each (lambda (x) (fill-buffer buffer x)) l))
@@ -324,7 +355,7 @@ manual."
    (else
     (cond
      ((not (pair? tree))
-      (error "invalid stexi tree"))
+      (error "invalid stexi tree" tree))
      ((symbol? (car tree))
       (case (car tree)
         ((*nest*)
@@ -341,10 +372,10 @@ manual."
       ;; maybe the tree transform made a nontagged list
       (handle-body tree))))))
 
-(define-public (test stexi)
+(define (stexi->text-tagged-tree stexi)
   (pre-post-order stexi rules))
 
 (define (stexi->gtk-text-buffer stexi)
   (let ((buffer (make <gtk-text-buffer> #:tag-table tag-table)))
-    (fill-buffer buffer (pre-post-order stexi rules))
+    (fill-buffer buffer (stexi->text-tagged-tree stexi))
     buffer))
