@@ -20,26 +20,35 @@
 
 ;;; Commentary:
 ;;
-;;Guile wrappers for libgnome only (not GTK, not libgnomeui, ...).
+;;g-wrap specification for libgnome.
 ;;
 ;;; Code:
 
-(define-module (gnome gnome)
-  :use-module (gnome gobject)
-  :use-module (gnome gw libgnome)
+(define-module (gnome gw libgnome-spec)
   :use-module (oop goops)
-  :use-module (gnome gobject gw-utils)
-  :export (gnome-program-init))
+  :use-module (g-wrap)
+  :use-module (gnome gw gobject-spec)
+  :use-module (gnome gobject gw-spec-utils)
+  :use-module (gnome gobject defs-support))
 
-(re-export-modules (gnome gw libgnome))
+(define-class <libgnome-wrapset> (<gobject-wrapset-base>)
+  #:id 'gnome-libgnome)
 
-(define (gnome-program-init name version . properties)
-  (let ((program (%gnome-program-init name version)))
-    (if (not (even? (length properties)))
-        (scm-error 'gruntime-error "Invalid property list: ~A" properties))
-    (let loop ((props properties))
-      (if (null? props)
-          program
-          (begin
-            (set program (car props) (cadr props))
-            (loop (cddr props)))))))
+(define-method (initialize (ws <libgnome-wrapset>) initargs)
+  (next-method ws (append '(#:module (gnome gw libgnome)) initargs))
+  
+  (depends-on! ws 'standard 'gnome-glib 'gnome-gobject)
+
+  (load-defs ws "gnome/defs/gnome.defs"))
+
+(define-method (global-declarations-cg (self <libgnome-wrapset>))
+  (list (next-method)
+        "#include <libgnome/libgnome.h>\n"
+        "#include <libgnome/libgnometypebuiltins.h>\n"
+        "#include \"gnome-support.h\"\n"))
+
+(define-method (client-global-declarations-cg (self <libgnome-wrapset>))
+  (list (next-method)
+        "#include <libgnome/libgnome.h>\n"
+        "#include <libgnome/libgnometypebuiltins.h>\n"
+        "#include \"gnome-support.h\"\n"))
