@@ -47,7 +47,15 @@
                gparam-struct:flags gparam-struct:param-type
                gparam-struct:value-type gparam-struct:owner-type
                gparam-struct:args gparam-struct-arg-info
-               
+               ;; Limits
+               gparameter:uint-max gparameter:int-min gparameter:int-max
+               gparameter:ulong-max gparameter:long-min
+               gparameter:long-max gparameter:uint64-max
+               gparameter:int64-min gparameter:int64-max
+               gparameter:float-max gparameter:float-min
+               gparameter:double-max gparameter:double-min
+               gparameter:byte-order
+
                ;; From C:
                gparam->param-struct gparam->value-type))
 
@@ -83,36 +91,36 @@
     ("GParamBoolean" . (gtype:gboolean
                         (#:default-value boolean? #f)))
     ("GParamInt"     . (gtype:gint
-                        (#:minimum integer? gruntime:int-min)
-                        (#:maximum integer? gruntime:int-max)
+                        (#:minimum integer? gparameter:int-min)
+                        (#:maximum integer? gparameter:int-max)
                         (#:default-value integer? 0)))
     ("GParamUInt"    . (gtype:guint
                         (#:minimum integer? 0)
-                        (#:maximum integer? gruntime:uint-max)
+                        (#:maximum integer? gparameter:uint-max)
                         (#:default-value integer? 0)))
     ("GParamLong"    . (gtype:glong
-                        (#:minimum integer? gruntime:long-min)
-                        (#:maximum integer? gruntime:long-max)
+                        (#:minimum integer? gparameter:long-min)
+                        (#:maximum integer? gparameter:long-max)
                         (#:default-value integer? 0)))
     ("GParamULong"   . (gtype:gulong
                         (#:minimum integer? 0)
-                        (#:maximum integer? gruntime:ulong-max)
+                        (#:maximum integer? gparameter:ulong-max)
                         (#:default-value integer? 0)))
     ("GParamInt64"   . (gtype:gint
-                        (#:minimum integer? gruntime:int64-min)
-                        (#:maximum integer? gruntime:int64-max)
+                        (#:minimum integer? gparameter:int64-min)
+                        (#:maximum integer? gparameter:int64-max)
                         (#:default-value integer? 0)))
     ("GParamUInt64"  . (gtype:guint
                         (#:minimum integer? 0)
-                        (#:maximum integer? gruntime:uint64-max)
+                        (#:maximum integer? gparameter:uint64-max)
                         (#:default-value integer? 0)))
     ("GParamFloat"   . (gtype:gfloat
-                        (#:minimum real? (- 0 gruntime:float-max))
-                        (#:maximum real? gruntime:float-max)
+                        (#:minimum real? (- 0 gparameter:float-max))
+                        (#:maximum real? gparameter:float-max)
                         (#:default-value real? 0.0)))
     ("GParamDouble"  . (gtype:gdouble
-                        (#:minimum real? (- 0 gruntime:double-max))
-                        (#:maximum real? gruntime:double-max)
+                        (#:minimum real? (- 0 gparameter:double-max))
+                        (#:maximum real? gparameter:double-max)
                         (#:default-value real? 0.0)))
     ("GParamPointer" . (gtype:gpointer))
     ("GParamString"  . (gtype:gchararray

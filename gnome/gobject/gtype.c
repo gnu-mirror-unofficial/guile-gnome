@@ -398,6 +398,11 @@ scm_c_gtype_to_class (GType gtype)
     
     /* Unlike lookup_class, this one will actually initialize the goops class if
        it doesn't yet exist. */
+
+    /* Prevent a round-trip to SCM: */
+    ret = scm_c_gtype_lookup_class (gtype);
+    if (SCM_NFALSEP (ret))
+        return ret;
     
     type = scm_c_register_gtype (gtype);
     ret = scm_call_1 (scm_gtype_to_class, type);

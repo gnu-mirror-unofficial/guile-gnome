@@ -647,20 +647,20 @@ scm_init_gnome_gobject_parameters (void)
     scm_c_define ("gparam-struct-vtable", scm_gparam_struct_vtable);
 
     /* fixme: these names suck */
-    scm_c_define ("gruntime:uint-max", scm_ulong2num (G_MAXUINT));
-    scm_c_define ("gruntime:int-min", scm_long2num (G_MININT));
-    scm_c_define ("gruntime:int-max", scm_long2num (G_MAXINT));
-    scm_c_define ("gruntime:ulong-max", scm_ulong2num (G_MAXULONG));
-    scm_c_define ("gruntime:long-min", scm_long2num (G_MINLONG));
-    scm_c_define ("gruntime:long-max", scm_long2num (G_MAXLONG));
-    scm_c_define ("gruntime:uint64-max", scm_ulong_long2num (G_MAXUINT64));
-    scm_c_define ("gruntime:int64-min", scm_long_long2num (G_MININT64));
-    scm_c_define ("gruntime:int64-max", scm_long_long2num (G_MAXINT64));
-    scm_c_define ("gruntime:float-max", scm_make_real (G_MAXFLOAT));
-    scm_c_define ("gruntime:float-min", scm_make_real (G_MINFLOAT));
-    scm_c_define ("gruntime:double-max", scm_make_real (G_MAXDOUBLE));
-    scm_c_define ("gruntime:double-min", scm_make_real (G_MINDOUBLE));
-    scm_c_define ("gruntime:byte-order", scm_long2num (G_BYTE_ORDER));
+    scm_c_define ("gparameter:uint-max", scm_ulong2num (G_MAXUINT));
+    scm_c_define ("gparameter:int-min", scm_long2num (G_MININT));
+    scm_c_define ("gparameter:int-max", scm_long2num (G_MAXINT));
+    scm_c_define ("gparameter:ulong-max", scm_ulong2num (G_MAXULONG));
+    scm_c_define ("gparameter:long-min", scm_long2num (G_MINLONG));
+    scm_c_define ("gparameter:long-max", scm_long2num (G_MAXLONG));
+    scm_c_define ("gparameter:uint64-max", scm_ulong_long2num (G_MAXUINT64));
+    scm_c_define ("gparameter:int64-min", scm_long_long2num (G_MININT64));
+    scm_c_define ("gparameter:int64-max", scm_long_long2num (G_MAXINT64));
+    scm_c_define ("gparameter:float-max", scm_make_real (G_MAXFLOAT));
+    scm_c_define ("gparameter:float-min", scm_make_real (G_MINFLOAT));
+    scm_c_define ("gparameter:double-max", scm_make_real (G_MAXDOUBLE));
+    scm_c_define ("gparameter:double-min", scm_make_real (G_MINDOUBLE));
+    scm_c_define ("gparameter:byte-order", scm_long2num (G_BYTE_ORDER));
 
     scm_c_define_and_export_gtype_x (G_TYPE_PARAM_CHAR);
     scm_c_define_and_export_gtype_x (G_TYPE_PARAM_UCHAR); 				
