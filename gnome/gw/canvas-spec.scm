@@ -64,4 +64,6 @@
   (next-method ws (cons #:module (cons '(gnome gw canvas) initargs)))
   (if #f
       (wrap-custom-pointer! "GnomeCanvasPoints"))
+  (add-type-alias! ws "double" 'double)
+  (add-type-rule! ws '(("double*" "*")) '(double out))
   (load-defs-with-overrides ws "gnome/defs/libgnomecanvas.defs"))

@@ -21,7 +21,8 @@ exec guile-gnome-0 -s $0 "$@"
 ;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
 ;; Boston, MA  02111-1307,  USA       gnu@gnu.org
 
-(use-modules (gnome gtk)
+(use-modules (srfi srfi-8)
+	     (gnome gtk)
 	     (gnome gtk gdk-event)
 	     (gnome canvas))
 
@@ -117,6 +118,12 @@ exec guile-gnome-0 -s $0 "$@"
     ;; (set-size-request button canvas-width 20) ?
     (set-child-packing vbox button #f #f 0 'end)
     (set-size-request canvas canvas-width canvas-height)
+
+    (set-pixels-per-unit canvas output-scale)
+    (receive (r x y)
+	     (world-to-window canvas 1.0 1.0)
+	     (stderr "result: ~S (~S, ~S)\n" r x y))
+    (set-pixels-per-unit canvas 1.0)
     
     (show-all window)
     (gtk-main)))
