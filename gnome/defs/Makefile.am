@@ -9,9 +9,7 @@ guilemodule_DATA = 				\
 	bonobo-types.defs			\
 	bonoboui.defs				\
 	bonoboui-types.defs			\
-	canvas.defs				\
 	common-ignores.defs			\
-	canvas-overrides.defs			\
 	gconf.defs				\
 	gdk.defs				\
 	gdk-types.defs				\
@@ -33,6 +31,11 @@ guilemodule_DATA = 				\
 	libgda-types.defs			\
 	libglade.defs				\
 	libglade-overrides.defs			\
+	libgnomecanvas.defs			\
+	libgnomecanvas-types.defs 		\
+	libgnomecanvas-overrides.defs		\
+	libwnck.defs				\
+	libwnck-types.defs			\
 	Makefile.am				\
 	nautilus.defs				\
 	pango.defs				\

@@ -1,10 +1,17 @@
-2004-05-04  Andreas Rottmann  <a.rottmann@gmx.at>
+2004-06-11  Jan Nieuwenhuizen  <janneke@gnu.org>
 
-	* gnome/defs/glib.defs: Added functions from glib/gstring.h.
-	
-	* gnome/defs/glib-overrides.defs (string): New method of GString, 
-	returning the string value as a Scheme string.
-	
+	* gnome/defs/libgnomecanvas.defs (gnome_canvas_item_new): New function.
+	(root): New method.
+
+	* gnome/defs/Makefile.am: Update.
+
+	* gnome/defs/libgnomecanvas.defs: 
+
+	* gnome/defs/libgnomecanvas-overrides.defs (affine_absolute)
+	(affine_relative): New override.
+
+	* gnome/defs/libgnomecanvas-types.defs: New file.
+
 2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gtk-types.defs (PrivateFlags, TreeViewMode): Removed.

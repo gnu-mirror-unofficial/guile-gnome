@@ -1,6 +1,6 @@
 ;; -*- scheme -*-
 
-(include "wnck-types.defs")
+(include "libwnck-types.defs")
 
 ;; ClassGroup -- /usr/include/libwnck-1.0/libwnck/class-group.h
 (define-method get_name
