@@ -1,3 +1,21 @@
+2005-01-11  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gnome-vfs.defs-type-ignores (GnomeVFSMimeAction)
+	(GnomeVFSMimeActionType):
+	* gnome/overrides/gnome-vfs.defs
+	(gnome_vfs_mime_id_in_application_list)
+	(gnome_vfs_mime_id_in_component_list)
+	(gnome_vfs_mime_action_launch)
+	(gnome_vfs_mime_action_launch_with_env)
+	(gnome_vfs_mime_get_all_desktop_entries)
+	(gnome_vfs_application_is_user_owned_application)
+	(gnome_vfs_mime_get_default_action_type)
+	(gnome_vfs_mime_get_default_action)
+	(gnome_vfs_mime_get_icon)
+	(gnome_vfs_mime_application_new_from_id)
+	(gnome_vfs_mime_get_default_desktop_entry): Ignored, because they
+	are deprecated in 2.8 and this API doesn't have users.
+
 2004-12-06  Andy Wingo  <wingo@pobox.com>
 
 	* == Released platform version 2.7.97 ==

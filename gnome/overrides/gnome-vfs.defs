@@ -239,26 +239,6 @@
   )
 )
 
-(define-function gnome_vfs_mime_id_in_application_list
-  (c-name "gnome_vfs_mime_id_in_application_list")
-  (overrides "gnome_vfs_mime_id_in_application_list")
-  (return-type "gboolean")
-  (parameters
-    '("const-char*" "id")
-    '("GList*-of-const-gchar*" "applications")
-  )
-)
-
-(define-function gnome_vfs_mime_id_in_component_list
-  (c-name "gnome_vfs_mime_id_in_component_list")
-  (overrides "gnome_vfs_mime_id_in_component_list")
-  (return-type "gboolean")
-  (parameters
-    '("const-char*" "iid")
-    '("GList*-of-const-gchar*" "components")
-  )
-)
-
 (ignore "gnome_vfs_mime_remove_application_from_list")
 ; (define-function gnome_vfs_mime_remove_application_from_list
 ;   (c-name "gnome_vfs_mime_remove_application_from_list")
@@ -304,27 +284,6 @@
 ; )
 
 (define-method launch
-  (of-object "GnomeVFSMimeAction")
-  (c-name "gnome_vfs_mime_action_launch")
-  (overrides "gnome_vfs_mime_action_launch")
-  (return-type "GnomeVFSResult")
-  (parameters
-    '("GList*-of-GnomeVFSURI*" "uris")
-  )
-)
-
-(define-method launch_with_env
-  (of-object "GnomeVFSMimeAction")
-  (c-name "gnome_vfs_mime_action_launch_with_env")
-  (overrides "gnome_vfs_mime_action_launch_with_env")
-  (return-type "GnomeVFSResult")
-  (parameters
-    '("GList*-of-GnomeVFSURI*" "uris")
-    '("char**" "envp")
-  )
-)
-
-(define-method launch
   (of-object "GnomeVFSMimeApplication")
   (c-name "gnome_vfs_mime_application_launch")
   (overrides "gnome_vfs_mime_application_launch")
@@ -342,15 +301,6 @@
   (parameters
     '("GList*-of-GnomeVFSURI*" "uris")
     '("char**" "envp")
-  )
-)
-
-(define-function gnome_vfs_mime_get_all_desktop_entries
-  (c-name "gnome_vfs_mime_get_all_desktop_entries")
-  (overrides "gnome_vfs_mime_get_all_desktop_entries")
-  (return-type "GList*-of-const-gchar*")
-  (parameters
-    '("const-char*" "mime_type")
   )
 )
 
@@ -448,4 +398,16 @@
         "gnome_vfs_preinit"
         "gnome_vfs_postinit"
         "gnome_vfs_async_create_uri_as_channel" ; prototyped, but not implemented!
-        )
+
+        ;; deprecated in 2.9
+        "gnome_vfs_mime_id_in_application_list"
+        "gnome_vfs_mime_id_in_component_list"
+        "gnome_vfs_mime_action_launch"
+        "gnome_vfs_mime_action_launch_with_env"
+        "gnome_vfs_mime_get_all_desktop_entries"
+        "gnome_vfs_application_is_user_owned_application"
+        "gnome_vfs_mime_get_default_action_type"
+        "gnome_vfs_mime_get_default_action"
+        "gnome_vfs_mime_get_icon"
+        "gnome_vfs_mime_application_new_from_id"
+        "gnome_vfs_mime_get_default_desktop_entry")
