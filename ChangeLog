@@ -1,3 +1,13 @@
+2005-01-08  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac (GTK_DEPRECATED_CFLAGS): Add --disable-gtk-deprecated
+	as an option, off by default. This is so when new GTK+ versions
+	come out with more deprecations, a guile-gtk made for an older
+	deprecation level will still compile.
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_gtk_la_CFLAGS): Use
+	$(GTK_DEPRECATED_CFLAGS).
+
 2004-12-06  Andy Wingo  <wingo@pobox.com>
 
 	* == Released platform version 2.7.97 ==

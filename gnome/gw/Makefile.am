@@ -33,7 +33,7 @@ libgw_guile_gnome_gdk_la_SOURCES = gdk-support.c gdk-support.h \
 
 libgw_guile_gnome_gdk_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(AM_CFLAGS) $(GDK_CFLAGS) $(GDK_PIXBUF_CFLAGS) $(GUILE_CFLAGS) \
-	$(G_WRAP_CFLAGS) -DGTK_DISABLE_DEPRECATED
+	$(G_WRAP_CFLAGS) $(GTK_DEPRECATED_CFLAGS)
 
 libgw_guile_gnome_gdk_la_LIBADD = $(GDK_LIBS) $(GUILE_LIBS) \
 	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS) $(GDK_PIXBUF_LIBS)
@@ -50,7 +50,7 @@ libgw_guile_gnome_gtk_la_SOURCES = \
 
 libgw_guile_gnome_gtk_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(AM_CFLAGS) $(GTK_CFLAGS) $(GUILE_CFLAGS) \
-	$(G_WRAP_CFLAGS) -DGTK_DISABLE_DEPRECATED
+	$(G_WRAP_CFLAGS) $(GTK_DEPRECATED_CFLAGS)
 
 libgw_guile_gnome_gtk_la_LIBADD = $(GTK_LIBS) $(GUILE_LIBS) \
 	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS)
