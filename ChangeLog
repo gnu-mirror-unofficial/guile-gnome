@@ -1,3 +1,33 @@
+2004-10-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gsignal.scm (gtype-class-get-signal-names): Copy
+	vector-map from gobject.scm.
+
+	* gnome/gw/glib-spec.scm (initialize): GTime -> int32.
+
+	* gnome/gobject/gvalue.[ch] (scm_c_gboxed_to_scm) 
+	(scm_c_dup_gboxed_to_scm): New helper functions. Take a pointer to
+	an object along with its GType and return a SCM gvalue.
+
+2004-10-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (unwrap-value-cg, wrap-value-cg):
+	Define c-var, scm-var, and gtype-id within the body of the
+	wrap-pointer! value wrappers.
+
+2004-10-07  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (construct-argument-list): Fail
+	correctly if there is an unknown rest arg, but warn.
+	(load-defs:scan-type!): Catch a throw to 'ignored. Get the ctype
+	as a string, not a list of one element. Throw to 'ignored if the
+	ctype is in the ignored-types list.
+	(load-defs:ignore-types): New procedure, adds all of its arguments
+	to the ignored types list.
+	(load-defs): Add a hook to interpret ignore-types. Also interpret
+	the form (include SYMBOL) to mean (include
+	"gnome/overrides/BASENAME-SYMBOL").
+
 2004-09-27  Andy Wingo  <wingo@pobox.com>
 
 	* test-suite/exceptions.scm, gnome/gw/Makefile.am
