@@ -16,6 +16,10 @@ GTKMODULES =
 GTKLIB =
 endif
 
+# Make sure the user isn't compiling with -O, because it makes gcc 3.3
+# and up break
+CFLAGS=-g 
+
 guilegwmodule_DATA = $(GDKMODULES) $(GTKMODULES)
 
 EXTRA_DIST = gdk-spec.scm gtk-spec.scm
