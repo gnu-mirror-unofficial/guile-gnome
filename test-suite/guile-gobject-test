@@ -5,7 +5,7 @@ exec ${srcdir:-.}/guile-test-env guile --debug -e main -s "$0" "$@"
 ;;;;
 ;;;; Originally by Jim Blandy <jimb@red-bean.com> --- May 1999
 ;;;; Stolen for guile-gobject by Andreas Rottmann <a.rottmann@gmx.at>
-;;;;   --- Oct 20003
+;;;;   --- Oct 2003
 ;;;;
 ;;;; 	Copyright (C) 1999 - 2003 Free Software Foundation, Inc.
 ;;;;

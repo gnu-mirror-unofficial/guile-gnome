@@ -1,4 +1,17 @@
+2004-09-27  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/exceptions.scm, gnome/gw/Makefile.am
+	* test-suite/test-gobject.c, examples/example-1.scm
+	* test-suite/gw-glib.test, test-suite/gw-gobject.test
+	* test-suite/gobject.test, test-suite/gw-test-gobject-spec.scm
+	* test-suite/guile-gobject-test, test-suite/gw-test-glib-spec.scm
+	* test-suite/test-glib.defs, test-suite/test-gobject.h: Added
+	license blocks.
+
 2004-09-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_glib_la_LIBADD): Not
+	G_WRAP_LINK_ARGS, it's G_WRAP_LIBS.
 
 	* gnome/gobject/Makefile.am (libguile_gnome_gobject_la_LIBADD):
 	Don't link to g-wrap.
