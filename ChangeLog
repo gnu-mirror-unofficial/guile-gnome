@@ -1,5 +1,14 @@
 2004-09-05  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gobject/Makefile.am (CLEANFILES): Clean the .x files.
+
+	* package.ac (GUILE_GLIB_CFLAGS): Include the builddir's gobject
+	dir as well.
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_gobject_la_CFLAGS): Add
+	the builddir to the CFLAGS as well: the link is placed in the
+	builddir.
+
 	* package.ac: Fix the link creation for non-srcdir builds.
 
 	* gnome/overrides/Makefile.am, gnome/Makefile.am: Add the
