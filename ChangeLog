@@ -1,3 +1,58 @@
+2004-09-27  Andy Wingo  <wingo@pobox.com>
+
+	* examples/canvas.scm: Add license block.
+
+2004-09-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_canvas_la_LIBADD): Not
+	G_WRAP_LINK_ARGS, it's G_WRAP_LIBS.
+
+	* gnome/gw/canvas-spec.scm (<canvas-wrapset>): Depend on gtk.
+
+2004-09-16  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (SUBDIRS): Dist fixes.
+
+	* README: Added.
+
+	* NEWS: Added.
+
+	* AUTHORS: Added.
+
+	* gtk-checks.ac: Check the right package.
+
+	* glib-checks.ac: Check the right package.
+
+2004-09-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/Makefile.am: Install to the proper directory.
+
+	* examples/canvas.scm: Don't use gnome-canvas-item-new. Some style
+	cleanups.
+
+	* gnome/overrides/libgnomecanvas.defs: Merge with janneke's
+	version, with the affine wrappers and all.
+
+2004-09-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/canvas.scm: New file.
+
+	* examples/canvas.scm (main): Get the type of a canvas rect via
+	gtype-class->type. The example still isn't working; I don't know
+	how it ever did. Use (gnome canvas).
+
+	* Makefile.am (EXTRA_DIST): Dist fixes.
+
+	* gnome/gw/canvas-spec.scm (initialize): Adapt for module name
+	changes, load-defs-with-overrides.
+
+	* gnome/canvas.scm: New file.
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_canvas_la_SOURCES):
+	Don't dist the g-wrap generated C files.
+
+	* gnome/overrides/, gnome/Makefile.am: Add overrides.
+
 2004-06-26  Jan Nieuwenhuizen  <janneke@gnu.org>
 
 	* gnome/gw/canvas-spec.scm (initialize): Remove depends-on.
