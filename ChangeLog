@@ -1,3 +1,17 @@
+2004-10-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/Makefile.am: Dist/install type overrides.
+
+	* gnome/overrides/ui.defs: Adjust to ignore deprecated API.
+
+	* gnome/overrides/ui.defs-type-ignores: New file. Overrides
+	GnomeAppBar->GNOME_APPBAR, ignores deprecated types.
+
+	* Makefile.am:
+	* guile-gnome-libgnomeui-uninstalled.pc.in: 
+	* guile-gnome-libgnomeui.pc.in:
+	* files.ac: Add pkg-config files.
+
 2004-09-27  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/overrides/ui.defs: Ignore href_construct and

@@ -1,0 +1,27 @@
+;; -*- scheme -*-
+
+(define-object AppBar
+  (in-module "Gnome")
+  (parent "GtkHBox")
+  (c-name "GnomeAppBar")
+  (gtype-id "GNOME_TYPE_APPBAR")
+)
+
+(ignore-types "GnomeColorPicker"
+              "GnomeDialog"
+              "GnomeEntry"
+              "GnomeIconData"
+              "GnomeFontPicker"
+              "GnomeMDI"
+              "GnomeMDIChild"
+              "GnomeMDIGenericChild"
+              "GnomeMessageBox"
+              "GnomePixmap"
+              "GnomePropertyBox"
+              "GnomeFontPickerMode"
+              "GnomeMDIMode"
+              "GnomeThemeFileParseError"
+              "GnomeAppBar")
+
+
+
