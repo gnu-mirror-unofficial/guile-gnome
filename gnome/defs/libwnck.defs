@@ -1,0 +1,69 @@
+;; -*- scheme -*-
+
+(include "wnck-types.defs")
+
+;; ClassGroup -- /usr/include/libwnck-1.0/libwnck/class-group.h
+(define-method get_name
+  (of-object "WnckClassGroup")
+  (c-name "wnck_class_group_get_name")
+  (return-type "const-char*"))
+
+;; WnckScreen -- /usr/include/libwnck-1.0/libwnck/screen.h
+(define-function wnck_screen_get
+  (c-name "wnck_screen_get")
+  (return-type "WnckScreen*")
+  (parameters
+   '("int" "number")))
+
+(define-method get_active_workspace
+  (of-object "WnckScreen")
+  (c-name "wnck_screen_get_active_workspace")
+  (return-type "WnckWorkspace*"))
+
+(define-method get_windows
+  (of-object "WnckScreen")
+  (c-name "wnck_screen_get_windows")
+  (return-type "GList*-of-WnckWindow*"))
+
+;; WnckWindow -- /usr/include/libwnck-1.0/libwnck/window.h
+(define-method activate
+  (of-object "WnckWindow")
+  (c-name "wnck_window_activate")
+  (return-type "none"))
+
+(define-method get_class_group
+  (of-object "WnckWindow")
+  (c-name "wnck_window_get_class_group")
+  (return-type "WnckClassGroup*"))
+
+(define-method get_icon
+  (of-object "WnckWindow")
+  (c-name "wnck_window_get_icon")
+  (return-type "GdkPixbuf*"))
+
+(define-method get_name
+  (of-object "WnckWindow")
+  (c-name "wnck_window_get_name")
+  (return-type "const-char*"))
+
+(define-method get_workspace
+  (of-object "WnckWindow")
+  (c-name "wnck_window_get_workspace")
+  (return-type "WnckWorkspace*"))
+
+(define-method unminimize
+  (of-object "WnckWindow")
+  (c-name "wnck_window_unminimize")
+  (return-type "none"))
+
+;; WnckWorkspace -- /usr/include/libwnck-1.0/libwnck/window.h
+(define-method activate
+  (of-object "WnckWorkspace")
+  (c-name "wnck_workspace_activate")
+  (return-type "none"))
+
+(define-method get_name
+  (of-object "WnckWorkspace")
+  (c-name "wnck_workspace_get_name")
+  (return-type "const-char*"))
+

@@ -116,6 +116,12 @@
   (gtype-id "GDK_TYPE_PIXBUF_LOADER")
 )
 
+(define-object Screen
+  (in-module "Gdk")
+  (parent "GObject")
+  (c-name "GdkScreen")
+  (gtype-id "GDK_TYPE_SCREEN"))
+
 (define-object Visual
   (in-module "Gdk")
   (parent "GObject")

@@ -26,11 +26,16 @@
 ;;; Code:
 
 ;; use our version that processes interrupts
-(define-function g-main-loop-run
+(define-method run
+  (of-object "GMainLoop")
   (c-name "_wrap_g_main_loop_run")
   (overrides "g_main_loop_run")
-  (return-type "none")
-  (parameters '("GMainLoop*" "loop")))
+  (return-type "none"))
+
+(define-method string
+  (of-object "GString")
+  (c-name "_wrap_g_string_get_str")
+  (return-type "SCM"))
 
 (ignore-glob  "_*"
               "*_copy"

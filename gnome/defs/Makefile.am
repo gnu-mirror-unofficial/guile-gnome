@@ -42,6 +42,8 @@ guilemodule_DATA = 				\
 	ui.defs					\
 	ui-overrides.defs			\
 	vte.defs				\
-	vte-overrides.defs
+	vte-overrides.defs			\
+	libwnck.defs				\
+	libwnck-types.defs
 
 EXTRA_DIST = $(guilemodule_DATA)

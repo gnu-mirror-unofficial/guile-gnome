@@ -51,6 +51,18 @@
     '("const-gchar*" "new_text")
     '("gint" "position")))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkEditable
+(define-method get_vbox
+  (of-object "GtkDialog")
+  (c-name "_wrap_gtk_dialog_get_vbox")
+  (return-type "GtkWidget*"))
+(define-method get_action_area
+  (of-object "GtkDialog")
+  (c-name "_wrap_gtk_dialog_get_action_area")
+  (return-type "GtkWidget*"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkFileSelection
 ;; NB: As of Gtk+-2.4, this API is obsolete.

@@ -1,3 +1,10 @@
+2004-05-04  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/defs/glib.defs: Added functions from glib/gstring.h.
+	
+	* gnome/defs/glib-overrides.defs (string): New method of GString, 
+	returning the string value as a Scheme string.
+	
 2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gtk-types.defs (PrivateFlags, TreeViewMode): Removed.

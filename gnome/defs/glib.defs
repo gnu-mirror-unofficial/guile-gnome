@@ -1222,3 +1222,282 @@
     '("gint" "socket")
   )
 )
+
+;; From /usr/include/glib-2.0/glib/gstring.h
+
+(define-function g_string_chunk_new
+  (c-name "g_string_chunk_new")
+  (is-constructor-of "GStringChunk")
+  (return-type "GStringChunk*")
+  (parameters
+    '("gsize" "size")
+  )
+)
+
+(define-method free
+  (of-object "GStringChunk")
+  (c-name "g_string_chunk_free")
+  (return-type "none")
+)
+
+(define-method insert
+  (of-object "GStringChunk")
+  (c-name "g_string_chunk_insert")
+  (return-type "gchar*")
+  (parameters
+    '("const-gchar*" "string")
+  )
+)
+
+(define-method insert_len
+  (of-object "GStringChunk")
+  (c-name "g_string_chunk_insert_len")
+  (return-type "gchar*")
+  (parameters
+    '("const-gchar*" "string")
+    '("gssize" "len")
+  )
+)
+
+(define-function g_string_new
+  (c-name "g_string_new")
+  (is-constructor-of "GString")
+  (return-type "GString*")
+  (parameters
+    '("const-gchar*" "init" (default "\"\""))
+  )
+)
+
+(define-function g_string_new_len
+  (c-name "g_string_new_len")
+  (return-type "GString*")
+  (parameters
+    '("const-gchar*" "init")
+    '("gssize" "len")
+  )
+)
+
+(define-function g_string_sized_new
+  (c-name "g_string_sized_new")
+  (is-constructor-of "GStringSized")
+  (return-type "GString*")
+  (parameters
+    '("gsize" "dfl_size")
+  )
+)
+
+(define-method free
+  (of-object "GString")
+  (c-name "g_string_free")
+  (return-type "gchar*")
+  (parameters
+    '("gboolean" "free_segment")
+  )
+)
+
+(define-method equal
+  (of-object "GString")
+  (c-name "g_string_equal")
+  (return-type "gboolean")
+  (parameters
+    '("const-GString*" "v2")
+  )
+)
+
+(define-method hash
+  (of-object "GString")
+  (c-name "g_string_hash")
+  (return-type "guint")
+)
+
+(define-method assign
+  (of-object "GString")
+  (c-name "g_string_assign")
+  (return-type "GString*")
+  (parameters
+    '("const-gchar*" "rval")
+  )
+)
+
+(define-method truncate
+  (of-object "GString")
+  (c-name "g_string_truncate")
+  (return-type "GString*")
+  (parameters
+    '("gsize" "len")
+  )
+)
+
+(define-method set_size
+  (of-object "GString")
+  (c-name "g_string_set_size")
+  (return-type "GString*")
+  (parameters
+    '("gsize" "len")
+  )
+)
+
+(define-method insert_len
+  (of-object "GString")
+  (c-name "g_string_insert_len")
+  (return-type "GString*")
+  (parameters
+    '("gssize" "pos")
+    '("const-gchar*" "val")
+    '("gssize" "len")
+  )
+)
+
+(define-method append
+  (of-object "GString")
+  (c-name "g_string_append")
+  (return-type "GString*")
+  (parameters
+    '("const-gchar*" "val")
+  )
+)
+
+(define-method append_len
+  (of-object "GString")
+  (c-name "g_string_append_len")
+  (return-type "GString*")
+  (parameters
+    '("const-gchar*" "val")
+    '("gssize" "len")
+  )
+)
+
+(define-method append_c
+  (of-object "GString")
+  (c-name "g_string_append_c")
+  (return-type "GString*")
+  (parameters
+    '("gchar" "c")
+  )
+)
+
+(define-method append_unichar
+  (of-object "GString")
+  (c-name "g_string_append_unichar")
+  (return-type "GString*")
+  (parameters
+    '("gunichar" "wc")
+  )
+)
+
+(define-method prepend
+  (of-object "GString")
+  (c-name "g_string_prepend")
+  (return-type "GString*")
+  (parameters
+    '("const-gchar*" "val")
+  )
+)
+
+(define-method prepend_c
+  (of-object "GString")
+  (c-name "g_string_prepend_c")
+  (return-type "GString*")
+  (parameters
+    '("gchar" "c")
+  )
+)
+
+(define-method prepend_unichar
+  (of-object "GString")
+  (c-name "g_string_prepend_unichar")
+  (return-type "GString*")
+  (parameters
+    '("gunichar" "wc")
+  )
+)
+
+(define-method prepend_len
+  (of-object "GString")
+  (c-name "g_string_prepend_len")
+  (return-type "GString*")
+  (parameters
+    '("const-gchar*" "val")
+    '("gssize" "len")
+  )
+)
+
+(define-method insert
+  (of-object "GString")
+  (c-name "g_string_insert")
+  (return-type "GString*")
+  (parameters
+    '("gssize" "pos")
+    '("const-gchar*" "val")
+  )
+)
+
+(define-method insert_c
+  (of-object "GString")
+  (c-name "g_string_insert_c")
+  (return-type "GString*")
+  (parameters
+    '("gssize" "pos")
+    '("gchar" "c")
+  )
+)
+
+(define-method insert_unichar
+  (of-object "GString")
+  (c-name "g_string_insert_unichar")
+  (return-type "GString*")
+  (parameters
+    '("gssize" "pos")
+    '("gunichar" "wc")
+  )
+)
+
+(define-method erase
+  (of-object "GString")
+  (c-name "g_string_erase")
+  (return-type "GString*")
+  (parameters
+    '("gssize" "pos")
+    '("gssize" "len")
+  )
+)
+
+(define-method ascii_down
+  (of-object "GString")
+  (c-name "g_string_ascii_down")
+  (return-type "GString*")
+)
+
+(define-method ascii_up
+  (of-object "GString")
+  (c-name "g_string_ascii_up")
+  (return-type "GString*")
+)
+
+(define-method printf
+  (of-object "GString")
+  (c-name "g_string_printf")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "format")
+  )
+  (varargs #t)
+)
+
+(define-method append_printf
+  (of-object "GString")
+  (c-name "g_string_append_printf")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "format")
+  )
+  (varargs #t)
+)
+
+(define-method up
+  (of-object "GString")
+  (c-name "g_string_up")
+  (return-type "GString*")
+)
+
+

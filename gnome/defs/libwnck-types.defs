@@ -1,0 +1,42 @@
+;; -*- scheme -*-
+
+;; Some libwnck object definitions 
+
+(define-object WnckClassGroup
+  (in-module "Wnck")
+  (parent "GObject")
+  (c-name "WnckClassGroup")
+  (gtype-id "WNCK_TYPE_CLASS_GROUP"))
+
+(define-object WnckScreen
+  (in-module "Wnck")
+  (parent "GObject")
+  (c-name "WnckScreen")
+  (gtype-id "WNCK_TYPE_SCREEN"))
+
+(define-object WnckWindow
+  (in-module "Wnck")
+  (parent "GObject")
+  (c-name "WnckWindow")
+  (gtype-id "WNCK_TYPE_WINDOW"))
+
+(define-object WnckWorkspace
+  (in-module "Wnck")
+  (parent "GObject")
+  (c-name "WnckWorkspace")
+  (gtype-id "WNCK_TYPE_WORKSPACE"))
+
+(define-enum WnckWindowState
+  (in-module "Wnck")
+  (c-name "WnckWindowState")
+  (gtype-id "WNCK_TYPE_WINDOW_STATE")
+  (values
+   '("minimized" "WNCK_WINDOW_STATE_MINIMIZED")
+   '("horizontally" "WNCK_WINDOW_STATE_MAXIMIZED_HORIZONTALLY")
+   '("vertically" "WNCK_WINDOW_STATE_MAXIMIZED_VERTICALLY")
+   '("shaded" "WNCK_WINDOW_STATE_SHADED")
+   '("pager" "WNCK_WINDOW_STATE_SKIP_PAGER")
+   '("tasklist" "WNCK_WINDOW_STATE_SKIP_TASKLIST")
+   '("sticky" "WNCK_WINDOW_STATE_STICKY")
+   '("hidden" "WNCK_WINDOW_STATE_HIDDEN")
+   '("fullscreen" "WNCK_WINDOW_STATE_FULLSCREEN")))
