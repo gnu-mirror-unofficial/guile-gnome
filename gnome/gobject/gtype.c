@@ -80,7 +80,7 @@ static GQuark quark_guile_gtype_class = 0;
 
 typedef struct {
     GType type;
-    void (* sinkfunc)(GTypeInstance *instance);
+    void (* sinkfunc)(gpointer instance);
 } SinkFunc;
 
 static GArray *sink_funcs = NULL;
@@ -450,7 +450,7 @@ SCM_DEFINE (scm_sys_gtype_bind_to_class, "%gtype-bind-to-class", 2, 0, 0,
 static size_t
 scm_gtype_instance_free (SCM smob)
 {
-    GTypeInstance *instance = (GTypeInstance *) SCM_SMOB_DATA (smob);
+    gpointer instance = (gpointer)SCM_SMOB_DATA (smob);
 
     SCM_SET_SMOB_DATA (smob, NULL);
 
@@ -460,19 +460,19 @@ scm_gtype_instance_free (SCM smob)
     switch (G_TYPE_FUNDAMENTAL (G_TYPE_FROM_INSTANCE (instance))) {
     case G_TYPE_OBJECT:
         /* unset the cached wrapper data, if there was any */
-        g_object_set_qdata ((GObject*)instance, guile_gobject_quark_instance_wrapper, NULL);
-        g_object_set_qdata ((GObject*)instance, quark_primitive_instance_wrapper, NULL);
+        g_object_set_qdata (instance, guile_gobject_quark_instance_wrapper, NULL);
+        g_object_set_qdata (instance, quark_primitive_instance_wrapper, NULL);
         DEBUG_ALLOC ("g_object_unref (%p) for SMOB %p: %u->%u", instance, smob,
                      ((GObject*)instance)->ref_count,
                      ((GObject*)instance)->ref_count - 1);
-	g_object_unref (G_OBJECT (instance));
+	g_object_unref (instance);
 	break;
 
     case G_TYPE_PARAM:
         DEBUG_ALLOC ("g_param_spec_unref (%p) %u->%u", instance,
                      ((GParamSpec*)instance)->ref_count,
                      ((GParamSpec*)instance)->ref_count - 1);
-	g_param_spec_unref (G_PARAM_SPEC (instance));
+	g_param_spec_unref (instance);
 	break;
 
     default:
@@ -486,7 +486,7 @@ scm_gtype_instance_free (SCM smob)
 static int
 scm_gtype_instance_print (SCM smob, SCM port, scm_print_state *pstate)
 {
-    GTypeInstance *instance = (GTypeInstance *) SCM_SMOB_DATA (smob);
+    gpointer instance = (gpointer)SCM_SMOB_DATA (smob);
     SCM class;
 
     class = g_type_get_qdata (G_TYPE_FROM_INSTANCE (instance), quark_class);
@@ -530,13 +530,13 @@ scm_c_gtype_instance_is_a_p (SCM instance, GType gtype)
 }
 
 /* takes EITHER a gtype-instance smob OR a gtype-instance goops object */
-GTypeInstance *
+gpointer
 scm_c_scm_to_gtype_instance (SCM instance, GType gtype)
 {
     SCM type, class, pinstance;
 
     if (SCM_TYP16_PREDICATE (scm_tc16_gtype_instance, instance)) {
-	GTypeInstance *ginstance = (GTypeInstance *) SCM_SMOB_DATA (instance);
+	gpointer ginstance = (gpointer)SCM_SMOB_DATA (instance);
 
 	if (G_TYPE_CHECK_INSTANCE_TYPE (ginstance, gtype))
 	    return ginstance;
@@ -554,7 +554,7 @@ scm_c_scm_to_gtype_instance (SCM instance, GType gtype)
 
     pinstance = scm_slot_ref (instance, scm_sym_gtype_instance);
     if (SCM_TYP16_PREDICATE (scm_tc16_gtype_instance, pinstance)) {
-	GTypeInstance *ginstance = (GTypeInstance *) SCM_SMOB_DATA (pinstance);
+	gpointer ginstance = (gpointer)SCM_SMOB_DATA (pinstance);
 
         if (!ginstance)
             scm_c_gruntime_error ("%scm->gtype-instance",
@@ -572,7 +572,7 @@ scm_c_scm_to_gtype_instance (SCM instance, GType gtype)
 
 /* idea, code, and comments stolen from pygtk -- thanks, James :-) */
 static inline void
-sink_type_instance (GTypeInstance *instance)
+sink_type_instance (gpointer instance)
 {
     if (sink_funcs) {
 	gint i;
@@ -605,7 +605,7 @@ sink_type_instance (GTypeInstance *instance)
  * instances of the given type, or any subclasses.
  */
 void
-scm_register_gtype_instance_sinkfunc (GType type, void (*sinkfunc) (GTypeInstance *))
+scm_register_gtype_instance_sinkfunc (GType type, void (*sinkfunc) (gpointer))
 {
     SinkFunc sf;
 
@@ -619,7 +619,7 @@ scm_register_gtype_instance_sinkfunc (GType type, void (*sinkfunc) (GTypeInstanc
 
 /* returns a goops object of class (gtype->class [type of gtypeinstance]) */
 SCM
-scm_c_gtype_instance_to_scm (GTypeInstance *ginstance)
+scm_c_gtype_instance_to_scm (gpointer ginstance)
 {
     GType type;
     SCM instance_smob, class, object;
@@ -631,7 +631,7 @@ scm_c_gtype_instance_to_scm (GTypeInstance *ginstance)
 
     switch (G_TYPE_FUNDAMENTAL (type)) {
     case G_TYPE_OBJECT:
-        object = g_object_get_qdata ((GObject*)ginstance,
+        object = g_object_get_qdata (ginstance,
                                      guile_gobject_quark_instance_wrapper);
         if (object) return object;
         break;
@@ -653,7 +653,7 @@ scm_c_gtype_instance_to_scm (GTypeInstance *ginstance)
      * their wrappers. This qdata is unset in the SMOB's free function. */
     switch (G_TYPE_FUNDAMENTAL (type)) {
     case G_TYPE_OBJECT:
-        g_object_set_qdata ((GObject*)ginstance,
+        g_object_set_qdata (ginstance,
                             guile_gobject_quark_instance_wrapper, object);
         break;
     }
@@ -662,7 +662,7 @@ scm_c_gtype_instance_to_scm (GTypeInstance *ginstance)
 }
 
 SCM
-scm_c_make_gtype_instance (GTypeInstance *ginstance)
+scm_c_make_gtype_instance (gpointer ginstance)
 {
     SCM ret;
 
@@ -671,12 +671,12 @@ scm_c_make_gtype_instance (GTypeInstance *ginstance)
 
     switch (G_TYPE_FUNDAMENTAL (G_TYPE_FROM_INSTANCE (ginstance))) {
     case G_TYPE_OBJECT:
-        if ((ret = g_object_get_qdata ((GObject*)ginstance,
+        if ((ret = g_object_get_qdata (ginstance,
                                        quark_primitive_instance_wrapper)))
             return ret;
 
         /* see REFCOUNTING for the policy */
-        g_object_ref ((GObject*)ginstance);
+        g_object_ref (ginstance);
 
         DEBUG_ALLOC ("reffed gobject (%p) of type %s, ->%u",
                      ginstance, g_type_name (G_TYPE_FROM_INSTANCE (ginstance)),
@@ -687,13 +687,13 @@ scm_c_make_gtype_instance (GTypeInstance *ginstance)
         SCM_NEWSMOB2 (ret, scm_tc16_gtype_instance, ginstance, NULL);
 
         /* cache the return value */
-        g_object_set_qdata ((GObject*)ginstance, quark_primitive_instance_wrapper, ret);
+        g_object_set_qdata (ginstance, quark_primitive_instance_wrapper, ret);
         break;
       
     case G_TYPE_PARAM:
         /* ignoring floating status, the creation functions will sink if
          * necessary */
-        g_param_spec_ref ((GParamSpec*)ginstance);
+        g_param_spec_ref (ginstance);
 
         DEBUG_ALLOC ("reffed param (%p) of type %s, ->%u", 
                      ginstance, g_type_name (G_TYPE_FROM_INSTANCE (ginstance)),

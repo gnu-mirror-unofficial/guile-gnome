@@ -64,8 +64,7 @@
             wrap-flags!
             wrap-gobject-class!
             
-            custom-wrap-decls
-            wrap-custom-pointer!))
+            wrap-custom-boxed!))
 
 (require 'printf)
 
@@ -561,35 +560,111 @@
      "else\n"
      "  " scm-var " = scm_c_gtype_to_class (G_TYPE_FROM_CLASS (" c-var "));\n")))
 
-;; The following two macros were designed to help wrapping of types
-;; represented on the C side by non-simple object, but on the scheme
-;; side with native scheme values. See gtk-spec.scm for an example.
-(define-macro (custom-wrap-decls ctype unwrap wrap)
-  (let ((type (gtype-name->class-name ctype)))
-    `(begin
-       (define-class ,type (<gobject-type-base>))
-       (define-method (unwrap-value-cg (type ,type)
-                                       (value <gw-value>)
-                                       status-var)
-         (let ((c-var (var value))
-               (scm-var (scm-var value)))
-           ,unwrap))
-       (define-method (wrap-value-cg (type ,type)
-                                     (value <gw-value>)
-                                     status-var)
-         (let ((c-var (var value))
-               (scm-var (scm-var value)))
-           ,wrap)))))
+(define-class <gobject-custom-boxed-type> (<gobject-classed-pointer-type>)
+  (wrap-func #:init-keyword #:wrap-func #:getter wrap-func)
+  (wrap #:init-keyword #:wrap #:getter wrap)
+  (unwrap-func #:init-keyword #:unwrap-func #:getter unwrap-func)
+  (unwrap #:init-keyword #:unwrap #:getter unwrap))
+  
+(class-slot-set! <gobject-custom-boxed-type> 'allowed-options '(null-ok))
 
-(define-macro (wrap-custom-pointer! ctype)
-  (let ((pname (string-append ctype "*"))
-        (class (gtype-name->class-name ctype)))
-    `(begin
-       (add-type! ws (make ,class
-                       #:ctype ,ctype
-                       #:c-type-name ,pname
-                       #:c-const-type-name ,pname
-                       #:ffspec 'pointer
-                       #:wrapped "Custom"))
-       (class-slot-set! ,class 'allowed-options '(null-ok))
-       (add-type-alias! ws ,pname ',class))))
+(define gen-c-tmp
+  (let ((i -1))
+    (lambda (suffix)
+      (set! i (1+ i))
+      (format #f "gw__~A_~A" i suffix))))
+
+(define-method (global-definitions-cg (wrapset <gobject-wrapset-base>)
+                                      (type <gobject-custom-boxed-type>))
+  (let ((scm-var (gen-c-tmp "scm_val"))
+        (c-var (gen-c-tmp "c_val")))
+    (list
+     (next-method)
+     ((wrap type) scm-var c-var)
+     ((unwrap type) scm-var c-var))))
+
+(define-method (global-declarations-cg (wrapset <gobject-wrapset-base>)
+                                       (type <gobject-custom-boxed-type>))
+  (list
+   (next-method)
+   "static SCM " (wrap-func type) " (const GValue *);\n"
+   "static void " (unwrap-func type) " (SCM, GValue *);\n"))
+
+(define-method (initializations-cg (wrapset <gobject-wrapset-base>)
+                                   (type <gobject-custom-boxed-type>)
+                                   status-var)
+  (list
+   (next-method)
+   "scm_c_register_gvalue_wrappers (" (gtype-id type) ", "
+   (wrap-func type) ", " (unwrap-func type) ");\n"))
+
+(define-macro (make-custom-wrapper type wrap-form)
+  `(let ((ctype (,c-type-name ,type))
+         (wrap-func (,wrap-func ,type)))
+     (lambda (scm-var c-var)
+       (list
+        "static SCM " wrap-func " (const GValue* gvalue) {\n"
+        "  SCM " scm-var " = SCM_BOOL_F;\n"
+        "  " ctype " " c-var " = g_value_get_boxed (gvalue);\n"
+        ,wrap-form
+        "  return " scm-var ";\n"
+        "}\n"))))
+     
+(define-macro (make-custom-unwrapper type unwrap-form)
+  `(let ((ctype (,c-type-name ,type))
+         (unwrap-func (,unwrap-func ,type)))
+     (lambda (scm-var c-var)
+       (list
+        "static void " unwrap-func " (SCM " scm-var ", GValue* gvalue) {\n"
+        "  " ctype " " c-var " = NULL;\n"
+        ,unwrap-form
+        "  g_value_init (gvalue, " (gtype-id ,type) ");\n"
+        "  g_value_take_boxed (gvalue, " c-var ");\n"
+        "}\n"))))
+     
+(define-method (unwrap-value-cg (type <gobject-custom-boxed-type>)
+                                (value <gw-value>)
+                                status-var)
+  (let ((c-var (var value))
+        (scm-var (scm-var value)))
+    (unwrap-null-checked
+     value status-var
+     (list
+      "GValue lvalue = { 0, };\n"
+      (unwrap-func type) " (" scm-var ", &lvalue);\n"
+      "if (G_IS_VALUE (&lvalue)) {"
+      ;; might leak memory... need to write a destructor for c-var in the
+      ;; case of a caller-owned argument
+      "  " c-var " = g_value_get_boxed (&lvalue);\n"
+      "} else {\n"
+      "  " c-var " = NULL;\n"
+      "}\n"))))
+
+(define-method (wrap-value-cg (type <gobject-custom-boxed-type>)
+                              (value <gw-value>)
+                              status-var)
+  (let ((c-var (var value))
+        (scm-var (scm-var value)))
+    (list
+     "GValue rvalue = { 0, };\n"
+     "g_value_init (&rvalue, " (gtype-id type) ");\n"
+     "g_value_set_static_boxed (&rvalue, " c-var ");\n"
+     scm-var " = " (wrap-func type) " (&rvalue);\n")))
+
+(define-macro (wrap-custom-boxed! ctype gtype wrap unwrap)
+  (let* ((pname (string-append ctype "*"))
+         (func-infix (string-map (lambda (c) (case c ((#\-) #\_) (else c)))
+                                 (GStudlyCapsExpand ctype)))
+         (wrap-func (string-append "gw__gvalue_" func-infix "_wrap"))
+         (unwrap-func (string-append "gw__gvalue_" func-infix "_unwrap")))
+    `(let ((t (make ,<gobject-custom-boxed-type>
+                #:ctype ,ctype
+                #:gtype-id ,gtype
+                #:c-type-name ,pname
+                #:wrapped "Custom"
+                #:wrap-func ,wrap-func
+                #:unwrap-func ,unwrap-func)))
+       (slot-set! t 'wrap (,make-custom-wrapper t ,wrap))
+       (slot-set! t 'unwrap (,make-custom-unwrapper t ,unwrap))
+       (add-type! ws t)
+       (add-type-alias! ws ,pname (name t)))))

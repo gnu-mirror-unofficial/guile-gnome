@@ -1,3 +1,50 @@
+2004-12-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (wrap-custom-boxed!): New exported
+	macro, replaces wrap-custom-pointer! and custom-wrapper-decls.
+	(<gobject-custom-boxed-type>, gen-c-tmp, global-definitions-cg) 
+	(global-declarations-cg, initializations-cg, make-custom-wrapper) 
+	(make-custom-unwrapper, unwrap-value-cg, wrap-value-cg): Support
+	for the new custom wrapper. Will create GValue wrapper functions,
+	use them from the wrap/unwrap procedures, and registers them with
+	gvalue.c.
+
+	* gnome/gobject/gvalue.c (s_scm_gvalue_primitive_get)
+	(scm_c_gvalue_to_scm, s_scm_gvalue_to_scm): Remove casts to
+	GTypeInstance.
+
+	* gnome/gobject/gtype.c (scm_c_make_gtype_instance)
+	(scm_gtype_instance_free, scm_gtype_instance_print)
+	(sink_type_instance, scm_register_gtype_instance_sinkfunc)
+	(scm_c_gtype_instance_to_scm, scm_c_make_gtype_instance)
+	(guile_gobject_log_handler)
+	(scm_c_scm_to_gtype_instance, scm_c_gtype_instance_to_scm): Use
+	gpointer instead of GTypeInstance* as the type declaration, since
+	we never actually deal with GTypeInstance, only their subclasses.
+	Eliminates the need for many casts, because we have to check at
+	runtime anyway.
+
+2004-12-02  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/utils.scm (gnome): Export GStudlyCapsExpand so
+	that (gnome gw support gobject) can use it.
+
+	* gnome/gobject/gvalue.c (s_scm_scm_to_gvalue)
+	(s_scm_gvalue_to_scm): Use the new gvalue wrappers as appropriate.
+	(scm_c_register_gvalue_wrappers): New procedure, registers a pair
+	of procedures to make a custom mapping between scheme values and
+	gvalues.
+
+2004-11-29  Andy Wingo  <wingo@pobox.com>
+
+	* gnome.scm.in (gnome): Define the module before resolving it, so
+	as to avoid guile 1.6 trying to load a binary module. Thanks to
+	David Pirotte for the bug report. Define the version as
+	`gnome-version' because the core already exports `version'.
+	(add-to-load-path!): New proc, tries to order environment-variable
+	load paths first so that hacking the load path during compilation
+	works.
+
 2004-11-21  Andy Wingo  <wingo@pobox.com>
 
 	* examples/Makefile.am (EXTRA_DIST): Dist all scm files.

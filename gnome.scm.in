@@ -25,6 +25,11 @@
 ;;
 ;;; Code:
 
+;; Although resolve-module would create (gnome) if it's not found, guile
+;; 1.6 will still search for a lib named libgnome.so before giving up.
+;; Avoid this problem by making sure (gnome) is defined.
+(define-module (gnome))
+
 (define-module (gnome-@API_VERSION@))
 
 (define (ld-library-path-prepend! path)
@@ -34,11 +39,27 @@
                                           path ld-library-path))
         (setenv "LD_LIBRARY_PATH" path))))
 
+;; Add path to the load path, preserving any modification that the user
+;; already made via environment variables. Necessary so that
+;; GUILE_LOAD_PATH munging during build works even after (gnome-0)
+;; munges the path itself.
+(define (add-to-load-path! path)
+  (let ((first-std-path (in-vicinity
+                         (assq-ref %guile-build-info 'pkgdatadir)
+                         "site")))
+    (let lp ((tail %load-path) (head '()))
+      (cond
+       ((null? tail)
+        (set! %load-path (cons path %load-path)))
+       ((string=? (car tail) first-std-path)
+        (set! %load-path (append (reverse head) (cons path tail))))
+       (else
+        (lp (cdr tail) (cons (car tail) head)))))))
+                 
 (define version "@API_VERSION@")
 
-;; Note that `resolve-module' creates it if necessary.
 (cond
- ((module-variable (resolve-module '(gnome)) 'version)
+ ((module-variable (resolve-module '(gnome)) 'gnome-version)
   =>
   (lambda (v)
     (if (not (string=? (variable-ref v) version))
@@ -46,17 +67,17 @@
                (variable-ref v) version))))
 
  (@running-uninstalled@ ;; #t if we are uninstalled
-  (module-define! (resolve-module '(gnome)) 'version version)
+  (module-define! (resolve-module '(gnome)) 'gnome-version version)
   #t) ;; we're building guile-gnome, let the build scripts do their hacks
 
  (else
-  (module-define! (resolve-module '(gnome)) 'version version)
+  (module-define! (resolve-module '(gnome)) 'gnome-version version)
 
   (let ((guile-gnome-dir "@guilegnomedir@")
         (guile-gnome-lib-dir "@guilegnomelibdir@")
         (libdir "@libdir@"))
 
-    (set! %load-path (cons guile-gnome-dir %load-path))
+    (add-to-load-path! guile-gnome-dir)
 
     ;; Resolve (gnome gw ...) wrapper links to libguile-gnome-gobject.
     (if (not (member libdir '("/usr/lib" "/usr/local/lib")))

@@ -451,11 +451,11 @@ SCM_DEFINE (scm_gvalue_primitive_get, "gvalue-primitive-get", 1, 0, 0,
 
     case G_TYPE_OBJECT:
         /* scm_c_make_gtype_instance will ref the object for us */
-	return scm_c_make_gtype_instance ((GTypeInstance *) g_value_get_object (gvalue));
+	return scm_c_make_gtype_instance (g_value_get_object (gvalue));
 
     case G_TYPE_PARAM:
         /* scm_c_make_gtype_instance will ref the object for us */
-	return scm_c_make_gtype_instance ((GTypeInstance *) g_value_get_param (gvalue));
+	return scm_c_make_gtype_instance (g_value_get_param (gvalue));
 
     default:
 	scm_wrong_type_arg (FUNC_NAME, SCM_ARG1, value);
@@ -492,6 +492,29 @@ scm_c_dup_gboxed_to_scm (GType boxed_type, gconstpointer boxed_value)
     return svalue;
 }
 
+static GHashTable *gvalue_wrappers = NULL;
+typedef struct {
+    SCM (*wrap) (const GValue*);
+    void (*unwrap) (SCM, GValue*);
+} wrap_funcs;
+
+/* not threadsafe */
+void
+scm_c_register_gvalue_wrappers (GType type,
+                                SCM (*wrap) (const GValue*),
+                                void (*unwrap) (SCM, GValue*))
+{
+    wrap_funcs* w = g_new (wrap_funcs, 1);
+
+    if (!gvalue_wrappers)
+        gvalue_wrappers = g_hash_table_new (g_int_hash, g_int_equal);
+    
+    w->wrap = wrap;
+    w->unwrap = unwrap;
+
+    g_hash_table_insert (gvalue_wrappers, GINT_TO_POINTER (type), w);
+}
+
 SCM_DEFINE (scm_gvalue_to_scm, "gvalue->scm", 1, 0, 0,
 	    (SCM value),
 	    "")
@@ -511,16 +534,27 @@ SCM_DEFINE (scm_gvalue_to_scm, "gvalue->scm", 1, 0, 0,
 
     if (SCM_NFALSEP (scm_gtype_basic_p (stype))) {
         return scm_gvalue_primitive_get (value);
-    }
+    } 
     else if (fundamental == G_TYPE_OBJECT) {
-        return scm_c_gtype_instance_to_scm ((GTypeInstance*)g_value_get_object (gvalue));
+        return scm_c_gtype_instance_to_scm (g_value_get_object (gvalue));
     }
     else if (fundamental == G_TYPE_PARAM) {
-        return scm_c_gtype_instance_to_scm ((GTypeInstance*)g_value_get_param (gvalue));
+        return scm_c_gtype_instance_to_scm (g_value_get_param (gvalue));
+    }
+    else if (gvalue_wrappers) {
+        wrap_funcs* w;
+        w = g_hash_table_lookup (gvalue_wrappers,
+                                 GINT_TO_POINTER (G_VALUE_TYPE (gvalue)));
+        
+        if (w)
+            return w->wrap (gvalue);
+        else
+            return value;
     }
     else {
-        /* Enums and flags are natively represented as GValues. Also most boxed
-         * and pointer values will fall here. */
+        /* Enums and flags are natively represented as GValues. Boxed and
+         * pointer values also fall through here, unless there is a custom
+         * wrapper registered. */
         return value;
     }
 }
@@ -532,10 +566,10 @@ SCM scm_c_gvalue_to_scm (const GValue *gvalue)
     
     /* try to avoid needless allocation of a gvalue smob */
     if (fundamental == G_TYPE_OBJECT) {
-        return scm_c_gtype_instance_to_scm ((GTypeInstance*)g_value_get_object (gvalue));
+        return scm_c_gtype_instance_to_scm (g_value_get_object (gvalue));
     }
     else if (fundamental == G_TYPE_PARAM) {
-        return scm_c_gtype_instance_to_scm ((GTypeInstance*)g_value_get_param (gvalue));
+        return scm_c_gtype_instance_to_scm (g_value_get_param (gvalue));
     }
     else {
         /* fall back on the normal version */
@@ -588,12 +622,30 @@ SCM_DEFINE (scm_scm_to_gvalue, "scm->gvalue", 2, 0, 0,
             scm_wrong_type_arg (FUNC_NAME, 2, scm);
         return scm_slot_ref (scm, sym_closure);
     }
-    else {
-        scm_c_gruntime_error (FUNC_NAME,
-                              "Don't know how to make values of type ~A",
-                              SCM_LIST1 (type));
-        return SCM_UNSPECIFIED; /* won't get here */
+    else if (gvalue_wrappers) {
+        wrap_funcs* w;
+        w = g_hash_table_lookup (gvalue_wrappers, GINT_TO_POINTER (gtype));
+    
+        if (w) {
+            GValue *v = g_new0 (GValue, 1);
+            
+            w->unwrap (scm, v);
+            if (G_IS_VALUE (v)) {
+                SCM svalue;
+                SCM_NEWSMOB (svalue, scm_tc16_gvalue, v);
+                return svalue;
+            } else {
+                g_free (v);
+            }
+        }
+        /* might fall through */
     }
+    
+    /* otherwise... */
+    scm_c_gruntime_error (FUNC_NAME,
+                          "Don't know how to make values of type ~A",
+                          SCM_LIST1 (type));
+    return SCM_UNSPECIFIED; /* won't get here */
 }
 #undef FUNC_NAME
 
