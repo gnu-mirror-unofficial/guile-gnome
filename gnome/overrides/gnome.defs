@@ -1,3 +1,4 @@
+;; -*- scheme -*-
 ;; guile-gnome
 ;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
 
@@ -20,33 +21,35 @@
 
 ;;; Commentary:
 ;;
-;;g-wrap specification for libgnome.
+;;Custom wrapper definitions.
 ;;
 ;;; Code:
 
-(define-module (gnome gw libgnome-spec)
-  #:use-module (oop goops)
-  #:use-module (g-wrap)
-  #:use-module (gnome gw gobject-spec)
-  #:use-module (gnome gw support gobject)
-  #:use-module (gnome gw support defs))
+(define-function program_initv
+  (c-name "_wrap_gnome_program_init")
+  (overrides "%gnome-program-init") ;; hacky!
+  (return-type "GnomeProgram*")
+  (parameters
+    '("const-char*" "app_id")
+    '("const-char*" "app_version")))
 
-(define-class <libgnome-wrapset> (<gobject-wrapset-base>)
-  #:id 'gnome-libgnome #:dependencies '(standard gnome-glib gnome-gobject))
+(ignore-glob  "*_get_type"
+              "_*"
+              "*_ref"
+              "*_unref"
+              "*_copy"
+              "*_free"
+              "*_newv"
+              "*_valist"
+              "*_setv"
+              "*_foreach"
+              "*_valist")
 
-(define-method (initialize (ws <libgnome-wrapset>) initargs)
-  (next-method ws (append '(#:module (gnome gw libgnome)) initargs))
-  
-  (load-defs-with-overrides ws "gnome/defs/gnome.defs"))
 
-(define-method (global-declarations-cg (self <libgnome-wrapset>))
-  (list (next-method)
-        "#include <libgnome/libgnome.h>\n"
-        "#include <libgnome/libgnometypebuiltins.h>\n"
-        "#include \"gnome-support.h\"\n"))
 
-(define-method (client-global-declarations-cg (self <libgnome-wrapset>))
-  (list (next-method)
-        "#include <libgnome/libgnome.h>\n"
-        "#include <libgnome/libgnometypebuiltins.h>\n"
-        "#include \"gnome-support.h\"\n"))
+(ignore-glob  "gnome_config*" ;; gah, this is a mess
+              "gnome_execute_async*" ;; can't handle the argv[]
+              "*_vector" ;; vectors need special loving
+              "gnome_triggers_v*" ;; can't handle the argv[]
+              "gnome_program_init*" ;; taken care of already
+              )

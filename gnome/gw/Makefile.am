@@ -11,9 +11,8 @@ lib_LTLIBRARIES = libgw-guile-gnome-libgnome.la
 
 ########################################################################
 ## libgnome
-libgw_guile_gnome_libgnome_la_SOURCES = \
-	guile-gnome-gw-libgnome.c \
-	gnome-support.c gnome-support.h
+nodist_libgw_guile_gnome_libgnome_la_SOURCES = guile-gnome-gw-libgnome.c
+libgw_guile_gnome_libgnome_la_SOURCES = gnome-support.c gnome-support.h
 
 libgw_guile_gnome_libgnome_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(AM_CFLAGS) $(LIBGNOME_CFLAGS) $(GUILE_CFLAGS) \
