@@ -283,7 +283,11 @@
          '())
      "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
      "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " gtype-id "))\n"
-     "  " c-var " = (" (c-type-name-func typespec) ") g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
+     "  " c-var " = (" (c-type-name-func typespec) ") "
+     "g_value_" (if (memq 'callee-owned (gw:typespec-get-options typespec))
+                    "dup"
+                    "get")
+     "_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
      "else {\n"
      "  " c-var " = NULL;\n"
      `(gw:error ,status-var type ,scm-var)

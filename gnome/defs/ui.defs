@@ -18,7 +18,7 @@
   (in-module "Gnome")
   (parent "GtkHBox")
   (c-name "GnomeAppBar")
-  (gtype-id "GNOME_TYPE_APPBAR")
+  (gtype-id "GNOME_TYPE_APPBAR") ;; GRR!
 )
 
 (define-object Client
@@ -54,12 +54,6 @@
   (parent "GtkContainer")
   (c-name "GnomeDruid")
   (gtype-id "GNOME_TYPE_DRUID")
-  (fields
-    '("GtkWidget*" "help")
-    '("GtkWidget*" "back")
-    '("GtkWidget*" "next")
-    '("GtkWidget*" "cancel")
-    '("GtkWidget*" "finish"))
 )
 
 (define-object DruidPage
@@ -81,15 +75,6 @@
   (parent "GnomeDruidPage")
   (c-name "GnomeDruidPageStandard")
   (gtype-id "GNOME_TYPE_DRUID_PAGE_STANDARD")
-  (fields
-    '("GtkWidget*" "vbox")
-    '("gchar*" "title")
-    '("GdkPixbuf*" "logo")
-    '("GdkPixbuf*" "top_watermark")    
-    '("GdkColor" "title_foreground")    
-    '("GdkColor" "background")        
-    '("GdkColor" "logo_background")        
-    '("GdkColor" "contents_background"))
 )
 
 (define-object Entry
@@ -148,6 +133,13 @@
   (gtype-id "GNOME_TYPE_ICON_TEXT_ITEM")
 )
 
+(define-object IconTheme
+  (in-module "Gnome")
+  (parent "GObject")
+  (c-name "GnomeIconTheme")
+  (gtype-id "GNOME_TYPE_ICON_THEME")
+)
+
 (define-object MDI
   (in-module "Gnome")
   (parent "GtkObject")
@@ -204,6 +196,13 @@
   (gtype-id "GNOME_TYPE_SCORES")
 )
 
+(define-object ThumbnailFactory
+  (in-module "Gnome")
+  (parent "GObject")
+  (c-name "GnomeThumbnailFactory")
+  (gtype-id "GNOME_TYPE_THUMBNAIL_FACTORY")
+)
+
 ;; Enumerations and flags ...
 
 (define-enum UIInfoType
@@ -238,7 +237,7 @@
     '("print" "GNOME_APP_CONFIGURABLE_ITEM_PRINT")
     '("print-setup" "GNOME_APP_CONFIGURABLE_ITEM_PRINT_SETUP")
     '("close" "GNOME_APP_CONFIGURABLE_ITEM_CLOSE")
-    '("exit" "GNOME_APP_CONFIGURABLE_ITEM_EXIT")
+    '("quit" "GNOME_APP_CONFIGURABLE_ITEM_QUIT")
     '("cut" "GNOME_APP_CONFIGURABLE_ITEM_CUT")
     '("copy" "GNOME_APP_CONFIGURABLE_ITEM_COPY")
     '("paste" "GNOME_APP_CONFIGURABLE_ITEM_PASTE")
@@ -393,6 +392,27 @@
   )
 )
 
+(define-flags IconLookupFlags
+  (in-module "Gnome")
+  (c-name "GnomeIconLookupFlags")
+  (gtype-id "GNOME_TYPE_ICON_LOOKUP_FLAGS")
+  (values
+    '("none" "GNOME_ICON_LOOKUP_FLAGS_NONE")
+    '("embedding-text" "GNOME_ICON_LOOKUP_FLAGS_EMBEDDING_TEXT")
+    '("show-small-images-as-themselves" "GNOME_ICON_LOOKUP_FLAGS_SHOW_SMALL_IMAGES_AS_THEMSELVES")
+  )
+)
+
+(define-flags IconLookupResultFlags
+  (in-module "Gnome")
+  (c-name "GnomeIconLookupResultFlags")
+  (gtype-id "GNOME_TYPE_ICON_LOOKUP_RESULT_FLAGS")
+  (values
+    '("none" "GNOME_ICON_LOOKUP_RESULT_FLAGS_NONE")
+    '("thumbnail" "GNOME_ICON_LOOKUP_RESULT_FLAGS_THUMBNAIL")
+  )
+)
+
 (define-enum MDIMode
   (in-module "Gnome")
   (c-name "GnomeMDIMode")
@@ -402,6 +422,27 @@
     '("toplevel" "GNOME_MDI_TOPLEVEL")
     '("modal" "GNOME_MDI_MODAL")
     '("default-mode" "GNOME_MDI_DEFAULT_MODE")
+  )
+)
+
+;(define-enum ThemeFileParseError
+;  (in-module "Gnome")
+;  (c-name "GnomeThemeFileParseError")
+;  (gtype-id "GNOME_TYPE_THEME_FILE_PARSE_ERROR")
+;  (values
+;    '("syntax" "GNOME_THEME_FILE_PARSE_ERROR_INVALID_SYNTAX")
+;    '("escapes" "GNOME_THEME_FILE_PARSE_ERROR_INVALID_ESCAPES")
+;    '("chars" "GNOME_THEME_FILE_PARSE_ERROR_INVALID_CHARS")
+;  )
+;)
+
+(define-enum ThumbnailSize
+  (in-module "Gnome")
+  (c-name "GnomeThumbnailSize")
+  (gtype-id "GNOME_TYPE_THUMBNAIL_SIZE")
+  (values
+    '("normal" "GNOME_THUMBNAIL_SIZE_NORMAL")
+    '("large" "GNOME_THUMBNAIL_SIZE_LARGE")
   )
 )
 
@@ -417,7 +458,9 @@
 )
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-about.h
+(include "ui-overrides.defs")
+
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-about.h
 
 (define-function gnome_about_get_type
   (c-name "gnome_about_get_type")
@@ -426,7 +469,7 @@
 
 (define-function gnome_about_new
   (c-name "gnome_about_new")
-  (is-constructor-of GnomeAbout)
+  (is-constructor-of "GnomeAbout")
   (return-type "GtkWidget*")
   (parameters
     '("const-gchar*" "name")
@@ -458,7 +501,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-appbar.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-appbar.h
 
 (define-function gnome_appbar_get_type
   (c-name "gnome_appbar_get_type")
@@ -467,7 +510,7 @@
 
 (define-function gnome_appbar_new
   (c-name "gnome_appbar_new")
-  (is-constructor-of GnomeAppBar)
+  (is-constructor-of "GnomeAppbar")
   (return-type "GtkWidget*")
   (parameters
     '("gboolean" "has_progress")
@@ -566,7 +609,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-app.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-app.h
 
 (define-function gnome_app_get_type
   (c-name "gnome_app_get_type")
@@ -575,7 +618,7 @@
 
 (define-function gnome_app_new
   (c-name "gnome_app_new")
-  (is-constructor-of GnomeApp)  
+  (is-constructor-of "GnomeApp")
   (return-type "GtkWidget*")
   (parameters
     '("const-gchar*" "appname")
@@ -708,7 +751,15 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-app-helper.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-app-helper.h
+
+(define-function gnome_app_helper_gettext
+  (c-name "gnome_app_helper_gettext")
+  (return-type "const-gchar*")
+  (parameters
+    '("const-gchar*" "string")
+  )
+)
 
 (define-function gnome_accelerators_sync
   (c-name "gnome_accelerators_sync")
@@ -912,7 +963,7 @@
   (return-type "none")
   (parameters
     '("const-gchar*" "path")
-    '("GnomeUIInfo*" "menuinfo")
+    '("GnomeUIInfo*" "uiinfo")
     '("GnomeUIBuilderData*" "uibdata")
   )
 )
@@ -974,7 +1025,7 @@
   (c-name "gnome_app_install_menu_hints")
   (return-type "none")
   (parameters
-    '("GnomeUIInfo*" "uinfo")
+    '("GnomeUIInfo*" "uiinfo")
   )
 )
 
@@ -989,7 +1040,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-app-util.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-app-util.h
 
 (define-method flash
   (of-object "GnomeApp")
@@ -1127,7 +1178,16 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-client.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-authentication-manager.h
+
+(define-function gnome_authentication_manager_init
+  (c-name "gnome_authentication_manager_init")
+  (return-type "none")
+)
+
+
+
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-client.h
 
 (define-function gnome_client_module_info_get
   (c-name "gnome_client_module_info_get")
@@ -1290,7 +1350,7 @@
   (c-name "gnome_client_set_user_id")
   (return-type "none")
   (parameters
-    '("const-gchar*" "user_id")
+    '("const-gchar*" "id")
   )
 )
 
@@ -1344,13 +1404,12 @@
 
 (define-function gnome_client_new
   (c-name "gnome_client_new")
-  (is-constructor-of GnomeClient)  
+  (is-constructor-of "GnomeClient")
   (return-type "GnomeClient*")
 )
 
 (define-function gnome_client_new_without_connection
   (c-name "gnome_client_new_without_connection")
-  (is-constructor-of GnomeClient)    
   (return-type "GnomeClient*")
 )
 
@@ -1371,7 +1430,7 @@
   (c-name "gnome_client_set_id")
   (return-type "none")
   (parameters
-    '("const-gchar*" "client_id")
+    '("const-gchar*" "id")
   )
 )
 
@@ -1398,9 +1457,9 @@
   (c-name "gnome_client_request_interaction")
   (return-type "none")
   (parameters
-    '("GnomeDialogType" "dialog")
-    '("GnomeInteractFunction" "func")
-    '("gpointer" "client_data")
+    '("GnomeDialogType" "dialog_type")
+    '("GnomeInteractFunction" "function")
+    '("gpointer" "data")
   )
 )
 
@@ -1409,8 +1468,8 @@
   (c-name "gnome_client_request_interaction_interp")
   (return-type "none")
   (parameters
-    '("GnomeDialogType" "dialog")
-    '("GtkCallbackMarshal" "func")
+    '("GnomeDialogType" "dialog_type")
+    '("GtkCallbackMarshal" "function")
     '("gpointer" "data")
     '("GtkDestroyNotify" "destroy")
   )
@@ -1427,7 +1486,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-color-picker.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-color-picker.h
 
 (define-function gnome_color_picker_get_type
   (c-name "gnome_color_picker_get_type")
@@ -1436,7 +1495,7 @@
 
 (define-function gnome_color_picker_new
   (c-name "gnome_color_picker_new")
-  (is-constructor-of GnomeColorPicker)    
+  (is-constructor-of "GnomeColorPicker")
   (return-type "GtkWidget*")
 )
 
@@ -1559,7 +1618,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-dateedit.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-dateedit.h
 
 (define-function gnome_date_edit_get_type
   (c-name "gnome_date_edit_get_type")
@@ -1568,7 +1627,7 @@
 
 (define-function gnome_date_edit_new
   (c-name "gnome_date_edit_new")
-  (is-constructor-of GnomeDateEdit)    
+  (is-constructor-of "GnomeDateEdit")
   (return-type "GtkWidget*")
   (parameters
     '("time_t" "the_time")
@@ -1579,7 +1638,6 @@
 
 (define-function gnome_date_edit_new_flags
   (c-name "gnome_date_edit_new_flags")
-  (is-constructor-of GnomeDateEdit)    
   (return-type "GtkWidget*")
   (parameters
     '("time_t" "the_time")
@@ -1651,7 +1709,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-dialog.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-dialog.h
 
 (define-function gnome_dialog_get_type
   (c-name "gnome_dialog_get_type")
@@ -1660,7 +1718,7 @@
 
 (define-function gnome_dialog_new
   (c-name "gnome_dialog_new")
-  (is-constructor-of GnomeDialog)
+  (is-constructor-of "GnomeDialog")
   (return-type "GtkWidget*")
   (parameters
     '("const-gchar*" "title")
@@ -1670,7 +1728,6 @@
 
 (define-function gnome_dialog_newv
   (c-name "gnome_dialog_newv")
-  (is-constructor-of GnomeDialog)  
   (return-type "GtkWidget*")
   (parameters
     '("const-gchar*" "title")
@@ -1693,7 +1750,7 @@
   (return-type "none")
   (parameters
     '("gint" "button")
-    '("GtkSignalFunc" "callback")
+    '("GCallback" "callback")
     '("gpointer" "data")
   )
 )
@@ -1704,7 +1761,7 @@
   (return-type "none")
   (parameters
     '("gint" "button")
-    '("GtkSignalFunc" "callback")
+    '("GCallback" "callback")
     '("GtkObject*" "obj")
   )
 )
@@ -1808,7 +1865,7 @@
   (c-name "gnome_dialog_append_button")
   (return-type "none")
   (parameters
-    '("const-gchar*" "name")
+    '("const-gchar*" "button_name")
   )
 )
 
@@ -1826,8 +1883,8 @@
   (c-name "gnome_dialog_append_button_with_pixmap")
   (return-type "none")
   (parameters
-    '("const-gchar*" "name")
-    '("const-gchar*" "pixmap")
+    '("const-gchar*" "button_name")
+    '("const-gchar*" "pixmap_name")
   )
 )
 
@@ -1863,7 +1920,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-dialog-util.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-dialog-util.h
 
 (define-function gnome_ok_dialog_parented
   (c-name "gnome_ok_dialog_parented")
@@ -2050,7 +2107,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-druid.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-druid.h
 
 (define-function gnome_druid_get_type
   (c-name "gnome_druid_get_type")
@@ -2059,7 +2116,7 @@
 
 (define-function gnome_druid_new
   (c-name "gnome_druid_new")
-  (is-constructor-of GnomeDruid)  
+  (is-constructor-of "GnomeDruid")
   (return-type "GtkWidget*")
 )
 
@@ -2132,7 +2189,6 @@
 
 (define-function gnome_druid_new_with_window
   (c-name "gnome_druid_new_with_window")
-  (is-constructor-of GnomeDruid)    
   (return-type "GtkWidget*")
   (parameters
     '("const-char*" "title")
@@ -2156,7 +2212,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-druid-page-edge.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-druid-page-edge.h
 
 (define-function gnome_druid_page_edge_get_type
   (c-name "gnome_druid_page_edge_get_type")
@@ -2165,7 +2221,7 @@
 
 (define-function gnome_druid_page_edge_new
   (c-name "gnome_druid_page_edge_new")
-  (is-constructor-of GnomeDruidPageEdge)    
+  (is-constructor-of "GnomeDruidPageEdge")
   (return-type "GtkWidget*")
   (parameters
     '("GnomeEdgePosition" "position")
@@ -2174,7 +2230,6 @@
 
 (define-function gnome_druid_page_edge_new_aa
   (c-name "gnome_druid_page_edge_new_aa")
-  (is-constructor-of GnomeDruidPageEdge)      
   (return-type "GtkWidget*")
   (parameters
     '("GnomeEdgePosition" "position")
@@ -2183,7 +2238,6 @@
 
 (define-function gnome_druid_page_edge_new_with_vals
   (c-name "gnome_druid_page_edge_new_with_vals")
-  (is-constructor-of GnomeDruidPageEdge)      
   (return-type "GtkWidget*")
   (parameters
     '("GnomeEdgePosition" "position")
@@ -2202,7 +2256,7 @@
   (return-type "none")
   (parameters
     '("GnomeEdgePosition" "position")
-    '("gboolean" "antialiaed")
+    '("gboolean" "antialiased")
     '("const-gchar*" "title")
     '("const-gchar*" "text")
     '("GdkPixbuf*" "logo")
@@ -2297,13 +2351,13 @@
   (c-name "gnome_druid_page_edge_set_top_watermark")
   (return-type "none")
   (parameters
-    '("GdkPixbuf*" "top_watermark")
+    '("GdkPixbuf*" "top_watermark_image")
   )
 )
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-druid-page.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-druid-page.h
 
 (define-function gnome_druid_page_get_type
   (c-name "gnome_druid_page_get_type")
@@ -2311,8 +2365,8 @@
 )
 
 (define-function gnome_druid_page_new
-  (is-constructor-of GnomeDruidPage)    
   (c-name "gnome_druid_page_new")
+  (is-constructor-of "GnomeDruidPage")
   (return-type "GtkWidget*")
 )
 
@@ -2348,7 +2402,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-druid-page-standard.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-druid-page-standard.h
 
 (define-function gnome_druid_page_standard_get_type
   (c-name "gnome_druid_page_standard_get_type")
@@ -2357,13 +2411,12 @@
 
 (define-function gnome_druid_page_standard_new
   (c-name "gnome_druid_page_standard_new")
-  (is-constructor-of GnomeDruidPageStandard)    
+  (is-constructor-of "GnomeDruidPageStandard")
   (return-type "GtkWidget*")
 )
 
 (define-function gnome_druid_page_standard_new_with_vals
   (c-name "gnome_druid_page_standard_new_with_vals")
-  (is-constructor-of GnomeDruidPageStandard)    
   (return-type "GtkWidget*")
   (parameters
     '("const-gchar*" "title")
@@ -2440,15 +2493,15 @@
   (c-name "gnome_druid_page_standard_append_item")
   (return-type "none")
   (parameters
-    '("const-gchar*" "question_mnemonic")
+    '("const-gchar*" "question")
     '("GtkWidget*" "item")
-    '("const-gchar*" "additional_info_markup")
+    '("const-gchar*" "additional_info")
   )
 )
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-entry.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-entry.h
 
 (define-function gnome_entry_get_type
   (c-name "gnome_entry_get_type")
@@ -2457,8 +2510,17 @@
 
 (define-function gnome_entry_new
   (c-name "gnome_entry_new")
-  (is-constructor-of GnomeEntry)      
+  (is-constructor-of "GnomeEntry")
   (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "history_id")
+  )
+)
+
+(define-method construct
+  (of-object "GnomeEntry")
+  (c-name "gnome_entry_construct")
+  (return-type "none")
   (parameters
     '("const-gchar*" "history_id")
   )
@@ -2528,7 +2590,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-file-entry.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-file-entry.h
 
 (define-function gnome_file_entry_get_type
   (c-name "gnome_file_entry_get_type")
@@ -2537,7 +2599,7 @@
 
 (define-function gnome_file_entry_new
   (c-name "gnome_file_entry_new")
-  (is-constructor-of GnomeFileEntry)      
+  (is-constructor-of "GnomeFileEntry")
   (return-type "GtkWidget*")
   (parameters
     '("const-char*" "history_id")
@@ -2644,7 +2706,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-font-picker.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-font-picker.h
 
 (define-function gnome_font_picker_get_type
   (c-name "gnome_font_picker_get_type")
@@ -2653,7 +2715,7 @@
 
 (define-function gnome_font_picker_new
   (c-name "gnome_font_picker_new")
-  (is-constructor-of GnomeFontPicker)
+  (is-constructor-of "GnomeFontPicker")
   (return-type "GtkWidget*")
 )
 
@@ -2759,15 +2821,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-gconf-ui.h
-
-
-
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome.h
-
-
-
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-href.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-href.h
 
 (define-function gnome_href_get_type
   (c-name "gnome_href_get_type")
@@ -2776,8 +2830,18 @@
 
 (define-function gnome_href_new
   (c-name "gnome_href_new")
-  (is-constructor-of GnomeHRef)
+  (is-constructor-of "GnomeHref")
   (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "url")
+    '("const-gchar*" "text")
+  )
+)
+
+(define-method construct
+  (of-object "GnomeHRef")
+  (c-name "gnome_href_construct")
+  (return-type "none")
   (parameters
     '("const-gchar*" "url")
     '("const-gchar*" "text")
@@ -2831,15 +2895,11 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-i18nP.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-ice.h
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-ice.h
-
-
-
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-icon-entry.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-icon-entry.h
 
 (define-function gnome_icon_entry_get_type
   (c-name "gnome_icon_entry_get_type")
@@ -2848,7 +2908,7 @@
 
 (define-function gnome_icon_entry_new
   (c-name "gnome_icon_entry_new")
-  (is-constructor-of GnomeIconEntry)
+  (is-constructor-of "GnomeIconEntry")
   (return-type "GtkWidget*")
   (parameters
     '("const-gchar*" "history_id")
@@ -2908,6 +2968,15 @@
   )
 )
 
+(define-method set_max_saved
+  (of-object "GnomeIconEntry")
+  (c-name "gnome_icon_entry_set_max_saved")
+  (return-type "none")
+  (parameters
+    '("guint" "max_saved")
+  )
+)
+
 (define-method pick_dialog
   (of-object "GnomeIconEntry")
   (c-name "gnome_icon_entry_pick_dialog")
@@ -2943,7 +3012,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-icon-item.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-icon-item.h
 
 (define-function gnome_icon_text_item_get_type
   (c-name "gnome_icon_text_item_get_type")
@@ -2980,7 +3049,7 @@
   (c-name "gnome_icon_text_item_select")
   (return-type "none")
   (parameters
-    '("int" "sel")
+    '("gboolean" "sel")
   )
 )
 
@@ -2989,14 +3058,14 @@
   (c-name "gnome_icon_text_item_focus")
   (return-type "none")
   (parameters
-    '("int" "focused")
+    '("gboolean" "focused")
   )
 )
 
 (define-method get_text
   (of-object "GnomeIconTextItem")
   (c-name "gnome_icon_text_item_get_text")
-  (return-type "const char*")
+  (return-type "const-char*")
 )
 
 (define-method start_editing
@@ -3014,9 +3083,15 @@
   )
 )
 
+(define-method get_editable
+  (of-object "GnomeIconTextItem")
+  (c-name "gnome_icon_text_item_get_editable")
+  (return-type "GtkEditable*")
+)
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-icon-list.h
+
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-icon-list.h
 
 (define-function gnome_icon_list_get_type
   (c-name "gnome_icon_list_get_type")
@@ -3025,7 +3100,7 @@
 
 (define-function gnome_icon_list_new
   (c-name "gnome_icon_list_new")
-  (is-constructor-of GnomeIconList)  
+  (is-constructor-of "GnomeIconList")
   (return-type "GtkWidget*")
   (parameters
     '("guint" "icon_width")
@@ -3080,7 +3155,7 @@
   (c-name "gnome_icon_list_insert")
   (return-type "none")
   (parameters
-    '("int" "idx")
+    '("int" "pos")
     '("const-char*" "icon_filename")
     '("const-char*" "text")
   )
@@ -3091,7 +3166,7 @@
   (c-name "gnome_icon_list_insert_pixbuf")
   (return-type "none")
   (parameters
-    '("int" "idx")
+    '("int" "pos")
     '("GdkPixbuf*" "im")
     '("const-char*" "icon_filename")
     '("const-char*" "text")
@@ -3130,7 +3205,7 @@
   (c-name "gnome_icon_list_remove")
   (return-type "none")
   (parameters
-    '("int" "idx")
+    '("int" "pos")
   )
 )
 
@@ -3160,7 +3235,7 @@
   (c-name "gnome_icon_list_select_icon")
   (return-type "none")
   (parameters
-    '("int" "idx")
+    '("int" "pos")
   )
 )
 
@@ -3169,7 +3244,7 @@
   (c-name "gnome_icon_list_unselect_icon")
   (return-type "none")
   (parameters
-    '("int" "idx")
+    '("int" "pos")
   )
 )
 
@@ -3281,9 +3356,9 @@
   (c-name "gnome_icon_list_set_icon_data_full")
   (return-type "none")
   (parameters
-    '("int" "idx")
+    '("int" "pos")
     '("gpointer" "data")
-    '("GtkDestroyNotify" "destroy")
+    '("GDestroyNotify" "destroy")
   )
 )
 
@@ -3301,7 +3376,7 @@
   (c-name "gnome_icon_list_get_icon_data")
   (return-type "gpointer")
   (parameters
-    '("int" "idx")
+    '("int" "pos")
   )
 )
 
@@ -3310,7 +3385,7 @@
   (c-name "gnome_icon_list_moveto")
   (return-type "none")
   (parameters
-    '("int" "idx")
+    '("int" "pos")
     '("double" "yalign")
   )
 )
@@ -3320,7 +3395,7 @@
   (c-name "gnome_icon_list_icon_is_visible")
   (return-type "GtkVisibility")
   (parameters
-    '("int" "idx")
+    '("int" "pos")
   )
 )
 
@@ -3360,7 +3435,24 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-icon-sel.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-icon-lookup.h
+
+(define-function gnome_icon_lookup_sync
+  (c-name "gnome_icon_lookup_sync")
+  (return-type "char*")
+  (parameters
+    '("GnomeIconTheme*" "icon_theme")
+    '("GnomeThumbnailFactory*" "thumbnail_factory")
+    '("const-char*" "file_uri")
+    '("const-char*" "custom_icon")
+    '("GnomeIconLookupFlags" "flags")
+    '("GnomeIconLookupResultFlags*" "result")
+  )
+)
+
+
+
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-icon-sel.h
 
 (define-function gnome_icon_selection_get_type
   (c-name "gnome_icon_selection_get_type")
@@ -3369,7 +3461,7 @@
 
 (define-function gnome_icon_selection_new
   (c-name "gnome_icon_selection_new")
-  (is-constructor-of GnomeIconSelection)    
+  (is-constructor-of "GnomeIconSelection")
   (return-type "GtkWidget*")
 )
 
@@ -3441,11 +3533,138 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-marshal.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-icon-theme.h
+
+(define-function gnome_icon_theme_get_type
+  (c-name "gnome_icon_theme_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_icon_theme_new
+  (c-name "gnome_icon_theme_new")
+  (is-constructor-of "GnomeIconTheme")
+  (return-type "GnomeIconTheme*")
+)
+
+(define-method set_search_path
+  (of-object "GnomeIconTheme")
+  (c-name "gnome_icon_theme_set_search_path")
+  (return-type "none")
+  (parameters
+    '("const-char*[]" "path")
+    '("int" "n_elements")
+  )
+)
+
+(define-method get_search_path
+  (of-object "GnomeIconTheme")
+  (c-name "gnome_icon_theme_get_search_path")
+  (return-type "none")
+  (parameters
+    '("char**[]" "path")
+    '("int*" "n_elements")
+  )
+)
+
+(define-method set_allow_svg
+  (of-object "GnomeIconTheme")
+  (c-name "gnome_icon_theme_set_allow_svg")
+  (return-type "none")
+  (parameters
+    '("gboolean" "allow_svg")
+  )
+)
+
+(define-method get_allow_svg
+  (of-object "GnomeIconTheme")
+  (c-name "gnome_icon_theme_get_allow_svg")
+  (return-type "gboolean")
+)
+
+(define-method append_search_path
+  (of-object "GnomeIconTheme")
+  (c-name "gnome_icon_theme_append_search_path")
+  (return-type "none")
+  (parameters
+    '("const-char*" "path")
+  )
+)
+
+(define-method prepend_search_path
+  (of-object "GnomeIconTheme")
+  (c-name "gnome_icon_theme_prepend_search_path")
+  (return-type "none")
+  (parameters
+    '("const-char*" "path")
+  )
+)
+
+(define-method set_custom_theme
+  (of-object "GnomeIconTheme")
+  (c-name "gnome_icon_theme_set_custom_theme")
+  (return-type "none")
+  (parameters
+    '("const-char*" "theme_name")
+  )
+)
+
+(define-method lookup_icon
+  (of-object "GnomeIconTheme")
+  (c-name "gnome_icon_theme_lookup_icon")
+  (return-type "char*")
+  (parameters
+    '("const-char*" "icon_name")
+    '("int" "size")
+    '("const-GnomeIconData**" "icon_data")
+    '("int*" "base_size")
+  )
+)
+
+(define-method has_icon
+  (of-object "GnomeIconTheme")
+  (c-name "gnome_icon_theme_has_icon")
+  (return-type "gboolean")
+  (parameters
+    '("const-char*" "icon_name")
+  )
+)
+
+(define-method list_icons
+  (of-object "GnomeIconTheme")
+  (c-name "gnome_icon_theme_list_icons")
+  (return-type "GList*")
+  (parameters
+    '("const-char*" "context")
+  )
+)
+
+(define-method get_example_icon_name
+  (of-object "GnomeIconTheme")
+  (c-name "gnome_icon_theme_get_example_icon_name")
+  (return-type "char*")
+)
+
+(define-method rescan_if_needed
+  (of-object "GnomeIconTheme")
+  (c-name "gnome_icon_theme_rescan_if_needed")
+  (return-type "gboolean")
+)
+
+(define-method dup
+  (of-object "GnomeIconData")
+  (c-name "gnome_icon_data_dup")
+  (return-type "GnomeIconData*")
+)
+
+(define-method free
+  (of-object "GnomeIconData")
+  (c-name "gnome_icon_data_free")
+  (return-type "none")
+)
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-mdi-child.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-mdi-child.h
 
 (define-function gnome_mdi_child_get_type
   (c-name "gnome_mdi_child_get_type")
@@ -3487,7 +3706,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-mdi-generic-child.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-mdi-generic-child.h
 
 (define-function gnome_mdi_generic_child_get_type
   (c-name "gnome_mdi_generic_child_get_type")
@@ -3496,7 +3715,7 @@
 
 (define-function gnome_mdi_generic_child_new
   (c-name "gnome_mdi_generic_child_new")
-  (is-constructor-of GnomeMDIGenericChild)    
+  (is-constructor-of "GnomeMdiGenericChild")
   (return-type "GnomeMDIGenericChild*")
   (parameters
     '("const-gchar*" "name")
@@ -3593,7 +3812,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-mdi.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-mdi.h
 
 (define-function gnome_mdi_get_type
   (c-name "gnome_mdi_get_type")
@@ -3602,7 +3821,7 @@
 
 (define-function gnome_mdi_new
   (c-name "gnome_mdi_new")
-  (is-constructor-of GnomeMDI)      
+  (is-constructor-of "GnomeMdi")
   (return-type "GtkObject*")
   (parameters
     '("const-gchar*" "appname")
@@ -3831,7 +4050,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-mdi-session.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-mdi-session.h
 
 (define-method save_state
   (of-object "GnomeMDI")
@@ -3844,7 +4063,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-messagebox.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-messagebox.h
 
 (define-function gnome_message_box_get_type
   (c-name "gnome_message_box_get_type")
@@ -3853,22 +4072,21 @@
 
 (define-function gnome_message_box_new
   (c-name "gnome_message_box_new")
-  (is-constructor-of GnomeMessageBox)      
+  (is-constructor-of "GnomeMessageBox")
   (return-type "GtkWidget*")
   (parameters
     '("const-gchar*" "message")
-    '("const-gchar*" "messagebox_type")
+    '("const-gchar*" "message_box_type")
   )
   (varargs #t)
 )
 
 (define-function gnome_message_box_newv
   (c-name "gnome_message_box_newv")
-  (is-constructor-of GnomeMessageBox)      
   (return-type "GtkWidget*")
   (parameters
     '("const-gchar*" "message")
-    '("const-gchar*" "messagebox_type")
+    '("const-gchar*" "message_box_type")
     '("const-gchar**" "buttons")
   )
 )
@@ -3886,7 +4104,98 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-pixmap-entry.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-password-dialog.h
+
+(define-function gnome_password_dialog_get_type
+  (c-name "gnome_password_dialog_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gnome_password_dialog_new
+  (c-name "gnome_password_dialog_new")
+  (is-constructor-of "GnomePasswordDialog")
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-char*" "dialog_title")
+    '("const-char*" "message")
+    '("const-char*" "username")
+    '("const-char*" "password")
+    '("gboolean" "readonly_username")
+  )
+)
+
+(define-method run_and_block
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_run_and_block")
+  (return-type "gboolean")
+)
+
+(define-method set_username
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_set_username")
+  (return-type "none")
+  (parameters
+    '("const-char*" "username")
+  )
+)
+
+(define-method set_password
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_set_password")
+  (return-type "none")
+  (parameters
+    '("const-char*" "password")
+  )
+)
+
+(define-method set_readonly_username
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_set_readonly_username")
+  (return-type "none")
+  (parameters
+    '("gboolean" "readonly")
+  )
+)
+
+(define-method set_remember
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_set_remember")
+  (return-type "none")
+  (parameters
+    '("gboolean" "remember")
+  )
+)
+
+(define-method set_remember_label_text
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_set_remember_label_text")
+  (return-type "none")
+  (parameters
+    '("const-char*" "remember_label_text")
+  )
+)
+
+(define-method get_username
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_get_username")
+  (return-type "char*")
+)
+
+(define-method get_password
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_get_password")
+  (return-type "char*")
+)
+
+(define-method get_remember
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_get_remember")
+  (return-type "gboolean")
+)
+
+
+
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-pixmap-entry.h
 
 (define-function gnome_pixmap_entry_get_type
   (c-name "gnome_pixmap_entry_get_type")
@@ -3895,7 +4204,7 @@
 
 (define-function gnome_pixmap_entry_new
   (c-name "gnome_pixmap_entry_new")
-  (is-constructor-of GnomePixmapEntry)
+  (is-constructor-of "GnomePixmapEntry")
   (return-type "GtkWidget*")
   (parameters
     '("const-gchar*" "history_id")
@@ -3981,7 +4290,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-pixmap.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-pixmap.h
 
 (define-function gnome_pixmap_get_type
   (c-name "gnome_pixmap_get_type")
@@ -3990,7 +4299,6 @@
 
 (define-function gnome_pixmap_new_from_file
   (c-name "gnome_pixmap_new_from_file")
-  (is-constructor-of GnomePixmapEntry)
   (return-type "GtkWidget*")
   (parameters
     '("const-gchar*" "filename")
@@ -3999,7 +4307,6 @@
 
 (define-function gnome_pixmap_new_from_file_at_size
   (c-name "gnome_pixmap_new_from_file_at_size")
-  (is-constructor-of GnomePixmapEntry)
   (return-type "GtkWidget*")
   (parameters
     '("const-gchar*" "filename")
@@ -4010,7 +4317,6 @@
 
 (define-function gnome_pixmap_new_from_xpm_d
   (c-name "gnome_pixmap_new_from_xpm_d")
-  (is-constructor-of GnomePixmapEntry)
   (return-type "GtkWidget*")
   (parameters
     '("const-gchar**" "xpm_data")
@@ -4019,7 +4325,6 @@
 
 (define-function gnome_pixmap_new_from_xpm_d_at_size
   (c-name "gnome_pixmap_new_from_xpm_d_at_size")
-  (is-constructor-of GnomePixmapEntry)
   (return-type "GtkWidget*")
   (parameters
     '("const-gchar**" "xpm_data")
@@ -4028,13 +4333,10 @@
   )
 )
 
-(define-function new_from_gnome_pixmap
+(define-method new_from_
+  (of-object "GnomePixmap")
   (c-name "gnome_pixmap_new_from_gnome_pixmap")
-  (is-constructor-of GnomePixmap)
   (return-type "GtkWidget*")
-  (parameters
-    '("GnomePixmap*" gpixmap)
-  )
 )
 
 (define-method load_file
@@ -4079,11 +4381,10 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-popup-menu.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-popup-menu.h
 
 (define-function gnome_popup_menu_new_with_accelgroup
   (c-name "gnome_popup_menu_new_with_accelgroup")
-  (is-constructor-of GnomePopupMenu)
   (return-type "GtkWidget*")
   (parameters
     '("GnomeUIInfo*" "uiinfo")
@@ -4156,7 +4457,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-propertybox.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-propertybox.h
 
 (define-function gnome_property_box_get_type
   (c-name "gnome_property_box_get_type")
@@ -4165,7 +4466,7 @@
 
 (define-function gnome_property_box_new
   (c-name "gnome_property_box_new")
-  (is-constructor-of GnomePropertyBox)
+  (is-constructor-of "GnomePropertyBox")
   (return-type "GtkWidget*")
 )
 
@@ -4205,7 +4506,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-scores.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-scores.h
 
 (define-function gnome_scores_get_type
   (c-name "gnome_scores_get_type")
@@ -4216,9 +4517,10 @@
   (c-name "gnome_scores_display")
   (return-type "GtkWidget*")
   (parameters
-    '("-const-gchar*" "title")
+    '("const-gchar*" "title")
     '("const-gchar*" "app_name")
     '("const-gchar*" "level")
+    '("int" "pos")
   )
 )
 
@@ -4235,10 +4537,10 @@
 
 (define-function gnome_scores_new
   (c-name "gnome_scores_new")
-  (is-constructor-of GnomeScores)  
+  (is-constructor-of "GnomeScores")
   (return-type "GtkWidget*")
   (parameters
-    '("-guint" "n_scores")
+    '("guint" "n_scores")
     '("gchar**" "names")
     '("gfloat*" "scores")
     '("time_t*" "times")
@@ -4262,7 +4564,7 @@
   (c-name "gnome_scores_set_logo_label")
   (return-type "none")
   (parameters
-    '("-GnomeScores*" "gs")
+    '("GnomeScores*" "gs")
     '("const-gchar*" "txt")
     '("const-gchar*" "font")
   )
@@ -4272,7 +4574,7 @@
   (c-name "gnome_scores_set_logo_pixmap")
   (return-type "none")
   (parameters
-    '("-GnomeScores*" "gs")
+    '("GnomeScores*" "gs")
   )
 )
 
@@ -4280,7 +4582,7 @@
   (c-name "gnome_scores_set_logo_widget")
   (return-type "none")
   (parameters
-    '("-GnomeScores*" "gs")
+    '("GnomeScores*" "gs")
   )
 )
 
@@ -4288,8 +4590,8 @@
   (c-name "gnome_scores_set_color")
   (return-type "none")
   (parameters
-    '("-GnomeScores*" "gs")
-    '("guint" "pos")
+    '("GnomeScores*" "gs")
+    '("guint" "n")
   )
 )
 
@@ -4297,7 +4599,7 @@
   (c-name "gnome_scores_set_def_color")
   (return-type "none")
   (parameters
-    '("-GnomeScores*" "gs")
+    '("GnomeScores*" "gs")
   )
 )
 
@@ -4305,7 +4607,7 @@
   (c-name "gnome_scores_set_colors")
   (return-type "none")
   (parameters
-    '("-GnomeScores*" "gs")
+    '("GnomeScores*" "gs")
   )
 )
 
@@ -4313,7 +4615,7 @@
   (c-name "gnome_scores_set_logo_label_title")
   (return-type "none")
   (parameters
-    '("-GnomeScores*" "gs")
+    '("GnomeScores*" "gs")
   )
 )
 
@@ -4321,17 +4623,235 @@
   (c-name "gnome_scores_set_current_player")
   (return-type "none")
   (parameters
-    '("-GnomeScores*" "gs")
+    '("GnomeScores*" "gs")
   )
 )
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-stock-icons.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-stock-icons.h
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnometypebuiltins.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-theme-parser.h
+
+(define-function gnome_theme_file_new_from_string
+  (c-name "gnome_theme_file_new_from_string")
+  (return-type "GnomeThemeFile*")
+  (parameters
+    '("char*" "data")
+    '("GError**" "error")
+  )
+)
+
+(define-method to_string
+  (of-object "GnomeThemeFile")
+  (c-name "gnome_theme_file_to_string")
+  (return-type "char*")
+)
+
+(define-method free
+  (of-object "GnomeThemeFile")
+  (c-name "gnome_theme_file_free")
+  (return-type "none")
+)
+
+(define-method foreach_section
+  (of-object "GnomeThemeFile")
+  (c-name "gnome_theme_file_foreach_section")
+  (return-type "none")
+  (parameters
+    '("GnomeThemeFileSectionFunc" "func")
+    '("gpointer" "user_data")
+  )
+)
+
+(define-method foreach_key
+  (of-object "GnomeThemeFile")
+  (c-name "gnome_theme_file_foreach_key")
+  (return-type "none")
+  (parameters
+    '("const-char*" "section")
+    '("gboolean" "include_localized")
+    '("GnomeThemeFileLineFunc" "func")
+    '("gpointer" "user_data")
+  )
+)
+
+(define-method get_raw
+  (of-object "GnomeThemeFile")
+  (c-name "gnome_theme_file_get_raw")
+  (return-type "gboolean")
+  (parameters
+    '("const-char*" "section")
+    '("const-char*" "keyname")
+    '("const-char*" "locale")
+    '("char**" "val")
+  )
+)
+
+(define-method get_integer
+  (of-object "GnomeThemeFile")
+  (c-name "gnome_theme_file_get_integer")
+  (return-type "gboolean")
+  (parameters
+    '("const-char*" "section")
+    '("const-char*" "keyname")
+    '("int*" "val")
+  )
+)
+
+(define-method get_string
+  (of-object "GnomeThemeFile")
+  (c-name "gnome_theme_file_get_string")
+  (return-type "gboolean")
+  (parameters
+    '("const-char*" "section")
+    '("const-char*" "keyname")
+    '("char**" "val")
+  )
+)
+
+(define-method get_locale_string
+  (of-object "GnomeThemeFile")
+  (c-name "gnome_theme_file_get_locale_string")
+  (return-type "gboolean")
+  (parameters
+    '("const-char*" "section")
+    '("const-char*" "keyname")
+    '("char**" "val")
+  )
+)
+
+
+
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-thumbnail.h
+
+(define-function gnome_thumbnail_factory_get_type
+  (c-name "gnome_thumbnail_factory_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_thumbnail_factory_new
+  (c-name "gnome_thumbnail_factory_new")
+  (is-constructor-of "GnomeThumbnailFactory")
+  (return-type "GnomeThumbnailFactory*")
+  (parameters
+    '("GnomeThumbnailSize" "size")
+  )
+)
+
+(define-method lookup
+  (of-object "GnomeThumbnailFactory")
+  (c-name "gnome_thumbnail_factory_lookup")
+  (return-type "char*")
+  (parameters
+    '("const-char*" "uri")
+    '("time_t" "mtime")
+  )
+)
+
+(define-method has_valid_failed_thumbnail
+  (of-object "GnomeThumbnailFactory")
+  (c-name "gnome_thumbnail_factory_has_valid_failed_thumbnail")
+  (return-type "gboolean")
+  (parameters
+    '("const-char*" "uri")
+    '("time_t" "mtime")
+  )
+)
+
+(define-method can_thumbnail
+  (of-object "GnomeThumbnailFactory")
+  (c-name "gnome_thumbnail_factory_can_thumbnail")
+  (return-type "gboolean")
+  (parameters
+    '("const-char*" "uri")
+    '("const-char*" "mime_type")
+    '("time_t" "mtime")
+  )
+)
+
+(define-method generate_thumbnail
+  (of-object "GnomeThumbnailFactory")
+  (c-name "gnome_thumbnail_factory_generate_thumbnail")
+  (return-type "GdkPixbuf*")
+  (parameters
+    '("const-char*" "uri")
+    '("const-char*" "mime_type")
+  )
+)
+
+(define-method save_thumbnail
+  (of-object "GnomeThumbnailFactory")
+  (c-name "gnome_thumbnail_factory_save_thumbnail")
+  (return-type "none")
+  (parameters
+    '("GdkPixbuf*" "thumbnail")
+    '("const-char*" "uri")
+    '("time_t" "original_mtime")
+  )
+)
+
+(define-method create_failed_thumbnail
+  (of-object "GnomeThumbnailFactory")
+  (c-name "gnome_thumbnail_factory_create_failed_thumbnail")
+  (return-type "none")
+  (parameters
+    '("const-char*" "uri")
+    '("time_t" "mtime")
+  )
+)
+
+(define-function gnome_thumbnail_has_uri
+  (c-name "gnome_thumbnail_has_uri")
+  (return-type "gboolean")
+  (parameters
+    '("GdkPixbuf*" "pixbuf")
+    '("const-char*" "uri")
+  )
+)
+
+(define-function gnome_thumbnail_is_valid
+  (c-name "gnome_thumbnail_is_valid")
+  (return-type "gboolean")
+  (parameters
+    '("GdkPixbuf*" "pixbuf")
+    '("const-char*" "uri")
+    '("time_t" "mtime")
+  )
+)
+
+(define-function gnome_thumbnail_md5
+  (c-name "gnome_thumbnail_md5")
+  (return-type "char*")
+  (parameters
+    '("const-char*" "uri")
+  )
+)
+
+(define-function gnome_thumbnail_path_for_uri
+  (c-name "gnome_thumbnail_path_for_uri")
+  (return-type "char*")
+  (parameters
+    '("const-char*" "uri")
+    '("GnomeThumbnailSize" "size")
+  )
+)
+
+(define-function gnome_thumbnail_scale_down_pixbuf
+  (c-name "gnome_thumbnail_scale_down_pixbuf")
+  (return-type "GdkPixbuf*")
+  (parameters
+    '("GdkPixbuf*" "pixbuf")
+    '("int" "dest_width")
+    '("int" "dest_height")
+  )
+)
+
+
+
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnometypebuiltins.h
 
 (define-function gnome_ui_info_configurable_types_get_type
   (c-name "gnome_ui_info_configurable_types_get_type")
@@ -4393,8 +4913,23 @@
   (return-type "GType")
 )
 
+(define-function gnome_icon_lookup_flags_get_type
+  (c-name "gnome_icon_lookup_flags_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_icon_lookup_result_flags_get_type
+  (c-name "gnome_icon_lookup_result_flags_get_type")
+  (return-type "GType")
+)
+
 (define-function gnome_mdi_mode_get_type
   (c-name "gnome_mdi_mode_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_thumbnail_size_get_type
+  (c-name "gnome_thumbnail_size_get_type")
   (return-type "GType")
 )
 
@@ -4405,15 +4940,15 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-types.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-types.h
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-uidefs.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-uidefs.h
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-ui-init.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-ui-init.h
 
 (define-function gnome_gtk_module_info_get
   (c-name "gnome_gtk_module_info_get")
@@ -4436,7 +4971,7 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-vfs-util.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-vfs-util.h
 
 (define-function gnome_gdk_pixbuf_new_from_uri_async
   (c-name "gnome_gdk_pixbuf_new_from_uri_async")
@@ -4459,11 +4994,11 @@
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-window.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-window.h
 
 
 
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/gnome-window-icon.h
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-window-icon.h
 
 (define-function gnome_window_icon_set_from_file
   (c-name "gnome_window_icon_set_from_file")
@@ -4503,13 +5038,5 @@
   (c-name "gnome_window_icon_init")
   (return-type "none")
 )
-
-
-
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/libgnomeui.h
-
-
-
-;; From /home/zilch/cvs/gnome2/libgnomeui/libgnomeui/libgnomeuiP.h
 
 

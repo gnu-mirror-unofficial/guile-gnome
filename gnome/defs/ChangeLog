@@ -1,3 +1,24 @@
+2004-02-08  Andy Wingo  <wingo@pobox.com>
+
+	* ui.defs: Revert ui.defs to my local copy. There are still some
+	problems, but it's better than before.
+
+2004-01-14  Andy Wingo  <wingo@pobox.com>
+
+	* ui.defs: Re-generated and tweaked.
+
+	* ui-overrides.defs: New file.
+
+	* gnome.defs: Miscellaneous fixes.
+
+	* gnome-overrides.defs: New file.
+
+	* canvas-overrides.defs: New file.
+
+2003-12-16  Andy Wingo  <wingo@pobox.com>
+
+	* gtk-overrides.defs: Allow NULL for the parent in iter_children.
+
 2003-12-13  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* Makefile.am (guilemodule_DATA): Added gnome-overrides.defs,

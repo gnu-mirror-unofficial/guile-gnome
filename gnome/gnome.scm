@@ -31,7 +31,7 @@
   :use-module (oop goops)
   :export (gnome-program-init))
 
-(re-export-module (gnome gnome gw-gnome))
+(re-export-modules (gnome gnome gw-gnome))
 
 (define (gnome-program-init name version . properties)
   (let ((program (%gnome-program-init name version)))

@@ -46,11 +46,10 @@
                gtype-instance:write
                ;; Enums
                enum-by-index enum-by-symbol enum-by-name 
-               genum->value-table genum->symbol genum->name
+               genum->symbol genum->name genum->value
                ;; Flags
                flags-by-index flags-by-symbol flags-by-name 
-               gflags->element-list gflags->symbol-list gflags->name-list
-               gflags->value-list
+               gflags->symbol-list gflags->name-list gflags->value-list
                ;; Signals
                gsignal:id gsignal:name gsignal:interface-type
                gsignal:return-type gsignal:param-types
@@ -163,11 +162,6 @@
 (define (flags-by-symbol type symbol)
   (find-enum (gflags-primitive-get-values type) (lambda (l) (car l)) symbol))
 
-(define (genum->value-table obj)
-  (if (gvalue? obj)
-    (genum-primitive-get-values (gvalue->type obj))
-    (genum-primitive-get-values obj)))
-
 (define (genum->symbol obj)
   (let* ((type (gvalue->type obj))
 	 (enum-values (genum-primitive-get-values type))
@@ -181,6 +175,13 @@
 	 (value (gvalue-primitive-get obj))
 	 (the-value (enum-by-index type value)))
     (cadr the-value)))
+
+(define (genum->value obj)
+  (let* ((type (gvalue->type obj))
+	 (enum-values (genum-primitive-get-values type))
+	 (value (gvalue-primitive-get obj))
+	 (the-value (enum-by-index type value)))
+    (caddr the-value)))
 
 (define (gflags->element-list obj)
   (let* ((type (gvalue->type obj))

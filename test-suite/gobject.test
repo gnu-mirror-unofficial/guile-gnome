@@ -86,25 +86,30 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
 (with-test-prefix "creating genum and gflags types"
   
   (pass-if "creating genum type"
-           (let* ((enum-vtable #((a "Foo" 1) (b "Hello" 2)))
-                  (enum-type (genum-register-static "EnumTest" enum-vtable)))
-             (and (eq? (gtype->fundamental enum-type) gtype:genum)
-                  (eq? enum-type (gtype-from-name "EnumTest")))))
-  
+           (let* ((class (make-class (list <genum>) '()
+                           #:name '<enum-test>
+                           #:vtable #((a "Foo" 1) (b "Hello" 2))))
+                  (type (gtype-class->type class)))
+             (and (eq? (gtype->fundamental type)
+                       gtype:genum)
+                  (eq? type (gtype-from-name "EnumTest")))))
+
   (pass-if "creating gflags type"
-           (let* ((flags-vtable #((c "AAAA" 4) (d "BBBB" 8)))
-                  (flags-type (gflags-register-static "FlagsTest" flags-vtable)))
-             (and (eq? (gtype->fundamental flags-type) gtype:gflags)
-                  (eq? flags-type (gtype-from-name "FlagsTest")))))
+           (let* ((class (make-class (list <gflags>) '()
+                           #:name '<flags-test>
+                           #:vtable #((c "AAAA" 4) (d "BBBB" 8))))
+                  (type (gtype-class->type class)))
+             (and (eq? (gtype->fundamental type)
+                       gtype:gflags)
+                  (eq? type (gtype-from-name "FlagsTest")))))
   )
 
 (with-test-prefix "genum values"
   
-  (define enum-type  (gtype-from-name "EnumTest"))
   (define enum-class (gtype->class (gtype-from-name "EnumTest")))
   
-  (pass-if "getting enum type from name"
-           (is-a? enum-type <gtype>))
+  (pass-if "getting enum type from class"
+           (is-a? (gtype-class->type enum-class) <gtype>))
   
   (pass-if "getting enum type class"
            (is-a? enum-class <gtype-class>))
@@ -124,19 +129,17 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
   (pass-if "getting enum name"
            (equal? (genum->name (make enum-class #:value 'a)) "Foo"))
 
-  ;; FIXME: gvalue->scm doesn't work anymore for enums
-  ;;(pass-if "getting enum value"
-  ;;         (equal? (gvalue->scm (make enum-class #:value 'a)) 1))
+  (pass-if "getting enum value"
+           (equal? (genum->value (make enum-class #:value 'a)) 1))
   
   )
 
 (with-test-prefix "gflags values"
 
-  (define flags-type  (gtype-from-name "FlagsTest"))
   (define flags-class (gtype->class (gtype-from-name "FlagsTest")))
-
-  (pass-if "getting flags type from name"
-           (is-a? flags-type <gtype>))
+  
+  (pass-if "getting flags type from class"
+           (is-a? (gtype-class->type flags-class) <gtype>))
 
   (pass-if "getting flags type class"
            (is-a? flags-class <gtype-class>))
@@ -167,11 +170,6 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
   (pass-if "getting flags values"
            (equal? (gflags->value-list (make flags-class #:value '(4 8)))
                    '(4 8)))
-
-  ;; FIXME: gvalue->scm broken for enums
-  ;;(pass-if "getting flags value"
-  ;;         (eq? (gvalue->scm (make flags-class #:value '(c d))) 12))
-
   )
 
 (with-test-prefix "creating gclosure"

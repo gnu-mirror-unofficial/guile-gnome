@@ -91,23 +91,46 @@
 
   (set! glib:type-cname->symbol-alist
         (acons "GValue" '<gvalue> glib:type-cname->symbol-alist))
-  (gobject:gwrap-helper
-   ws "GValue"
-   (lambda (typespec)
-     (if (memq 'const (gw:typespec-get-options typespec))
-         "const GValue*"
-         "GValue*"))
-   (lambda (c-var scm-var typespec status-var)
-     ;; should use scm_c_scm_to_gvalue here, except we'd have to make a
-     ;; cleanup function to free the value, and I can't think right now
-     (list "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var "))\n"
-           "  " c-var " = (GValue*) SCM_SMOB_DATA (" scm-var ");\n"
-           "else " `(gw:error ,status-var type ,scm-var)))
-   (lambda (scm-var c-var typespec status-var)
-     (list "SCM_NEWSMOB (" scm-var ", scm_tc16_gvalue, " c-var ");\n"))
-   (lambda (c-var typespec status-var force?)
-     (list))
-   "Custom")
+  
+  (let* ((c-type-name-func
+          (lambda (typespec)
+            (if (memq 'const (gw:typespec-get-options typespec))
+                "const GValue*"
+                "GValue*")))
+         (scm->c-codegen
+          (lambda (c-var scm-var typespec status-var)
+            (list "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var "))\n"
+                  ;; We allow mutation of the argument unless
+                  ;; 'callee-owned is present in the options, in which
+                  ;; case we make a copy.
+                  (if (memq 'callee-owned (gw:typespec-get-options typespec))
+                      `("  {\n"
+                        "    " ,c-var " = g_new0 (GValue, 1);\n"
+                        "    g_value_init (" ,c-var ", G_VALUE_TYPE (SCM_SMOB_DATA (" scm-var ")));\n"
+                        "    g_value_copy ((GValue*)SCM_SMOB_DATA (" ,scm-var "), " c-var ");\n"
+                        "  }\n")
+                      `("  " ,c-var " = (GValue*) SCM_SMOB_DATA (" ,scm-var ");\n"))
+                  "else " `(gw:error ,status-var type ,scm-var))))
+         (c->scm-codegen
+          (lambda (scm-var c-var typespec status-var)
+            (list "if (" c-var " != NULL)\n"
+                  (if (memq 'const (gw:typespec-get-options typespec))
+                      `("  {\n"
+                        "    GValue * tmp = g_new0 (GValue, 1);\n"
+                        "    g_value_init (tmp, G_VALUE_TYPE (" ,c-var "));\n"
+                        "    g_value_copy (" ,c-var ", tmp);\n"
+                        "    SCM_NEWSMOB (" ,scm-var ", scm_tc16_gvalue, tmp);\n"
+                        "  }\n")
+                      `("  SCM_NEWSMOB (" ,scm-var ", scm_tc16_gvalue, " ,c-var ");\n"))
+                  "else\n"
+                  "  " scm-var " = SCM_BOOL_F;\n")))
+         (cleanup
+          (lambda (c-var typespec status-var force?)
+            (list))))
+    (gobject:gwrap-helper ws "GValue"
+                          c-type-name-func scm->c-codegen
+                          c->scm-codegen cleanup
+                          "Custom"))
   
   (set! glib:type-cname->symbol-alist
         (acons "GClosure" '<gclosure> glib:type-cname->symbol-alist))

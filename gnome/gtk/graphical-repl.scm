@@ -36,22 +36,21 @@
   #:use-module (gnome gtk gdk-event)
   #:export (<guile-gtk-repl>))
 
-(define gtype:paren-matching-style
-  (gflags-register-static "GuileGtkReplEntryParenMatchingStyle"
-                          '#((move-cursor "Move cursor" 1)
-                             (highlight-region "Highlight region" 2))))
+(define-class <repl-paren-matching-style> (<gflags>)
+  #:vtable #((move-cursor "Move cursor" 1)
+             (highlight-region "Highlight region" 2)))
 
 (define-class <guile-gtk-repl-entry> (<gtk-entry>)
   new-read-hook
   read-complete-hook
   (port
-   #:param-spec `(,<gparam-boxed> #:boxed-type ,gtype:gboxed-scm #:flags (read)))
+   #:param-spec `(,<gparam-boxed> #:boxed-type ,<gboxed-scm> #:flags (read)))
   (paren-matching-style
-   #:param-spec `(,<gparam-flags> #:flags-type ,gtype:paren-matching-style
-                                 #:default-value 1 ;; arrg
-                                 #:flags (read write construct)))
+   #:param-spec `(,<gparam-flags> #:flags-type ,<repl-paren-matching-style>
+                                  #:default-value 1 ;; arrg
+                                  #:flags (read write construct)))
 
-  #:signal `(complete #f ,gtype:gchararray ,gtype:gboxed-scm))
+  #:signal `(complete #f ,<gchararray> ,<gboxed-scm>))
 
 
 (define (find-matching-open str pos)
@@ -311,7 +310,7 @@
 
 (define-class <guile-gtk-repl-output> (<gtk-text-buffer>)
   (port
-   #:param-spec `(,<gparam-boxed> #:boxed-type ,gtype:gboxed-scm #:flags (read))))
+   #:param-spec `(,<gparam-boxed> #:boxed-type ,<gboxed-scm> #:flags (read))))
 
 (define-method (initialize (output <guile-gtk-repl-output>) initargs)
   (define (output-string str)
@@ -335,9 +334,9 @@
   output-view
   
   (in-port
-   #:param-spec `(,<gparam-boxed> #:boxed-type ,gtype:gboxed-scm))
+   #:param-spec `(,<gparam-boxed> #:boxed-type ,<gboxed-scm>))
   (out-port
-   #:param-spec `(,<gparam-boxed> #:boxed-type ,gtype:gboxed-scm)))
+   #:param-spec `(,<gparam-boxed> #:boxed-type ,<gboxed-scm>)))
 
 (define-method (gobject:get-property (obj <guile-gtk-repl>) (prop <symbol>))
   (case prop

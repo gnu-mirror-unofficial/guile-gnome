@@ -1,3 +1,7 @@
+2004-02-08  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am: Reverted to my local copy.
+
 2004-01-14  Andy Wingo  <wingo@pobox.com>
 
 	* gw-ui-spec.scm: New file.

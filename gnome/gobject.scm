@@ -23,70 +23,7 @@
 ;;
 ;; This is the GObject wrapper for Guile.
 ;;
-;; In the GType runtime type system (also known as `gruntime'), each
-;; type is associated with unique ID (a number). This is represented in
-;; scheme with the GOOPS class, <gtype>. The following "simple" types
-;; are exported:
-;;
-;;   gtype:gchar gtype:guchar gtype:gboolean gtype:gint gtype:guint
-;;   gtype:glong gtype:gulong gtype:gint64 gtype:guint64 gtype:gfloat
-;;   gtype:gdouble gtype:gchararray
-;;
-;; Each of these types is associated with a GOOPS class:
-;;
-;;   <gchar> <guchar> <gboolean> <gint> <guint> <glong> <gulong>
-;;   <gint64> <guint64> <gfloat> <gdouble> <gchararray>
-;;
-;; These GOOPS classes can be used to create instances of their
-;; respective types. You pass a value via the #:value initarg:
-;;
-;;   (make <gchar> #:value #\A)
-;;   (make <gdouble> #:value 3.14159)
-;;
-;; All of the GType classes are instances of a metaclass, <gtype-class>.
-;; It has the following slots:
-;;
-;;      gtype       - The corresponding <gtype> for the class. You can
-;;                    slot-ref this directly, or use the
-;;                    gtype-class->type function.
-;;
-;;      gtype-class - The corresponding primitive, opaque type class.
-;;                    Private.
-;;
-;; Other types exported by (guile gobject) include:
-;;
-;;   gtype:genum gtype:gflags gtype:gboxed gtype:gclosure gtype:gparam
-;;   gtype:gobject gtype:ginterface gtype:gboxed-scm
-;;
-;; Of course there are <gtype-class> instances for these as well. These
-;; types are abstract base classes, and so are not directly
-;; instantiatable. Read the reference manual for more information.
-;;
-;; There are also a number of typed parameter GTypes and classes,
-;; for instance <gparam-int> and gtype:gparam-int.
-;;
-;; <gobject> has a parent class, <gtype-instance>, which corresponds to
-;; GTypeInstance in C. <gtype-instance> has the following slot:
-;;
-;;      gtype-instance - The corresponding primitive, opaque type
-;;                       instance, of type <%gtype-instance>.
-;;
-;; While there is a many-to-one relationship between <gtype-instance>
-;; objects and their corresponding C objects, there is just one
-;; <%gtype-instance> per C object. That means you should set scheme
-;; object properties on the <%gtype-instance>, not the <gtype-instance>.
-;;
-;; Note that a <gtype-class> is a persistent, immortal object - it can
-;; never be freed by GC. When you call `gtype->class' on a GType the
-;; first time, this creates a new GOOPS class and "binds" it to that
-;; type - so if you call `gtype->class' a second time on a type, you'll
-;; get the same class back. The same applies for <gtype>s.
-;;
-;; If you create any instances of this or any of its child classes,
-;; it will also create the corresponding C instance.
-;;
-;; So, to summarize, a <gobject> is a GObjectClass in C and an instance
-;; of a <gobject> is a GObject in C.
+;; See the guile-gnome tutorial for more details.
 ;;
 ;;; Code:
 
@@ -102,7 +39,7 @@
                ;; GValue
                gvalue? gvalue->type
                ;; GEnum
-               genum->value-table genum->symbol genum->name
+               genum->symbol genum->name genum->value
                ;; GFlags
                gflags->symbol-list gflags->name-list gflags->value-list
                ;; GSignal
@@ -122,6 +59,8 @@
                <gchararray> <gboxed> <gboxed-scm>
                ;; Other classes
                <gclosure> <genum> <gflags> <gobject> <gparam> <gsignal>
+               ;; GEnum/GFlags helpers
+               genum-class->value-table gflags-class->value-table
                ;; Parameter classes
                <gparam-char> <gparam-uchar> <gparam-boolean> <gparam-int>
                <gparam-uint> <gparam-long> <gparam-ulong> <gparam-float>
@@ -151,6 +90,7 @@
                gclosure-invoke gparam->pspec-struct))
 
 (%init-gnome-gobject)
+(define gobject-module (current-module))
 
 ;;;
 ;;;
@@ -250,18 +190,37 @@
     (if (and (not gtype) gtype-name (gtype-from-name gtype-name))
         (set! gtype (gtype-from-name gtype-name)))
 
-    (if (not gtype)
-        (let ((parent-class (first-gobject-class (cdr (class-precedence-list class)))))
-          (if (not parent-class)
-              (gruntime-error "initialize ~A: You can only derive from GObject classes"
-                              class))
-          ;; Subclass an existing GObject class.
-          (set! gtype (gtype-register-static
-                       (or gtype-name (class-name->gtype-name (slot-ref class 'name)))
-                       (gtype-class->type parent-class))))
-
+    (if gtype
+        ;; The GType is already there. Check to see if it already has a
+        ;; class.
         (if (%gtype-lookup-class gtype)
-            (gruntime-error "<gtype> ~A already has a GOOPS class, use gtype->class" gtype)))
+            (gruntime-error "<gtype> ~A already has a GOOPS class, use gtype->class" gtype))
+
+        ;; Create a new GType.
+        (cond
+         ((equal? (class-direct-supers class) (list <genum>))
+          ;; You have to descend directly from <genum>.
+          (set! gtype (genum-register-static
+                       (or gtype-name (class-name->gtype-name (slot-ref class 'name)))
+                       (or (kw-arg-ref initargs #:vtable)
+                           (error
+                            "You need to specify the #:vtable when subclassing <genum>.")))))
+         ((equal? (class-direct-supers class) (list <gflags>))
+          ;; You have to descend directly from <gflags>.
+          (set! gtype (gflags-register-static
+                       (or gtype-name (class-name->gtype-name (slot-ref class 'name)))
+                       (or (kw-arg-ref initargs #:vtable)
+                           (error
+                            "You need to specify the #:vtable when subclassing <gflags>.")))))
+         ((first-gobject-class (cdr (class-precedence-list class)))
+          ;; Derive an object type.
+          => (lambda (parent-class)
+               (set! gtype (gtype-register-static
+                            (or gtype-name (class-name->gtype-name (slot-ref class 'name)))
+                            (gtype-class->type parent-class)))))
+         (else
+          (gruntime-error "initialize ~A: You can only derive from ~A" class
+                          "<gobject> (or subclasses), <genum>, or <gflags>."))))
 
     (%gtype-bind-to-class class gtype)
 
@@ -373,11 +332,15 @@ magic way to its GType.
   (genum-values #:allocation #:each-subclass)
   #:gtype gtype:genum
   #:metaclass <gtype-class>)
+(define (genum-class->value-table class)
+  (class-slot-ref class 'genum-values))
 
 (define-class <gflags> ()
   (genum-values #:allocation #:each-subclass) ;; FIXME
   #:gtype gtype:gflags
   #:metaclass <gtype-class>)
+(define (gflags-class->value-table class)
+  (class-slot-ref class 'genum-values))
 
 (define-class <gclosure> ()
   closure
@@ -515,11 +478,15 @@ magic way to its GType.
 		   (gruntime-error "Unknown type: ~A" type))))
     (map (lambda (argdesc)
 	   (let* ((value (get-keyword (car argdesc) initargs
-				      (eval (caddr argdesc) (current-module)))))
+				      (eval (caddr argdesc) gobject-module))))
 	     (if (unspecified? value)
 	       (gruntime-error "Missing init keyword: ~A " (car argdesc)))
-	     (or (eval (list (cadr argdesc) value) (current-module))
-		 (gruntime-error "Wrong init keyword ~A: ~A" (car argdesc) value))
+	     (or (eval (list (cadr argdesc) value) gobject-module)
+                 ;; Accept gtype-classes where we can take gtypes
+                 (if (and (eq? (eval (cadr argdesc) gobject-module) gtype?)
+                          (is-a? value <gtype-class>))
+                     (begin (set! value (gtype-class->type value)) #t)
+                     (gruntime-error "Wrong init keyword ~A: ~A" (car argdesc) value)))
 	     value))
 	 (cdr args))))
 
@@ -596,30 +563,40 @@ magic way to its GType.
 
 (define-method (initialize (closure <gclosure>) initargs)
   (let* ((func (get-keyword #:func initargs *unspecified*))
-	 (rettype (get-keyword #:return-type initargs *unspecified*))
-	 (paramtypes (get-keyword #:param-types initargs *unspecified*)))
+	 (rettype (get-keyword #:return-type initargs gtype:void))
+	 (paramtypes (get-keyword #:param-types initargs '())))
     (if (unspecified? func)
-      (gruntime-error "Missing #:func argument"))
+        (gruntime-error "Missing #:func argument"))
     (or (procedure? func)
 	(gruntime-error "Wrong type argument: ~S" func))
-    (next-method)
+    (if (not (unspecified? rettype))
+        (if (not (is-a? rettype <gtype>))
+            (if (is-a? rettype <gtype-class>)
+                (set! rettype (gtype-class->type rettype))
+                (gruntime-error "#:rettype must be a <gtype> or a <gtype-class>: ~A"
+                                rettype))))
+    (set! paramtypes
+          (list->vector
+           (map
+            (lambda (ptype)
+              (cond
+               ((is-a? ptype <gtype>)
+                ptype)
+               ((is-a? ptype <gtype-class>)
+                (gtype-class->type ptype))
+               (else
+                (gruntime-error "Invalid closure parameter type: ~A" ptype))))
+            paramtypes)))
+
     (let* ((newfunc (lambda (. args)
 		      (let* ((newargs (map (lambda (x) (gvalue->scm x)) args))
 			     (retval (apply func newargs)))
 			(scm->gvalue rettype retval)))))
       (slot-set! closure 'closure (gclosure-primitive-new newfunc)))
-    (slot-set! closure 'return-type (if (unspecified? rettype) #f rettype))
-    (if (unspecified? paramtypes)
-      (slot-set! closure 'param-types (make-vector 0))
-      (begin
-	(or (list? paramtypes)
-	    (gruntime-error "Wrong type argument: ~S" paramtypes))
-	(for-each (lambda (x)
-		    (or (is-a? x <gtype>)
-			(gruntime-error "Wrong type argument: ~S" x)))
-		  paramtypes)
-	(slot-set! closure 'param-types (list->vector paramtypes))))))
-
+    (slot-set! closure 'return-type rettype)
+    (slot-set! closure 'param-types paramtypes)
+    (next-method)))
+    
 (define-method (initialize (instance <gvalue>) initargs)
   (let* ((type (gvalue->type instance))
 	 (fundamental (gtype->fundamental type))
@@ -882,7 +859,7 @@ magic way to its GType.
 		       (vector-set! params index value))))
 	   (retval (gclosure-primitive-invoke primitive-closure
                                               return-type params)))
-      (if return-type
+      (if (not (unspecified? retval))
           (gvalue->scm retval)))))
 
 ;;;
@@ -1096,6 +1073,9 @@ gsignal-handler-unblock, gsignal-handler-disconnect and gsignal-handler-connecte
   "Convenience function for `(gtype-instance-signal-connect-data object name func #t)'."
   (gtype-instance-signal-connect-data object name func #t))
 
+(define (gtype-instance-primitive obj)
+  (slot-ref obj 'gtype-instance))
+
 (define (gsignal-handler-block obj id)
   (gsignal-primitive-handler-block (gtype-instance-primitive obj) id))
 	
@@ -1112,7 +1092,16 @@ gsignal-handler-unblock, gsignal-handler-disconnect and gsignal-handler-connecte
   (let* ((type (gtype-class->type class))
 	 (signal-vector (gtype-class-get-signals class))
 	 (signal (make-struct gsignal-struct-vtable 0 #f #f
-			      0 name type return-type #f (list->vector param-types)))
+			      0 name type return-type #f
+                              (list->vector
+                               (map
+                                (lambda (t)
+                                  (cond 
+                                   ((is-a? t <gtype>) t)
+                                   ((is-a? t <gtype-class>) (gtype-class->type t))
+                                   (else
+                                    (gruntime-error "Invalid parameter type: ~A" t))))
+                                param-types))))
 	 (method-name (gtype->method-name type name))
 	 (default-func (lambda args *unspecified*))
 	 (generic (ensure-generic default-func method-name))

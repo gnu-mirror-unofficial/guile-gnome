@@ -1,3 +1,24 @@
+2004-02-08  Andy Wingo  <wingo@pobox.com>
+
+	* gobject.scm: Removed most of the commentary. Instead, refer to
+	the tutorial.
+	(exports): No more genum->value-table. New functions
+	genum-class->value-table, gflags-class->value-table. New function
+	genum->value.
+	(initialize for <gtype-class>): Allow subclassing of <genum> and
+	<gflags> to create new GTypes. You must pass #:vtable as an
+	initarg.
+	(gtype-instance-primitive): New helper (private).
+	(initialize for <gclosure>): Allow either parameters and return
+	val to be either <gtype> or <gtype-class> instances. If no return
+	type is specified, set the slot to gtype:void, not #f.
+	(make-pspec-args): Accept <gtype-class> when gtype? is the predicate.
+	(gtype-class-create-signal): Accept <gtype-class> instances in the
+	param types.
+
+	* Makefile.am: Make the gnome build conditional, and some
+	cleanups.
+
 2004-01-14  Andy Wingo  <wingo@pobox.com>
 
 	* gtk.scm: Move functions from generics.scm here, as everyone uses

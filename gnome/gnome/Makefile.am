@@ -44,14 +44,110 @@ guilegnomemoduledir = $(datadir)/guile/gnome/gnome
 
 guilegnomemodule_DATA = $(VTEMODULES) $(GTKSOURCEVIEWMODULES)
 
-EXTRA_DIST = gw-vte-spec.scm gw-vte.scm
+EXTRA_DIST = gw-gnome-spec.scm gw-canvas-spec.scm gw-ui-spec.scm \
+	 gw-vte-spec.scm gw-source-view-spec.scm
 
 CLEANFILES =
 
 # There is one shared library for each wrapset. Each is produced by
 # g-wrap, but also may contain some hand-coded routines.
 
-lib_LTLIBRARIES = $(VTELIB) $(GTKSOURCEVIEWLIB)
+lib_LTLIBRARIES = $(LIBGNOMELIB) $(LIBGNOMECANVASLIB) $(LIBGNOMEUILIB) \
+	$(VTELIB) $(GTKSOURCEVIEWLIB)
+
+########################################################################
+## libgnome
+libguile_gnome_gw_gnome_la_SOURCES = \
+	guile-gnome-gw-gnome.c guile-gnome-gw-gnome.h \
+	gnome-support.c gnome-support.h
+
+libguile_gnome_gw_gnome_la_CFLAGS = -I$(top_srcdir)/gnome/gobject \
+	$(AM_CFLAGS) $(LIBGNOME_CFLAGS) $(GUILE_CFLAGS) \
+	$(G_WRAP_CFLAGS)
+
+libguile_gnome_gw_gnome_la_LIBADD = $(LIBGNOME_LIBS) $(GUILE_LIBS) \
+	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gw-gobject.la
+
+libguile_gnome_gw_gnome_la_LDFLAGS = \
+	-export-dynamic
+
+CLEANFILES += guile-gnome-gw-gnome.c guile-gnome-gw-gnome.h \
+	guile-gnome-gw-glib.log guile-gnome-gw-atk.log \
+	guile-gnome-gw-gdk.log guile-gnome-gw-pango.log \
+	guile-gnome-gw-gtk.log \
+	guile-gnome-gw-gnome.log guile-gnome-gw-gnome.html \
+	gw-gnome.scm
+
+gw-gnome.scm guile-gnome-gw-gnome.c guile-gnome-gw-gnome.h: \
+	gw-gnome-spec.scm ../defs/gnome.defs ../defs/gnome-overrides.defs
+	guile -c \
+	  "(set! %load-path (cons \"${G_WRAP_MODULE_DIR}\" %load-path)) \
+	   (set! %load-path (cons \"${top_srcdir}\" %load-path)) \
+	   (primitive-load \"$(srcdir)/gw-gnome-spec.scm\") \
+	   (gw:generate-wrapset \"guile-gnome-gw-gnome\")"
+	mv guile-gnome-gw-gnome.scm gw-gnome.scm
+
+########################################################################
+## libgnomecanvas
+libguile_gnome_gw_canvas_la_SOURCES = \
+	guile-gnome-gw-canvas.c guile-gnome-gw-canvas.h
+
+libguile_gnome_gw_canvas_la_CFLAGS = -I$(top_srcdir)/gnome/gobject \
+	$(AM_CFLAGS) $(LIBGNOMECANVAS_CFLAGS) $(GUILE_CFLAGS) \
+	$(G_WRAP_CFLAGS)
+
+libguile_gnome_gw_canvas_la_LIBADD = $(LIBGNOMECANVAS_LIBS) $(GUILE_LIBS) \
+	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gw-gobject.la
+
+libguile_gnome_gw_canvas_la_LDFLAGS = \
+	-export-dynamic
+
+CLEANFILES += guile-gnome-gw-canvas.c guile-gnome-gw-canvas.h \
+	guile-gnome-gw-glib.log guile-gnome-gw-atk.log \
+	guile-gnome-gw-gdk.log guile-gnome-gw-pango.log \
+	guile-gnome-gw-gtk.log \
+	guile-gnome-gw-canvas.log guile-gnome-gw-canvas.html \
+	gw-canvas.scm
+
+gw-canvas.scm guile-gnome-gw-canvas.c guile-gnome-gw-canvas.h: \
+	gw-canvas-spec.scm ../defs/canvas.defs ../defs/canvas-overrides.defs
+	guile -c \
+	  "(set! %load-path (cons \"${G_WRAP_MODULE_DIR}\" %load-path)) \
+	   (set! %load-path (cons \"${top_srcdir}\" %load-path)) \
+	   (primitive-load \"$(srcdir)/gw-canvas-spec.scm\") \
+	   (gw:generate-wrapset \"guile-gnome-gw-canvas\")"
+	mv guile-gnome-gw-canvas.scm gw-canvas.scm
+
+########################################################################
+## libgnomeui
+libguile_gnome_gw_ui_la_SOURCES = \
+	guile-gnome-gw-ui.c guile-gnome-gw-ui.h
+
+libguile_gnome_gw_ui_la_CFLAGS = -I$(top_srcdir)/gnome/gobject \
+	$(AM_CFLAGS) $(LIBGNOMEUI_CFLAGS) $(GUILE_CFLAGS) \
+	$(G_WRAP_CFLAGS)
+
+libguile_gnome_gw_ui_la_LIBADD = $(LIBGNOMEUI_LIBS) $(GUILE_LIBS) \
+	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gw-gobject.la
+
+libguile_gnome_gw_ui_la_LDFLAGS = \
+	-export-dynamic
+
+CLEANFILES += guile-gnome-gw-ui.c guile-gnome-gw-ui.h \
+	guile-gnome-gw-glib.log guile-gnome-gw-atk.log \
+	guile-gnome-gw-gdk.log guile-gnome-gw-pango.log \
+	guile-gnome-gw-gtk.log \
+	guile-gnome-gw-ui.log guile-gnome-gw-ui.html \
+	gw-ui.scm
+
+gw-ui.scm guile-gnome-gw-ui.c guile-gnome-gw-ui.h: \
+	gw-ui-spec.scm ../defs/ui.defs ../defs/ui-overrides.defs
+	guile --debug -c \
+	  "(set! %load-path (cons \"${G_WRAP_MODULE_DIR}\" %load-path)) \
+	   (set! %load-path (cons \"${top_srcdir}\" %load-path)) \
+	   (primitive-load \"$(srcdir)/gw-ui-spec.scm\") \
+	   (gw:generate-wrapset \"guile-gnome-gw-ui\")"
+	mv guile-gnome-gw-ui.scm gw-ui.scm
 
 ########################################################################
 ## vte

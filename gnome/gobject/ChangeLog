@@ -1,3 +1,30 @@
+2004-02-08  Andy Wingo  <wingo@pobox.com>
+
+	* primitives.scm (genum->value): New public function.
+	(genum->value-table): Removed. Use genum-class->value-table from
+	gobject.scm.
+
+	* guile-gnome-gobject-primitives.c (scm_c_make_gvalue): Add
+	some more debugging.
+
+	* glib-support.h: Add copyright notice. Still need to change all
+	these to FSF.
+
+2004-01-29  Andy Wingo  <wingo@pobox.com>
+
+	* defs-support.scm (load-defs): Parse a (callee-owned) option in
+	parameter definitions.
+
+	* gw-gobject-spec.scm (GValue wrapping): Support 'callee-owned
+	values.
+
+	* gw-spec-utils.scm (gobject:gwrap-boxed): Support 'callee-owned
+	arguments (call g_value_dup_boxed instead of _get_boxed).
+
+2004-01-28  Andy Wingo  <wingo@pobox.com>
+
+	* gw-gobject-spec.scm (ws): Check for a NULL return for GValues.
+
 2004-01-14  Andy Wingo  <wingo@pobox.com>
 
 	* primitives.scm (<gtype-instance-class>): There's no special

@@ -689,12 +689,15 @@ SCM
 scm_c_make_gvalue (GType gtype)
 {
     GValue *gvalue;
+    SCM ret;
 
     gvalue = scm_gc_malloc (sizeof (GValue), "%gvalue");
     gvalue->g_type = 0;
     g_value_init (gvalue, gtype);
 
-    SCM_RETURN_NEWSMOB (scm_tc16_gvalue, gvalue);
+    SCM_NEWSMOB (ret, scm_tc16_gvalue, gvalue);
+    DEBUG_ALLOC ("New GValue SMOB %p for %p of type %s", ret, gvalue, g_type_name (gtype));
+    return ret;
 }
 
 

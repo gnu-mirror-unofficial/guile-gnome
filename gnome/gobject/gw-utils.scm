@@ -20,22 +20,23 @@
 
 ;;; Commentary:
 ;;
-;;This module implements some miscellaneous useful procedures.
+;;This module implements some procedures useful to modules that use
+;;g-wrapped libraries.
 ;;
 ;;; Code:
 
 (define-module (gnome gobject gw-utils)
-  :use-module (srfi srfi-13)
-  :use-module (oop goops)
-  :use-module (gnome gobject)
-  :use-module (ice-9 syncase)
-  :export (re-export-module))
+  :export (re-export-modules))
 
-(define-syntax re-export-module
-  (syntax-rules ()
-    ((_ module)
-     (module-use! (module-public-interface (current-module))
-                  (resolve-interface 'module)))))
-(set-object-property! re-export-module 'documentation
+(define-macro (re-export-modules . args)
+  (if (not (null? args))
+      (begin
+        (or (list? (car args))
+            (error "Invalid module specification" (car args)))
+        `(begin
+           (module-use! (module-public-interface (current-module))
+                        (resolve-interface ',(car args)))
+           (re-export-modules ,@(cdr args))))))
+(set-object-property! re-export-modules 'documentation
   "Re-export the public interface of a module; used like
 @code{use-modules}.")

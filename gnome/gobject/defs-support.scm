@@ -265,10 +265,10 @@
                          ;; after the (is-constructor-of)
                          (set! caller-owns-return #t))
                         ((parameters)
-                         (if (memq #t 
-                                   (map (lambda (name)
-                                          (eq? (string-ref name 0) #\())
-                                        (map cadadr (cdr arg))))
+                         (if (or-map
+                              (lambda (name)
+                                (eq? (string-ref name 0) #\())
+                              (map cadadr (cdr arg)))
                              (begin
                                (format #t "\nWarning, not binding function ~A because I can't deal with function pointers\n"
                                        name)
@@ -318,7 +318,9 @@
                                 (lambda (restarg)
                                   (case (car restarg)
                                     ((null-ok)
-                                     (set! options (cons 'null-ok options)))))
+                                     (set! options (cons 'null-ok options)))
+                                    ((callee-owned)
+                                     (set! options (cons 'callee-owned options)))))
                                 restargs)
                                options))))
                       (map (lambda (defs-parameter-spec)
@@ -330,6 +332,11 @@
                                             (cddr defs-parameter-spec)))
                                    (arg-name (string->symbol
                                               (cadr defs-parameter-spec))))
+                               ;; Ah, hackery...
+                               (if (memq 'callee-owned parsed)
+                                   (set! looked-up
+                                         (delq! 'callee-owned
+                                                (delq! 'caller-owned looked-up))))
                                (if (list? looked-up)
                                    (list (append looked-up parsed) arg-name)
                                    (list looked-up arg-name))))

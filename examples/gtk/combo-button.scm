@@ -11,7 +11,8 @@
     
     (connect w 'delete-event (lambda (w e)
                                (gtk-widget-destroy w)
-                               (gtk-main-quit)))
+                               (gtk-main-quit)
+                               #t))
 
     ;; note that we use a scheme list here; it's translated to a glist
     ;; on the c side
