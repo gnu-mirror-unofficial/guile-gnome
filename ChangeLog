@@ -1,3 +1,11 @@
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* gtk-checks.ac: 
+	* glib-checks.ac: 
+	* defs-checks.ac: Versioned pkg-config check.
+
+	* examples/test.scm: Use "exec guile-gnome-0 ..."
+
 2004-10-26  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
