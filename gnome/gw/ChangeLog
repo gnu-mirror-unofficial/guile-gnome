@@ -1,3 +1,8 @@
+2004-07-01  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gdk-spec.scm (unwrap-value-cg): Adapted for unwrap-null-check ->
+	unwrap-null-checked change.
+
 2004-06-22  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gtk-spec.scm, gdk-spec.scm: Fix for G-Wrap #:dependencies API
