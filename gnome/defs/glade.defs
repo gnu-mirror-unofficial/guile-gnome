@@ -9,7 +9,7 @@
 
 ;; Enumerations and flags ...
 
-(include "libglade.defs")
+(include "glade-overrides.defs")
 
 ;; From /opt/gtk2/include/glade-2.0/glade/glade-init.h
 
