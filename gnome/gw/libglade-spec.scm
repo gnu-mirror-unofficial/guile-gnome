@@ -33,13 +33,12 @@
   #:use-module (gnome gobject gw-spec-utils))
 
 (define-class <glade-wrapset> (<gobject-wrapset-base>)
-  #:id 'gnome-libglade)
+  #:id 'gnome-libglade
+  #:dependencies '(standard gnome-glib gnome-gobject gnome-gtk))
 
 (define-method (initialize (ws <glade-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gw libglade) initargs)))
   
-  (depends-on! ws 'standard 'gnome-glib 'gnome-gobject 'gnome-gtk)
-
   (load-defs ws "gnome/defs/libglade.defs"))
 
 (define-method (global-declarations-cg (self <glade-wrapset>))
