@@ -1,3 +1,7 @@
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* glib-checks.ac: Versioned pkg-config check.
+
 2004-10-26  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/corba/Makefile.am
