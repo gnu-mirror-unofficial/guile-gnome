@@ -1,5 +1,6 @@
 ;; -*- scheme -*-
 
+(include type-overrides)
 (include "gdk-types.defs")
 (include overrides)
 
@@ -419,7 +420,7 @@
   (return-type "none")
   (parameters
     '("GdkGC*" "gc")
-    '("gint" "filled")
+    '("gboolean" "filled")
     '("gint" "x")
     '("gint" "y")
     '("gint" "width")

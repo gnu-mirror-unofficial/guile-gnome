@@ -1,3 +1,24 @@
+2004-11-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/defs/gdk.defs (type-overrides): Added here -- not setting
+	up generation for gdk right now, I don't have the time.
+	(draw_rectangle): `filled' param is a boolean.
+
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (all-local): Versioned pkg-config files.
+
+2004-10-16  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/defs/Makefile.am: Integrate with common.mk.
+
+2004-10-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/defs/ui.defs, gnome/defs/ui-types.defs: Generated.
+
+	* gnome/defs/Makefile.am (guilemodule_DATA): Added ui-types.defs.
+	(gnome-ui): Added target for generating gnome-ui defs.
+
 2004-10-10  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/defs/gconf.defs: Regenerated.

@@ -1,6 +1,8 @@
-guilemoduledir = $(datadir)/guile/gnome/defs
+include $(top_srcdir)/common.mk
 
-guilemodule_DATA = 				\
+defsdir = $(guilemoduledir)/defs
+
+defs_DATA = 					\
         applet.defs				\
 	art.defs				\
 	atk.defs				\
@@ -37,11 +39,12 @@ guilemodule_DATA = 				\
 	print.defs				\
 	printui.defs				\
 	ui.defs					\
+	ui-types.defs				\
 	vte.defs				\
 	libwnck.defs				\
 	libwnck-types.defs
 
-EXTRA_DIST = $(guilemodule_DATA)
+EXTRA_DIST = $(defs_DATA)
 
 gdk-pixbuf:
 	../../../h2def.py --types \
@@ -71,3 +74,9 @@ gconf:
 	   --with-header='(include type-ignores) (include "gconf-types.defs") (include overrides)' \
 	   /usr/include/gconf/2/gconf/*.h > gconf.defs
 
+gnome-ui:
+	../../../h2def.py --types \
+	   /usr/include/libgnomeui-2.0/libgnomeui/*.h > ui-types.defs
+	../../../h2def.py --procs \
+	   --with-header='(include type-ignores) (include "ui-types.defs") (include overrides)' \
+	   /usr/include/libgnomeui-2.0/libgnomeui/*.h > ui.defs
