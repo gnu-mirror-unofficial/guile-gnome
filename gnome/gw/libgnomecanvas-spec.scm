@@ -21,7 +21,7 @@
 
 ;;; Commentary:
 ;;
-;;g-wrap specification for Wnck.
+;;g-wrap specification for libgnomecanvas.
 ;;
 ;;; Code:
 
@@ -31,13 +31,14 @@
   #:use-module (g-wrap guile)
   #:use-module (gnome gw glib-spec)
   #:use-module (gnome gw gobject-spec)
+  #:use-module (gnome gw gdk-spec)
   #:use-module (gnome gobject gw-spec-utils)
   #:use-module (gnome gobject defs-support))
 
 (define-class <canvas-wrapset> (<gobject-wrapset-base>)
   guile #:id 'gnome-libgnomecanvas)
 
-(define-method (global-declarations-cg (self <gobject-wrapset-base>))
+(define-method (global-declarations-cg (self <canvas-wrapset>))
   (list
    (next-method)
 	 "#include <libgnomecanvas/libgnomecanvas.h>\n"
@@ -46,7 +47,7 @@
 (define-method (initialize (ws <canvas-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gw libgnomecanvas) initargs)))
 
-  (depends-on! ws 'standard 'gnome-glib 'gnome-gobject)
+  (depends-on! ws 'standard 'gnome-glib 'gnome-gobject 'gnome-gdk)
   
   (load-defs ws "gnome/defs/libgnomecanvas.defs"))
 
