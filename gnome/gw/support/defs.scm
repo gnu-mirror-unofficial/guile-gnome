@@ -1,4 +1,5 @@
 ;; guile-gnome
+;; Copyright (C) 2005 Andreas Rottmann <rotty at debian dot org>
 ;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
@@ -367,13 +368,12 @@
         (lambda () (push (dirname abs-path) %load-path))
         (lambda ()
           (with-input-from-file abs-path scan-defs)
-          ;; FIXME: re-establish
-          ;;     (format log-file "Opaque types in the ~A wrapset: c-name scm-name\n\n"
-          ;;             (name ws))
-          ;;     (for-each
-          ;;      (lambda (pair)
-          ;;        (format log-file "~A ~A\n" (car pair) (cadr pair)))
-          ;;      opaque-types)
+          (format log-file "Opaque types in the ~A wrapset: c-name scm-name\n\n"
+                  (name ws))
+          (for-each-type (lambda (type)
+                           (if (is-a? type <gw-wct>)
+                               (format log-file "~A ~A\n" (c-type-name type) (name type))))
+                         ws)
           (format log-file "\n\nBad method names in the ~A wrapset: c-name of-object\n\n"
                   (name ws))
           (for-each

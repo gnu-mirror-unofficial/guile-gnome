@@ -1,3 +1,13 @@
+2005-03-01  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/overrides/glib.defs: Added g_io_add_watch_full to ignore
+	list.
+
+	* examples/fifo.scm: Polished a bit.
+
+	* gnome/gw/support/defs.scm (load-defs): Re-enable logging of
+	opaque types.
+
 2005-01-29  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/gw/support/gobject.scm (make-typespec): Make the methods
