@@ -248,15 +248,15 @@
   (slot-set! entry 'main-loop #f)
   (let ((return-from-read #f)
         (new-read-hook (slot-ref entry 'new-read-hook))
-        (read-complete-hook (slot-ref entry 'read-complete-hook))
-        (main-loop (or (slot-ref entry 'main-loop)
-                       (g-main-loop-new #f #f))))
+        (read-complete-hook (slot-ref entry 'read-complete-hook)))
 
     (slot-set! entry 'port
                (make-line-buffered-input-port
                 (lambda (continuation?)
                   (run-hook new-read-hook)
-                  (let ((read-string #f))
+                  (let ((read-string #f)
+                        (main-loop (or (slot-ref entry 'main-loop)
+                                       (g-main-loop-new #f #f))))
                     (set! return-from-read
                           (lambda (x)
                             (set! read-string x)
