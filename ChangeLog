@@ -1,3 +1,16 @@
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* gtk-checks.ac: 
+	* glib-checks.ac: Versioned pkg-config check.
+
+	* examples/canvas.scm: Use "exec guile-gnome-0 ...".
+	(main): Handle delete-event.
+
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
+	versioned directory.
+
 2004-09-27  Andy Wingo  <wingo@pobox.com>
 
 	* examples/canvas.scm: Add license block.
