@@ -36,39 +36,41 @@
 (define-class <gtk-wrapset> (<gobject-wrapset-base>)
   #:id 'gnome-gtk)
 
-(define-method (global-declarations-cg (self <gobject-wrapset-base>))
+(define-method (global-declarations-cg (self <gtk-wrapset>))
+  (list (next-method)
+        "#include <gtk/gtk.h>\n"
+        "#include \"gtk-support.h\"\n"
+        "#include \"guile-gtk-tree-model.h\"\n"
+        "\n"
+        ;; Opaquely wrap groups for radio buttons and menu items
+        "#define GtkRadioGroup GSList\n"))
+
+(define-method (global-definitions-cg (self <gtk-wrapset>))
+  (list (next-method)
+        "static void\n"
+        "sink_gtkobject (GObject *object)\n"
+        "{\n"
+        "  if (GTK_OBJECT_FLOATING (object)) {\n"
+        "    g_object_ref (object);\n"
+        "    gtk_object_sink (GTK_OBJECT (object));\n"
+        "  }\n"
+        "}\n"))
+  
+(define-method (initializations-cg (self <gtk-wrapset>) err)
   (list
    (next-method)
-   "#include <gtk/gtk.h>\n"
-   "#include \"gtk-support.h\"\n"
-   "#include \"guile-gtk-tree-model.h\"\n"
-   "\n"
-   ;; Opaquely wrap groups for radio buttons and menu items
-   "#define GtkRadioGroup GSList\n"))
-
-(define-method (global-definitions-cg (self <gobject-wrapset-base>))
-  '("static void\n"
-    "sink_gtkobject (GObject *object)\n"
-    "{\n"
-    "  if (GTK_OBJECT_FLOATING (object)) {\n"
-    "    g_object_ref (object);\n"
-    "    gtk_object_sink (GTK_OBJECT (object));\n"
-    "  }\n"
-    "}\n"))
-  
-(define-method (initializations-cg (self <gobject-wrapset-base>) err)
-  '("gtk_init (NULL, NULL);\n"
-    "guile_gobject_register_sinkfunc (GTK_TYPE_OBJECT, sink_gtkobject);\n"
-    "guile_gobject_register_postmakefunc (GTK_TYPE_WINDOW, g_object_ref);\n"
-    "guile_gobject_register_postmakefunc (GTK_TYPE_INVISIBLE, g_object_ref);\n"))
+   "gtk_init (NULL, NULL);\n"
+   "guile_gobject_register_sinkfunc (GTK_TYPE_OBJECT, sink_gtkobject);\n"
+   "guile_gobject_register_postmakefunc (GTK_TYPE_WINDOW, g_object_ref);\n"
+   "guile_gobject_register_postmakefunc (GTK_TYPE_INVISIBLE, g_object_ref);\n"))
 
   
 (define-method (initialize (ws <gtk-wrapset>) initargs)
-  (next-method ws (cons #:module (cons '(gnome gtk gw-gtk) initargs)))
+  (next-method ws (cons #:module (cons '(gnome gw gtk) initargs)))
   
   (depends-on! ws 'standard 'gnome-glib 'gnome-gobject 'gnome-atk 'gnome-pango
                'gnome-gdk)
-  
+
   (add-type-alias! ws "GtkType" '<gtype>)
 
   (add-type! ws (make <gtk-tree-path-type>
@@ -80,7 +82,7 @@
                   #:wrapped "Custom"))
   (add-type-alias! ws "GtkTreePath*" '<gtk-tree-path>)
   
-  (load-defs ws "gtk.defs"))
+  (load-defs ws "gnome/defs/gtk.defs"))
 
 (define-class <gtk-tree-path-type> (<gobject-type-base>))
 

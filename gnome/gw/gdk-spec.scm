@@ -36,17 +36,18 @@
 (define-class <gdk-wrapset> (<gobject-wrapset-base>)
   #:id 'gnome-gdk)
 
-(define-method (global-declarations-cg (self <gobject-wrapset-base>))
+(define-method (global-declarations-cg (self <gdk-wrapset>))
   (list
    (next-method)
    "#include <gdk/gdk.h>\n"
    "#include \"gdk-support.h\"\n"))
   
-(define-method (initializations-cg (self <gobject-wrapset-base>) err)
-  '("gdk_init (NULL, NULL);\n"))
+(define-method (initializations-cg (self <gdk-wrapset>) err)
+  (list (next-method)
+        "gdk_init (NULL, NULL);\n"))
   
 (define-method (initialize (ws <gdk-wrapset>) initargs)
-  (next-method ws (cons #:module (cons '(gnome gtk gw-gdk) initargs)))
+  (next-method ws (cons #:module (cons '(gnome gw gdk) initargs)))
   
   (depends-on! ws 'standard 'gnome-glib 'gnome-gobject 'gnome-pango)
 
@@ -81,7 +82,7 @@
   ;; a hack now -- dunno what to do with this...
   (add-type-alias! ws "GdkNativeWindow" 'unsigned-long)
   
-  (load-defs ws "gdk.defs"))
+  (load-defs ws "gnome/defs/gdk.defs"))
 
 
 (define-class <gdk-event-type> (<gobject-classed-pointer-type>))
