@@ -31,13 +31,13 @@
   #:use-module (g-wrap guile)
   #:use-module (gnome gw glib-spec)
   #:use-module (gnome gw gobject-spec)
-  #:use-module (gnome gw gdk-spec)
+  #:use-module (gnome gw gtk-spec)
   #:use-module (gnome gw support gobject)
   #:use-module (gnome gw support defs))
 
 (define-class <canvas-wrapset> (<gobject-wrapset-base>)
   #:id 'gnome-canvas
-  #:dependencies '(standard gnome-glib gnome-gobject gnome-gdk))
+  #:dependencies '(standard gnome-glib gnome-gobject gnome-gdk gnome-gtk))
 
 (define-method (global-declarations-cg (self <canvas-wrapset>))
   (list
