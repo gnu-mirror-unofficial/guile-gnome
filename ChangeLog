@@ -1,3 +1,8 @@
+2004-11-11  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/gtk/gdk-event.scm (button-press, button-release): Define
+	accessor for modifiers.
+
 2004-11-10  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gtk.scm (create-tag): Don't specialize on the type of
