@@ -33,22 +33,20 @@
   #:use-module (gnome gobject defs-support))
 
 (define-class <atk-wrapset> (<gobject-wrapset-base>)
-  #:language guile #:id 'gnome-atk)
+  #:id 'gnome-atk)
 
+(define-method (global-declarations-cg (self <gobject-wrapset-base>))
+  (list
+   (next-method)
+   "#include <atk/atk.h>\n"
+   "#include <atk/atk-enum-types.h>\n"))
+  
 (define-method (initialize (ws <atk-wrapset>) initargs)
 
-  (next-method)
+  (next-method ws (append '(#:module (gnome gw atk)) initargs))
 
   (depends-on! ws 'standard 'gnome-glib 'gnome-gobject)
   
-  (set! (module ws) '(gnome atk gw-atk))
-
-  (add-cs-global-declarator! ws
-                             (lambda (wrapset)
-                               (list
-                                "#include <atk/atk.h>\n"
-                                "#include <atk/atk-enum-types.h>\n")))
-
   (add-type-alias! ws "AtkState" 'long-long)
   
-  (load-defs ws "atk.defs"))
+  (load-defs ws "gnome/defs/atk.defs"))
