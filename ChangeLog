@@ -1,3 +1,7 @@
+2004-09-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/glib-spec.scm: Wrap unsigned-char.
+
 2004-07-28  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/gw/glib-spec.scm (make-typespec): Use raise instead of throw.

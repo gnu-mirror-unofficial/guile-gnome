@@ -72,6 +72,7 @@
      ("float" float)
      ("double" double)
      ("short" short)
+     ("unsigned-char" unsigned-char)
      ("unsigned-short" unsigned-short)
      ("unsigned" unsigned-int)
      ("unsigned-int" unsigned-int)
