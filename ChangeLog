@@ -1,5 +1,7 @@
 2004-09-05  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/atk-spec.scm: Fixes for module name changes.
+
 	* defs-checks.ac: Added.
 
 	* glib-checks.ac: Fixed.
