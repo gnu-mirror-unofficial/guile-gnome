@@ -2,14 +2,16 @@ AC_PREREQ(2.52)
 AC_INIT(gnome/gobject.scm)
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(guile-gobject, 0.5.2)
+AM_INIT_AUTOMAKE(guile-gobject, 0.5.3)
 
-AC_SUBST(VERSION,0.5.2)
+AC_SUBST(VERSION,0.5.3)
 
 AM_MAINTAINER_MODE
 AC_DISABLE_STATIC
 
+# hack with aclocal
 GNOME_COMMON_INIT
+# ensure we have pkg-config
 GNOME_PLATFORM_GNOME_2(yes, force)
 
 AC_ISC_POSIX
@@ -29,12 +31,15 @@ GNOME_DEBUG_CHECK
 #
 # Check for Guile
 #
-#fixme: require guile 1.6.4
 AC_MSG_CHECKING(for Guile)
 guile-config link > /dev/null || {
-    echo "configure: cannot find guile-config; is Guile installed?" 1>&2
-    exit 1
+   echo "configure: cannot find guile-config; is Guile installed?" 1>&2
+   exit 1
 }
+GUILE_VERSION=`guile-config info guileversion`
+if test "$GUILE_VERSION" \< 1.6.4; then
+   AC_MSG_ERROR([Guile 1.6.4 or newer is required, but you only have $GUILEVERSION.])
+fi
 GUILE_CFLAGS="`guile-config compile`"
 GUILE_LIBS="`guile-config link`"
 AC_SUBST(GUILE_CFLAGS)
@@ -44,11 +49,11 @@ AC_MSG_RESULT(yes)
 #
 # Check for g-wrap
 #
-# fixme: check for new gw-standard-spec.scm
-AM_PATH_GWRAP(1.3.3, ,[AC_MSG_ERROR([
+# fixme: check for new gw-standard-spec.scm -- actually pretty difficult...
+AM_PATH_GWRAP(1.3.4, ,[AC_MSG_ERROR([
 
   g-wrap does not appear to be installed correctly, or is not new
-  enough. We need version 1.3.3.
+  enough. We need version 1.3.4.
 
   If you need to install g-wrap, you can find it at
   http://www.gnucash.org/pub/g-wrap.
@@ -58,6 +63,8 @@ G_WRAP_CFLAGS=`${G_WRAP_CONFIG} --c-compile-args guile`
 G_WRAP_LIBS=`${G_WRAP_CONFIG} --c-link-args guile`
 G_WRAP_MODULE_DIR=`${G_WRAP_CONFIG} --guile-module-directory`
 G_WRAP_LIB_DIR=`echo $G_WRAP_MODULE_DIR | sed -e 's|share/guile|lib|'`
+
+echo -e "\n\n*** Remember to update g-wrap as described in the README ***\n\n"
 
 AC_GWRAP_CHECK_GUILE
 
@@ -70,6 +77,9 @@ AC_SUBST(G_WRAP_LIB_DIR)
 #
 # Start of pkg-config checks
 #
+
+# we have to have glib and gobject
+
 PKG_CHECK_MODULES(GLIB, glib-2.0)
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
@@ -78,29 +88,37 @@ PKG_CHECK_MODULES(GOBJECT, gobject-2.0)
 AC_SUBST(GOBJECT_CFLAGS)
 AC_SUBST(GOBJECT_LIBS)
 
-PKG_CHECK_MODULES(ATK, atk)
+# the rest are optional
+
+PKG_CHECK_MODULES(ATK, atk, HAVE_ATK=true, HAVE_ATK=false)
 AC_SUBST(ATK_CFLAGS)
 AC_SUBST(ATK_LIBS)
+AM_CONDITIONAL(HAVE_ATK, $HAVE_ATK)
 
-PKG_CHECK_MODULES(PANGO, pango)
+PKG_CHECK_MODULES(PANGO, pango, HAVE_PANGO=true, HAVE_PANGO=false)
 AC_SUBST(PANGO_CFLAGS)
 AC_SUBST(PANGO_LIBS)
+AM_CONDITIONAL(HAVE_PANGO, $HAVE_PANGO)
 
-PKG_CHECK_MODULES(GDK, gdk-2.0)
+PKG_CHECK_MODULES(GDK, gdk-2.0, HAVE_GDK=true, HAVE_GDK=false)
 AC_SUBST(GDK_CFLAGS)
 AC_SUBST(GDK_LIBS)
+AM_CONDITIONAL(HAVE_GDK, $HAVE_GDK)
 
-PKG_CHECK_MODULES(GTK, gtk+-2.0)
+PKG_CHECK_MODULES(GTK, gtk+-2.0, HAVE_GTK=true, HAVE_GTK=false)
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
+AM_CONDITIONAL(HAVE_GTK, $HAVE_GTK)
 
-PKG_CHECK_MODULES(LIBIDL, libIDL-2.0)
+PKG_CHECK_MODULES(LIBIDL, libIDL-2.0, HAVE_LIBIDL=true, HAVE_LIBIDL=false)
 AC_SUBST(LIBIDL_CFLAGS)
 AC_SUBST(LIBIDL_LIBS)
+AM_CONDITIONAL(HAVE_LIBIDL, $HAVE_LIBIDL)
 
-PKG_CHECK_MODULES(CORBA, libbonobo-2.0)
+PKG_CHECK_MODULES(CORBA, libbonobo-2.0, HAVE_CORBA=true, HAVE_CORBA=false)
 AC_SUBST(CORBA_CFLAGS)
 AC_SUBST(CORBA_LIBS)
+AM_CONDITIONAL(HAVE_CORBA, $HAVE_CORBA)
 
 # orbit-idl
 ORBIT_IDL="`$PKG_CONFIG --variable=orbit_idl ORBit-2.0`"

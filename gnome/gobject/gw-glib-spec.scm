@@ -2,7 +2,7 @@
 
 (define-module (gnome gobject gw-glib-spec)
   :use-module (g-wrap)
-  :use-module (g-wrap gw-standard-spec)
+  :use-module (gnome gobject gw-standard-spec)
   :use-module (gnome gobject defs-support))
 
 (for-each
@@ -45,7 +45,7 @@
 
 (let ((ws (gw:new-wrapset "guile-gnome-gw-glib")))
 
-  (gw:wrapset-depends-on ws "gw-standard")
+  (gw:wrapset-depends-on ws "guile-gnome-gw-standard")
 
   (gw:wrapset-set-guile-module! ws '(gnome gobject gw-glib))
 
@@ -56,6 +56,13 @@
          '("#include <glib.h>\n"
            "#include \"glib-support.h\"\n")
          '("#include <glib.h>\n"))))
+
+  (gw:wrapset-add-cs-initializers!
+   ws
+   (lambda (wrapset client-wrapset status-var)
+     (if (not client-wrapset)
+         (list "scm_init_glib ();\n")
+         '())))
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; ((glist-of (<gtk-window> gw:const) gw:const) win-list)

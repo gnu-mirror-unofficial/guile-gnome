@@ -9,7 +9,7 @@
 (let ((ws (gw:new-wrapset "guile-gnome-gw-gtk")))
 
   (gw:wrapset-set-guile-module! ws '(gnome gtk gw-gtk))
-  (gw:wrapset-depends-on ws "gw-standard")
+  (gw:wrapset-depends-on ws "guile-gnome-gw-standard")
   (gw:wrapset-depends-on ws "guile-gnome-gw-glib")
   (gw:wrapset-depends-on ws "guile-gnome-gw-gobject")
   (gw:wrapset-depends-on ws "guile-gnome-gw-atk")

@@ -2,14 +2,14 @@
 
 (define-module (gnome corba gw-corba-spec)
   :use-module (g-wrap)
-  :use-module (g-wrap gw-standard-spec)
+  :use-module (gnome gobject gw-standard-spec)
   :use-module (g-wrap simple-type))
 
 ;; gw-corba: an internal glue binding, probably not useful to other people...
 
 (let ((ws (gw:new-wrapset "guile-gnome-gw-corba")))
 
-  (gw:wrapset-depends-on ws "gw-standard")
+  (gw:wrapset-depends-on ws "guile-gnome-gw-standard")
 
   (gw:wrapset-set-guile-module! ws '(gnome corba gw-corba))
 

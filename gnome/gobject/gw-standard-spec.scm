@@ -1,6 +1,10 @@
 ;; -*-scheme-*-
 
-(define-module (g-wrap gw-standard-spec))
+;; This file was taken from the main g-wrap distribution. Hopefully the
+;; changes in it will be incorporated upstream. In the meantime this
+;; file so that guile-gobject can be released properly.
+
+(define-module (gnome gobject gw-standard-spec))
 
 (use-modules (g-wrap))
 (use-modules (g-wrap simple-type))
@@ -113,10 +117,10 @@
     
     simple-type))
 
-(let ((ws (gw:new-wrapset "gw-standard"))
+(let ((ws (gw:new-wrapset "guile-gnome-gw-standard"))
       (limits-requiring-types '()))
 
-  (gw:wrapset-set-guile-module! ws '(g-wrap gw-standard))
+  (gw:wrapset-set-guile-module! ws '(gnome gobject gw-standard))
     
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; void

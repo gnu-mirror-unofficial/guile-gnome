@@ -5,7 +5,7 @@ libdir=${pcfiledir}
 includedir=${pcfiledir}
 have_gtk=true # fix this later...
 
-Name: (guile gobject), Uninstalled
+Name: (gnome gobject), Uninstalled
 Description: Guile bindings for GObject and Gtk, Not Installed
 Version: @VERSION@
 Requires: gobject-2.0

@@ -25,7 +25,7 @@
 
 (let ((ws (gw:new-wrapset "guile-gnome-gw-gobject")))
 
-  (gw:wrapset-depends-on ws "gw-standard")
+  (gw:wrapset-depends-on ws "guile-gnome-gw-standard")
   (gw:wrapset-depends-on ws "guile-gnome-gw-glib")
 
   (gw:wrapset-set-guile-module! ws '(gnome gobject gw-gobject))

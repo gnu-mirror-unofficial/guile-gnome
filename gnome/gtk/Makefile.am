@@ -1,13 +1,40 @@
 AM_CFLAGS = $(WARN_CFLAGS) -Werror
 
+if HAVE_ATK
+ATKMODULES=gw-atk-spec.scm gw-atk.scm
+ATKLIB=libguile-gnome-gw-atk.la
+else
+ATKMODULES=
+ATKLIB=
+endif
+
+if HAVE_PANGO
+PANGOMODULES=gw-pango-spec.scm gw-pango.scm
+PANGOLIB=libguile-gnome-gw-pango.la
+else
+PANGOMODULES=
+PANGOLIB=
+endif
+
+if HAVE_GDK
+GDKMODULES=gw-gdk-spec.scm gw-gdk.scm
+GDKLIB=libguile-gnome-gw-gdk.la
+else
+GDKMODULES=
+GDKLIB=
+endif
+
+if HAVE_GTK
+GTKMODULES=gw-gtk-spec.scm gw-gtk.scm generics.scm
+GTKLIB=libguile-gnome-gw-gtk.la
+else
+GTKMODULES=
+GTKLIB=
+endif
+
 guilegtkmoduledir = $(datadir)/guile/gnome/gtk
 
-guilegtkmodule_DATA = \
-	gw-atk-spec.scm gw-atk.scm \
-	gw-pango-spec.scm gw-pango.scm \
-	gw-gdk-spec.scm gw-gdk.scm \
-	gw-gtk-spec.scm gw-gtk.scm \
-	generics.scm
+guilegtkmodule_DATA = $(ATKMODULES) $(PANGOMODULES) $(GDKMODULES) $(GTKMODULES)
 
 EXTRA_DIST = $(guilegtkmodule_DATA)
 
@@ -16,11 +43,7 @@ CLEANFILES =
 # There is one shared library for each wrapset. Each is produced by
 # g-wrap, but also may contain some hand-coded routines.
 
-lib_LTLIBRARIES = \
-	libguile-gnome-gw-atk.la \
-	libguile-gnome-gw-pango.la \
-	libguile-gnome-gw-gdk.la \
-	libguile-gnome-gw-gtk.la
+lib_LTLIBRARIES = $(ATKLIB) $(PANGOLIB) $(GDKLIB) $(GTKLIB)
 
 ########################################################################
 ## atk
