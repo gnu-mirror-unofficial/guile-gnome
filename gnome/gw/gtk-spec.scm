@@ -34,7 +34,9 @@
   #:use-module (gnome gobject gw-spec-utils))
 
 (define-class <gtk-wrapset> (<gobject-wrapset-base>)
-  #:id 'gnome-gtk)
+  #:id 'gnome-gtk
+  #:dependencies '(standard gnome-glib gnome-gobject
+                   gnome-atk gnome-pango gnome-gdk))
 
 (define-method (global-declarations-cg (self <gtk-wrapset>))
   (list (next-method)
@@ -69,9 +71,6 @@
 (define-method (initialize (ws <gtk-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gw gtk) initargs)))
   
-  (depends-on! ws 'standard 'gnome-glib 'gnome-gobject 'gnome-atk 'gnome-pango
-               'gnome-gdk)
-
   (add-type-alias! ws "GtkType" '<gtype>)
 
   (add-type! ws (make <gtk-tree-path-type>

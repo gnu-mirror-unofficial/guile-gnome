@@ -1,3 +1,19 @@
+2004-06-30  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk/gdk-event.scm: Fixed references to bogus g-wrap
+	modules.
+
+	* gnome/contrib/texinfo-buffer.scm: New file. Like what
+	(text structured gtk-text-buffer) was, but a lot cleaner now. (And
+	a lot shorter, incidentally.) Renders texinfo, expressed as SXML,
+	into a GtkTextBuffer.
+
+	* gnome/contrib/Makefile.am: New file.
+
+	* gnome/contrib/: New directory. The thought is for (gnome
+	contrib) to be a place where people can contribute useful
+	scheme-only library code based on the gnome modules.
+
 2004-05-22  Andy Wingo  <wingo@pobox.com>
 
 	* guile-gtk.pc.in, guile-gtk-uninstalled.pc.in, files.ac: New

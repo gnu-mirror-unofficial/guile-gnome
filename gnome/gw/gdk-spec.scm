@@ -34,7 +34,8 @@
   #:use-module (gnome gobject defs-support))
 
 (define-class <gdk-wrapset> (<gobject-wrapset-base>)
-  #:id 'gnome-gdk)
+  #:id 'gnome-gdk
+  #:dependencies '(standard gnome-glib gnome-gobject gnome-pango))
 
 (define-method (global-declarations-cg (self <gdk-wrapset>))
   (list
@@ -49,8 +50,6 @@
 (define-method (initialize (ws <gdk-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gw gdk) initargs)))
   
-  (depends-on! ws 'standard 'gnome-glib 'gnome-gobject 'gnome-pango)
-
   (add-type-alias! ws "GdkWChar" 'unsigned-long)
   
   (for-each
