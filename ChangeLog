@@ -1,3 +1,12 @@
+2004-11-14  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/defs/libgnomecanvas.defs: Remove type defs.  Include
+	libgnomecanvas-types.defs.
+
+2004-11-10  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/defs/glib.defs: Bugfix: include overrides after types.
+
 2004-11-09  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/defs/gdk.defs (type-overrides): Added here -- not setting
