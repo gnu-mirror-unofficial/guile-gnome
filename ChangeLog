@@ -1,3 +1,7 @@
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.7.99 ==
+
 2005-02-17  Andy Wingo  <wingo@pobox.com>
 
 	* package.ac: Follow --disable-deprecation for deprecation cflags.
