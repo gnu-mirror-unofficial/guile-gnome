@@ -633,7 +633,7 @@
       "GValue lvalue = { 0, };\n"
       (unwrap-func type) " (" scm-var ", &lvalue);\n"
       "if (G_IS_VALUE (&lvalue)) {"
-      ;; might leak memory... need to write a destructor for c-var in the
+      ;; leaks memory... need to write a destructor for c-var in the
       ;; case of a caller-owned argument
       "  " c-var " = g_value_get_boxed (&lvalue);\n"
       "} else {\n"

@@ -507,7 +507,7 @@ scm_c_register_gvalue_wrappers (GType type,
     wrap_funcs* w = g_new (wrap_funcs, 1);
 
     if (!gvalue_wrappers)
-        gvalue_wrappers = g_hash_table_new (g_int_hash, g_int_equal);
+        gvalue_wrappers = g_hash_table_new (NULL, NULL);
     
     w->wrap = wrap;
     w->unwrap = unwrap;

@@ -1,3 +1,12 @@
+2004-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped.
+
+	* == Released platform version 2.7.97 ==
+
+	* gnome/gobject/gvalue.c (scm_c_register_gvalue_wrappers):
+	DAMMMIT, g_int_hash doesn't do what you think it does!
+
 2004-12-05  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gobject.scm (wrap-custom-boxed!): New exported
