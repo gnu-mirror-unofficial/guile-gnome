@@ -32,8 +32,8 @@
   #:use-module (gnome gw glib-spec)
   #:use-module (gnome gw gobject-spec)
   #:use-module (gnome gw gdk-spec)
-  #:use-module (gnome gobject gw-spec-utils)
-  #:use-module (gnome gobject defs-support))
+  #:use-module (gnome gw support gobject)
+  #:use-module (gnome gw support defs))
 
 (define-class <canvas-wrapset> (<gobject-wrapset-base>)
   #:id 'gnome-canvas
@@ -51,4 +51,4 @@
 (define-method (initialize (ws <canvas-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gw canvas) initargs)))
 
-  (load-defs ws "gnome/defs/libgnomecanvas.defs"))
+  (load-defs-with-overrides ws "gnome/defs/libgnomecanvas.defs"))

@@ -2,7 +2,7 @@
 !#
 (use-modules (gnome gtk)
 	     (gnome gtk gdk-event)
-	     (gnome gw canvas))
+	     (gnome canvas))
 
 (debug-enable 'backtrace)
 
@@ -41,7 +41,7 @@
     (gtk-container-add window vbox)
     (add vbox canvas)
 
-    (let* ((rect-type (gnome-canvas-rect-get-type))
+    (let* ((rect-type (gtype-class->type <gnome-canvas-rect>))
 	   (line (gnome-canvas-item-new canvas-root rect-type))
     	   (text (make <gnome-canvas-text> #:parent canvas-root
 		       #:font "new century schoolbook, i bold 20"

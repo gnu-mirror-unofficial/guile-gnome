@@ -1,3 +1,23 @@
+2004-09-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/canvas.scm: New file.
+
+	* examples/canvas.scm (main): Get the type of a canvas rect via
+	gtype-class->type. The example still isn't working; I don't know
+	how it ever did. Use (gnome canvas).
+
+	* Makefile.am (EXTRA_DIST): Dist fixes.
+
+	* gnome/gw/canvas-spec.scm (initialize): Adapt for module name
+	changes, load-defs-with-overrides.
+
+	* gnome/canvas.scm: New file.
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_canvas_la_SOURCES):
+	Don't dist the g-wrap generated C files.
+
+	* gnome/overrides/, gnome/Makefile.am: Add overrides.
+
 2004-06-26  Jan Nieuwenhuizen  <janneke@gnu.org>
 
 	* gnome/gw/canvas-spec.scm (initialize): Remove depends-on.
