@@ -1,3 +1,10 @@
+2004-05-19  Andy Wingo  <wingo@pobox.com>
+
+	* gtk.scm (gnome): The main glib wrapper depends on gobject, so
+	put it after gobject to show times better. Also add goops to the
+	startup list. (This should eventually go away when (gnome gtk) is
+	really fast.)
+
 2004-04-02  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gtk.scm (on-get-flags): Provide default implementation returning 0.
