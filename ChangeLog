@@ -1,5 +1,7 @@
 2004-09-05  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/Makefile.am: Don't dist the C files.
+
 	* gnome/Makefile.am, gnome/overrides/Makefile.am: Add overrides/
 	to the dist.
 
