@@ -48,7 +48,7 @@ connect_one (const gchar *handler_name, GObject *object, const gchar *signal_nam
 
     if (SCM_FALSEP (gtype_instance_signal_connect_data))
         gtype_instance_signal_connect_data =
-            SCM_VARIABLE_REF (scm_c_module_lookup (scm_module_gobject,
+            SCM_VARIABLE_REF (scm_c_module_lookup (scm_glade_module,
                                                    "gtype-instance-signal-connect-data"));
 
     proc = SCM_PACK (GPOINTER_TO_INT (user_data));
