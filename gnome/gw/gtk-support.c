@@ -89,6 +89,18 @@ _wrap_gtk_editable_insert_text (GtkEditable *editable, const gchar *text, gint p
 }
 
 GtkWidget*
+_wrap_gtk_dialog_get_vbox (GtkDialog *dialog)
+{
+  return dialog->vbox;
+}
+
+GtkWidget*
+_wrap_gtk_dialog_get_action_area (GtkDialog *dialog)
+{
+  return dialog->action_area;
+}
+
+GtkWidget*
 _wrap_gtk_file_selection_get_ok_button (GtkFileSelection* selection)
 {
     return selection->ok_button;

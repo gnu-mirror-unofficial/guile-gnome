@@ -106,8 +106,13 @@ gdk_event_to_event_struct (GdkEvent *event)
             scm_struct_set_x (ret, MAKSLOT (1),
                               scm_c_gtype_instance_to_scm ((GTypeInstance*)ecrossing.window));
             scm_struct_set_x (ret, MAKSLOT (2), ecrossing.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            scm_struct_set_x (ret, MAKSLOT (3),
-                              scm_c_gtype_instance_to_scm ((GTypeInstance*)ecrossing.subwindow));
+	    /* subwindow may be NULL. --jcn */
+	    if (ecrossing.subwindow)
+	      scm_struct_set_x (ret, MAKSLOT (3),
+				scm_c_gtype_instance_to_scm ((GTypeInstance*)ecrossing.subwindow));
+	    else
+	      scm_struct_set_x (ret, MAKSLOT (3), SCM_BOOL_F);
+	      
             scm_struct_set_x (ret, MAKSLOT (4),
                               ecrossing.time > SCM_MOST_POSITIVE_FIXNUM
                               ? scm_i_ulong2big (ecrossing.time) : SCM_MAKINUM (ecrossing.time));

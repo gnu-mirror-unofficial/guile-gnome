@@ -132,6 +132,9 @@
                (%gtk-message-dialog-new parent flags message-type buttons text))
     instance))
 
+(define-public (gtk-stock-id nick)
+  (string-append "gtk-" (symbol->string nick)))
+
 (use-modules (gnome gobject gw-utils))
 
 ;; re-export everything you need to have a nice gtk session...
