@@ -3,45 +3,44 @@ guilemoduledir = $(datadir)/guile/gnome/defs
 guilemodule_DATA = 				\
         applet.defs				\
 	art.defs				\
-	atk.defs				\
 	atk-types.defs				\
-	bonobo.defs				\
+	atk.defs				\
 	bonobo-types.defs			\
-	bonoboui.defs				\
+	bonobo.defs				\
 	bonoboui-types.defs			\
+	bonoboui.defs				\
+	canvas-overrides.defs			\
 	canvas.defs				\
 	common-ignores.defs			\
-	canvas-overrides.defs			\
 	gconf.defs				\
-	gdk.defs				\
-	gdk-types.defs				\
 	gdk-overrides.defs			\
-	glib.defs				\
-	glib-types.defs 			\
+	gdk-types.defs				\
+	gdk.defs				\
+	glade-overrides.defs			\
+	glade.defs				\
 	glib-overrides.defs			\
-	gnome.defs				\
+	glib-types.defs 			\
+	glib.defs				\
 	gnome-overrides.defs			\
-	gtk.defs				\
-	gtk-overrides.defs			\
+	gnome-ui-overrides.defs			\
+	gnome-ui.defs				\
+	gnome.defs				\
 	gtk-extrafuncs.defs			\
+	gtk-overrides.defs			\
 	gtk-types.defs				\
+	gtk.defs				\
 	gtkhtml2.defs				\
-	gtksourceview.defs			\
 	gtksourceview-overrides.defs		\
-	libgda.defs 				\
+	gtksourceview.defs			\
 	libgda-overrides.defs			\
 	libgda-types.defs			\
-	libglade.defs				\
-	libglade-overrides.defs			\
-	Makefile.am				\
+	libgda.defs 				\
 	nautilus.defs				\
-	pango.defs				\
 	pango-types.defs			\
+	pango.defs				\
 	print.defs				\
 	printui.defs				\
-	ui.defs					\
-	ui-overrides.defs			\
-	vte.defs				\
-	vte-overrides.defs
+	vte-overrides.defs			\
+	vte.defs				
 
 EXTRA_DIST = $(guilemodule_DATA)

@@ -1,5 +1,11 @@
 2004-05-19  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/defs/Makefile.am (guilemodule_DATA): Updated for new
+	names, and sorted (M-x sort-lines).
+
+	* gnome/defs/gnome-ui-overrides.defs, gnome/defs/gnome-ui.defs:
+	Renamed from ui*.
+
 	* gnome/defs/glade-overrides.defs, gnome/defs/glade.defs: Renamed
 	from libglade*.
 
