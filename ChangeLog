@@ -1,3 +1,15 @@
+2004-09-16  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (SUBDIRS): Dist fixes.
+
+	* README: Added.
+
+	* NEWS: Added.
+
+	* AUTHORS: Added.
+
+	* glib-checks.ac: Check the right package.
+
 2004-09-12  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/libgnome-spec.scm: Use proper keywords.

@@ -1,0 +1,12 @@
+To find out what should go in this file, see "Information For
+Maintainers of GNU Software" (maintain.texi), the section called
+"Recording Changes".
+
+
+Andy Wingo:
+In the directory gnome/gw, wrote:
+    libgnome-spec.scm gnome-support.c gnome-support.h
+In the directory gnome/overrides, wrote:
+    libgnome.defs
+In the directory gnome, wrote:
+    gnome.scm
