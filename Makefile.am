@@ -1,5 +1,3 @@
-SUBDIRS = gnome test-suite demos examples 
+SUBDIRS = gnome demos
 
-EXTRA_DIST = RELEASE-NOTES-0.2.0.txt RELEASE-NOTES-0.5.0.txt dev-environ h2def.py 
-
-DISTCLEANFILES = stamp-h1
+EXTRA_DIST = ChangeLog NEWS README AUTHORS $(wildcard *.ac)

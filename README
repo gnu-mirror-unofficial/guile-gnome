@@ -1,41 +1,32 @@
--*- text -*-
+guile-gnome-corba README
+Copyright (C) 2004 Free Software Foundation, Inc.
+See the end for copying conditions of this file.
+Last updated 16 September 2004.
 
-README for guile-gobject
-========================
 
-Abstract:
----------
+About guile-gnome-corba
+======================
 
-guile-gobject is a Guile wrapper collection for the GNOME
-libraries. It ships with an wrapper engine that allows semi-automatic
-wrapping of GObject-based C APIs (GNOME2, but also other non-GNOME
-projects).
+guile-gnome-corba is a Guile wrapper for CORBA, an interprocess
+communication library and server. It is a part of GNU guile-gnome,
+although it is not part of the GNOME platform. See the README file in
+the toplevel source directory for more information.
 
-Copyright:
-----------
-Distribution of library and components is under the GPL as listed in the
-file COPYING.
 
-Contact info:
--------------
-  Mailing List: mailto: guile-gtk-general@gnu.org
-  Homepage:     http://www.gnu.org/software/guile-gtk
-  Download:     http://www.gnu.org/software/guile-gtk/download
+Build dependencies
+==================
 
-Build-Dependencies:
---------------------
+Besides the base guile-gnome requirements given in ../README,
+guile-gnome-corba requires ORBit2 development packages.
 
-* Guile 1.6.4 or newer.
-* G-Wrap 1.3.4, available from http://www.gnucash.org/pub/g-wrap/source/.
+guile-gnome-corba depends on the following guile-gnome modules: glib.
 
-Installation Quickstart:
-------------------------
 
-Install using the standard autotools incantation:
-  ./configure && make && make install.
+Copying this file
+=================
 
-Build from CVS or Arch using ./autogen.sh && make.
+Copyright (C) 2004 Free Software Foundation, Inc.
 
-You can run without installing, just run './dev-environ guile'.
-
-The guile-gobject Developers, 29 Mar 2004
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice
+and this notice are preserved.
