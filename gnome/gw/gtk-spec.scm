@@ -50,7 +50,7 @@
 (define-method (global-definitions-cg (self <gtk-wrapset>))
   (list (next-method)
         "static void\n"
-        "sink_gtkobject (GTypeInstance *i)\n"
+        "sink_gtkobject (gpointer i)\n"
         "{\n"
         "  GObject *object = (GObject*)i;\n"
         "  if (GTK_OBJECT_FLOATING (object)) {\n"
@@ -67,21 +67,16 @@
    "scm_register_gobject_postmakefunc (GTK_TYPE_WINDOW, g_object_ref);\n"
    "scm_register_gobject_postmakefunc (GTK_TYPE_INVISIBLE, g_object_ref);\n"))
   
-(custom-wrap-decls
- "GtkTreePath"
- ;; unwrap
- (unwrap-null-checked
-  value status-var
-  (list c-var " = guile_gtk_scm_to_tree_path (" scm-var ");\n"))
- ;; wrap
- (list scm-var " = guile_gtk_tree_path_to_scm (" c-var ");\n"
-       "gtk_tree_path_free (" c-var ");\n"))
-
 (define-method (initialize (ws <gtk-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gw gtk) initargs)))
   
   (add-type-alias! ws "GtkType" '<gtype>)
 
-  (wrap-custom-pointer! "GtkTreePath")
-  
+  (wrap-custom-boxed!
+   "GtkTreePath" "GTK_TYPE_TREE_PATH"
+   ;; wrap
+   (list scm-var " = guile_gtk_tree_path_to_scm (" c-var ");\n")
+   ;; unwrap
+   (list c-var " = guile_gtk_scm_to_tree_path (" scm-var ");\n"))
+
   (load-defs-with-overrides ws "gnome/defs/gtk.defs"))

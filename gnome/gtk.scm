@@ -26,23 +26,27 @@
 
 (define-module (gnome gtk))
 
-(display "(gnome gtk): [")
+(if (getenv "GUILE_GTK_DEBUG")
+    (define progress display)
+    (define progress identity))
 
-(display "goops ")
+(progress "(gnome gtk): [")
+
+(progress "goops ")
 (use-modules (oop goops))
-(display "gobject ")
+(progress "gobject ")
 (use-modules (gnome gobject) (gnome gobject generics))
-(display "glib ")
+(progress "glib ")
 (use-modules (gnome glib))
-(display "atk ")
+(progress "atk ")
 (use-modules (gnome gw atk))
-(display "pango ")
+(progress "pango ")
 (use-modules (gnome gw pango))
-(display "gdk ")
+(progress "gdk ")
 (use-modules (gnome gw gdk))
-(display "gtk ")
+(progress "gtk ")
 (use-modules (gnome gw gtk))
-(display "support")
+(progress "support")
 
 ;; Support explicit object destruction.
 (define-method (make-gobject-instance class type (instance <gtk-object>) initargs)
@@ -148,4 +152,4 @@
                    (gnome gw gtk)
                    (oop goops))
 
-(display "]\n")
+(progress "]\n")

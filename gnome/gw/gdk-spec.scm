@@ -49,24 +49,6 @@
   (list (next-method)
         "gdk_init (NULL, NULL);\n"))
   
-(custom-wrap-decls
- "GdkRectangle"
- ;; unwrap
- (unwrap-null-checked
-  value status-var
-  (list c-var " = scm_scm_to_gdk_rectangle (" scm-var ");\n"))
- ;; wrap
- (list scm-var " = " c-var " ? scm_gdk_rectangle_to_scm (" c-var ") : SCM_BOOL_F;\n"))
-
-(custom-wrap-decls
- "GdkColor"
- ;; unwrap
- (unwrap-null-checked
-  value status-var
-  (list c-var " = scm_scm_to_gdk_color (" scm-var ");\n"))
- ;; wrap
- (list scm-var " = " c-var " ? scm_gdk_color_to_scm (" c-var ") : SCM_BOOL_F;\n"))
-
 (define-class <gdk-event-type> (<gobject-classed-pointer-type>))
 
 (define-method (initialize (type <gdk-event-type>) initargs)
@@ -135,9 +117,19 @@
   ;; a hack now -- dunno what to do with this...
   (add-type-alias! ws "GdkNativeWindow" 'unsigned-long)
   
-  (wrap-custom-pointer! "GdkRectangle")
-  (wrap-custom-pointer! "GdkColor")
+  (wrap-custom-boxed!
+   "GdkRectangle" "GDK_TYPE_RECTANGLE"
+   ;; wrap
+   (list scm-var " = " c-var " ? scm_gdk_rectangle_to_scm (" c-var ") : SCM_BOOL_F;\n")
+   ;; unwrap
+   (list c-var " = scm_scm_to_gdk_rectangle (" scm-var ");\n"))
+
+  (wrap-custom-boxed!
+   "GdkColor" "GDK_TYPE_COLOR"
+   ;; wrap
+   (list scm-var " = " c-var " ? scm_gdk_color_to_scm (" c-var ") : SCM_BOOL_F;\n")
+   ;; unwrap
+   (list c-var " = scm_scm_to_gdk_color (" scm-var ");\n"))
 
   (load-defs-with-overrides ws "gnome/defs/gdk-pixbuf.defs")
   (load-defs-with-overrides ws "gnome/defs/gdk.defs"))
-
