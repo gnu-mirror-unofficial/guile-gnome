@@ -40,6 +40,8 @@
 (define-method (global-declarations-cg (self <gdk-wrapset>))
   (list
    (next-method)
+   "#include <gdk-pixbuf/gdk-pixbuf.h>\n"
+   "#include \"gdk-pixbuf-support.h\"\n"
    "#include <gdk/gdk.h>\n"
    "#include \"gdk-support.h\"\n"))
   
@@ -81,6 +83,7 @@
   ;; a hack now -- dunno what to do with this...
   (add-type-alias! ws "GdkNativeWindow" 'unsigned-long)
   
+  (load-defs-with-overrides ws "gnome/defs/gdk-pixbuf.defs")
   (load-defs-with-overrides ws "gnome/defs/gdk.defs"))
 
 

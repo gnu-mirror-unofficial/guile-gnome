@@ -1,16 +1,10 @@
 include $(top_srcdir)/common.mk
 
-if HAVE_GDK
-GDKMODULES = gdk-spec.scm gdk.scm
-GDKLIB = libgw-guile-gnome-gdk.la
-else
-GDKMODULES =
-GDKLIB =
-endif
-
 if HAVE_GTK
-GTKMODULES = gtk-spec.scm gtk.scm
-GTKLIB = libgw-guile-gnome-gtk.la
+GTKMODULES = gtk-spec.scm gtk.scm \
+	gdk-spec.scm gdk.scm
+GTKLIB = libgw-guile-gnome-gtk.la \
+	libgw-guile-gnome-gdk.la
 else
 GTKMODULES =
 GTKLIB =
@@ -20,7 +14,7 @@ endif
 # and up break
 CFLAGS=-g 
 
-guilegwmodule_DATA = $(GDKMODULES) $(GTKMODULES)
+guilegwmodule_DATA = $(GTKMODULES)
 
 EXTRA_DIST = gdk-spec.scm gtk-spec.scm
 
@@ -29,19 +23,20 @@ CLEANFILES = $(wildcard gnome-*.log)
 # There is one shared library for each wrapset. Each is produced by
 # g-wrap, but also may contain some hand-coded routines.
 
-lib_LTLIBRARIES = $(GDKLIB) $(GTKLIB)
+lib_LTLIBRARIES = $(GTKLIB)
 
 ########################################################################
 ## gdk
 nodist_libgw_guile_gnome_gdk_la_SOURCES = guile-gnome-gw-gdk.c
-libgw_guile_gnome_gdk_la_SOURCES = gdk-support.c gdk-support.h
+libgw_guile_gnome_gdk_la_SOURCES = gdk-support.c gdk-support.h \
+	gdk-pixbuf-support.c gdk-pixbuf-support.h
 
 libgw_guile_gnome_gdk_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
-	$(AM_CFLAGS) $(GDK_CFLAGS) $(GUILE_CFLAGS) \
+	$(AM_CFLAGS) $(GDK_CFLAGS) $(GDK_PIXBUF_CFLAGS) $(GUILE_CFLAGS) \
 	$(G_WRAP_CFLAGS) -DGTK_DISABLE_DEPRECATED
 
 libgw_guile_gnome_gdk_la_LIBADD = $(GDK_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS)
+	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS) $(GDK_PIXBUF_LIBS)
 
 libgw_guile_gnome_gdk_la_LDFLAGS = -module
 
@@ -55,7 +50,7 @@ libgw_guile_gnome_gtk_la_SOURCES = \
 
 libgw_guile_gnome_gtk_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(AM_CFLAGS) $(GTK_CFLAGS) $(GUILE_CFLAGS) \
-	$(G_WRAP_CFLAGS) # -DGTK_DISABLE_DEPRECATED
+	$(G_WRAP_CFLAGS) -DGTK_DISABLE_DEPRECATED
 
 libgw_guile_gnome_gtk_la_LIBADD = $(GTK_LIBS) $(GUILE_LIBS) \
 	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS)

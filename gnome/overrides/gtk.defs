@@ -25,6 +25,9 @@
 ;;
 ;;; Code:
 
+(include "gnome/overrides/gtk-customs.defs")
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Types
 (define-object GenericTreeModel
@@ -32,11 +35,6 @@
   (parent "GtkTreeModel")
   (c-name "GuileGtkGenericTreeModel")
   (gtype-id "GUILE_GTK_TYPE_GENERIC_TREE_MODEL"))
-
-(define-interface FileChooser
-  (in-module "Gtk")
-  (c-name "GtkFileChooser")
-  (gtype-id "GTK_TYPE_FILE_CHOOSER"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkActionGroup
@@ -65,13 +63,6 @@
     '("SCM"  "entries")
     '("gint" "value")
     '("SCM"  "on_change")))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; GtkCombo
-(define-method get_entry
-  (of-object "GtkCombo")
-  (c-name "gtk_combo_get_entry")
-  (return-type "GtkWidget*"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkColorSelectionDialog
@@ -283,6 +274,54 @@
   (return-type "none")
   (parameters
     '("GtkRadioGroup*" "group")))
+(define-function
+  gtk_radio_tool_button_new
+  (c-name "gtk_radio_tool_button_new")
+  (overrides "gtk_radio_tool_button_new")
+  (is-constructor-of "GtkRadioToolButton")
+  (return-type "GtkToolItem*")
+  (parameters
+    '("GtkRadioGroup*" "group"
+      (default "NULL"))))
+(define-function
+  gtk_radio_tool_button_new_from_stock
+  (c-name "gtk_radio_tool_button_new_from_stock")
+  (overrides
+    "gtk_radio_tool_button_new_from_stock")
+  (return-type "GtkToolItem*")
+  (parameters
+    '("GtkRadioGroup*" "group"
+      (default "NULL"))
+    '("const-gchar*" "stock_id")))
+(define-method
+  get_group
+  (of-object "GtkRadioToolButton")
+  (c-name "gtk_radio_tool_button_get_group")
+  (overrides "gtk_radio_tool_button_get_group")
+  (return-type "GtkRadioGroup*"))
+(define-method
+  set_group
+  (of-object "GtkRadioToolButton")
+  (c-name "gtk_radio_tool_button_set_group")
+  (overrides "gtk_radio_tool_button_set_group")
+  (return-type "none")
+  (parameters
+    '("GtkRadioGroup*" "group")))
+(define-method
+  get_group
+  (of-object "GtkRadioAction")
+  (c-name "gtk_radio_action_get_group")
+  (overrides "gtk_radio_action_get_group")
+  (return-type "GtkRadioGroup*"))
+(define-method
+  set_group
+  (of-object "GtkRadioAction")
+  (c-name "gtk_radio_action_set_group")
+  (overrides "gtk_radio_action_set_group")
+  (return-type "none")
+  (parameters
+    '("GtkRadioGroup*" "group")))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkStockItem
@@ -423,8 +462,6 @@
   (return-type "GtkTextIter*")
   (parameters
     '("GtkTextChildAnchor*" "anchor")))
-;; TextView functions that get iters still need to be wrapped by some
-;; endeavoring soul
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkTreeModel
@@ -562,7 +599,56 @@
               "*_foreach"
               "*_valist")
 
-(ignore-glob "gtk_gc_*"
+;; deprecated parts of gtk
+(ignore-glob "gtk_item_factory*"
+             "gtk_clist*"
+             "gtk_ctree*"
+             "gtk_combo_new" ;; avoid ignoring gtk_combo_box
+             "gtk_combo_set_*"
+             "gtk_combo_disable_activate"
+             "gtk_list*"
+             "gtk_old_editable*"
+             "gtk_option_menu*"
+             "gtk_pixmap*"
+             "gtk_preview*"
+             "gtk_progress_set_*" ;; avoid ignoring gtk_progress_bar
+             "gtk_progress_get_*"
+             "gtk_progress_configure"
+             "gtk_text_new" ;; avoid ignoring textbuffer/view, etc
+             "gtk_text_set_*"
+             "gtk_text_get_*"
+             "gtk_text_freeze"
+             "gtk_text_thaw"
+             "gtk_text_insert"
+             "gtk_text_backward_delete"
+             "gtk_text_forward_delete"
+             "gtk_tips_query_*"
+             "gtk_tree_new" ;; avoid ignoring treemodel/view, etc
+             "gtk_tree_append"
+             "gtk_tree_prepend"
+             "gtk_tree_insert"
+             "gtk_tree_remove_*"
+             "gtk_tree_set_*"
+             "gtk_tree_clear_items"
+             "gtk_tree_select_*"
+             "gtk_tree_unselect_*"
+             "gtk_tree_child_position"
+             "gtk_tree_item_*")
+
+(ignore-glob "gtk_file_system_*"
+             "gtk_file_info_*"
+             "gtk_file_loader_*"
+             "gtk_file_folder_*"
+             "gtk_file_path*"
+             "gtk_button_box_*_size"
+             "gtk_button_box_*_ipadding"
+             "gtk_signal_*"
+             "gtk_text_layout*"
+             "gtk_text_child_anchor_register_child"
+             "gtk_text_child_anchor_unregister_child"
+             "gtk_text_child_anchor_queue_resize"
+             "gtk_text_anchored_child_set_layout"
+             "gtk_gc_*"
              "gtk_idle_*"
              "gtk_init*"
              "gtk_input_add*" ; there is also gtk_input_dialog
@@ -581,22 +667,11 @@
         "gtk_key_snooper_remove"
         "gtk_get_current_event"
         "gtk_get_event_widget"
-        "gtk_propagate_event"
 
-        "gtk_accel_groups_activate"
-        "gtk_accel_group_activate"
-        "gtk_accel_group_get_entry"
-        "gtk_accel_group_lock_entry"
-        "gtk_accel_group_unlock_entry"
-        "gtk_accel_group_add"
-        "gtk_accel_group_remove"
-        "gtk_accel_group_handle_add"
-        "gtk_accel_group_handle_remove"
-        "gtk_accel_group_create_add"
-        "gtk_accel_group_create_remove"
         "gtk_accel_group_find"
-        "gtk_accel_groups_from_object"
-        "gtk_accel_group_entries_from_object"
+        "gtk_accel_group_query"
+
+        "gtk_calendar_display_options"
 
         ;; don't know why i'm ignoring these, but pygtk does
         "gtk_container_add_child_arg_type"
@@ -615,15 +690,6 @@
         "gtk_icon_theme_set_search_path" ;; takes array
         "gtk_icon_theme_get_search_path" ;; returns array
         
-        "gtk_item_factory_create_item"
-        "gtk_item_factory_delete_entry"
-        "gtk_item_factory_delete_entries"
-        "gtk_item_factory_popup_with_data"
-        "gtk_item_factory_popup_data"
-        "gtk_item_factory_set_translate_func"
-        "gtk_item_factory_create_items_ac"
-        "gtk_item_factory_create_menu_entries"
-
         "gtk_list_store_set_column_types"
 
         "gtk_preview_uninit"
@@ -645,7 +711,110 @@
         "gtk_widget_new"
 
         "gtk_window_add_embedded_xid"
-        "gtk_window_remove_embedded_xid")
+        "gtk_window_remove_embedded_xid"
+
+        "gtk_check_menu_item_set_show_toggle"
+        "gtk_color_selection_set_change_palette_hook"
+        "gtk_color_selection_set_color"
+        "gtk_color_selection_get_color"
+        "gtk_color_selection_set_update_policy"
+        "gtk_container_foreach_full"
+        "gtk_drag_set_default_icon"
+        "gtk_drawing_area_size"
+        "gtk_entry_new_with_max_length"
+        "gtk_entry_append_text"
+        "gtk_entry_prepend_text"
+        "gtk_entry_set_position"
+        "gtk_entry_select_region"
+        "gtk_entry_set_editable"
+        "gtk_file_folder_is_finished_loading"
+        "gtk_font_selection_get_font"
+        "gtk_font_selection_dialog_get_font"
+        "gtk_hbutton_box_get_spacing_default"
+        "gtk_hbutton_box_get_layout_default"
+        "gtk_hbutton_box_set_spacing_default"
+        "gtk_hbutton_box_set_layout_default"
+        "gtk_image_set"
+        "gtk_image_get"
+        "gtk_item_factories_path_delete"
+        "gtk_label_get"
+        "gtk_label_parse_uline"
+        "gtk_layout_freeze"
+        "gtk_layout_thaw"
+        "gtk_notebook_set_homogeneous_tabs"
+        "gtk_notebook_set_tab_border"
+        "gtk_notebook_set_tab_hborder"
+        "gtk_notebook_set_tab_vborder"
+        "gtk_paned_compute_position"
+        "gtk_progress_bar_new_with_adjustment"
+        "gtk_progress_bar_set_bar_style"
+        "gtk_progress_bar_set_discrete_blocks"
+        "gtk_progress_bar_set_activity_step"
+        "gtk_progress_bar_set_activity_blocks"
+        "gtk_progress_bar_update"
+        "gtk_rc_add_widget_name_style"
+        "gtk_rc_add_widget_class_style"
+        "gtk_rc_add_class_style"
+        "gtk_socket_steal"
+        "gtk_style_get_font"
+        "gtk_style_set_font"
+        "gtk_draw_hline"
+        "gtk_draw_vline"
+        "gtk_draw_shadow"
+        "gtk_draw_polygon"
+        "gtk_draw_arrow"
+        "gtk_draw_diamond"
+        "gtk_draw_box"
+        "gtk_draw_flat_box"
+        "gtk_draw_check"
+        "gtk_draw_option"
+        "gtk_draw_tab"
+        "gtk_draw_shadow_gap"
+        "gtk_draw_box_gap"
+        "gtk_draw_extension"
+        "gtk_draw_focus"
+        "gtk_draw_slider"
+        "gtk_draw_handle"
+        "gtk_draw_expander"
+        "gtk_draw_layout"
+        "gtk_draw_resize_grip"
+        "gtk_draw_string"
+        "gtk_paint_string"
+        "gtk_tooltips_set_delay"
+        "gtk_type_unique"
+        "gtk_type_new"
+        "gtk_type_enum_get_values"
+        "gtk_type_flags_get_values"
+        "gtk_type_enum_find_value"
+        "gtk_type_flags_find_value"
+        "gtk_type_init"
+        "gtk_vbutton_box_get_spacing_default"
+        "gtk_vbutton_box_set_spacing_default"
+        "gtk_vbutton_box_get_layout_default"
+        "gtk_vbutton_box_set_layout_default"
+        "gtk_widget_queue_clear"
+        "gtk_widget_queue_clear_area"
+        "gtk_widget_draw"
+        "gtk_widget_set_uposition"
+        "gtk_widget_set_usize"
+        "gtk_window_set_policy"
+        "gtk_toolbar_set_icon_size"
+        "gtk_toolbar_unset_icon_size"
+        "gtk_toolbar_append_item"
+        "gtk_toolbar_prepend_item"
+        "gtk_toolbar_insert_item"
+        "gtk_toolbar_insert_stock"
+        "gtk_toolbar_append_space"
+        "gtk_toolbar_prepend_space"
+        "gtk_toolbar_insert_space"
+        "gtk_toolbar_remove_space"
+        "gtk_toolbar_append_element"
+        "gtk_toolbar_prepend_element"
+        "gtk_toolbar_insert_element"
+        "gtk_toolbar_append_widget"
+        "gtk_toolbar_prepend_widget"
+        "gtk_toolbar_insert_widget")
+
 
 ;; Things that python-gtk does that we should do, ordered approximately
 ;; according to priority

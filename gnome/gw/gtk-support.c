@@ -257,12 +257,6 @@ _wrap_gtk_action_group_add_radio_actions (GtkActionGroup *action_group,
 }
 #undef FUNC_NAME
 
-GtkWidget*
-gtk_combo_get_entry (GtkCombo *combo)
-{
-    return combo->entry;
-}
-
 gint
 _wrap_gtk_editable_insert_text (GtkEditable *editable, const gchar *text, gint pos)
 {
