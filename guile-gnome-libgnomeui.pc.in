@@ -5,4 +5,4 @@ libdir=@libdir@
 Name: (gnome gnome-ui), Uninstalled
 Description: Guile bindings for libgnomeui
 Version: @VERSION@
-Requires: guile-gnome-glib
+Requires: guile-gnome-glib-@API_VERSION@

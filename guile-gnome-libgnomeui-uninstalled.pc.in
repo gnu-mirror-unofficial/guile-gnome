@@ -7,4 +7,4 @@ includedir=${pcfiledir}
 Name: (gnome gnome-ui), Uninstalled
 Description: Guile bindings for libgnomeui, Not Installed
 Version: @VERSION@
-Requires: guile-gnome-glib
+Requires: guile-gnome-glib-@API_VERSION@
