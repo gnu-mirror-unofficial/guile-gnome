@@ -46,3 +46,10 @@ gdk-pixbuf:
 	../../../h2def.py --procs \
 	   --with-header='(include "gdk-pixbuf-types.defs") (include overrides)' \
 	   /usr/include/gtk-2.0/gdk-pixbuf/gdk-pixbuf*.h > gdk-pixbuf.defs
+
+gtk:
+	../../../h2def.py --types \
+	   /usr/include/gtk-2.0/gtk/gtk*.h > gtk-types.defs
+	../../../h2def.py --procs \
+	   --with-header='(include type-ignores) (include "gtk-types.defs") (include overrides)' \
+	   /usr/include/gtk-2.0/gtk/gtk*.h > gtk.defs

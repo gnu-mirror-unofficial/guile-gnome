@@ -1,0 +1,51 @@
+#!/usr/bin/guile -s
+!#
+;; Copyright (C) 2004 Free Software Foundation, Inc.
+;; GPL version 2 or later.
+
+;; The input file should be composed as <input>:
+;; <input>      ::= <diff-pair>*
+;; <diff-pair>  ::= (+ | -) <list-of-2-or-more-elements>
+
+(use-modules (ice-9 pretty-print))
+
+(define diff-port #f)
+
+(define (usage)
+  (display "diff-to-overrides [DIFF]\n" (current-error-port))
+  (display "If there is no DIFF, input will be read from stdin.\n")
+  (exit 1))
+
+(let ((args (program-arguments)))
+  (case (length args)
+    ((1) (set! diff-port (current-input-port)))
+    ((2) (set! diff-port (open-input-file (cadr args))))
+    (else (usage))))
+     
+(define (assq* key alist)
+  (cond ((null? alist) #f)
+        ((eq? (caar alist) key) alist)
+        (else (assq* key (cdr alist)))))
+
+(define (write-form f)
+  (and=> (and (memq (car f) '(define-function define-method))
+              (assq* 'c-name (cddr f)))
+         (lambda (tail)
+           (set-cdr! tail
+                     (cons `(overrides ,(cadr (car tail)))
+                           (cdr tail)))))
+  (pretty-print f) (newline))
+
+(let lp ((+/- (read diff-port)))
+  (cond
+   ((eof-object? +/-)) ;; finished
+   ((memq +/- '(+ -))
+    (let ((f (read diff-port)))
+      (or (list? f) (error "invalid diff" f))
+      (case +/-
+        ((+) #f) ;; ignore it
+        ((-) (if (not (eq? (car f) 'include))
+                 (write-form f))))
+      (lp (read diff-port))))
+   (else
+    (error "invalid diff" f))))

@@ -3,6 +3,10 @@
 ;; Copyright (C) 2004 Free Software Foundation, Inc.
 ;; GPL version 2 or later.
 
+;; Assumes that a defs file is composed of lists of symbols, strings,
+;; numbers, #t/#f, and other lists. Each toplevel list is assumed to
+;; have at least two elements.
+
 (use-modules (ice-9 pretty-print))
 
 (define from-port #f)
@@ -20,56 +24,62 @@
     (else (usage)))
   (set! from-port (open-input-file (cadr args))))
      
-(define (form-head=? f1 f2)
-  (and (list? f1) (list? f2)
-       (eq? (car f1) (car f2))
-       (cond ((null? (cdr f1)) (null? cdr f2))
-             ((null? (cdr f2)) #f)
-             (else (eq? (cadr f1) (cadr f2))))))
+(define (form-comp-object f)
+  (case (car f)
+    ((define-object define-enum define-flags define-interface
+      define-boxed define-pointer define-function define-method)
+     (cadr (assq 'c-name (cddr f))))
+    ((include)
+     (cadr f))
+    (else
+     (error "unknown defs form type" (car f)))))
+  
+;; If two forms should be treated as the same
+(define (form=? f1 f2)
+  (and (eq? (car f1) (car f2))
+       (apply equal? (map form-comp-object (list f1 f2)))))
 
-;; assume form is either lists, strings, or symbols
+(define (symbol<? x y)
+  (string<? (symbol->string x) (symbol->string y)))
+
 (define (form<? f1 f2)
-  (cond
-   ((and (symbol? f1) (symbol? f2))
-    (string<? (symbol->string f1) (symbol->string f2)))
-   ((and (string? f1) (string? f2))
-    (string<? f1 f2))
-   ((and (list? f1) (list? f2))
-    (cond ((null? f1) (not (null? f2)))
-          ((null? f2) #f)
-          (else (if (equal? (car f1) (car f2))
-                    (form<? (cdr f1) (cdr f2))
-                    (form<? (car f1) (car f2))))))
-   (else #f)))
+  (if (eq? (car f1) (car f2))
+      (let ((c1 (form-comp-object f1))
+            (c2 (form-comp-object f2)))
+        (if (symbol? c1)
+            (if (symbol? c2) (symbol<? c1 c2) #t)
+            (if (symbol? c2) #f (string<? c1 c2))))
+      (symbol<? (car f1) (car f2))))
 
-(define (collect-sexps port)
+(define (collect-forms port)
   (let lp ((out '()))
     (let ((form (read port)))
       (if (eof-object? form)
           (sort! (reverse! out) form<?)
           (lp (cons form out))))))
 
-(define (form-changed? f1 f2)
-  (not (equal? f1 f2)))
+;; If two forms are really the same
+(define (form==? f1 f2)
+  (equal? f1 f2))
 
-(let lp ((l1 (collect-sexps from-port))
-         (l2 (collect-sexps to-port)))
+(let lp ((l1 (collect-forms from-port))
+         (l2 (collect-forms to-port)))
   (cond ((and (null? l1) (null? l2))) ; finished
         ((or (null? l2)
              (form<? (car l1) (car l2))
-             (and (form-head=? (car l1) (car l2))
-                  (form-changed? (car l1) (car l2))))
+             (and (form=? (car l1) (car l2))
+                  (not (form==? (car l1) (car l2)))))
          (display "-")
          (pretty-print (car l1))
          (lp (cdr l1) l2))
         ((or (null? l1)
-             (not (form-head=? (car l1) (car l2)))
-             (and (form-head=? (car l1) (car l2))
-                  (form-changed? (car l1) (car l2))))
+             (not (form=? (car l1) (car l2)))
+             (and (form=? (car l1) (car l2))
+                  (not (form==? (car l1) (car l2)))))
          (display "+")
          (pretty-print (car l2))
          (lp l1 (cdr l2)))
         (else
-         (or (not (form-changed? (car l1) (car l2)))
+         (or (form==? (car l1) (car l2))
              (error "wingo is stupid"))
          (lp (cdr l1) (cdr l2)))))
