@@ -25,27 +25,28 @@
 ;;; Code:
 
 (define-module (gnome gtk gw-pango-spec)
-  :use-module (g-wrap)
-  :use-module (gnome gobject gw-glib-spec)
-  :use-module (gnome gobject gw-gobject-spec)
-  :use-module (gnome gobject defs-support))
+  #:use-module (oop goops)
+  #:use-module (g-wrap)
+  #:use-module (g-wrap guile)
+  #:use-module (gnome gobject gw-glib-spec)
+  #:use-module (gnome gobject gw-gobject-spec)
+  #:use-module (gnome gobject gw-spec-utils)
+  #:use-module (gnome gobject defs-support))
 
-(let ((ws (gw:new-wrapset "guile-gnome-gw-pango")))
+(define-class <pango-wrapset> (<gobject-wrapset-base>)
+  #:language guile #:id 'gnome-pango)
 
-  (gw:wrapset-set-guile-module! ws '(gnome gtk gw-pango))
-  (gw:wrapset-depends-on ws "guile-gnome-gw-standard")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-glib")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gobject")
+(define-method (initialize (ws <pango-wrapset>) initargs)
+  (next-method ws (cons #:module (cons '(gnome gtk gw-pango) initargs)))
 
-  (gw:wrapset-add-cs-declarations!
-   ws
-   (lambda (wrapset client-wrapset)
-     (if (eq? client-wrapset wrapset)
-         '()
-         (list
-          "#include <pango/pango.h>\n"))))
-
-  (register-type "guile-gnome-gw-pango" "PangoGlyph" '<gw:unsigned-long>)
+  (depends-on! ws 'standard  'gnome-glib 'gnome-gobject)
+  
+  (add-cs-global-declarator! ws
+                             (lambda (wrapset)
+                                (list
+                                 "#include <pango/pango.h>\n")))
+  
+  (add-type-alias! ws "PangoGlyph" 'unsigned-long)
 
   (load-defs ws "gnome/defs/pango.defs"))
 

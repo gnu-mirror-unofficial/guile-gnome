@@ -1,0 +1,16 @@
+;; -*- scheme -*-
+; object definitions ...
+;; Enumerations and flags ...
+
+
+;; From test-glib.h
+
+(define-function test_glist_echo
+  (c-name "test_glist_echo")
+  (return-type "GList*-of-char*")
+  (parameters
+    '("GList*-of-char*" "list")
+  )
+)
+
+

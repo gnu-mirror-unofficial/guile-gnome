@@ -1,0 +1,17 @@
+#!/bin/sh
+exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
+!#
+
+(define-module (test-suite test-gw-glib)
+  #:use-module (oop goops)
+  #:use-module (gnome gobject)
+  #:use-module (gnome gobject primitives)
+  #:use-module (test-suite lib)
+  #:use-module (test-suite gw-test-glib))
+
+(with-test-prefix "GList"
+  (pass-if (equal? (test-glist-echo '("a" "b" "c")) '("a" "b" "c"))))
+
+;; Local Variables:
+;; mode: scheme
+;; End:

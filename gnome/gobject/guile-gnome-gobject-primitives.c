@@ -2351,9 +2351,15 @@ SCM_DEFINE (scm_gsignal_primitive_handler_connected_p, "gsignal-primitive-handle
 
 
 
-void guile_gobject_log_handler (const gchar *log_domain, GLogLevelFlags log_level,
-                                const gchar *message, gpointer user_data)
+void
+guile_gobject_log_handler (const gchar *log_domain, GLogLevelFlags log_level,
+                           const gchar *message, gpointer user_data)
 {
+    if (log_domain == NULL)
+        log_domain = "(null)";
+    if (message == NULL)
+        message = "(null)";
+    
     scm_error (sym_gruntime_error, NULL,
                "~A: ~A",
                SCM_LIST2 (scm_str2string (log_domain ? log_domain : "(application)"),

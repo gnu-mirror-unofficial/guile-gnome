@@ -54,6 +54,11 @@
 	* Makefile.am: Make the gnome build conditional, and some
 	cleanups.
 
+2004-02-01  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gtk.scm (<guile-gtk-tree-model>): Defined public as
+	<guile-gtk-generic-tree-model>.
+
 2004-01-14  Andy Wingo  <wingo@pobox.com>
 
 	* gtk.scm: Move functions from generics.scm here, as everyone uses
@@ -67,6 +72,23 @@
 	(gvalue->scm): Use %gtype-instance-value->scm to convert GObject
 	GValues into GOOPS objects. An optimization to prevent excessive
 	allocation and reffing.
+
+2003-12-07  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gda.scm: Support for GdaValue reworked, GdaCommand added.
+
+2003-11-30  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gda.scm (scm->gda-value): New procedure.
+	(value): New accessor, providing method for <gda-value>.
+
+2003-11-26  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gda.scm: New file.
+
+	* Makefile.am (SUBDIRS): Conditionally add gda.
+	
+	* Makefile.am: Simplified conditional structure a bit.
 
 2003-11-08  Andy Wingo  <wingo@pobox.com>
 

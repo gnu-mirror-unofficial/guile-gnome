@@ -734,89 +734,6 @@ SCM_DEFINE (scm_sys_gobject_get_refcount, "%gobject-get-refcount", 1, 0, 0,
 #undef FUNC_NAME
 #endif
 
-
-
-/* 1. methods of generic functions can come from any module.
- *    eg gst_props_entry_get and g_object_get.
- *
- * 2. the generic function can only be defined in one place, or it loses
- *    all knowledge of other methods (gst_props_entry_get replaces all
- *    definitions from other modules, eg g_object_get.)
- *
- * 3. therefore, we export the bindings for generics to the root module
- *
- * This is a temporary hack. We will be more sane we move to Guile 1.{7,8},
- * because the module system will have support for merging generic functions.
- */
-
-SCM_DEFINE (scm_sys_function_to_method_public,
-            "%function->method-public", 3, 0, 0,
-	    (SCM proc, SCM of_object, SCM generic_name),
-	    "")
-#define FUNC_NAME s_scm_sys_function_to_method_public
-{
-    static SCM the_root_module = SCM_BOOL_F, module_add_x = SCM_BOOL_F;
-    SCM arg_syms, specializers, generic, meth, closure;
-    int i;
-    char buffer[32];
-  
-    if (SCM_FALSEP (the_root_module)) {
-        the_root_module = scm_permanent_object
-            (SCM_VARIABLE_REF (scm_c_lookup ("the-root-module")));
-        module_add_x = scm_permanent_object
-            (SCM_VARIABLE_REF (scm_c_lookup ("module-add!")));
-    }
-
-    SCM_VALIDATE_PROC (0, proc);
-
-    /* use a previously available generic, if possible */
-    generic = scm_sym2var (generic_name,
-                           scm_module_lookup_closure (the_root_module),
-                           SCM_BOOL_F);
-    if (SCM_NFALSEP (generic)) {
-        generic = scm_variable_ref (generic);
-        
-        if (!SCM_IS_A_P (generic, scm_class_generic)) {
-            /* if the existing value is not a generic, we choose a new name */
-            gchar *new_name = g_strconcat (".", SCM_SYMBOL_CHARS (generic_name), NULL);
-            generic_name = scm_str2symbol (new_name);
-            g_free (new_name);
-            generic = SCM_BOOL_F;
-        }
-    }
-
-    /* make the method's specializer list */
-    arg_syms = specializers = SCM_EOL;
-    for (i = SCM_NUM2INT (0, SCM_CAR (scm_i_procedure_arity (proc))) - 1; i > 0; i--) {
-        specializers = scm_cons (scm_class_top, specializers);
-        sprintf (buffer, "arg%d", i);
-        arg_syms = scm_cons (scm_str2symbol (buffer), arg_syms);
-    }
-    specializers = scm_cons (of_object, specializers);
-    arg_syms = scm_cons (scm_str2symbol ("obj"), arg_syms);
-  
-    /* make a new generic if needed, and add it to the root module */
-    if (SCM_FALSEP (generic)) {
-        generic = scm_call_1 (scm_sym_make, scm_class_generic);
-        scm_call_3 (module_add_x, the_root_module, generic_name,
-                    scm_make_variable (generic));
-        scm_set_procedure_property_x (generic, sym_name, generic_name);
-    }
-  
-    /* proc has to be a closure: methinks this is a goops bug */
-    closure = scm_closure (scm_list_2 (arg_syms, scm_cons (proc, arg_syms)),
-                           scm_top_level_env (SCM_TOP_LEVEL_LOOKUP_CLOSURE));
-    
-    /* make the method, and add it to the generic */
-    meth = scm_apply_0 (scm_sym_make,
-                        scm_list_5 (scm_class_method,
-                                    scm_c_make_keyword ("specializers"), specializers,
-                                    scm_c_make_keyword ("procedure"), closure));
-    scm_add_method (generic, meth);
-
-    return SCM_UNSPECIFIED;
-}
-#undef FUNC_NAME
 
 
 
@@ -860,7 +777,6 @@ scm_init_gnome_gobject (void)
 #ifdef DEBUG_REFCOUNTING
                   s_scm_sys_gobject_get_refcount,
 #endif
-                  s_scm_sys_function_to_method_public,
 		  NULL);
 
     scm_init_gnome_gobject_helper (G_TYPE_NONE);
@@ -903,6 +819,7 @@ scm_init_gnome_gobject (void)
     scm_init_gnome_gobject_helper (G_TYPE_PARAM_POINTER);
     scm_init_gnome_gobject_helper (G_TYPE_PARAM_BOXED);
     scm_init_gnome_gobject_helper (G_TYPE_PARAM_OBJECT);
+
     scm_init_gnome_gobject_helper (G_TYPE_VALUE_ARRAY);
 }
 
@@ -921,4 +838,22 @@ scm_post_init_gnome_gobject (void)
     scm_sym_scm_to_gvalue = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("scm->gvalue")));
     scm_sym_initialize = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("initialize")));
     scm_sym_gtype_to_class = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gtype->class")));
+}
+
+GType
+g_type_from_instance (GTypeInstance *instance)
+{
+  return G_TYPE_FROM_INSTANCE (instance);
+}
+
+gboolean
+g_type_is_instantiatable (GType type)
+{
+  return G_TYPE_IS_INSTANTIATABLE (type);
+}
+
+gboolean
+g_type_is_classed (GType type)
+{
+  return G_TYPE_IS_CLASSED (type);
 }

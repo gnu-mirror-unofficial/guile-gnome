@@ -43,6 +43,22 @@
 	Call scm_c_scm_to_gvalue instead of rolling our own conversion --
 	allows gboxed-scm tree columns.
 
+2003-11-25  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* generics.scm (<guile-gtk-tree-model>): defined public as
+	<guile-gtk-generic-tree-model>.
+
+	* gw-gtk-spec.scm (GtkTreePath), 
+	* gw-atk-spec.scm, gw-gdk-spec.scm, gw-pango-spec.scm, 
+	* gw-gtk-spec.scm, gw-glade-spec.scm: Use
+	gw-standard instead of guile-gnome-gw-standard.
+
+	* Makefile.am (GTKMODULES): Added graphical-repl.scm.
+	(guilegtkmodule_DATA): Added generics.scm.
+
+	* Makefile.am (GUILE_FLAGS): New variable, to be overriden via
+	make commandline.
+
 2003-11-02  Andy Wingo  <wingo@pobox.com>
 
 	* generics.scm (gtk-text-buffer-get-bounds): Remove, implemented

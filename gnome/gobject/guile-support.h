@@ -28,21 +28,15 @@
 
 #include <libguile.h>
 
-G_BEGIN_DECLS
+#include <g-wrap/guile-compatibility.h>
 
-/* Define this macro if Guile 1.7.x or better is in use. */
-#if defined (SCM_MINOR_VERSION) && (SCM_MINOR_VERSION >= 7) && \
-    defined (SCM_MAJOR_VERSION) && (SCM_MAJOR_VERSION >= 1)
-#define SCM_VERSION_17X 1
-#endif
+G_BEGIN_DECLS
 
 #ifndef SCM_VERSION_17X
 
 #define SCM_VECTOR_SET(x, idx, val) (SCM_VELTS(x)[(idx)] = (val))
 #define SCM_VECTOR_REF(x, idx) (SCM_VELTS(x)[(idx)])
 
-#define scm_gc_malloc(size, what) scm_must_malloc((size), (what))
-#define scm_gc_free(mem, size, what) scm_must_free(mem)
 #define scm_gc_register_collectable_memory(mem, size, what)
 #define scm_gc_unregister_collectable_memory(mem, size, what)
 

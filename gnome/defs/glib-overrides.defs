@@ -33,10 +33,7 @@
   (parameters '("GMainLoop*" "loop")))
 
 (ignore-glob  "_*"
-              "*_ref"
-              "*_unref"
               "*_copy"
-              "*_free"
               "*_newv"
               "*_valist"
               "*_setv"
@@ -47,9 +44,10 @@
               "g_timeout_remove*"
               "g_idle_add*"
               "g_idle_remove*"
+              "g_error_*"
               "*win32*")
 
 (ignore "g_main_context_wait"
-        
-        "g_error_new"
-        "g_set_error")
+        "g_propagate_error"
+        "g_set_error"
+        "g_clear_error")

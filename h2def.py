@@ -248,6 +248,10 @@ def clean_func(buf):
     pat = re.compile(r"""^[#].*?$""", re.MULTILINE) 
     buf=pat.sub('',buf)
 
+    # GLib declaration braces
+    pat = re.compile(r"""^\s*G_(BEGIN|END)_DECLS\s*$""", re.MULTILINE)
+    buf=pat.sub('',buf)
+    
     #typedefs, stucts, and enums
     pat = re.compile(r"""^(typedef|struct|enum)(\s|.|\n)*?;\s*""", re.MULTILINE) 
     buf=pat.sub('',buf)
@@ -408,21 +412,24 @@ if __name__ == '__main__':
     onlyenums = 0
     onlyobjdefs = 0
     enums_without_gtype = 0
+    onlydefs = 0
     
     opts, args = getopt.getopt(sys.argv[1:], 'v',
-                               ['onlyenums', 'onlyobjdefs',
+                               ['onlyenums', 'onlyobjdefs', 'onlydefs',
                                 'enums-without-gtype',
                                 'type-postfix'])
     for o, v in opts:
         if o == '-v':
             verbose = 1
-        if o == '--onlyenums':
+        elif o == '--onlyenums':
             onlyenums = 1
-        if o == '--onlyobjdefs':
+        elif o == '--onlyobjdefs':
             onlyobjdefs = 1
-        if o == '--enums-without-gtype':
+        elif o == '--onlydefs':
+            onlydefs = 1
+        elif o == '--enums-without-gtype':
             enums_without_gtype = 1
-        if o == '--type-postfix':
+        elif o == '--type-postfix':
             typecode = typecode_postfix
         
     if not args[0:1]:
@@ -441,6 +448,9 @@ if __name__ == '__main__':
         write_enum_defs(enums,None, without_gtype = enums_without_gtype)
     elif onlyobjdefs:
         write_obj_defs(objdefs,None)
+    elif onlydefs:
+        for filename in args:
+            write_def(filename,None)
     else:
         write_obj_defs(objdefs,None)
         write_enum_defs(enums,None, without_gtype = enums_without_gtype)

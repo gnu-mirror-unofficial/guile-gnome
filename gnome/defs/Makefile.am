@@ -1,6 +1,7 @@
 guilemoduledir = $(datadir)/guile/gnome/defs
 
-guilemodule_DATA = applet.defs			\
+guilemodule_DATA = 				\
+        applet.defs				\
 	art.defs				\
 	atk.defs				\
 	atk-types.defs				\
@@ -9,6 +10,7 @@ guilemodule_DATA = applet.defs			\
 	bonoboui.defs				\
 	bonoboui-types.defs			\
 	canvas.defs				\
+	common-ignores.defs			\
 	canvas-overrides.defs			\
 	gconf.defs				\
 	gdk.defs				\
@@ -36,6 +38,7 @@ guilemodule_DATA = applet.defs			\
 	ui.defs					\
 	ui-overrides.defs			\
 	vte.defs				\
-	vte-overrides.defs
+	vte-overrides.defs			\
+	gda.defs
 
 EXTRA_DIST = $(guilemodule_DATA) ChangeLog

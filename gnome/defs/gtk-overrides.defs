@@ -30,7 +30,7 @@
 (define-object GenericTreeModel
   (in-module "GuileGtk")
   (parent "GtkTreeModel")
-  (c-name "GuileGtkTreeModel")
+  (c-name "GuileGtkGenericTreeModel")
   (gtype-id "GUILE_GTK_TYPE_GENERIC_TREE_MODEL"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

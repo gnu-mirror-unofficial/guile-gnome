@@ -1,3 +1,10 @@
+2003-11-25  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* Makefile.am (GUILE_SNARF_CFLAGS): Added $(G_WRAP_FLAGS).
+	
+	* gw-corba-spec.scm: Use gw-standard instead of
+	guile-gnome-gw-standard.
+
 2003-10-22  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* guile-gnome-corba-primitives.c: Use for "" instead of <> for our

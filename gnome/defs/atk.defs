@@ -1,5 +1,7 @@
 ;; -*- scheme -*-
 
+(include "common-ignores.defs")
+
 (include "atk-types.defs")
 
 ;; From /usr/include/atk-1.0/atk/atkaction.h

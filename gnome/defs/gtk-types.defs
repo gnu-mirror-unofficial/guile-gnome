@@ -1933,26 +1933,6 @@
   )
 )
 
-(define-flags PrivateFlags
-  (in-module "Gtk")
-  (c-name "GtkPrivateFlags")
-  (gtype-id "GTK_TYPE_PRIVATE_FLAGS")
-  (values
-    '("user-style" "PRIVATE_GTK_USER_STYLE")
-    '("resize-pending" "PRIVATE_GTK_RESIZE_PENDING")
-    '("leave-pending" "PRIVATE_GTK_LEAVE_PENDING")
-    '("has-shape-mask" "PRIVATE_GTK_HAS_SHAPE_MASK")
-    '("in-reparent" "PRIVATE_GTK_IN_REPARENT")
-    '("direction-set" "PRIVATE_GTK_DIRECTION_SET")
-    '("direction-ltr" "PRIVATE_GTK_DIRECTION_LTR")
-    '("anchored" "PRIVATE_GTK_ANCHORED")
-    '("child-visible" "PRIVATE_GTK_CHILD_VISIBLE")
-    '("redraw-on-alloc" "PRIVATE_GTK_REDRAW_ON_ALLOC")
-    '("alloc-needed" "PRIVATE_GTK_ALLOC_NEEDED")
-    '("request-needed" "PRIVATE_GTK_REQUEST_NEEDED")
-  )
-)
-
 (define-enum ProgressBarStyle
   (in-module "Gtk")
   (c-name "GtkProgressBarStyle")
@@ -2115,16 +2095,6 @@
   (values
     '("empty" "GTK_TOOLBAR_SPACE_EMPTY")
     '("line" "GTK_TOOLBAR_SPACE_LINE")
-  )
-)
-
-(define-enum TreeViewMode
-  (in-module "Gtk")
-  (c-name "GtkTreeViewMode")
-  (gtype-id "GTK_TYPE_TREE_VIEW_MODE")
-  (values
-    '("line" "GTK_TREE_VIEW_LINE")
-    '("item" "GTK_TREE_VIEW_ITEM")
   )
 )
 

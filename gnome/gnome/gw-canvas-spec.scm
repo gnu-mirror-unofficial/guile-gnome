@@ -25,34 +25,32 @@
 ;;; Code:
 
 (define-module (gnome gnome gw-canvas-spec)
+  :use-module (oop goops)
   :use-module (g-wrap)
+  :use-module (g-wrap guile)
   :use-module (gnome gobject gw-gobject-spec)
   :use-module (gnome gtk gw-gtk-spec)
+  :use-module (gnome gobject gw-spec-utils)
   :use-module (gnome gobject defs-support))
 
-(let ((ws (gw:new-wrapset "guile-gnome-gw-canvas")))
+(define-class <gnome-canvas-wrapset> (<gobject-wrapset-base>)
+  #:language guile #:id 'gnome-canvas)
 
-  (gw:wrapset-set-guile-module! ws '(gnome gnome gw-canvas))
-  (gw:wrapset-depends-on ws "guile-gnome-gw-standard")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-glib")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gobject")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-atk")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gdk")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-pango")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gtk")
+(define-method (initialize (ws <gnome-canvas-wrapset>) initargs)
+  (next-method ws (append '(#:module (gnome gnome gw-canvas)) initargs))
+  
+  (depends-on! ws
+               'standard 'gnome-glib 'gnome-gobject
+               'gnome-atk 'gnome-gdk 'gnome-pango 'gnome-gtk)
 
-  (gw:wrapset-add-cs-declarations!
-   ws
-   (lambda (wrapset client-wrapset)
-     (list
-      (if (not client-wrapset)
-          (list
-           "#include <libgnomecanvas/libgnomecanvas.h>\n"
-           "#include <libgnomecanvas/gnome-canvas-clipgroup.h>\n")
-           ;"#include \"source-view-support.h\"\n")
-          (list
-           "#include <libgnomecanvas/libgnomecanvas.h>\n"
-           "#include <libgnomecanvas/gnome-canvas-clipgroup.h>\n"
-           )))))
+  (add-cs-global-declarator!
+   ws (lambda (lang)
+        (list "#include <libgnomecanvas/libgnomecanvas.h>\n"
+              "#include <libgnomecanvas/gnome-canvas-clipgroup.h>\n")))
+  
+  (add-client-cs-global-declarator!
+   ws (lambda (lang)
+        (list "#include <libgnomecanvas/libgnomecanvas.h>\n"
+              "#include <libgnomecanvas/gnome-canvas-clipgroup.h>\n")))
 
   (load-defs ws "gnome/defs/canvas.defs"))

@@ -25,82 +25,42 @@
 ;;; Code:
 
 (define-module (gnome gtk gw-gdk-spec)
-  :use-module (g-wrap)
-  :use-module (gnome gtk gw-pango-spec)
-  :use-module (gnome gobject gw-spec-utils)
-  :use-module (gnome gobject defs-support))
+  #:use-module (oop goops)
+  #:use-module (ice-9 optargs)
+  #:use-module (g-wrap)
+  #:use-module (g-wrap guile)
+  #:use-module (gnome gtk gw-pango-spec)
+  #:use-module (gnome gobject gw-spec-utils)
+  #:use-module (gnome gobject defs-support))
 
-(define (gdk:gwrap-event ws ctype)
-  (define (c-type-name-func typespec)
-    (if (memq 'const (gw:typespec-get-options typespec))
-        (string-append "const " ctype " *")
-        (string-append ctype " *")))
+(define-class <gdk-wrapset> (<gobject-wrapset-base>)
+  #:language guile #:id 'gnome-gdk)
 
-  (define (scm->c-ccg c-var scm-var typespec status-var)
-    (list
-     (if (memq 'null-ok (gw:typespec-get-options typespec))
-         (list
-          "if (SCM_FALSEP (" scm-var "))\n"
-          "  " c-var " = NULL;\n"
-          "else ")
-         '())
-     "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
-     "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), GDK_TYPE_EVENT))\n"
-     "  " c-var " = (" (c-type-name-func typespec) ") g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
-     "else {\n"
-     "  " c-var " = NULL;\n"
-     `(gw:error ,status-var type ,scm-var)
-     "}\n"))
-
-  (define (c->scm-ccg scm-var c-var typespec status-var)
-    (list
-     "if (" c-var " == NULL) {\n"
-     "  " scm-var " = SCM_BOOL_F;\n"
-     "} else {\n"
-     "  " scm-var " = scm_c_make_gvalue (GDK_TYPE_EVENT);\n"
-     "  g_value_set_boxed ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n"
-     "}\n"))
+(define-method (initialize (ws <gdk-wrapset>) initargs)
+  (next-method ws (cons #:module (cons '(gnome gtk gw-gdk) initargs)))
   
-  (define (c-destructor c-var typespec status-var force?)
-    ;; our temp vars are just pointers, there's nothing to clean up
-    '())
+  (depends-on! ws 'standard 'gnome-glib 'gnome-gobject 'gnome-pango)
+
+  (add-cs-global-declarator! ws
+                             (lambda (wrapset)
+                                (list
+                                 "#include <gdk/gdk.h>\n"
+                                 "#include \"gdk-support.h\"\n")))
   
-  (gobject:gwrap-helper ws ctype c-type-name-func scm->c-ccg
-                        c->scm-ccg c-destructor "GdkEvent"))
-
-(let ((ws (gw:new-wrapset "guile-gnome-gw-gdk")))
-
-  (gw:wrapset-set-guile-module! ws '(gnome gtk gw-gdk))
-  (gw:wrapset-depends-on ws "guile-gnome-gw-standard")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-glib")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gobject")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-pango")
-
-  (gw:wrapset-add-cs-declarations!
+  (add-cs-initializer!
    ws
-   (lambda (wrapset client-wrapset)
-     (if (not client-wrapset)
-         (list
-          "#include <gdk/gdk.h>\n"
-          "#include \"gdk-support.h\"\n")
-         (list
-          "#include <gdk/gdk.h>\n"))))
-
-  (gw:wrapset-add-cs-wrapper-initializers!
-   ws
-   (lambda (wrapset client-wrapset status-var)
-     (if (not client-wrapset)
-         '("gdk_init (NULL, NULL);\n")
-         '())))
-
-  (register-type "guile-gnome-gw-gdk" "GdkWChar" '<gw:unsigned-long>)
-
+   (lambda (wrapset status-var)
+     '("gdk_init (NULL, NULL);\n")))
+  
+  (add-type-alias! ws "GdkWChar" 'unsigned-long)
+  
   (for-each
    (lambda (ctype)
-     (register-type
-      "guile-gnome-gw-gdk"
-      (string-append ctype "*")
-      (gw:type-get-name (gdk:gwrap-event ws ctype))))
+     (let ((event (make <gdk-event-type>
+                    #:ctype ctype
+                    #:c-type-name (string-append ctype "*"))))
+       (add-type! ws event)
+       (add-type-alias! ws (string-append ctype "*") (name event))))
    '("GdkEventAny"
      "GdkEventKey"
      "GdkEventButton"
@@ -121,7 +81,43 @@
      "GdkEventSetting"))
 
   ;; a hack now -- dunno what to do with this...
-  (register-type "guile-gnome-gw-gdk" "GdkNativeWindow" '<gw:unsigned-long>)
-
+  (add-type-alias! ws "GdkNativeWindow" 'unsigned-long)
+  
   (load-defs ws "gnome/defs/gdk.defs"))
+
+
+(define-class <gdk-event-type> (<gobject-classed-pointer-type>))
+
+(define-method (initialize (type <gdk-event-type>) initargs)
+  (next-method type (cons #:gtype-id (cons "GDK_TYPE_EVENT" initargs))))
+
+(define-method (unwrap-value-cg (lang <gw-guile>)
+                                (type <gdk-event-type>)
+                                (value <gw-value>)
+                                status-var)
+  (let ((c-var (var value))
+        (scm-var (scm-var value)))
+    (list
+     (unwrap-null-check lang value status-var)
+     "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
+     "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), GDK_TYPE_EVENT))\n"
+     "  " c-var " = (" (c-type-name type)  ") g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
+     "else {\n"
+     "  " c-var " = NULL;\n"
+     `(gw:error ,status-var type ,scm-var)
+    "}\n")))
+
+(define-method (wrap-value-cg (lang <gw-guile>)
+                              (type <gdk-event-type>)
+                              (value <gw-value>)
+                              status-var)
+  (let ((c-var (var value))
+        (scm-var (scm-var value)))
+    (list
+     "if (" c-var " == NULL) {\n"
+     "  " scm-var " = SCM_BOOL_F;\n"
+     "} else {\n"
+     "  " scm-var " = scm_c_make_gvalue (GDK_TYPE_EVENT);\n"
+     "  g_value_set_boxed ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n"
+     "}\n")))
 

@@ -1,3 +1,7 @@
+2004-04-12  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* h2def.py: Quick hack to fix G_*_DECLS misparsing.
+
 2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* configure.in: Depend on libgnomeui >= 2.6.0 and gtk+ >= 2.4.0.
@@ -36,6 +40,18 @@
 	* configure.in: Check for GLib >= 2.2.0, since 2.1.X has no
 	g_{set,get}_application_name.
 
+	* configure.in: Use pkg-config to check for g-wrap.
+
+2004-01-20  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* guile-gobject.pc.in: Require g-wrap and drop @GUILE_LIBS@.
+
+	* autogen.sh: Require automake 1.7.
+
+2004-01-05  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* h2def.py: Added new option --onlydefs.
+
 2003-12-17  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* TODO: Added entry on procedure->macro usage.
@@ -43,6 +59,10 @@
 	* h2def.py: Added option --type-postfix, as needed for APIs
 	that use PREFIX_CLASSNAME_TYPE instead of PREFIX_TYPE_CLASSNAME,
 	as GTK+ does.
+
+2003-12-07  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* configure.in: Check for libgda >= 0.15.0 (we need new API).
 
 2003-10-26  Andy Wingo  <wingo@pobox.com>
 

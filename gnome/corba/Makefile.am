@@ -6,12 +6,14 @@ guilecorbamodule_DATA = primitives.scm types.scm gw-corba.scm gw-corba-spec.scm
 
 EXTRA_DIST = primitives.scm types.scm gw-corba-spec.scm
 
-guile-gnome-gw-corba.h guile-gnome-gw-corba.c guile-gnome-gw-corba.html: gw-corba-spec.scm
+guile-gnome-gw-corba.c guile-gnome-gw-corba.html: gw-corba-spec.scm
 	guile -c \
 	  "(set! %load-path (cons \"${G_WRAP_MODULE_DIR}\" %load-path)) \
 	   (set! %load-path (cons \"${top_srcdir}\" %load-path)) \
-	   (primitive-load \"$(srcdir)/gw-corba-spec.scm\") \
-	   (gw:generate-wrapset \"guile-gnome-gw-corba\")"
+	   (use-modules (g-wrap)) \
+	   (use-modules (g-wrap guile)) \
+	   (use-modules (gnome corba gw-corba-spec)) \
+	   (generate-wrapset guile 'gnome-corba \"guile-gnome-gw-corba\")"
 	mv guile-gnome-gw-corba.scm gw-corba.scm
 
 DOT_X_FILES = \
@@ -24,7 +26,8 @@ DOT_DOC_FILES = \
 	guile-gnome-corba-primitives.doc	\
 	guile-gnome-corba-types.doc
 
-GUILE_SNARF_CFLAGS = $(DEFS) $(AM_CFLAGS) $(GUILE_CFLAGS) $(CORBA_CFLAGS)
+GUILE_SNARF_CFLAGS = $(DEFS) $(AM_CFLAGS) $(GUILE_CFLAGS) $(CORBA_CFLAGS) \
+		     $(G_WRAP_CFLAGS) 
 
 SUFFIXES = .x .doc
 .c.x:
@@ -44,7 +47,7 @@ guile-gnome-corba-procedures.txt: guile-gnome-corba.texi
 	makeinfo --force -o $@ $< || test -f $@
 
 BUILT_SOURCES = \
-	guile-gnome-gw-corba.h guile-gnome-gw-corba.c $(DOT_X_FILES) 
+	guile-gnome-gw-corba.c $(DOT_X_FILES) 
 #$(DOT_DOC_FILES)  gnomecorba.html
 
 CLEANFILES = $(BUILT_SOURCES) guile-gnome-gw-corba.log	\
@@ -70,9 +73,7 @@ libguile_gnome_corba_la_LIBADD = $(CORBA_LIBS) ../gobject/libguile-gnome-gobject
 
 libguile_gnome_corba_la_LDFLAGS = -export-dynamic
 
-libguile_gnome_gw_corba_la_SOURCES = \
-	guile-gnome-gw-corba.h	\
-	guile-gnome-gw-corba.c
+libguile_gnome_gw_corba_la_SOURCES = guile-gnome-gw-corba.c
 
 libguile_gnome_gw_corba_la_CFLAGS = $(AM_CFLAGS) $(CORBA_CFLAGS) $(G_WRAP_CFLAGS) -DORBIT2_INTERNAL_API  
 

@@ -52,6 +52,8 @@
                (%gtype-instance-primitive-destroy! primitive-instance))))
   instance)
 
+(define-public <guile-gtk-tree-model> <guile-gtk-generic-tree-model>)
+
 ;; Support tree models written in guile.
 (define-method (on-get-flags (obj <guile-gtk-tree-model>))
   (make <gtk-tree-model-flags> #:value 0))

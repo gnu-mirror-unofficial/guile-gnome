@@ -25,40 +25,38 @@
 ;;; Code:
 
 (define-module (gnome gnome gw-ui-spec)
+  :use-module (oop goops)
   :use-module (g-wrap)
+  :use-module (g-wrap guile)
   :use-module (gnome gobject gw-gobject-spec)
   :use-module (gnome gtk gw-gtk-spec)
+  :use-module (gnome gobject gw-spec-utils)
   :use-module (gnome gobject defs-support))
 
-(let ((ws (gw:new-wrapset "guile-gnome-gw-ui")))
+(define-class <gnome-ui-wrapset> (<gobject-wrapset-base>)
+  #:language guile #:id 'gnome-ui)
 
-  (gw:wrapset-set-guile-module! ws '(gnome gnome gw-ui))
-  (gw:wrapset-depends-on ws "guile-gnome-gw-standard")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-glib")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gobject")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-atk")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gdk")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-pango")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gtk")
+(define-method (initialize (ws <gnome-ui-wrapset>) initargs)
+  (next-method ws (append '(#:module (gnome gnome gw-ui)) initargs))
 
-  (gw:wrapset-add-cs-declarations!
-   ws
-   (lambda (wrapset client-wrapset)
-     (list
-      (if (not client-wrapset)
-          (list
-           "#include <libgnomeui/libgnomeui.h>\n"
-           ;"#include \"source-view-support.h\"\n"
-           )
-          (list
-           "#include <libgnomeui/libgnomeui.h>\n"
-           )))))
+  (depends-on! ws
+               'standard 'gnome-glib 'gnome-gobject
+               'gnome-atk 'gnome-gdk 'gnome-pango 'gnome-gtk)
 
-  (register-type "guile-gnome-gw-ui" "pid_t" '<gw:int>)
-  (register-type "guile-gnome-gw-ui" "time_t" '<gw:int>)
+  (add-cs-global-declarator!
+   ws (lambda (lang)
+        (list "#include <libgnomeui/libgnomeui.h>\n")))
 
-  ;; Until we wrap bonobo, hack in these definitions
-  (register-type "guile-gnome-gw-ui" "BonoboDockItemBehavior" '<gw:int>)
-  (register-type "guile-gnome-gw-ui" "BonoboDockPlacement" '<gw:int>)
-
+  (add-client-cs-global-declarator!
+   ws (lambda (lang)
+        (list "#include <libgnomeui/libgnomeui.h>\n")))
+  
+  (for-each
+   (lambda (elt) (add-type-alias! ws (car elt) (cadr elt)))
+   '(("pid_t" int)
+     ("time_t" int)
+     ;; Until we wrap bonobo, hack in these definitions
+     ("BonoboDockItemBehavior" int)
+     ("BonoboDockPlacement" int)))
+  
   (load-defs ws "gnome/defs/ui.defs"))

@@ -6,9 +6,8 @@ TODO for (gnome gobject)
 * either get gw-standard accepted upstream or rename it
 
 * make method creation not so damn slow
-  - setting of precedure properties should not have to do so many
-    scm_c_lookups, perhaps g-wrap needs to be changed here
-  - making of methods takes way too damn long (in generics.scm)
+  - making of methods/generics takes too long (probably GOOPS 
+    is at fault here)
 
 * review refcounting
   - a nice test-suite would help here
@@ -20,7 +19,6 @@ TODO for (gnome glib)
 ====================
 
 * wrap necessary parts of glib
-  - GError support: turn GErrors into exceptions
   - GString <-> scm string conversion
   - quarks
   - trees, perhaps?
@@ -47,4 +45,4 @@ TODO for (gnome gtk)
 * translate some more example code from guile-gtk and other language bindings
 
 
-$Id: TODO,v 1.4 2004/02/01 14:51:17 rottmann Exp $
+$Id: TODO,v 1.2 2003/07/03 15:16:02 wingo Exp $

@@ -1,0 +1,20 @@
+2003-12-07  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gda-support.c (scm_c_gda_value_set)
+	(scm_gda_value_primitive_get): Support for string and number types.
+
+	* gw-gda-spec.scm: Support GdaValue and GdaCommand.
+	
+	* gda-support.c, gda-support.h: New files.
+	* Makefile.am: Snarfing support.
+
+2003-11-30  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gw-gda-spec.scm: Added support for <gda-value>.
+
+	* Makefile.am: Adapted.
+	* gda-support.c, gda-support.h: New files.
+
+2003-11-26  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* Makefile.am, gw-gda-spec.scm: New files.

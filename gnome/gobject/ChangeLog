@@ -183,6 +183,11 @@
 	(s_scm_gvalue_array_primitive_append): Don't wrap SCM_DEFINE
 	invocation too much, since it seems to confuse older snarfers.
 
+2004-01-20  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* defs-support.scm (load-defs): The glob:* functions are not
+	existant anymore in SLIB3, and were aliased to filename:* anyway.
+
 2003-12-30  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* guile-gnome-gobject-primitives.c (scm_c_make_gtype_name) 
@@ -210,8 +215,55 @@
 	enough related to the size of fundamental types. Also added gshort
 	and gushort as types.
 
+2003-12-13  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* guile-support.h: Build upon g-wrap-compatibilty.h.
+
+2003-12-07  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* guile-gnome-gobject-primitives.h
+	(scm_init_gnome_gobject_helper): Added declaration.
+
+2003-12-06  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* guile-gnome-gobject-primitives.c (guile_gobject_log_handler):
+	Always issue error, even with NULL domain/message.
+
+2003-12-03  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* guile-gnome-gobject-primitives.c (guile_gobject_log_handler):
+	Protect against NULL arguments.
+
+2003-12-02  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gw-glib-spec.scm (GError): Ignore null-ok typespec option (we
+	always pass a pointer).
+
+2003-11-30  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gw-glib-spec.scm: Register gshort and gushort type aliases.
+
 2003-11-22  Andreas Rottmann  <a.rottmann@gmx.at>
 
+	* Makefile.am: Use $(G_WRAP_LIBS) and $(G_WRAP_CFLAGS).
+
+	* gw-glib-spec.scm: Adapted for new g-wrap. Implemented
+	transparent GError handling (throw expection and hide argument).
+	
+	* gw-spec-utils.scm, gw-gobject-spec.scm: Reworked for new g-wrap.
+	
+	* Makefile.am: Removed gw-standard sections.
+	* gw-standard-spec.scm: Removed, since g-wrap now has an up-to-date
+	copy. All uses changed back to "(g-wrap gw-standard-spec)".
+	
+	* guile-gnome-gobject.c, guile-gnome-gobject.h
+	(scm_sys_function_to_method_public): Removed, functionality is now
+	in g-wrap.
+	
+	* guile-gnome-gobject.c, guile-gnome-gobject.h
+	(g_type_from_instance, g_type_is_instantiatable)
+	(g_type_is_classed): New macro-workalike functions.
+	
 	* glib-support.h: Added #include guards.
 	* glib-support.c: Quick-fixed to work with Guile 1.7.
 	

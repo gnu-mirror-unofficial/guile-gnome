@@ -1,12 +1,12 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
-includedir=@includedir@/guile-gobject-2.0
+includedir=@includedir@/guile-gobject
 toolsdir=${exec_prefix}/bin
 
 Name: Guile-GObject
 Description: GObject support runtime for Guile
-Requires: gobject-2.0
+Requires: gobject-2.0 g-wrap-2.0-guile
 Version: @VERSION@
-Libs: -L${libdir} -lguile-gnome-gobject @GUILE_LIBS@
-Cflags: -I${includedir} @GUILE_CFLAGS@
+Libs: -L${libdir} -lguile-gnome-gobject
+Cflags: -I${includedir}

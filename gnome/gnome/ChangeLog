@@ -13,7 +13,15 @@
 	* Makefile.am: Add bindings for libgnomecanvas, libgnomeui, and
 	libgnome.
 
-2003-10-24  Andreas Rottmann  <a.rottmann@gmx.at>
+2003-12-13  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gw-canvas-spec.scm, gw-ui-spec.scm, gw-canvas-spec.scm: Use
+	gw-standard instead of guile-gnome-gw-standard.
+	
+2003-11-25  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gw-vte-spec.scm, gw-source-view-spec.scm: Use gw-standard
+	instead of guile-gnome-gw-standard.
 
 	* Makefile.am: 'make distcheck' fixes.
 

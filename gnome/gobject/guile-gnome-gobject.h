@@ -26,6 +26,7 @@
 
 #include <guile-gnome-gobject-primitives.h>
 #include <libguile.h>
+#include <g-wrap/core-runtime.h>
 
 G_BEGIN_DECLS
 
@@ -117,10 +118,15 @@ SCM scm_c_gtype_instance_to_scm (GTypeInstance *ginstance);
 SCM scm_c_gvalue_to_scm (const GValue *value);
 GValue* scm_c_scm_to_gvalue (GType type, SCM scm);
 
+void scm_init_gnome_gobject_helper (GType type);
+
 
 
-SCM scm_sys_function_to_method_public (SCM proc, SCM of_object,
-                                       SCM generic_name);
+/* Macros that are not available as functions (needed for glueless wrapping) */
+
+GType    g_type_from_instance (GTypeInstance *);
+gboolean g_type_is_instantiatable (GType type);
+gboolean g_type_is_classed (GType type);
 
 G_END_DECLS
 

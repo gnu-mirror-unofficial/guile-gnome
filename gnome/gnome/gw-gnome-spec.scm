@@ -25,29 +25,30 @@
 ;;; Code:
 
 (define-module (gnome gnome gw-gnome-spec)
+  :use-module (oop goops)
   :use-module (g-wrap)
+  :use-module (g-wrap guile)
   :use-module (gnome gobject gw-gobject-spec)
+  :use-module (gnome gobject gw-spec-utils)
   :use-module (gnome gobject defs-support))
 
-(let ((ws (gw:new-wrapset "guile-gnome-gw-gnome")))
+(define-class <libgnome-wrapset> (<gobject-wrapset-base>)
+  #:language guile #:id 'gnome-libgnome)
 
-  (gw:wrapset-set-guile-module! ws '(gnome gnome gw-gnome))
-  (gw:wrapset-depends-on ws "guile-gnome-gw-standard")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-glib")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gobject")
+(define-method (initialize (ws <libgnome-wrapset>) initargs)
+  (next-method ws (append '(#:module (gnome gnome gw-gnome)) initargs))
+  
+  (depends-on! ws 'standard 'gnome-glib 'gnome-gobject)
 
-  (gw:wrapset-add-cs-declarations!
-   ws
-   (lambda (wrapset client-wrapset)
-     (list
-      (if (not client-wrapset)
-          (list
-           "#include <libgnome/libgnome.h>\n"
-           "#include <libgnome/libgnometypebuiltins.h>\n"
-           "#include \"gnome-support.h\"\n")
-          (list
-           "#include <libgnome/libgnome.h>\n"
-           "#include <libgnome/libgnometypebuiltins.h>\n"
-           )))))
+  (add-cs-global-declarator!
+   ws (lambda (lang)
+        (list "#include <libgnome/libgnome.h>\n"
+              "#include <libgnome/libgnometypebuiltins.h>\n"
+              "#include \"gnome-support.h\"\n")))
+
+  (add-client-cs-global-declarator!
+   ws (lambda (lang)
+        (list "#include <libgnome/libgnome.h>\n"
+              "#include <libgnome/libgnometypebuiltins.h>\n")))
 
   (load-defs ws "gnome/defs/gnome.defs"))

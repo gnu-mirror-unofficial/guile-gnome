@@ -24,41 +24,46 @@
 ;;
 ;;; Code:
 
-(define-module (gnome gtk gw-source-view-spec)
+(define-module (gnome gnome gw-source-view-spec)
+  :use-module (oop goops)
   :use-module (g-wrap)
+  :use-module (g-wrap guile)
   :use-module (gnome gobject gw-gobject-spec)
   :use-module (gnome gtk gw-gtk-spec)
+  :use-module (gnome gobject gw-spec-utils)
   :use-module (gnome gobject defs-support))
 
-(let ((ws (gw:new-wrapset "guile-gnome-gw-source-view")))
+(define-class <gnome-source-view-wrapset> (<gobject-wrapset-base>)
+  #:language guile #:id 'gnome-source-view)
 
-  (gw:wrapset-set-guile-module! ws '(gnome gnome gw-source-view))
-  (gw:wrapset-depends-on ws "guile-gnome-gw-standard")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-glib")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gobject")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-atk")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gdk")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-pango")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gtk")
+(define-method (initialize (ws <gnome-source-view-wrapset>) initargs)
+  (next-method ws (append '(#:module (gnome gnome gw-source-view)) initargs))
 
-  (gw:wrapset-add-cs-declarations!
-   ws
-   (lambda (wrapset client-wrapset)
-     (list
-      (if (not client-wrapset)
-          (list
-           "#include <gtksourceview/gtksourceview.h>\n"
-           "#include <gtksourceview/gtksourceview-typebuiltins.h>\n"
-           "#include <gtksourceview/gtksourceprintjob.h>\n"
-           "#include <gtksourceview/gtksourcetag.h>\n"
-           "#include <gtksourceview/gtksourcelanguagesmanager.h>\n"
-           "#include \"source-view-support.h\"\n")
-          (list
-           "#include <gtksourceview/gtksourceview.h>\n"
-           "#include <gtksourceview/gtksourceview-typebuiltins.h>\n"
-           "#include <gtksourceview/gtksourceprintjob.h>\n"
-           "#include <gtksourceview/gtksourcetag.h>\n"
-           "#include <gtksourceview/gtksourcelanguagesmanager.h>\n"
-           )))))
+  (depends-on! ws
+               'standard 'gnome-glib 'gnome-gobject
+               'gnome-atk 'gnome-gdk 'gnome-pango 'gnome-gtk)
+
+  (add-cs-global-declarator!
+   ws (lambda (lang)
+        (list "#include <vte/vte.h>\n")))
+  
+  (add-cs-global-declarator!
+   ws (lambda (lang)
+        (list
+         "#include <gtksourceview/gtksourceview.h>\n"
+         "#include <gtksourceview/gtksourceview-typebuiltins.h>\n"
+         "#include <gtksourceview/gtksourceprintjob.h>\n"
+         "#include <gtksourceview/gtksourcetag.h>\n"
+         "#include <gtksourceview/gtksourcelanguagesmanager.h>\n"
+         "#include \"source-view-support.h\"\n")))
+
+  (add-client-cs-global-declarator!
+   ws (lambda (lang)
+        (list
+         "#include <gtksourceview/gtksourceview.h>\n"
+         "#include <gtksourceview/gtksourceview-typebuiltins.h>\n"
+         "#include <gtksourceview/gtksourceprintjob.h>\n"
+         "#include <gtksourceview/gtksourcetag.h>\n"
+         "#include <gtksourceview/gtksourcelanguagesmanager.h>\n")))
 
   (load-defs ws "gnome/defs/gtksourceview.defs"))

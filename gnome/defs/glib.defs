@@ -560,4 +560,607 @@
   )
 )
 
+;; gfileutils.h [rotty]
+
+;; Enumerations and flags ...
+
+(define-enum FileError
+  (in-module "G")
+  (c-name "GFileError")
+  (values
+    '("exist" "G_FILE_ERROR_EXIST")
+    '("isdir" "G_FILE_ERROR_ISDIR")
+    '("acces" "G_FILE_ERROR_ACCES")
+    '("nametoolong" "G_FILE_ERROR_NAMETOOLONG")
+    '("noent" "G_FILE_ERROR_NOENT")
+    '("notdir" "G_FILE_ERROR_NOTDIR")
+    '("nxio" "G_FILE_ERROR_NXIO")
+    '("nodev" "G_FILE_ERROR_NODEV")
+    '("rofs" "G_FILE_ERROR_ROFS")
+    '("txtbsy" "G_FILE_ERROR_TXTBSY")
+    '("fault" "G_FILE_ERROR_FAULT")
+    '("loop" "G_FILE_ERROR_LOOP")
+    '("nospc" "G_FILE_ERROR_NOSPC")
+    '("nomem" "G_FILE_ERROR_NOMEM")
+    '("mfile" "G_FILE_ERROR_MFILE")
+    '("nfile" "G_FILE_ERROR_NFILE")
+    '("badf" "G_FILE_ERROR_BADF")
+    '("inval" "G_FILE_ERROR_INVAL")
+    '("pipe" "G_FILE_ERROR_PIPE")
+    '("again" "G_FILE_ERROR_AGAIN")
+    '("intr" "G_FILE_ERROR_INTR")
+    '("io" "G_FILE_ERROR_IO")
+    '("perm" "G_FILE_ERROR_PERM")
+    '("failed" "G_FILE_ERROR_FAILED")
+  )
+)
+
+(define-flags FileTest
+  (in-module "G")
+  (c-name "GFileTest")
+  (values
+    '("is-regular" "G_FILE_TEST_IS_REGULAR")
+    '("is-symlink" "G_FILE_TEST_IS_SYMLINK")
+    '("is-dir" "G_FILE_TEST_IS_DIR")
+    '("is-executable" "G_FILE_TEST_IS_EXECUTABLE")
+    '("exists" "G_FILE_TEST_EXISTS")
+  )
+)
+
+
+;; From /usr/include/glib-2.0/glib/gfileutils.h
+
+; This one wasn't found by h2def.py
+(define-function g_file_error_quark
+  (c-name "g_file_error_quark")
+  (return-type "GQuark")
+)
+
+(define-function g_file_error_from_errno
+  (c-name "g_file_error_from_errno")
+  (return-type "GFileError")
+  (parameters
+    '("gint" "err_no")
+  )
+)
+
+(define-function g_file_test
+  (c-name "g_file_test")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "filename")
+    '("GFileTest" "test")
+  )
+)
+
+(define-function g_file_get_contents
+  (c-name "g_file_get_contents")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "filename")
+    '("gchar**" "contents")
+    '("gsize*" "length")
+    '("GError**" "error")
+  )
+)
+
+(define-function g_mkstemp
+  (c-name "g_mkstemp")
+  (return-type "int")
+  (parameters
+    '("char*" "tmpl")
+  )
+)
+
+(define-function g_file_open_tmp
+  (c-name "g_file_open_tmp")
+  (return-type "int")
+  (parameters
+    '("const-char*" "tmpl")
+    '("char**" "name_used")
+    '("GError**" "error")
+  )
+)
+
+(define-function g_build_path
+  (c-name "g_build_path")
+  (return-type "gchar*")
+  (parameters
+    '("const-gchar*" "separator")
+    '("const-gchar*" "first_element")
+  )
+  (varargs #t)
+)
+
+(define-function g_build_filename
+  (c-name "g_build_filename")
+  (return-type "gchar*")
+  (parameters
+    '("const-gchar*" "first_element")
+  )
+  (varargs #t)
+)
+
+
+;; giochannel.h [rotty]
+
+;; Enumerations and flags ...
+
+(define-enum IOError
+  (in-module "G")
+  (c-name "GIOError")
+  (values
+    '("none" "G_IO_ERROR_NONE")
+    '("again" "G_IO_ERROR_AGAIN")
+    '("inval" "G_IO_ERROR_INVAL")
+    '("unknown" "G_IO_ERROR_UNKNOWN")
+  )
+)
+
+(define-enum IOChannelError
+  (in-module "G")
+  (c-name "GIOChannelError")
+  (values
+    '("fbig" "G_IO_CHANNEL_ERROR_FBIG")
+    '("inval" "G_IO_CHANNEL_ERROR_INVAL")
+    '("io" "G_IO_CHANNEL_ERROR_IO")
+    '("isdir" "G_IO_CHANNEL_ERROR_ISDIR")
+    '("nospc" "G_IO_CHANNEL_ERROR_NOSPC")
+    '("nxio" "G_IO_CHANNEL_ERROR_NXIO")
+    '("overflow" "G_IO_CHANNEL_ERROR_OVERFLOW")
+    '("pipe" "G_IO_CHANNEL_ERROR_PIPE")
+    '("failed" "G_IO_CHANNEL_ERROR_FAILED")
+  )
+)
+
+(define-enum IOStatus
+  (in-module "G")
+  (c-name "GIOStatus")
+  (values
+    '("error" "G_IO_STATUS_ERROR")
+    '("normal" "G_IO_STATUS_NORMAL")
+    '("eof" "G_IO_STATUS_EOF")
+    '("again" "G_IO_STATUS_AGAIN")
+  )
+)
+
+(define-enum SeekType
+  (in-module "G")
+  (c-name "GSeekType")
+  (values
+    '("cur" "G_SEEK_CUR")
+    '("set" "G_SEEK_SET")
+    '("end" "G_SEEK_END")
+  )
+)
+
+(define-enum IOCondition
+  (in-module "G")
+  (c-name "GIOCondition")
+  (values
+    '("in" "G_IO_IN")
+    '("out" "G_IO_OUT")
+    '("pri" "G_IO_PRI")
+    '("err" "G_IO_ERR")
+    '("hup" "G_IO_HUP")
+    '("nval" "G_IO_NVAL")
+  )
+)
+
+(define-flags IOFlags
+  (in-module "G")
+  (c-name "GIOFlags")
+  (values
+    '("append" "G_IO_FLAG_APPEND")
+    '("nonblock" "G_IO_FLAG_NONBLOCK")
+    '("is-readable" "G_IO_FLAG_IS_READABLE")
+    '("is-writeable" "G_IO_FLAG_IS_WRITEABLE")
+    '("is-seekable" "G_IO_FLAG_IS_SEEKABLE")
+    '("mask" "G_IO_FLAG_MASK")
+    '("get-mask" "G_IO_FLAG_GET_MASK")
+    '("set-mask" "G_IO_FLAG_SET_MASK")
+  )
+)
+
+
+;; From /usr/include/glib-2.0/glib/giochannel.h
+
+(define-method init
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_init")
+  (return-type "none")
+)
+
+(define-method ref
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_ref")
+  (return-type "none")
+)
+
+(define-method unref
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_unref")
+  (return-type "none")
+)
+
+(define-method read
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_read")
+  (return-type "GIOError")
+  (parameters
+    '("gchar*" "buf")
+    '("gsize" "count")
+    '("gsize*" "bytes_read")
+  )
+)
+
+(define-method write
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_write")
+  (return-type "GIOError")
+  (parameters
+    '("const-gchar*" "buf")
+    '("gsize" "count")
+    '("gsize*" "bytes_written")
+  )
+)
+
+(define-method seek
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_seek")
+  (return-type "GIOError")
+  (parameters
+    '("gint64" "offset")
+    '("GSeekType" "type")
+  )
+)
+
+(define-method close
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_close")
+  (return-type "none")
+)
+
+(define-method shutdown
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_shutdown")
+  (return-type "GIOStatus")
+  (parameters
+    '("gboolean" "flush")
+    '("GError**" "err")
+  )
+)
+
+(define-function g_io_add_watch_full
+  (c-name "g_io_add_watch_full")
+  (return-type "guint")
+  (parameters
+    '("GIOChannel*" "channel")
+    '("gint" "priority")
+    '("GIOCondition" "condition")
+    '("GIOFunc" "func")
+    '("gpointer" "user_data")
+    '("GDestroyNotify" "notify")
+  )
+)
+
+(define-function g_io_create_watch
+  (c-name "g_io_create_watch")
+  (return-type "GSource*")
+  (parameters
+    '("GIOChannel*" "channel")
+    '("GIOCondition" "condition")
+  )
+)
+
+(define-function g_io_add_watch
+  (c-name "g_io_add_watch")
+  (return-type "guint")
+  (parameters
+    '("GIOChannel*" "channel")
+    '("GIOCondition" "condition")
+    '("GIOFunc" "func")
+    '("gpointer" "user_data")
+  )
+)
+
+(define-method set_buffer_size
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_set_buffer_size")
+  (return-type "none")
+  (parameters
+    '("gsize" "size")
+  )
+)
+
+(define-method get_buffer_size
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_get_buffer_size")
+  (return-type "gsize")
+)
+
+(define-method get_buffer_condition
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_get_buffer_condition")
+  (return-type "GIOCondition")
+)
+
+(define-method set_flags
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_set_flags")
+  (return-type "GIOStatus")
+  (parameters
+    '("GIOFlags" "flags")
+    '("GError**" "error")
+  )
+)
+
+(define-method get_flags
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_get_flags")
+  (return-type "GIOFlags")
+)
+
+(define-method set_line_term
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_set_line_term")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "line_term")
+    '("gint" "length")
+  )
+)
+
+(define-method get_line_term
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_get_line_term")
+  (return-type "const-gchar*")
+  (parameters
+    '("gint*" "length")
+  )
+)
+
+(define-method set_buffered
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_set_buffered")
+  (return-type "none")
+  (parameters
+    '("gboolean" "buffered")
+  )
+)
+
+(define-method get_buffered
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_get_buffered")
+  (return-type "gboolean")
+)
+
+(define-method set_encoding
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_set_encoding")
+  (return-type "GIOStatus")
+  (parameters
+    '("const-gchar*" "encoding")
+    '("GError**" "error")
+  )
+)
+
+(define-method get_encoding
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_get_encoding")
+  (return-type "const-gchar*")
+)
+
+(define-method set_close_on_unref
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_set_close_on_unref")
+  (return-type "none")
+  (parameters
+    '("gboolean" "do_close")
+  )
+)
+
+(define-method get_close_on_unref
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_get_close_on_unref")
+  (return-type "gboolean")
+)
+
+(define-method flush
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_flush")
+  (return-type "GIOStatus")
+  (parameters
+    '("GError**" "error")
+  )
+)
+
+(define-method read_line
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_read_line")
+  (return-type "GIOStatus")
+  (parameters
+    '("gchar**" "str_return")
+    '("gsize*" "length")
+    '("gsize*" "terminator_pos")
+    '("GError**" "error")
+  )
+)
+
+(define-method read_line_string
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_read_line_string")
+  (return-type "GIOStatus")
+  (parameters
+    '("GString*" "buffer")
+    '("gsize*" "terminator_pos")
+    '("GError**" "error")
+  )
+)
+
+(define-method read_to_end
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_read_to_end")
+  (return-type "GIOStatus")
+  (parameters
+    '("gchar**" "str_return")
+    '("gsize*" "length")
+    '("GError**" "error")
+  )
+)
+
+(define-method read_chars
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_read_chars")
+  (return-type "GIOStatus")
+  (parameters
+    '("gchar*" "buf")
+    '("gsize" "count")
+    '("gsize*" "bytes_read")
+    '("GError**" "error")
+  )
+)
+
+(define-method read_unichar
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_read_unichar")
+  (return-type "GIOStatus")
+  (parameters
+    '("gunichar*" "thechar")
+    '("GError**" "error")
+  )
+)
+
+(define-method write_chars
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_write_chars")
+  (return-type "GIOStatus")
+  (parameters
+    '("const-gchar*" "buf")
+    '("gssize" "count")
+    '("gsize*" "bytes_written")
+    '("GError**" "error")
+  )
+)
+
+(define-method write_unichar
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_write_unichar")
+  (return-type "GIOStatus")
+  (parameters
+    '("gunichar" "thechar")
+    '("GError**" "error")
+  )
+)
+
+(define-method seek_position
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_seek_position")
+  (return-type "GIOStatus")
+  (parameters
+    '("gint64" "offset")
+    '("GSeekType" "type")
+    '("GError**" "error")
+  )
+)
+
+(define-function g_io_channel_new_file
+  (c-name "g_io_channel_new_file")
+  (return-type "GIOChannel*")
+  (parameters
+    '("const-gchar*" "filename")
+    '("const-gchar*" "mode")
+    '("GError**" "error")
+  )
+)
+
+(define-function g_io_channel_error_quark
+  (c-name "g_io_channel_error_quark")
+  (return-type "GQuark")
+)
+
+(define-function g_io_channel_error_from_errno
+  (c-name "g_io_channel_error_from_errno")
+  (return-type "GIOChannelError")
+  (parameters
+    '("gint" "en")
+  )
+)
+
+(define-function g_io_channel_unix_new
+  (c-name "g_io_channel_unix_new")
+  (is-constructor-of "GIoChannelUnix")
+  (return-type "GIOChannel*")
+  (parameters
+    '("int" "fd")
+  )
+)
+
+(define-method unix_get_fd
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_unix_get_fd")
+  (return-type "gint")
+)
+
+(define-method win32_make_pollfd
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_win32_make_pollfd")
+  (return-type "none")
+  (parameters
+    '("GIOCondition" "condition")
+    '("GPollFD*" "fd")
+  )
+)
+
+(define-function g_io_channel_win32_poll
+  (c-name "g_io_channel_win32_poll")
+  (return-type "gint")
+  (parameters
+    '("GPollFD*" "fds")
+    '("gint" "n_fds")
+    '("gint" "timeout_")
+  )
+)
+
+(define-function g_main_poll_win32_msg_add
+  (c-name "g_main_poll_win32_msg_add")
+  (return-type "none")
+  (parameters
+    '("gint" "priority")
+    '("GPollFD*" "fd")
+    '("guint" "hwnd")
+  )
+)
+
+(define-function g_io_channel_win32_new_messages
+  (c-name "g_io_channel_win32_new_messages")
+  (return-type "GIOChannel*")
+  (parameters
+    '("guint" "hwnd")
+  )
+)
+
+(define-function g_io_channel_win32_new_fd
+  (c-name "g_io_channel_win32_new_fd")
+  (return-type "GIOChannel*")
+  (parameters
+    '("gint" "fd")
+  )
+)
+
+(define-method win32_get_fd
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_win32_get_fd")
+  (return-type "gint")
+)
+
+(define-function g_io_channel_win32_new_socket
+  (c-name "g_io_channel_win32_new_socket")
+  (return-type "GIOChannel*")
+  (parameters
+    '("gint" "socket")
+  )
+)
+
+
 ;; (snip)

@@ -1,11 +1,10 @@
 SUBDIRS = gobject defs
-DIST_SUBDIRS = gobject defs gtk gnome corba
+
+guilemodule_DATA = gobject.scm glib.scm
 
 if HAVE_GTK
-GTKMODULE = gtk.scm
+guilemodule_DATA += gtk.scm
 SUBDIRS += gtk
-else
-GTKMODULE =
 endif
 
 if HAVE_LIBGNOME
@@ -16,14 +15,17 @@ GNOMEMODULE =
 endif
 
 if HAVE_CORBA
-CORBAMODULE = corba.scm
+guilemodule_DATA += corba.scm
 SUBDIRS += corba
 else
 CORBAMODULE =
 endif
 
+if HAVE_LIBGDA
+guilemodule_DATA += gda.scm
+SUBDIRS += gda
+endif
+
 guilemoduledir = $(datadir)/guile/gnome
 
-guilemodule_DATA = gobject.scm glib.scm $(GTKMODULE) $(GNOMEMODULE) $(CORBAMODULE)
-
-EXTRA_DIST = gobject.scm glib.scm gtk.scm gnome.scm corba.scm
+EXTRA_DIST = gobject.scm gtk.scm corba.scm glib.scm gda.scm

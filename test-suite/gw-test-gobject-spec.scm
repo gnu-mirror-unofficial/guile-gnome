@@ -1,23 +1,25 @@
 (define-module (gw-test-gobject-spec)
+  #:use-module (oop goops)
   #:use-module (g-wrap)
-  #:use-module (g-wrap gw-standard-spec)
+  #:use-module (g-wrap guile)
+  #:use-module (g-wrap guile ws standard)
   #:use-module (gnome gobject gw-gobject-spec)
+  #:use-module (gnome gobject gw-spec-utils)
   #:use-module (gnome gobject defs-support))
 
-(let ((ws (gw:new-wrapset "gw-test-gobject")))
+(define-class <test-gobject-wrapset> (<gobject-wrapset-base>)
+  #:language guile #:id 'test-gobject)
 
-  (gw:wrapset-set-guile-module! ws '(test-suite gw-test-gobject))
+(define-method (initialize (ws <test-gobject-wrapset>) initargs)
+
+  (next-method ws (append '(#:module (test-suite gw-test-gobject)) initargs))
   
-  (gw:wrapset-depends-on ws "gw-standard")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gobject")
+  (depends-on! ws 'standard 'gnome-gobject)
 
-  (gw:wrapset-add-cs-declarations!
+  (add-cs-global-declarator!
    ws
-   (lambda (wrapset client-wrapset)
-     (if client-wrapset
-         '()
-         "#include \"test-gobject.h\"\n")))
-
-  (load-defs ws "test-suite/test-gobject.defs")
+   (lambda (lang)
+     (list "#include \"test-gobject.h\"\n")))
   
-  ws)
+  (load-defs ws "test-suite/test-gobject.defs"))
+

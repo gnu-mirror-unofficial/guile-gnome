@@ -1,5 +1,6 @@
 ;; -*- scheme -*-
 
+(include "common-ignores.defs")
 (include "pango-types.defs")
 
 ;; From /opt/gtk2/include/pango-1.0/pango/pango-attributes.h

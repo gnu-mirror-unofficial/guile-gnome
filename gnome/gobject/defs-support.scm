@@ -25,61 +25,28 @@
 ;;; Code:
 
 (define-module (gnome gobject defs-support)
-  :use-module (g-wrap)
-  :use-module (gnome gobject gw-spec-utils)
-  :use-module (srfi srfi-13)
-  :use-module (ice-9 slib)
-  :use-module (ice-9 optargs)
-  :use-module (ice-9 regex)
-  :export (load-defs register-type))
+  #:use-module (oop goops)
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-13)
+  #:use-module (ice-9 slib)
+  #:use-module (ice-9 optargs)
+  #:use-module (ice-9 regex)
+  
+  #:use-module (g-wrap)
+  #:use-module (g-wrap c-types)
+  #:use-module (g-wrap enumeration)
+  #:use-module (gnome gobject gw-spec-utils)
+  #:export (load-defs))
 
 (require 'glob)
-
-;; wrapset-name <-> hash of (cname . gwrap-type-name)
-(define types-hash-hash (make-hash-table 31))
-
-(define opaque-types '())
-
-(define (register-type ws-name cname type)
-  (let* ((types-hash (hash-ref types-hash-hash ws-name)))
-    (if (not types-hash)
-        (begin (set! types-hash (make-hash-table 31))
-               (hash-create-handle! types-hash-hash ws-name types-hash)))
-    (hash-create-handle! types-hash cname type))
-  *unspecified*)
-
-;; g-wrap doesn't export these for us. oh well..
-(define (wrapset-get-wrapsets-depended-on ws)
-  (let ((rtd (record-type-descriptor ws)))
-    ((record-accessor rtd 'wrapsets-depended-on) ws)))
-
-;; the first time i've ever used call/cc :-)
-(define (recursive-type-find ws type)
-  (let* ((ws-name (gw:wrapset-get-name ws))
-         (types-hash (hash-ref types-hash-hash ws-name)))
-    (let ((ret (if types-hash
-                   (hash-ref types-hash type)
-                   #f)))
-      (if ret
-          ret
-          (call-with-current-continuation
-           (lambda (exit)
-             (for-each
-              (lambda (ws)
-                (let ((ret (recursive-type-find ws type)))
-                  (if ret
-                      (exit ret))))
-              (wrapset-get-wrapsets-depended-on ws))
-             #f))))))
 
 ;; find the gwrap type name for a given type name in a defs file, or
 ;; wrap the type as an opaque gpointer -- this thing is getting nasty!
 ;; i could really use some keyword args here, ugh
 (define* (type-lookup ws type return? #:key (ownership #f))
-  (let ((ws-name (gw:wrapset-get-name ws))
-        (options (list))
-        (const? #f)
-        (gwrap-type-name #f))
+  (let ((options (list))
+        (const? #f))
+    ;;(format #t "lookup: ~S\n" type)
     (set! type (regexp-substitute/global #f "\\[\\]" type 'pre "*" 'post))
     (cond
      ((string-prefix? "const-" type)
@@ -99,37 +66,28 @@
                           options))))
 
     ;; support GList*-of-GtkWindow*
-    (if (string-contains type "-of-")
-        (begin (set! options (cons
-                              (type-lookup
-                               ws
-                               (substring type (+ (string-contains type "-of-") 4))
-                               return?)
-                              options))
-               (set! type (substring type 0 (string-contains type "-of-")))))
-
-    (set! gwrap-type-name (recursive-type-find ws type))
-    (if (not gwrap-type-name)
-        (let ((wrapped-type #f))
-          (set! wrapped-type (gobject:gwrap-opaque-pointer ws type))
-          (set! gwrap-type-name (gw:type-get-name wrapped-type))
-          (if (eq? (length opaque-types) 0)
-              (gw:wrapset-depends-on ws "gw-wct"))
-          (set! opaque-types (cons (list type gwrap-type-name) opaque-types))
-          ;;(glib:print-info "Opaque" type gwrap-type-name ws)
-          (register-type ws-name type gwrap-type-name)))
-
-    ;; gw:wct does not take caller/callee owned type options
-    (if (null? options)
-        gwrap-type-name
-        (if (or-map (lambda (pair) (equal? (car pair) type)) opaque-types)
-            (if const? (cons gwrap-type-name '(const)) gwrap-type-name)
-            (cons gwrap-type-name options)))))
+    (let ((index (string-contains type "-of-")))
+      (if index
+          (begin (set! options (cons
+                                (type-lookup
+                                 ws
+                                 (substring type (+ index 4))
+                                 return?)
+                                options))
+                  (set! type (substring type 0 index)))))
+    (let ((type-obj (or (lookup-type ws type)
+                        (wrap-opaque-pointer! ws type))))
+      
+      ;; gw:wct does not take caller/callee owned type options
+      (if (null? options)
+          (name type-obj)
+          (if (is-a? type-obj <gw-wct>)
+              (if const? (cons (name type-obj) '(const)) (name type-obj))
+              (cons (name type-obj) options))))))
 
 (define (load-defs ws file . already-included)
   (let* ((old-load-path %load-path)
-         (log-file-name (string-append (gw:wrapset-get-name ws)
-                                                ".log"))
+         (log-file-name (string-append (symbol->string (name ws)) ".log"))
          (log-file (open-output-file log-file-name))
          (overrides '())
          (bad-methods '())
@@ -149,100 +107,45 @@
     (set! file (basename file))
 
     (let* ((scan-type!
-            (lambda (gwrap-function args)
-              (let* ((ctype #f)
-                     (gtype-id #f)
-                     (wrapped-type #f)
-                     (is-enum-or-flags (memv gwrap-function 
-                                             (list gobject:gwrap-enum
-                                                   gobject:gwrap-flags))))
+            (lambda (wrap-function immediate? args)
+              ;; The gtype system has enough introspection power that
+              ;; we can disregard a lot of the information in the defs
+              ;; files and just look at the ctype and gtype-id, as
+              ;; well as the values, for enums without a gtype-id.
+              (let ((ctype (assq-ref args 'c-name))
+                    (gtype-id (assq-ref args 'gtype-id))
+                    (values (assq-ref args 'values)))
                 (set! num-types (1+ num-types))
-                (for-each
-                 (lambda (arg)
-                   (case (car arg) 
-                     ;; The gtype system has enough
-                     ;; introspection power that we can
-                     ;; disregard a lot of the information in
-                     ;; the defs files and just look at the
-                     ;; ctype and gtype-id.
-                     ((gtype-id) (set! gtype-id (cadr arg)))
-                     ((c-name) (set! ctype (cadr arg)))))
-                 args)
                 
                 (if (not ctype)
                     (error "Type lacks a c-name:\n\n" args))
                 
-                (if (and (not gtype-id) (not is-enum-or-flags))
+                (if (and (not gtype-id) (not values))
                     (error "Non-enum/flags-type lacks a gtype-id:\n\n" args))
-                
-                (if (not gtype-id)
-                    ;; Do the wrapping of enums/flags without a GType
-                    (let ((values #f))
-                      (for-each 
-                       (lambda (arg)
-                         (case (car arg)
-                           ((values) (set! values (cdr arg)))))
-                       args)
-                      (set! wrapped-type (gwrap-function ws ctype gtype-id 
-                                                         values)))
-                    (set! wrapped-type (gwrap-function ws ctype gtype-id)))
-                
-                (register-type (gw:wrapset-get-name ws)
-                               (if is-enum-or-flags
-                                   ctype
-                                   (string-append ctype "*"))
-                               (gw:type-get-name wrapped-type))
-                wrapped-type)))
-
-           (add-method-property-with-generic-name
-            (lambda (func-name generic-name of-object)
-              (if (not methods-used?)
-                  (begin
-                    (gw:wrapset-add-cs-wrapper-declarations!
-                     ws
-                     (lambda (wrapset client-wrapset)
-                       (if (not client-wrapset)
-                           "static SCM sym_of_object, sym_generic_name;\n"
-                           '())))
-                    (gw:wrapset-add-cs-wrapper-initializers!
-                     ws
-                     (lambda (wrapset client-wrapset status-var)
-                       (if (not client-wrapset)
-                           (list "sym_of_object = scm_permanent_object (scm_str2symbol (\"of-object\"));\n"
-                                 "sym_generic_name = scm_permanent_object (scm_str2symbol (\"generic-name\"));\n")
-                           '())))
-                    (set! methods-used? #t)))
-
-              (gw:wrapset-add-cs-wrapper-initializers!
-               ws
-               (lambda (wrapset client-wrapset status-var)
-                 (if (not client-wrapset)
-                     (list "scm_sys_function_to_method_public ( "
-                           "SCM_VARIABLE_REF (scm_c_lookup (\""
-                           func-name "\")), "
-                           "SCM_VARIABLE_REF (scm_c_lookup (\""
-                           of-object "\")), "
-                           "scm_str2symbol (\"" generic-name "\"));")
-                     '())))))
+                (let ((wrapped-type
+                       (apply
+                        wrap-function ws
+                        (append
+                         (if ctype `(#:ctype ,(car ctype)) '())
+                         (if gtype-id `(#:gtype-id ,(car gtype-id)) '())
+                         (if values
+                             `(#:values ,(map
+                                          (lambda (entry)
+                                            (cons
+                                             (string->symbol (cadr entry))
+                                             (cdr entry)))
+                                          (cdar values)))
+                             '())))))
+                  (add-type-alias! ws (if immediate?
+                                          (car ctype)
+                                          (string-append (car ctype) "*"))
+                                   (name wrapped-type))
+                  wrapped-type))))
            
-           (add-method-property
-            (lambda (func-name of-object)
-              (let ((generic-name #f)
-                    (sanitized-of-obj (substring of-object 1
-                                                 (1- (string-length of-object)))))
-                (if (string-prefix? (string-append sanitized-of-obj "-") func-name)
-                    (add-method-property-with-generic-name
-                     func-name
-                     (string->symbol
-                      (substring func-name (1+ (string-length sanitized-of-obj))))
-                     of-object)
-                    (set! bad-methods (cons (list func-name of-object)
-                                                   bad-methods))))))
-
            (ignored?
             (lambda (c-name)
-              (or-map (lambda (matcher) (matcher c-name))
-                      ignore-matchers)))
+              (any (lambda (matcher) (matcher c-name))
+                   ignore-matchers)))
 
            (scan-function!
             (lambda (is-method? name args)
@@ -253,7 +156,8 @@
                        (of-object #f)
                        (return-type "none")
                        (caller-owns-return #f)
-                       (parameters (list)))
+                       (parameters (list))
+                       (generic-name #f))
                    (for-each
                     (lambda (arg)
                       (case (car arg)
@@ -298,21 +202,43 @@
                    (if (not scm-name)
                        (set! scm-name (glib:func-cname->symbol c-name)))
 
-                   (if is-method?
-                       (if (not of-object)
-                           (error "Method name lacks an of-object!" c-name)
-                           (set! parameters (cons (list of-object "self")
-                                                    parameters))))
+                   (cond
+                    (is-method?
+                     (if (not of-object)
+                         (error "Method name lacks an of-object!" c-name))
+                     (set! parameters (cons (list of-object "self")
+                                            parameters))
+                     (let* ((func-name (symbol->string scm-name))
+                            ; Fixme: do parameter spec creation for
+                            ; gw:wrap-function before this, we can
+                            ; then use recursive-type-find
+                            (looked-up (type-lookup ws of-object #f))
+                            (of-obj (if (list? looked-up) (car looked-up)
+                                        looked-up))
+                            (of-obj-str (symbol->string of-obj))
+                            (sanitized-of-obj
+                             (substring of-obj-str 1
+                                        (or (string-index of-obj-str #\*)
+                                            (1- (string-length of-obj-str))))))
+                       (cond
+                        ((string-prefix? (string-append sanitized-of-obj "-")
+                                         func-name)
+                         (set! generic-name (string->symbol (substring func-name (1+ (string-length sanitized-of-obj)))))
+                         (set! of-object of-obj-str))
+                        (else
+                         (set! bad-methods (cons (list func-name of-object)
+                                                bad-methods)))))))
 
                    (display ".")
-                   (gw:wrap-function
+                   (wrap-function!
                     ws
-                    scm-name
-                    (type-lookup ws return-type #t
-                                 #:ownership (if caller-owns-return
-                                                 'caller-owned
-                                                 'callee-owned))
-                    c-name
+                    #:name scm-name
+                    #:returns (type-lookup ws return-type #t
+                                           #:ownership (if caller-owns-return
+                                                           'caller-owned
+                                                           'callee-owned))
+                    #:c-name c-name
+                    #:arguments
                     (let ((parse-restargs
                            (lambda (restargs)
                              (let ((options (list)))
@@ -342,31 +268,27 @@
                                (if (list? looked-up)
                                    (list (append looked-up parsed) arg-name)
                                    (list looked-up arg-name))))
-                           parameters)))
-                   (if is-method?
-                       (add-method-property
-                        (symbol->string scm-name)
-                        (symbol->string (recursive-type-find ws of-object))))))))))
+                           parameters))
+                    #:generic-name generic-name)))))))
 
       (letrec ((define-enum (procedure->syntax
                              (lambda (x env)
-                               (scan-type! gobject:gwrap-enum (cddr x)))))
+                               (scan-type! wrap-enum! #t (cddr x)))))
                (define-flags (procedure->syntax
                               (lambda (x env)
-                                (scan-type! gobject:gwrap-flags (cddr x)))))
+                                (scan-type! wrap-flags! #t (cddr x)))))
                (define-object (procedure->syntax
                                (lambda (x env)
-                                 (scan-type! gobject:gwrap-object (cddr x)))))
+                                 (scan-type! wrap-object! #f (cddr x)))))
                (define-interface (procedure->syntax
                                   (lambda (x env)
-                                    (scan-type! gobject:gwrap-interface (cddr x)))))
+                                    (scan-type! wrap-interface! #f (cddr x)))))
                (define-pointer (procedure->syntax
                                 (lambda (x env)
-                                  (scan-type! gobject:gwrap-pointer (cddr x)))))
+                                  (scan-type! wrap-pointer! #f (cddr x)))))
                (define-boxed (procedure->syntax
                               (lambda (x env)
-                                (scan-type! gobject:gwrap-boxed (cddr x)))))
-               
+                                (scan-type! wrap-boxed! #f (cddr x)))))
                (define-function (procedure->syntax
                                  (lambda (x env)
                                    (scan-function! #f (cadr x) (cddr x)))))
@@ -386,7 +308,8 @@
                               (for-each
                                (lambda (glob)
                                  (set! ignore-matchers
-                                       (cons (filename:match?? glob) ignore-matchers)))
+                                       (cons (filename:match?? glob)
+                                             ignore-matchers)))
                                args)))
 
                (include (lambda (file)
@@ -405,19 +328,19 @@
         ;; we're now in an environment to interpret the defs files natively.
         ;; nice :-)
 
-        (include file)
-
-        (gobject:gwrap-set-all-types-used ws)))
-
-    (format log-file "Opaque types in the ~A wrapset: c-name scm-name\n\n"
-            (gw:wrapset-get-name ws))
-    (for-each
-     (lambda (pair)
-       (format log-file "~A ~A\n" (car pair) (cadr pair)))
-     opaque-types)
+        (include file)))
+      
+        
+    ;; FIXME: re-establish
+;     (format log-file "Opaque types in the ~A wrapset: c-name scm-name\n\n"
+;             (name ws))
+;     (for-each
+;      (lambda (pair)
+;        (format log-file "~A ~A\n" (car pair) (cadr pair)))
+;      opaque-types)
 
     (format log-file "\n\nBad method names in the ~A wrapset: c-name of-object\n\n"
-            (gw:wrapset-get-name ws))
+            (name ws))
     (for-each
      (lambda (pair)
        (format log-file "~A ~A\n" (car pair) (cadr pair)))
@@ -425,8 +348,8 @@
 
     (close log-file)
 
-    (format #t "\n\nWrapped ~A types (~A opaque) and ~A functions.\n"
-            (+ num-types (length opaque-types)) (length opaque-types) num-functions)
+;     (format #t "\n\nWrapped ~A types (~A opaque) and ~A functions.\n"
+;             (+ num-types (length opaque-types)) (length opaque-types) num-functions)
     (format #t "A list of opaque types and bad method names has been written to ~A.\n\n"
             log-file-name)
 

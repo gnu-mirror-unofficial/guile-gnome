@@ -25,31 +25,29 @@
 ;;; Code:
 
 (define-module (gnome gtk gw-glade-spec)
-  :use-module (g-wrap)
-  :use-module (gnome gtk gw-gtk-spec)
-  :use-module (gnome gobject defs-support))
+  #:use-module (oop goops)
+  #:use-module (g-wrap)
+  #:use-module (g-wrap guile)
+  #:use-module (gnome gtk gw-gtk-spec)
+  #:use-module (gnome gobject defs-support)
+  #:use-module (gnome gobject gw-spec-utils))
 
-(let ((ws (gw:new-wrapset "guile-gnome-gw-glade")))
+(define-class <glade-wrapset> (<gobject-wrapset-base>)
+  #:language guile #:id 'gnome-glade)
 
-  (gw:wrapset-set-guile-module! ws '(gnome gtk gw-glade))
-  (gw:wrapset-depends-on ws "guile-gnome-gw-standard")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-glib")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gobject")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gtk")
+(define-method (initialize (ws <glade-wrapset>) initargs)
+  (next-method ws (cons #:module (cons '(gnome gtk gw-glade) initargs)))
+  
+  (depends-on! ws 'standard 'gnome-glib 'gnome-gobject 'gnome-gtk)
 
-  (gw:wrapset-add-cs-declarations!
+  (add-cs-global-declarator! ws
+                             (lambda (wrapset)
+                               '("#include <glade/glade.h>\n"
+                                 "#include \"glade-support.h\"\n")))
+
+  (add-cs-initializer!
    ws
-   (lambda (wrapset client-wrapset)
-     (if (not client-wrapset)
-         '("#include <glade/glade.h>\n"
-           "#include \"glade-support.h\"\n")
-         '("#include <glade/glade.h>\n"))))
-
-  (gw:wrapset-add-cs-wrapper-initializers!
-   ws
-   (lambda (wrapset client-wrapset status-var)
-     (if (not client-wrapset)
-         '("glade_set_custom_handler (guile_glade_custom_handler, NULL);\n")
-         '())))
+   (lambda (wrapset status-var)
+     '("glade_set_custom_handler (guile_glade_custom_handler, NULL);\n")))
 
   (load-defs ws "gnome/defs/libglade.defs"))

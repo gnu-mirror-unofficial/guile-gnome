@@ -1,3 +1,7 @@
+2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gtk-types.defs (PrivateFlags, TreeViewMode): Removed.
+
 2004-04-02  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* ui.defs: Revised for GNOME 2.6.
@@ -52,10 +56,40 @@
 	* gtk-overrides.defs (iter_children): Return a list of the
 	children instead of only the first iterator.
 
+2003-11-30  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* Makefile.am (guilemodule_DATA): Added gda.defs.
+
+	* gda-overrides.defs: Un-ignore gda_value_*, ignore
+	gda_value_new_* instead.
+
 2003-11-25  Andy Wingo  <wingo@pobox.com>
 
 	* gtk-overrides.defs: Added accessors for ok and cancel buttons in
 	file selections.
+
+2003-11-26  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gda.defs, gda-types.defs, gda-overrides.defs: New files.
+
+2003-11-25  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gdk-types.defs (ColorSpace): Commented out, is in gdk-pixbuf and
+	named GdkColor_s_pace.
+	
+	* gtk-overrides.defs (GenericTreeModel): C type is
+	GuileGtkGenericTreeModel, not GuileGtkTreeModel.
+
+	* gtk-types.defs: Get rid of CTree/CList stuff. Comment out a
+	bunch of types apparently missing in GTK+ 2.4.
+
+	* glib-override.defs: Removed some ignore-globs (*_ref, *_unref
+	and *_free), since g-wrap has no automatic reference-counting
+	or disposal of objects.
+	Ignore the GError-related functions, since the GError type is 
+	exposed only via exceptions to the scheme level.
+
+	* glib.defs: Added defs for giochannel.h and gfileutils.h.
 
 2003-11-01  Andy Wingo  <wingo@pobox.com>
 

@@ -25,27 +25,30 @@
 ;;; Code:
 
 (define-module (gnome gtk gw-atk-spec)
-  :use-module (g-wrap)
-  :use-module (gnome gobject gw-gobject-spec)
-  :use-module (gnome gobject defs-support))
+  #:use-module (oop goops)
+  #:use-module (g-wrap)
+  #:use-module (g-wrap guile)
+  #:use-module (gnome gobject gw-spec-utils)
+  #:use-module (gnome gobject gw-gobject-spec)
+  #:use-module (gnome gobject defs-support))
 
-(let ((ws (gw:new-wrapset "guile-gnome-gw-atk")))
+(define-class <atk-wrapset> (<gobject-wrapset-base>)
+  #:language guile #:id 'gnome-atk)
 
-  (gw:wrapset-set-guile-module! ws '(gnome gtk gw-atk))
-  (gw:wrapset-depends-on ws "guile-gnome-gw-standard")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-glib")
-  (gw:wrapset-depends-on ws "guile-gnome-gw-gobject")
+(define-method (initialize (ws <atk-wrapset>) initargs)
 
-  (gw:wrapset-add-cs-declarations!
-   ws
-   (lambda (wrapset client-wrapset)
-     (if (eq? client-wrapset wrapset)
-         '()
-         (list
-          "#include <atk/atk.h>\n"
-          "#include <atk/atk-enum-types.h>\n"))))
+  (next-method)
 
-  (register-type "guile-gnome-gw-atk" "AtkState" '<gw:long-long>)
+  (depends-on! ws 'standard 'gnome-glib 'gnome-gobject)
+  
+  (set! (module ws) '(gnome gtk gw-atk))
 
+  (add-cs-global-declarator! ws
+                             (lambda (wrapset)
+                               (list
+                                "#include <atk/atk.h>\n"
+                                "#include <atk/atk-enum-types.h>\n")))
+
+  (add-type-alias! ws "AtkState" 'long-long)
+  
   (load-defs ws "gnome/defs/atk.defs"))
-
