@@ -26,6 +26,8 @@
 #include "guile-gnome-gobject.h"
 
 
+extern SCM scm_glade_module;
+
 GladeXML* _wrap_glade_xml_new_from_buffer (const char *buffer, const char *root,
                                            const char *domain);
 

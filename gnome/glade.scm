@@ -20,35 +20,16 @@
 
 ;;; Commentary:
 ;;
-;;g-wrap specification for libglade.
+;;Libglade bindings.
+;;
+;;Should doc here about evaluating the signal handlers, and about
+;;modules.
 ;;
 ;;; Code:
 
-(define-module (gnome gw libglade-spec)
-  #:use-module (oop goops)
-  #:use-module (g-wrap)
-  #:use-module (g-wrap guile)
-  #:use-module (gnome gw gtk-spec)
-  #:use-module (gnome gobject defs-support)
-  #:use-module (gnome gobject gw-spec-utils))
+(define-module (gnome glade)
+  #:use-module (gnome gtk)
+  #:use-module (gnome gw glade)
+  #:use-module (gnome gobject gw-utils))
 
-(define-class <glade-wrapset> (<gobject-wrapset-base>)
-  #:id 'gnome-libglade)
-
-(define-method (initialize (ws <glade-wrapset>) initargs)
-  (next-method ws (cons #:module (cons '(gnome gw libglade) initargs)))
-  
-  (depends-on! ws 'standard 'gnome-glib 'gnome-gobject 'gnome-gtk)
-
-  (load-defs ws "gnome/defs/libglade.defs"))
-
-(define-method (global-declarations-cg (self <glade-wrapset>))
-  (list (next-method)
-        "#include <glade/glade.h>\n"
-        "#include \"glade-support.h\"\n"
-        "SCM scm_glade_module = SCM_BOOL_F;\n"))
-
-(define-method (initializations-cg (self <glade-wrapset>) err)
-   (list (next-method)
-         "glade_set_custom_handler (guile_glade_custom_handler, NULL);\n"))
-
+(re-export-modules (gnome gw glade))
