@@ -1,0 +1,71 @@
+;; -*- scheme -*-
+;; Enumerations and flags ...
+
+(define-enum PixbufAlphaMode
+  (in-module "Gdk")
+  (c-name "GdkPixbufAlphaMode")
+  (gtype-id "GDK_TYPE_PIXBUF_ALPHA_MODE")
+  (values
+    '("bilevel" "GDK_PIXBUF_ALPHA_BILEVEL")
+    '("full" "GDK_PIXBUF_ALPHA_FULL")
+  )
+)
+
+(define-enum Colorspace
+  (in-module "Gdk")
+  (c-name "GdkColorspace")
+  (gtype-id "GDK_TYPE_COLORSPACE")
+  (values
+    '("b" "GDK_COLORSPACE_RGB")
+  )
+)
+
+(define-enum PixbufError
+  (in-module "Gdk")
+  (c-name "GdkPixbufError")
+  (gtype-id "GDK_TYPE_PIXBUF_ERROR")
+  (values
+    '("corrupt-image" "GDK_PIXBUF_ERROR_CORRUPT_IMAGE")
+    '("insufficient-memory" "GDK_PIXBUF_ERROR_INSUFFICIENT_MEMORY")
+    '("bad-option" "GDK_PIXBUF_ERROR_BAD_OPTION")
+    '("unknown-type" "GDK_PIXBUF_ERROR_UNKNOWN_TYPE")
+    '("unsupported-operation" "GDK_PIXBUF_ERROR_UNSUPPORTED_OPERATION")
+    '("failed" "GDK_PIXBUF_ERROR_FAILED")
+  )
+)
+
+(define-enum InterpType
+  (in-module "Gdk")
+  (c-name "GdkInterpType")
+  (gtype-id "GDK_TYPE_INTERP_TYPE")
+  (values
+    '("nearest" "GDK_INTERP_NEAREST")
+    '("tiles" "GDK_INTERP_TILES")
+    '("bilinear" "GDK_INTERP_BILINEAR")
+    '("hyper" "GDK_INTERP_HYPER")
+  )
+)
+
+;; -*- scheme -*-
+; object definitions ...
+(define-object PixbufAnimation
+  (in-module "Gdk")
+  (parent "GObject")
+  (c-name "GdkPixbufAnimation")
+  (gtype-id "GDK_TYPE_PIXBUF_ANIMATION")
+)
+
+(define-object PixbufAnimationIter
+  (in-module "Gdk")
+  (parent "GObject")
+  (c-name "GdkPixbufAnimationIter")
+  (gtype-id "GDK_TYPE_PIXBUF_ANIMATION_ITER")
+)
+
+(define-object PixbufLoader
+  (in-module "Gdk")
+  (parent "GObject")
+  (c-name "GdkPixbufLoader")
+  (gtype-id "GDK_TYPE_PIXBUF_LOADER")
+)
+

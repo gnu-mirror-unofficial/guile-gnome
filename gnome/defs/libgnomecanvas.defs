@@ -1,6 +1,114 @@
 ;; -*- scheme -*-
+; object definitions ...
 
-(include "libgnomecanvas-types.defs")
+(define-object Canvas
+  (in-module "Gnome")
+  (parent "GtkLayout")
+  (c-name "GnomeCanvas")
+  (gtype-id "GNOME_TYPE_CANVAS")
+)
+
+(define-object CanvasItem
+  (in-module "Gnome")
+  (parent "GtkObject")
+  (c-name "GnomeCanvasItem")
+  (gtype-id "GNOME_TYPE_CANVAS_ITEM")
+)
+
+(define-object CanvasGroup
+  (in-module "Gnome")
+  (parent "GnomeCanvasItem")
+  (c-name "GnomeCanvasGroup")
+  (gtype-id "GNOME_TYPE_CANVAS_GROUP")
+)
+
+(define-object CanvasClipgroup
+  (in-module "Gnome")
+  (parent "GnomeCanvasGroup")
+  (c-name "GnomeCanvasClipgroup")
+  (gtype-id "GNOME_TYPE_CANVAS_CLIPGROUP")
+)
+
+(define-object CanvasLine
+  (in-module "Gnome")
+  (parent "GnomeCanvasItem")
+  (c-name "GnomeCanvasLine")
+  (gtype-id "GNOME_TYPE_CANVAS_LINE")
+)
+
+(define-object CanvasPixbuf
+  (in-module "Gnome")
+  (parent "GnomeCanvasItem")
+  (c-name "GnomeCanvasPixbuf")
+  (gtype-id "GNOME_TYPE_CANVAS_PIXBUF")
+)
+
+(define-object CanvasRichText
+  (in-module "Gnome")
+  (parent "GnomeCanvasItem")
+  (c-name "GnomeCanvasRichText")
+  (gtype-id "GNOME_TYPE_CANVAS_RICH_TEXT")
+)
+
+(define-object CanvasShape
+  (in-module "Gnome")
+  (parent "GnomeCanvasItem")
+  (c-name "GnomeCanvasShape")
+  (gtype-id "GNOME_TYPE_CANVAS_SHAPE")
+)
+
+(define-object CanvasRE
+  (in-module "Gnome")
+  (parent "GnomeCanvasShape")
+  (c-name "GnomeCanvasRE")
+  (gtype-id "GNOME_TYPE_CANVAS_RE")
+)
+
+(define-object CanvasRect
+  (in-module "Gnome")
+  (parent "GnomeCanvasRE")
+  (c-name "GnomeCanvasRect")
+  (gtype-id "GNOME_TYPE_CANVAS_RECT")
+)
+
+(define-object CanvasEllipse
+  (in-module "Gnome")
+  (parent "GnomeCanvasRE")
+  (c-name "GnomeCanvasEllipse")
+  (gtype-id "GNOME_TYPE_CANVAS_ELLIPSE")
+)
+
+(define-object CanvasPolygon
+  (in-module "Gnome")
+  (parent "GnomeCanvasShape")
+  (c-name "GnomeCanvasPolygon")
+  (gtype-id "GNOME_TYPE_CANVAS_POLYGON")
+)
+
+(define-object CanvasBpath
+  (in-module "Gnome")
+  (parent "GnomeCanvasShape")
+  (c-name "GnomeCanvasBpath")
+  (gtype-id "GNOME_TYPE_CANVAS_BPATH")
+)
+
+(define-object CanvasText
+  (in-module "Gnome")
+  (parent "GnomeCanvasItem")
+  (c-name "GnomeCanvasText")
+  (gtype-id "GNOME_TYPE_CANVAS_TEXT")
+)
+
+(define-object CanvasWidget
+  (in-module "Gnome")
+  (parent "GnomeCanvasItem")
+  (c-name "GnomeCanvasWidget")
+  (gtype-id "GNOME_TYPE_CANVAS_WIDGET")
+)
+
+;; Enumerations and flags ...
+
+(include overrides)
 
 ;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-bpath.h
 
@@ -28,7 +136,6 @@
 )
 
 
-(include overrides)
 
 ;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-path-def.h
 
@@ -598,6 +705,7 @@
   (return-type "GType")
 )
 
+
 (define-function gnome_canvas_item_new
   (c-name "gnome_canvas_item_new")
   (is-constructor-of "GnomeCanvasItem")
@@ -698,6 +806,7 @@
   (c-name "gnome_canvas_item_lower_to_bottom")
   (return-type "none")
 )
+
 
 (define-method show
   (of-object "GnomeCanvasItem")
@@ -894,26 +1003,17 @@
   (return-type "none")
   (parameters
     '("int*" "cx")
-    '("int*" "cy")
-  )
-)
+    '("int*" "cy")))
 
-
-(define-method update_now
+(define-method get_scroll_region
   (of-object "GnomeCanvas")
-  (c-name "gnome_canvas_update_now")
+  (c-name "gnome_canvas_get_scroll_region")
   (return-type "none")
-)
-
-(define-method get_item_at
-  (of-object "GnomeCanvas")
-  (c-name "gnome_canvas_get_item_at")
-  (return-type "GnomeCanvasItem*")
   (parameters
-    '("double" "x")
-    '("double" "y")
-  )
-)
+    '("double*" "x1")
+    '("double*" "y1")
+    '("double*" "x2")
+    '("double*" "y2")))
 
 (define-method request_redraw_uta
   (of-object "GnomeCanvas")
@@ -953,9 +1053,15 @@
     '("double" "wx")
     '("double" "wy")
     '("int*" "cx")
-    '("int*" "cy")
-  )
-)
+    '("int*" "cy")))
+
+;; ignored, to be overridden
+(define-method w2c_affine
+  (of-object "GnomeCanvas")
+  (c-name "gnome_canvas_w2c_affine")
+  (return-type "none")
+  (parameters
+    '("double[6]" "affine")))
 
 (define-method w2c_d
   (of-object "GnomeCanvas")
@@ -965,21 +1071,7 @@
     '("double" "wx")
     '("double" "wy")
     '("double*" "cx")
-    '("double*" "cy")
-  )
-)
-
-(define-method c2w
-  (of-object "GnomeCanvas")
-  (c-name "gnome_canvas_c2w")
-  (return-type "none")
-  (parameters
-    '("int" "cx")
-    '("int" "cy")
-    '("double*" "wx")
-    '("double*" "wy")
-  )
-)
+    '("double*" "cy")))
 
 (define-method window_to_world
   (of-object "GnomeCanvas")
@@ -989,9 +1081,7 @@
     '("double" "winx")
     '("double" "winy")
     '("double*" "worldx")
-    '("double*" "worldy")
-  )
-)
+    '("double*" "worldy")))
 
 (define-method world_to_window
   (of-object "GnomeCanvas")

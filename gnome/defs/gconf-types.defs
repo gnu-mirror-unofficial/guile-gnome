@@ -1,0 +1,84 @@
+;; -*- scheme -*-
+;; Enumerations and flags ...
+
+(define-enum ConfClientPreloadType
+  (in-module "G")
+  (c-name "GConfClientPreloadType")
+  (gtype-id "G_TYPE_CONF_CLIENT_PRELOAD_TYPE")
+  (values
+    '("none" "GCONF_CLIENT_PRELOAD_NONE")
+    '("onelevel" "GCONF_CLIENT_PRELOAD_ONELEVEL")
+    '("recursive" "GCONF_CLIENT_PRELOAD_RECURSIVE")
+  )
+)
+
+(define-enum ConfClientErrorHandlingMode
+  (in-module "G")
+  (c-name "GConfClientErrorHandlingMode")
+  (gtype-id "G_TYPE_CONF_CLIENT_ERROR_HANDLING_MODE")
+  (values
+    '("none" "GCONF_CLIENT_HANDLE_NONE")
+    '("unreturned" "GCONF_CLIENT_HANDLE_UNRETURNED")
+    '("all" "GCONF_CLIENT_HANDLE_ALL")
+  )
+)
+
+(define-enum ConfError
+  (in-module "G")
+  (c-name "GConfError")
+  (gtype-id "G_TYPE_CONF_ERROR")
+  (values
+    '("success" "GCONF_ERROR_SUCCESS")
+    '("failed" "GCONF_ERROR_FAILED")
+    '("no-server" "GCONF_ERROR_NO_SERVER")
+    '("no-permission" "GCONF_ERROR_NO_PERMISSION")
+    '("bad-address" "GCONF_ERROR_BAD_ADDRESS")
+    '("bad-key" "GCONF_ERROR_BAD_KEY")
+    '("parse-error" "GCONF_ERROR_PARSE_ERROR")
+    '("corrupt" "GCONF_ERROR_CORRUPT")
+    '("type-mismatch" "GCONF_ERROR_TYPE_MISMATCH")
+    '("is-dir" "GCONF_ERROR_IS_DIR")
+    '("is-key" "GCONF_ERROR_IS_KEY")
+    '("overridden" "GCONF_ERROR_OVERRIDDEN")
+    '("oaf-error" "GCONF_ERROR_OAF_ERROR")
+    '("local-engine" "GCONF_ERROR_LOCAL_ENGINE")
+    '("lock-failed" "GCONF_ERROR_LOCK_FAILED")
+    '("no-writable-database" "GCONF_ERROR_NO_WRITABLE_DATABASE")
+    '("in-shutdown" "GCONF_ERROR_IN_SHUTDOWN")
+  )
+)
+
+(define-enum ConfValueType
+  (in-module "G")
+  (c-name "GConfValueType")
+  (gtype-id "G_TYPE_CONF_VALUE_TYPE")
+  (values
+    '("invalid" "GCONF_VALUE_INVALID")
+    '("string" "GCONF_VALUE_STRING")
+    '("int" "GCONF_VALUE_INT")
+    '("float" "GCONF_VALUE_FLOAT")
+    '("bool" "GCONF_VALUE_BOOL")
+    '("schema" "GCONF_VALUE_SCHEMA")
+    '("list" "GCONF_VALUE_LIST")
+    '("pair" "GCONF_VALUE_PAIR")
+  )
+)
+
+(define-flags ConfUnsetFlags
+  (in-module "G")
+  (c-name "GConfUnsetFlags")
+  (gtype-id "G_TYPE_CONF_UNSET_FLAGS")
+  (values
+    '("s" "GCONF_UNSET_INCLUDING_SCHEMA_NAMES")
+  )
+)
+
+;; -*- scheme -*-
+; object definitions ...
+(define-object ConfClient
+  (in-module "G")
+  (parent "GObject")
+  (c-name "GConfClient")
+  (gtype-id "G_TYPE_CONF_CLIENT")
+)
+
