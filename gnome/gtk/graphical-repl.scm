@@ -32,7 +32,7 @@
   #:use-module (ice-9 session) ;; for the completer
   #:use-module (ice-9 regex) ;; for the completer
   #:use-module (gnome gtk)
-  #:use-module (gnome gtk gw-pango)
+  #:use-module (gnome pango gw-pango)
   #:use-module (gnome gtk gdk-event)
   #:export (<guile-gtk-repl>))
 

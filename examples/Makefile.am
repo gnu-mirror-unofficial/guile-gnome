@@ -1,1 +1,1 @@
-EXTRA_DIST=gtk gobject
+EXTRA_DIST = $(wildcard *.scm) guile-gtk-demo tutorial
