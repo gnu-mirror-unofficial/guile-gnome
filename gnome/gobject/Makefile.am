@@ -11,16 +11,17 @@ libguile_gnome_gobject_la_SOURCES = \
        $(C_FILES) $(H_FILES) guile-support.c guile-support.h
 
 libguile_gnome_gobject_la_CFLAGS = \
-  $(AM_CFLAGS) $(GOBJECT_CFLAGS) $(GUILE_CFLAGS) $(G_WRAP_CFLAGS) \
+  $(AM_CFLAGS) $(GOBJECT_CFLAGS) $(GUILE_CFLAGS) \
   -DGUILE_GOBJECT_DIR=\""$(schemelibdir)"\"
 
-libguile_gnome_gobject_la_LIBADD = $(G_WRAP_LIBS) $(GOBJECT_LIBS) $(GUILE_LIBS)
+libguile_gnome_gobject_la_LIBADD = $(GOBJECT_LIBS) $(GUILE_LIBS)
 libguile_gnome_gobject_la_LDFLAGS = # FIXME: version info
 
-guile_gnome_includedir = $(includedir)/guile-gnome-gobject
-guile_gnome_include_HEADERS = $(H_FILES)
+guile_gnome_includedir = $(includedir)/guile-gnome-2.6
+guile_gnome_include_HEADERS = guile-gnome-gobject.h
 
-include_HEADERS = guile-gnome-gobject.h
+guile_gnome_subincludedir = $(guile_gnome_includedir)/guile-gnome-gobject
+guile_gnome_subinclude_HEADERS = $(H_FILES)
 
 # Scheme files
 
@@ -47,6 +48,8 @@ guile-gnome-gobject-procedures.txt: guile-gnome-gobject.texi
 
 BUILT_SOURCES = $(DOT_X_FILES)
 
+CLEANFILES = $(DOT_X_FILES)
+
 #schemelib_DATA = guile-gnome-gobject-procedures.txt
 
-EXTRA_DIST = $(module_DATA)
+EXTRA_DIST = $(module_DATA) private.h

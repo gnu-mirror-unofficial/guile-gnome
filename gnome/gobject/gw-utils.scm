@@ -26,17 +26,9 @@
 ;;; Code:
 
 (define-module (gnome gobject gw-utils)
-  #:export (re-export-modules))
+  #:use-module (gnome gw support modules))
 
-(define-macro (re-export-modules . args)
-  (if (not (null? args))
-      (begin
-        (or (list? (car args))
-            (error "Invalid module specification" (car args)))
-        `(begin
-           (module-use! (module-public-interface (current-module))
-                        (resolve-interface ',(car args)))
-           (re-export-modules ,@(cdr args))))))
-(set-object-property! re-export-modules 'documentation
-  "Re-export the public interface of a module; used like
-@code{use-modules}.")
+(begin-deprecated
+ (issue-deprecation-warning
+  "`(gnome gobject gw-utils)' is deprecated. Use `(gnome gw support modules)' instead.")
+ (re-export-modules (gnome gw support modules)))

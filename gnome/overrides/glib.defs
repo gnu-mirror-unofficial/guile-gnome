@@ -1,6 +1,6 @@
+;; -*- scheme -*-
 ;; guile-gnome
 ;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
-;; Copyright (C) 2004 Andreas Rottmann <rotty at debian dot org>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -21,14 +21,43 @@
 
 ;;; Commentary:
 ;;
-;;Routines useful to *-spec.scm g-wrap files.
+;;Custom wrapper definitions.
 ;;
 ;;; Code:
 
-(define-module (gnome gobject gw-spec-utils)
-  #:use-module (gnome gw support modules))
+;; use our version that processes interrupts
+(define-method run
+  (of-object "GMainLoop")
+  (c-name "_wrap_g_main_loop_run")
+  (overrides "g_main_loop_run")
+  (return-type "none"))
 
-(begin-deprecated
- (issue-deprecation-warning
-  "`(gnome gobject gw-spec-utils)' is deprecated. Use `(gnome gw support gobject)' instead.")
- (re-export-modules (gnome gw support gobject)))
+(define-method string
+  (of-object "GString")
+  (c-name "_wrap_g_string_get_str")
+  (return-type "SCM"))
+
+(ignore-glob  "_*"
+              "*_copy"
+              "*_newv"
+              "*_valist"
+              "*_setv"
+              "*_user_data"
+              "*_func"
+              "g_source_set_callback*"
+              "g_timeout_add*"
+              "g_timeout_remove*"
+              "g_idle_add*"
+              "g_idle_remove*"
+              "g_error_*"
+              "g_child_watch_add*"
+              "g_parse_debug_string"
+              "g_snprintf"
+              "g_vsnprintf"
+              "g_atexit"
+              "*win32*")
+
+(ignore "g_main_context_wait"
+        "g_propagate_error"
+        "g_set_error"
+        "g_clear_error")
