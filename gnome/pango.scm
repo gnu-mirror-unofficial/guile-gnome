@@ -20,33 +20,13 @@
 
 ;;; Commentary:
 ;;
-;;g-wrap specification for Pango.
+;;Pango bindings.
 ;;
 ;;; Code:
 
-(define-module (gnome gw pango-spec)
-  #:use-module (oop goops)
-  #:use-module (g-wrap)
-  #:use-module (g-wrap guile)
-  #:use-module (gnome gw glib-spec)
-  #:use-module (gnome gw gobject-spec)
-  #:use-module (gnome gw support gobject)
-  #:use-module (gnome gw support defs))
+(define-module (gnome pango)
+  #:use-module (gnome gobject)
+  #:use-module (gnome gw pango)
+  #:use-module (gnome gw support modules))
 
-(define-class <pango-wrapset> (<gobject-wrapset-base>)
-  guile
-  #:id 'gnome-pango
-  #:dependencies '(standard gnome-glib gnome-gobject))
-
-(define-method (global-declarations-cg (self <gobject-wrapset-base>))
-  (list
-   (next-method)
-   "#include <pango/pango.h>\n"))
-  
-(define-method (initialize (ws <pango-wrapset>) initargs)
-  (next-method ws (cons #:module (cons '(gnome gw pango) initargs)))
-
-  (add-type-alias! ws "PangoGlyph" 'unsigned-long)
-
-  (load-defs ws "gnome/defs/pango.defs"))
-
+(re-export-modules (gnome gw pango))
