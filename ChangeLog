@@ -1,3 +1,21 @@
+2004-07-07  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gobject-spec.scm (unwrap-value-cg): Whoops, call
+	wrapped-var on the right thing.
+
+	* gnome/gobject/gw-spec-utils.scm (unwrap-value-cg): For enums and
+	flags, use scm_scm_to_gvalue() instead of rolling our own
+	conversion. Also fixes problems when the current module doesn't
+	import GOOPS.
+
+2004-07-06  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gobject-spec.scm: Same.
+
+	* gnome/gobject/gw-spec-utils.scm: Make sure that gw:error is
+	passed the wrapped var, not the scm var -- they are of different
+	types.
+
 2004-07-01  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/glib.scm: Include #:use-module (gnome gobject) before the
@@ -7,6 +25,18 @@
 	conversion code was always executed, even when null-ok and the
 	pointer actually was NULL. This is now named unwrap-null-checked
 	and takes the actual unwrap code as extra parameter.
+ 
+2004-06-30  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.c (scm_gtype_instance_print): Same bug.
+
+	* gnome/gobject/gvalue.c (scm_gvalue_print): I got bit by !SCM.
+	Use SCM_FALSEP instead.
+
+	* gnome/gobject/gtype.c: Yikes, somehow Martin's copyright notice
+	got lost in the file split! Put back on all files.
+
+	* gnome/gobject/gvalue.c (scm_gvalue_print): Indentation fix.
 
 2004-06-24  Andreas Rottmann  <a.rottmann@gmx.at>
 

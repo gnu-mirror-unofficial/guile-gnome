@@ -281,7 +281,7 @@
           "  " c-var " = (" ctype ") g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"))
         " } else {\n"
         "  " c-var " = NULL;\n"
-        `(gw:error ,status-var type ,scm-var)
+        `(gw:error ,status-var type ,(wrapped-var value))
         "}\n")))))
 
 (define-method (wrap-value-cg (type <gobject-boxed-type>)
@@ -320,7 +320,7 @@
     "  " c-var " = (" ctype ") g_value_get_pointer ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
     "else {\n"
     "  " c-var " = NULL;\n"
-    `(gw:error ,status-var type ,scm-var)
+    `(gw:error ,status-var type ,(wrapped-var value))
     "}\n")))
 
 (define-method (wrap-value-cg (type <gobject-pointer-type>)
@@ -418,12 +418,12 @@
      "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
      "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " gtype-id "))\n"
      "  " c-var " = g_value_get_enum ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
-     "else {\n" ;; we can't use scm_make because we need the special allocate-instance
-     "  SCM newval = scm_apply_3 (SCM_VARIABLE_REF (scm_c_lookup (\"make\")),\n"
-     "                            scm_c_gtype_to_class (" gtype-id "),\n"
-     "                            scm_c_make_keyword (\"value\"),\n"
-     "                            " scm-var ", SCM_EOL);\n"
-     ;; should throw an exception if the eval fails
+     "else {\n"
+     ;; will throw an exception if the conversion fails
+     ;; don't use scm_c_scm_to_gvalue because that will unecessarily
+     ;; create a new value
+     "  SCM newval = scm_scm_to_gvalue (scm_c_register_gtype (" gtype-id "),"
+                                        scm-var ");\n"
      "  " c-var " = g_value_get_enum ((GValue*)SCM_SMOB_DATA (newval));\n"
      "}\n")))
 
@@ -476,11 +476,11 @@
      "         && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " gtype-id "))\n"
      "  " c-var " = g_value_get_flags ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
      "else {\n" ;; we can't use scm_make because we need the special allocate-instance
-     "  SCM newval = scm_apply_3 (SCM_VARIABLE_REF (scm_c_lookup (\"make\")),\n"
-     "                            scm_c_gtype_to_class (" gtype-id "),\n"
-     "                            scm_c_make_keyword (\"value\"),\n"
-     "                            " scm-var ", SCM_EOL);\n"
-     ;; should throw an exception if the eval fails
+     ;; will throw an exception if the conversion fails
+     ;; don't use scm_c_scm_to_gvalue because that will unecessarily
+     ;; create a new value
+     "  SCM newval = scm_scm_to_gvalue (scm_c_register_gtype (" gtype-id "),"
+                                        scm-var ");\n"
      "  " c-var " = g_value_get_flags ((GValue*)SCM_SMOB_DATA (newval));\n"
      "}\n")))
 
@@ -541,7 +541,7 @@
      (list
       "if (g_type_is_a (SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype)), " (gtype-id type) "))\n"
       "  " c-var " = (" ctype ") SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype_class));\n"
-      "else " `(gw:error ,status-var type ,scm-var)))))
+      "else " `(gw:error ,status-var type ,(wrapped-var value))))))
 
 (define-method (wrap-value-cg (type <gobject-class-type>)
                               (value <gw-value>)

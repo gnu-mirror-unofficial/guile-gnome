@@ -1,5 +1,6 @@
 /* -*- Mode: C; c-basic-offset: 4 -*- */
 /* guile-gnome
+ * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
  * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
  *
  * gvalue.c: Support for GValue-based types
@@ -71,7 +72,8 @@ gboxed_scm_get_type (void)
     static GType boxed_type = 0;
 
     if (!boxed_type)
-      boxed_type = g_boxed_type_register_static ("GBoxedSCM", copy_gboxed_scm, free_gboxed_scm); 
+        boxed_type = g_boxed_type_register_static
+            ("GBoxedSCM", copy_gboxed_scm, free_gboxed_scm);
 
     return boxed_type;
 }
@@ -85,8 +87,8 @@ scm_gvalue_print (SCM smob, SCM port, scm_print_state *pstate)
     SCM class;
 
     class = scm_c_gtype_lookup_class (G_VALUE_TYPE (value));
-    if (!class)
-    class = scm_c_register_gtype (G_VALUE_TYPE (value));
+    if (SCM_FALSEP (class))
+        class = scm_c_register_gtype (G_VALUE_TYPE (value));
 
     scm_call_3 (_gtype_instance_write, class, smob, port);
     return 1;

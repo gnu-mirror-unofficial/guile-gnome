@@ -1,4 +1,5 @@
 /* guile-gnome
+ * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
  * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
  *
  * gobject.c: Support for GObject (and GInterface)
