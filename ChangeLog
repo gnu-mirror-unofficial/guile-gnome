@@ -1,175 +1,138 @@
-2004-04-12  Andreas Rottmann  <a.rottmann@gmx.at>
-
-	* h2def.py: Quick hack to fix G_*_DECLS misparsing.
-
 2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
 
-	* configure.in: Depend on libgnomeui >= 2.6.0 and gtk+ >= 2.4.0.
+	* gtk-types.defs (PrivateFlags, TreeViewMode): Removed.
 
 2004-04-02  Andreas Rottmann  <a.rottmann@gmx.at>
 
-	* examples/gtk/guile-gtk-demo/demos/tree-model.scm (on-get-flags):
-	Removed, can use default implementation.
+	* ui.defs: Revised for GNOME 2.6.
+	
+	* gtk.defs: Removed broken functions, fixes.
+	
+	* gtk-types.defs: Removed broken types and re-added boxed types
+	and interfaces.
+
+2004-03-31  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gtk.defs, gtk-types.defs: Adapted for GTK+ 2.4.
 
 2004-03-29  Andreas Rottmann  <a.rottmann@gmx.at>
-
-	* guile-gobject.pc.in, guile-gobject-uninstalled.pc.in: Moved to
-	gnome/gobject, where they belong. Makefiles adapted.
 	
-	* guile-gobject.pc.in (Libs): Link against against the core
-	support code, not a wrapset.
-	Remove have_gtk= line and FIXME comment, since these do not 
-	fall in the realm of pkg-config (no headers or regular shared 
-	libs installed).
-	* guile-gobject-uninstalled.pc.in: Ditto.
+	* gdk-types.defs (ColorSpace): Removed, is in gdk-pixbuf and
+	named GdkColor_s_pace.
 	
-2004-03-29  Andreas Rottmann  <a.rottmann@gmx.at>
+	* gtk-types.defs: Removed CTreeNode, CellType, CListDragPos,
+	ButtonAction, CTreePos, CTreeExpanderStyle, CTreeExpansionType,
+	SideType, MatchType, PreviewType, SubmenuDirection,
+	SubmenuPlacement, which were all deprecated before GTK+ 2.0.
 
-	* README: Extended a little bit.
+2004-02-08  Andy Wingo  <wingo@pobox.com>
+
+	* ui.defs: Revert ui.defs to my local copy. There are still some
+	problems, but it's better than before.
 
 2004-01-14  Andy Wingo  <wingo@pobox.com>
 
-	* WARTS: You've been able to subclass with define-class for a
-	while now...
+	* ui.defs: Re-generated and tweaked.
 
-	* configure.in: Add checks for libgnome, libgnomeui, and
-	libgnomecanvas.
+	* ui-overrides.defs: New file.
 
-2004-01-22  Andreas Rottmann  <a.rottmann@gmx.at>
+	* gnome.defs: Miscellaneous fixes.
 
-	* configure.in: Check for GLib >= 2.2.0, since 2.1.X has no
-	g_{set,get}_application_name.
+	* gnome-overrides.defs: New file.
 
-	* configure.in: Use pkg-config to check for g-wrap.
+	* canvas-overrides.defs: New file.
 
-2004-01-20  Andreas Rottmann  <a.rottmann@gmx.at>
+2003-12-16  Andy Wingo  <wingo@pobox.com>
 
-	* guile-gobject.pc.in: Require g-wrap and drop @GUILE_LIBS@.
+	* gtk-overrides.defs: Allow NULL for the parent in iter_children.
 
-	* autogen.sh: Require automake 1.7.
+2003-12-13  Andreas Rottmann  <a.rottmann@gmx.at>
 
-2004-01-05  Andreas Rottmann  <a.rottmann@gmx.at>
+	* Makefile.am (guilemodule_DATA): Added gnome-overrides.defs,
+	ui-overrides.defs and canavas-overrides.defs.
 
-	* h2def.py: Added new option --onlydefs.
+2003-12-09  Andy Wingo  <wingo@pobox.com>
 
-2003-12-17  Andreas Rottmann  <a.rottmann@gmx.at>
+	* gtk-overrides.defs (iter_children): Return a list of the
+	children instead of only the first iterator.
 
-	* TODO: Added entry on procedure->macro usage.
+2003-11-30  Andreas Rottmann  <a.rottmann@gmx.at>
 
-	* h2def.py: Added option --type-postfix, as needed for APIs
-	that use PREFIX_CLASSNAME_TYPE instead of PREFIX_TYPE_CLASSNAME,
-	as GTK+ does.
+	* Makefile.am (guilemodule_DATA): Added gda.defs.
 
-2003-12-07  Andreas Rottmann  <a.rottmann@gmx.at>
+	* gda-overrides.defs: Un-ignore gda_value_*, ignore
+	gda_value_new_* instead.
 
-	* configure.in: Check for libgda >= 0.15.0 (we need new API).
+2003-11-25  Andy Wingo  <wingo@pobox.com>
 
-2003-10-26  Andy Wingo  <wingo@pobox.com>
+	* gtk-overrides.defs: Added accessors for ok and cancel buttons in
+	file selections.
 
-	* examples/gobject/example-1.scm: Updated to the new
-	property/signal/subclassing API.
+2003-11-26  Andreas Rottmann  <a.rottmann@gmx.at>
 
-2003-10-25  Andy Wingo  <wingo@pobox.com>
+	* gda.defs, gda-types.defs, gda-overrides.defs: New files.
 
-	* examples/gtk/tic-tac-toe.scm: Updated to the new
-	property/signal/subclassing API.
+2003-11-25  Andreas Rottmann  <a.rottmann@gmx.at>
 
-2003-10-21  Andreas Rottmann  <a.rottmann@gmx.at>
+	* gdk-types.defs (ColorSpace): Commented out, is in gdk-pixbuf and
+	named GdkColor_s_pace.
+	
+	* gtk-overrides.defs (GenericTreeModel): C type is
+	GuileGtkGenericTreeModel, not GuileGtkTreeModel.
 
-	* configure.in: Disable ORBit check, since the code needs internal
-	API headers that are not installed by default.
+	* gtk-types.defs: Get rid of CTree/CList stuff. Comment out a
+	bunch of types apparently missing in GTK+ 2.4.
+
+	* glib-override.defs: Removed some ignore-globs (*_ref, *_unref
+	and *_free), since g-wrap has no automatic reference-counting
+	or disposal of objects.
+	Ignore the GError-related functions, since the GError type is 
+	exposed only via exceptions to the scheme level.
+
+	* glib.defs: Added defs for giochannel.h and gfileutils.h.
+
+2003-11-01  Andy Wingo  <wingo@pobox.com>
+
+	* gtk.defs (gtk_clipboard_get): New wrapping, was missing before.
+	(gtk_clipboard_get_for_display): Same.
+	(gtk_clipboard_get_display): Same.
 
 2003-10-16  Andy Wingo  <wingo@pobox.com>
 
-	* examples/gtk/guile-gtk-demo/guile-gtk-demo.scm: Actually works
-	now, yay!
+	* gtk-overrides.defs: New wrappers for TextBuffer operations, and
+	GtkTreeSelection::get_selected.
 
-	* configure.in: Check for libvte.
-
-2003-10-13  Andy Wingo  <wingo@pobox.com>
-
-	* configure.in: -Wall always. -Werror unless you pass
-	--disable-Werror. --disable-Wall is gone. Put in debugging symbols
-	unless --disable-debug is passed.
+	* vte.defs, vte-overrides.defs: New files. The overrides still
+	need some work and a vte-support.[ch], but I want to get a repl
+	working first.
+	* zvt.defs: Deleted.
 
 2003-10-12  Andy Wingo  <wingo@pobox.com>
 
-	* configure.in: We do -Wall by default (--disable-Wall to disable)
-
-2003-10-11  Andy Wingo  <wingo@pobox.com>
-
-	* examples/gtk/hello-generics.scm, examples/gtk/hello.scm:
-	s/app/hello/ so we don't confuse the [stupid] module system.
-
-	* examples/gtk/combo-button.scm: s/app/demo/.
+	* gtk-overrides.defs: Define the custom Guile treemodel object.
+	Some custom wrappings for GtkTreeModel, GtkTreeStore, and
+	GtkListStore. Ignore *_foreach and *_valist.
 
 2003-10-01  Andy Wingo  <wingo@pobox.com>
 
-	* configure.in: Check to see if glade is installed.
+	* libglade.defs: Include overrides file, specify that
+	get-widget-prefix returns a GList* of GtkWidget*, remove pygtk
+	stuff.
+	* libglade-overrides.defs: New file.
 
-2003-09-22  Andy Wingo  <wingo@pobox.com>
+2003-05-25  Andy Wingo  <wingo@pobox.com>
 
-	* autogen.sh: remove build-dependency on gnome2-dev by using
-	gstreamer's build system
-	* autogen-support.sh: gstreamer's build system (new file)
+	* gtk-overrides.defs: Ignore gtk_container_foreach -- to use this,
+	just (for-each f (get-children c)). Ignore gtk_container_forall --
+	scheme equivalent unimplemeted.
 
-2003-08-26  Andreas Rottmann  <rottmann@users.sourceforge.net>
- 
-	* h2def.py: Added --enums-without-gtype option, which will emit
-	the enum and flags defs without gtype-id.
+2003-05-08  Andy Wingo  <wingo@pobox.com>
 
-2003-05-30  Andy Wingo  <wingo@pobox.com>
+	* glib.defs: Added to support GMainLoop, etc.
 
-	* gw-standard-spec.scm (<gw:long-long>, <gw:unsigned-long-long>):
-	Add LL to the end of the max/min 64 bit constants to appease gcc
-	3.3. However, gcc-3.3 fails to compile the gtk bindings, at least
-	on my machine. gcc 3.2 does work.
+	* gtk.defs, gdk.defs, pango.defs: Updated to
+	"GList*-of-GtkWindow*".
 
-2002-01-28  Ariel Rios  <ariel@gnu.org>
-
-	* configure.in: Bump version number to 0.3.0
-
-	* NEWS: What's new =)
-
-2001-09-10  Martin Baulig  <baulig@suse.de>
-
-	Released guile-gobject 0.2.0 "The Great Barrier Reef".
-
-	* configure.in: Bump version number to 0.2.0.
-
-	* RELEASE-NOTES-0.2.0.txt: Preparing the release ...
-
-2001-09-07  Martin Baulig  <baulig@suse.de>
-
-	* configure.in: Check for orbit-idl.
-	(ORBIT_IDL, BONOBO_IDL_DIR): Added.
-
-	* demos/: New directory.
-
-	* demos/corba/: New directory.
-
-2001-09-05  Martin Baulig  <baulig@suse.de>
-
-	* configure.in: Bump version number to 0.1.0.
-
-2001-09-05  Martin Baulig  <baulig@suse.de>
-
-	* configure.in: Check for GTK+.
-
-	* gtk/: New directory.
-
-2001-09-01  Martin Baulig  <baulig@suse.de>
-
-	* Makefile.am, configure.in: Don't build libgnome/ and orbit/
-	for the moment, nothing interesting in there.
-
-2001-08-27  Martin Baulig  <baulig@suse.de>
-
-	* test-suite/: New directory.
-
-2001-08-01  Martin Baulig  <baulig@suse.de>
-
-	* orbit/: New directory.
-
-	* libgnome/: New directory.
+	* gtk-overrides.defs, gdk-overrides.defs, glib-overrides.defs: new
+	files. Contain ignore and override information.
 
