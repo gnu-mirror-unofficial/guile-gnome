@@ -80,6 +80,9 @@
         "gnome_app_set_progress"
         "gnome_app_progress_done"
 
+        "gnome_entry_construct" ;; <- debian borked this symbol from 2.8.0
+        "gnome_href_construct" ;; <- debian borked this symbol from 2.8.0
+
         "gnome_icon_theme_list_icons" ;; what does this return?
 
         "gnome_init_with_popt_table"
