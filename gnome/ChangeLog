@@ -1,6 +1,10 @@
 2004-06-21  Jan Nieuwenhuizen  <janneke@gnu.org>
 
-	* gtk/gdk-event.scm (gdk-event-button:button): New function.
+	* gtk/gdk-event.scm (gdk-event-button:button):
+	(gdk-event-button:x): 
+	(gdk-event-button:y): 
+	(gdk-event-button:x-root): 
+	(gdk-event-button:y-root): New function.
 
 2004-04-02  Andreas Rottmann  <a.rottmann@gmx.at>
 

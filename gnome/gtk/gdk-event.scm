@@ -69,11 +69,43 @@
       (else
        (gruntime-error "Event not of the proper type: ~A" event)))))
        
+(define (gdk-event-button:x event)
+  (let ((event-struct (gdk-event->event-struct event)))
+    (case (gdk-event:type event)
+      ((button-press button-release)
+       (struct-ref event-struct (+ vtable-offset-user 4)))
+      (else
+       (gruntime-error "Event not of the proper type: ~A" event)))))
+
+(define (gdk-event-button:y event)
+  (let ((event-struct (gdk-event->event-struct event)))
+    (case (gdk-event:type event)
+      ((button-press button-release)
+       (struct-ref event-struct (+ vtable-offset-user 5)))
+      (else
+       (gruntime-error "Event not of the proper type: ~A" event)))))
+
 (define (gdk-event-button:button event)
   (let ((event-struct (gdk-event->event-struct event)))
     (case (gdk-event:type event)
       ((button-press button-release)
        (struct-ref event-struct (+ vtable-offset-user 7)))
+      (else
+       (gruntime-error "Event not of the proper type: ~A" event)))))
+
+(define (gdk-event-button:x-root event)
+  (let ((event-struct (gdk-event->event-struct event)))
+    (case (gdk-event:type event)
+      ((button-press button-release)
+       (struct-ref event-struct (+ vtable-offset-user 9)))
+      (else
+       (gruntime-error "Event not of the proper type: ~A" event)))))
+
+(define (gdk-event-button:y-root event)
+  (let ((event-struct (gdk-event->event-struct event)))
+    (case (gdk-event:type event)
+      ((button-press button-release)
+       (struct-ref event-struct (+ vtable-offset-user 10)))
       (else
        (gruntime-error "Event not of the proper type: ~A" event)))))
 
