@@ -1,1 +1,1 @@
-EXTRA_DIST=gtk gobject
+EXTRA_DIST = test.glade test.scm
