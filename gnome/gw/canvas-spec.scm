@@ -36,7 +36,8 @@
   #:use-module (gnome gobject defs-support))
 
 (define-class <canvas-wrapset> (<gobject-wrapset-base>)
-  guile #:id 'gnome-canvas)
+  #:id 'gnome-canvas
+  #:dependencies '(standard gnome-glib gnome-gobject gnome-gdk))
 
 (define-method (global-declarations-cg (self <canvas-wrapset>))
   (list
@@ -50,6 +51,4 @@
 (define-method (initialize (ws <canvas-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gw canvas) initargs)))
 
-  (depends-on! ws 'standard 'gnome-glib 'gnome-gobject 'gnome-gdk)
-  
   (load-defs ws "gnome/defs/libgnomecanvas.defs"))

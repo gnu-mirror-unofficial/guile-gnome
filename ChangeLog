@@ -1,3 +1,8 @@
+2004-06-26  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/gw/canvas-spec.scm (initialize): Remove depends-on.
+	(<canvas-wrapset>): Add #:dependencies.
+
 2004-06-14  Jan Nieuwenhuizen  <janneke@gnu.org>
 
 	* gnome/gw/Makefile.am (BUILT_SOURCES): Build fix.
