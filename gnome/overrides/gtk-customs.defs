@@ -1069,18 +1069,6 @@
   (return-type "GtkTargetList*"))
 
 (define-method
-  drag_dest_set
-  (of-object "GtkWidget")
-  (c-name "gtk_drag_dest_set")
-  (overrides "gtk_drag_dest_set")
-  (return-type "none")
-  (parameters
-    '("GtkDestDefaults" "flags")
-    '("const-GtkTargetEntry*" "targets")
-    '("gint" "n_targets")
-    '("GdkDragAction" "actions")))
-
-(define-method
   drag_dest_set_proxy
   (of-object "GtkWidget")
   (c-name "gtk_drag_dest_set_proxy")

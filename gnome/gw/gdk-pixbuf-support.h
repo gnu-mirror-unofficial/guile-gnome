@@ -24,5 +24,6 @@
 #include <libguile.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-/* nothing */
+gboolean gdk_pixbuf_save_to_port (GdkPixbuf *pixbuf, SCM port, const char *type,
+                                  SCM options_alist, GError **error);
 

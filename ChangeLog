@@ -1,3 +1,44 @@
+2004-10-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gtk.defs (set_text, get_as_string)
+	(set_cell_data_func, drag_dest_set): Update to reflect new
+	wrappers.
+
+	* gnome/gw/gtk-support.c (_gtk_selection_data_get_as_string): New
+	helper.
+
+	* gnome/overrides/gdk-pixbuf.defs (gdk_pixbuf_save_to_port):
+	* gnome/gw/gdk-pixbuf-support.[ch] (port_write_cb) 
+	("gdk-pixbuf-save-to-port"): Define helper to save a GdkPixbuf to
+	a scheme port.
+
+2004-10-11  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gtk-support.c (_wrap_gtk_clipboard_set_text): New
+	wrapper. 
+
+2004-10-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gtk.defs (drag_dest_set)
+	(set_cell_data_func): Define overrides for these wrappers.
+
+	* gnome/overrides/gtk-customs.defs (drag_dest_set): Removed from
+	here, we specialize in the main overrides.
+
+	* gnome/gw/gtk-support.c ("gtk-list-store-new"): Support
+	GTypeClasses as the type arguments as well as GTypes. Plug a
+	memleak.
+	(_wrap_gtk_tree_view_column_set_cell_data_func, cell_data_func):
+	New procs to wrap set-cell-data-func.
+	(_wrap_gtk_drag_dest_set): New wrapper.
+
+	* examples/repl.scm: Gutted. Still here, but just calls
+	guile-gtk-repl.
+
+	* gnome/gtk/graphical-repl.scm (guile-gtk-repl): Moved here from
+	examples/repl.scm, because it's useful for quickly hacking up
+	applications. Exported.
+
 2004-10-07  Andy Wingo  <wingo@pobox.com>
 
 	* package.ac: Add check for GDK_PIXBUF libs and cflags.

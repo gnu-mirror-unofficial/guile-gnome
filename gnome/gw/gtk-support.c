@@ -257,6 +257,12 @@ _wrap_gtk_action_group_add_radio_actions (GtkActionGroup *action_group,
 }
 #undef FUNC_NAME
 
+void
+_wrap_gtk_clipboard_set_text (GtkClipboard *clipboard, const gchar *text)
+{
+    gtk_clipboard_set_text (clipboard, text, strlen (text));
+}
+
 gint
 _wrap_gtk_editable_insert_text (GtkEditable *editable, const gchar *text, gint pos)
 {
@@ -322,10 +328,19 @@ _wrap_gtk_list_store_new (SCM col_types)
     
     SCM_VALIDATE_NONEMPTYLIST (1, col_types);
     len = scm_ilength (col_types);
-    col_gtypes = g_new (GType, len); /* fixme: if there's an error, this memory
-                                      * is leaked */
+    col_gtypes = g_new (GType, len);
+
     for (i=0; i<len; i++) {
-        SCM_VALIDATE_GTYPE_COPY (i, SCM_CAR (col_types), col_gtypes[i]);
+        SCM v = SCM_CAR (col_types);
+        if (SCM_GTYPEP (v))
+            col_gtypes[i] = (GType)SCM_SMOB_DATA (v);
+        else if (SCM_GTYPE_CLASSP (v))
+            col_gtypes[i] = (GType)SCM_SMOB_DATA (scm_slot_ref
+                                                  (v, scm_str2symbol ("gtype")));
+        else {
+            g_free (col_gtypes);
+            scm_wrong_type_arg (FUNC_NAME, 1, v);
+        }
         col_types = SCM_CDR (col_types);
     }
     
@@ -409,6 +424,12 @@ _wrap_gtk_message_dialog_new (GtkWindow* parent, GtkDialogFlags flags, GtkMessag
     g_object_ref (w); /* the initial ref belongs to GTK+ */
     SCM_NEWSMOB2 (ret, scm_tc16_gtype_instance, w, NULL);
     return ret;
+}
+
+gchar*
+_gtk_selection_data_get_as_string (GtkSelectionData *data) 
+{
+    return g_strndup (data->data, data->length);
 }
 
 void
@@ -867,4 +888,45 @@ _wrap_gtk_tree_store_append (GtkTreeStore *store, GtkTreeIter *parent)
     GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
     gtk_tree_store_append (store, new, parent);
     return new;
+}
+
+static void
+cell_data_func (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell,
+                GtkTreeModel *tree_model, GtkTreeIter *iter, gpointer data)
+{
+    SCM proc, scolumn, scell, smodel, siter;
+    proc = SCM_PACK (GPOINTER_TO_INT (data));
+    scolumn = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_column);
+    scell = scm_c_gtype_instance_to_scm ((GTypeInstance*)cell);
+    smodel = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
+    siter = scm_c_dup_gboxed_to_scm (GTK_TYPE_TREE_ITER, iter);
+    
+    scm_call_4 (proc, scolumn, scell, smodel, siter);
+}
+
+void
+_wrap_gtk_tree_view_column_set_cell_data_func (GtkTreeViewColumn *tree_column,
+                                               GtkCellRenderer *cell_renderer,
+                                               SCM proc) 
+{
+    gtk_tree_view_column_set_cell_data_func
+        (tree_column, cell_renderer, cell_data_func,
+         GINT_TO_POINTER (SCM_UNPACK (scm_gc_protect_object (proc))),
+         (GtkDestroyNotify)scm_gc_unprotect_object);
+}
+
+void
+_wrap_gtk_drag_dest_set (GtkWidget *widget, GtkDestDefaults flags,
+                         const GList* types, GdkDragAction actions)
+{
+    const GList *l;
+    gint i, n;
+    GtkTargetEntry* entries;
+
+    n = g_list_length ((GList*)types);
+    entries = g_new0 (GtkTargetEntry, n);
+    for (i=0, l=types; i<n; i++, l=l->next)
+        entries[i].target = (gchar*)l->data;
+
+    gtk_drag_dest_set (widget, flags, entries, n, actions);
 }
