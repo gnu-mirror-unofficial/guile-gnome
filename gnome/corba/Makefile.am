@@ -18,8 +18,9 @@ libguile_gnome_corba_la_CFLAGS = $(CORBA_CFLAGS)  \
 libguile_gnome_corba_la_LIBADD = $(GUILE_GLIB_LIBS) $(GUILE_LIBS)
 libguile_gnome_corba_la_LDFLAGS = -export-dynamic # FIXME: version info
 
-guile_gnome_includedir = $(includedir)/guile-gnome-corba
-guile_gnome_include_HEADERS = $(H_FILES)
+guile_gnome_includedir = $(includedir)/guile-gnome-2.6
+guile_gnome_subincludedir = $(guile_gnome_includedir)/guile-gnome-corba
+guile_gnome_subinclude_HEADERS = $(H_FILES)
 
 # include_HEADERS = guile-gnome-gobject.h
 

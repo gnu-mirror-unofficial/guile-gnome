@@ -1,5 +1,8 @@
 2004-09-19  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/corba/Makefile.am: Install headers into a versioned
+	directory.
+
 	* package.ac: Re-enable the CORBA build.
 
 	* gnome/gw/corba-spec.scm: Move here from
