@@ -1,3 +1,8 @@
+2005-03-01  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/gdk-spec.scm (initialize): Added type-rules making
+	gint* and guint* output args.
+
 2005-02-28  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/overrides/gdk.defs (gdk_window_set_icon): Added override

@@ -1,4 +1,5 @@
 ;; guile-gnome
+;; Copyright (C) 2005 Andread Rottmann <rotty at debian dot org>
 ;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
@@ -116,6 +117,9 @@
 
   ;; a hack now -- dunno what to do with this...
   (add-type-alias! ws "GdkNativeWindow" 'unsigned-long)
+  
+  (add-type-rule! ws '(("gint*" "*")) '(int out))
+  (add-type-rule! ws '(("guint*" "*")) '(unsigned-int out))
   
   (wrap-custom-boxed!
    "GdkRectangle" "GDK_TYPE_RECTANGLE"
