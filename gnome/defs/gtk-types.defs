@@ -1004,12 +1004,6 @@
   )
 )
 
-(define-pointer CTreeNode
-  (in-module "Gtk")
-  (c-name "GtkCTreeNode")
-  (gtype-id "GTK_TYPE_CTREE_NODE")
-)
-
 (define-boxed IconSet
   (in-module "Gtk")
   (c-name "GtkIconSet")
@@ -1109,92 +1103,6 @@
     '("inert" "GTK_CELL_RENDERER_MODE_INERT")
     '("activatable" "GTK_CELL_RENDERER_MODE_ACTIVATABLE")
     '("editable" "GTK_CELL_RENDERER_MODE_EDITABLE")
-  )
-)
-
-(define-enum CellType
-  (in-module "Gtk")
-  (c-name "GtkCellType")
-  (gtype-id "GTK_TYPE_CELL_TYPE")
-  (values
-    '("empty" "GTK_CELL_EMPTY")
-    '("text" "GTK_CELL_TEXT")
-    '("pixmap" "GTK_CELL_PIXMAP")
-    '("pixtext" "GTK_CELL_PIXTEXT")
-    '("widget" "GTK_CELL_WIDGET")
-  )
-)
-
-(define-enum CListDragPos
-  (in-module "Gtk")
-  (c-name "GtkCListDragPos")
-  (gtype-id "GTK_TYPE_CLIST_DRAG_POS")
-  (values
-    '("none" "GTK_CLIST_DRAG_NONE")
-    '("before" "GTK_CLIST_DRAG_BEFORE")
-    '("into" "GTK_CLIST_DRAG_INTO")
-    '("after" "GTK_CLIST_DRAG_AFTER")
-  )
-)
-
-(define-flags ButtonAction
-  (in-module "Gtk")
-  (c-name "GtkButtonAction")
-  (gtype-id "GTK_TYPE_BUTTON_ACTION")
-  (values
-    '("ignored" "GTK_BUTTON_IGNORED")
-    '("selects" "GTK_BUTTON_SELECTS")
-    '("drags" "GTK_BUTTON_DRAGS")
-    '("expands" "GTK_BUTTON_EXPANDS")
-  )
-)
-
-(define-enum CTreePos
-  (in-module "Gtk")
-  (c-name "GtkCTreePos")
-  (gtype-id "GTK_TYPE_CTREE_POS")
-  (values
-    '("before" "GTK_CTREE_POS_BEFORE")
-    '("as-child" "GTK_CTREE_POS_AS_CHILD")
-    '("after" "GTK_CTREE_POS_AFTER")
-  )
-)
-
-(define-enum CTreeLineStyle
-  (in-module "Gtk")
-  (c-name "GtkCTreeLineStyle")
-  (gtype-id "GTK_TYPE_CTREE_LINE_STYLE")
-  (values
-    '("none" "GTK_CTREE_LINES_NONE")
-    '("solid" "GTK_CTREE_LINES_SOLID")
-    '("dotted" "GTK_CTREE_LINES_DOTTED")
-    '("tabbed" "GTK_CTREE_LINES_TABBED")
-  )
-)
-
-(define-enum CTreeExpanderStyle
-  (in-module "Gtk")
-  (c-name "GtkCTreeExpanderStyle")
-  (gtype-id "GTK_TYPE_CTREE_EXPANDER_STYLE")
-  (values
-    '("none" "GTK_CTREE_EXPANDER_NONE")
-    '("square" "GTK_CTREE_EXPANDER_SQUARE")
-    '("triangle" "GTK_CTREE_EXPANDER_TRIANGLE")
-    '("circular" "GTK_CTREE_EXPANDER_CIRCULAR")
-  )
-)
-
-(define-enum CTreeExpansionType
-  (in-module "Gtk")
-  (c-name "GtkCTreeExpansionType")
-  (gtype-id "GTK_TYPE_CTREE_EXPANSION_TYPE")
-  (values
-    '("expand" "GTK_CTREE_EXPANSION_EXPAND")
-    '("expand-recursive" "GTK_CTREE_EXPANSION_EXPAND_RECURSIVE")
-    '("collapse" "GTK_CTREE_EXPANSION_COLLAPSE")
-    '("collapse-recursive" "GTK_CTREE_EXPANSION_COLLAPSE_RECURSIVE")
-    '("toggle" "GTK_CTREE_EXPANSION_TOGGLE")
-    '("toggle-recursive" "GTK_CTREE_EXPANSION_TOGGLE_RECURSIVE")
   )
 )
 
@@ -1392,18 +1300,6 @@
   )
 )
 
-(define-enum SideType
-  (in-module "Gtk")
-  (c-name "GtkSideType")
-  (gtype-id "GTK_TYPE_SIDE_TYPE")
-  (values
-    '("top" "GTK_SIDE_TOP")
-    '("bottom" "GTK_SIDE_BOTTOM")
-    '("left" "GTK_SIDE_LEFT")
-    '("right" "GTK_SIDE_RIGHT")
-  )
-)
-
 (define-enum TextDirection
   (in-module "Gtk")
   (c-name "GtkTextDirection")
@@ -1424,20 +1320,6 @@
     '("right" "GTK_JUSTIFY_RIGHT")
     '("center" "GTK_JUSTIFY_CENTER")
     '("fill" "GTK_JUSTIFY_FILL")
-  )
-)
-
-(define-enum MatchType
-  (in-module "Gtk")
-  (c-name "GtkMatchType")
-  (gtype-id "GTK_TYPE_MATCH_TYPE")
-  (values
-    '("all" "GTK_MATCH_ALL")
-    '("all-tail" "GTK_MATCH_ALL_TAIL")
-    '("head" "GTK_MATCH_HEAD")
-    '("tail" "GTK_MATCH_TAIL")
-    '("exact" "GTK_MATCH_EXACT")
-    '("last" "GTK_MATCH_LAST")
   )
 )
 
@@ -1561,16 +1443,6 @@
   )
 )
 
-(define-enum PreviewType
-  (in-module "Gtk")
-  (c-name "GtkPreviewType")
-  (gtype-id "GTK_TYPE_PREVIEW_TYPE")
-  (values
-    '("color" "GTK_PREVIEW_COLOR")
-    '("grayscale" "GTK_PREVIEW_GRAYSCALE")
-  )
-)
-
 (define-enum ReliefStyle
   (in-module "Gtk")
   (c-name "GtkReliefStyle")
@@ -1652,26 +1524,6 @@
     '("prelight" "GTK_STATE_PRELIGHT")
     '("selected" "GTK_STATE_SELECTED")
     '("insensitive" "GTK_STATE_INSENSITIVE")
-  )
-)
-
-(define-enum SubmenuDirection
-  (in-module "Gtk")
-  (c-name "GtkSubmenuDirection")
-  (gtype-id "GTK_TYPE_SUBMENU_DIRECTION")
-  (values
-    '("left" "GTK_DIRECTION_LEFT")
-    '("right" "GTK_DIRECTION_RIGHT")
-  )
-)
-
-(define-enum SubmenuPlacement
-  (in-module "Gtk")
-  (c-name "GtkSubmenuPlacement")
-  (gtype-id "GTK_TYPE_SUBMENU_PLACEMENT")
-  (values
-    '("top-bottom" "GTK_TOP_BOTTOM")
-    '("left-right" "GTK_LEFT_RIGHT")
   )
 )
 

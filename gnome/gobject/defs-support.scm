@@ -384,7 +384,7 @@
                               (for-each
                                (lambda (glob)
                                  (set! ignore-matchers
-                                       (cons (glob:match?? glob) ignore-matchers)))
+                                       (cons (filename:match?? glob) ignore-matchers)))
                                args)))
 
                (include (lambda (file)

@@ -1,3 +1,8 @@
+2004-03-28  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* defs-support.scm (load-defs): The glob:* functions are not
+	existant anymore in SLIB3, and were aliased to filename:* anyway.
+
 2004-02-22  Andy Wingo  <wingo@pobox.com>
 
 	* guile-gnome-gobject.c (s_scm_gobject_get_data) 

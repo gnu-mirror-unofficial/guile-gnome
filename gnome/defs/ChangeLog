@@ -1,3 +1,13 @@
+2004-03-29  Andreas Rottmann  <a.rottmann@gmx.at>
+	
+	* gdk-types.defs (ColorSpace): Removed, is in gdk-pixbuf and
+	named GdkColor_s_pace.
+	
+	* gtk-types.defs: Removed CTreeNode, CellType, CListDragPos,
+	ButtonAction, CTreePos, CTreeExpanderStyle, CTreeExpansionType,
+	SideType, MatchType, PreviewType, SubmenuDirection,
+	SubmenuPlacement, which were all deprecated before GTK+ 2.0.
+
 2004-02-08  Andy Wingo  <wingo@pobox.com>
 
 	* ui.defs: Revert ui.defs to my local copy. There are still some

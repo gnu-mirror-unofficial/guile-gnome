@@ -1,3 +1,9 @@
+2004-03-26  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gobject.scm (gtype-class-define-signal): Use
+	procedure->memoizing-macro instead of procedure->macro, which is
+	deprecated.
+
 2004-02-22  Andy Wingo  <wingo@pobox.com>
 
 	* gobject.scm (make-gparam-instance): Make params (read write) by
