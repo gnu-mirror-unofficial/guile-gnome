@@ -12,7 +12,7 @@ guile-gnome-gnome-vfs only.
 guile-gnome-gnome-vfs 2.7.98 - Andy Wingo, 2005-01-11
 =====================================================
 
-* New platform release, no change.
+* Ignore API deprecated in gnome-vfs 2.8.
 
 
 guile-gnome-gnome-vfs 2.7.97 - Andy Wingo, 2004-12-05

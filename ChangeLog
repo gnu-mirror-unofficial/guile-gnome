@@ -1,5 +1,9 @@
 2005-01-11  Andy Wingo  <wingo@pobox.com>
 
+	* == Released platform version 2.7.98 ==
+
+2005-01-11  Andy Wingo  <wingo@pobox.com>
+
 	* gnome/overrides/gnome-vfs.defs-type-ignores (GnomeVFSMimeAction)
 	(GnomeVFSMimeActionType):
 	* gnome/overrides/gnome-vfs.defs
