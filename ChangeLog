@@ -1,3 +1,8 @@
+2004-09-14  Andy Wingo  <wingo@pobox.com>
+
+	* examples/calc.scm: Updated from guile-gtk 1.2 by Patrick
+	Bernaud.
+
 2004-08-29  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gtk/graphical-repl.scm (<guile-gtk-repl-entry>): New slot,
