@@ -1,3 +1,20 @@
+2004-09-12  Andy Wingo  <wingo@pobox.com>
+
+	* defs-checks.ac: New file.
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_libglade_la_SOURCES):
+	Don't dist the g-wrap generated C file.
+
+	* Makefile.am (EXTRA_DIST): Add the .ac files to the dist.
+
+	* gnome/overrides/Makefile.am, gnome/overrides/libglade.defs: Add
+	overrides to the libglade module.
+
+	* gnome/Makefile.am: Fix for overrides, dist stuff.
+
+	* gnome/gw/libglade-spec.scm (initialize): Use
+	load-defs-with-overrides, new module locations.
+
 2004-08-06  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/Makefile.am: Distribute and install glade.scm.

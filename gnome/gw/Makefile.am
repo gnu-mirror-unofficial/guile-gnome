@@ -11,8 +11,8 @@ lib_LTLIBRARIES = libgw-guile-gnome-libglade.la
 
 ########################################################################
 ## glade
-libgw_guile_gnome_libglade_la_SOURCES = guile-gnome-gw-libglade.c \
-	glade-support.c glade-support.h
+nodist_libgw_guile_gnome_libglade_la_SOURCES = guile-gnome-gw-libglade.c
+libgw_guile_gnome_libglade_la_SOURCES = glade-support.c glade-support.h
 
 libgw_guile_gnome_libglade_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(AM_CFLAGS) $(LIBGLADE_CFLAGS) $(GUILE_CFLAGS) \
