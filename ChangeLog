@@ -1,3 +1,7 @@
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Add record_check.
+
 2004-10-28  Andy Wingo  <wingo@pobox.com>
 
 	* glib-checks.ac:
