@@ -25,7 +25,7 @@
 ;;; Code:
 
 (define-module (gnome gtk gdk-event)
-  :use-module (gnome gtk gw-gdk)
+  :use-module (gnome gw gdk)
   :use-module (gnome gobject)
   :use-module (oop goops))
 
