@@ -1,3 +1,10 @@
+2004-10-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/defs/ui.defs, gnome/defs/ui-types.defs: Generated.
+
+	* gnome/defs/Makefile.am (guilemodule_DATA): Added ui-types.defs.
+	(gnome-ui): Added target for generating gnome-ui defs.
+
 2004-10-10  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/defs/gconf.defs: Regenerated.

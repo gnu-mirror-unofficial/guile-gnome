@@ -1,458 +1,5 @@
 ;; -*- scheme -*-
-; object definitions ...
-(define-object About
-  (in-module "Gnome")
-  (parent "GtkDialog")
-  (c-name "GnomeAbout")
-  (gtype-id "GNOME_TYPE_ABOUT")
-)
-
-(define-object App
-  (in-module "Gnome")
-  (parent "GtkWindow")
-  (c-name "GnomeApp")
-  (gtype-id "GNOME_TYPE_APP")
-)
-
-(define-object AppBar
-  (in-module "Gnome")
-  (parent "GtkHBox")
-  (c-name "GnomeAppBar")
-  (gtype-id "GNOME_TYPE_APPBAR") ;; GRR!
-)
-
-(define-object Client
-  (in-module "Gnome")
-  (parent "GtkObject")
-  (c-name "GnomeClient")
-  (gtype-id "GNOME_TYPE_CLIENT")
-)
-
-(define-object ColorPicker
-  (in-module "Gnome")
-  (parent "GtkButton")
-  (c-name "GnomeColorPicker")
-  (gtype-id "GNOME_TYPE_COLOR_PICKER")
-)
-
-(define-object DateEdit
-  (in-module "Gnome")
-  (parent "GtkHBox")
-  (c-name "GnomeDateEdit")
-  (gtype-id "GNOME_TYPE_DATE_EDIT")
-)
-
-(define-object Dialog
-  (in-module "Gnome")
-  (parent "GtkWindow")
-  (c-name "GnomeDialog")
-  (gtype-id "GNOME_TYPE_DIALOG")
-)
-
-(define-object Druid
-  (in-module "Gnome")
-  (parent "GtkContainer")
-  (c-name "GnomeDruid")
-  (gtype-id "GNOME_TYPE_DRUID")
-)
-
-(define-object DruidPage
-  (in-module "Gnome")
-  (parent "GtkBin")
-  (c-name "GnomeDruidPage")
-  (gtype-id "GNOME_TYPE_DRUID_PAGE")
-)
-
-(define-object DruidPageEdge
-  (in-module "Gnome")
-  (parent "GnomeDruidPage")
-  (c-name "GnomeDruidPageEdge")
-  (gtype-id "GNOME_TYPE_DRUID_PAGE_EDGE")
-)
-
-(define-object DruidPageStandard
-  (in-module "Gnome")
-  (parent "GnomeDruidPage")
-  (c-name "GnomeDruidPageStandard")
-  (gtype-id "GNOME_TYPE_DRUID_PAGE_STANDARD")
-)
-
-(define-object Entry
-  (in-module "Gnome")
-  (parent "GtkCombo")
-  (c-name "GnomeEntry")
-  (gtype-id "GNOME_TYPE_ENTRY")
-)
-
-(define-object FileEntry
-  (in-module "Gnome")
-  (parent "GtkVBox")
-  (c-name "GnomeFileEntry")
-  (gtype-id "GNOME_TYPE_FILE_ENTRY")
-)
-
-(define-object FontPicker
-  (in-module "Gnome")
-  (parent "GtkButton")
-  (c-name "GnomeFontPicker")
-  (gtype-id "GNOME_TYPE_FONT_PICKER")
-)
-
-(define-object HRef
-  (in-module "Gnome")
-  (parent "GtkButton")
-  (c-name "GnomeHRef")
-  (gtype-id "GNOME_TYPE_HREF")
-)
-
-(define-object IconEntry
-  (in-module "Gnome")
-  (parent "GtkVBox")
-  (c-name "GnomeIconEntry")
-  (gtype-id "GNOME_TYPE_ICON_ENTRY")
-)
-
-(define-object IconList
-  (in-module "Gnome")
-  (parent "GnomeCanvas")
-  (c-name "GnomeIconList")
-  (gtype-id "GNOME_TYPE_ICON_LIST")
-)
-
-(define-object IconSelection
-  (in-module "Gnome")
-  (parent "GtkVBox")
-  (c-name "GnomeIconSelection")
-  (gtype-id "GNOME_TYPE_ICON_SELECTION")
-)
-
-(define-object IconTextItem
-  (in-module "Gnome")
-  (parent "GnomeCanvasItem")
-  (c-name "GnomeIconTextItem")
-  (gtype-id "GNOME_TYPE_ICON_TEXT_ITEM")
-)
-
-(define-object MDI
-  (in-module "Gnome")
-  (parent "GtkObject")
-  (c-name "GnomeMDI")
-  (gtype-id "GNOME_TYPE_MDI")
-)
-
-(define-object MDIChild
-  (in-module "Gnome")
-  (parent "GtkObject")
-  (c-name "GnomeMDIChild")
-  (gtype-id "GNOME_TYPE_MDI_CHILD")
-)
-
-(define-object MDIGenericChild
-  (in-module "Gnome")
-  (parent "GnomeMDIChild")
-  (c-name "GnomeMDIGenericChild")
-  (gtype-id "GNOME_TYPE_MDI_GENERIC_CHILD")
-)
-
-(define-object MessageBox
-  (in-module "Gnome")
-  (parent "GnomeDialog")
-  (c-name "GnomeMessageBox")
-  (gtype-id "GNOME_TYPE_MESSAGE_BOX")
-)
-
-(define-object Pixmap
-  (in-module "Gnome")
-  (parent "GtkImage")
-  (c-name "GnomePixmap")
-  (gtype-id "GNOME_TYPE_PIXMAP")
-)
-
-(define-object PixmapEntry
-  (in-module "Gnome")
-  (parent "GnomeFileEntry")
-  (c-name "GnomePixmapEntry")
-  (gtype-id "GNOME_TYPE_PIXMAP_ENTRY")
-)
-
-(define-object PropertyBox
-  (in-module "Gnome")
-  (parent "GnomeDialog")
-  (c-name "GnomePropertyBox")
-  (gtype-id "GNOME_TYPE_PROPERTY_BOX")
-)
-
-(define-object Scores
-  (in-module "Gnome")
-  (parent "GtkDialog")
-  (c-name "GnomeScores")
-  (gtype-id "GNOME_TYPE_SCORES")
-)
-
-(define-object ThumbnailFactory
-  (in-module "Gnome")
-  (parent "GObject")
-  (c-name "GnomeThumbnailFactory")
-  (gtype-id "GNOME_TYPE_THUMBNAIL_FACTORY")
-)
-
-;; Enumerations and flags ...
-
-(define-enum UIInfoType
-  (in-module "Gnome")
-  (c-name "GnomeUIInfoType")
-  (gtype-id "GNOME_TYPE_UI_INFO_TYPE")
-  (values
-    '("endofinfo" "GNOME_APP_UI_ENDOFINFO")
-    '("item" "GNOME_APP_UI_ITEM")
-    '("toggleitem" "GNOME_APP_UI_TOGGLEITEM")
-    '("radioitems" "GNOME_APP_UI_RADIOITEMS")
-    '("subtree" "GNOME_APP_UI_SUBTREE")
-    '("separator" "GNOME_APP_UI_SEPARATOR")
-    '("help" "GNOME_APP_UI_HELP")
-    '("builder-data" "GNOME_APP_UI_BUILDER_DATA")
-    '("item-configurable" "GNOME_APP_UI_ITEM_CONFIGURABLE")
-    '("subtree-stock" "GNOME_APP_UI_SUBTREE_STOCK")
-    '("include" "GNOME_APP_UI_INCLUDE")
-  )
-)
-
-(define-enum UIInfoConfigurableTypes
-  (in-module "Gnome")
-  (c-name "GnomeUIInfoConfigurableTypes")
-  (gtype-id "GNOME_TYPE_UI_INFO_CONFIGURABLE_TYPES")
-  (values
-    '("new" "GNOME_APP_CONFIGURABLE_ITEM_NEW")
-    '("open" "GNOME_APP_CONFIGURABLE_ITEM_OPEN")
-    '("save" "GNOME_APP_CONFIGURABLE_ITEM_SAVE")
-    '("save-as" "GNOME_APP_CONFIGURABLE_ITEM_SAVE_AS")
-    '("revert" "GNOME_APP_CONFIGURABLE_ITEM_REVERT")
-    '("print" "GNOME_APP_CONFIGURABLE_ITEM_PRINT")
-    '("print-setup" "GNOME_APP_CONFIGURABLE_ITEM_PRINT_SETUP")
-    '("close" "GNOME_APP_CONFIGURABLE_ITEM_CLOSE")
-    '("quit" "GNOME_APP_CONFIGURABLE_ITEM_QUIT")
-    '("cut" "GNOME_APP_CONFIGURABLE_ITEM_CUT")
-    '("copy" "GNOME_APP_CONFIGURABLE_ITEM_COPY")
-    '("paste" "GNOME_APP_CONFIGURABLE_ITEM_PASTE")
-    '("clear" "GNOME_APP_CONFIGURABLE_ITEM_CLEAR")
-    '("undo" "GNOME_APP_CONFIGURABLE_ITEM_UNDO")
-    '("redo" "GNOME_APP_CONFIGURABLE_ITEM_REDO")
-    '("find" "GNOME_APP_CONFIGURABLE_ITEM_FIND")
-    '("find-again" "GNOME_APP_CONFIGURABLE_ITEM_FIND_AGAIN")
-    '("replace" "GNOME_APP_CONFIGURABLE_ITEM_REPLACE")
-    '("properties" "GNOME_APP_CONFIGURABLE_ITEM_PROPERTIES")
-    '("preferences" "GNOME_APP_CONFIGURABLE_ITEM_PREFERENCES")
-    '("about" "GNOME_APP_CONFIGURABLE_ITEM_ABOUT")
-    '("select-all" "GNOME_APP_CONFIGURABLE_ITEM_SELECT_ALL")
-    '("new-window" "GNOME_APP_CONFIGURABLE_ITEM_NEW_WINDOW")
-    '("close-window" "GNOME_APP_CONFIGURABLE_ITEM_CLOSE_WINDOW")
-    '("new-game" "GNOME_APP_CONFIGURABLE_ITEM_NEW_GAME")
-    '("pause-game" "GNOME_APP_CONFIGURABLE_ITEM_PAUSE_GAME")
-    '("restart-game" "GNOME_APP_CONFIGURABLE_ITEM_RESTART_GAME")
-    '("undo-move" "GNOME_APP_CONFIGURABLE_ITEM_UNDO_MOVE")
-    '("redo-move" "GNOME_APP_CONFIGURABLE_ITEM_REDO_MOVE")
-    '("hint" "GNOME_APP_CONFIGURABLE_ITEM_HINT")
-    '("scores" "GNOME_APP_CONFIGURABLE_ITEM_SCORES")
-    '("end-game" "GNOME_APP_CONFIGURABLE_ITEM_END_GAME")
-  )
-)
-
-(define-enum UIPixmapType
-  (in-module "Gnome")
-  (c-name "GnomeUIPixmapType")
-  (gtype-id "GNOME_TYPE_UI_PIXMAP_TYPE")
-  (values
-    '("none" "GNOME_APP_PIXMAP_NONE")
-    '("stock" "GNOME_APP_PIXMAP_STOCK")
-    '("data" "GNOME_APP_PIXMAP_DATA")
-    '("filename" "GNOME_APP_PIXMAP_FILENAME")
-  )
-)
-
-(define-enum InteractStyle
-  (in-module "Gnome")
-  (c-name "GnomeInteractStyle")
-  (gtype-id "GNOME_TYPE_INTERACT_STYLE")
-  (values
-    '("none" "GNOME_INTERACT_NONE")
-    '("errors" "GNOME_INTERACT_ERRORS")
-    '("any" "GNOME_INTERACT_ANY")
-  )
-)
-
-(define-enum DialogType
-  (in-module "Gnome")
-  (c-name "GnomeDialogType")
-  (gtype-id "GNOME_TYPE_DIALOG_TYPE")
-  (values
-    '("error" "GNOME_DIALOG_ERROR")
-    '("normal" "GNOME_DIALOG_NORMAL")
-  )
-)
-
-(define-enum SaveStyle
-  (in-module "Gnome")
-  (c-name "GnomeSaveStyle")
-  (gtype-id "GNOME_TYPE_SAVE_STYLE")
-  (values
-    '("global" "GNOME_SAVE_GLOBAL")
-    '("local" "GNOME_SAVE_LOCAL")
-    '("both" "GNOME_SAVE_BOTH")
-  )
-)
-
-(define-enum RestartStyle
-  (in-module "Gnome")
-  (c-name "GnomeRestartStyle")
-  (gtype-id "GNOME_TYPE_RESTART_STYLE")
-  (values
-    '("if-running" "GNOME_RESTART_IF_RUNNING")
-    '("anyway" "GNOME_RESTART_ANYWAY")
-    '("immediately" "GNOME_RESTART_IMMEDIATELY")
-    '("never" "GNOME_RESTART_NEVER")
-  )
-)
-
-(define-enum ClientState
-  (in-module "Gnome")
-  (c-name "GnomeClientState")
-  (gtype-id "GNOME_TYPE_CLIENT_STATE")
-  (values
-    '("idle" "GNOME_CLIENT_IDLE")
-    '("saving-phase-1" "GNOME_CLIENT_SAVING_PHASE_1")
-    '("waiting-for-phase-2" "GNOME_CLIENT_WAITING_FOR_PHASE_2")
-    '("saving-phase-2" "GNOME_CLIENT_SAVING_PHASE_2")
-    '("frozen" "GNOME_CLIENT_FROZEN")
-    '("disconnected" "GNOME_CLIENT_DISCONNECTED")
-    '("registering" "GNOME_CLIENT_REGISTERING")
-  )
-)
-
-(define-flags ClientFlags
-  (in-module "Gnome")
-  (c-name "GnomeClientFlags")
-  (gtype-id "GNOME_TYPE_CLIENT_FLAGS")
-  (values
-    '("is-connected=" "GNOME_CLIENT_IS_CONNECTED=")
-    '("restarted" "GNOME_CLIENT_RESTARTED")
-    '("restored" "GNOME_CLIENT_RESTORED")
-  )
-)
-
-(define-flags DateEditFlags
-  (in-module "Gnome")
-  (c-name "GnomeDateEditFlags")
-  (gtype-id "GNOME_TYPE_DATE_EDIT_FLAGS")
-  (values
-    '("show-time" "GNOME_DATE_EDIT_SHOW_TIME")
-    '("24-hr" "GNOME_DATE_EDIT_24_HR")
-    '("week-starts-on-monday" "GNOME_DATE_EDIT_WEEK_STARTS_ON_MONDAY")
-  )
-)
-
-(define-enum EdgePosition
-  (in-module "Gnome")
-  (c-name "GnomeEdgePosition")
-  (gtype-id "GNOME_TYPE_EDGE_POSITION")
-  (values
-    '("start" "GNOME_EDGE_START")
-    '("finish" "GNOME_EDGE_FINISH")
-    '("other" "GNOME_EDGE_OTHER")
-    '("last" "GNOME_EDGE_LAST")
-  )
-)
-
-(define-enum FontPickerMode
-  (in-module "Gnome")
-  (c-name "GnomeFontPickerMode")
-  (gtype-id "GNOME_TYPE_FONT_PICKER_MODE")
-  (values
-    '("pixmap" "GNOME_FONT_PICKER_MODE_PIXMAP")
-    '("font-info" "GNOME_FONT_PICKER_MODE_FONT_INFO")
-    '("user-widget" "GNOME_FONT_PICKER_MODE_USER_WIDGET")
-    '("unknown" "GNOME_FONT_PICKER_MODE_UNKNOWN")
-  )
-)
-
-(define-enum IconListMode
-  (in-module "Gnome")
-  (c-name "GnomeIconListMode")
-  (gtype-id "GNOME_TYPE_ICON_LIST_MODE")
-  (values
-    '("icons" "GNOME_ICON_LIST_ICONS")
-    '("text-below" "GNOME_ICON_LIST_TEXT_BELOW")
-    '("text-right" "GNOME_ICON_LIST_TEXT_RIGHT")
-  )
-)
-
-(define-flags IconLookupFlags
-  (in-module "Gnome")
-  (c-name "GnomeIconLookupFlags")
-  (gtype-id "GNOME_TYPE_ICON_LOOKUP_FLAGS")
-  (values
-    '("none" "GNOME_ICON_LOOKUP_FLAGS_NONE")
-    '("embedding-text" "GNOME_ICON_LOOKUP_FLAGS_EMBEDDING_TEXT")
-    '("show-small-images-as-themselves" "GNOME_ICON_LOOKUP_FLAGS_SHOW_SMALL_IMAGES_AS_THEMSELVES")
-    '("allow-svg-as-themselves" "GNOME_ICON_LOOKUP_FLAGS_ALLOW_SVG_AS_THEMSELVES")
-  )
-)
-
-(define-flags IconLookupResultFlags
-  (in-module "Gnome")
-  (c-name "GnomeIconLookupResultFlags")
-  (gtype-id "GNOME_TYPE_ICON_LOOKUP_RESULT_FLAGS")
-  (values
-    '("none" "GNOME_ICON_LOOKUP_RESULT_FLAGS_NONE")
-    '("thumbnail" "GNOME_ICON_LOOKUP_RESULT_FLAGS_THUMBNAIL")
-  )
-)
-
-(define-enum MDIMode
-  (in-module "Gnome")
-  (c-name "GnomeMDIMode")
-  (gtype-id "GNOME_TYPE_MDI_MODE")
-  (values
-    '("notebook" "GNOME_MDI_NOTEBOOK")
-    '("toplevel" "GNOME_MDI_TOPLEVEL")
-    '("modal" "GNOME_MDI_MODAL")
-    '("default-mode" "GNOME_MDI_DEFAULT_MODE")
-  )
-)
-
-(define-enum PasswordDialogRemember
-  (in-module "Gnome")
-  (c-name "GnomePasswordDialogRemember")
-  (gtype-id "GNOME_TYPE_PASSWORD_DIALOG_REMEMBER")
-  (values
-    '("nothing" "GNOME_PASSWORD_DIALOG_REMEMBER_NOTHING")
-    '("session" "GNOME_PASSWORD_DIALOG_REMEMBER_SESSION")
-    '("forever" "GNOME_PASSWORD_DIALOG_REMEMBER_FOREVER")
-  )
-)
-
-(define-enum ThumbnailSize
-  (in-module "Gnome")
-  (c-name "GnomeThumbnailSize")
-  (gtype-id "GNOME_TYPE_THUMBNAIL_SIZE")
-  (values
-    '("normal" "GNOME_THUMBNAIL_SIZE_NORMAL")
-    '("large" "GNOME_THUMBNAIL_SIZE_LARGE")
-  )
-)
-
-(define-enum PreferencesType
-  (in-module "Gnome")
-  (c-name "GnomePreferencesType")
-  (gtype-id "GNOME_TYPE_PREFERENCES_TYPE")
-  (values
-    '("never" "GNOME_PREFERENCES_NEVER")
-    '("user" "GNOME_PREFERENCES_USER")
-    '("always" "GNOME_PREFERENCES_ALWAYS")
-  )
-)
-
-
-(include overrides)
+(include type-ignores) (include "ui-types.defs") (include overrides)
 
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-about.h
 
@@ -1036,6 +583,15 @@
 
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-app-util.h
 
+(define-method message
+  (of-object "GnomeApp")
+  (c-name "gnome_app_message")
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "message")
+  )
+)
+
 (define-method flash
   (of-object "GnomeApp")
   (c-name "gnome_app_flash")
@@ -1177,6 +733,11 @@
 (define-function gnome_authentication_manager_init
   (c-name "gnome_authentication_manager_init")
   (return-type "none")
+)
+
+(define-function gnome_authentication_manager_dialog_is_visible
+  (c-name "gnome_authentication_manager_dialog_is_visible")
+  (return-type "gboolean")
 )
 
 
@@ -1913,7 +1474,16 @@
 )
 
 
+
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-dialog-util.h
+
+(define-function gnome_ok_dialog
+  (c-name "gnome_ok_dialog")
+  (return-type "GtkWidget*")
+  (parameters
+    '("const-gchar*" "message")
+  )
+)
 
 (define-function gnome_ok_dialog_parented
   (c-name "gnome_ok_dialog_parented")
@@ -2394,6 +1964,7 @@
 )
 
 
+
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-druid-page-standard.h
 
 (define-function gnome_druid_page_standard_get_type
@@ -2815,6 +2386,17 @@
 
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-help.h
 
+(define-function gnome_help_display_on_screen
+  (c-name "gnome_help_display_on_screen")
+  (return-type "gboolean")
+  (parameters
+    '("const-char*" "file_name")
+    '("const-char*" "link_id")
+    '("GdkScreen*" "screen")
+    '("GError**" "error")
+  )
+)
+
 (define-function gnome_help_display_with_doc_id_on_screen
   (c-name "gnome_help_display_with_doc_id_on_screen")
   (return-type "gboolean")
@@ -2928,6 +2510,11 @@
 
 
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-ice.h
+
+(define-function gnome_ice_init
+  (c-name "gnome_ice_init")
+  (return-type "none")
+)
 
 
 
@@ -3280,6 +2867,12 @@
   )
 )
 
+(define-method select_all
+  (of-object "GnomeIconList")
+  (c-name "gnome_icon_list_select_all")
+  (return-type "none")
+)
+
 (define-method unselect_all
   (of-object "GnomeIconList")
   (c-name "gnome_icon_list_unselect_all")
@@ -3468,6 +3061,21 @@
 
 
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-icon-lookup.h
+
+(define-function gnome_icon_lookup
+  (c-name "gnome_icon_lookup")
+  (return-type "char*")
+  (parameters
+    '("GtkIconTheme*" "icon_theme")
+    '("GnomeThumbnailFactory*" "thumbnail_factory")
+    '("const-char*" "file_uri")
+    '("const-char*" "custom_icon")
+    '("GnomeVFSFileInfo*" "file_info")
+    '("const-char*" "mime_type")
+    '("GnomeIconLookupFlags" "flags")
+    '("GnomeIconLookupResultFlags*" "result")
+  )
+)
 
 (define-function gnome_icon_lookup_sync
   (c-name "gnome_icon_lookup_sync")
@@ -3694,6 +3302,14 @@
   (return-type "none")
 )
 
+(define-method _get_gtk_icon_theme
+  (of-object "GnomeIconTheme")
+  (c-name "_gnome_icon_theme_get_gtk_icon_theme")
+  (return-type "GtkIconTheme*")
+)
+
+
+
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-mdi-child.h
 
 (define-function gnome_mdi_child_get_type
@@ -3837,19 +3453,6 @@
     '("GtkCallbackMarshal" "marshal")
     '("gpointer" "data")
     '("GtkDestroyNotify" "notify")
-  )
-)
-
-
-
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-mdi-session.h
-
-(define-method save_state
-  (of-object "GnomeMDI")
-  (c-name "gnome_mdi_save_state")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "section")
   )
 )
 
@@ -4093,6 +3696,29 @@
 
 
 
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-mdi-session.h
+
+(define-method restore_state
+  (of-object "GnomeMDI")
+  (c-name "gnome_mdi_restore_state")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "section")
+    '("GnomeMDIChildCreator" "create_child_func")
+  )
+)
+
+(define-method save_state
+  (of-object "GnomeMDI")
+  (c-name "gnome_mdi_save_state")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "section")
+  )
+)
+
+
+
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-messagebox.h
 
 (define-function gnome_message_box_get_type
@@ -4222,6 +3848,7 @@
     '("gboolean" "readonly")
   )
 )
+
 (define-method set_readonly_domain
   (of-object "GnomePasswordDialog")
   (c-name "gnome_password_dialog_set_readonly_domain")
@@ -4255,6 +3882,15 @@
   (return-type "GnomePasswordDialogRemember")
 )
 
+(define-method set_show_userpass_buttons
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_set_show_userpass_buttons")
+  (return-type "none")
+  (parameters
+    '("gboolean" "show_userpass_buttons")
+  )
+)
+
 (define-method get_username
   (of-object "GnomePasswordDialog")
   (c-name "gnome_password_dialog_get_username")
@@ -4272,6 +3908,13 @@
   (c-name "gnome_password_dialog_get_password")
   (return-type "char*")
 )
+
+(define-method anon_selected
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_anon_selected")
+  (return-type "gboolean")
+)
+
 
 
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-pixmap-entry.h
@@ -4462,6 +4105,15 @@
 
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-popup-menu.h
 
+(define-function gnome_popup_menu_new
+  (c-name "gnome_popup_menu_new")
+  (is-constructor-of "GnomePopupMenu")
+  (return-type "GtkWidget*")
+  (parameters
+    '("GnomeUIInfo*" "uiinfo")
+  )
+)
+
 (define-function gnome_popup_menu_new_with_accelgroup
   (c-name "gnome_popup_menu_new_with_accelgroup")
   (return-type "GtkWidget*")
@@ -4623,6 +4275,7 @@
     '("gchar**" "names")
     '("gfloat*" "scores")
     '("time_t*" "times")
+    '("gboolean" "clear")
   )
 )
 
@@ -4639,70 +4292,78 @@
   )
 )
 
-(define-function gnome_scores_set_logo_label
+(define-method set_logo_label
+  (of-object "GnomeScores")
   (c-name "gnome_scores_set_logo_label")
   (return-type "none")
   (parameters
-'("GnomeScores*" "gs")
     '("const-gchar*" "txt")
     '("const-gchar*" "font")
+    '("GdkColor*" "col")
   )
 )
 
-(define-function gnome_scores_set_logo_pixmap
+(define-method set_logo_pixmap
+  (of-object "GnomeScores")
   (c-name "gnome_scores_set_logo_pixmap")
   (return-type "none")
   (parameters
-'("GnomeScores*" "gs")
+    '("const-gchar*" "pix_name")
   )
 )
 
-(define-function gnome_scores_set_logo_widget
+(define-method set_logo_widget
+  (of-object "GnomeScores")
   (c-name "gnome_scores_set_logo_widget")
   (return-type "none")
   (parameters
-'("GnomeScores*" "gs")
+    '("GtkWidget*" "w")
   )
 )
 
-(define-function gnome_scores_set_color
+(define-method set_color
+  (of-object "GnomeScores")
   (c-name "gnome_scores_set_color")
   (return-type "none")
   (parameters
-'("GnomeScores*" "gs")
     '("guint" "n")
+    '("GdkColor*" "col")
   )
 )
 
-(define-function gnome_scores_set_def_color
+(define-method set_def_color
+  (of-object "GnomeScores")
   (c-name "gnome_scores_set_def_color")
   (return-type "none")
   (parameters
-'("GnomeScores*" "gs")
+    '("GdkColor*" "col")
   )
 )
 
-(define-function gnome_scores_set_colors
+(define-method set_colors
+  (of-object "GnomeScores")
   (c-name "gnome_scores_set_colors")
   (return-type "none")
   (parameters
-'("GnomeScores*" "gs")
+    '("GdkColor*" "col")
   )
 )
 
-(define-function gnome_scores_set_logo_label_title
+(define-method set_logo_label_title
+  (of-object "GnomeScores")
   (c-name "gnome_scores_set_logo_label_title")
   (return-type "none")
   (parameters
-'("GnomeScores*" "gs")
+    '("const-gchar*" "txt")
   )
 )
 
-(define-function gnome_scores_set_current_player
+(define-method set_current_player
+  (of-object "GnomeScores")
   (c-name "gnome_scores_set_current_player")
   (return-type "none")
   (parameters
-'("GnomeScores*" "gs")
+    '("gint" "i")
   )
 )
 
@@ -4713,6 +4374,11 @@
 
 
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-theme-parser.h
+
+(define-function gnome_theme_file_parse_error_quark
+  (c-name "gnome_theme_file_parse_error_quark")
+  (return-type "GQuark")
+)
 
 (define-function gnome_theme_file_new_from_string
   (c-name "gnome_theme_file_new_from_string")
@@ -4930,11 +4596,119 @@
 
 
 
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnometypebuiltins.h
+
+(define-function gnome_ui_info_type_get_type
+  (c-name "gnome_ui_info_type_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_ui_info_configurable_types_get_type
+  (c-name "gnome_ui_info_configurable_types_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_ui_pixmap_type_get_type
+  (c-name "gnome_ui_pixmap_type_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_interact_style_get_type
+  (c-name "gnome_interact_style_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_dialog_type_get_type
+  (c-name "gnome_dialog_type_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_save_style_get_type
+  (c-name "gnome_save_style_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_restart_style_get_type
+  (c-name "gnome_restart_style_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_client_state_get_type
+  (c-name "gnome_client_state_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_client_flags_get_type
+  (c-name "gnome_client_flags_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_date_edit_flags_get_type
+  (c-name "gnome_date_edit_flags_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_edge_position_get_type
+  (c-name "gnome_edge_position_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_font_picker_mode_get_type
+  (c-name "gnome_font_picker_mode_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_icon_list_mode_get_type
+  (c-name "gnome_icon_list_mode_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_icon_lookup_flags_get_type
+  (c-name "gnome_icon_lookup_flags_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_icon_lookup_result_flags_get_type
+  (c-name "gnome_icon_lookup_result_flags_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_mdi_mode_get_type
+  (c-name "gnome_mdi_mode_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_password_dialog_remember_get_type
+  (c-name "gnome_password_dialog_remember_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_thumbnail_size_get_type
+  (c-name "gnome_thumbnail_size_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_preferences_type_get_type
+  (c-name "gnome_preferences_type_get_type")
+  (return-type "GType")
+)
+
+
+
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-types.h
 
 
 
+;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-uidefs.h
+
+
+
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-ui-init.h
+
+(define-function libgnomeui_module_info_get
+  (c-name "libgnomeui_module_info_get")
+  (return-type "const-GnomeModuleInfo*")
+)
 
 (define-function gnome_gtk_module_info_get
   (c-name "gnome_gtk_module_info_get")
@@ -4957,15 +4731,29 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-uidefs.h
-
-
-
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-url.h
+
+(define-function gnome_url_show_on_screen
+  (c-name "gnome_url_show_on_screen")
+  (return-type "gboolean")
+  (parameters
+    '("const-char*" "url")
+    '("GdkScreen*" "screen")
+    '("GError**" "error")
+  )
+)
 
 
 
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-vfs-util.h
+
+(define-function gnome_gdk_pixbuf_new_from_uri
+  (c-name "gnome_gdk_pixbuf_new_from_uri")
+  (return-type "GdkPixbuf*")
+  (parameters
+    '("const-char*" "uri")
+  )
+)
 
 (define-function gnome_gdk_pixbuf_new_from_uri_async
   (c-name "gnome_gdk_pixbuf_new_from_uri_async")
@@ -4990,9 +4778,28 @@
 
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-window.h
 
+(define-function gnome_window_toplevel_set_title
+  (c-name "gnome_window_toplevel_set_title")
+  (return-type "none")
+  (parameters
+    '("GtkWindow*" "window")
+    '("const-gchar*" "doc_name")
+    '("const-gchar*" "app_name")
+    '("const-gchar*" "extension")
+  )
+)
+
 
 
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-window-icon.h
+
+(define-function gnome_window_icon_set_from_default
+  (c-name "gnome_window_icon_set_from_default")
+  (return-type "none")
+  (parameters
+    '("GtkWindow*" "w")
+  )
+)
 
 (define-function gnome_window_icon_set_from_file
   (c-name "gnome_window_icon_set_from_file")
@@ -5032,5 +4839,9 @@
   (c-name "gnome_window_icon_init")
   (return-type "none")
 )
+
+
+
+;; From /usr/include/libgnomeui-2.0/libgnomeui/libgnomeui.h
 
 
