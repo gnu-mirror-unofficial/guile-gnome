@@ -1,3 +1,27 @@
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gtk.pc.in (Requires): 
+	* guile-gnome-gtk-uninstalled.pc.in (Requires): 
+	* pango-checks.ac: 
+	* glib-checks.ac: 
+	* defs-checks.ac: 
+	* atk-checks.ac: Versioned pkg-config check.
+
+	* Makefile.am (all-local): Versioned pkg-config files.
+
+	* examples/continuations.scm: Add a comment about this demo's
+	crack-rock nature.
+
+	* examples/tic-tac-toe.scm: 
+	* examples/texinfo-browser.scm: 
+	* examples/repl.scm: 
+	* examples/metaspline.scm: 
+	* examples/hello.scm: 
+	* examples/hello-generics.scm: 
+	* examples/guile-gtk-demo/guile-gtk-demo.scm: 
+	* examples/calendar.scm: 
+	* examples/calc.scm: Use "exec guile-gnome-0 ..."
+
 2004-10-26  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to

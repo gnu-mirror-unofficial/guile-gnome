@@ -4,5 +4,5 @@ libdir=@libdir@
 
 Name: (gnome gtk)
 Description: Guile bindings for Gtk+
-Requires: guile-gnome-glib
+Requires: guile-gnome-glib-@API_VERSION@
 Version: @VERSION@
