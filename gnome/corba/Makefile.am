@@ -1,6 +1,6 @@
 include $(top_srcdir)/common.mk
 
-lib_LTLIBRARIES = libguile-gnome-corba.la
+lib_LTLIBRARIES = libguile-gnome-corba-@API_VERSION@.la
 
 # libguile-gnome-gobject (core library)
 
@@ -10,19 +10,17 @@ C_FILES = guile-gnome-corba.c \
 	  guile-gnome-corba-generic.c
 H_FILES = $(C_FILES:.c=.h)
 
-libguile_gnome_corba_la_SOURCES = $(C_FILES) $(H_FILES)
+libguile_gnome_corba_@API_VERSION@_la_SOURCES = $(C_FILES) $(H_FILES)
 
-libguile_gnome_corba_la_CFLAGS = $(CORBA_CFLAGS)  \
+libguile_gnome_corba_@API_VERSION@_la_CFLAGS = $(CORBA_CFLAGS)  \
   $(AM_CFLAGS) $(GUILE_GLIB_CFLAGS) $(GUILE_CFLAGS) -DORBIT2_STUBS_API
 
-libguile_gnome_corba_la_LIBADD = $(GUILE_GLIB_LIBS) $(GUILE_LIBS)
-libguile_gnome_corba_la_LDFLAGS = -export-dynamic # FIXME: version info
+libguile_gnome_corba_@API_VERSION@_la_LIBADD = $(GUILE_GLIB_LIBS) $(GUILE_LIBS)
+libguile_gnome_corba_@API_VERSION@_la_LDFLAGS = -export-dynamic # FIXME: version info
 
-guile_gnome_includedir = $(includedir)/guile-gnome-2.6
+guile_gnome_includedir = $(includedir)/guile-gnome-@API_VERSION@
 guile_gnome_subincludedir = $(guile_gnome_includedir)/guile-gnome-corba
 guile_gnome_subinclude_HEADERS = $(H_FILES)
-
-# include_HEADERS = guile-gnome-gobject.h
 
 # Scheme files
 
@@ -47,6 +45,6 @@ BUILT_SOURCES = $(DOT_X_FILES)
 
 CLEANFILES = $(DOT_X_FILES)
 
-#schemelib_DATA = guile-gnome-gobject-procedures.txt
+#guilegnome_DATA = guile-gnome-corba-procedures.txt
 
 EXTRA_DIST = $(module_DATA)

@@ -1,3 +1,12 @@
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/corba/Makefile.am
+	(libguile_gnome_corba_@API_VERSION@_la_SOURCES): Version the lib
+	that gets linked to.
+
+	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
+	versioned directory. Link to the versioned lib.
+
 2004-09-19  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/Makefile.am (libgw_guile_gnome_corba_la_LIBADD): Not
