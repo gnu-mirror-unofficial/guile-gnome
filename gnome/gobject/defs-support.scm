@@ -121,7 +121,7 @@
                               (delq! 'caller-owned looked-up))))
              (if (list? looked-up)
                  (append! (list (append looked-up options) arg-name) extras)
-                 (list looked-up arg-name)))))
+                 (append! (list looked-up arg-name) extras)))))
        parameters))
 
 (define (load-defs ws file . already-included)
