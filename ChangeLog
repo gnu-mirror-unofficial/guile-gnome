@@ -1,3 +1,16 @@
+2004-10-07  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (construct-argument-list): Fail
+	correctly if there is an unknown rest arg, but warn.
+	(load-defs:scan-type!): Catch a throw to 'ignored. Get the ctype
+	as a string, not a list of one element. Throw to 'ignored if the
+	ctype is in the ignored-types list.
+	(load-defs:ignore-types): New procedure, adds all of its arguments
+	to the ignored types list.
+	(load-defs): Add a hook to interpret ignore-types. Also interpret
+	the form (include SYMBOL) to mean (include
+	"gnome/overrides/BASENAME-SYMBOL").
+
 2004-09-27  Andy Wingo  <wingo@pobox.com>
 
 	* test-suite/exceptions.scm, gnome/gw/Makefile.am

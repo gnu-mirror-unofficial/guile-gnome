@@ -109,7 +109,10 @@
          ((callee-owned)
           (cons 'callee-owned options))
          ((default)
-          (cons restarg options))))
+          (cons restarg options))
+         (else
+          (warn "unknown rest arg" restarg)
+          options)))
      '() restargs))
   
   (let loop ((result '()) (params parameters))
@@ -151,6 +154,7 @@
          (num-types 0)
          (num-functions 0)
          (ignore-matchers '())
+         (ignored-types '())
          (methods-used? #f))
 
     ;; The handlers...
@@ -159,34 +163,41 @@
       ;; disregard a lot of the information in the defs files and just
       ;; look at the ctype and gtype-id, as well as the values, for
       ;; enums without a gtype-id.
-      (let ((ctype (or (assq-ref args 'c-name)
-                       (error "Type lacks a c-name" args)))
-            (gtype-id (assq-ref args 'gtype-id))
-            (values (assq-ref args 'values)))
-        (set! num-types (1+ num-types))
-                
-        (if (and (not gtype-id) (not values))
-            (error "Non-enum/flags-type lacks a gtype-id" args))
+      (catch
+       'ignored
+       (lambda ()
+         (let ((ctype (car (or (assq-ref args 'c-name)
+                               (error "Type lacks a c-name" args))))
+               (gtype-id (assq-ref args 'gtype-id))
+               (values (assq-ref args 'values)))
+           (if (member ctype ignored-types)
+               (throw 'ignored))
 
-        (let ((wrapped-type
-               (apply
-                wrap-function ws
-                (append
-                 (if ctype `(#:ctype ,(car ctype)) '())
-                 (if gtype-id `(#:gtype-id ,(car gtype-id)) '())
-                 (if values
-                     `(#:values ,(map
-                                  (lambda (entry)
-                                    (cons
-                                     (string->symbol (caadr entry))
-                                     (cadadr entry)))
-                                  values))
-                     '())))))
-          (add-type-alias! ws (if immediate?
-                                  (car ctype)
-                                  (string-append (car ctype) "*"))
-                           (name wrapped-type))
-          wrapped-type)))
+           (set! num-types (1+ num-types))
+                
+           (if (and (not gtype-id) (not values))
+               (error "Non-enum/flags-type lacks a gtype-id" args))
+
+           (let ((wrapped-type
+                  (apply
+                   wrap-function ws
+                   (append
+                    `(#:ctype ,ctype)
+                    (if gtype-id `(#:gtype-id ,(car gtype-id)) '())
+                    (if values
+                        `(#:values ,(map
+                                     (lambda (entry)
+                                       (cons
+                                        (string->symbol (caadr entry))
+                                        (cadadr entry)))
+                                     values))
+                        '())))))
+             (add-type-alias! ws (if immediate?
+                                     ctype
+                                     (string-append ctype "*"))
+                              (name wrapped-type))
+             wrapped-type)))
+       noop))
     (define (arg-ref args field default)
       (cond ((assq field args) => cadr)
             (else default)))
@@ -285,6 +296,8 @@
              (error "Function ~S already overridden" c-name)
              (push c-name overridden)))
        args))
+    (define (ignore-types . args)
+      (set! ignored-types (append args ignored-types)))
     (define (ignore-glob . args)
       (for-each
        (lambda (glob)
@@ -309,7 +322,8 @@
           (define-function  ,(fh #f))
           (define-method    ,(fh #t))
           (ignore           ,(lambda (exp) (apply ignore (cdr exp))))
-          (ignore-glob      ,(lambda (exp) (apply ignore-glob (cdr exp))))))
+          (ignore-glob      ,(lambda (exp) (apply ignore-glob (cdr exp))))
+          (ignore-types     ,(lambda (exp) (apply ignore-types (cdr exp))))))
       (let lp ((exp (read)))
         (cond
          ((eof-object? exp))
@@ -322,6 +336,12 @@
           (let ((f (cond
                     ((eq? (cadr exp) 'overrides)
                      (or overrides (error "no overrides file for defs" file)))
+                    ((symbol? (cadr exp))
+                     (let ((fname (string-append "gnome/overrides/" (basename file)
+                                                 "-" (symbol->string (cadr exp)))))
+                       (or (file-exists? (search-path %load-path fname))
+                           (error "file does not exist in load path" fname))
+                       fname))
                     (else (cadr exp)))))
             (if (member f already-included)
                 (error ".defs file has recursively included itself"
