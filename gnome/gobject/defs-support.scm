@@ -36,7 +36,9 @@
   #:use-module (g-wrap)
   #:use-module (g-wrap c-types)
   #:use-module (g-wrap enumeration)
+  #:use-module (gnome gobject utils)
   #:use-module (gnome gobject gw-spec-utils)
+  
   #:export (load-defs))
 
 (require 'glob)
@@ -130,6 +132,9 @@
                      result)
                     (list-tail params (if (= count 0) 1 count)))))))))
 
+(define (proc-name-from-cname cname)
+  (string->symbol (gtype-name->scheme-name cname)))
+
 (define (load-defs ws file . already-included)
   (let* ((old-load-path %load-path)
          (log-file-name (string-append (symbol->string (name ws)) ".log"))
@@ -177,9 +182,9 @@
                              `(#:values ,(map
                                           (lambda (entry)
                                             (cons
-                                             (string->symbol (cadr entry))
-                                             (cdr entry)))
-                                          (cdar values)))
+                                             (string->symbol (caadr entry))
+                                             (cadadr entry)))
+                                          values))
                              '())))))
                   (add-type-alias! ws (if immediate?
                                           (car ctype)
@@ -228,7 +233,7 @@
                         ((of-object)
                          (set! of-object (string-append (cadr arg) "*")))
                         ((overrides)
-                         (set! scm-name (glib:func-cname->symbol (cadr arg)))
+                         (set! scm-name (proc-name-from-cname (cadr arg)))
                          (if (member (cadr arg) overrides)
                              (error "Function ~S already overridden" (cadr arg))
                              (set! overrides (cons (cadr arg) overrides))))
@@ -245,7 +250,7 @@
                    (set! num-functions (1+ num-functions))
 
                    (if (not scm-name)
-                       (set! scm-name (glib:func-cname->symbol c-name)))
+                       (set! scm-name (proc-name-from-cname c-name)))
 
                    (cond
                     (is-method?
@@ -323,7 +328,8 @@
                               (for-each
                                (lambda (glob)
                                  (set! ignore-matchers
-                                       (cons (filename:match?? glob)
+                                       (cons (glob:make-matcher
+                                              glob char=? char<=?)
                                              ignore-matchers)))
                                args)))
 

@@ -20,7 +20,7 @@ libgw_guile_test_glib_la_LIBADD = \
 
 noinst_HEADERS = test-gobject.h test-glib.h
 
-SCM_TESTS = gobject-primitives.test gobject.test gw-gobject.test
+SCM_TESTS = gobject.test gw-gobject.test
 
 EXTRA_DIST = lib.scm exceptions.scm gw-test-gobject-spec.scm \
 	     gw-test-glib-spec.scm test-gobject.defs test-glib.defs \

@@ -1,7 +1,7 @@
 /* guile-gnome
  * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
  *
- * glib-support.h: Support for the GLib binding
+ * gclosure.h: Support for GClosure
  *
  * This program is free software; you can redistribute it and/or    
  * modify it under the terms of the GNU General Public License as   
@@ -21,18 +21,22 @@
  * Boston, MA  02111-1307,  USA       gnu@gnu.org
  */
 
-#if !defined(_GUILE_GOBJECT_GLIB_SUPPORT_H)
-#define _GUILE_GOBJECT_GLIB_SUPPORT_H
+#ifndef __GUILE_GNOME_GOBJECT_CLOSURES_H__
+#define __GUILE_GNOME_GOBJECT_CLOSURES_H__
 
-#include <glib.h>
-#include <libguile.h>
+#include <guile-gnome-gobject/gvalue.h>
 
 G_BEGIN_DECLS
 
-void scm_init_glib (void);
-void _wrap_g_main_loop_run (GMainLoop *loop);
-SCM  _wrap_g_string_get_str (GString *str);
+extern SCM scm_class_gclosure;
+
+#define SCM_GCLOSUREP(x) SCM_HACKY_IS_A_P (x, scm_class_gclosure)
+
+/* Although closures are stored as GValues, they cannot be manipulated with the
+   gvalue-primitive API. */
+SCM scm_gclosure_primitive_new (SCM func);
+SCM scm_gclosure_primitive_invoke (SCM instance, SCM return_type, SCM args);
 
 G_END_DECLS
 
-#endif
+#endif /* __GUILE_GNOME_GOBJECT_CLOSURES_H__ */

@@ -48,13 +48,8 @@
   (list "#include <guile-gnome-gobject.h>\n"))
 
 (define-method (initializations-cg (ws <gobject-wrapset>) err)
-  (list
-   (next-method)
-   "g_type_init ();\n"
-   "scm_pre_init_gnome_gobject_primitives ();\n"
-   "scm_pre_init_gnome_gobject ();\n"
-   ;; needed for gtype->class for exporting gobject types
-   (inline-scheme ws '(use-modules (gnome gobject)))))
+  (list (next-method)
+        (inline-scheme ws '(use-modules (gnome gobject)))))
    
 (define-method (initialize (ws <gobject-wrapset>) initargs)
   (next-method ws (append '(#:module (gnome gw gobject)) initargs))
@@ -127,92 +122,9 @@
      ("GClosure*" <gclosure>)
      ("GParamSpec*" <gparam>)))
   
-  ;; Here we wrap some functions to bootstrap the core library.
-
-  (wrap-function!
-   ws
-   #:name '%init-gnome-gobject
-   #:returns 'void
-   #:c-name "scm_init_gnome_gobject"
-   #:arguments '()
-   #:description "Export a number of fundamental gtypes and functions to operate on objects.")
-
-  (wrap-function!
-   ws
-   #:name        '%post-init-gnome-gobject
-   #:returns     'void
-   #:c-name      "scm_post_init_gnome_gobject"
-   #:arguments   '()
-   #:description "Pull scheme definitions back into the C world.")
-
-  (wrap-function!
-   ws
-   #:name        '%init-gnome-gobject-primitives
-   #:returns     'void
-   #:c-name      "scm_init_gnome_gobject_primitives"
-   #:arguments   '()
-   #:description "Export some functions to operate on primitive data structures, and
-pull scheme definitions back into the C world.")
-
-  ;; And here we wrap the g_type_* functions, just because it's nice and
-  ;; easy with g-wrap.
-
-  (wrap-function!
-   ws
-   #:name        'gtype-name
-   #:returns     '(mchars callee-owned const)
-   #:c-name      "g_type_name"
-   #:arguments   '((<gtype> type))
-   #:description "Return the name of a gtype.")
-
-  (wrap-function!
-   ws
-   #:name        'gtype-from-name
-   #:returns     '<gtype>
-   #:c-name      "g_type_from_name"
-   #:arguments   '(((mchars caller-owned const) name))
-   #:description "Given a name, return the corresponding gtype or #f if not found.")
-
-  (wrap-function!
-   ws
-   #:name        'gtype-from-instance
-   #:returns     '<gtype>
-   #:c-name      "g_type_from_instance"
-   #:arguments   '((<gtype-instance> instance))
-   #:description "Given a primitive GTypeInstance, return its corresponding gtype.")
-
-  (wrap-function!
-   ws
-   #:name        'gtype-parent
-   #:returns     '<gtype>
-   #:c-name      "g_type_parent"
-   #:arguments   '((<gtype> type))
-   #:description "Returns the parent gtype of a gtype.")
-
-  (wrap-function!
-   ws
-   #:name        'gtype-is-a?
-   #:returns     'bool
-   #:c-name      "g_type_is_a"
-   #:arguments   '((<gtype> type) (<gtype> is-a-type))
-   #:description "Returns #t if IS-A-TYPE is a parent of TYPE, #f otherwise.")
-
-  (wrap-function!
-   ws
-   #:name        'gtype-is-classed?
-   #:returns     'bool
-   #:c-name      "g_type_is_classed"
-   #:arguments   '((<gtype> type))
-   #:description "Returns #t if TYPE is classed, #f otherwise.")
-
-  (wrap-function!
-   ws
-   #:name        'gtype-is-instantiatable?
-   #:returns     'bool
-   #:c-name      "g_type_is_instantiatable"
-   #:arguments   '((<gtype> type))
-   #:description "Returns #t if TYPE is instantiatable, #f otherwise.")
-
+  ;; Wrap the pariah function of gobject -- can't be done in C,
+  ;; because <g-source*> is a wcp (well, in fact, it could be done,
+  ;; but it's much easier using G-Wrap --rotty).
   (wrap-function!
    ws
    #:name        'g-source-set-closure
@@ -220,7 +132,6 @@ pull scheme definitions back into the C world.")
    #:c-name      "g_source_set_closure"
    #:arguments   '((<g-source*> source) ((<gclosure> caller-owned) closure))
    #:description "Set the closure for SOURCE to CLOSURE."))
-
 
 (define-class <gparam-spec-type> (<gobject-type-base>))
 
@@ -254,9 +165,7 @@ pull scheme definitions back into the C world.")
     (list
      "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var "))\n"
      "  " c-var " = (GClosure*) g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
-     "else if (SCM_NFALSEP (scm_call_2 (SCM_VARIABLE_REF (scm_c_lookup (\"is-a?\")),\n"
-     "                                  " scm-var ",\n"
-     "                                  SCM_VARIABLE_REF (scm_c_lookup (\"<gclosure>\")))))\n"
+     "else if (SCM_GCLOSUREP ("  scm-var "))\n"
      "  " c-var " = (GClosure*) g_value_get_boxed ((GValue*)SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_str2symbol (\"closure\"))));\n"
      "else " `(gw:error ,status-var type ,scm-var))))
 
@@ -304,3 +213,4 @@ pull scheme definitions back into the C world.")
      "  " scm-var " = SCM_BOOL_F;\n")))
 
   
+

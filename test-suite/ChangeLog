@@ -1,3 +1,8 @@
+2004-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* gobject-primitives.test: Removed, this interface is no longer
+	exported. Yay!
+
 2004-03-29  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* Makefile.am (libgw_test_gobject_la_LIBADD): Link against core

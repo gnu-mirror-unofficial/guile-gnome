@@ -27,16 +27,19 @@
 
 (define-module (gnome gobject gw-spec-utils)
   #:use-module (oop goops)
-  #:use-module (g-wrap)
-  #:use-module (g-wrap enumeration)
-  #:use-module (g-wrap rti)
-  #:use-module (g-wrap guile)
-  #:use-module (g-wrap c-types)
   #:use-module (ice-9 optargs)
   #:use-module (ice-9 slib)
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-11)
   #:use-module (srfi srfi-13)
+  
+  #:use-module (g-wrap)
+  #:use-module (g-wrap enumeration)
+  #:use-module (g-wrap rti)
+  #:use-module (g-wrap guile)
+  #:use-module (g-wrap c-types)
+  
+  #:use-module (gnome gobject utils)
   
   #:export (unwrap-null-check
             
@@ -53,8 +56,6 @@
             
             <gobject-classed-pointer-type>
             
-            glib:func-cname->symbol
-
             wrap-object!
             wrap-boxed!
             wrap-pointer!
@@ -112,65 +113,10 @@
         (values 1 (cdr match))
         (values 0 #f))))
 
-;; Based on code from slib's strcase.scm, written 1992 by Dirk
-;; Lutzebaeck (lutzeb@cs.tu-berlin.de). Public domain.
-;;
-;; We're tring to mimic the naming conventions of the C functions here.
-;; Normally a lower case letter preceded by one capital letter forces a
-;; hyphenation before the capital letter: GSource => g-source,
-;; GtkIMContext => gtk-im-context. However, a lower case letter preceded
-;; by exactly two capital letters that is not at the beginning of the
-;; string is treated specially: GtkHBox => gtk-hbox (as the C api does).
-(define (GStudlyCapsExpand nstr)
-  (do ((idx (+ -1 (string-length nstr)) (+ -1 idx)))
-      ((> 1 idx) (string-downcase nstr))
-    (cond ((and (> idx 2)
-                (char-lower-case? (string-ref nstr (+ -3 idx)))
-                (char-upper-case? (string-ref nstr (+ -2 idx)))
-                (char-upper-case? (string-ref nstr (+ -1 idx)))
-                (char-lower-case? (string-ref nstr idx)))
-           (set! idx (1- idx))
-           (set! nstr
-                 (string-append (substring nstr 0 (+ -1 idx))
-                                "-"
-                                (substring nstr (+ -1 idx)
-                                           (string-length nstr)))))
-          ((and (> idx 1)
-                (char-upper-case? (string-ref nstr (+ -1 idx)))
-                (char-lower-case? (string-ref nstr idx)))
-           (set! nstr
-                 (string-append (substring nstr 0 (+ -1 idx))
-                                "-"
-                                (substring nstr (+ -1 idx)
-                                           (string-length nstr)))))
-          ((and (char-lower-case? (string-ref nstr (+ -1 idx)))
-                (char-upper-case? (string-ref nstr idx)))
-           (set! nstr
-                 (string-append (substring nstr 0 idx)
-                                "-"
-                                (substring nstr idx
-                                           (string-length nstr))))))))
-
-(define glib:type-cname->symbol-alist '())
-
-;; (glib:type-cname->symbol "GtkAccelGroup") => <gtk-accel-group>
-;; (glib:type-cname->symbol "GSource*") => <g-source*>
-(define (glib:type-cname->symbol cname)
-  (or (assoc-ref glib:type-cname->symbol-alist cname)
-      (string->symbol
-       (string-append
-        "<"
-        (string-trim-right
-         (GStudlyCapsExpand
-          ;; only change _ to -, other characters are not valid c names
-          (string-map (lambda (c) (if (eq? c #\_) #\- c)) cname))
-         #\-)
-        ">"))))
-
-;; (glib:type-cname->symbol "gtk_accel_group") => gtk-accel-group
-(define (glib:func-cname->symbol cname)
+;; "gtk_accel_group" => gtk-accel-group
+(define (glib-function-name->scheme-name cname)
   ;; only change _ to -, other characters are not valid c names
-  (string->symbol (string-map (lambda (c) (if (eq? c #\_) #\- c)) cname)))
+  (string->symbol (gtype-name->scheme-name cname)))
 
 (define (print-info how-wrapped c-name scm-name ws)
   (printf "%-8.8s|%-18.18s|%-25.25s|%-25.25s\n"
@@ -183,7 +129,7 @@
 (define-method (initialize (type <gobject-type-base>) initargs)
   (let-keywords
    initargs #t (class-name ctype name)
-   (let ((name-sym (glib:type-cname->symbol ctype)))
+   (let ((name-sym (gtype-name->class-name ctype)))
      (next-method
       type
       (append!
@@ -205,7 +151,7 @@
 (define-method (initialize (type <gobject-classed-type>) initargs)
   (let-keywords
    initargs #t (c-type-name class-name ctype name)
-   (let ((name-sym (glib:type-cname->symbol ctype)))
+   (let ((name-sym (gtype-name->class-name ctype)))
      (next-method
       type
       (append!
@@ -223,8 +169,7 @@
    (if (slot-ref type 'define-class?)
        (list
         "scm_c_define (\"" (symbol->string (class-name type)) "\",\n"
-        "              scm_call_1 (scm_sym_gtype_to_class,\n"
-        "                          scm_c_register_gtype (" (gtype-id type) ")));\n")
+        "              scm_c_gtype_to_class (" (gtype-id type) "));\n")
        '())))
 
 (define-method (add-type! (ws <gobject-wrapset-base>)
@@ -448,7 +393,7 @@
    (else
       (print-info "C Enum" ctype ctype ws)
       (apply next-method ws (append!
-                             (list #:name (glib:type-cname->symbol ctype)
+                             (list #:name (gtype-name->class-name ctype)
                                    #:c-type-name ctype)
                              args))))))
 
@@ -542,7 +487,7 @@
   ;;(print-info "Opaque" ctype ctype ws) ; FIXME: Write to log file
   (let ((type (wrap-as-wct!
                ws
-               #:name (glib:type-cname->symbol ctype)
+               #:name (gtype-name->class-name ctype)
                #:c-type-name ctype
                #:c-const-type-name (string-append "const " ctype))))
     (add-type-alias! ws ctype (name type))))

@@ -27,6 +27,7 @@
   scm_error (scm_str2symbol ("gruntime-error"), func_name, format, \
              ##args, SCM_EOL)
 
+/* The signal code doesn't work with 1.7 */
 #if (SCM_MAJOR_VERSION == 1) && (SCM_MINOR_VERSION == 6)
 
 static SCM deliver_signals;
@@ -77,7 +78,7 @@ _wrap_g_main_loop_run (GMainLoop *loop)
                                loop,
                                &timeout);
 }
-#else
+#else /* we're not on Guile 1.6 */
 
 void
 scm_init_glib (void)
@@ -91,3 +92,10 @@ _wrap_g_main_loop_run (GMainLoop *loop)
 }
 
 #endif
+
+
+SCM
+_wrap_g_string_get_str (GString *str)
+{
+  return scm_mem2string (str->str, str->len);
+}

@@ -12,5 +12,74 @@ function?
 So, we always need to ref once when making a new wrapper around a
 gobject.
 
-Also see gnome/gobject/guile-gnome-gobject-primitives.c, at about line
-710.
+/* The GObject wrapper (a short post-hoc re-design statement)
+   ==========================================================
+
+   Specifications:
+
+     1. For each GObject wrapper alive in Guile-land, Guile needs to hold
+        exactly one reference on the GObject.
+
+     2. When a wrapper vanishes from Guile-land, i.e., is garbage-collected,
+        Guile needs to drop its reference on the GObject.
+
+     3. If a wrapper is created again after having been garbage-collected, we
+        need to have a way of holding state with regards to the wrapped GObject,
+        i.e. object properties.
+
+     4. If the GObject itself goes away (not possible if there is a wrapper
+        alive), any state associated with it should go away as well.
+
+   Stipulation 4 means that the state must not hold a reference on the GObject,
+   and thus cannot be associated with the wrapper. Fortunately, GObject itself
+   provides such a mechanism, g_object_{set,get}_qdata. Therefore we need to
+   provide a special interface so that we can attach arbitrary data to gobjects,
+   as well as provide non-parameterized slots on derived GObjects.
+
+   Stipulation 2 means that we need a way of knowing when the wrapper is
+   garbage-collected. As far as I know, the only way to do this is via SMOBs. Of
+   course we want the wrapper to be a GOOPS object, though. We have two options
+   for this, either (somehow) representing the wrappers as GOOPS objects that
+   are really SMOBs, or having a special SMOB, existing on a 1-to-1 basis with
+   the wrapper, that will go away when the wrapper goes away. However, we do not
+   want details of this arrangement leaking out into scheme-land.
+
+   As the latter arrangement is easier to implement, and closer to the
+   historical situation, we choose it over the former. The SMOB is then
+   responsible for the ref and unref of the GObject. If the first reference of
+   the GObject is actually owned by Guile, then the constructor function (i.e.
+   gobject-primitive-create-instance) should unref the object. We might as well
+   use the GObject as the SMOB's data. As long as we can retrieve the SMOB given
+   the wrapper, this allows us to retrieve the GObject when we need to.
+
+   It would be good, from an optimization perspective, not to unnecessarily
+   create new wrappers when old ones are still alive. A cached piece of qdata on
+   the GObject does the trick (see scm_c_gtype_instance_to_scm in -gobject.c).
+   The cached data is removed when the SMOB is collected.
+
+   OK, so far so good. The one remaining problem is with regards to closures. We
+   have some more specifications here:
+
+     1. A closure connected to a GObject signal should not be collected until
+        either the closure is disconnected, or the object itself (not the
+        wrapper) goes out of existence.
+
+     2. Attaching closures to an object should not prevent the object from being
+        freed. Otherwise, any object with a connected signal will live forever.
+        Closures should only have a weak reference on an object.
+
+   These specifications are mutually exclusive. Stipulation 2 means that a
+   closure cannot be a permanent object, because its environment will always
+   reference the wrapper. But for it to be invoked after the wrapper is
+   collected would mean that its environment would have to be valid, which would
+   always include the wrapper object. So, either the closure must be invalidated
+   and collected when the object is collected (violating stipulation 1), or the
+   object must be immortal as long as it has signals connected to it (violating
+   stipulation 2).
+
+   Since it is a common idiom to find an object, connect to it, and then forget
+   about it, we will choose to violate stipulation 2. However, when
+   %gtype-instance-primitive-destroy! is called on a GTypeInstance, we
+   invalidate all guile closures.
+*/
+

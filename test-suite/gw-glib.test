@@ -5,7 +5,6 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
 (define-module (test-suite test-gw-glib)
   #:use-module (oop goops)
   #:use-module (gnome gobject)
-  #:use-module (gnome gobject primitives)
   #:use-module (test-suite lib)
   #:use-module (test-suite gw-test-glib))
 

@@ -1,7 +1,5 @@
 include $(top_srcdir)/common.mk
 
-GUILE_SNARF_CFLAGS += $(GOBJECT_CFLAGS)
-
 package = glib
 
 guilegwmodule_DATA = gobject-spec.scm gobject.scm glib-spec.scm glib.scm 
@@ -22,79 +20,33 @@ guilegwmodule_DATA = gobject-spec.scm gobject.scm glib-spec.scm glib.scm
 # Also, there's a g-wrap-produced wrapper for glib types and functions,
 # libgw-guile-gnome-glib.la.
 
-lib_LTLIBRARIES = libguile-gnome-gobject.la \
-	libgw-guile-gnome-gobject.la \
-	libgw-guile-gnome-glib.la
-
-# libguile-gnome-gobject (core library)
-
-libguile_gnome_gobject_la_SOURCES = \
-	guile-gnome-gobject.c			\
-	guile-gnome-gobject.h			\
-	guile-gnome-gobject-primitives.c	\
-	guile-gnome-gobject-primitives.h	\
-	guile-support.c				\
-	guile-support.h
-
-libguile_gnome_gobject_la_CFLAGS = \
-  $(AM_CFLAGS) $(GOBJECT_CFLAGS) $(GUILE_CFLAGS) $(G_WRAP_CFLAGS) \
-  -DGUILE_GOBJECT_DIR=\""$(schemelibdir)"\"
-
-libguile_gnome_gobject_la_LIBADD = $(G_WRAP_LIBS) $(GOBJECT_LIBS) $(GUILE_LIBS)
-libguile_gnome_gobject_la_LDFLAGS = # FIXME: version info
-
-pkginclude_HEADERS = guile-gnome-gobject.h guile-gnome-gobject-primitives.h
+lib_LTLIBRARIES = libgw-guile-gnome-gobject.la \
+	          libgw-guile-gnome-glib.la
 
 # libgw-guile-gnome-gobject (g-wrap support)
 
 libgw_guile_gnome_gobject_la_SOURCES = guile-gnome-gw-gobject.c
-
-noinst_HEADERS = glib-support.h
-
-libgw_guile_gnome_gobject_la_CFLAGS = $(AM_CFLAGS) $(GOBJECT_CFLAGS) \
-	$(GUILE_CFLAGS) $(G_WRAP_CFLAGS)
-
+libgw_guile_gnome_gobject_la_CFLAGS = -I$(srcdir)/../gobject \
+        $(AM_CFLAGS) $(GOBJECT_CFLAGS) $(GUILE_CFLAGS) $(G_WRAP_CFLAGS)
 libgw_guile_gnome_gobject_la_LIBADD = $(G_WRAP_LIBS) $(GOBJECT_LIBS) \
 	$(GUILE_LIBS) \
-	 libguile-gnome-gobject.la
-
+	 ../gobject/libguile-gnome-gobject.la
 libgw_guile_gnome_gobject_la_LDFLAGS = -module
 
 # libgw-guile-gnome-glib (g-wrap support for glib)
 
+noinst_HEADERS = glib-support.h
+
 libgw_guile_gnome_glib_la_SOURCES = guile-gnome-gw-glib.c glib-support.c
-
-libgw_guile_gnome_glib_la_CFLAGS = $(GLIB_CFLAGS) $(GUILE_CFLAGS) \
-	$(G_WRAP_CFLAGS)
-
+libgw_guile_gnome_glib_la_CFLAGS = -I$(srcdir)/../gobject \
+	$(GLIB_CFLAGS) $(GUILE_CFLAGS) $(G_WRAP_CFLAGS)
 libgw_guile_gnome_glib_la_LIBADD = $(GLIB_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LINK_ARGS) libguile-gnome-gobject.la
-
+	$(G_WRAP_LINK_ARGS) ../gobject/libguile-gnome-gobject.la
 libgw_guile_gnome_glib_la_LDFLAGS = -module
-
-DOT_X_FILES = \
-	guile-gnome-gobject.x			\
-	guile-gnome-gobject-primitives.x
-
-DOT_DOC_FILES = \
-	guile-gnome-gobject.doc			\
-	guile-gnome-gobject-primitives.doc
-
-guile-gnome-gobject.texi: $(DOT_DOC_FILES)
-	cat $(DOT_DOC_FILES) | guile-snarf-docs-texi > $@ \
-	|| { rm $@; false; }
-
-guile-gnome-gobject-procedures.txt: guile-gnome-gobject.texi
-	rm -f $@
-	makeinfo --force -o $@ $< || test -f $@
-
-#schemelib_DATA = guile-gnome-gobject-procedures.txt
 
 BUILT_SOURCES = \
 	guile-gnome-gw-gobject.c \
-	guile-gnome-gw-glib.c $(DOT_X_FILES)
-
-# other potentially built files: $(DOT_DOC_FILES)
+	guile-gnome-gw-glib.c
 
 CLEANFILES = $(BUILT_SOURCES) guile-gnome-gobject.texi			\
         $(wildcard gnome-*.log) 					\

@@ -2,7 +2,7 @@
 
 GUILE_VERSION=$(guile -c '(display (version))')
 
-export LTDL_LIBRARY_PATH=".:../gnome/gw:${LTDL_LIBRARY_PATH}"
+export LTDL_LIBRARY_PATH=".:../gnome/gw:../gnome/gobject:${LTDL_LIBRARY_PATH}"
 
 export GUILE_LOAD_PATH=".:${srcdir:-.}/..:..:${GUILE_LOAD_PATH}"
 

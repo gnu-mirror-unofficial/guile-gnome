@@ -1,7 +1,7 @@
 /* guile-gnome
  * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
  *
- * guile-gnome-gobject.h: The GObject wrapper
+ * gobject.h: Support for GObject and GInterface
  *
  * This program is free software; you can redistribute it and/or    
  * modify it under the terms of the GNU General Public License as   
@@ -21,20 +21,19 @@
  * Boston, MA  02111-1307,  USA       gnu@gnu.org
  */
 
-#ifndef __GUILE_GNOME_GOBJECT_H__
-#define __GUILE_GNOME_GOBJECT_H__
+#ifndef __GUILE_GNOME_GOBJECT_OBJECT_H__
+#define __GUILE_GNOME_GOBJECT_OBJECT_H__
 
-#include <guile-gnome-gobject-primitives.h>
-#include <libguile.h>
-#include <g-wrap/core-runtime.h>
+#include <guile-gnome-gobject/gtype.h>
+#include <guile-gnome-gobject/gparameter.h>
+#include <guile-gnome-gobject/gvalue.h>
+#include <guile-gnome-gobject/gsignal.h>
 
 G_BEGIN_DECLS
 
-extern SCM scm_module_gobject;
 
-extern SCM scm_class_gparam;
 extern SCM scm_class_gobject;
-extern SCM scm_sym_gtype_to_class;
+
 
 
 
@@ -52,8 +51,6 @@ SCM_MAKE_VALIDATE (pos, scm, GOBJECTP)
     SCM_VALIDATE_GTYPE_INSTANCE_TYPE_COPY (pos, tmp_instance, G_TYPE_OBJECT, GObject, cvar); \
   } while (0)
 
-
-
 #define SCM_GOBJECT_CLASSP(scm) \
 SCM_GTYPE_CLASS_SUBCLASSP (scm, scm_class_gobject)
 
@@ -68,65 +65,23 @@ SCM_MAKE_VALIDATE (pos, scm, GOBJECT_CLASSP)
     SCM_VALIDATE_GTYPE_COPY (0, tmp_type, cvar); \
   } while (0)
 
-
-
-#define SCM_GPARAMP(scm) \
-SCM_INSTANCEP (scm) && SCM_IS_A_P (scm, scm_class_gparam)
-
-#define SCM_VALIDATE_GPARAM(pos, scm) \
-SCM_MAKE_VALIDATE (pos, scm, GPARAMP)
-
-#define SCM_VALIDATE_GPARAM_COPY(pos, scm, cvar) \
-  do { \
-    SCM tmp_instance; \
-    SCM_VALIDATE_GPARAM (pos, scm); \
-    tmp_instance = scm_slot_ref (scm, scm_sym_gtype_instance); \
-    SCM_VALIDATE_GTYPE_INSTANCE_TYPE_COPY (0, tmp_instance, G_TYPE_PARAM, GParamSpec, cvar); \
-  } while (0)
 
 
 
-void scm_init_gnome_gobject_module (void);
-void scm_pre_init_gnome_gobject (void);
-void scm_init_gnome_gobject (void);
-void scm_post_init_gnome_gobject (void);
-
-
-
-SCM scm_gobject_scheme_dir (void);
-SCM scm_gtype_children (SCM type);
-SCM scm_gtype_to_fundamental (SCM type);
-SCM scm_gtype_to_class_name (SCM type);
-SCM scm_gtype_to_method_name (SCM type, SCM method);
-SCM scm_gtype_p (SCM type);
-SCM scm_gtype_fundamental_p (SCM type);
-
-SCM scm_genum_register_static (SCM name, SCM vtable);
-SCM scm_gflags_register_static (SCM name, SCM vtable);
-
-SCM scm_gtype_register_static (SCM name, SCM parent_type);
 SCM scm_gobject_set_data_x (SCM object, SCM key, SCM val);
 SCM scm_gobject_get_data (SCM object, SCM key);
+
+SCM scm_gtype_register_static (SCM name, SCM parent_type);
 SCM scm_gobject_class_install_property (SCM type, SCM param);
-SCM scm_gparam_to_value_type (SCM param);
+
+SCM scm_gobject_type_get_properties (SCM type);
+SCM scm_gobject_primitive_create_instance (SCM class, SCM type, SCM object, SCM properties);
+SCM scm_gobject_primitive_get_property (SCM object, SCM name);
+SCM scm_gobject_primitive_set_property (SCM object, SCM name, SCM value);
+
+void scm_register_gobject_postmakefunc (GType type, gpointer (*postmakefunc) (gpointer));
 
 
-
-gboolean scm_c_gtype_instance_is_a_p (SCM instance, GType gtype);
-GTypeInstance* scm_c_scm_to_gtype_instance (SCM instance, GType gtype);
-SCM scm_c_gtype_instance_to_scm (GTypeInstance *ginstance);
-SCM scm_c_gvalue_to_scm (const GValue *value);
-GValue* scm_c_scm_to_gvalue (GType type, SCM scm);
-
-void scm_init_gnome_gobject_helper (GType type);
-
-
-
-/* Macros that are not available as functions (needed for glueless wrapping) */
-
-GType    g_type_from_instance (GTypeInstance *);
-gboolean g_type_is_instantiatable (GType type);
-gboolean g_type_is_classed (GType type);
 
 G_END_DECLS
 

@@ -28,8 +28,10 @@
   #:use-module (oop goops)
   #:use-module (g-wrap)
   #:use-module (g-wrap util)
+  #:use-module (g-wrap c-types)
   #:use-module (g-wrap guile)
   #:use-module (g-wrap guile ws standard)
+  #:use-module (gnome gobject utils)
   #:use-module (gnome gobject gw-spec-utils)
   #:use-module (gnome gobject defs-support))
 
@@ -117,7 +119,7 @@
   (add-type-alias! ws "GError**" '<GError>)
 
   (add-type-rule! ws '(("gint*" "*")) '(int out))
-  
+
   (load-defs ws "gnome/defs/glib.defs"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -319,9 +321,58 @@
          '())
      "}\n")))
   
-;   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;   ;; ((gslist-of (<gtk-window> gw:const) gw:const) win-list)
-;   ;; shamelessly stolen from upstream g-wrap so that we can use glib 2.0
+;;; GError
+
+(define-class <gerror-type> (<gw-type>))
+
+(define-method (initialize (self <gerror-type>) initargs)
+  (next-method self (append '(#:arguments-visible? #f) initargs)))
+    
+(define-method (c-type-name (type <gerror-type>))
+  "GError*")
+
+(define-method (check-typespec-options (type <gerror-type>) (options <list>))
+  (let ((remainder options))
+    (set! remainder (delq 'caller-owned remainder))
+    (set! remainder (delq 'null-ok remainder))
+    (if (not (null? remainder))
+        (raise (condition
+                (&gw:bad-typespec (type type) (options options)))))))
+    
+(define-method (destruct-value-cg (t <gerror-type>)
+                                  (value <gw-value>)
+                                  status-var)
+  (list "g_clear_error(&" (var value) ");\n"))
+
+(define-method (pre-call-arg-cg (t <gerror-type>)
+                                (value <gw-value>)
+                                status-var)
+  (list (var value) " =  NULL;\n"))
+
+
+(define-method (call-arg-cg (t <gerror-type>) (value <gw-value>))
+  (list "&" (var value)))
+
+(define-method (post-call-arg-cg (t <gerror-type>)
+                                 (value <gw-value>)
+                                 status-var)
+  (let* ((c-name (var value))
+         (typespec (typespec value)))
+    (list
+     "if (" c-name ") {\n" 
+     "  SCM scm_gerror = scm_list_3(scm_ulong2num(" c-name "->domain), scm_ulong2num(" c-name "->code), scm_makfrom0str(" c-name "->message));\n"
+     (destruct-value-cg t value status-var)
+     "  scm_throw(scm_str2symbol(\"g-error\"), scm_gerror);\n"
+     "}\n")))
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ((gslist-of (<gtk-window> gw:const) gw:const) win-list)
+;; shamelessly stolen from upstream g-wrap so that we can use glib 2.0
+
+;;; FIXME: Convert or generalize glist-of and refactor
+
 ;   (let ((glo (gw:wrap-type ws 'gslist-of)))
     
 ;     (define (c-type-name-func typespec)
@@ -538,53 +589,5 @@
     
 ;     glo)
 
-;;; GError
-
-(define-class <gerror-type> (<gw-type>))
-
-(define-method (initialize (self <gerror-type>) initargs)
-  (next-method self (append '(#:arguments-visible? #f) initargs)))
-    
-(define-method (c-type-name (type <gerror-type>))
-  "GError*")
-
-(define-method (make-typespec (type <gerror-type>) (options <list>))
-  ;; FIXME: Use raise, not throw
-  (let ((remainder options))
-    (set! remainder (delq 'caller-owned remainder))
-    (set! remainder (delq 'null-ok remainder))
-    (if (null? remainder)
-        (next-method type '())
-        (throw 'gw:bad-typespec
-               "Bad <GError> options form - spurious options: "
-               remainder))))
-    
-(define-method (destruct-value-cg (t <gerror-type>)
-                                  (value <gw-value>)
-                                  status-var)
-  (list "g_clear_error(&" (var value) ");\n"))
-
-(define-method (pre-call-arg-cg (t <gerror-type>)
-                                (value <gw-value>)
-                                status-var)
-  (list (var value) " =  NULL;\n"))
-
-
-(define-method (call-arg-cg (t <gerror-type>) (value <gw-value>))
-  (list "&" (var value)))
-
-(define-method (post-call-arg-cg (t <gerror-type>)
-                                 (value <gw-value>)
-                                 status-var)
-  (let* ((c-name (var value))
-         (typespec (typespec value)))
-    (list
-     "if (" c-name ") {\n" 
-     "  SCM scm_gerror = scm_list_3(scm_ulong2num(" c-name "->domain), scm_ulong2num(" c-name "->code), scm_makfrom0str(" c-name "->message));\n"
-     (destruct-value-cg t value status-var)
-     "  scm_throw(scm_str2symbol(\"g-error\"), scm_gerror);\n"
-     "}\n")))
-
-  
 ;;(register-type "guile-gnome-gw-glib" "GSList*" 'gslist-of)
   
