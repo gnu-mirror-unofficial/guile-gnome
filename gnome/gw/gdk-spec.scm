@@ -94,15 +94,16 @@
                                 status-var)
   (let ((c-var (var value))
         (scm-var (scm-var value)))
-    (list
-     (unwrap-null-check value status-var)
-     "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
-     "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), GDK_TYPE_EVENT))\n"
-     "  " c-var " = (" (c-type-name type)  ") g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
-     "else {\n"
-     "  " c-var " = NULL;\n"
-     `(gw:error ,status-var type ,scm-var)
-    "}\n")))
+    (unwrap-null-checked
+     value status-var
+     (list
+      "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
+      "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), GDK_TYPE_EVENT))\n"
+      "  " c-var " = (" (c-type-name type)  ") g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
+      "else {\n"
+      "  " c-var " = NULL;\n"
+      `(gw:error ,status-var type ,scm-var)
+      "}\n"))))
 
 (define-method (wrap-value-cg (type <gdk-event-type>)
                               (value <gw-value>)
