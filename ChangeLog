@@ -1,3 +1,12 @@
+2004-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.97 ==
+
+2004-11-16  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/defs/Makefile.am (defs_DATA): Just do *.defs, to prevent
+	bugs.
+
 2004-11-14  Jan Nieuwenhuizen  <janneke@gnu.org>
 
 	* gnome/defs/libgnomecanvas.defs: Remove type defs.  Include
