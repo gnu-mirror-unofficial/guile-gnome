@@ -1,12 +1,11 @@
 #! /bin/sh
-exec guile-gtk -s "$0" "$@"
+exec guile -s "$0" "$@"
 !#
 
-;; please translate me to the (gnome gtk) api!
-
-;; Time-stamp: <1998-03-15 21:18:16 szi>
+;; Time-stamp: <07-sep-2004 11:42:38 pat>
 ;;
 ;; Copyright (C) 1997, 1998, 1999 Marius Vollmer
+;; Copyright (C) 2004 Patrick Bernaud
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -188,17 +187,7 @@ exec guile-gtk -s "$0" "$@"
 ;; overwriting builtin functions.
 
 (define-module (calc)
-  :use-module (gtk gtk))
-
-(if (not (defined? 'gtk-scrolled-window-add-with-viewport))
-    (define gtk-scrolled-window-add-with-viewport gtk-container-add))
-
-;; First some utility functions.  The first saves us from writing a
-;; million times "gtk-widget-show".  It is like gtk-widget-show but
-;; takes any number of widgets and shows them all.
-
-(define (gtk-widget-show-multi . widgets)
-  (for-each gtk-widget-show widgets))
+  :use-module (gnome gtk))
 
 ;; This one loads a file from the users home directory, if it exists.
 
@@ -216,17 +205,19 @@ exec guile-gtk -s "$0" "$@"
 
   ;; First, we create some widgets and store references to them in
   ;; local variables.
-  (let ((window (gtk-window-new 'toplevel))
-	(box (gtk-vbox-new #f 0))
-	(scrolled-win (gtk-scrolled-window-new))
-	(list-widget (gtk-list-new))
-	(entry (gtk-entry-new))
-	(echo (gtk-label-new " "))
-
-	;; This is the caluclator stack.  It is simply a list of
-        ;; arbitrary values, with the top of the stack in the first
-        ;; element.  It starts out empty.
-	(stack '()))
+  (let* ((window       (make <gtk-window> #:type 'toplevel))
+	 (box          (make <gtk-vbox> #:homogeneous #f #:spacing 0))
+	 (scrolled-win (make <gtk-scrolled-window>))
+	 (text-buffer  (make <gtk-text-buffer>))
+	 (text-view    (make <gtk-text-view> 
+			 #:buffer text-buffer #:editable #f))
+	 (entry        (make <gtk-entry>))
+	 (echo         (make <gtk-label> #:label " "))
+	 
+	 ;; This is the caluclator stack.  It is simply a list of
+	 ;; arbitrary values, with the top of the stack in the first
+	 ;; element.  It starts out empty.
+	 (stack '()))
   
     ;; Some handy operations to work on the stack.  I think you can
     ;; figure them out.
@@ -244,35 +235,30 @@ exec guile-gtk -s "$0" "$@"
 	       (s '() (cons (pop) s)))
 	      ((zero? i) s))))
 
-    ;; Make our list-widget show the stack.  The list-widget is
+    ;; Make our text-view show the stack.  The text-buffer is
     ;; cleared and refilled each time.  This is slow, but should be
     ;; okay for now.
     (define (redisplay)
 
-      ;; A line of the stack display is composed of a hbox that packs
-      ;; a numeric label at the left and the value at the right.  We
-      ;; print to a string to get the printed representation of the
-      ;; value.
-      (define (make-stack-line num val) 
-	(let ((numlab (gtk-label-new (string-append (number->string num) ":")))
-	      (vallab (gtk-label-new (call-with-output-string
-				      (lambda (port) (write val port)))))
-	      (box (gtk-hbox-new #f 2))
-	      (item (gtk-list-item-new)))
-	  (gtk-box-pack-start box numlab #f #f 0)
-	  (gtk-box-pack-end box vallab #t #t 0)
-	  (gtk-misc-set-alignment vallab 1.0 0.0)
-	  (gtk-container-add item box)
-	  (gtk-widget-show-multi numlab vallab box item)
-	  item))
-
-      ;; Now clear the list-widget and insert a stack-line for every
+      ;; Now clear the text-buffer and insert a stack-line for every
       ;; stack item.
-      (gtk-list-clear-items list-widget 0 -1)
-      (do ((i 1 (1+ i))
-	   (s stack (cdr s)))
-	  ((null? s))
-	(gtk-list-prepend-item list-widget (make-stack-line i (car s)))))
+      (set-text text-buffer "")
+      (let ((iter (get-start-iter text-buffer)))
+	(do ((i 1 (1+ i))
+	     (s stack (cdr s)))
+	    ((null? s))
+	  ;; A line of the stack display is composed of a numeric label 
+	  ;; at the left and the value at the right on the line below. We
+	  ;; print to a string to get the printed representation of the
+	  ;; value.
+	  (insert text-buffer iter
+		  (string-append (number->string i) ":\n"))
+	  (insert-with-tags-by-name text-buffer iter
+				    (call-with-output-string
+				     (lambda (port) 
+				       (write (car s) port)
+				       (newline port)))
+				    '("right-justify")))))
 
     ;; This sets the echo area of the calculator to TEXT.
     (define set-echo
@@ -283,7 +269,7 @@ exec guile-gtk -s "$0" "$@"
 	  ;; changed, which leads to visible flicker.
 	  (cond ((not (string=? last-text text))
 		 (set! last-text text)
-		 (gtk-label-set-text echo text))))))
+		 (set-text echo text))))))
 
     ;; Construct a concise error message out of KEY and ARGS.  For now
     ;; we just return the KEY as a string and print a more verbose
@@ -307,14 +293,14 @@ exec guile-gtk -s "$0" "$@"
 	  (if (eof-object? val)
 	      (reverse! res)
 	      (loop (cons val res) (read port)))))
-      (let ((vals (call-with-input-string (gtk-entry-get-text entry)
+      (let ((vals (call-with-input-string (get-text entry)
 					  read-all)))
 	(if (null? vals)
 	    (if (and (or (null? opt-dup) (car opt-dup)) (not (null? stack)))
 		(push (car stack)))
 	    (for-each push vals))
 	(redisplay)
-	(gtk-entry-set-text entry "")
+	(set-text entry "")
 	(set-echo "")))
 
     ;; Do whatever ACTION says to do with VAL.
@@ -322,7 +308,7 @@ exec guile-gtk -s "$0" "$@"
       (case action 
 	((push)      (push val))
 	((push-list) (for-each push val))
-	((set-entry) (gtk-entry-set-text entry val))
+	((set-entry) (set-text entry val))
 	(else        (error "bad action"))))
 
     ;; Return a new function that is suitable as a signal handler on a
@@ -330,41 +316,40 @@ exec guile-gtk -s "$0" "$@"
     ;; according to N-ARGS, invokes FUNC and then performs ACTION on
     ;; the return value.
     (define (make-op func n-args action)
-      (lambda ()
 
-	;; Push the entry field prior to collecting the arguments, but
-        ;; only when we are taking them from the stack.
-	(if (not (eq? action 'set-entry))
-	    (activate-entry #f))
+      ;; Push the entry field prior to collecting the arguments, but
+      ;; only when we are taking them from the stack.
+      (if (not (eq? action 'set-entry))
+	  (activate-entry #f))
 
-	;; Save the stack so that we can restore it later.
-	(let ((saved-stack stack))
+      ;; Save the stack so that we can restore it later.
+      (let ((saved-stack stack))
 
-	  ;; Now, collect all arguments, invoke the real function with
-	  ;; them and stuff the return value, all while catching
-	  ;; errors.
-	  (catch #t
-		 ;; This is the normal action.
-		 (lambda ()
-		   (set-echo "")
-		   (let ((args (cond ((number? n-args)
-				      (pop-n n-args))
-				     ((eq? 'all n-args)
-				      (pop-n (length stack)))
-				     ((eq? 'entry n-args)
-				      (list (gtk-entry-get-text entry)))
-				     (else
-				      (error "bad arg spec" n-args)))))
-		     (perform-action (apply func args) action)))
-
-		 ;; We come here when we have caught an error.
-		 (lambda (key . args)
-		   (set-echo (construct-error-message key args))
-		   (set! stack saved-stack))))
-	
-	;; Update the stack display.
-	(redisplay)))
-
+	;; Now, collect all arguments, invoke the real function with
+	;; them and stuff the return value, all while catching
+	;; errors.
+	(catch #t
+	       ;; This is the normal action.
+	       (lambda ()
+		 (set-echo "")
+		 (let ((args (cond ((number? n-args)
+				    (pop-n n-args))
+				   ((eq? 'all n-args)
+				    (pop-n (length stack)))
+				   ((eq? 'entry n-args)
+				    (list (get-text entry)))
+				   (else
+				    (error "bad arg spec" n-args)))))
+		   (perform-action (apply func args) action)))
+	       
+	       ;; We come here when we have caught an error.
+	       (lambda (key . args)
+		 (set-echo (construct-error-message key args))
+		 (set! stack saved-stack))))
+      
+      ;; Update the stack display.
+      (redisplay))
+  
     ;; Construct a hbox full of buttons according to SPECS.  SPECS is
     ;; a list of button specifications 
     ;;
@@ -375,28 +360,31 @@ exec guile-gtk -s "$0" "$@"
     ;; evaluation rules.  All the evaluation or not-evaluation takes
     ;; place when executing the `calc-panel' form.  See below.
     (define (make-button-row specs)
-      (let ((box (gtk-hbox-new #t 2)))
+      (let ((box (make <gtk-hbox> #:homogeneous #t #:spacing 2)))
 	(for-each (lambda (s)
-		    (let ((b (gtk-button-new-with-label (car s))))
-		      (gtk-signal-connect b "clicked" (apply make-op (cdr s)))
-		      (gtk-box-pack-start box b #t #t 0)
-		      (gtk-widget-show b)))
+		    (let ((b (make <gtk-button> #:label (car s))))
+		      (connect b 'clicked (lambda (w)
+					    (apply make-op (cdr s))))
+		      (pack-start box b #t #t 0)))
 		  specs)
-	(gtk-widget-show box)
 	box))
 
     ;; Now setup the GUI.  This is fairly basic Gtk stuff, just like
     ;; you would write it in C.
-    (gtk-window-set-title window "Calc")
-    (gtk-scrolled-window-set-policy scrolled-win 'automatic 'always)
-    (gtk-scrolled-window-add-with-viewport scrolled-win list-widget)
-    (gtk-misc-set-alignment echo 0.0 0.5)
-    (gtk-widget-set-usize scrolled-win 200 120)
+    (set-title window "Calc")
+    (set-policy scrolled-win 'automatic 'always)
+    (add-with-viewport scrolled-win text-view)
+    (set-alignment echo 0.0 0.5)
+    (set-size-request scrolled-win 200 120)
 
     ;; Pack the widgets from top to bottom.
-    (gtk-container-add window box)
-    (gtk-box-pack-start box scrolled-win #t #t 0)
-    (gtk-box-pack-start box entry #f #f 0)
+    (add window box)
+    (pack-start box scrolled-win #t #t 0)
+    (pack-start box entry #f #f 0)
+
+    ;; The text tag to right align the value in text-view
+    (create-tag text-buffer "right-justify"
+		'justification 'right)
 
     ;; Here we loop thru all panels, and (within each panel) thru all
     ;; rows.  Each row is in the format expected by `make-button-row'
@@ -404,21 +392,19 @@ exec guile-gtk -s "$0" "$@"
     (for-each (lambda (p)
 		(for-each (lambda (r)
 			    (let ((br (make-button-row r)))
-			      (gtk-box-pack-start box br #f #f 1)))
+			      (pack-start box br #f #f 1)))
 			  p)
-		(let ((sep (gtk-hseparator-new)))
-		  (gtk-box-pack-start box sep #f #f 1)
-		  (gtk-widget-show sep)))
+		(pack-start box (make <gtk-hseparator>) #f #f 1))
 	      panels)
 
     ;; Pack the echo area at the bottom.
-    (gtk-box-pack-end box echo #f #f 0)
+    (pack-end box echo #f #f 0)
 
     ;; Finally, connect to some signals, show the whole mess and we
     ;; are done.
-    (gtk-signal-connect entry "activate" activate-entry)
-    (if (gtk-standalone?) (gtk-signal-connect window "destroy" gtk-exit))
-    (gtk-widget-show-multi echo entry list-widget box scrolled-win window)))
+    (connect entry 'activate activate-entry)
+    (connect window 'destroy (lambda (w) (gtk-main-quit)))
+    (show-all window)))
 
 
 ;; This is the definition of the CALC-PANEL macro.  It looks quite
@@ -548,7 +534,7 @@ exec guile-gtk -s "$0" "$@"
 (load-rcfile ".calcrc")
 (make-calculator calc-panels)
 
-(if (gtk-standalone?) (gtk-main))
+(gtk-main)
 
 ; Local Variables:
 ; mode: scheme
