@@ -26,7 +26,6 @@
 
 (define-module (gnome gobject gtype)
   :use-module (oop goops)
-  :use-module (ice-9 documentation)
   :use-module (gnome gobject utils)
   :export     (;; From C:
 

@@ -29,7 +29,6 @@
 
 (define-module (gnome gobject gparameter)
   :use-module (oop goops)
-  :use-module (ice-9 documentation)
   :use-module (gnome gobject gtype)
   :use-module (gnome gobject gvalue)
 

@@ -26,6 +26,7 @@
 
 (define-module (gnome gobject utils)
   :use-module (srfi srfi-13)
+  :use-module (ice-9 documentation)
   :export     (gtype-name->scheme-name-alist gtype-name->scheme-name
                gtype-name->class-name gtype-name->method-name
                re-export-modules

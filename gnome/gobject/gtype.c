@@ -36,6 +36,7 @@ SCM_GLOBAL_SYMBOL  (scm_sym_gtype_class,	"gtype-class");
 SCM_GLOBAL_SYMBOL  (scm_sym_gtype_instance,	"gtype-instance");
 
 SCM scm_class_gtype_class;
+SCM scm_gtype_to_class;
 
 scm_t_bits scm_tc16_gtype;
 scm_t_bits scm_tc16_gtype_class;
@@ -56,7 +57,6 @@ static SCM _make;
 static SCM _make_class;
 static SCM _class_redefinition;
 
-static SCM _gtype_to_class;
 static SCM _gtype_instance_write;
 static SCM _gtype_name_to_scheme_name;
 
@@ -400,7 +400,7 @@ scm_c_gtype_to_class (GType gtype)
        it doesn't yet exist. */
     
     type = scm_c_register_gtype (gtype);
-    ret = scm_call_1 (_gtype_to_class, type);
+    ret = scm_call_1 (scm_gtype_to_class, type);
     
     return ret;
 }
@@ -898,7 +898,7 @@ SCM_DEFINE (scm_sys_gnome_gobject_types_post_init,
             "")
 #define FUNC_NAME s_scm_sys_gnome_gobject_types_post_init
 {
-    _gtype_to_class = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gtype->class")));
+    scm_gtype_to_class = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gtype->class")));
     _gtype_instance_write =
         scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gtype-instance:write")));
     return SCM_UNSPECIFIED;

@@ -207,6 +207,7 @@
                        (return-type "none")
                        (caller-owns-return #f)
                        (parameters (list))
+                       (arguments #f)
                        (generic-name #f))
                    (for-each
                     (lambda (arg)
@@ -271,13 +272,15 @@
                                         (or (string-index of-obj-str #\*)
                                             (1- (string-length of-obj-str))))))
                        (cond
-                        ((string-prefix? (string-append sanitized-of-obj "-")
-                                         func-name)
+                        ((and (string-prefix? (string-append sanitized-of-obj "-")
+                                              func-name)
+                              ;; Temporary hack -- <gw-wct> should be a metaclass
+                              (not (is-a? (lookup-type ws of-object) <gw-wct>)))
                          (set! generic-name (string->symbol (substring func-name (1+ (string-length sanitized-of-obj)))))
                          (set! of-object of-obj-str))
                         (else
                          (set! bad-methods (cons (list func-name of-object)
-                                                bad-methods)))))))
+                                                 bad-methods)))))))
 
                    (display ".")
                    (wrap-function!
@@ -371,7 +374,7 @@
 
 ;     (format #t "\n\nWrapped ~A types (~A opaque) and ~A functions.\n"
 ;             (+ num-types (length opaque-types)) (length opaque-types) num-functions)
-    (format #t "A list of opaque types and bad method names has been written to ~A.\n\n"
+    (format #t "\nA list of opaque types and bad method names has been written to ~A.\n\n"
             log-file-name)
 
     (set! %load-path old-load-path)))

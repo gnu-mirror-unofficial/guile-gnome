@@ -37,6 +37,7 @@ extern SCM scm_sym_gtype_class;
 extern SCM scm_sym_gtype_instance;
 
 extern SCM scm_class_gtype_class;
+extern SCM scm_gtype_to_class;
 
 extern scm_t_bits scm_tc16_gtype;
 extern scm_t_bits scm_tc16_gtype_class;

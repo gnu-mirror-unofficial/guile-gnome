@@ -168,8 +168,9 @@
    (next-method)
    (if (slot-ref type 'define-class?)
        (list
-        "scm_c_define (\"" (symbol->string (class-name type)) "\",\n"
-        "              scm_c_gtype_to_class (" (gtype-id type) "));\n")
+        "gw_guile_make_latent_variable\n"
+        "  (scm_str2symbol (\"" (symbol->string (class-name type)) "\"), "
+        "scm_gtype_to_class, scm_c_register_gtype (" (gtype-id type) "));\n")
        '())))
 
 (define-method (add-type! (ws <gobject-wrapset-base>)
@@ -234,7 +235,7 @@
      (if-typespec-option value 'caller-owned
          ;; the _to_scm will ref the object; if the function is a
          ;; constructor, we don't need that ref
-          (list "if (" c-var ") g_object_ref ((GObject*)" c-var ");\n")))))
+          (list "if (" c-var ") g_object_unref ((GObject*)" c-var ");\n")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Wrap boxed types, represented on the scheme side by GValues.
