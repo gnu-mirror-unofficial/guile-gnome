@@ -1,3 +1,7 @@
+2004-09-19  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (pkgconfig_DATA): Install the pkg-config file.
+
 2004-09-16  Andy Wingo  <wingo@pobox.com>
 
 	* Makefile.am (SUBDIRS): Dist fixes.
