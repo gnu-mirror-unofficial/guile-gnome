@@ -1,5 +1,6 @@
 /* guile-gnome
  * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+ *		 2004 Jan Nieuwenhuizen <janneke@gnu.org>
  *
  * glib-support.c: Support routines for the GLib wrapper
  *
@@ -21,6 +22,7 @@
  * Boston, MA  02111-1307,  USA       gnu@gnu.org
  */
 
+#include <g-wrap-wct.h>
 #include "glib-support.h"
 
 #define GRUNTIME_ERROR(format, func_name, args...) \
@@ -99,3 +101,36 @@ _wrap_g_string_get_str (GString *str)
 {
   return scm_mem2string (str->str, str->len);
 }
+
+static gboolean
+g_io_func (GIOChannel *source,
+	   GIOCondition condition,
+	   gpointer data)
+{
+  SCM proc;
+  SCM result;
+
+  proc = SCM_PACK (GPOINTER_TO_INT (data));
+  result = scm_call_2 (proc,
+#if 0 /* GIOChannel is not wrapped, assimilate by hand, says Andy -- jcn */		       
+		       scm_c_gtype_instance_to_scm ((GTypeInstance*) source),
+#else		       
+		       gw_wcp_assimilate_ptr (source, SCM_VARIABLE_REF (scm_c_lookup ("<gio-channel*>"))),
+#endif
+		       scm_long2num (condition));
+  return result == SCM_BOOL_T;
+}
+
+guint
+_wrap_g_io_add_watch (GIOChannel *channel,
+		      GIOCondition condition,
+		      SCM func)
+#define FUNC_NAME "g-io-add-watch"
+{
+  SCM_VALIDATE_PROC (3, func);
+  return g_io_add_watch (channel,
+			 condition,
+			 ((GIOFunc) (g_io_func)),
+			 GINT_TO_POINTER (SCM_UNPACK (func)));
+}
+#undef FUNC_NAME

@@ -26,12 +26,14 @@
 
 #include <glib.h>
 #include <libguile.h>
+#include "guile-gnome-gobject.h"
 
 G_BEGIN_DECLS
 
 void scm_init_glib (void);
 void _wrap_g_main_loop_run (GMainLoop *loop);
 SCM  _wrap_g_string_get_str (GString *str);
+guint _wrap_g_io_add_watch (GIOChannel *channel, GIOCondition condition, SCM func);
 
 G_END_DECLS
 

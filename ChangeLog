@@ -1,3 +1,21 @@
+2004-10-30  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* examples/fifo.scm: Update.
+
+	* gnome/gw/glib-support.scm: Add return parameter overrides (Rotty).
+
+	* gnome/gw/glib-support.c: Remove _wrap_g_io_channel_read_line wrapper.
+
+2004-10-22  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* examples/fifo.scm: New file.
+
+2004-10-21  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/gw/glib-support.c (_wrap_g_io_add_watch): New wrapper.
+
+	* gnome/overrides/glib.defs (g_io_add_watch): New override.
+
 2004-11-15  Andy Wingo  <wingo@pobox.com>
 
 	* Makefile.am: Don't install into guile's path, just use $prefix.
