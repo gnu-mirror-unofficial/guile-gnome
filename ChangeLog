@@ -1,3 +1,16 @@
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am: Don't install into guile's path, just use $prefix.
+
+	* gnome.scm.in: Don't hack /usr/local. Add some comments.
+
+	* package.ac: Add record_check.
+
+2004-11-13  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (EXTRA_DIST): Dist VERSION.
+	* VERSION: New file.
+
 2004-11-11  Andy Wingo  <wingo@pobox.com>
 
 	* gnome.scm.in (usr-local-hack): Fix..

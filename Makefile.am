@@ -6,7 +6,7 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pcifiles)
 
 # tried to get autoconf to do this, but failed.
-guilesite:=$(shell guile-config info pkgdatadir)/site
+guilesite:=$(prefix)/share/guile/site
 
 gnome-@API_VERSION@.scm: gnome.scm.in Makefile
 	if test -f $@; then chmod +w $@; fi
@@ -35,6 +35,6 @@ uninstall-local:
 
 EXTRA_DIST = guile-gnome-glib.pc.in guile-gnome-glib-uninstalled.pc.in \
 	AUTHORS NEWS TODO WARTS REFCOUNTING THREADING NEWS.guile-gobject \
-	README $(wildcard *.ac) gnome.scm.in
+	README $(wildcard *.ac) gnome.scm.in VERSION
 
 CLEANFILES = $(pcifiles) $(pcufiles) $(bin_SCRIPTS) gnome-@API_VERSION@.scm
