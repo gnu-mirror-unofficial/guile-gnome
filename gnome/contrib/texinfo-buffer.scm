@@ -32,9 +32,15 @@
   #:use-module (gnome gtk gdk-event)
   #:use-module (gnome gobject)
   #:use-module (gnome pango)
-  #:use-module (gnome gnome)
   #:export (stexi->gtk-text-buffer
             stexi-buffer-xref-activated-hook))
+
+(define url-show
+  (or
+   (false-if-exception
+    (module-ref (resolve-interface '(gnome gnome)) 'gnome-url-show))
+   (lambda (u x)
+     (pk "Hmm, implement a non-gnome URL handler..." u))))
 
 ;; The two arguments are the node name and the manual name or #f
 (define-with-docs stexi-buffer-xref-activated-hook
@@ -182,7 +188,7 @@ manual."
              (if (eq? (gdk-event:type event) 'button-press)
                  (begin
                    (format #t "\nshowing ~A in new window\n" (slot-ref obj 'uri))
-                   (gnome-url-show (slot-ref obj 'uri) #f)))
+                   (url-show (slot-ref obj 'uri) #f)))
              #f)))
 
 (define (uref tag args)

@@ -3,6 +3,8 @@
 	* gnome/contrib/texinfo-buffer.scm (<stexi-ref-tag>): Name changed
 	from stext-..., s/#:param-spec/#:gparam/, fix the hook.
 	(ref): Fix typo.
+	(url-show): New function, uses gnome to show the url if it's
+	around, should do something else otherwise...
 
 	* gnome/contrib/help-browser.scm: New file, implements a help
 	browser whose native data format is stexi.
