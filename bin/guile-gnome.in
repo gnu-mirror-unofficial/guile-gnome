@@ -20,10 +20,17 @@
 
 # This will allow the shell to find `guile-gnome' in the path.
 
+# Hack around guile-1.6's lack of /usr/local paths in its load-dir.
+# (Otherwise a user looking for g-wrap / guile-lib installed in
+# /usr/local will be unpleasantly surprised.)
+localpath=/usr/local/share/guile/site:/usr/local/share/guile/1.6:/usr/local/share/guile
+
 if test "x$GUILE_LOAD_PATH" = "x"; then
-  GUILE_LOAD_PATH="@guilegnomedir@"
+  GUILE_LOAD_PATH="@guilegnomedir@":$localpath
 else
-  GUILE_LOAD_PATH="@guilegnomedir@":$GUILE_LOAD_PATH
+  # Because GUILE_LOAD_PATH is essentially a user customization, allow
+  # it to have precedence over $localpath.
+  GUILE_LOAD_PATH="@guilegnomedir@":$GUILE_LOAD_PATH:$localpath
 fi
 
 # Probably will always be necessary to resolve libguile-gnome-gobject

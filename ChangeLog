@@ -1,3 +1,16 @@
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* defs-checks.ac: Versioned pkg-config check.
+
+	* Makefile.am (all-local): Versioned pkg-config files.
+
+	* examples/main-loop.scm: 
+	* examples/example-1.scm: Use guile-gnome-0.
+
+	* bin/guile-gnome.in (localpath): Add /usr/local include dirs to
+	the guile loadpath, so that users aren't surprised when they have
+	g-wrap installed in /usr/local/guile/site. A hack for guile 1.6.
+
 2004-10-26  Andy Wingo  <wingo@pobox.com>
 
 	* package.ac (GUILE_GLIB_LIBS): Link to the versioned lib.

@@ -42,7 +42,7 @@ In the directory gnome/gobject, extensive changes to:
     gobject.h   gtype.h   gvalue.h   gparameter.h   gsignal.h   gclosure.h
     gobject.scm gtype.scm gvalue.scm gparameter.scm gsignal.scm gclosure.scm
 In the directory gnome/gobject, wrote:
-    generics.scm
+    generics.scm config.scm.in
 In the directory gnome/gw/support, wrote:
     defs.scm gobject.scm util.scm
 In the directory gnome/gw, wrote:
@@ -53,6 +53,8 @@ In the toplevel directory, wrote:
     WARTS THREADING REFCOUNTING TODO
 In the directory examples, wrote:
     example-1.scm main-loop.scm
+In the directory bin, wrote:
+    guile-gnome.in
 Many other changes throughout.
   
 Marius Vollmer:
