@@ -2,10 +2,10 @@
 
 pwd=`pwd`
 this_dir=`dirname $0`
-this_dir=`realpath $this_dir`
+this_dir=`readlink -f $this_dir`
 src_dir=@top_srcdir@
 cd $this_dir
-src_dir=`realpath $src_dir`
+src_dir=`readlink -f $src_dir`
 cd $pwd
 
 export GUILE_LOAD_PATH=$src_dir:$this_dir:$GUILE_LOAD_PATH

@@ -22,11 +22,10 @@ config.h.in
 install-sh
 missing
 mkinstalldirs
-INSTALL
 intl
 ABOUT-NLS
-COPYING
 .lclintrc
 autom4te.cache
 compile
 depcomp
+autoregen.sh

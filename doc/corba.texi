@@ -1,0 +1,227 @@
+@node CORBA
+@chapter CORBA
+
+@cartouche
+@strong{Note:} This file is from the 0.2.0 release notes. Somewhere
+between then and 0.5.0, CORBA got broken (I suspect changes in ORBit2 to be
+at fault). Presumably, fixing this would be trivial, but I don't know. I'm
+not a CORBA guru.
+@end cartouche
+
+This module depends heavily on ORBit2 - the ORB which we use in GNOME 2 -
+it doesn't work with any other ORB, but read the bootstraping section
+below.
+
+@node Bootstrapping your IDL
+@section Bootstrapping your IDL
+
+ORBit2 is a CORBA 2.3 compliant ORB - and, of course, it's interoperable
+with other ORBs.
+
+However, it's not very useful to have an opaque @code{<CORBA:Object>}
+in scheme if you don't know anything about this object. It's also not
+very useful if you can't write your own CORBA servants in scheme.
+
+Basically, there are two ways to solve this problem: parsing the IDL at
+runtime or doing it the GNOME 2 way - loading a shared library which
+contains all the necessary information from the IDL.
+
+Some of the core GNOME 2 libraries like Bonobo provide so called
+"imodule" libraries which are installed in
+@code{$(libdir)/<modulename>_imodule.la}.
+
+To create such a library for your own IDL, you need to run ORBit2's
+IDL compiler, @code{orbit-idl}, with the @option{--imodule} argument -
+see the @code{demos/corba/} directory in this distribution for an
+example.
+
+NOTE: The rest of this section refers to the sample IDL which can be
+found in @code{demos/corba/Foo.idl} in this distribution.
+
+Once you installed this library, you can read it in scheme by calling
+
+@example
+(corba-primitive-open-module "Foo")
+@end example
+
+This creates all the GOOPS classes and methods you need.
+
+If there's a a CORBA interface @code{Foo::Hello}, the bootstrap
+process will create a GOOPS class @code{<Foo:Hello>} which serves as
+stub class and another GOOPS class @code{<POA:Foo:Hello>} which serves
+as skeleton class.
+
+All stub classes are derived from @code{<CORBA:Object>} and their
+CORBA class hierarchy is preserved in scheme.
+
+All skeleton classes are derived from
+@code{<PortableServer-ServantBase>} and their CORBA class hierarchy is
+preserved as well.
+
+@node Calling CORBA Methods
+@section Calling CORBA Methods
+
+This section refers to the sample IDL in @code{demos/corba/Foo.idl} in
+this distribution.
+
+To call a CORBA method, all you need to do is to invoke the
+corresponding method in the stub class - let's assume @code{hello} is
+an instance of the @code{<Foo:Hello>} class:
+
+@example
+(Foo:Hello:doHello hello) ; calls the CORBA method `Foo::Hello::doHello'
+                          ; on the CORBA Object `hello'.
+@end example
+
+So to call CORBA methods, you don't even need to know that it's CORBA :-)
+
+Oh, by the way, the cool thing about CORBA and scheme is that you
+don't need to worry about these annoying CORBA exceptions - since you
+automatically get a scheme exception @code{corba-system-exception} /
+@code{corba-user-exception}.
+
+@node Implementing CORBA servants
+@section Implementing CORBA servants
+
+Well, I guess the interesting part is to implement CORBA servants in
+scheme - so let's assume you want to write a servant for the
+@code{Foo::Hello} interface.
+
+The first thing you need to do is to derive its POA class (as a special
+"feature" you can also use the POA class directly to specify the default
+behavior for all servants of this interface, see below):
+
+@example
+(define-class <hello> (<POA:Foo:Hello>))
+@end example
+
+Then, you define methods:
+
+@example
+(define-method (Foo:Hello:doHello (hello <hello>))
+  (display (list "Hello World!" hello)) (newline))
+@end example
+
+If you call @code{(next-method)}, the POA classes method will be run -
+and the default is to throw a @code{CORBA::NO_IMPLEMENT} system
+exception.
+
+However, you can override this:
+
+@example
+(define-method (Foo:Bar:Baz:haveFun (object <POA:Foo:Bar:Baz>) a b)
+  (display (list "Default Foo:Bar:Baz:haveFun handler!" a b))
+  (newline))
+@end example
+
+If you created all the methods, you can create servants and call
+@code{corba-servant->reference} to get a @code{CORBA::Object}
+reference:
+
+@example
+(define servant (make <hello>))
+(define hello (corba-servant->reference servant))
+@end example
+
+Now you have a CORBA Object @code{hello} (for guile, this is an
+instance of the GOOPS class @code{<Foo:Hello>}) and you can invoke
+methods on it:
+
+@example
+(Foo:Hello:doHello hello)
+@end example
+
+Even if this looks like there's just a scheme method being called -
+this is a "real" CORBA call - for scheme @code{hello} is a "normal"
+CORBA Object.
+
+NOTE: Any CORBA Objects which you create in guile are "owned" by
+guile's garbage collector - so make sure to
+@code{CORBA_Object_duplicate()} in a C function before you store it
+somewhere !
+
+@node Implementing CORBA servants - multiple inheritance
+@section Implementing CORBA servants - multiple inheritance
+
+Like in C, you can also create servants for CORBA interfaces which are
+derived from other interfaces:
+
+@example
+(define-class <maximum> (<hello> <POA:Foo:MaximumHello>))
+(define-method (Foo:Hello:doHello (hello <maximum>))
+  (display (list "Hello Maximum World!" hello))
+  (newline)
+  (next-method))
+
+(define maximum-servant (make <maximum>))
+(define maximum (corba-servant->reference maximum-servant))
+@end example
+
+This creates a new servant for the CORBA interface
+@code{Foo::MaximumHello} which is derived from @code{Foo::Hello} and
+@code{Foo::Bar::Baz} - this inheritance is reflected in scheme.
+
+@example
+;; Calls method `Foo:Hello:doHello' in class <maximum> and then
+;; in <hello> because of the (next-method).
+(Foo:Hello:doHello maximum)
+
+;; Calls method `Foo:Bar:Baz:haveFun' in class <POA:Foo:Bar:Baz> -
+;; the default handler.
+(Foo:Bar:Baz:haveFun maximum 1 2)
+@end example
+
+Since we're using real CORBA calls, all of this also works for calls which
+are coming "from the outside" - ie. from C or a remote process.
+
+@node Implementing CORBA servants - an important limitation
+@section Implementing CORBA servants - an important limitation
+
+CORBA servants can be implemented either in C or in scheme - but you cannot
+mix them - to make it clear, an example:
+
+In the example above, you learned how to create a CORBA servant for
+the @code{Foo::MaximumHello} CORBA interface in scheme.
+
+Now let's assume you already have an implementation for the
+@code{Foo::Hello} interface in C.
+
+Even if @code{Foo::MaximumHello} is derived from @code{Foo::Hello} -
+you cannot use the @code{Foo::Hello} C implementation in scheme.
+
+This limitation may sound obvious, but it's not so obvious at all if
+you're a bit familiar with CORBA. In C, you would normally expect to
+have a @code{vepv} and a @code{epv} vector in a CORBA servant - and to be
+able to poke around in the vepv to override methods.
+
+As an ORBit2 specific implementation details, servants which you
+create from scheme don't have a @code{vepv} at all and the @code{epv}
+is not what you'd expect - the @code{epv} entries are scheme vectors
+and not pointers to C functions.
+
+@cartouche
+@emph{Implementation details:}
+
+This works because ORBit2 has a feature to call one single function to
+marshal any calls on a CORBA object - the @code{impl_finder_func} and
+@code{relay_call} fields in the class info (see ORBit2 source code for
+details).
+
+This feature was explicitly added to ORBit2 to make it easy to use
+from scripting languages - it'd be difficult to provide "normal"
+@code{epv} entries for the scheme methods (you'd have to generate a C
+function at runtime which also contains a data pointer somewhere -
+before we added this feature to ORBit2 I was using weird assembler
+tricks here and it was also using much more memory - about 40 more
+bytes / CORBA method).
+@end cartouche
+
+@node CORBA structs / sequences
+@section CORBA structs / sequences
+
+There's support to access CORBA structs / sequences from scheme
+including a special record type for structs - see the @code{(gnome
+corba)} module for details.
+
+That's it for the docs. They're not quite adequate -- want to write some
+more? <a href="../../../contact/">Contact us</a>!
