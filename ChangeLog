@@ -1,5 +1,7 @@
 2004-10-10  Andy Wingo  <wingo@pobox.com>
 
+	* {arch}/=tagging-method: Untagged-source = unrecognized.
+
 	* AUTHORS: Updated.
 
 	* gnome/gw/gconf-spec.scm: Add custom wrapper for GConfValue. 
