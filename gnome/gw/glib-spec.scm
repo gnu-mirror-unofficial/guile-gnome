@@ -34,29 +34,32 @@
   #:use-module (gnome gobject defs-support))
 
 (define-class <glib-wrapset> (<gobject-wrapset-base>)
-  #:language guile #:id 'gnome-glib)
+  #:id 'gnome-glib)
+
+(define-class <client-actions> (<gw-item>))
+
+(define-method (global-declarations-cg (ws <glib-wrapset>)
+                                       (a <client-actions>))
+  '("#include <glib.h>\n"))
+  
+(define-method (global-declarations-cg (ws <glib-wrapset>))
+  (list
+   (next-method)
+   "#include <glib.h>\n"
+   "#include \"glib-support.h\"\n"))
+
+(define-method (initializations-cg (ws <glib-wrapset>) err)
+  (list
+   (next-method)
+   "scm_init_glib ();\n"))
 
 (define-method (initialize (ws <glib-wrapset>) initargs)
   (next-method ws (append '(#:module (gnome gw glib)) initargs))
   
   (depends-on! ws 'standard)
 
-  (add-cs-global-declarator!
-   ws
-   (lambda (wrapset)
-     '("#include <glib.h>\n"
-       "#include \"glib-support.h\"\n")))
+  (add-client-item! ws (make <client-actions>))
   
-  (add-client-cs-global-declarator!
-   ws
-   (lambda (wrapset)
-     '("#include <glib.h>\n")))
-  
-  (add-cs-initializer!
-   ws
-   (lambda (wrapset status-var)
-         (list "scm_init_glib ();\n")))
-
   (for-each
    (lambda (pair) (add-type-alias! ws (car pair) (cadr pair)))
    '(("gboolean" bool)
@@ -72,12 +75,15 @@
      ("short" short)
      ("gshort" short)
      ("gushort" unsigned-short)
+     ("unsigned-short" unsigned-short)
      ("gint8" short)
      ("guint8" unsigned-short)
      ("int" int)
      ("gint" int)
      ("gint16" int)
      ("guint" unsigned-int)
+     ("unsigned" unsigned-int)
+     ("unsigned-int" unsigned-int)
      ("guint16" unsigned-int)
 
      ("SCM" scm) ; not really glib, but oh well
@@ -89,13 +95,19 @@
      ("gsize" unsigned-int) ; fixme: system-dependant
 
      ("gint32" long) ; fixme: what about when longs are 64 bits?
+     ("long" long)
      ("glong" long)
+     ("unsigned-long" unsigned-long)
+     ("gulong" unsigned-long)
      ("guint32" unsigned-long)
      ("gunichar" unsigned-long)
-     ("gulong" unsigned-long)
+     ("long-long" long-long)
      ("gint64" long-long)
+     ("unsigned-long-long" unsigned-long-long)
      ("guint64" unsigned-long-long)
      ("none" void)
+
+     
      ("void" void)))
 
   (add-type! ws (make <glist-of-type> #:name 'glist-of))
@@ -103,8 +115,10 @@
 
   (add-type! ws (make <gerror-type> #:name '<GError>))
   (add-type-alias! ws "GError**" '<GError>)
+
+  (add-type-rule! ws '(("gint*" "*")) '(int out))
   
-  (load-defs ws "glib.defs"))
+  (load-defs ws "gnome/defs/glib.defs"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ((glist-of (<gtk-window> gw:const) gw:const) win-list)
@@ -172,8 +186,7 @@
                  "Bad glist-of options form - spurious options: "
                  remainder))))
 
-(define-method (unwrap-value-cg (lang <gw-guile>)
-                                (glist-type <glist-of-type>)
+(define-method (unwrap-value-cg (glist-type <glist-of-type>)
                                 (value <gw-value>)
                                 status-var)
 
@@ -202,7 +215,7 @@
        "    " sub-item-c-type " " tmp-sub-item-c-var ";\n"
        "    SCM " tmp-sub-item-scm-var " = SCM_CAR(" tmp-rest-var ");\n"
        "\n"
-       (unwrap-value-cg lang sub-type tmp-sub-item status-var)
+       (unwrap-value-cg sub-type tmp-sub-item status-var)
        "\n"
        "    if(! " `(gw:error? ,status-var) " )\n"
        "    {\n"
@@ -223,7 +236,7 @@
        "      " tmp-sub-item-c-var " = ( " sub-item-c-type ") "
        (string-append tmp-cursor "->data") ";\n"
        ;; FIMXE: had force #t here
-       (destruct-value-cg lang sub-type tmp-sub-item status-var) 
+       (destruct-value-cg sub-type tmp-sub-item status-var) 
        tmp-cursor " = " (string-append tmp-cursor "->next") ";\n"
        "    }\n"
        "    g_list_free(" c-var ");\n"
@@ -231,8 +244,7 @@
        "  }\n"
        "}\n")))
 
-(define-method (wrap-value-cg (lang <gw-guile>)
-                              (glist-type <glist-of-type>)
+(define-method (wrap-value-cg (glist-type <glist-of-type>)
                               (value <gw-value>)
                               status-var)
   (let* ((c-var (var value))
@@ -260,7 +272,7 @@
      "  " tmp-sub-item-c-var " = ( " sub-item-c-type ") "
      (string-append tmp-rest-var "->data") ";\n"
      "\n"
-     (wrap-value-cg lang sub-type tmp-sub-item status-var)
+     (wrap-value-cg sub-type tmp-sub-item status-var)
      "\n"
      "  if(! " `(gw:error? ,status-var) " )\n"
      "  {\n"
@@ -273,8 +285,7 @@
      "  " scm-var " = scm_reverse(" scm-var ");\n"
      "}\n")))
 
-(define-method (destruct-value-cg (lang <gw-language>)
-                                  (glist-type <glist-of-type>)
+(define-method (destruct-value-cg (glist-type <glist-of-type>)
                                   (value <gw-value>)
                                   status-var)
   (let* ((c-var (var value))
@@ -296,7 +307,7 @@
      "    " sub-item-c-type " " tmp-sub-item-c-var ";\n"
      "    " tmp-sub-item-c-var " = ( " sub-item-c-type ") "
      (string-append tmp-cursor "->data") ";\n"
-     (destruct-value-cg lang sub-type tmp-sub-item status-var)
+     (destruct-value-cg sub-type tmp-sub-item status-var)
      tmp-cursor " = " (string-append tmp-cursor "->next") ";\n"
      "  }\n"
      (if (memq 'caller-owned options)
@@ -548,26 +559,21 @@
                "Bad <GError> options form - spurious options: "
                remainder))))
     
-(define-method (destruct-value-cg (lang <gw-guile>)
-                                  (t <gerror-type>)
+(define-method (destruct-value-cg (t <gerror-type>)
                                   (value <gw-value>)
                                   status-var)
   (list "g_clear_error(&" (var value) ");\n"))
 
-(define-method (pre-call-arg-cg (lang <gw-guile>)
-                                (t <gerror-type>)
+(define-method (pre-call-arg-cg (t <gerror-type>)
                                 (value <gw-value>)
                                 status-var)
   (list (var value) " =  NULL;\n"))
 
 
-(define-method (call-arg-cg (lang <gw-guile>) (t <gerror-type>)
-                            (value <gw-value>))
+(define-method (call-arg-cg (t <gerror-type>) (value <gw-value>))
   (list "&" (var value)))
 
-
-(define-method (post-call-arg-cg (lang <gw-guile>)
-                                 (t <gerror-type>)
+(define-method (post-call-arg-cg (t <gerror-type>)
                                  (value <gw-value>)
                                  status-var)
   (let* ((c-name (var value))
@@ -575,7 +581,7 @@
     (list
      "if (" c-name ") {\n" 
      "  SCM scm_gerror = scm_list_3(scm_ulong2num(" c-name "->domain), scm_ulong2num(" c-name "->code), scm_makfrom0str(" c-name "->message));\n"
-     (destruct-value-cg lang t value status-var)
+     (destruct-value-cg t value status-var)
      "  scm_throw(scm_str2symbol(\"g-error\"), scm_gerror);\n"
      "}\n")))
 

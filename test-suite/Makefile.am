@@ -38,4 +38,4 @@ gw-test-%.scm gw-test-%.c: gw-test-%-spec.scm
 	  "(use-modules (g-wrap)) \
 	   (use-modules (g-wrap guile)) \
 	   (use-modules (gw-test-$*-spec)) \
-	   (generate-wrapset guile 'test-$* \"gw-test-$*\")"
+	   (generate-wrapset 'guile 'test-$* \"gw-test-$*\")"

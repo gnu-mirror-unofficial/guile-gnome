@@ -90,7 +90,8 @@
               (if const? (cons (name type-obj) '(const)) (name type-obj))
               (cons (name type-obj) options))))))
 
-(define (construct-argument-list ws parameters)
+(define-method (construct-argument-list (ws <gobject-wrapset-base>)
+                                        (parameters <list>))
   
   (define (parse-restargs restargs)
     (fold
@@ -104,25 +105,30 @@
           (cons restarg options))))
        '() restargs))
   
-  (map (lambda (defs-parameter-spec)
-         (let ((looked-up (type-lookup
-                           ws
-                           (car defs-parameter-spec)
-                           #f))
-               (parsed (parse-restargs
-                        (cddr defs-parameter-spec)))
-               (arg-name (string->symbol
-                          (cadr defs-parameter-spec))))
-           (let-values (((options extras) (partition! symbol? parsed)))
-             ;; Ah, hackery...
-             (if (memq 'callee-owned options)
-                 (set! looked-up
-                       (delq! 'callee-owned
-                              (delq! 'caller-owned looked-up))))
-             (if (list? looked-up)
-                 (append! (list (append looked-up options) arg-name) extras)
-                 (append! (list looked-up arg-name) extras)))))
-       parameters))
+  (let loop ((result '()) (params parameters))
+    (if (null? params)
+        (reverse result)
+        (let-values (((count type) (find-type-rule ws params)))
+          (let* ((defs-parameter-spec (car params))
+                 (looked-up
+                  (or type (type-lookup ws (car defs-parameter-spec) #f)))
+                 (parsed (parse-restargs
+                          (cddr defs-parameter-spec)))
+                 (arg-name (string->symbol
+                            (cadr defs-parameter-spec))))
+            (let-values (((options extras) (partition! symbol? parsed)))
+              ;; Ah, hackery...
+              (if (memq 'callee-owned options)
+                  (set! looked-up
+                        (delq! 'callee-owned
+                               (delq! 'caller-owned looked-up))))
+              (loop (cons
+                     (if (list? looked-up)
+                         (append! (list (append looked-up options)
+                                        arg-name) extras)
+                         (append! (list looked-up arg-name) extras))
+                     result)
+                    (list-tail params (if (= count 0) 1 count)))))))))
 
 (define (load-defs ws file . already-included)
   (let* ((old-load-path %load-path)

@@ -39,29 +39,31 @@
 ;; gw-gobject: a wrapset to assist in wrapping gobject-based apis
 
 (define-class <gobject-wrapset> (<gobject-wrapset-base>)
-  #:language guile #:id 'gnome-gobject)
+  #:id 'gnome-gobject)
 
+(define-class <include-item> (<gw-item>))
+
+(define-method (global-declarations-cg (ws <gobject-wrapset>)
+                                       (item <include-item>))
+  (list "#include <guile-gnome-gobject.h>\n"))
+
+(define-method (initializations-cg (ws <gobject-wrapset>) err)
+  (list
+   (next-method)
+   "g_type_init ();\n"
+   "scm_pre_init_gnome_gobject_primitives ();\n"
+   "scm_pre_init_gnome_gobject ();\n"
+   ;; needed for gtype->class for exporting gobject types
+   (inline-scheme ws '(use-modules (gnome gobject)))))
+   
 (define-method (initialize (ws <gobject-wrapset>) initargs)
-  (define (global-declarator wrapset)
-                               (list
-                                "#include <guile-gnome-gobject.h>\n"))
-  
   (next-method ws (append '(#:module (gnome gw gobject)) initargs))
   
   (depends-on! ws 'standard 'gnome-glib)
 
-  (add-cs-global-declarator! ws global-declarator)
-  (add-client-cs-global-declarator! ws global-declarator)
-  
-  (add-cs-initializer!
-   ws
-   (lambda (lang status-var)
-         (list "g_type_init ();\n"
-               "scm_pre_init_gnome_gobject_primitives ();\n"
-               "scm_pre_init_gnome_gobject ();\n")))
-
-  ;; needed for gtype->class for exporting gobject types
-  ;;(inline-scheme ws '(use-modules (gnome gobject))))))
+  (let ((item (make <include-item>)))
+    (add-item! ws item)
+    (add-client-item! ws item))
   
   (add-type!
    ws
@@ -222,8 +224,7 @@ pull scheme definitions back into the C world.")
 
 (define-class <gparam-spec-type> (<gobject-type-base>))
 
-(define-method (unwrap-value-cg (lang <gw-guile>)
-                                (type <gparam-spec-type>)
+(define-method (unwrap-value-cg (type <gparam-spec-type>)
                                 (value <gw-value>)
                                 status-var)
   (let ((c-var (var value)) (scm-var (scm-var value)))
@@ -237,8 +238,7 @@ pull scheme definitions back into the C world.")
       `(gw:error ,status-var type ,scm-var)))))
 
 
-(define-method (wrap-value-cg (lang <gw-guile>)
-                              (type <gparam-spec-type>)
+(define-method (wrap-value-cg (type <gparam-spec-type>)
                               (value <gw-value>)
                               status-var)
   (let ((c-var (var value)) (scm-var (scm-var value)))
@@ -247,8 +247,7 @@ pull scheme definitions back into the C world.")
 
 (define-class <gclosure-type> (<gobject-classed-pointer-type>))
 
-(define-method (unwrap-value-cg (lang <gw-guile>)
-                                (type <gclosure-type>)
+(define-method (unwrap-value-cg (type <gclosure-type>)
                                 (value <gw-value>)
                                 status-var)
   (let ((c-var (var value)) (scm-var (scm-var value)))
@@ -261,8 +260,7 @@ pull scheme definitions back into the C world.")
      "  " c-var " = (GClosure*) g_value_get_boxed ((GValue*)SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_str2symbol (\"closure\"))));\n"
      "else " `(gw:error ,status-var type ,scm-var))))
 
-(define-method (wrap-value-cg (lang <gw-guile>)
-                              (type <gclosure-type>)
+(define-method (wrap-value-cg (type <gclosure-type>)
                               (value <gw-value>)
                               status-var)
   (let ((c-var (var value)) (scm-var (scm-var value))) ; not ideal but ok
@@ -271,8 +269,7 @@ pull scheme definitions back into the C world.")
 
 (define-class <gvalue-type> (<gobject-type-base>))
 
-(define-method (unwrap-value-cg (lang <gw-guile>)
-                                (type <gvalue-type>)
+(define-method (unwrap-value-cg (type <gvalue-type>)
                                 (value <gw-value>)
                                 status-var)
   (let ((c-var (var value)) (scm-var (scm-var value)))
@@ -290,8 +287,7 @@ pull scheme definitions back into the C world.")
      "else " `(gw:error ,status-var type ,scm-var))))
 
 
-(define-method (wrap-value-cg (lang <gw-guile>)
-                              (type <gvalue-type>)
+(define-method (wrap-value-cg (type <gvalue-type>)
                               (value <gw-value>)
                               status-var)
   (let ((c-var (var value)) (scm-var (scm-var value)))

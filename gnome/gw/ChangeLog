@@ -1,3 +1,11 @@
+2004-04-27  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* Makefile.am: Also distribute and install glib.scm.
+
+	* glib-spec.scm (initialize): Added a few type aliases for basic C
+	types.
+	Fixed for changed defs directory.
+
 2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* defs-support.scm (type-lookup): Recognize "[]" in type strings

@@ -34,13 +34,17 @@
   #:use-module (g-wrap c-types)
   #:use-module (ice-9 optargs)
   #:use-module (ice-9 slib)
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-11)
   #:use-module (srfi srfi-13)
   
   #:export (unwrap-null-check
             
             <gobject-wrapset-base>
             add-type-alias!
-
+            add-type-rule! find-type-rule
+            construct-argument-list
+            
             <gobject-type-base>
             
             
@@ -61,7 +65,8 @@
 (require 'printf)
 
 (define-class <gobject-wrapset-base> (<gw-guile-wrapset>)
-  (type-aliases #:init-form (make-hash-table 31)))
+  (type-aliases #:init-form (make-hash-table 31))
+  (type-rules #:init-form (make-hash-table 7)))
 
 (define-method (add-type-alias! (wrapset <gobject-wrapset-base>)
                                 (alias <string>)
@@ -91,26 +96,21 @@
    (lambda (exit)
      (lookup wrapset exit))))
 
-; ;; FIXME: review this
-; (define (wrapset-get-types-used ws)
-;   (let ((rtd (record-type-descriptor ws)))
-;     ((record-accessor rtd 'types-used) ws)))
-; (define (wrapset-get-wrapped-types ws)
-;   (let ((rtd (record-type-descriptor ws)))
-;     ((record-accessor rtd 'wrapped-types) ws)))
+(define-method (add-type-rule! (self <gobject-wrapset-base>) (pattern <list>)
+                               typespec)
+  (if (not (and (not (null? pattern))
+                (every (lambda (elt)
+                           (and (list? elt) (<= 1 (length elt) 2)))
+                       pattern)))
+      (error "invalid type rule pattern"))
+  (hash-set! (slot-ref self 'type-rules) (caar pattern)
+             (cons pattern typespec)))
 
-; ;; g-wrap will only output type initialization code (ie, gtype->class
-; ;; stuff) for types that are actually used in the api. some types,
-; ;; however, do not show up in the api -- <gtk-hbox>, for instance. Of
-; ;; course we want to be able to (make <gtk-hbox>), this function exists
-; ;; to say that all of the types are used by the wrapset.
-; (define (gobject:gwrap-set-all-types-used ws)
-;   (let ((gw-types-used (wrapset-get-types-used ws)))
-;     (for-each (lambda (pair)
-;                 (hashq-set! gw-types-used
-;                             (cdr pair)
-;                             (cdr pair)))
-;               (wrapset-get-wrapped-types ws))))
+(define-method (find-type-rule (self <gobject-wrapset-base>) (params <list>))
+  (let ((match (hash-ref (slot-ref self 'type-rules) (caar params))))
+    (if match
+        (values 1 (cdr match))
+        (values 0 #f))))
 
 ;; Based on code from slib's strcase.scm, written 1992 by Dirk
 ;; Lutzebaeck (lutzeb@cs.tu-berlin.de). Public domain.
@@ -176,7 +176,7 @@
   (printf "%-8.8s|%-18.18s|%-25.25s|%-25.25s\n"
           how-wrapped c-name scm-name (name ws)))
 
-(define-class <gobject-type-base> (<gw-rti-type>)
+(define-class <gobject-type-base> (<gw-guile-rti-type>)
   (ctype #:init-keyword #:ctype)
   (how-wrapped #:init-keyword #:wrapped #:init-value #f))
 
@@ -215,8 +215,7 @@
        initargs)))))
 
 ;; Perhaps make this one also use a loop over an array?
-(define-method (initializations-cg (lang <gw-guile>)
-                                   (wrapset <gobject-wrapset-base>)
+(define-method (initializations-cg (wrapset <gobject-wrapset-base>)
                                    (type <gobject-classed-type>)
                                    status-var)
   (list
@@ -249,8 +248,7 @@
 
 (define-class <gobject-object-type> (<gobject-classed-pointer-type>))
 
-(define-method (unwrap-null-check (lang <gw-guile>)
-                                  (value <gw-value>)
+(define-method (unwrap-null-check (value <gw-value>)
                                   status-var)
   (if-typespec-option
    value 'null-ok
@@ -266,21 +264,19 @@
     (add-type! ws type)
     type))
 
-(define-method (unwrap-value-cg (lang <gw-guile>)
-                                (type <gobject-object-type>)
+(define-method (unwrap-value-cg (type <gobject-object-type>)
                                 (value <gw-value>)
                                 status-var)
   (let ((c-var (var value))
         (scm-var (scm-var value)))
     (list
-     (unwrap-null-check lang value status-var)
+     (unwrap-null-check value status-var)
      
      "if (!(" c-var " = (" (c-type-name type) ") "
      "scm_c_scm_to_gtype_instance (" scm-var ", " (gtype-id type) ")))\n"
      `(gw:error ,status-var type ,(wrapped-var value)))))
 
-(define-method (wrap-value-cg (lang <gw-guile>)
-                              (type <gobject-object-type>)
+(define-method (wrap-value-cg (type <gobject-object-type>)
                               (value <gw-value>)
                               status-var)
   (let ((c-var (var value))
@@ -314,15 +310,14 @@
     type))
 
 ;; fixme: how to deal with consts?
-(define-method (unwrap-value-cg (lang <gw-guile>)
-                                (type <gobject-boxed-type>)
+(define-method (unwrap-value-cg (type <gobject-boxed-type>)
                                 (value <gw-value>)
                                 status-var)
   (let ((c-var (var value))
         (scm-var (scm-var value))
         (ctype (c-type-name type)))
      (list
-      (unwrap-null-check lang value status-var)
+      (unwrap-null-check value status-var)
       "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
       "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " (gtype-id type) ")) {\n"
       (if-typespec-option
@@ -336,8 +331,7 @@
       `(gw:error ,status-var type ,scm-var)
       "}\n")))
 
-(define-method (wrap-value-cg (lang <gw-guile>)
-                              (type <gobject-boxed-type>)
+(define-method (wrap-value-cg (type <gobject-boxed-type>)
                               (value <gw-value>)
                               status-var)
   (let ((c-var (var value))
@@ -361,13 +355,12 @@
     (add-type! ws type)
     type))
 
-(define-method (unwrap-value-cg (lang <gw-guile>)
-                                (type <gobject-pointer-type>)
+(define-method (unwrap-value-cg (type <gobject-pointer-type>)
                                 (value <gw-value>)
                                 status-var)
   ;; fixme: how to deal with consts?
   (list
-   (unwrap-null-check lang value status-var)
+   (unwrap-null-check value status-var)
    "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
    "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " (gtype-id type) "))\n"
    "  " c-var " = (" ctype ") g_value_get_pointer ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
@@ -376,8 +369,7 @@
    `(gw:error ,status-var type ,scm-var)
    "}\n"))
 
-(define-method (wrap-value-cg (lang <gw-guile>)
-                              (type <gobject-pointer-type>)
+(define-method (wrap-value-cg (type <gobject-pointer-type>)
                               (value <gw-value>)
                               status-var)
   (list
@@ -399,22 +391,20 @@
     (add-type! ws type)
     type))
 
-(define-method (unwrap-value-cg (lang <gw-guile>)
-                                (type <gobject-interface-type>)
+(define-method (unwrap-value-cg (type <gobject-interface-type>)
                                 (value <gw-value>)
                                 status-var)
   (let ((c-var (var value))
         (scm-var (scm-var value)))
     (list
-     (unwrap-null-check lang value status-var)
+     (unwrap-null-check value status-var)
      c-var " = (" (c-type-name type) ") scm_c_scm_to_gtype_instance (" scm-var ", G_TYPE_OBJECT);\n"
      
      "if (!" c-var " || !g_type_is_a (G_TYPE_FROM_INSTANCE (" c-var "), " (gtype-id type) "))\n"
       `(gw:error ,status-var type ,(wrapped-var value)))
     ))
 
-(define-method (wrap-value-cg (lang <gw-guile>)
-                              (type <gobject-interface-type>)
+(define-method (wrap-value-cg (type <gobject-interface-type>)
                               (value <gw-value>)
                               status-var)
   (let ((c-var (var value))
@@ -463,8 +453,7 @@
                              args))))))
 
 ;; enums are just guints...
-(define-method (unwrap-value-cg (lang <gw-guile>)
-                                (type <gobject-enum-type>)
+(define-method (unwrap-value-cg (type <gobject-enum-type>)
                                 (value <gw-value>)
                                 status-var)
   (let ((c-var (var value))
@@ -483,8 +472,7 @@
      "  " c-var " = g_value_get_enum ((GValue*)SCM_SMOB_DATA (newval));\n"
      "}\n")))
 
-(define-method (wrap-value-cg (lang <gw-guile>)
-                              (type <gobject-enum-type>)
+(define-method (wrap-value-cg (type <gobject-enum-type>)
                               (value <gw-value>)
                               status-var)
   (let ((c-var (var value))
@@ -520,8 +508,7 @@
        type)))))
 
 ;; flags are just guints...
-(define-method (unwrap-value-cg (lang <gw-guile>)
-                                (type <gobject-flags-type>)
+(define-method (unwrap-value-cg (type <gobject-flags-type>)
                                 (value <gw-value>)
                                 status-var)
   (let ((c-var (var value))
@@ -542,8 +529,7 @@
      "  " c-var " = g_value_get_flags ((GValue*)SCM_SMOB_DATA (newval));\n"
      "}\n")))
 
-(define-method (wrap-value-cg (lang <gw-guile>)
-                              (type <gobject-flags-type>)
+(define-method (wrap-value-cg (type <gobject-flags-type>)
                               (value <gw-value>)
                               status-var)
   (let ((c-var (var value)) (scm-var (scm-var value)))

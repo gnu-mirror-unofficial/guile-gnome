@@ -8,18 +8,17 @@
   #:use-module (gnome gobject defs-support))
 
 (define-class <test-gobject-wrapset> (<gobject-wrapset-base>)
-  #:language guile #:id 'test-gobject)
+  #:id 'test-gobject)
+
+(define-method (global-declarations-cg (ws <test-gobject-wrapset>))
+  (list
+   (next-method)
+   "#include \"test-gobject.h\"\n"))
 
 (define-method (initialize (ws <test-gobject-wrapset>) initargs)
-
   (next-method ws (append '(#:module (test-suite gw-test-gobject)) initargs))
   
   (depends-on! ws 'standard 'gnome-gobject)
 
-  (add-cs-global-declarator!
-   ws
-   (lambda (lang)
-     (list "#include \"test-gobject.h\"\n")))
-  
   (load-defs ws "test-suite/test-gobject.defs"))
 
