@@ -1,3 +1,17 @@
+2004-09-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/Makefile.am (libguile_gnome_gobject_la_LIBADD):
+	Don't link to g-wrap.
+
+	* gnome/gobject/guile-support.h: Don't include
+	g-wrap/guile-compatibility.h -- no reason to depend on g-wrap.
+
+	* guile-gnome-glib.pc.in (includedir): Point to the versioned
+	directory.
+
+	* gnome/gobject/Makefile.am: Install headers to a versioned
+	directory.
+
 2004-09-16  Andy Wingo  <wingo@pobox.com>
 
 	* Makefile.am (SUBDIRS): Dist fixes.
