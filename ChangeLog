@@ -1,3 +1,8 @@
+2004-08-06  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* examples/test.scm: Use (gnome glade) instead of 
+	(gnome gw libglade).
+
 2004-07-01  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/libglade-spec.scm (initializations-cg): Fix module

@@ -1,5 +1,5 @@
 (use-modules (gnome gtk)
-             (gnome gw libglade))
+             (gnome glade))
 
 (define (frobify button)
   (display "Frobbing button...\n")
