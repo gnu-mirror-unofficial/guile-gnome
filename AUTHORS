@@ -5,10 +5,10 @@ Maintainers of GNU Software" (maintain.texi), the section called
 
 <Name>:
 In the directory gnome/gw, wrote:
-    template-spec.scm template-support.c template-support.h
+    gconf-spec.scm gconf-support.c gconf-support.h
 In the directory gnome/overrides, wrote:
-    template.defs
+    gconf.defs
 In the directory gnome, wrote:
-    template.scm
-In the directory examples/template, wrote:
+    gconf.scm
+In the directory examples/gconf, wrote:
     ...

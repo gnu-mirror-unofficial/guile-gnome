@@ -1,13 +1,13 @@
-guile-gnome-template README
+guile-gnome-gconf README
 Copyright (C) 2004 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
 Last updated 16 September 2004.
 
 
-About guile-gnome-template
+About guile-gnome-gconf
 ==========================
 
-guile-gnome-template is a Guile wrapper for template. It is a part of
+guile-gnome-gconf is a Guile wrapper for gconf. It is a part of
 GNU guile-gnome. See the README file in the toplevel source directory
 for more information.
 
@@ -16,9 +16,9 @@ Build dependencies
 ==================
 
 Besides the base guile-gnome requirements given in ../README,
-guile-gnome-template requires template development packages.
+guile-gnome-gconf requires gconf development packages.
 
-guile-gnome-template depends on the following guile-gnome modules: glib,
+guile-gnome-gconf depends on the following guile-gnome modules: glib,
 defs, <others>.
 
 

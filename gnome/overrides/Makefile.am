@@ -2,6 +2,6 @@ include $(top_srcdir)/common.mk
 
 moduledir = $(guilemoduledir)/overrides
 
-module_DATA = template.defs
+module_DATA = gconf.defs
 
 EXTRA_DIST = $(module_DATA)

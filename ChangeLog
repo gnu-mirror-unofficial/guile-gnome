@@ -1,0 +1,4 @@
+2004-10-09  Andy Wingo  <wingo@pobox.com>
+
+	* Initial import, via guile-gnome-template's `templatize'.
+

@@ -1,7 +1,7 @@
 /* guile-gnome
  * Copyright (C) 2004 Free Software Foundation, Inc.
  *
- * template-support.c: Support routines for the template wrapper
+ * gconf-support.c: Support routines for the gconf wrapper
  *
  * This program is free software; you can redistribute it and/or    
  * modify it under the terms of the GNU General Public License as   
@@ -21,7 +21,7 @@
  * Boston, MA  02111-1307,  USA       gnu@gnu.org
  */
 
-#include "template-support.h"
+#include "gconf-support.h"
 #include "guile-gnome-gobject.h"
 
 #define GRUNTIME_ERROR(format, func_name, args...) \

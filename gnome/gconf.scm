@@ -26,9 +26,9 @@
 ;;
 ;;; Code:
 
-(define-module (gnome template)
+(define-module (gnome gconf)
   #:use-module (gnome gtk)
-  #:use-module (gnome gw template)
+  #:use-module (gnome gw gconf)
   #:use-module (gnome gw support modules))
 
-(re-export-modules (gnome gw template))
+(re-export-modules (gnome gw gconf))
