@@ -34,17 +34,17 @@
   #:use-module (gnome gobject defs-support))
 
 (define-class <pango-wrapset> (<gobject-wrapset-base>)
-  #:language guile #:id 'gnome-pango)
+  guile #:id 'gnome-pango)
 
+(define-method (global-declarations-cg (self <gobject-wrapset-base>))
+  (list
+   (next-method)
+   "#include <pango/pango.h>\n"))
+  
 (define-method (initialize (ws <pango-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome pango gw-pango) initargs)))
 
   (depends-on! ws 'standard  'gnome-glib 'gnome-gobject)
-  
-  (add-cs-global-declarator! ws
-                             (lambda (wrapset)
-                                (list
-                                 "#include <pango/pango.h>\n")))
   
   (add-type-alias! ws "PangoGlyph" 'unsigned-long)
 
