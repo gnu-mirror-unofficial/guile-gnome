@@ -1,3 +1,10 @@
+2004-07-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gnome-ui-spec.scm, gnome/gw/Makefile.am: Reverted
+	previous name change.
+
+	* gnome/gnome-ui.scm: New file.
+
 2004-05-22  Andy Wingo  <wingo@pobox.com>
 
 	* ChangeLog: Merged all gnome-ui changelogs to here.
