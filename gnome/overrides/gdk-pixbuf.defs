@@ -1,5 +1,6 @@
+;; -*- scheme -*-
 ;; guile-gnome
-;; Copyright (C) 2001,2002,2003,2004 Free Software Foundation, Inc.
+;; Copyright (C) 2004 Free Software Foundation, Inc.
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -18,28 +19,34 @@
 ;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
 ;; Boston, MA  02111-1307,  USA       gnu@gnu.org
 
-(use-modules (gnome gtk))
+;;; Commentary:
+;;
+;;Custom wrapper definitions.
+;;
+;;; Code:
 
+(define-object Pixbuf
+  (in-module "Gdk")
+  (parent "GObject")
+  (c-name "GdkPixbuf")
+  (gtype-id "GDK_TYPE_PIXBUF")
+)
 
-(define (demo)
-  (let* ((w (make <gtk-window> #:type 'toplevel))
-	 (cb (make <gtk-combo>)))
+(define-function gdk_pixbuf_get_formats
+  (c-name "gdk_pixbuf_get_formats")
+  (overrides "gdk_pixbuf_get_formats")
+  (return-type "GSList*-of-GdkPixbufFormat*")
+)
 
-    (set-border-width w 10)
+(ignore-glob  "*_get_type"
+              "_*"
+              "*_ref"
+              "*_unref"
+              "*_copy"
+              "*_free"
+              "*_newv"
+              "*_valist"
+              "*_setv")
 
-    (add w cb)
-    
-    (connect w 'delete-event (lambda (w e)
-                               (gtk-widget-destroy w)
-                               (gtk-main-quit)
-                               #t))
-
-    ;; note that we use a scheme list here; it's translated to a glist
-    ;; on the c side
-    (set-popdown-strings cb '("foo" "bar"))
-
-    (show-all w)
-
-    (gtk-main)))
-
-(demo)
+(ignore "gdk_pixbuf_non_anim_new"
+        "gdk_pixbuf_set_option")

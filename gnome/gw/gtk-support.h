@@ -35,8 +35,6 @@ void _wrap_gtk_action_group_add_actions (GtkActionGroup* action_group, SCM entri
 void _wrap_gtk_action_group_add_toggle_actions (GtkActionGroup *action_group, SCM entries);
 void _wrap_gtk_action_group_add_radio_actions (GtkActionGroup *action_group, SCM entries, gint value, SCM on_change);
 
-GtkWidget* gtk_combo_get_entry (GtkCombo *combo);
-
 GtkWidget* _wrap_gtk_dialog_get_vbox (GtkDialog *dialog);
 GtkWidget* _wrap_gtk_dialog_get_action_area (GtkDialog *dialog);
 

@@ -1,3 +1,44 @@
+2004-10-07  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Add check for GDK_PIXBUF libs and cflags.
+
+	* gnome/overrides/gdk-pixbuf.defs: New file. Factored out of the
+	upstream hand-tuned gdk.defs.
+
+	* gnome/overrides/gtk-customs.defs: New file, generated from the
+	old hand-tuned gtk.defs in the defs package. Includes some
+	forgotten types (boxed/interface), default values, null-ok args,
+	GList-of args, and constructor-of params. Now the upstream .defs
+	are only generated manually. Some customizations were elided
+	because they describe deprecated interfaces.
+
+	* gnome/overrides/gtk.defs: Add wrappers for
+	gtk_radio_tool_button_get/set_group,
+	gtk_radio_action_get/set_group. Ignore all deprecated functions as
+	of Gtk+ 2.4.4.
+
+	* gnome/overrides/gtk.defs-type-ignores: New file, included before
+	gtk-types.defs. Ignores a number of deprecated types.
+
+	* gnome/gw/gdk-pixbuf-support.c, gnome/gw/gdk-pixbuf-support.h:
+	New files, with nothing yet.
+
+	* gnome/gw/Makefile.am: Build gdk and gtk modules only if there is
+	all of gtk available. This is a bit of a mistake, but I don't
+	think it matters. Split gdk-pixbuf support out into a separate
+	.defs and separate .c, but in the same wrapset as GDK. Use
+	-DGTK_DISABLE_DEPRECATED again on Gtk+.
+
+	* examples/combo-button.scm: Removed. There's no more GtkCombo.
+
+	* gnome/gw/gtk-support.h, gnome/gw/gtk-support.h,
+	gnome/overrides/gtk.defs (gtk-combo-get-entry): Removed. No more
+	GtkCombo, yo.
+
+	* gnome/overrides/gtk.defs: Don't ignore gtk_propagate_event.
+	Dunno why. From gtk_accel_*, only ignore the find and query
+	functions.
+
 2004-09-28  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/gtk-support.c: Cleaned up the action wrappers.
