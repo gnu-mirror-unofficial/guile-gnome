@@ -218,12 +218,17 @@
              (sanitized-of-obj
               (substring of-obj-str 1
                          (or (string-index of-obj-str #\*)
-                             (1- (string-length of-obj-str))))))
+                             (1- (string-length of-obj-str)))))
+             (g-wrap-type (lookup-type ws of-object))
+             (hack-module (resolve-module '(gnome gw support gobject))))
         (cond
-         ((and (string-prefix? (string-append sanitized-of-obj "-")
-                               func-name)
-               ;; Temporary hack -- <gw-wct> should be a metaclass
-               (not (is-a? (lookup-type ws of-object) <gw-wct>)))
+         ((or (is-a? g-wrap-type <gw-wct>)
+              (is-a? g-wrap-type (module-ref hack-module '<gobject-boxed-type>))
+              (is-a? g-wrap-type (module-ref hack-module '<gobject-custom-boxed-type>))
+              (is-a? g-wrap-type (module-ref hack-module '<gobject-enum-type>))
+              (is-a? g-wrap-type (module-ref hack-module '<gobject-flags-type>)))
+          #f)
+         ((string-prefix? (string-append sanitized-of-obj "-") func-name)
           (string->symbol (substring func-name (1+ (string-length sanitized-of-obj)))))
          (else
           (push (list func-name of-object) bad-methods)

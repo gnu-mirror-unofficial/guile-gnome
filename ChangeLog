@@ -1,3 +1,17 @@
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm: Don't make generics if the of-object
+	is an enum, flags, boxed, or custom boxed. This is a nasty nasty
+	hack to make sure generics aren't created with unspecialized args,
+	to prevent e.g. (foo-append <top> <top>) -> (append <top> <top>). 
+
+2005-01-29  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/support/gobject.scm (make-typespec): Make the methods
+	specialized on <gobject-enum-type>, <gobject-boxed-type> and
+	<gobject-custom-boxed-type> add the 'unspecialized option to the
+	created typespec (needed for G-Wrap 1.9.4).
+
 2005-01-11  Andy Wingo  <wingo@pobox.com>
 
 	* == Released platform version 2.7.98 ==
