@@ -26,10 +26,12 @@
 #include "guile-gnome-gobject.h"
 
 #define RESULT_ERROR(result) \
-  scm_throw (scm_str2symbol (g_enum_get_value \
-                             ((GEnumClass*)g_type_class_peek \
-                              (GNOME_VFS_TYPE_VFS_RESULT), result)->value_nick), \
-                             SCM_EOL)
+  scm_throw (scm_str2symbol ("gnome-vfs-error"), \
+             scm_list_1 \
+             (scm_str2symbol (g_enum_get_value \
+                              ((GEnumClass*)g_type_class_peek \
+                               (GNOME_VFS_TYPE_VFS_RESULT), \
+                               result)->value_nick)))
 
 GnomeVFSDirectoryHandle *_wrap_gnome_vfs_directory_open (const gchar *text_uri, GnomeVFSFileInfoOptions options);
 GnomeVFSDirectoryHandle *_wrap_gnome_vfs_directory_open_from_uri (GnomeVFSURI *uri, GnomeVFSFileInfoOptions options);

@@ -25,6 +25,13 @@
 ;;
 ;;; Code:
 
+(define-function gnome_vfs_result_to_string
+  (c-name "gnome_vfs_result_to_string")
+  (overrides "gnome_vfs_result_to_string")
+  (return-type "const-char*")
+  (parameters
+   '("GnomeVFSResult" "res")))
+
 (define-function gnome_vfs_directory_open
   (c-name "_wrap_gnome_vfs_directory_open")
   (overrides "gnome_vfs_directory_open")

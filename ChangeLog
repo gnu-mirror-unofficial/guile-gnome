@@ -1,4 +1,38 @@
+2004-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.97 ==
+
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Add record_check.
+
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* glib-checks.ac: 
+	* defs-checks.ac: Versioned pkg-config check
+
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
+	versioned directory.
+
+2004-10-16  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Require gnome-vfs-2.0 >= 2.8.0.
+
+2004-10-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gnome-vfs-spec.scm (wrap-value-cg): Throw to
+	'gnome-vfs-error with the specific kind of error as an argument.
+	* gnome/gw/gnome-vfs-support.h (RESULT_ERROR): Same.
+
+	* gnome/overrides/gnome-vfs.defs (gnome_vfs_result_to_string):
+	Define as a function, not a method.
+
 2004-10-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/Makefile.am (module_DATA): Dist the
+	type-ignores.
 
 	* gnome/overrides/gnome-vfs.defs: Adjust the prototypes of the
 	open/create procs to return SCM. Add a wrapper for port->handle.
