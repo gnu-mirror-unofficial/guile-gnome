@@ -7,23 +7,40 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-echo "* setting up guile-gnome-$1--dev--0"
-tla archive-setup guile-gnome-$1--dev--0
+package=$1
 
-echo "* branching guile-gnome-$1--dev--0 from $(tla tree-version)"
-tla tag `tla tree-version` guile-gnome-$1--dev--0
+echo "* setting up guile-gnome-$package--dev--0"
+tla archive-setup guile-gnome-$package--dev--0
 
-echo "* fetching guile-gnome-$1--dev--0 into ../$1"
+echo "* branching guile-gnome-$package--dev--0 from $(tla tree-version)"
+tla tag `tla tree-version` guile-gnome-$package--dev--0
+
+echo "* fetching guile-gnome-$package--dev--0 into ../$package"
 cd ..
-tla get guile-gnome-$1--dev--0 $1
-cd $1
+tla get guile-gnome-$package--dev--0 $package
+cd $package
 
-for i in `tla inventory -s`; do
+package_uc=$(echo $package | tr '[:lower:]-' '[:upper:]_')
+package_un=$(echo $package | tr '-' '_')
+
+for i in `tla inventory -s -f`; do
     echo "* templatizing $i"
-    perl -i -p -e "s/template/$1/" $i
+    perl -i -p -e "s/_template/_${package_un}/g" $i
+    perl -i -p -e "s/template_/${package_un}_/g" $i
+    perl -i -p -e "s/template/$package/g" $i
+    perl -i -p -e "s/TEMPLATE/$package_uc/g" $i
+    if basename $i | grep -q template; then
+        newname="$(dirname $i)/$(echo $(basename $i) | sed -e "s/template/$package/")"
+        echo "* moving file $i to $newname"
+        tla mv $i $newname
+    fi
+done
+
+for i in `tla inventory -s -d`; do
     if echo $i | grep -q template; then
-        echo "* renaming $i to $(echo $i | sed -e \"s/template/$1\")"
-        tla mv $i `echo $i | sed -e "s/template/$1/"`
+        newname=$(echo $i | sed -e "s/template/$package/")
+        echo "* moving directory $i to $newname"
+        mv $i $newname
     fi
 done
 
