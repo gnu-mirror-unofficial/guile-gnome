@@ -25,13 +25,13 @@
 ;;; Code:
 
 (define-module (gnome glib)
-  :use-module (gnome gobject)
-  :use-module (gnome gw glib)
-  :use-module (gnome gw gobject)
-  :use-module (gnome gobject gw-utils)
-  :use-module (oop goops)
+  #:use-module (gnome gobject)
+  #:use-module (gnome gw glib)
+  #:use-module (gnome gw gobject)
+  #:use-module (gnome gw support modules)
+  #:use-module (oop goops)
 
-  :re-export (g-source-set-closure))
+  #:re-export (g-source-set-closure))
 
 (re-export-modules (gnome gw glib))
 

@@ -1,3 +1,15 @@
+2004-09-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm: Real keywords, avoid deprecated modules.
+
+	* gnome/glib.scm: Real keywords, avoid deprecated modules.
+
+	* gnome/gw/gobject-spec.scm (gnome, gnome): Adapt to new module
+	names.
+
+	* package.ac (GUILE_GLIB_LIBS): Use readlink, not realpath, for
+	portability.
+
 2004-09-08  Andy Wingo  <wingo@pobox.com>
 
 	* AUTHORS: Updated.
