@@ -1,5 +1,7 @@
 include $(top_srcdir)/common.mk
 
+SUBDIRS = support
+
 package = glib
 
 guilegwmodule_DATA = gobject-spec.scm gobject.scm glib-spec.scm glib.scm 

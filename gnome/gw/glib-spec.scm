@@ -34,8 +34,8 @@
   #:use-module (g-wrap guile)
   #:use-module (g-wrap guile ws standard)
   #:use-module (gnome gobject utils)
-  #:use-module (gnome gobject gw-spec-utils)
-  #:use-module (gnome gobject defs-support))
+  #:use-module (gnome gw support gobject)
+  #:use-module (gnome gw support defs))
 
 (define-class <glib-wrapset> (<gobject-wrapset-base>)
   #:id 'gnome-glib #:dependencies '(standard))
@@ -137,7 +137,7 @@
 
   (add-type-rule! ws '(("gint*" "*")) '(int out))
 
-  (load-defs ws "gnome/defs/glib.defs"))
+  (load-defs-with-overrides ws "gnome/defs/glib.defs"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ((glist-of (<gtk-window> gw:const) gw:const) win-list)

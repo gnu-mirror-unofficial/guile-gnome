@@ -10,3 +10,5 @@ GUILE_GLIB_CFLAGS='-I$(top_srcdir)/glib/gnome/gobject'
 GUILE_GLIB_LIBS='$(top_builddir)/glib/gnome/gobject/libguile-gnome-gobject.la'
 AC_SUBST(GUILE_GLIB_CFLAGS)
 AC_SUBST(GUILE_GLIB_LIBS)
+
+AC_CONFIG_COMMANDS_PRE([ln -f -s . glib/gnome/gobject/guile-gnome-gobject])

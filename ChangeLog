@@ -1,3 +1,33 @@
+2004-09-05  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Create the gnome/gobject/guile-gnome-gobject link
+	when config.status is created.
+
+	* guile-gnome-glib.pc.in, guile-gnome-glib-uninstalled.pc.in:
+	Moved from guile-gobject*.pc.in.
+
+	* gnome/overrides/glib.defs: Moved from glib-overrides in the defs
+	module. Otherwise unchanged.
+
+	* defs-checks.ac: New file. We depend on the defs module.
+
+	* For each of the files below, deprecated versions were left in
+	the original locations.
+	
+	* gnome/gw/support/modules.scm: Moved from (gnome gobject
+	gw-utils). Otherwise unchanged.
+
+	* gnome/gw/support/gobject.scm: Moved from (gnome gobject
+	gw-spec-utils). Otherwise unchanged.
+
+	* gnome/gw/support/defs.scm: Moved from (gnome gobject
+	defs-support). The parser was rewritten as an interpreter, rather
+	than using guile as the interpreter.
+	(load-defs): Take an optional argument, overrides, which should be
+	the path within %load-path of the overrides file. Handle (ignore
+	overrides).
+	(load-defs-with-overrides): New procedure, wraps load-defs.
+
 2004-07-28  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/gw/glib-spec.scm (make-typespec): Use raise instead of throw.

@@ -4,8 +4,8 @@ exec_prefix=
 libdir=${pcfiledir}
 includedir=${pcfiledir}
 
-Name: Guile-GObject, Uninstalled
-Description: GObject support runtime for Guile, Not Installed
+Name: Guile-Gnome GLib bindings, Uninstalled
+Description: Guile-Gnome GLib bindings, Uninstalled
 Version: @VERSION@
 Requires: gobject-2.0
 Libs: ${libdir}/gnome/gobject/libguile-gnome-gobject.la
