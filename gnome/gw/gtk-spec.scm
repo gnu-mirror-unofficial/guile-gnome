@@ -61,9 +61,9 @@
   (list
    (next-method)
    "gtk_init (NULL, NULL);\n"
-   "scm_register_sinkfunc (GTK_TYPE_OBJECT, sink_gtkobject);\n"
-   "scm_register_postmakefunc (GTK_TYPE_WINDOW, g_object_ref);\n"
-   "scm_register_postmakefunc (GTK_TYPE_INVISIBLE, g_object_ref);\n"))
+   "scm_register_gtype_instance_sinkfunc (GTK_TYPE_OBJECT, sink_gtkobject);\n"
+   "scm_register_gobject_postmakefunc (GTK_TYPE_WINDOW, g_object_ref);\n"
+   "scm_register_gobject_postmakefunc (GTK_TYPE_INVISIBLE, g_object_ref);\n"))
 
   
 (define-method (initialize (ws <gtk-wrapset>) initargs)
