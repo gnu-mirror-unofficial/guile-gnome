@@ -1,3 +1,8 @@
+2004-11-07  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (all-local): Only make/install the pkg-config files
+	if we actually build the wrapset.
+
 2004-10-28  Andy Wingo  <wingo@pobox.com>
 
 	* guile-gnome-libgnomeui.pc.in (Requires): 
