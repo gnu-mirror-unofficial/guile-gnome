@@ -83,7 +83,8 @@
      ("SCM" scm) ; not really glib, but oh well
 
      ("GQuark" unsigned-int) ; need to wrap this one better
-
+     ("GPid" int)
+     
      ("gssize" int) ; fixme: system-dependant
      ("gsize" unsigned-int) ; fixme: system-dependant
 
