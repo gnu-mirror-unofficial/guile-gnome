@@ -1,5 +1,7 @@
 2004-11-15  Andy Wingo  <wingo@pobox.com>
 
+	* examples/canvas.scm: Use (gnome-0) now. Schitzophrenia.
+
 	* package.ac: Add record_check.
 
 2004-11-14  Jan Nieuwenhuizen  <janneke@gnu.org>
