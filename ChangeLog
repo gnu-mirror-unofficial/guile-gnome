@@ -1,3 +1,8 @@
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
+	versioned directory.
+
 2004-10-10  Andy Wingo  <wingo@pobox.com>
 
 	* {arch}/=tagging-method: Untagged-source = unrecognized.
