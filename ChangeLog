@@ -1,3 +1,7 @@
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Add record_check.
+
 2004-11-10  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gtk.scm (create-tag): Don't specialize on the type of
