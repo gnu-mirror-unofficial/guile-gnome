@@ -191,7 +191,7 @@
         "g_value_init (" ,c-var ", G_VALUE_TYPE (SCM_SMOB_DATA (" ,scm-var ")));\n"
         "g_value_copy ((GValue*)SCM_SMOB_DATA (" ,scm-var "), " ,c-var ");\n")
       `("  " ,c-var " = (GValue*) SCM_SMOB_DATA (" ,scm-var ");\n"))
-     "else " `(gw:error ,status-var type ,(wrapped-var scm-var)))))
+     "else " `(gw:error ,status-var type ,(wrapped-var value)))))
 
 
 (define-method (wrap-value-cg (type <gvalue-type>)
