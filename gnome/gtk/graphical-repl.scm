@@ -34,7 +34,7 @@
   #:use-module (gnome gtk)
   #:use-module (gnome pango)
   #:use-module (gnome gtk gdk-event)
-  #:export (<guile-gtk-repl>))
+  #:export (<guile-gtk-repl> <gtk-buffer-output-port> construct-view))
 
 (define-class <repl-paren-matching-style> (<gflags>)
   #:vtable #((move-cursor "Move cursor" 1)
@@ -43,12 +43,13 @@
 (define-class <guile-gtk-repl-entry> (<gtk-entry>)
   new-read-hook
   read-complete-hook
+  main-loop
   (port
    #:gparam `(,<gparam-boxed> #:boxed-type ,<gboxed-scm> #:flags (read)))
   (paren-matching-style
    #:gparam `(,<gparam-flags> #:flags-type ,<repl-paren-matching-style>
-                                  #:default-value 1 ;; arrg
-                                  #:flags (read write construct)))
+                              #:default-value 1 ;; arrg
+                              #:flags (read write construct)))
 
   #:gsignal `(complete #f ,<gchararray> ,<gboxed-scm>))
 
@@ -244,19 +245,24 @@
   (next-method)
   (slot-set! entry 'new-read-hook (make-hook))
   (slot-set! entry 'read-complete-hook (make-hook 1))
+  (slot-set! entry 'main-loop #f)
   (let ((return-from-read #f)
         (new-read-hook (slot-ref entry 'new-read-hook))
         (read-complete-hook (slot-ref entry 'read-complete-hook))
-        (main-loop (g-main-loop-new #f #f)))
+        (main-loop (or (slot-ref entry 'main-loop)
+                       (g-main-loop-new #f #f))))
 
     (slot-set! entry 'port
                (make-line-buffered-input-port
                 (lambda (continuation?)
-                  (call-with-current-continuation
-                   (lambda (cont)
-                     (run-hook new-read-hook)
-                     (set! return-from-read cont)
-                     (g-main-loop-run main-loop))))))
+                  (run-hook new-read-hook)
+                  (let ((read-string #f))
+                    (set! return-from-read
+                          (lambda (x)
+                            (set! read-string x)
+                            (g-main-loop-quit main-loop)))
+                    (g-main-loop-run main-loop)
+                    read-string))))
 
     (modify-font entry (pango-font-description-from-string "Monospace"))
 
@@ -281,7 +287,8 @@
                (if return-from-read
                    (let ((str (get entry 'text)))
                      (run-hook read-complete-hook str)
-                     (return-from-read str)))))
+                     (return-from-read str))
+                   (warn "no return-from-read!"))))
 
     ;; These keypresses can't be caught by the parent window,
     ;; apparently...
@@ -303,17 +310,13 @@
 
     (install-paren-matching-handlers entry)
 
-    (install-history-handlers entry)
+    (install-history-handlers entry)))
 
-    ;; This will display to the repl-output if all goes well.
-    (add-hook! read-complete-hook
-               (lambda (str) (display str) (newline)))))
-
-(define-class <guile-gtk-repl-output> (<gtk-text-buffer>)
+(define-class <gtk-buffer-output-port> (<gtk-text-buffer>)
   (port
    #:gparam `(,<gparam-boxed> #:boxed-type ,<gboxed-scm> #:flags (read))))
 
-(define-method (initialize (output <guile-gtk-repl-output>) initargs)
+(define-method (initialize (output <gtk-buffer-output-port>) initargs)
   (define (output-string str)
     (let ((end (get-end-iter output)))
       (insert output end str)))
@@ -327,6 +330,19 @@
                                      #f
                                      #f)
                              "w")))
+
+(define-method (construct-view (buffer <gtk-buffer-output-port>))
+  (let ((view (make <gtk-text-view>
+                #:editable #f #:cursor-visible #f #:can-focus #f
+                #:wrap-mode 'char)))
+        
+    (modify-font view (pango-font-description-from-string "Monospace"))
+    (set-buffer view buffer)
+    (let ((mark (create-mark buffer "end" (get-end-iter buffer) #f)))
+      (connect buffer 'changed
+               (lambda (buf)
+                 (scroll-to-mark view mark 0.0 #t 0.0 1.0))))
+    view))
 
 (define-class <guile-gtk-repl> (<gtk-vbox>)
   entry
@@ -344,46 +360,33 @@
     ((in-port) (get (slot-ref obj 'entry) 'port))
     ((out-port) (get (slot-ref obj 'output) 'port))))
 
-(define (pretty-display scm width)
-  (cond
-   ((and (list? scm) (and-map string? scm))
-    ;; A list of strings
-    (let* ((max-length (1+ (apply max (map string-length scm))))
-           (num-cols (inexact->exact (floor (/ width max-length))))
-           (col-width (inexact->exact (floor (/ width num-cols)))))
-      (let loop ((l scm) (col 0))
-        (if (null? l)
-            (if #f #f)
-            (let* ((str (car l))
-                   (len (string-length str)))
-              (display str) (display (make-string (- col-width len) #\space))
-              (if (and (eq? (1- num-cols) col)
-                       (not (null? (cdr l))))
-                  (newline))
-              (loop (cdr l) (modulo (1+ col) num-cols)))))))
-   (else
-    (display scm))))
+(define (pretty-display-strings scm width)
+  (let* ((max-length (1+ (apply max (map string-length scm))))
+         (num-cols (inexact->exact (floor (/ width max-length))))
+         (col-width (inexact->exact (floor (/ width num-cols)))))
+    (let loop ((l scm) (col 0))
+      (if (not (null? l))
+          (let* ((str (car l))
+                 (len (string-length str))
+                 (next-col (modulo (1+ col) num-cols)))
+            (display str)
+            (if (zero? next-col)
+                (if (not (null? (cdr l)))
+                    (newline))
+                (display (make-string (- col-width len) #\space)))
+            (loop (cdr l) next-col))))))
 
 (define-method (initialize (obj <guile-gtk-repl>) initargs)
   (slot-set! obj 'entry (make <guile-gtk-repl-entry>))
-  (slot-set! obj 'output (make <guile-gtk-repl-output>))
+  (slot-set! obj 'output (make <gtk-buffer-output-port>))
   (slot-set! obj 'scrolled (make <gtk-scrolled-window>
                              #:hscrollbar-policy 'never
                              #:vscrollbar-policy 'always))
-  (slot-set! obj 'output-view (make <gtk-text-view>
-                                #:editable #f #:cursor-visible #f
-                                #:can-focus #f #:wrap-mode 'word))
+  (slot-set! obj 'output-view (construct-view (slot-ref obj 'output)))
   (let ((entry (slot-ref obj 'entry))
         (output (slot-ref obj 'output))
         (scrolled (slot-ref obj 'scrolled))
         (view (slot-ref obj 'output-view)))
-    (modify-font view (pango-font-description-from-string "Monospace"))
-    
-    (set-buffer view output)
-    (let ((mark (create-mark output "end" (get-end-iter output) #f)))
-      (connect output 'changed
-               (lambda (buf)
-                 (scroll-to-mark view (get-mark buf "end") 0.0 #t 0.0 1.0))))
     
     ;; Install some nice keybindings
     (connect obj 'key-press-event
@@ -395,7 +398,7 @@
                   ;; need to wrap GtkAdjustment better
                   ((or (eq? keyval gdk:Page-Up) (eq? keyval gdk:Page-Down))
                    (let* ((adjustment (get scrolled 'vadjustment))
-                          (new-value ((if (eq? keyval gdk:Page-Up) - +)
+                          (new-value ((if (eq? keyval gdk:Page-Up) + -)
                                       0.1 (get-value adjustment))))
                      ;; 0.1 is a hack, cause adjustments don't have properties
                      (set-value adjustment
@@ -404,18 +407,26 @@
                   (else
                    #f)))))
 
+
+    (add-hook! (slot-ref entry 'read-complete-hook)
+               (lambda (str)
+                 (display str (get output 'port))
+                 (newline (get output 'port))))
+
     (connect entry 'complete
              (lambda (entry text completions)
-               (display text) (newline)
-               (pretty-display
-                (if (null? completions)
-                    "[no completions]"
-                    completions)
-                ;; We don't really know how big the window is,
-                ;; unfortunately
-                70)
-               (newline)
-               (display scm-repl-prompt)))
+               (with-output-to-port (get output 'port)
+                 (lambda ()
+                   (with-error-to-port (get output 'port)
+                     (lambda ()
+                       (display text) (newline)
+                       (if (null? completions)
+                           (display "[no completions]")
+                           (pretty-display-strings completions 70))
+                       ;; We don't really know how big the window is,
+                       ;; unfortunately
+                       (newline)
+                       (display scm-repl-prompt)))))))
 
     (pack-start obj scrolled #t #t 0)
     (add scrolled view)

@@ -1,3 +1,23 @@
+2004-08-29  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk/graphical-repl.scm (<guile-gtk-repl-entry>): New slot,
+	`main-loop', to hold the main loop. Can be set by user code, if
+	you want to share a main loop between the REPL and something else.
+	(initialize): Don't return a string from the soft port via
+	continuations, because this can confuse Gtk+. Use the main-loop
+	from the slot if it's available.
+	(<gtk-buffer-output-port>): Renamed from <guile-gtk-repl-output>,
+	because it can be used more generally as a graphical output port
+	for scheme. Exported.
+	(construct-view): New method on <gtk-buffer-output-port>, factored
+	out from from other code. Constructs a view widget for the output.
+	(pretty-display-strings): Renamed from pretty-display. Only deals
+	with strings. Optimized.
+	(<guile-gtk-repl>): Only have
+	output-port=current-output/error-port for the duration of the
+	eval, and for completions. Allows the app to have a different
+	output port during running of the main loop.
+
 2004-07-10  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/contrib/texinfo-buffer.scm (false-if-exception): New
