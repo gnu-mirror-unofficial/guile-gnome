@@ -1,0 +1,16 @@
+To find out what should go in this file, see "Information For
+Maintainers of GNU Software" (maintain.texi), the section called
+"Recording Changes".
+
+
+Jan Nieuwenhuizen:
+In the directory gnome/gw, wrote:
+    canvas-spec.scm libgnomecanvas-support.c libgnomecanvas-support.h
+In the directory gnome/overrides, wrote:
+    canvas.defs
+In the directory examples, wrote:
+    canvas.scm
+
+Andy Wingo:
+In the directory gnome, wrote:
+    canvas.scm

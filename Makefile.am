@@ -1,3 +1,3 @@
 SUBDIRS = gnome examples
 
-EXTRA_DIST = ChangeLog glib-checks.ac defs-checks.ac gtk-checks.ac
+EXTRA_DIST = ChangeLog NEWS AUTHORS README $(wildcard *.ac)
