@@ -1,8 +1,0 @@
-2001-09-09  Martin Baulig  <baulig@suse.de>
-
-	* Foo.idl: Make it a bit more "complicated" ....
-
-2001-09-07  Martin Baulig  <baulig@suse.de>
-
-	* Foo.idl: Moved here from ../../corba/.
-
