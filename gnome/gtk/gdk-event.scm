@@ -42,7 +42,7 @@
 
 (define (gdk-event-key:modifiers event)
   (let ((event-struct (gdk-event->event-struct event)))
-    (case (gdk-event:type event) 
+    (case (gdk-event:type event)
       ((key-press key-release)
        ;; We have to do some hackery here, because there are bitmasks
        ;; used by XKB that we don't know about.
@@ -55,7 +55,7 @@
 
 (define (gdk-event-key:keyval event)
   (let ((event-struct (gdk-event->event-struct event)))
-    (case (gdk-event:type event) 
+    (case (gdk-event:type event)
       ((key-press key-release)
        (struct-ref event-struct (+ vtable-offset-user 5)))
       (else
@@ -63,12 +63,20 @@
 
 (define (gdk-event-selection:selection event)
   (let ((event-struct (gdk-event->event-struct event)))
-    (case (gdk-event:type event) 
+    (case (gdk-event:type event)
       ((selection-notify selection-clear selection-request)
        (string->symbol (struct-ref event-struct (+ vtable-offset-user 3))))
       (else
        (gruntime-error "Event not of the proper type: ~A" event)))))
        
+(define (gdk-event-button:button event)
+  (let ((event-struct (gdk-event->event-struct event)))
+    (case (gdk-event:type event)
+      ((button-press button-release)
+       (struct-ref event-struct (+ vtable-offset-user 7)))
+      (else
+       (gruntime-error "Event not of the proper type: ~A" event)))))
+
 ;;
 ;; Update this list with the following bit of perl:
 ;; perl -p -e 's/#define GDK_/(define gdk:/; s/_/-/g; s/0x/#x/; s/$/)/;' \
