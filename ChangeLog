@@ -1,4 +1,67 @@
+2004-07-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/contrib/texinfo-buffer.scm (false-if-exception): New
+	macro, like the standard one but doesn't affect the-last-stack.
+	(tag-prop-alist): Add tags for entry-header, entry-body, and asis.
+	(arg-ref): Use assq-ref.
+	(identity): New handler, just returns the body.
+	(*table-formatter*): Fluid, holds the current table formatter
+	(@code, @asis, etc.).
+	(table): Use with-fluids to set the formatter while processing the
+	body. Hm, I think this needs to be pre-order, though.
+	(entry): Format the entry header with the table formatter.
+	(ignore-list): Add indexing commands (cindex, etc.) to the ignore
+	list.
+	(rules): Add a rule for texinfo, using the identity handler.
+	(with-nesting): Up to default nesting from 25px to 35px.
+	(fill-buffer): More informative errors.
+	(stexi->text-tagged-tree): New (private) function, calls
+	pre-post-order to do the first pass.
+	
+	* gnome/contrib/help-browser.scm (populate-help-hook): New hook,
+	run right before the help window is constructed.
+	(set-default-help-document!): Fix a typo.
+	(make-help-window): Set the title properly when no iter is
+	selected.
+	(make-help-window): Add again the warning that indexing can take
+	time. It's not so much for a single texinfo file, but if you have
+	documentation that is constructed at runtime, all of that will
+	have to be evaluated before the indexer can index. (A caching
+	indexer is needed.)
+	(ensure-help-window): Run the hook before constructing the help
+	window.
+
+	* gnome/contrib/delay-tree-model.scm (on-get-iter): Don't expect
+	#f from node-ref/force-ref of 'children, because (make-node) now
+	guarantees that 'children is there.
+
+	* gnome/contrib/texinfo-buffer.scm (uref): It's URL, not URI.
+	(URLs are the retrievable resources.)
+	(initialize): url-show takes one argument, not two.
+	(rules): s/results/result/.
+
+2004-07-07  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/contrib/texinfo-buffer.scm (<stexi-ref-tag>): Name changed
+	from stext-..., s/#:param-spec/#:gparam/, fix the hook.
+	(ref): Fix typo.
+	(url-show): New function, uses gnome to show the url if it's
+	around, should do something else otherwise...
+
+	* gnome/contrib/help-browser.scm: New file, implements a help
+	browser whose native data format is stexi.
+
+	* examples/texinfo-browser.scm: New file, implements a help
+	browser that will open a file given on the command line.
+
+	* gnome/contrib/help-browser.scm: 
+	* gnome/contrib/delay-tree-model.scm:
+	* gnome/contrib/texinfo-buffer.scm: Make sure keywords have #:.
+
 2004-07-06  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/contrib/texinfo-buffer.scm (gnome):
+	s/(sxml texinfo)/(texinfo)/, don't use gw modules
 
 	* gnome/contrib/filtered-list.scm: New file, implements a tree
 	model whose backing store is a list. The model only exposes those

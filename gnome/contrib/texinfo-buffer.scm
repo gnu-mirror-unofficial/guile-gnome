@@ -25,16 +25,31 @@
 ;;; Code:
 
 (define-module (gnome contrib texinfo-buffer)
-  :use-module (sxml texinfo)
-  :use-module (sxml transform)
-  :use-module (scheme documentation)
-  :use-module (gnome gtk)
-  :use-module (gnome gtk gdk-event)
-  :use-module (gnome gobject)
-  :use-module (gnome gw pango)
-  :use-module (gnome gw libgnome)
-  :export (stexi->gtk-text-buffer
-           stexi-buffer-xref-activated-hook))
+  #:use-module (texinfo)
+  #:use-module (sxml transform)
+  #:use-module (sxml simple)
+  #:use-module (scheme documentation)
+  #:use-module (gnome gtk)
+  #:use-module (gnome gtk gdk-event)
+  #:use-module (gnome gobject)
+  #:use-module (gnome pango)
+  #:export (stexi->gtk-text-buffer
+            stexi-buffer-xref-activated-hook))
+
+;; don't allow the exp to affect the-last-stack
+(define-macro (false-if-exception exp)
+  `(catch #t
+          (lambda ()
+            (with-fluids ((the-last-stack (fluid-ref the-last-stack)))
+              ,exp))
+          (lambda args #f)))
+
+(define url-show
+  (or
+   (false-if-exception
+    (module-ref (resolve-interface '(gnome gnome)) 'gnome-url-show))
+   (lambda (u x)
+     (pk "Hmm, implement a non-gnome URL handler..." u))))
 
 ;; The two arguments are the node name and the manual name or #f
 (define-with-docs stexi-buffer-xref-activated-hook
@@ -46,89 +61,97 @@ manual."
 (define tag-table (make <gtk-text-tag-table>))
 (define tag-prop-alist
   ;; List the non-inline styles first so inlines get priority
-  '((center . (:justification center))
-    (example . (:font "Monospace" :wrap-mode none
-                :pixels-below-lines 0 :pixels-above-lines 0 :left-margin 20))
-    (smallexample . (:font "Monospace" :wrap-mode none :scale 0.9
-                     :pixels-below-lines 0 :pixels-above-lines 0 :left-margin 20))
-    (cartouche . (:pixels-below-lines 6 :pixels-above-lines 6 :pixels-inside-wrap 0
-                  :left-margin 25 :right-margin 25 :background "grey"
-                  :justification center))
-    (title . (:pixels-above-lines 6 :pixels-below-lines 12 :scale 1.4399999999 :weight 700))
-    (subtitle . (:pixels-above-lines 0 :pixels-below-lines 12 :scale 1.2 :weight 700))
-    (author . (:pixels-above-lines 0 :pixels-below-lines 12 :scale 1.2 :weight 700))
+  '((center . (#:justification center))
+    (example . (#:font "Monospace" #:wrap-mode none
+                #:pixels-below-lines 0 #:pixels-above-lines 0 #:left-margin 20))
+    (smallexample . (#:font "Monospace" #:wrap-mode none #:scale 0.9
+                     #:pixels-below-lines 0 #:pixels-above-lines 0 #:left-margin 20))
+    (cartouche . (#:pixels-below-lines 6 #:pixels-above-lines 6 #:pixels-inside-wrap 0
+                  #:left-margin 25 #:right-margin 25 #:background "grey"
+                  #:justification center))
+    (title . (#:pixels-above-lines 6 #:pixels-below-lines 12 #:scale 1.4399999999 #:weight 700))
+    (subtitle . (#:pixels-above-lines 0 #:pixels-below-lines 12 #:scale 1.2 #:weight 700))
+    (author . (#:pixels-above-lines 0 #:pixels-below-lines 12 #:scale 1.2 #:weight 700))
     ;; Assuming chapters and sections fall at the beginning of a buffer.
     ;; Not too good of an assumption. Better would be to detect if we're
     ;; at the start of a buffer, then adjust the tag accordingly.
-    (chapter . (:pixels-above-lines 6 :pixels-below-lines 18 :scale 1.4399999999 :weight 700))
-    (majorheading . (:pixels-above-lines 6 :pixels-below-lines 18 :scale 1.4399999999 :weight 700))
-    (chapheading . (:pixels-above-lines 6 :pixels-below-lines 18 :scale 1.4399999999 :weight 700))
-    (section . (:pixels-above-lines 6 :pixels-below-lines 18 :scale 1.4399999999 :weight 700))
-    (heading . (:pixels-above-lines 6 :pixels-below-lines 18 :scale 1.4399999999 :weight 700))
-    (appendix . (:pixels-above-lines 6 :pixels-below-lines 18 :scale 1.4399999999 :weight 700))
-    (appendixsec . (:pixels-above-lines 6 :pixels-below-lines 18 :scale 1.4399999999 :weight 700))
-    (unnumbered . (:pixels-above-lines 6 :pixels-below-lines 18 :scale 1.4399999999 :weight 700))
-    (unnumberedsec . (:pixels-above-lines 6 :pixels-below-lines 18 :scale 1.4399999999 :weight 700))
-    (subsection . (:pixels-above-lines 12 :pixels-below-lines 6 :scale 1.2 :weight 700))
-    (subheading . (:pixels-above-lines 12 :pixels-below-lines 6 :scale 1.2 :weight 700))
-    (subsubsection . (:pixels-above-lines 6 :pixels-below-lines 6 :weight 700))
-    (subsubheading . (:pixels-above-lines 6 :pixels-below-lines 6 :weight 700))
-    (appendixsubsec . (:pixels-above-lines 12 :pixels-below-lines 6 :scale 1.2 :weight 700))
-    (appendixsubsubsec . (:pixels-above-lines 6 :pixels-below-lines 6 :weight 700))
-    (unnumberedsubsec . (:pixels-above-lines 12 :pixels-below-lines 6 :scale 1.2 :weight 700))
-    (unnumberedsubsubsec . (:pixels-above-lines 6 :pixels-below-lines 6 :weight 700))
-    (para . (:pixels-below-lines 6))
-    (table . (:left-margin 50 :right-margin 25))
-    (ftable . (:left-margin 50 :right-margin 25))
-    (vtable . (:left-margin 50 :right-margin 25))
-    (def-body . (:right-margin 50)) ;; left is handled by the *nest*
-    (quotation . (:left-margin 50 :right-margin 50 :scale 0.9))
+    (chapter . (#:pixels-above-lines 6 #:pixels-below-lines 18 #:scale 1.4399999999 #:weight 700))
+    (majorheading . (#:pixels-above-lines 6 #:pixels-below-lines 18 #:scale 1.4399999999 #:weight 700))
+    (chapheading . (#:pixels-above-lines 6 #:pixels-below-lines 18 #:scale 1.4399999999 #:weight 700))
+    (section . (#:pixels-above-lines 6 #:pixels-below-lines 18 #:scale 1.4399999999 #:weight 700))
+    (heading . (#:pixels-above-lines 6 #:pixels-below-lines 18 #:scale 1.4399999999 #:weight 700))
+    (appendix . (#:pixels-above-lines 6 #:pixels-below-lines 18 #:scale 1.4399999999 #:weight 700))
+    (appendixsec . (#:pixels-above-lines 6 #:pixels-below-lines 18 #:scale 1.4399999999 #:weight 700))
+    (unnumbered . (#:pixels-above-lines 6 #:pixels-below-lines 18 #:scale 1.4399999999 #:weight 700))
+    (unnumberedsec . (#:pixels-above-lines 6 #:pixels-below-lines 18 #:scale 1.4399999999 #:weight 700))
+    (subsection . (#:pixels-above-lines 12 #:pixels-below-lines 6 #:scale 1.2 #:weight 700))
+    (subheading . (#:pixels-above-lines 12 #:pixels-below-lines 6 #:scale 1.2 #:weight 700))
+    (subsubsection . (#:pixels-above-lines 6 #:pixels-below-lines 6 #:weight 700))
+    (subsubheading . (#:pixels-above-lines 6 #:pixels-below-lines 6 #:weight 700))
+    (appendixsubsec . (#:pixels-above-lines 12 #:pixels-below-lines 6 #:scale 1.2 #:weight 700))
+    (appendixsubsubsec . (#:pixels-above-lines 6 #:pixels-below-lines 6 #:weight 700))
+    (unnumberedsubsec . (#:pixels-above-lines 12 #:pixels-below-lines 6 #:scale 1.2 #:weight 700))
+    (unnumberedsubsubsec . (#:pixels-above-lines 6 #:pixels-below-lines 6 #:weight 700))
+    (para . (#:pixels-below-lines 6))
+    (enumerate . (#:pixels-below-lines 6)) ;; FIXME!
+    (itemize . (#:pixels-below-lines 6)) ;; FIXME!
+    (table . (#:left-margin 50 #:right-margin 25))
+    (ftable . (#:left-margin 50 #:right-margin 25))
+    (vtable . (#:left-margin 50 #:right-margin 25))
+    (def-body . (#:right-margin 50)) ;; left is handled by the *nest*
+    (quotation . (#:left-margin 50 #:right-margin 50 #:scale 0.9))
+    (entry-header . (#:pixels-above-lines 6 #:pixels-below-lines 0))
+    (entry-body . (#:right-margin 50)) ;; left is handled by the *nest*
 
-    (bold . (:weight 700))
-    (item . (:left-margin 25 :right-margin 25 :pixels-below-lines 0))
-    (itemx . (:left-margin 25 :right-margin 25 :pixels-below-lines 0))
-    (sample . (:font "Monospace"))
-    (samp . (:font "Monospace"))
-    (code . (:font "Monospace"))
-    (kbd . (:font "Monospace" :style oblique))
-    (key . (:font "Monospace" :variant small-caps))
-    (var . (:font "Monospace" :style italic))
-    (env . (:font "Monospace"))
-    (file . (:font "Monospace"))
-    (command . (:font "Monospace"))
-    (option . (:font "Monospace"))
-    (dfn . (:style italic :weight 700))
-    (cite . (:style italic))
-    (acro . (:scale 0.8333333333))
-    (url . (:font "Monospace"))
-    (email . (:font "Monospace"))
-    (emph . (:style italic))
-    (strong . (:weight 700))
-    (sc . (:variant small-caps))
-    (small . (:scale 0.5 :pixels-below-lines 0)) ;; only used for weird newlines in examples
+    (asis . ())
+    (bold . (#:weight 700))
+    (item . (#:left-margin 25 #:right-margin 25 #:pixels-below-lines 0))
+    (itemx . (#:left-margin 25 #:right-margin 25 #:pixels-below-lines 0))
+    (sample . (#:font "Monospace"))
+    (samp . (#:font "Monospace"))
+    (code . (#:font "Monospace"))
+    (kbd . (#:font "Monospace" #:style oblique))
+    (key . (#:font "Monospace" #:variant small-caps))
+    (var . (#:font "Monospace" #:style italic))
+    (env . (#:font "Monospace"))
+    (file . (#:font "Monospace"))
+    (command . (#:font "Monospace"))
+    (option . (#:font "Monospace"))
+    (dfn . (#:style italic #:weight 700))
+    (cite . (#:style italic))
+    (acro . (#:scale 0.8333333333))
+    (url . (#:font "Monospace"))
+    (email . (#:font "Monospace"))
+    (emph . (#:style italic))
+    (strong . (#:weight 700))
+    (sc . (#:variant small-caps))
+    (small . (#:scale 0.5 #:pixels-below-lines 0)) ;; only used for weird newlines in examples
     ))
 (for-each ;; Make the tags now so the priorities are correct
  (lambda (pair)
-   (let ((tag (apply make <gtk-text-tag> :name (symbol->string (car pair)) (cdr pair))))
+   (let ((tag (apply make <gtk-text-tag> #:name (symbol->string (car pair)) (cdr pair))))
      (add tag-table tag)))
  tag-prop-alist)
 
 (let ((tabs (pango-tab-array-new 1 #t)))
   (pango-tab-array-set-tab tabs 0 'left 325)
   (add tag-table (make <gtk-text-tag>
-                   :name "def-header" :tabs tabs :pixels-below-lines 0)))
+                   #:name "def-header" #:tabs tabs #:pixels-below-lines 0)))
 
 (define (get-tag name)
   (lookup tag-table (symbol->string name)))
 
 (define (arg-ref name args)
-  (and=> (assq name (cdr args)) cdr))
+  (assq-ref (cdr args) name))
 (define (arg-req name args)
   (or (arg-ref name args)
       (error "Required argument missing" name args)))
 (define (arg-req* names args)
   (or (or-map (lambda (name) (arg-ref name args)) names)
       (error "Required argument missing" names args)))
+
+(define (identity tag . body)
+  body)
 
 ;; We can't have after-paragraph space, because there are newlines in
 ;; examples. Hack around it by putting an extra newline at the end.
@@ -137,38 +160,38 @@ manual."
 (define (smallexample tag . body)
   `(smallexample ,@body #\newline (small #\newline)))
 
-(define-class <stext-ref-tag> (<gtk-text-tag>)
-  (node :param-spec `(,<gparam-boxed> :boxed-type ,gtype:gboxed-scm
-                                      :flags (read write)))
-  (manual :param-spec `(,<gparam-boxed> :boxed-type ,gtype:gboxed-scm
-                                        :flags (read write))))
+(define-class <stexi-ref-tag> (<gtk-text-tag>)
+  (node #:gparam `(,<gparam-boxed> #:boxed-type ,gtype:gboxed-scm
+                                   #:flags (read write)))
+  (manual #:gparam `(,<gparam-boxed> #:boxed-type ,gtype:gboxed-scm
+                                     #:flags (read write))))
 
-(define-method (initialize (obj <stext-ref-tag>) initargs)
+(define-method (initialize (obj <stexi-ref-tag>) initargs)
   (next-method)
   (set obj 'foreground "blue")
   (set obj 'underline 'single)
   (connect obj 'event
            (lambda (tag object event iter)
              (if (eq? (gdk-event:type event) 'button-press)
-                 (run-hook stext-buffer-xref-activated-hook
-                           (slot-ref obj 'node-name)
+                 (run-hook stexi-buffer-xref-activated-hook
+                           (slot-ref obj 'node)
                            (slot-ref obj 'manual)))
              #f)))
 
 (define (ref tag args)
-  (list (let ((tag (make <stext-ref-tag>
-                     :node (car (arg-req 'node args))
-                     :manual (and=> (arg-ref 'manual args) car))))
+  (list (let ((tag (make <stexi-ref-tag>
+                     #:node (car (arg-req 'node args))
+                     #:manual (and=> (arg-ref 'manual args) car))))
           (add tag-table tag)
           tag)
-        (case type
+        (case tag
           ((xref) "See ") ((pxref) "see ") (else ""))
         (car (arg-req* '(node section) args))))
 
-(define-class <stext-uref-tag> (<gtk-text-tag>)
-  (uri :param-spec `(,<gparam-string> :flags (read write))))
+(define-class <stexi-uref-tag> (<gtk-text-tag>)
+  (url #:gparam `(,<gparam-string> #:flags (read write))))
 
-(define-method (initialize (obj <stext-uref-tag>) initargs)
+(define-method (initialize (obj <stexi-uref-tag>) initargs)
   (next-method)
   (set obj 'foreground "blue")
   (set obj 'underline 'single)
@@ -179,16 +202,16 @@ manual."
            (lambda (tag object event iter)
              (if (eq? (gdk-event:type event) 'button-press)
                  (begin
-                   (format #t "\nshowing ~A in new window\n" (slot-ref obj 'uri))
-                   (gnome-url-show (slot-ref obj 'uri) #f)))
+                   (format #t "\nshowing ~A in new window\n" (slot-ref obj 'url))
+                   (url-show (slot-ref obj 'url))))
              #f)))
 
 (define (uref tag args)
-  (list (let ((tag (make <stext-uref-tag>
-                     :uri (car (arg-req 'url args)))))
+  (list (let ((tag (make <stexi-uref-tag>
+                     #:url (car (arg-req 'url args)))))
           (add tag-table tag)
           tag)
-        (car (arg-req* '(title uri) args))))
+        (car (arg-req* '(title url) args))))
 
 (define (node tag args)
   `(*mark* ,(string-append "node-" (car (arg-req 'name args)))))
@@ -224,9 +247,21 @@ manual."
       (*nest* (def-body ,@body)))))
 
 
+(define *table-formatter* (make-fluid))
+(fluid-set! *table-formatter* 'asis) ;; just in case
+(define (table tag args . body)
+  (with-fluids ((*table-formatter* (arg-req 'formatter args)))
+    (nest body)))
+(define (entry tag args . body)
+  `((entry-header (,(fluid-ref *table-formatter*)
+                   ,(stexi->text-tagged-tree (arg-req 'heading args))
+                   #\newline))
+    (*nest* (entry-body ,@body))))
+
 (define ignore-list
   '(page setfilename setchapternewpage iftex ifhtml ifplaintext ifxml sp vskip
-    menu ignore syncodeindex))
+    menu ignore syncodeindex comment c ifinfo cindex findex vindex tindex
+    kindex pindex))
 
 (define (default-handler tag . body)
   (cond
@@ -248,6 +283,7 @@ manual."
 ;; then display the document.
 (define rules
   `((% *preorder*        . ,(lambda args args))
+    (texinfo             . ,identity)
     (example             . ,example)
     (lisp                . ,example)
     (verbatim            . ,example)
@@ -259,11 +295,12 @@ manual."
     (uref                . ,uref)
     (node                . ,node)
     (anchor              . ,node)
-    (table               . ,nest)
+    (table               . ,table)
+    (entry               . ,entry)
     (enumerate           . ,nest)
     (itemize             . ,nest)
     (copyright           . ,(lambda args (string #\302 #\251)))
-    (results             . ,(lambda args (string #\342 #\207 #\222)))
+    (result              . ,(lambda args (string #\342 #\207 #\222)))
     (deftp               . ,def)
     (defcv               . ,def)
     (defivar             . ,def)
@@ -298,12 +335,14 @@ manual."
 
 (define (make-nesting-tag)
   ((lambda (x) (add tag-table x) x)
-   (make <gtk-text-tag> :left-margin (fluid-ref *indent*))))
+   (make <gtk-text-tag> #:left-margin (fluid-ref *indent*))))
 
 (define (with-nesting buffer proc . args)
-  (with-fluids ((*indent* (+ (fluid-ref *indent*) 25)))
+  (with-fluids ((*indent* (+ (fluid-ref *indent*) 35)))
     (apply with-tag (make-nesting-tag) buffer proc args)))
 
+;; Note that errors in this file are caused by inconsistencies produced
+;; in the transformation stage, not by problems in the stexi.
 (define (fill-buffer buffer tree)
   (define (handle-body l)
     (for-each (lambda (x) (fill-buffer buffer x)) l))
@@ -316,7 +355,7 @@ manual."
    (else
     (cond
      ((not (pair? tree))
-      (error "invalid stexi tree"))
+      (error "invalid stexi tree" tree))
      ((symbol? (car tree))
       (case (car tree)
         ((*nest*)
@@ -333,10 +372,10 @@ manual."
       ;; maybe the tree transform made a nontagged list
       (handle-body tree))))))
 
-(define-public (test stexi)
+(define (stexi->text-tagged-tree stexi)
   (pre-post-order stexi rules))
 
 (define (stexi->gtk-text-buffer stexi)
-  (let ((buffer (make <gtk-text-buffer> :tag-table tag-table)))
-    (fill-buffer buffer (pre-post-order stexi rules))
+  (let ((buffer (make <gtk-text-buffer> #:tag-table tag-table)))
+    (fill-buffer buffer (stexi->text-tagged-tree stexi))
     buffer))
