@@ -29,9 +29,10 @@ guilegnomelib_LTLIBRARIES = libgw-guile-gnome-gobject.la \
 
 nodist_libgw_guile_gnome_gobject_la_SOURCES = guile-gnome-gw-gobject.c
 libgw_guile_gnome_gobject_la_CFLAGS = -I$(srcdir)/../gobject -I../gobject \
-        $(AM_CFLAGS) $(GOBJECT_CFLAGS) $(GUILE_CFLAGS) $(G_WRAP_CFLAGS)
+        $(AM_CFLAGS) $(GOBJECT_CFLAGS) $(GUILE_CFLAGS) $(G_WRAP_CFLAGS) \
+ 	$(GUILE_GLIB_CFLAGS)
 libgw_guile_gnome_gobject_la_LIBADD = $(G_WRAP_LIBS) $(GOBJECT_LIBS) \
-	$(GUILE_LIBS) \
+	$(GUILE_LIBS) $(GUILE_GLIB_LIBS) \
 	 ../gobject/libguile-gnome-gobject-@API_VERSION@.la
 libgw_guile_gnome_gobject_la_LDFLAGS = -module
 
@@ -42,9 +43,10 @@ noinst_HEADERS = glib-support.h
 nodist_libgw_guile_gnome_glib_la_SOURCES = guile-gnome-gw-glib.c
 libgw_guile_gnome_glib_la_SOURCES = glib-support.c
 libgw_guile_gnome_glib_la_CFLAGS = \
-	$(AM_CFLAGS) $(GLIB_CFLAGS) $(GUILE_CFLAGS) $(G_WRAP_CFLAGS)
+	$(AM_CFLAGS) $(GLIB_CFLAGS) $(GUILE_CFLAGS) $(G_WRAP_CFLAGS) \
+	$(GUILE_GLIB_CFLAGS)
 libgw_guile_gnome_glib_la_LIBADD = $(GLIB_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LIBS)
+	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS)
 libgw_guile_gnome_glib_la_LDFLAGS = -module
 
 BUILT_SOURCES = \

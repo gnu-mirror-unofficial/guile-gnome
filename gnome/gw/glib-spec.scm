@@ -138,6 +138,8 @@
   (add-type-alias! ws "GError**" '<GError>)
 
   (add-type-rule! ws '(("gint*" "*")) '(int out))
+  (add-type-rule! ws '(("gsize*" "*")) '(unsigned-int out))
+  (add-type-rule! ws '(("gchar**" "*")) '(mchars caller-owned out))
 
   (load-defs-with-overrides ws "gnome/defs/glib.defs"))
 
