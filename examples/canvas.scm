@@ -62,7 +62,19 @@ exec guile-gnome-0 -s $0 "$@"
     (add window vbox)
     (add vbox canvas)
 
-    (let* ((line (make <gnome-canvas-rect> #:parent canvas-root
+    (let* ((line (make <gnome-canvas-line> #:parent canvas-root
+		       #:fill-color "black"
+		       #:first-arrowhead #t
+		       #:arrow-shape-a 10
+		       #:arrow-shape-b 10
+		       #:arrow-shape-c 10
+		       #:line-style 'on-off-dash
+;;;FIXME: how to wrap this properly?
+;;;#:points #(0 0 100 100)))
+;;;ERROR: In procedure scm->gvalue:
+;;;ERROR: Don't know how to make values of type #<gtype GnomeCanvasPoints>
+		       #:points (gnome-canvas-points-new #(0 0 100 100))))
+	   (rect (make <gnome-canvas-rect> #:parent canvas-root
                        #:x1 0.0 #:y1 0.0 #:x2 100.0 #:y2 9.0
                        #:fill-color "black"))
     	   (text (make <gnome-canvas-text> #:parent canvas-root
@@ -93,7 +105,7 @@ exec guile-gnome-0 -s $0 "$@"
       (for-each (lambda (item)
 		  (move item -40 70)
 		  (affine-relative item output-scale 0 0 output-scale 0 0))
-       (list line bezier)))
+       (list rect bezier)))
 
     (add vbox button)
     (connect button 'clicked

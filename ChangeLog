@@ -1,4 +1,14 @@
+2004-11-16  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* examples/canvas.scm: Add line.
+
 2004-11-14  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/gw/libgnomecanvas-support.c (_wrap_gnome_canvas_points_new):
+	New wrapper.
+
+	* gnome/overrides/libgnomecanvas.defs (gnome_canvas_points_new):
+	New override.
 
 	* gnome/canvas.scm (<gnome-canvas-path-def>): Add class.
 
