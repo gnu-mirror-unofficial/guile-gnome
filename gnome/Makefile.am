@@ -2,10 +2,10 @@ include $(top_srcdir)/common.mk
 
 SUBDIRS = overrides
 
-guilegwmodule_DATA = 
+guilemodule_DATA = 
 
 if HAVE_LIBGNOME
-guilegwmodule_DATA += gnome.scm
+guilemodule_DATA += gnome.scm
 SUBDIRS += gw
 endif
 

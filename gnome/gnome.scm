@@ -28,7 +28,7 @@
   #:use-module (gnome gobject)
   #:use-module (gnome gw libgnome)
   #:use-module (oop goops)
-  #:use-module (gnome gobject gw-utils)
+  #:use-module (gnome gw support modules)
   #:export (gnome-program-init))
 
 (re-export-modules (gnome gw libgnome))
