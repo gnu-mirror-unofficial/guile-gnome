@@ -26,6 +26,8 @@
 
 (define-module (gnome gw glib-spec)
   #:use-module (oop goops)
+  #:use-module (srfi srfi-34)
+  #:use-module (srfi srfi-35)
   #:use-module (g-wrap)
   #:use-module (g-wrap util)
   #:use-module (g-wrap c-types)
@@ -163,37 +165,45 @@
 ;; if this succeeds, the glist-of typespec-options will be
 ;; (sub-typespec (caller-owned | callee-owned) [const])
 (define-method (make-typespec (type <glist-of-type>) (options <list>))
-  ;; FIXME: Use raise, not throw
   (if (null? options)
-      (throw 'gw:bad-typespec
-             "Missing glist-of options form." options))
+      (raise (condition
+              (&gw-bad-typespec
+               (type type) (options options)
+               (message "Missing glist-of options form.")))))
   (if (< (length options) 2)
-      (throw 'gw:bad-typespec
-             "glist-of options form must have at least 2 options."
-             options))
+      (raise
+       (condition
+        (&gw-bad-typespec
+         (type type) (options options)
+         (message "glist-of options form must have at least 2 options.")))))
   (let ((sub-typespec (car options))
         (glist-options (cdr options))
         (remainder (cdr options)))
     
     (if (not (is-a? sub-typespec <gw-typespec>))
-        (throw
-         'gw:bad-typespec
-         "glist-of options form must have a sub-typespec as first option."
-         (list sub-typespec options)))
+        (raise (condition
+                (&gw-bad-typespec
+                 (type type) (options options)
+                 (message "glist-of options form must have a sub-typespec as first option.")))))
+
     
     (set! remainder (delq 'const remainder))
     (if (and (memq 'caller-owned remainder)
              (memq 'callee-owned remainder))
-        (throw 'gw:bad-typespec
-               "Bad glist-of options form (caller and callee owned!)."
-               options))
+        (raise (condition
+                (&gw-bad-typespec
+                 (type type) (options options)
+                 (message
+                  "Bad glist-of options form (caller and callee owned!).")))))
     
     (if (not (or (memq 'caller-owned remainder)
                  (memq 'callee-owned remainder)))
-        (throw
-         'gw:bad-typespec
-         "Bad glist-of options form (must be caller or callee owned!)."
-         options))
+        (raise
+         (condition
+          (&gw-bad-typespec
+           (type type) (options options)
+           (message
+            "Bad glist-of options form (must be caller or callee owned!).")))))
     (set! remainder (delq 'caller-owned remainder))
     (set! remainder (delq 'callee-owned remainder))
     (if (null? remainder)
@@ -201,9 +211,12 @@
           #:type type
           #:sub-typespec sub-typespec
           #:options glist-options)
-        (throw 'gw:bad-typespec
-               "Bad glist-of options form - spurious options: "
-               remainder))))
+        (raise (condition
+                (&gw-bad-typespec
+                 (type type) (options options)
+                 (message
+                  (format #f "Bad glist-of options form - spurious options: ~S"
+                          remainder))))))))
 
 (define-method (unwrap-value-cg (glist-type <glist-of-type>)
                                 (value <gw-value>)
@@ -256,7 +269,7 @@
        "      " tmp-sub-item-c-var " = ( " sub-item-c-type ") "
        (string-append tmp-cursor "->data") ";\n"
        ;; FIMXE: had force #t here
-       (destruct-value-cg sub-type tmp-sub-item status-var) 
+       (destroy-value-cg sub-type tmp-sub-item status-var) 
        tmp-cursor " = " (string-append tmp-cursor "->next") ";\n"
        "    }\n"
        "    " func-prefix "_free(" c-var ");\n"
@@ -305,7 +318,7 @@
      "  " scm-var " = scm_reverse(" scm-var ");\n"
      "}\n")))
 
-(define-method (destruct-value-cg (glist-type <glist-of-type>)
+(define-method (destroy-value-cg (glist-type <glist-of-type>)
                                   (value <gw-value>)
                                   status-var)
   (let* ((c-var (var value))
@@ -328,7 +341,7 @@
      "    " sub-item-c-type " " tmp-sub-item-c-var ";\n"
      "    " tmp-sub-item-c-var " = ( " sub-item-c-type ") "
      (string-append tmp-cursor "->data") ";\n"
-     (destruct-value-cg sub-type tmp-sub-item status-var)
+     (destroy-value-cg sub-type tmp-sub-item status-var)
      tmp-cursor " = " (string-append tmp-cursor "->next") ";\n"
      "  }\n"
      (if (memq 'caller-owned options)
@@ -358,7 +371,7 @@
         (raise (condition
                 (&gw:bad-typespec (type type) (options options)))))))
     
-(define-method (destruct-value-cg (t <gerror-type>)
+(define-method (destroy-value-cg (t <gerror-type>)
                                   (value <gw-value>)
                                   status-var)
   (list "g_clear_error(&" (var value) ");\n"))
@@ -380,6 +393,6 @@
     (list
      "if (" c-name ") {\n" 
      "  SCM scm_gerror = scm_list_3(scm_ulong2num(" c-name "->domain), scm_ulong2num(" c-name "->code), scm_makfrom0str(" c-name "->message));\n"
-     (destruct-value-cg t value status-var)
+     (destroy-value-cg t value status-var)
      "  scm_throw(scm_str2symbol(\"g-error\"), scm_gerror);\n"
      "}\n")))

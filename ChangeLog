@@ -1,3 +1,10 @@
+2004-07-28  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/glib-spec.scm (make-typespec): Use raise instead of throw.
+
+	* gnome/gw/glib-spec.scm: Adapt for destruct-value-cg ->
+	destroy-value-cg G-Wrap API change.
+
 2004-07-18  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/glib-spec.scm (<glist-of-type>): Added #:type-cname and
