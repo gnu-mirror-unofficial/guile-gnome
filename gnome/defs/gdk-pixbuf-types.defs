@@ -1,3 +1,4 @@
+;; -*- scheme -*-
 ;; Enumerations and flags ...
 
 (define-enum PixbufAlphaMode
@@ -42,47 +43,6 @@
     '("tiles" "GDK_INTERP_TILES")
     '("bilinear" "GDK_INTERP_BILINEAR")
     '("hyper" "GDK_INTERP_HYPER")
-  )
-)
-
-(define-flags PixbufFormatFlags
-  (in-module "Gdk")
-  (c-name "GdkPixbufFormatFlags")
-  (gtype-id "GDK_TYPE_PIXBUF_FORMAT_FLAGS")
-  (values
-    '("e" "GDK_PIXBUF_FORMAT_WRITABLE")
-  )
-)
-
-(define-flags PixdataType
-  (in-module "Gdk")
-  (c-name "GdkPixdataType")
-  (gtype-id "GDK_TYPE_PIXDATA_TYPE")
-  (values
-    '("color-type-rgb" "GDK_PIXDATA_COLOR_TYPE_RGB")
-    '("color-type-rgba" "GDK_PIXDATA_COLOR_TYPE_RGBA")
-    '("color-type-mask" "GDK_PIXDATA_COLOR_TYPE_MASK")
-    '("sample-width-8" "GDK_PIXDATA_SAMPLE_WIDTH_8")
-    '("sample-width-mask" "GDK_PIXDATA_SAMPLE_WIDTH_MASK")
-    '("encoding-raw" "GDK_PIXDATA_ENCODING_RAW")
-    '("encoding-rle" "GDK_PIXDATA_ENCODING_RLE")
-    '("encoding-mask" "GDK_PIXDATA_ENCODING_MASK")
-  )
-)
-
-(define-flags PixdataDumpType
-  (in-module "Gdk")
-  (c-name "GdkPixdataDumpType")
-  (gtype-id "GDK_TYPE_PIXDATA_DUMP_TYPE")
-  (values
-    '("pixdata-stream" "GDK_PIXDATA_DUMP_PIXDATA_STREAM")
-    '("pixdata-struct" "GDK_PIXDATA_DUMP_PIXDATA_STRUCT")
-    '("macros" "GDK_PIXDATA_DUMP_MACROS")
-    '("gtypes" "GDK_PIXDATA_DUMP_GTYPES")
-    '("ctypes" "GDK_PIXDATA_DUMP_CTYPES")
-    '("static" "GDK_PIXDATA_DUMP_STATIC")
-    '("const" "GDK_PIXDATA_DUMP_CONST")
-    '("rle-decoder" "GDK_PIXDATA_DUMP_RLE_DECODER")
   )
 )
 

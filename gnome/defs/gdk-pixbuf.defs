@@ -1,4 +1,5 @@
-(import "gdk-pixbuf-types.defs") (import overrides)
+;; -*- scheme -*-
+(include "gdk-pixbuf-types.defs") (include overrides)
 
 ;; From /usr/include/gtk-2.0/gdk-pixbuf/gdk-pixbuf-animation.h
 
@@ -653,58 +654,5 @@
 
 ;; From /usr/include/gtk-2.0/gdk-pixbuf/gdk-pixbuf-marshal.h
 
-
-
-;; From /usr/include/gtk-2.0/gdk-pixbuf/gdk-pixdata.h
-
-(define-method serialize
-  (of-object "GdkPixdata")
-  (c-name "gdk_pixdata_serialize")
-  (return-type "guint8*")
-  (parameters
-    '("guint*" "stream_length_p")
-  )
-)
-
-(define-method deserialize
-  (of-object "GdkPixdata")
-  (c-name "gdk_pixdata_deserialize")
-  (return-type "gboolean")
-  (parameters
-    '("guint" "stream_length")
-    '("const-guint8*" "stream")
-    '("GError**" "error")
-  )
-)
-
-(define-method from_pixbuf
-  (of-object "GdkPixdata")
-  (c-name "gdk_pixdata_from_pixbuf")
-  (return-type "gpointer")
-  (parameters
-    '("const-GdkPixbuf*" "pixbuf")
-    '("gboolean" "use_rle")
-  )
-)
-
-(define-function gdk_pixbuf_from_pixdata
-  (c-name "gdk_pixbuf_from_pixdata")
-  (return-type "GdkPixbuf*")
-  (parameters
-    '("const-GdkPixdata*" "pixdata")
-    '("gboolean" "copy_pixels")
-    '("GError**" "error")
-  )
-)
-
-(define-method to_csource
-  (of-object "GdkPixdata")
-  (c-name "gdk_pixdata_to_csource")
-  (return-type "GString*")
-  (parameters
-    '("const-gchar*" "name")
-    '("GdkPixdataDumpType" "dump_type")
-  )
-)
 
 

@@ -1,0 +1,75 @@
+#!/usr/bin/guile -s
+!#
+;; Copyright (C) 2004 Free Software Foundation, Inc.
+;; GPL version 2 or later.
+
+(use-modules (ice-9 pretty-print))
+
+(define from-port #f)
+(define to-port #f)
+
+(define (usage)
+  (display "defs-diff FROM-FILE [TO-FILE]\n" (current-error-port))
+  (display "If there is no TO-FILE, defs-diff will read from stdin.\n")
+  (exit 1))
+
+(let ((args (program-arguments)))
+  (case (length args)
+    ((2) (set! to-port (current-input-port)))
+    ((3) (set! to-port (open-input-file (caddr args))))
+    (else (usage)))
+  (set! from-port (open-input-file (cadr args))))
+     
+(define (form-head=? f1 f2)
+  (and (list? f1) (list? f2)
+       (eq? (car f1) (car f2))
+       (cond ((null? (cdr f1)) (null? cdr f2))
+             ((null? (cdr f2)) #f)
+             (else (eq? (cadr f1) (cadr f2))))))
+
+;; assume form is either lists, strings, or symbols
+(define (form<? f1 f2)
+  (cond
+   ((and (symbol? f1) (symbol? f2))
+    (string<? (symbol->string f1) (symbol->string f2)))
+   ((and (string? f1) (string? f2))
+    (string<? f1 f2))
+   ((and (list? f1) (list? f2))
+    (cond ((null? f1) (not (null? f2)))
+          ((null? f2) #f)
+          (else (if (equal? (car f1) (car f2))
+                    (form<? (cdr f1) (cdr f2))
+                    (form<? (car f1) (car f2))))))
+   (else #f)))
+
+(define (collect-sexps port)
+  (let lp ((out '()))
+    (let ((form (read port)))
+      (if (eof-object? form)
+          (sort! (reverse! out) form<?)
+          (lp (cons form out))))))
+
+(define (form-changed? f1 f2)
+  (not (equal? f1 f2)))
+
+(let lp ((l1 (collect-sexps from-port))
+         (l2 (collect-sexps to-port)))
+  (cond ((and (null? l1) (null? l2))) ; finished
+        ((or (null? l2)
+             (form<? (car l1) (car l2))
+             (and (form-head=? (car l1) (car l2))
+                  (form-changed? (car l1) (car l2))))
+         (display "-")
+         (pretty-print (car l1))
+         (lp (cdr l1) l2))
+        ((or (null? l1)
+             (not (form-head=? (car l1) (car l2)))
+             (and (form-head=? (car l1) (car l2))
+                  (form-changed? (car l1) (car l2))))
+         (display "+")
+         (pretty-print (car l2))
+         (lp l1 (cdr l2)))
+        (else
+         (or (not (form-changed? (car l1) (car l2)))
+             (error "wingo is stupid"))
+         (lp (cdr l1) (cdr l2)))))

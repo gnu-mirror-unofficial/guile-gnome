@@ -1,5 +1,21 @@
 2004-10-06  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/defs/Makefile.am (gdk-pixbuf): Whoops, it's `include', not
+	`import'. Only pull in gdk-pixbuf*.h (i.e., not gdk-pixdata.h).
+
+	* gnome/defs/gdk-pixbuf-types.defs:
+	* gnome/defs/gdk-pixbuf.defs:
+	* gnome/defs/gdk-types.defs:
+	* gnome/defs/gdk.defs: Fix so all pixbuf stuff is only defined
+	once.
+	
+	* Makefile.am (SUBDIRS): Add tools/.
+
+	* tools/Makefile.am: New file.
+
+	* tools/defs-diff: New file, diffs two .defs files, optionally
+	reading the second file from stdin.
+
 	* gnome/defs/Makefile.am (gdk-pixbuf): Add rule to regenerate
 	gdk-pixbuf defs.
 

@@ -1,4 +1,4 @@
-SUBDIRS = gnome
+SUBDIRS = gnome tools
 
 EXTRA_DIST = ChangeLog NEWS README AUTHORS $(wildcard *.ac) \
 	guile-gnome-defs.pc.in guile-gnome-defs-uninstalled.pc.in

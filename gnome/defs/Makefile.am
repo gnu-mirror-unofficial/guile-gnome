@@ -42,7 +42,7 @@ EXTRA_DIST = $(guilemodule_DATA)
 
 gdk-pixbuf:
 	../../../h2def.py --types \
-	   /usr/include/gtk-2.0/gdk-pixbuf/*.h > gdk-pixbuf-types.defs
+	   /usr/include/gtk-2.0/gdk-pixbuf/gdk-pixbuf*.h > gdk-pixbuf-types.defs
 	../../../h2def.py --procs \
-	   --with-header='(import "gdk-pixbuf-types.defs") (import overrides)' \
-	   /usr/include/gtk-2.0/gdk-pixbuf/*.h > gdk-pixbuf.defs
+	   --with-header='(include "gdk-pixbuf-types.defs") (include overrides)' \
+	   /usr/include/gtk-2.0/gdk-pixbuf/gdk-pixbuf*.h > gdk-pixbuf.defs
