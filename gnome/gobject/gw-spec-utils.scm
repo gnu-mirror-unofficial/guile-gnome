@@ -41,7 +41,7 @@
   
   #:use-module (gnome gobject utils)
   
-  #:export (unwrap-null-check
+  #:export (unwrap-null-checked
             
             <gobject-wrapset-base>
             add-type-alias!
@@ -195,14 +195,17 @@
 
 (define-class <gobject-object-type> (<gobject-classed-pointer-type>))
 
-(define-method (unwrap-null-check (value <gw-value>)
-                                  status-var)
+(define-method (unwrap-null-checked (value <gw-value>)
+                                    status-var
+                                    code)
   (if-typespec-option
    value 'null-ok
    (list "if (SCM_FALSEP (" (scm-var value) "))\n"
-         "  " (var value) " = NULL;\n")
-   (list "if (SCM_FALSEP (" (scm-var value) "))\n"
-         `(gw:error ,status-var type ,(wrapped-var value)))))
+         "  " (var value) " = NULL;\n"
+         "else {\n"
+         code
+         "}\n")
+   code))
 
 (define-method (wrap-object! (ws <gobject-wrapset-base>) . args)
   (let ((type (apply make <gobject-object-type> args)))
@@ -217,11 +220,12 @@
   (let ((c-var (var value))
         (scm-var (scm-var value)))
     (list
-     (unwrap-null-check value status-var)
-     
-     "if (!(" c-var " = (" (c-type-name type) ") "
-     "scm_c_scm_to_gtype_instance (" scm-var ", " (gtype-id type) ")))\n"
-     `(gw:error ,status-var type ,(wrapped-var value)))))
+     (unwrap-null-checked
+      value status-var
+      (list
+       "if (!(" c-var " = (" (c-type-name type) ") "
+       "scm_c_scm_to_gtype_instance (" scm-var ", " (gtype-id type) ")))\n"
+       `(gw:error ,status-var type ,(wrapped-var value)))))))
 
 (define-method (wrap-value-cg (type <gobject-object-type>)
                               (value <gw-value>)
@@ -264,19 +268,21 @@
         (scm-var (scm-var value))
         (ctype (c-type-name type)))
      (list
-      (unwrap-null-check value status-var)
-      "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
-      "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " (gtype-id type) ")) {\n"
-      (if-typespec-option
-       value 'callee-owned
+      (unwrap-null-checked
+       value status-var
        (list
-        "  " c-var " = (" ctype ") g_value_dup_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n")
-       (list
-        "  " c-var " = (" ctype ") g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"))
-      " } else {\n"
-      "  " c-var " = NULL;\n"
-      `(gw:error ,status-var type ,scm-var)
-      "}\n")))
+        "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
+        "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " (gtype-id type) ")) {\n"
+        (if-typespec-option
+         value 'callee-owned
+         (list
+          "  " c-var " = (" ctype ") g_value_dup_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n")
+         (list
+          "  " c-var " = (" ctype ") g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"))
+        " } else {\n"
+        "  " c-var " = NULL;\n"
+        `(gw:error ,status-var type ,scm-var)
+        "}\n")))))
 
 (define-method (wrap-value-cg (type <gobject-boxed-type>)
                               (value <gw-value>)
@@ -306,15 +312,16 @@
                                 (value <gw-value>)
                                 status-var)
   ;; fixme: how to deal with consts?
-  (list
-   (unwrap-null-check value status-var)
-   "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
-   "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " (gtype-id type) "))\n"
-   "  " c-var " = (" ctype ") g_value_get_pointer ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
-   "else {\n"
-   "  " c-var " = NULL;\n"
-   `(gw:error ,status-var type ,scm-var)
-   "}\n"))
+  (unwrap-null-checked
+   value status-var
+   (list                    
+    "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
+    "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " (gtype-id type) "))\n"
+    "  " c-var " = (" ctype ") g_value_get_pointer ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
+    "else {\n"
+    "  " c-var " = NULL;\n"
+    `(gw:error ,status-var type ,scm-var)
+    "}\n")))
 
 (define-method (wrap-value-cg (type <gobject-pointer-type>)
                               (value <gw-value>)
@@ -343,13 +350,14 @@
                                 status-var)
   (let ((c-var (var value))
         (scm-var (scm-var value)))
-    (list
-     (unwrap-null-check value status-var)
-     c-var " = (" (c-type-name type) ") scm_c_scm_to_gtype_instance (" scm-var ", G_TYPE_OBJECT);\n"
-     
-     "if (!" c-var " || !g_type_is_a (G_TYPE_FROM_INSTANCE (" c-var "), " (gtype-id type) "))\n"
+    (unwrap-null-checked
+     value status-var
+     (list                    
+      c-var " = (" (c-type-name type) ") scm_c_scm_to_gtype_instance (" scm-var ", G_TYPE_OBJECT);\n"
+      
+      "if (!" c-var " || !g_type_is_a (G_TYPE_FROM_INSTANCE (" c-var "), " (gtype-id type) "))\n"
       `(gw:error ,status-var type ,(wrapped-var value)))
-    ))
+     )))
 
 (define-method (wrap-value-cg (type <gobject-interface-type>)
                               (value <gw-value>)
@@ -528,11 +536,12 @@
   (let ((c-var (var value))
         (scm-var (scm-var value))
         (ctype (c-type-name type)))
-    (list
-     (unwrap-null-check value status-var)
-     "if (g_type_is_a (SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype)), " (gtype-id type) "))\n"
-     "  " c-var " = (" ctype ") SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype_class));\n"
-     "else " `(gw:error ,status-var type ,scm-var))))
+    (unwrap-null-checked
+     value status-var
+     (list
+      "if (g_type_is_a (SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype)), " (gtype-id type) "))\n"
+      "  " c-var " = (" ctype ") SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype_class));\n"
+      "else " `(gw:error ,status-var type ,scm-var)))))
 
 (define-method (wrap-value-cg (type <gobject-class-type>)
                               (value <gw-value>)
