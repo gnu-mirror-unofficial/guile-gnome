@@ -1,3 +1,13 @@
+2004-09-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/Makefile.am: Install to the proper directory.
+
+	* examples/canvas.scm: Don't use gnome-canvas-item-new. Some style
+	cleanups.
+
+	* gnome/overrides/libgnomecanvas.defs: Merge with janneke's
+	version, with the affine wrappers and all.
+
 2004-09-12  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/canvas.scm: New file.

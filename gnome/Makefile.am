@@ -2,10 +2,10 @@ include $(top_srcdir)/common.mk
 
 SUBDIRS = overrides
 
-guilegwmodule_DATA = 
+guilemodule_DATA = 
 
 if HAVE_CANVAS
-guilegwmodule_DATA += canvas.scm
+guilemodule_DATA += canvas.scm
 SUBDIRS += gw
 endif
 

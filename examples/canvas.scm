@@ -7,7 +7,7 @@
 (debug-enable 'backtrace)
 
 (define (stderr string . rest)
-  (apply format (cons (current-error-port) (cons string rest)))
+  (apply format (current-error-port) string rest)
   (force-output (current-error-port)))
 
 (define canvas-width 300)
@@ -18,9 +18,9 @@
 
   (define (item-event item event . data)
     (case (gdk-event:type event)
-      ((enter-notify) (gobject-set-property item 'fill-color "white"))
-      ((leave-notify) (gobject-set-property item 'fill-color "black"))
-      ((2button-press) (gobject-set-property item 'fill-color "red")))
+      ((enter-notify) (set item 'fill-color "white"))
+      ((leave-notify) (set item 'fill-color "black"))
+      ((2button-press) (set item 'fill-color "red")))
     #t)
     
   (define (key-press-event item event . data)
@@ -38,11 +38,12 @@
 	 (vbox (make <gtk-vbox>))
 	 (canvas-root (root canvas)))
 
-    (gtk-container-add window vbox)
+    (add window vbox)
     (add vbox canvas)
 
-    (let* ((rect-type (gtype-class->type <gnome-canvas-rect>))
-	   (line (gnome-canvas-item-new canvas-root rect-type))
+    (let* ((line (make <gnome-canvas-rect> #:parent canvas-root
+                       #:x1 0.0 #:y1 0.0 #:x2 100.0 #:y2 9.0
+                       #:fill-color "black"))
     	   (text (make <gnome-canvas-text> #:parent canvas-root
 		       #:font "new century schoolbook, i bold 20"
 		       #:text "Guile GNOME"
@@ -51,20 +52,12 @@
 		       #:size-set #t
 		       #:fill-color "black"
 		       #:anchor 'west))
-	   (line-2 (make <gnome-canvas-rect> #:parent canvas-root)))
-      
-      (set line 'x1 0.0)
-      (set line 'y1 0.0)
-      (set line 'x2 100.0)
-      (set line 'y2 9.0)
-      (set line 'fill-color "black")
-      
-      (map (lambda (x) (apply gobject-set-property (cons line-2 x)))
-	   '((x1 0.0) (y1 30.0) (x2 100.0) (y2 39.0) (fill-color "black")))
+	   (line-2 (make <gnome-canvas-rect> #:parent canvas-root
+                         #:x1 0.0 #:y1 30.0 #:x2 100.0 #:y2 39.0
+                         #:fill-color "black")))
 
-      ;;(gtk-signal-connect text 'event item-event))
       (move text -40 55)
-      (gtype-instance-signal-connect text 'event item-event)
+      (connect text 'event item-event)
     
       (for-each (lambda (item)
 		  (move item -40 20)
@@ -72,12 +65,12 @@
        (list line line-2)))
 
     (add vbox button)
-    (gtype-instance-signal-connect button 'clicked
-				   (lambda (b) (gtk-main-quit)))
+    (connect button 'clicked
+             (lambda (b) (gtk-main-quit)))
 
-    (gtype-instance-signal-connect window 'key-press-event key-press-event)
+    (connect window 'key-press-event key-press-event)
     
-    (set-size-request button canvas-width 20)
+    ;; (set-size-request button canvas-width 20) ?
     (set-child-packing vbox button #f #f 0 'end)
     (set-size-request canvas canvas-width canvas-height)
     
