@@ -1,6 +1,282 @@
+2004-07-06  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/contrib/filtered-list.scm: New file, implements a tree
+	model whose backing store is a list. The model only exposes those
+	members of the list that pass a predicate. The predicate can be
+	set dynamically.
+
+	* gnome/gw/gdk-spec.scm (unwrap-value-cg): Report errors with the
+	wrapped var, not the scm var. This is for consistency with other
+	instances of gw:error -- I think it fixes a bug, but jan will tell
+	me :)
+
+	* gnome/contrib/delay-tree-model.scm: New file, implements a tree
+	model based on a delay tree. See (container delay-tree) in
+	guile-lib for details.
+
+2004-07-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk/graphical-repl.scm (gnome): Fix to use the right
+	module.
+
+	* gnome/contrib/texinfo-buffer.scm (gnome): Fix module name.
+
+2004-07-01  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gdk-spec.scm (unwrap-value-cg): Adapted for unwrap-null-check ->
+	unwrap-null-checked change.
+
+2004-06-30  Andy Wingo  <wingo@pobox.com>
+
+	* TODO: New file, for random thoughts.
+
+	* Merged changelogs, again. I need to star-merge with head now...
+
+	* gnome/gtk/gdk-event.scm: Fixed references to bogus g-wrap
+	modules.
+
+	* gnome/contrib/texinfo-buffer.scm: New file. Like what
+	(text structured gtk-text-buffer) was, but a lot cleaner now. (And
+	a lot shorter, incidentally.) Renders texinfo, expressed as SXML,
+	into a GtkTextBuffer.
+
+	* gnome/contrib/Makefile.am: New file.
+
+	* gnome/contrib/: New directory. The thought is for (gnome
+	contrib) to be a place where people can contribute useful
+	scheme-only library code based on the gnome modules.
+
+2004-06-22  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gtk-spec.scm, gdk-spec.scm: Fix for G-Wrap #:dependencies API
+	change.
+
+2004-06-21  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/gtk/gdk-event.scm (gdk-event-button:button):
+	(gdk-event-button:x):
+	(gdk-event-button:y):
+	(gdk-event-button:x-root):
+	(gdk-event-button:y-root): New function.
+       
 2004-05-26  Jan Nieuwenhuizen  <janneke@gnu.org>
 
 	* examples/canvas.scm: Remove.
 
-	* ChangeLog: New file.
+2004-05-22  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gtk.pc.in, guile-gtk-uninstalled.pc.in, files.ac: New
+	files.
+
+2004-05-19  Andy Wingo  <wingo@pobox.com>
+
+	* ChangeLog: All GTK+ changelogs have been merged, with non-gtk
+	items elided.
+
+	* gnome/gtk.scm (gnome): The main glib wrapper depends on gobject, so
+	put it after gobject to show times better. Also add goops to the
+	startup list. (This should eventually go away when (gnome gtk) is
+	really fast.)
+
+2004-05-17  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gtk-support.h, gtk-support.c (_wrap_gtk_dialog_get_vbox)
+	(_wrap_gtk_dialog_get_action_area): New functions.
+
+	* Makefile.am (guilegtkmodule_DATA): Fixed, now is
+	guilegwmodule_DATA.
+
+2004-04-02  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gtk.scm (on-get-flags): Provide default implementation returning 0.
+
+2004-02-01  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gtk.scm (<guile-gtk-tree-model>): Defined public as
+	<guile-gtk-generic-tree-model>.
+
+2004-01-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk.scm: Move functions from generics.scm here, as everyone uses
+	generics. Now re-exports ATK and Pango, using the new
+	re-export-module macro.
+
+2003-10-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk.scm: Import and re-export generics again, so we allow custom
+	generics to be written.
+
+2003-08-26  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gtk.scm: Removed import of (gnome gtk generics), as no longer needed.
+
+2003-05-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk.scm: import glib.scm.
+	
+2004-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (libguile_gnome_gw_*_la_LIBADD): Link all these to
+	the real gobject module, not the -gw- module.
+
+2004-04-18  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk/graphical-repl.scm (install-history-handlers): Fix the
+	long-standing bug in history-up and history-down. Load and save
+	history files like ice-9/readline.scm does. Position the cursor at
+	the end of the new text. Yay.
+	(initialize for the entry): Lots of simplifications. Don't know
+	why it was so complicated before.
+
+	* gnome/gw/Makefile.am (libguile_gnome_gw_gtk_la_CFLAGS): Temporarily
+	remove -DGTK_DISABLE_DEPRECATED until the trunk is synced to
+	Gtk+-2.4.
+
+	* gnome/gw/guile-gtk-tree-model.c (guile-gtk-generic-tree-model-get-flags):
+	Allow the implementation to return #f for on-get-flags.
+
+2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/Makefile.am (libguile_gnome_gw_gtk_la_CFLAGS): Added -O0, to
+	keep gcc from eating loads of memory.
+	
+	* gnome/gw/Makefile.am (libguile_gnome_gw_gtk_la_CFLAGS): Removed
+	-DGTK_DISABLE_DEPRECATED.
+
+2004-01-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gtk-support.c (_wrap_gtk_tree_model_iter_children): Return a
+	list of all children instead of the first sibling. Makes it
+	slower, but integrates better with higher-level procedures like
+	map and for-each.
+	(_wrap_gtk_tree_model_iter_parent): New wrapper.
+
+2004-01-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk/generics.scm: Removed. All functions added directly to gtk.scm.
+
+2003-12-13  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gtk/Makefile.am (GDKMODULES): Added gdk-event.scm.
+
+2003-12-03  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk/gdk-support.c (gdk_event_to_event_struct): Wrap button and
+	crossing events.
+
+2003-11-25  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gtk-support.[ch]: Added accessors for the ok and cancel buttons
+	in file selections. Note that this API will be deprecated in
+	Gtk+-2.4.
+
+2003-11-18  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/guile-gtk-tree-model.c (guile_gtk_generic_tree_model_get_value):
+	Call scm_c_scm_to_gvalue instead of rolling our own conversion --
+	allows gboxed-scm tree columns.
+
+2003-11-25  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gtk/generics.scm (<guile-gtk-tree-model>): defined public as
+	<guile-gtk-generic-tree-model>.
+
+	* gnome/gtk/Makefile.am (GTKMODULES): Added graphical-repl.scm.
+	(guilegtkmodule_DATA): Added generics.scm.
+
+	* gnome/gw/Makefile.am (GUILE_FLAGS): New variable, to be overriden via
+	make commandline.
+
+2003-11-02  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk/generics.scm (gtk-text-buffer-get-bounds): Remove, implemented
+	in C now.
+
+2003-10-29  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk/generics.scm (initialize): Override initialize for
+	<gtk-message-dialog>, because the API is broken (the constructor
+	takes varargs, and there's no property for the message text).
+
+2003-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gw-gdk-spec.scm: Fix GdkEvent wrappers to properly type the
+	pointers.
+
+2003-10-16  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk/generics.scm (gtk-text-buffer-create-tag): New function.
+	(create-tag): New generic function.
+	(gtk-text-buffer-get-bounds): New function.
+	(get-bounds): New generic function.
+
+	* gnome/gw/gtk-support.[ch]: New wrapper functions for GtkTextBuffer
+	operations, as well as GtkTreeSelection::get_selected.
+
+	* gnome/gw/gw-gtk-spec.scm: Add a custom type wrapper for GtkTreePath.
+	Ideally these should also be available to gvalue->scm, but that's
+	not the case now.
+
+2003-10-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk/generics.scm: New generic functions to support the Guile tree
+	model. 
+	(gtk-tree-or-list-store-set): Wrap the one-value
+	gtk-{list|tree}-store-set-value with a multi-arg equivalent.
+	(set): Wrap the preceding function as a method for generic set.
+	* gnome/gw/gtk-support.[ch]: New files.
+	* gnome/gw/guile-gtk-tree-model.[ch]: New files, implement a tree model
+	interface for guile.
+	
+2003-10-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk/generics.scm: Remove functions->methods-public.
+
+2003-08-26  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gtk/Makefile.am (GTKMODULES): Don't add generics.scm, as it's no
+	longer needed.
+
+2003-05-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk/event-repl.scm: New file, from gnome-guile 0.10.0.
+
+	* gnome/gw/gw-gdk-spec.scm: initialize gdk even when gtk isn't loaded.
+
+2003-05-03  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/*: Completely rewritten, see the release notes (0.5.0) for details.
+
+2002-11-08  Ariel Rios  <ariel@gnu.org>
+
+	* gnome/gw/converter.pl: Added. Creates gtk.scm file from the def file. At the moment
+	we only handle objects.
+
+	* gnome/gw/guile-gnome-gtk-aux.h: Added
+
+	* gnome/gw/guile-gnome-gtk.c: We now call the function generated from the aux file.
+
+	* gnome/gw/gtk.defs: Added
+
+2002-11-08  Ariel Rios <ariel@gnu.org>
+
+	* gnome/gw/guile-gnome-gtk.c (scm_init_gnome_gtk): Added more types so we can use them
+	in the sane Scheme world.
+
+	* gnome/gw/gtk.scm (gtktype:*): Added more gtktypes.
+	(<gtk-*>): Ditto for classes
+	(show-signals): Display signals. Helps with debug
+	(initialize): Gone
+
+2002-08-08  Ariel Rios  <ariel@gnu.org>
+	
+	* gnome/gw/guile-gnome-gtk.c (scm_init_gnome_gtk): get class ref for GTK_TYPE_WIDGET.
+	
+2001-09-06  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gw/gnome-gtk.gwp (%gtk-object-ref, %gtk-object-sink):
+	New private functions.
+
+	* gnome/gw/gtk.scm (initialize (<gtk-object>)):
+	Do a `(%gtk-object-ref obj) (%gtk-object-sink obj)'.
 

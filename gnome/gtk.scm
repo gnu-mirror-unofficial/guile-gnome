@@ -28,10 +28,12 @@
 
 (display "(gnome gtk): [")
 
-(display "glib ")
-(use-modules (gnome glib))
+(display "goops ")
+(use-modules (oop goops))
 (display "gobject ")
 (use-modules (gnome gobject) (gnome gobject generics))
+(display "glib ")
+(use-modules (gnome glib))
 (display "atk ")
 (use-modules (gnome gw atk))
 (display "pango ")
@@ -43,7 +45,6 @@
 (display "support")
 
 ;; Support explicit object destruction.
-(use-modules (oop goops) (gnome gobject gtype))
 (define-method (make-gobject-instance class type (instance <gtk-object>) initargs)
   (next-method)
   (connect instance 'destroy

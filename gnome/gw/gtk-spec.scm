@@ -35,8 +35,8 @@
 
 (define-class <gtk-wrapset> (<gobject-wrapset-base>)
   #:id 'gnome-gtk
-  #:dependencies '(standard gnome-glib gnome-gobject gnome-atk gnome-pango
-                   gnome-gdk))
+  #:dependencies '(standard gnome-glib gnome-gobject
+                   gnome-atk gnome-pango gnome-gdk))
 
 (define-method (global-declarations-cg (self <gtk-wrapset>))
   (list (next-method)

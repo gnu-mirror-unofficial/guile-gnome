@@ -102,7 +102,7 @@
       "  " c-var " = (" (c-type-name type)  ") g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
       "else {\n"
       "  " c-var " = NULL;\n"
-      `(gw:error ,status-var type ,scm-var)
+      `(gw:error ,status-var type ,(wrapped-var value))
       "}\n"))))
 
 (define-method (wrap-value-cg (type <gdk-event-type>)
