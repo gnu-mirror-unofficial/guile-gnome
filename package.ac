@@ -14,5 +14,7 @@ AC_SUBST(GUILE_GLIB_LIBS)
 AC_CONFIG_COMMANDS([glib/gnome/gobject/guile-gnome-gobject],
 [
  rm -f glib/gnome/gobject/guile-gnome-gobject
- ln -s `readlink -f $srcdir`/glib/gnome/gobject/ glib/gnome/gobject/guile-gnome-gobject
+ ln -s `cd $srcdir && pwd`/glib/gnome/gobject/ glib/gnome/gobject/guile-gnome-gobject
 ])
+
+record_check glib true

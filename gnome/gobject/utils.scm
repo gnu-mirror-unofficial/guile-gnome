@@ -29,7 +29,7 @@
   :use-module (ice-9 documentation)
   :export     (gtype-name->scheme-name-alist gtype-name->scheme-name
                gtype-name->class-name gtype-name->method-name
-               re-export-modules
+               re-export-modules GStudlyCapsExpand
                define-with-docs define-generic-with-docs))
 
 ;;;

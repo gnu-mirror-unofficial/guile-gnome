@@ -78,6 +78,10 @@ SCM scm_c_dup_gboxed_to_scm (GType boxed_type, gconstpointer boxed_value);
 SCM scm_c_gvalue_to_scm (const GValue *gvalue);
 GValue* scm_c_scm_to_gvalue (GType gtype, SCM scm);
 
+void scm_c_register_gvalue_wrappers (GType type,
+                                     SCM (*wrap) (const GValue*),
+                                     void (*unwrap) (SCM, GValue*));
+
 
 
 G_END_DECLS

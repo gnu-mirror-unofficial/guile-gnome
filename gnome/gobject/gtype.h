@@ -142,17 +142,17 @@ SCM scm_c_gtype_lookup_class (GType gtype);
 SCM scm_c_gtype_to_class (GType gtype);
 
 /* GTypeInstance */
-SCM scm_c_make_gtype_instance (GTypeInstance *instance);
+SCM scm_c_make_gtype_instance (gpointer ginstance);
 gboolean scm_c_gtype_instance_is_a_p (SCM instance, GType gtype);
-GTypeInstance* scm_c_scm_to_gtype_instance (SCM instance, GType gtype);
-SCM scm_c_gtype_instance_to_scm (GTypeInstance *ginstance);
+gpointer scm_c_scm_to_gtype_instance (SCM instance, GType gtype);
+SCM scm_c_gtype_instance_to_scm (gpointer ginstance);
 
 /* Misc */
 void scm_c_define_and_export_gtype_x (GType type);
 void scm_c_gruntime_error (const char *subr, const char *message, SCM args);
 void guile_gobject_log_handler (const gchar *log_domain, GLogLevelFlags log_level,
                                 const gchar *message, gpointer user_data);
-void scm_register_gtype_instance_sinkfunc (GType type, void (*sinkfunc) (GTypeInstance *));
+void scm_register_gtype_instance_sinkfunc (GType type, void (*sinkfunc) (gpointer));
 
 
 G_END_DECLS
