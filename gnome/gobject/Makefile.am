@@ -1,10 +1,8 @@
+include $(top_srcdir)/common.mk
+
+GUILE_SNARF_CFLAGS += $(GOBJECT_CFLAGS)
+
 schemelibdir = $(pkgdatadir)/$(VERSION)
-
-AM_CFLAGS = -I. -I$(srcdir) $(WARN_CFLAGS) $(DEBUG_CFLAGS)
-
-# fixme: what is this for?
-ETAGS_ARGS = --regex='/SCM_\(GLOBAL_\)?\(G?PROC\|G?PROC1\|SYMBOL\|VCELL\|CONST_LONG\).*\"\([^\"]\)*\"/\3/' \
-   --regex='/[ \t]*SCM_[G]?DEFINE1?[ \t]*(\([^,]*\),[^,]*/\1/'
 
 guilegobjectmoduledir = $(datadir)/guile/gnome/gobject
 
@@ -20,7 +18,7 @@ guilegobjectmodule_DATA = primitives.scm gw-gobject-spec.scm gw-gobject.scm \
 # This library and its headers can be accessed via pkg-config (the
 # .pc.in files).
 #
-# libguile-gnome-gw-gobject, produced by g-wrap, which supports the
+# libgw-guile-gnome-gobject, produced by g-wrap, which supports the
 # g-wrap type wrappings for gobject-related types. This one is not
 # used by the scheme<->gobject code; it's only there to support other
 # wrapsets.
@@ -52,9 +50,6 @@ libguile_gnome_gobject_la_LDFLAGS = \
 	-export-dynamic
 
 pkginclude_HEADERS = guile-gnome-gobject.h guile-gnome-gobject-primitives.h
-
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = guile-gobject.pc
 
 # libgw-guile-gnome-gobject (g-wrap support)
 
@@ -93,42 +88,6 @@ DOT_DOC_FILES = \
 	guile-gnome-gobject.doc			\
 	guile-gnome-gobject-primitives.doc
 
-SUFFIXES = .x .doc
-
-GUILE_SNARF_CFLAGS = $(DEFS) $(AM_CFLAGS) $(GUILE_CFLAGS) $(GOBJECT_CFLAGS) \
-		     $(G_WRAP_CFLAGS)
-
-# For overriding from the command line (e.g. --debug)
-GUILE_FLAGS = 
-
-.c.x:
-	guile-snarf $(GUILE_SNARF_CFLAGS) $< > $@ \
-	|| { rm $@; false; }
-.c.doc:
-	-(guile-func-name-check $<)
-	(guile-snarf-docs $(GUILE_SNARF_CFLAGS) $< | \
-	guile_filter_doc_snarfage --filter-snarfage) > $@ || { rm $@; false; }
-
-gw-gobject.scm guile-gnome-gw-gobject.c: gw-gobject-spec.scm
-	guile $(GUILE_FLAGS) -c \
-	  "(set! %load-path (cons \"${G_WRAP_MODULE_DIR}\" %load-path)) \
-	   (set! %load-path (cons \"${top_srcdir}\" %load-path)) \
-	   (use-modules (g-wrap)) \
-	   (use-modules (g-wrap guile)) \
-	   (use-modules (gnome gobject gw-gobject-spec)) \
-	   (generate-wrapset guile 'gnome-gobject \"guile-gnome-gw-gobject\")"
-	mv guile-gnome-gw-gobject.scm gw-gobject.scm
-
-gw-glib.scm guile-gnome-gw-glib.c: gw-glib-spec.scm
-	guile $(GUILE_FLAGS) -c \
-	  "(set! %load-path (cons \"${G_WRAP_MODULE_DIR}\" %load-path)) \
-	   (set! %load-path (cons \"${top_srcdir}\" %load-path)) \
-	   (use-modules (g-wrap)) \
-	   (use-modules (g-wrap guile)) \
-	   (use-modules (gnome gobject gw-glib-spec)) \
-	   (generate-wrapset guile 'gnome-glib \"guile-gnome-gw-glib\")"
-	mv guile-gnome-gw-glib.scm gw-glib.scm
-
 guile-gnome-gobject.texi: $(DOT_DOC_FILES)
 	cat $(DOT_DOC_FILES) | guile-snarf-docs-texi > $@ \
 	|| { rm $@; false; }
@@ -154,8 +113,12 @@ DISTCLEANFILES = $(CLEANFILES)
 
 EXTRA_DIST = primitives.scm gw-gobject-spec.scm \
 	gw-glib-spec.scm gw-spec-utils.scm gw-utils.scm \
-	defs-support.scm event-repl.scm generics.scm \
-	guile-gobject.pc.in guile-gobject-uninstalled.pc.in
+	defs-support.scm event-repl.scm generics.scm
 
 dist-hook:
 	for file in $(DISTCLEANFILES); do rm -f $(distdir)/$$file; done
+
+# fixme: what is this for?
+ETAGS_ARGS = --regex='/SCM_\(GLOBAL_\)?\(G?PROC\|G?PROC1\|SYMBOL\|VCELL\|CONST_LONG\).*\"\([^\"]\)*\"/\3/' \
+   --regex='/[ \t]*SCM_[G]?DEFINE1?[ \t]*(\([^,]*\),[^,]*/\1/'
+

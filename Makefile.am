@@ -1,5 +1,6 @@
-SUBDIRS = gnome test-suite demos examples 
+SUBDIRS = gnome test-suite examples 
 
-EXTRA_DIST = RELEASE-NOTES-0.2.0.txt RELEASE-NOTES-0.5.0.txt dev-environ h2def.py 
+EXTRA_DIST = guile-gobject.pc.in guile-gobject-uninstalled.pc
 
-DISTCLEANFILES = stamp-h1
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = guile-gobject.pc

@@ -100,7 +100,7 @@
   (add-type! ws (make <glist-of-type> #:name 'glist-of))
   (add-type-alias! ws "GList*" 'glist-of)
   
-  (load-defs ws "gnome/defs/glib.defs"))
+  (load-defs ws "glib.defs"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ((glist-of (<gtk-window> gw:const) gw:const) win-list)

@@ -1,1 +1,1 @@
-EXTRA_DIST=gtk gobject
+EXTRA_DIST = example-1.scm main-loop.scm
