@@ -39,9 +39,36 @@
 (define-method (initialize (ws <gconf-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gw gconf) initargs)))
   
+  (add-type! ws (make <gconf-value-type>
+                  #:gtype-id "_GCONF_TYPE_VALUE" 
+                  #:ctype "GConfValue"
+                  #:c-type-name "GConfValue*"
+                  #:c-const-type-name "const GConfValue*"
+                  #:ffspec 'pointer
+                  #:wrapped "Custom"))
+  (add-type-alias! ws "GConfValue*" '<g-conf-value>)
+
+  (add-type-alias! ws "GConfUnsetFlags" 'unsigned-int)
+
   (load-defs-with-overrides ws "gnome/defs/gconf.defs"))
 
 (define-method (global-declarations-cg (self <gconf-wrapset>))
   (list (next-method)
         "#include <gconf/gconf.h>\n"
+        "#include <gconf/gconf-client.h>\n"
+        "#include <gconf/gconf-changeset.h>\n"
         "#include \"gconf-support.h\"\n"))
+
+(define-class <gconf-value-type> (<gobject-classed-pointer-type>))
+(define-method (unwrap-value-cg (type <gconf-value-type>)
+                                (value <gw-value>)
+                                status-var)
+  (let ((c-var (var value))
+        (scm-var (scm-var value)))
+    (list c-var " = scm_c_scm_to_gconf_value (" scm-var ");\n")))
+(define-method (wrap-value-cg (type <gconf-value-type>)
+                              (value <gw-value>)
+                              status-var)
+  (let ((c-var (var value))
+        (scm-var (scm-var value)))
+    (list scm-var " = scm_c_gconf_value_to_scm (" c-var ");\n")))

@@ -1,4 +1,41 @@
+2004-10-10  Andy Wingo  <wingo@pobox.com>
+
+	* AUTHORS: Updated.
+
+	* gnome/gw/gconf-spec.scm: Add custom wrapper for GConfValue. 
+	(global-declarations-cg): Pull in the GConfClient headers.
+	(unwrap-value-cg, wrap-value-cg): GConfValue wrappers..
+	Alias GConfUnsetFlags as unsigned-int.
+
+	* gnome/gw/gconf-support.h: Define _GCONF_TYPE_SCHEMA,
+	_GCONF_TYPE_VALUE.
+
+	* gnome/gw/gconf-support.c (_gconf_schema_get_type) 
+	(_gconf_value_get_type): GType registration functions.
+	(scm_c_gconf_value_to_scm, sniff_list_type) 
+	(scm_c_scm_to_gconf_value): Helpers for conversion to and from
+	GConfValue.
+	(notify_proc, _wrap_gconf_client_notify_add): Custom wrapper for
+	add_notify. 
+
+	* gnome/overrides/gconf.defs-type-ignores: Fix all GType ids, it
+	seems h2defs chokes for gconf.
+
+	* gnome/overrides/gconf.defs (notify_add): Add notify_add wrapper.
+	(Schema): Define GConfSchema as a boxed type.
+	(gconf-client-all-entries, gconf-client-all-dirs)
+	(gconf-engine-all-entries, gconf-engine-all-dirs): Specify list
+	subtypes.
+	Ignore all type-specific get/set functions, because GConfValue is
+	represented naturally and unambiguously with native scheme values.
+	Ignore the listeners API for now, it requires custom wrappers.
+	Ignore deprecated/internal routines.
+
+	* gnome/gconf.scm: Don't pull in gtk.
+
 2004-10-09  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Check the right pkg-config file.
 
 	* Initial import, via guile-gnome-template's `templatize'.
 

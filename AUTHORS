@@ -3,12 +3,12 @@ Maintainers of GNU Software" (maintain.texi), the section called
 "Recording Changes".
 
 
-<Name>:
+Andy Wingo:
 In the directory gnome/gw, wrote:
     gconf-spec.scm gconf-support.c gconf-support.h
 In the directory gnome/overrides, wrote:
-    gconf.defs
+    gconf.defs gconf.defs-type-overrides
 In the directory gnome, wrote:
     gconf.scm
 In the directory examples/gconf, wrote:
-    ...
+    [nothing yet]

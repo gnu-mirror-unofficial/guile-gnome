@@ -25,6 +25,83 @@
 ;;
 ;;; Code:
 
+(define-boxed Schema
+  (c-name "GConfSchema")
+  (gtype-id "_GCONF_TYPE_SCHEMA"))
+
+(define-method notify_add
+  (of-object "GConfClient")
+  (c-name "_wrap_gconf_client_notify_add")
+  (overrides "gconf_client_notify_add")
+  (return-type "guint")
+  (parameters
+   '("const-gchar*" "namespace_section")
+   '("SCM" "proc")
+   '("GError**" "err")))
+
+(define-method all_entries
+  (of-object "GConfClient")
+  (c-name "gconf_client_all_entries")
+  (overrides "gconf_client_all_entries")
+  (return-type "GSList*-of-GConfEntry*")
+  (parameters
+    '("const-gchar*" "dir")
+    '("GError**" "err")
+  )
+)
+
+(define-method all_dirs
+  (of-object "GConfClient")
+  (c-name "gconf_client_all_dirs")
+  (overrides "gconf_client_all_dirs")
+  (return-type "GSList*-of-gchar*")
+  (parameters
+    '("const-gchar*" "dir")
+    '("GError**" "err")
+  )
+)
+
+(define-method all_entries
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_all_entries") 
+  (overrides "gconf_engine_all_entries") 
+  (return-type "GSList*-of-GConfEntry*")
+  (parameters
+    '("const-gchar*" "dir")
+    '("GError**" "err")
+  )
+)
+
+(define-method all_dirs
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_all_dirs")
+  (overrides "gconf_engine_all_dirs")
+  (return-type "GSList*-of-gchar*")
+  (parameters
+    '("const-gchar*" "dir")
+    '("GError**" "err")
+  )
+)
+
+(ignore-glob "*_set_int"
+             "*_set_bool"
+             "*_set_string"
+             "*_set_float"
+             "*_set_schema"
+             "*_set_list"
+             "*_set_list_nocopy"
+             "*_set_pair"
+             "*_get_int"
+             "*_get_bool"
+             "*_get_string"
+             "*_get_float"
+             "*_get_schema"
+             "*_get_list"
+             "*_get_pair"
+
+             "gconf_listeners_*")
+
+
 (ignore-glob  "*_get_type"
               "_*"
               "*_ref"
@@ -36,3 +113,14 @@
               "*_setv"
               "*_foreach"
               "*_valist")
+
+(ignore "gconf_engine_get_for_addresses"
+        "gconf_engine_get_local_for_addresses"
+        "gconf_engine_change_set_from_currentv"
+        "gconf_client_change_set_from_currentv"
+        "gconf_engine_get_local"
+        "gconf_clear_cache"
+        "gconf_synchronous_sync"
+        "gconf_engine_get_full"
+        "gconf_preinit"
+        "gconf_postinit")

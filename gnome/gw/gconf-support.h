@@ -22,6 +22,21 @@
  */
 
 #include <gconf/gconf.h>
+#include <gconf/gconf-client.h>
 #include <libguile.h>
 #include "guile-gnome-gobject.h"
+
+#define _GCONF_TYPE_SCHEMA (_gconf_schema_get_type ())
+#define _GCONF_TYPE_VALUE (_gconf_value_get_type ())
+
+GType _gconf_schema_get_type (void);
+
+GType _gconf_value_get_type (void);
+
+SCM scm_c_gconf_value_to_scm (const GConfValue *value);
+GConfValue *scm_c_scm_to_gconf_value (SCM value);
+
+guint _wrap_gconf_client_notify_add (GConfClient *client,
+                                     const gchar *namespace_section,
+                                     SCM proc, GError **err);
 
