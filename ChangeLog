@@ -1,4 +1,10 @@
+2004-07-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/contrib/texinfo-buffer.scm (gnome): Fix module name.
+
 2004-06-30  Andy Wingo  <wingo@pobox.com>
+
+	* TODO: New file, for random thoughts.
 
 	* Merged changelogs, again. I need to star-merge with head now...
 

@@ -1,0 +1,12 @@
+* Change private representation of events
+  
+Using a struct is too brittle (you have to worry about
+vtable-offset-user, have to create new struct types, etc). We should use
+a standard type. An alist would be nice, but vectors might be noticeably
+more efficient. Dunno.
+
+* Add a toplevel GDK module
+
+GDK isn't finished, of course, and it won't be until someone writes an
+app that uses it.
+

@@ -24,7 +24,7 @@
 ;;        
 ;;; Code:
 
-(define-module (gnome gtk texinfo-buffer)
+(define-module (gnome contrib texinfo-buffer)
   :use-module (sxml texinfo)
   :use-module (sxml transform)
   :use-module (scheme documentation)
