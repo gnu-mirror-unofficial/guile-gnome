@@ -1,3 +1,62 @@
+2004-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk.scm (create-tag): Don't specialize on the type of
+	tag-name, it could be #f for anonymous tags. Thanks to Patrick
+	Bernaud for the report.
+
+	* gnome/overrides/gdk.defs-type-ignores: New file. Ignore
+	gdk-color and gdk-rectangle, for which we have special wrappers.
+
+	* gnome/overrides/Makefile.am (module_DATA): Use a wildcard.
+
+	* AUTHORS: Updated.
+	
+	* examples/scribble.scm: New file, from Marcello Mathias
+	Herreshoff.
+
+	* gnome/gw/gtk-spec.scm ("GtkTreePath"): Report gw:error with the
+	(wrapped-var value), not the scm-var. Fixes a seggie. Thanks to
+	Puneet Goyal for the report. Also, use unwrap-null-checked.
+
+	* gnome/overrides/gtk.defs:
+	* gnome/gw/gtk-support.h: 
+	* gnome/gw/gtk-support.c (gtk_style_get_white_gc) 
+	(gtk_style_get_black_gc): New procedures.
+	("gtk-tree-store-new"): Be like gtk-list-store-new, and take
+	classes or gtypes.
+
+2004-11-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gtk-support.c (gtk_widget_get_allocation) 
+	(gtk_widget_get_window, gtk_style_get_bg_gc, gtk_style_get_fg_gc):
+	* gnome/overrides/gtk.defs (get-allocation, get-window) 
+	(get-bg-gc, get-fg-gc): New wrappers.
+
+	* gnome/gw/gdk-support.h:
+	* gnome/gw/gdk-support.h ("%scm->gdk-rectangle") 
+	(scm_gdk_color_to_scm): New procedures.
+
+	* gnome/overrides/gtk-customs.defs (add-events, set-events): New
+	wrappers: the guint parameter is really a GdkEventMask.
+
+	* gnome/gtk/gdk-event.scm (define-gdk-event-accessor): New macro,
+	encapsulates all of the crap involved in making an accessor to a
+	gdk-event field. Converted all gdk-event-FOO:BAR procs to use this
+	macro, saved a lot of lines of code.
+	(motion-notify): Defined accessors for modifiers, x, and y.
+
+	* gnome/gw/gdk-spec.scm ("GdkRectangle"): Added custom wrapper.
+	GdkRectangle is a 4-element vector on the scm side now.
+
+	* gnome/gw/gdk-support.c:
+	* gnome/gw/gdk-support.h (scm_gdk_rectangle_to_scm) 
+	(scm_gdk_rectangle_to_scm): New procedures.
+
+2004-11-07  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (all-local): Only make/install the pkg-config files
+	if we are building the wrapset.
+
 2004-10-28  Andy Wingo  <wingo@pobox.com>
 
 	* guile-gnome-gtk.pc.in (Requires): 

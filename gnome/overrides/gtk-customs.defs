@@ -2361,6 +2361,14 @@
     '("GtkAdjustment*" "adjustment" (null-ok))))
 
 (define-method
+  add-events
+  (of-object "GtkWidget")
+  (c-name "gtk_widget_add_events")
+  (overrides "gtk_widget_add_events")
+  (return-type "void")
+  (parameters '("GdkEventMask" "events")))
+
+(define-method
   create_pango_context
   (of-object "GtkWidget")
   (c-name "gtk_widget_create_pango_context")
@@ -2369,13 +2377,12 @@
   (return-type "PangoContext*"))
 
 (define-method
-  create_pango_layout
+  set-events
   (of-object "GtkWidget")
-  (c-name "gtk_widget_create_pango_layout")
-  (overrides "gtk_widget_create_pango_layout")
-  (caller-owns-return #t)
-  (return-type "PangoLayout*")
-  (parameters '("const-gchar*" "text")))
+  (c-name "gtk_widget_set_events")
+  (overrides "gtk_widget_set_events")
+  (return-type "void")
+  (parameters '("GdkEventMask" "events")))
 
 (define-method
   list_accel_closures

@@ -49,43 +49,23 @@
   (list (next-method)
         "gdk_init (NULL, NULL);\n"))
   
-(define-method (initialize (ws <gdk-wrapset>) initargs)
-  (next-method ws (cons #:module (cons '(gnome gw gdk) initargs)))
-  
-  (add-type-alias! ws "GdkWChar" 'unsigned-long)
-  
-  (for-each
-   (lambda (ctype)
-     (let ((event (make <gdk-event-type>
-                    #:ctype ctype
-                    #:c-type-name (string-append ctype "*"))))
-       (add-type! ws event)
-       (add-type-alias! ws (string-append ctype "*") (name event))))
-   '("GdkEventAny"
-     "GdkEventKey"
-     "GdkEventButton"
-     "GdkEventScroll"
-     "GdkEventMotion"
-     "GdkEventExpose"
-     "GdkEventVisibility"
-     "GdkEventCrossing"
-     "GdkEventFocus"
-     "GdkEventConfigure"
-     "GdkEventProperty"
-     "GdkEventSelection"
-     "GdkEventDND"
-     "GdkEventProximity"
-     "GdkEventClient"
-     "GdkEventNoExpose"
-     "GdkEventWindowState"
-     "GdkEventSetting"))
+(custom-wrap-decls
+ "GdkRectangle"
+ ;; unwrap
+ (unwrap-null-checked
+  value status-var
+  (list c-var " = scm_scm_to_gdk_rectangle (" scm-var ");\n"))
+ ;; wrap
+ (list scm-var " = " c-var " ? scm_gdk_rectangle_to_scm (" c-var ") : SCM_BOOL_F;\n"))
 
-  ;; a hack now -- dunno what to do with this...
-  (add-type-alias! ws "GdkNativeWindow" 'unsigned-long)
-  
-  (load-defs-with-overrides ws "gnome/defs/gdk-pixbuf.defs")
-  (load-defs-with-overrides ws "gnome/defs/gdk.defs"))
-
+(custom-wrap-decls
+ "GdkColor"
+ ;; unwrap
+ (unwrap-null-checked
+  value status-var
+  (list c-var " = scm_scm_to_gdk_color (" scm-var ");\n"))
+ ;; wrap
+ (list scm-var " = " c-var " ? scm_gdk_color_to_scm (" c-var ") : SCM_BOOL_F;\n"))
 
 (define-class <gdk-event-type> (<gobject-classed-pointer-type>))
 
@@ -120,4 +100,44 @@
      "  " scm-var " = scm_c_make_gvalue (GDK_TYPE_EVENT);\n"
      "  g_value_set_boxed ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n"
      "}\n")))
+
+(define-method (initialize (ws <gdk-wrapset>) initargs)
+  (next-method ws (cons #:module (cons '(gnome gw gdk) initargs)))
+  
+  (add-type-alias! ws "GdkWChar" 'unsigned-long)
+  
+  (for-each
+   (lambda (ctype)
+     (let ((event (make <gdk-event-type>
+                    #:ctype ctype
+                    #:c-type-name (string-append ctype "*"))))
+       (add-type! ws event)
+       (add-type-alias! ws (string-append ctype "*") (name event))))
+   '("GdkEventAny"
+     "GdkEventKey"
+     "GdkEventButton"
+     "GdkEventScroll"
+     "GdkEventMotion"
+     "GdkEventExpose"
+     "GdkEventVisibility"
+     "GdkEventCrossing"
+     "GdkEventFocus"
+     "GdkEventConfigure"
+     "GdkEventProperty"
+     "GdkEventSelection"
+     "GdkEventDND"
+     "GdkEventProximity"
+     "GdkEventClient"
+     "GdkEventNoExpose"
+     "GdkEventWindowState"
+     "GdkEventSetting"))
+
+  ;; a hack now -- dunno what to do with this...
+  (add-type-alias! ws "GdkNativeWindow" 'unsigned-long)
+  
+  (wrap-custom-pointer! "GdkRectangle")
+  (wrap-custom-pointer! "GdkColor")
+
+  (load-defs-with-overrides ws "gnome/defs/gdk-pixbuf.defs")
+  (load-defs-with-overrides ws "gnome/defs/gdk.defs"))
 

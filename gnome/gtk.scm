@@ -113,7 +113,7 @@
           (begin
             (set tag (car props) (cadr props))
             (loop (cddr props)))))))
-(define-method (create-tag (buffer <gtk-text-buffer>) (tag-name <string>) . properties)
+(define-method (create-tag (buffer <gtk-text-buffer>) tag-name . properties)
   (apply gtk-text-buffer-create-tag buffer tag-name properties))
 (export create-tag)
 

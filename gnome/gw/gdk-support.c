@@ -189,3 +189,68 @@ gdk_event_to_vector (GdkEvent *event)
     }
 }
 
+SCM
+scm_gdk_rectangle_to_scm (GdkRectangle *rect)
+{
+    SCM ret = scm_c_make_vector (4, SCM_BOOL_F);
+
+    scm_vector_set_x (ret, SCM_MAKINUM(0), scm_int2num (rect->x));
+    scm_vector_set_x (ret, SCM_MAKINUM(1), scm_int2num (rect->y));
+    scm_vector_set_x (ret, SCM_MAKINUM(2), scm_int2num (rect->width));
+    scm_vector_set_x (ret, SCM_MAKINUM(3), scm_int2num (rect->height));
+
+    return ret;
+}
+
+GdkRectangle*
+scm_scm_to_gdk_rectangle (SCM scm)
+#define FUNC_NAME "%scm->gdk-rectangle"
+{
+    GdkRectangle *ret = g_new0 (GdkRectangle, 1);
+    
+#define GET_VINT(v,i) \
+  scm_num2int (scm_vector_ref (v, SCM_MAKINUM(i)), 0, FUNC_NAME)
+
+    ret->x = GET_VINT (scm, 0);
+    ret->y = GET_VINT (scm, 1);
+    ret->width = GET_VINT (scm, 2);
+    ret->height = GET_VINT (scm, 3);
+
+    return ret;
+}
+#undef FUNC_NAME
+
+SCM
+scm_gdk_color_to_scm (GdkColor *c)
+{
+    SCM ret = scm_c_make_vector (3, SCM_BOOL_F);
+
+    scm_vector_set_x (ret, SCM_MAKINUM(0), scm_ushort2num (c->red));
+    scm_vector_set_x (ret, SCM_MAKINUM(1), scm_ushort2num (c->green));
+    scm_vector_set_x (ret, SCM_MAKINUM(2), scm_ushort2num (c->blue));
+
+    return ret;
+}
+
+GdkColor*
+scm_scm_to_gdk_color (SCM scm)
+#define FUNC_NAME "%scm->gdk-rectangle"
+{
+    GdkColor *ret = g_new0 (GdkColor, 1);
+    
+    if (SCM_STRINGP (scm)) {
+        if (gdk_color_parse (SCM_STRING_CHARS (scm), ret))
+            return ret;
+        /* FIXME: give a proper error */
+    }
+    
+#define GET_VUSHORT(v,i) \
+  scm_num2ushort (scm_vector_ref (v, SCM_MAKINUM(i)), 0, FUNC_NAME)
+
+    ret->red = GET_VUSHORT (scm, 0);
+    ret->green = GET_VUSHORT (scm, 1);
+    ret->blue = GET_VUSHORT (scm, 2);
+
+    return ret;
+}
+#undef FUNC_NAME

@@ -66,6 +66,11 @@ gchar* _gtk_selection_data_get_as_string (GtkSelectionData *data);
 void _wrap_gtk_stock_add (SCM items);
 SCM _wrap_gtk_stock_lookup (const gchar *stock_id);
 
+GdkGC* gtk_style_get_fg_gc (GtkStyle *style, GtkStateType state);
+GdkGC* gtk_style_get_bg_gc (GtkStyle *style, GtkStateType state);
+GdkGC* gtk_style_get_white_gc (GtkStyle *style);
+GdkGC* gtk_style_get_black_gc (GtkStyle *style);
+
 void _wrap_gtk_text_buffer_set_text (GtkTextBuffer *buf, SCM stext);
 void _wrap_gtk_text_buffer_insert (GtkTextBuffer *buf, GtkTextIter* iter, SCM stext);
 void _wrap_gtk_text_buffer_insert_at_cursor (GtkTextBuffer *buf, SCM stext);
@@ -105,5 +110,6 @@ GtkTreeIter* _wrap_gtk_tree_store_append (GtkTreeStore *store, GtkTreeIter *pare
 
 void _wrap_gtk_tree_view_column_set_cell_data_func (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell_renderer, SCM proc);
 
+GdkWindow* gtk_widget_get_window (GtkWidget *widget);
+GdkRectangle* gtk_widget_get_allocation (GtkWidget *widget);
 void _wrap_gtk_drag_dest_set (GtkWidget *widget, GtkDestDefaults flags, const GList *types, GdkDragAction actions);
-

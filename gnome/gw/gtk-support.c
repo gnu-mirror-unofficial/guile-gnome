@@ -810,10 +810,19 @@ _wrap_gtk_tree_store_new (SCM col_types)
     
     SCM_VALIDATE_NONEMPTYLIST (1, col_types);
     len = scm_ilength (col_types);
-    col_gtypes = g_new (GType, len); /* fixme: if there's an error, this memory
-                                      * is leaked */
+    col_gtypes = g_new (GType, len);
+
     for (i=0; i<len; i++) {
-        SCM_VALIDATE_GTYPE_COPY (i, SCM_CAR (col_types), col_gtypes[i]);
+        SCM v = SCM_CAR (col_types);
+        if (SCM_GTYPEP (v))
+            col_gtypes[i] = (GType)SCM_SMOB_DATA (v);
+        else if (SCM_GTYPE_CLASSP (v))
+            col_gtypes[i] = (GType)SCM_SMOB_DATA (scm_slot_ref
+                                                  (v, scm_str2symbol ("gtype")));
+        else {
+            g_free (col_gtypes);
+            scm_wrong_type_arg (FUNC_NAME, 1, v);
+        }
         col_types = SCM_CDR (col_types);
     }
     
@@ -929,4 +938,42 @@ _wrap_gtk_drag_dest_set (GtkWidget *widget, GtkDestDefaults flags,
         entries[i].target = (gchar*)l->data;
 
     gtk_drag_dest_set (widget, flags, entries, n, actions);
+}
+
+GdkGC*
+gtk_style_get_fg_gc (GtkStyle *style, GtkStateType state)
+{
+    return style->fg_gc[state];
+}
+
+GdkGC*
+gtk_style_get_bg_gc (GtkStyle *style, GtkStateType state)
+{
+    return style->bg_gc[state];
+}
+
+GdkGC*
+gtk_style_get_white_gc (GtkStyle *style)
+{
+    return style->white_gc;
+}
+
+GdkGC*
+gtk_style_get_black_gc (GtkStyle *style)
+{
+    return style->black_gc;
+}
+
+GdkWindow*
+gtk_widget_get_window (GtkWidget *widget)
+{
+    return widget->window;
+}
+
+GdkRectangle*
+gtk_widget_get_allocation (GtkWidget *widget)
+{
+    GdkRectangle *ret = g_new (GdkRectangle, 1);
+    *ret = widget->allocation;
+    return ret;
 }

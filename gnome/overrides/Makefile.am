@@ -2,6 +2,6 @@ include $(top_srcdir)/common.mk
 
 moduledir = $(guilemoduledir)/overrides
 
-module_DATA = gdk.defs gtk.defs gdk-pixbuf.defs gtk-customs.defs gtk.defs-type-ignores
+module_DATA = $(wildcard *.defs*)
 
 EXTRA_DIST = $(module_DATA)

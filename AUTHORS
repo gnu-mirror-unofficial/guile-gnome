@@ -8,8 +8,10 @@ In the directory gnome/gw, wrote:
     gtk-spec.scm gtk-support.c gtk-support.h
     gdk-spec.scm gdk-support.c gdk-support.h
     guile-gtk-tree-model.c guile-gtk-tree-model.h
+    gdk-pixbuf-support.c gdk-pixbuf-support.h
 In the directory gnome/overrides, wrote:
-    gtk.defs gdk.defs
+    gtk.defs gdk.defs gdk-pixbufs.defs gtk-customs.defs
+    gtk.defs-type-ignores gdk.defs-type-ignores
 In the directory gnome/gtk, wrote:
     graphical-repl.scm gdk-event.scm
 In the directory gnome/contrib, wrote:
@@ -56,3 +58,7 @@ In the directory gnome/gtk, changes to:
     gdk-event.scm
 In the directort gnome/gw, changes to:
     gdk-support.c
+
+Marcello Mathias Herreshoff:
+In the directory examples, wrote:
+    scribble.scm

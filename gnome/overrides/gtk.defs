@@ -356,6 +356,30 @@
     '("const-gchar*" "stock_id")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkStyle
+(define-method get-fg-gc
+  (of-object "GtkStyle")
+  (c-name "gtk_style_get_fg_gc")
+  (return-type "GdkGC*")
+  (parameters '("GtkStateType" "state")))
+
+(define-method get-bg-gc
+  (of-object "GtkStyle")
+  (c-name "gtk_style_get_bg_gc")
+  (return-type "GdkGC*")
+  (parameters '("GtkStateType" "state")))
+
+(define-method get-white-gc
+  (of-object "GtkStyle")
+  (c-name "gtk_style_get_white_gc")
+  (return-type "GdkGC*"))
+
+(define-method get-black-gc
+  (of-object "GtkStyle")
+  (c-name "gtk_style_get_black_gc")
+  (return-type "GdkGC*"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkTextBuffer
 (define-method set_text
   (of-object "GtkTextBuffer")
@@ -623,6 +647,16 @@
    '("GtkDestDefaults" "flags")
    '("const-GList*-of-const-gchar*" "types")
    '("GdkDragAction" "actions")))
+
+(define-method get-window
+  (of-object "GtkWidget")
+  (c-name "gtk_widget_get_window")
+  (return-type "GdkWindow*"))
+
+(define-method get-allocation
+  (of-object "GtkWidget")
+  (c-name "gtk_widget_get_allocation")
+  (return-type "GdkRectangle*")) ;; same as GtkAllocation
 
 (ignore-glob  "*_get_type"
               "_*"
