@@ -1,3 +1,8 @@
+2004-09-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_atk_la_LIBADD): Not
+	G_WRAP_LINK_ARGS, it's G_WRAP_LIBS.
+
 2004-09-16  Andy Wingo  <wingo@pobox.com>
 
 	* Makefile.am (SUBDIRS): Dist fixes.
