@@ -1,4 +1,28 @@
+2004-09-27  Andy Wingo  <wingo@pobox.com>
+
+	* examples/tic-tac-toe.scm
+	* examples/hello.scm
+	* examples/guile-gtk-demo/guile-gtk-demo.scm
+	* examples/hello-generics.scm
+	* examples/texinfo-browser.scm
+	* examples/metaspline.scm
+	* examples/continuations.scm
+	* examples/calendar.scm
+	* examples/repl.scm
+	* examples/test-gdk.scm
+	* examples/combo-button.scm: Add license blocks.
+	* examples/guile-gtk-demo/demos/sizegroup.scm
+	* examples/guile-gtk-demo/demos/tree-model.scm
+	* examples/guile-gtk-demo/demos/button-box.scm
+	* examples/guile-gtk-demo/demos/continuations.scm: Add abbreviated
+	license blocks.
+	
+	* gnome/contrib/filtered-list.scm: Re-export set-filter, since
+	there are some gtkfilechooser methods that implement it.
+
 2004-09-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gtk.defs (FileChooser): Add interface.
 
 	* gnome/gw/Makefile.am (libgw_guile_gnome_gdk_la_LIBADD)
 	(libgw_guile_gnome_gtk_la_LIBADD): Not G_WRAP_LINK_ARGS, it's

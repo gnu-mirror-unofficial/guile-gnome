@@ -1,6 +1,5 @@
 #!/usr/bin/guile -s
 !#
-
 ;; guile-gnome
 ;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
 

@@ -1,5 +1,5 @@
-(read-set! keywords 'prefix)
-
+;; Copyright (C) 2004 Patrick Bernaud
+;; GNU General Public License version 2 or later. No warrantee.
 (define-module (demos sizegroup)
   :use-module (gnome gtk))
 

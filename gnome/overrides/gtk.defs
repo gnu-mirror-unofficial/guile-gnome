@@ -33,6 +33,11 @@
   (c-name "GuileGtkGenericTreeModel")
   (gtype-id "GUILE_GTK_TYPE_GENERIC_TREE_MODEL"))
 
+(define-interface FileChooser
+  (in-module "Gtk")
+  (c-name "GtkFileChooser")
+  (gtype-id "GTK_TYPE_FILE_CHOOSER"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkCombo
 (define-method get_entry
