@@ -1,3 +1,13 @@
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Add record_check.
+
+2004-11-14  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/canvas.scm (<gnome-canvas-path-def>): Add class.
+
+	* examples/canvas.scm (main): Add bezier.
+
 2004-10-28  Andy Wingo  <wingo@pobox.com>
 
 	* gtk-checks.ac: 

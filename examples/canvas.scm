@@ -73,17 +73,27 @@ exec guile-gnome-0 -s $0 "$@"
 		       #:size-set #t
 		       #:fill-color "black"
 		       #:anchor 'west))
-	   (line-2 (make <gnome-canvas-rect> #:parent canvas-root
-                         #:x1 0.0 #:y1 30.0 #:x2 100.0 #:y2 39.0
-                         #:fill-color "black")))
+	   (def (make <gnome-canvas-path-def>))
+	   (bezier (make <gnome-canvas-bpath>
+		     #:parent canvas-root
+		     #:fill-color "black"
+		     #:width-pixels 2)))
 
       (move text -40 55)
       (connect text 'event item-event)
-    
+      
+      (move bezier 0 -30.0)
+      (reset def)
+      (moveto def 0.0 0.0)
+      (curveto def 40.0 -10.0 60.0 -10.0 100.0 0.0)
+      (lineto def 0.0 0.0)
+      (closepath def)
+      (set-path-def bezier def)
+      
       (for-each (lambda (item)
-		  (move item -40 20)
+		  (move item -40 70)
 		  (affine-relative item output-scale 0 0 output-scale 0 0))
-       (list line line-2)))
+       (list line bezier)))
 
     (add vbox button)
     (connect button 'clicked
