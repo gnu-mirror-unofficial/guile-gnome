@@ -2,7 +2,7 @@
 !#
 (use-modules (gnome gtk)
 	     (gnome gtk gdk-event)
-	     (gnome gw libgnomecanvas))
+	     (gnome gw canvas))
 
 (debug-enable 'backtrace)
 

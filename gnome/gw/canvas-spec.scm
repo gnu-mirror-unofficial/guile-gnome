@@ -25,7 +25,7 @@
 ;;
 ;;; Code:
 
-(define-module (gnome gw libgnomecanvas-spec)
+(define-module (gnome gw canvas-spec)
   #:use-module (oop goops)
   #:use-module (g-wrap)
   #:use-module (g-wrap guile)
@@ -36,7 +36,7 @@
   #:use-module (gnome gobject defs-support))
 
 (define-class <canvas-wrapset> (<gobject-wrapset-base>)
-  guile #:id 'gnome-libgnomecanvas)
+  guile #:id 'gnome-canvas)
 
 (define-method (global-declarations-cg (self <canvas-wrapset>))
   (list
@@ -48,7 +48,7 @@
 	 "#include \"libgnomecanvas-support.h\"\n"))
   
 (define-method (initialize (ws <canvas-wrapset>) initargs)
-  (next-method ws (cons #:module (cons '(gnome gw libgnomecanvas) initargs)))
+  (next-method ws (cons #:module (cons '(gnome gw canvas) initargs)))
 
   (depends-on! ws 'standard 'gnome-glib 'gnome-gobject 'gnome-gdk)
   
