@@ -1,5 +1,7 @@
 2004-07-01  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/libgnomeui-spec.scm (initialize): Fix for depends-on!.
+
 	* gnome/gw/gnome-ui-spec.scm, gnome/gw/Makefile.am: Reverted
 	previous name change.
 
