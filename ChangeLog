@@ -1,3 +1,8 @@
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* glib-checks.ac: Check for a versioned glib.
+	* defs-checks.ac: Check for a versioned defs.
+
 2004-10-26  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
