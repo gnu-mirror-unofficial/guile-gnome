@@ -1,3 +1,11 @@
+2004-09-09  Andreas Rottmann  <andy@findus>
+
+	* gnome/defs/libgnomecanvas.defs: Now include
+	libgnomecanvas-types.defs, instead of having its contents in-file.
+	Rescanned the headers and merged with old file.
+	
+	* gnome/defs/libgnomecanvas-overrides.defs: Added affine wrappers back.
+
 2004-07-28  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/defs/libgnomecanvas.defs (gnome_canvas_path_def_concat)
