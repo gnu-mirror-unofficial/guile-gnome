@@ -1,6 +1,8 @@
-guilemoduledir = $(datadir)/guile/gnome/defs
+include $(top_srcdir)/common.mk
 
-guilemodule_DATA = 				\
+defsdir = $(guilemoduledir)/defs
+
+defs_DATA = 					\
         applet.defs				\
 	art.defs				\
 	atk.defs				\
@@ -42,7 +44,7 @@ guilemodule_DATA = 				\
 	libwnck.defs				\
 	libwnck-types.defs
 
-EXTRA_DIST = $(guilemodule_DATA)
+EXTRA_DIST = $(defs_DATA)
 
 gdk-pixbuf:
 	../../../h2def.py --types \
