@@ -1,3 +1,7 @@
+2004-10-12  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* shlib-dirs.ac: New file, to be used by dev-environ.
+
 2004-10-10  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gobject/gsignal.scm (gtype-class-get-signal-names): Copy
