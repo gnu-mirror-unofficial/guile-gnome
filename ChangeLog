@@ -1,3 +1,7 @@
+2005-01-11  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.98 ==
+
 2005-01-08  Andy Wingo  <wingo@pobox.com>
 
 	* package.ac (GTK_DEPRECATED_CFLAGS): Add --disable-gtk-deprecated
