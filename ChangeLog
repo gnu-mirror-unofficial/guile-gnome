@@ -1,3 +1,14 @@
+2004-09-08  Andy Wingo  <wingo@pobox.com>
+
+	* NEWS: Updated, and put in a more Guile-like format.
+
+	* TODO: Removed many items.
+
+2004-09-07  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (load-defs): Change out a `cond' with
+	a series of and=> statements. Fixes some problems.
+
 2004-09-06  Andy Wingo  <wingo@pobox.com>
 
 	* Makefile.am: Er, it's not in this module. I'm stupid.

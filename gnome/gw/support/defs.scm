@@ -230,12 +230,6 @@
              (begin (display "x") (throw 'ignored)))
             ((member c-name overridden)
              (throw 'ignored))
-            ((memq 'is-constructor-of (map car args))
-             ;; If we're the constructor, we own the return value,
-             ;; unless told otherwise (e.g. with gtkwindow).
-             => (lambda (l)
-                  (if (not (memq 'caller-owns-return l))
-                      (set! caller-owns-return #t))))
             ((any
               (lambda (x) (eq? (string-ref (cadr x) 0) #\())
               parameters)
@@ -243,14 +237,21 @@
                      "because I can't deal with function pointers\n"
                      name)
              (throw 'ignored))
-            ((arg-ref args 'overrides #f)
-             => (lambda (x)
-                  (set! scm-name (proc-name-from-cname x))
-                  (if (member x overridden)
-                      (error "Function ~S already overridden" x)
-                      (push x overridden))))
             ((and is-method? (not of-object))
              (error "Method name lacks an of-object!" c-name)))
+
+           (and=> (memq 'is-constructor-of (map car args))
+                  ;; If we're the constructor, we own the return value,
+                  ;; unless told otherwise (e.g. with gtkwindow).
+                  (lambda (l)
+                    (if (not (memq 'caller-owns-return l))
+                        (set! caller-owns-return #t))))
+           (and=> (arg-ref args 'overrides #f)
+                  (lambda (x)
+                    (set! scm-name (proc-name-from-cname x))
+                    (if (member x overridden)
+                        (error "Function ~S already overridden" x)
+                        (push x overridden))))
 
            (if is-method?
                (push (list of-object "self") parameters))
