@@ -35,6 +35,7 @@ static SCM _initialize;
 static SCM _gobject_set_property;
 static SCM _gobject_get_property;
 static SCM _gobject_class_set_properties_x;
+static SCM _gobject_initargs_fluid;
 
 static GQuark quark_guile_gtype_class = 0;
 
@@ -155,7 +156,8 @@ scm_c_gtype_instance_instance_init (GTypeInstance *g_instance,
 	guile_class = g_type_get_qdata (G_TYPE_FROM_CLASS (g_class), quark_guile_gtype_class);
 	guile_class->first_instance_created = TRUE;
 
-        scm_call_2 (_initialize, scm_c_gtype_instance_to_scm (g_instance), SCM_EOL);
+        scm_call_2 (_initialize, scm_c_gtype_instance_to_scm (g_instance),
+                    scm_fluid_ref (_gobject_initargs_fluid));
 	break;
     }
 
@@ -196,6 +198,21 @@ scm_c_gtype_instance_class_init (gpointer g_class, gpointer class_data)
 	((GObjectClass *) g_class)->set_property = scm_c_gobject_set_property;
     }
 }
+
+SCM_DEFINE (scm_scheme_gclass_p, "scheme-gclass?", 1, 0, 0,
+	    (SCM class),
+	    "")
+#define FUNC_NAME s_scm_scheme_gclass_p
+{
+    GType gtype;
+    GObjectClass *gclass;
+
+    SCM_VALIDATE_GOBJECT_CLASS_GET_TYPE (1, class, gtype);
+    
+    gclass = g_type_class_ref (gtype);
+    return SCM_BOOL (gclass->get_property == scm_c_gobject_get_property);
+}
+#undef FUNC_NAME
 
 SCM_DEFINE (scm_gtype_register_static, "gtype-register-static", 2, 0, 0,
 	    (SCM name, SCM parent_type),
@@ -559,5 +576,14 @@ scm_init_gnome_gobject (void)
 #ifndef SCM_MAGIC_SNARFER
 #include "gobject.x"
 #endif
+    _gobject_initargs_fluid = scm_make_fluid ();
+
+    /* there is a case where it won't be set before entering
+       scm_c_gtype_instance_instance_init: if the class is instantiated from C
+       via g_object_new instead of from scheme via `make'. Give the initargs a
+       sane value in that case. */
+    scm_fluid_set_x (_gobject_initargs_fluid, SCM_EOL);
+
     quark_guile_gtype_class = g_quark_from_static_string ("%scm-guile-gtype-class");
+    scm_c_define ("%gobject-initargs", _gobject_initargs_fluid);
 }

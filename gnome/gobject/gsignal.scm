@@ -30,6 +30,7 @@
 (define-module (gnome gobject gsignal)
   :use-module (oop goops)
   :use-module (gnome gobject utils)
+  :use-module (gnome gobject config)
   :use-module (gnome gobject gtype)
   :use-module (gnome gobject gclosure)
   :use-module (gnome gobject gvalue)
@@ -54,7 +55,7 @@
 
 
 (dynamic-call "scm_init_gnome_gobject_signals"
-              (dynamic-link "libguile-gnome-gobject"))
+              (dynamic-link *guile-gnome-gobject-lib-path*))
 
 ;;;
 ;;; {Signal Field Accessors}

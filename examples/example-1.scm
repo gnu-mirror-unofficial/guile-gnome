@@ -1,3 +1,6 @@
+#! /bin/sh
+exec guile-gnome-0 -s $0
+!#
 ;; guile-gnome
 ;; Copyright (C) 2003,2004 Free Software Foundation, Inc.
 
@@ -17,9 +20,6 @@
 ;; Free Software Foundation           Voice:  +1-617-542-5942
 ;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
 ;; Boston, MA  02111-1307,  USA       gnu@gnu.org
-
-#! /usr/bin/guile -s
-!#
 
 (use-modules (oop goops)
              (gnome gobject))

@@ -27,6 +27,7 @@
 (define-module (gnome gobject gvalue)
   :use-module (oop goops)
   :use-module (gnome gobject utils)
+  :use-module (gnome gobject config)
   :use-module (gnome gobject gtype)
 
   :export     (;; Primitive GValue support
@@ -48,7 +49,7 @@
                gflags->symbol-list gflags->name-list gflags->value-list))
 
 (dynamic-call "scm_init_gnome_gobject_values"
-              (dynamic-link "libguile-gnome-gobject"))
+              (dynamic-link *guile-gnome-gobject-lib-path*))
 
 ;;;
 ;;; {Simple Classes}

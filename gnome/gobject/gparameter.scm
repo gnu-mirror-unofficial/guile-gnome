@@ -29,6 +29,7 @@
 
 (define-module (gnome gobject gparameter)
   :use-module (oop goops)
+  :use-module (gnome gobject config)
   :use-module (gnome gobject gtype)
   :use-module (gnome gobject gvalue)
 
@@ -76,7 +77,7 @@
   #:metaclass <gparam-class>)
 
 (dynamic-call "scm_init_gnome_gobject_parameters"
-              (dynamic-link "libguile-gnome-gobject"))
+              (dynamic-link *guile-gnome-gobject-lib-path*))
 
 (define parameters-module (current-module))
 (define gparam-struct-arg-info

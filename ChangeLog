@@ -1,8 +1,113 @@
+2004-11-11  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/glib-spec.scm (unwrap-value-cg): Whoops, fix parens.
+
+	* gnome/gw/support/defs.scm (type-lookup): Assume that the caller
+	owns generated container types (i.e. GList) if 'const isn't set.
+	Prevents some invalid frees, hanks to Patrick Bernaud for the
+	report.
+	
+	* gnome/gw/glib-spec.scm (unwrap-value-cg): Use destroy-value-cg
+	to free the list after unwrapping.
+
+2004-11-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (custom-wrap-decls)
+	(wrap-custom-pointer!): New exported macros, designed to simplify
+	wrappings of c types represented by native scheme values.
+
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* defs-checks.ac: Versioned pkg-config check.
+
+	* Makefile.am (all-local): Versioned pkg-config files.
+
+	* examples/main-loop.scm: 
+	* examples/example-1.scm: Use guile-gnome-0.
+
+	* bin/guile-gnome.in (localpath): Add /usr/local include dirs to
+	the guile loadpath, so that users aren't surprised when they have
+	g-wrap installed in /usr/local/guile/site. A hack for guile 1.6.
+
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac (GUILE_GLIB_LIBS): Link to the versioned lib.
+
+	* guile-gnome-glib-uninstalled.pc.in, guile-gnome-glib.pc.in: Link
+	to the versioned lib.
+
+	* gnome/gobject/config.scm.in: New file, exports
+	*guile-gnome-gobject-lib-path*.
+
+	* gnome/gobject/gobject.scm, gtype.scm, gvalue.scm,
+	gparameter.scm, gsignal.scm, gclosure.scm: dynamic-link the path
+	from (gnome gobject config).
+
+	* gnome/gobject/Makefile.am: Version the libguile-gnome-gobject
+	lib. Make config.scm work in the source tree and in the
+	installdir. Define GUILE_GOBJECT_DIR to be $guilegnomedir.
+
+	* bin/Makefile.am: New file. Will install a versioned
+	guile-gnome-$apiversion into $bindir.
+
+	* bin/guile-gnome.in: New script, wraps guile with a munged load
+	path for modules and libraries.
+
+	* Makefile.am (SUBDIRS): Add bin/.
+
+	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
+	versioned directory.
+
 2004-10-12  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* shlib-dirs.ac: New file, to be used by dev-environ.
 
+2004-10-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gvalue.c (s_scm_gvalue_primitive_set): For
+	objects, interpret a #f value as NULL.
+	(s_scm_gvalue_primitive_set): Bugfix: convert SCM return value of
+	scm_list_p into a C boolean.
+
+	* gnome/gobject/gtype.c (scm_c_make_gtype_instance): Return #f if
+	the instance argument is NULL.
+
+2004-10-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gvalue.c (s_scm_gvalue_primitive_set): For
+	objects, assert that the type is compatible with the GValue type.
+
+2004-10-11  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gobject.scm (make-gobject-instance): Set the fluid
+	%gobject_initargs to the init-keyword kwargs for the duration of
+	the gobject-primitive-create-instance. This allows the call back
+	into scheme for `initialize' to pass the kwargs. However, if (not
+	 (scheme-gclass? class), call `initialize' manually. Also, in the
+	error message, "No such s/property/property or init-keyword/ ...".
+
+	* gnome/gobject/gtype.scm (initialize): For <gtype-instance>, no
+	need to provide a method that does nothing, and no need to avoid
+	the <gobject> initialize method. Removed.
+
+	* gnome/gobject/gobject.h: 
+	* gnome/gobject/gobject.c (s_scm_scheme_gclass_p): New predicate,
+	returns #t iff `class' is derived from within scheme. Normally it
+	doesn't matter, but we want to avoid calling `initialize' twice on
+	the instance.
+	(scm_init_gnome_gobject): Initialize the _gobject_initargs_fluid
+	to '(), define it for scheme.
+	(scm_c_gtype_instance_instance_init): Call initialize with the
+	proper initargs.
+
 2004-10-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.c (scm_c_gtype_instance_to_scm): Don't error
+	out if ginstance is NULL, we're probably going to scheme anyway.
+	Better to just return #f and stay quiet.
+
+	* gnome/gw/support/defs.scm (load-defs): Better error when a
+	symbolic include isn't file isn't found.
 
 	* gnome/gobject/gsignal.scm (gtype-class-get-signal-names): Copy
 	vector-map from gobject.scm.
