@@ -1,3 +1,13 @@
+2004-09-16  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (SUBDIRS): Dist fixes.
+
+	* README: Added.
+
+	* NEWS: Added.
+
+	* AUTHORS: Added.
+
 2004-09-12  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/pango.scm (gnome): Added.
