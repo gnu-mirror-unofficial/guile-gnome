@@ -1,3 +1,22 @@
+2004-09-16  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (SUBDIRS): Dist fixes.
+
+	* NEWS: Added.
+
+	* README: Added.
+
+	* AUTHORS: Added.
+
+	* gnome/gw/glade-support.[ch]: Removed these wayward support
+	files.
+
+	* pango-checks.ac: Check the right package.
+
+	* atk-checks.ac: Check the right package.
+
+	* gnome/gtk.scm: Avoid deprecated modules.
+
 2004-09-15  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/overrides/gdk.defs (gdk-event->event-struct): Adapted to
