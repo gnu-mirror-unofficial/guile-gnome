@@ -1,113 +1,6 @@
 ;; -*- scheme -*-
-; object definitions ...
 
-(define-object Canvas
-  (in-module "Gnome")
-  (parent "GtkLayout")
-  (c-name "GnomeCanvas")
-  (gtype-id "GNOME_TYPE_CANVAS")
-)
-
-(define-object CanvasItem
-  (in-module "Gnome")
-  (parent "GtkObject")
-  (c-name "GnomeCanvasItem")
-  (gtype-id "GNOME_TYPE_CANVAS_ITEM")
-)
-
-(define-object CanvasGroup
-  (in-module "Gnome")
-  (parent "GnomeCanvasItem")
-  (c-name "GnomeCanvasGroup")
-  (gtype-id "GNOME_TYPE_CANVAS_GROUP")
-)
-
-(define-object CanvasClipgroup
-  (in-module "Gnome")
-  (parent "GnomeCanvasGroup")
-  (c-name "GnomeCanvasClipgroup")
-  (gtype-id "GNOME_TYPE_CANVAS_CLIPGROUP")
-)
-
-(define-object CanvasLine
-  (in-module "Gnome")
-  (parent "GnomeCanvasItem")
-  (c-name "GnomeCanvasLine")
-  (gtype-id "GNOME_TYPE_CANVAS_LINE")
-)
-
-(define-object CanvasPixbuf
-  (in-module "Gnome")
-  (parent "GnomeCanvasItem")
-  (c-name "GnomeCanvasPixbuf")
-  (gtype-id "GNOME_TYPE_CANVAS_PIXBUF")
-)
-
-(define-object CanvasRichText
-  (in-module "Gnome")
-  (parent "GnomeCanvasItem")
-  (c-name "GnomeCanvasRichText")
-  (gtype-id "GNOME_TYPE_CANVAS_RICH_TEXT")
-)
-
-(define-object CanvasShape
-  (in-module "Gnome")
-  (parent "GnomeCanvasItem")
-  (c-name "GnomeCanvasShape")
-  (gtype-id "GNOME_TYPE_CANVAS_SHAPE")
-)
-
-(define-object CanvasRE
-  (in-module "Gnome")
-  (parent "GnomeCanvasShape")
-  (c-name "GnomeCanvasRE")
-  (gtype-id "GNOME_TYPE_CANVAS_RE")
-)
-
-(define-object CanvasRect
-  (in-module "Gnome")
-  (parent "GnomeCanvasRE")
-  (c-name "GnomeCanvasRect")
-  (gtype-id "GNOME_TYPE_CANVAS_RECT")
-)
-
-(define-object CanvasEllipse
-  (in-module "Gnome")
-  (parent "GnomeCanvasRE")
-  (c-name "GnomeCanvasEllipse")
-  (gtype-id "GNOME_TYPE_CANVAS_ELLIPSE")
-)
-
-(define-object CanvasPolygon
-  (in-module "Gnome")
-  (parent "GnomeCanvasShape")
-  (c-name "GnomeCanvasPolygon")
-  (gtype-id "GNOME_TYPE_CANVAS_POLYGON")
-)
-
-(define-object CanvasBpath
-  (in-module "Gnome")
-  (parent "GnomeCanvasShape")
-  (c-name "GnomeCanvasBpath")
-  (gtype-id "GNOME_TYPE_CANVAS_BPATH")
-)
-
-(define-object CanvasText
-  (in-module "Gnome")
-  (parent "GnomeCanvasItem")
-  (c-name "GnomeCanvasText")
-  (gtype-id "GNOME_TYPE_CANVAS_TEXT")
-)
-
-(define-object CanvasWidget
-  (in-module "Gnome")
-  (parent "GnomeCanvasItem")
-  (c-name "GnomeCanvasWidget")
-  (gtype-id "GNOME_TYPE_CANVAS_WIDGET")
-)
-
-;; Enumerations and flags ...
-
+(include "libgnomecanvas-types.defs")
 (include overrides)
 
 ;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-bpath.h
@@ -1145,3 +1038,4 @@
   (c-name "gnome_canvas_points_get_type")
   (return-type "GType")
 )
+
