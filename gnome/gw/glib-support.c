@@ -29,7 +29,7 @@
   scm_error (scm_str2symbol ("gruntime-error"), func_name, format, \
              ##args, SCM_EOL)
 
-static SCM iochannel_type;
+static SCM iochannel_type = SCM_BOOL_F;
 
 /* The signal code doesn't work with 1.7 */
 #if (SCM_MAJOR_VERSION == 1) && (SCM_MINOR_VERSION == 6)
@@ -39,10 +39,8 @@ static SCM deliver_signals;
 void
 scm_init_glib (void)
 {
-    deliver_signals = scm_permanent_object (
-            SCM_VARIABLE_REF (scm_c_lookup ("%deliver-signals")));
-    iochannel_type = scm_permanent_object (
-            SCM_VARIABLE_REF (scm_c_lookup ("<gio-channel*>")));
+    deliver_signals = scm_permanent_object
+        (SCM_VARIABLE_REF (scm_c_lookup ("%deliver-signals")));
 }
 
 static gboolean
@@ -89,14 +87,12 @@ _wrap_g_main_loop_run (GMainLoop *loop)
 void
 scm_init_glib (void)
 {
-    iochannel_type = scm_permanent_object (
-            SCM_VARIABLE_REF (scm_c_lookup ("<gio-channel*>")));
 }
 
 void
 _wrap_g_main_loop_run (GMainLoop *loop)
 {
-  g_main_loop_run (loop);
+    g_main_loop_run (loop);
 }
 
 #endif
@@ -105,7 +101,7 @@ _wrap_g_main_loop_run (GMainLoop *loop)
 SCM
 _wrap_g_string_get_str (GString *str)
 {
-  return scm_mem2string (str->str, str->len);
+    return scm_mem2string (str->str, str->len);
 }
 
 static gboolean
@@ -113,14 +109,14 @@ g_io_func (GIOChannel *source,
 	   GIOCondition condition,
 	   gpointer data)
 {
-  SCM proc;
-  SCM result;
+    SCM proc;
+    SCM result;
 
-  proc = SCM_PACK (GPOINTER_TO_INT (data));
-  result = scm_call_2 (proc,
-		       gw_wcp_assimilate_ptr (source, iochannel_type),
-		       scm_long2num (condition));
-  return result == SCM_BOOL_T;
+    proc = SCM_PACK (GPOINTER_TO_INT (data));
+    result = scm_call_2 (proc,
+                         gw_wcp_assimilate_ptr (source, iochannel_type),
+                         scm_long2num (condition));
+    return result == SCM_BOOL_T;
 }
 
 guint
@@ -129,10 +125,15 @@ _wrap_g_io_add_watch (GIOChannel *channel,
 		      SCM func)
 #define FUNC_NAME "g-io-add-watch"
 {
-  SCM_VALIDATE_PROC (3, func);
-  return g_io_add_watch (channel,
-			 condition,
-			 ((GIOFunc) (g_io_func)),
-			 GINT_TO_POINTER (SCM_UNPACK (func)));
+    if (SCM_FALSEP (iochannel_type))
+        iochannel_type = scm_permanent_object
+            (SCM_VARIABLE_REF (scm_c_module_lookup (scm_c_resolve_module ("gnome glib"),
+                                                    "<gio-channel*>")));
+
+    SCM_VALIDATE_PROC (3, func);
+    return g_io_add_watch (channel,
+                           condition,
+                           ((GIOFunc) (g_io_func)),
+                           GINT_TO_POINTER (SCM_UNPACK (func)));
 }
 #undef FUNC_NAME

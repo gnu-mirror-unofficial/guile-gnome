@@ -1,1 +1,1 @@
-EXTRA_DIST = example-1.scm main-loop.scm
+EXTRA_DIST = $(wildcard $(srcdir)/*.scm)
