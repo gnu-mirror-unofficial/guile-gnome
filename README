@@ -1,0 +1,17 @@
+-*- text -*-
+
+README for guile-gobject
+========================
+
+guile-gobject requires some changes to the upstream g-wrap. These
+changes have been sent along to the maintainer, but for now you need to
+replace g-wrap/gw-standard.scm with the version included here.
+
+# cp /usr/share/guile/g-wrap/gw-standard \
+  /usr/share/guile/g-wrap/gw-standard-old.scm
+# cp guile-gobject-0.5.0/gw-standard.scm /usr/share/guile/g-wrap
+#
+
+Sorry for the inconvenience, it should go away soon...
+
+Andy Wingo, 07 May 2003

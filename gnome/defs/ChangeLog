@@ -1,0 +1,10 @@
+2003-05-08  Andy Wingo  <wingo@pobox.com>
+
+	* glib.defs: Added to support GMainLoop, etc.
+
+	* gtk.defs, gdk.defs, pango.defs: Updated to
+	"GList*-of-GtkWindow*".
+
+	* gtk-overrides.defs, gdk-overrides.defs, glib-overrides.defs: new
+	files. Contain ignore and override information.
+

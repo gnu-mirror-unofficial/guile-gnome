@@ -1,0 +1,708 @@
+;; -*- scheme -*-
+; object definitions ...
+(define-object Term
+  (in-module "Zvt")
+  (parent "GtkWidget")
+  (c-name "ZvtTerm")
+  (gtype-id "ZVT_TYPE_TERM")
+  (fields
+    '("GtkAdjustment*" "adjustment")
+    '("int" "charwidth")
+    '("int" "charheight")
+  )  
+)
+
+;; Enumerations and flags ...
+
+
+;; From /usr/include/libzvt-2.0/libzvt/background.h
+
+(define-function zvt_term_background_unref
+  (c-name "zvt_term_background_unref")
+  (return-type "none")
+  (parameters
+    '("struct-zvt_background*" "b")
+  )
+)
+
+(define-function zvt_term_background_ref
+  (c-name "zvt_term_background_ref")
+  (return-type "none")
+  (parameters
+    '("struct-zvt_background*" "b")
+  )
+)
+
+(define-function zvt_term_background_set_pixmap
+  (c-name "zvt_term_background_set_pixmap")
+  (return-type "none")
+  (parameters
+    '("struct-zvt_background*" "b")
+    '("GdkPixmap*" "p")
+    '("GdkColormap*" "cmap")
+  )
+)
+
+(define-function zvt_term_background_set_pixmap_atom
+  (c-name "zvt_term_background_set_pixmap_atom")
+  (return-type "none")
+  (parameters
+    '("struct-zvt_background*" "b")
+    '("GdkWindow*" "win")
+    '("GdkAtom" "atom")
+  )
+)
+
+(define-function zvt_term_background_set_pixmap_file
+  (c-name "zvt_term_background_set_pixmap_file")
+  (return-type "none")
+  (parameters
+    '("struct-zvt_background*" "b")
+    '("char*" "filename")
+  )
+)
+
+(define-function zvt_term_background_set_pixbuf
+  (c-name "zvt_term_background_set_pixbuf")
+  (return-type "none")
+  (parameters
+    '("struct-zvt_background*" "b")
+    '("GdkPixbuf*" "pb")
+  )
+)
+
+(define-function zvt_term_background_set_shade
+  (c-name "zvt_term_background_set_shade")
+  (return-type "none")
+  (parameters
+    '("struct-zvt_background*" "bg")
+    '("int" "r")
+    '("int" "g")
+    '("int" "b")
+    '("int" "a")
+  )
+)
+
+(define-function zvt_term_background_set_scale
+  (c-name "zvt_term_background_set_scale")
+  (return-type "none")
+  (parameters
+    '("struct-zvt_background*" "b")
+    '("zvt_background_scale_t" "type")
+    '("int" "x")
+    '("int" "y")
+  )
+)
+
+(define-function zvt_term_background_set_translate
+  (c-name "zvt_term_background_set_translate")
+  (return-type "none")
+  (parameters
+    '("struct-zvt_background*" "b")
+    '("zvt_background_translate_t" "type")
+    '("int" "x")
+    '("int" "y")
+  )
+)
+
+(define-function zvt_term_background_load
+  (c-name "zvt_term_background_load")
+  (return-type "int")
+  (parameters
+    '("struct-_ZvtTerm*" "term")
+    '("struct-zvt_background*" "b")
+  )
+)
+
+(define-function zvt_term_background_unload
+  (c-name "zvt_term_background_unload")
+  (return-type "none")
+  (parameters
+    '("struct-_ZvtTerm*" "term")
+  )
+)
+
+
+
+;; From /usr/include/libzvt-2.0/libzvt/libzvt.h
+
+(define-function zvt_term_new
+  (c-name "zvt_term_new")
+  (return-type "GtkWidget*")
+  (is-constructor-of ZvtTerm)
+)
+
+(define-function zvt_term_new_with_size
+  (c-name "zvt_term_new_with_size")
+  (return-type "GtkWidget*")
+  (is-constructor-of ZvtTerm)
+  (parameters
+    '("int" "cols" (default "80"))
+    '("int" "rows" (default "25"))
+  )
+)
+
+(define-method reset
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_reset")
+  (return-type "none")
+  (parameters
+    '("int" "hard")
+  )
+)
+
+(define-method feed
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_feed")
+  (return-type "none")
+  (parameters
+    '("char*" "text")
+    '("int" "len")
+  )
+)
+
+(define-method writechild
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_writechild")
+  (return-type "int")
+  (parameters
+    '("char*" "data")
+    '("int" "len")
+  )
+)
+
+(define-method forkpty
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_forkpty")
+  (return-type "int")
+  (parameters
+    '("int" "do_uwtmp_log" (default "FALSE"))
+  )
+)
+
+(define-method closepty
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_closepty")
+  (return-type "int")
+)
+
+(define-method killchild
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_killchild")
+  (return-type "int")
+  (parameters
+    '("int" "signal")
+  )
+)
+
+(define-function zvt_term_bell
+  (c-name "zvt_term_bell")
+  (return-type "none")
+  (parameters
+    '("void*" "zvt_term")
+  )
+)
+
+(define-function zvt_term_get_type
+  (c-name "zvt_term_get_type")
+  (return-type "guint")
+)
+
+(define-method set_scrollback
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_scrollback")
+  (return-type "none")
+  (parameters
+    '("int" "lines")
+  )
+)
+
+(define-method get_buffer
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_get_buffer")
+  (return-type "char*")
+  (parameters
+    '("int*" "len")
+    '("int" "type")
+    '("int" "sx")
+    '("int" "sy")
+    '("int" "ex")
+    '("int" "ey")
+  )
+)
+
+(define-method set_font_name
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_font_name")
+  (return-type "none")
+  (parameters
+    '("char*" "name")
+  )
+)
+
+(define-method set_fonts
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_fonts")
+  (return-type "none")
+  (parameters
+    '("GdkFont*" "font")
+    '("GdkFont*" "font_bold")
+  )
+)
+
+(define-method hide_pointer
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_hide_pointer")
+  (return-type "none")
+)
+
+(define-method show_pointer
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_show_pointer")
+  (return-type "none")
+)
+
+(define-method set_bell
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_bell")
+  (return-type "none")
+  (parameters
+    '("int" "state")
+  )
+)
+
+(define-method get_bell
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_get_bell")
+  (return-type "gboolean")
+)
+
+(define-method set_blink
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_blink")
+  (return-type "none")
+  (parameters
+    '("int" "state")
+  )
+)
+
+(define-method set_scroll_on_keystroke
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_scroll_on_keystroke")
+  (return-type "none")
+  (parameters
+    '("int" "state")
+  )
+)
+
+(define-method set_scroll_on_output
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_scroll_on_output")
+  (return-type "none")
+  (parameters
+    '("int" "state")
+  )
+)
+
+(define-method set_color_scheme
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_color_scheme")
+  (return-type "none")
+  (parameters
+    '("gushort*" "red")
+    '("gushort*" "grn")
+    '("gushort*" "blu")
+  )
+)
+
+(define-method set_default_color_scheme
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_default_color_scheme")
+  (return-type "none")
+)
+
+(define-method set_del_key_swap
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_del_key_swap")
+  (return-type "none")
+  (parameters
+    '("int" "state")
+  )
+)
+
+(define-method set_del_is_del
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_del_is_del")
+  (return-type "none")
+  (parameters
+    '("int" "state")
+  )
+)
+
+(define-method set_wordclass
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_wordclass")
+  (return-type "none")
+  (parameters
+    '("unsigned-char*" "klass")
+  )
+)
+
+(define-method set_auto_window_hint
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_auto_window_hint")
+  (return-type "none")
+  (parameters
+    '("int" "state")
+  )
+)
+
+(define-method match_add
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_match_add")
+  (return-type "int")
+  (parameters
+    '("char*" "regex")
+    '("uint32" "highlight_mask")
+    '("void*" "data")
+  )
+)
+
+(define-method match_clear
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_match_clear")
+  (return-type "none")
+  (parameters
+    '("char*" "regex")
+  )
+)
+
+(define-method match_check
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_match_check")
+  (return-type "char*")
+  (parameters
+    '("int" "x")
+    '("int" "y")
+    '("void**" "user_data_ptr")
+  )
+)
+
+(define-method set_background
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_background")
+  (return-type "none")
+  (parameters
+    '("char*" "pixmap_file")
+    '("int" "transparent")
+    '("int" "flags")
+  )
+)
+
+(define-method set_shadow_type
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_shadow_type")
+  (return-type "none")
+  (parameters
+    '("GtkShadowType" "type")
+  )
+)
+
+(define-method set_size
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_set_size")
+  (return-type "none")
+  (parameters
+    '("guint" "width")
+    '("guint" "height")
+  )
+)
+
+(define-method get_capabilities
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_get_capabilities")
+  (return-type "guint32")
+)
+
+(define-method copy_clipboard
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_copy_clipboard")
+  (return-type "none")
+)
+
+(define-method paste_clipboard
+  (of-object "ZvtTerm")
+  (c-name "zvt_term_paste_clipboard")
+  (return-type "none")
+)
+
+
+
+;; From /usr/include/libzvt-2.0/libzvt/lists.h
+
+(define-function vt_list_new
+  (c-name "vt_list_new")
+  (return-type "none")
+  (parameters
+    '("struct-vt_list*" "v")
+  )
+)
+
+(define-function vt_list_empty
+  (c-name "vt_list_empty")
+  (return-type "int")
+  (parameters
+    '("struct-vt_list*" "l")
+  )
+)
+
+
+
+;; From /usr/include/libzvt-2.0/libzvt/vt.h
+
+(define-function vt_destroy
+  (c-name "vt_destroy")
+  (return-type "none")
+  (parameters
+    '("struct-vt_em*" "vt")
+  )
+)
+
+(define-function vt_resize
+  (c-name "vt_resize")
+  (return-type "none")
+  (parameters
+    '("struct-vt_em*" "vt")
+    '("int" "width")
+    '("int" "height")
+    '("int" "pixwidth")
+    '("int" "pixheight")
+  )
+)
+
+(define-function vt_parse_vt
+  (c-name "vt_parse_vt")
+  (return-type "none")
+  (parameters
+    '("struct-vt_em*" "vt")
+    '("char*" "ptr")
+    '("int" "length")
+  )
+)
+
+(define-function vt_swap_buffers
+  (c-name "vt_swap_buffers")
+  (return-type "none")
+  (parameters
+    '("struct-vt_em*" "vt")
+  )
+)
+
+(define-function vt_forkpty
+  (c-name "vt_forkpty")
+  (return-type "pid_t")
+  (parameters
+    '("struct-vt_em*" "vt")
+    '("int" "do_uwtmp_log")
+  )
+)
+
+(define-function vt_readchild
+  (c-name "vt_readchild")
+  (return-type "int")
+  (parameters
+    '("struct-vt_em*" "vt")
+    '("char*" "buffer")
+    '("int" "len")
+  )
+)
+
+(define-function vt_writechild
+  (c-name "vt_writechild")
+  (return-type "int")
+  (parameters
+    '("struct-vt_em*" "vt")
+    '("char*" "buffer")
+    '("int" "len")
+  )
+)
+
+(define-function vt_report_button
+  (c-name "vt_report_button")
+  (return-type "int")
+  (parameters
+    '("struct-vt_em*" "vt")
+    '("int" "down")
+    '("int" "button")
+    '("int" "qual")
+    '("int" "x")
+    '("int" "y")
+  )
+)
+
+(define-function vt_scrollback_set
+  (c-name "vt_scrollback_set")
+  (return-type "none")
+  (parameters
+    '("struct-vt_em*" "vt")
+    '("int" "lines")
+  )
+)
+
+(define-function vt_killchild
+  (c-name "vt_killchild")
+  (return-type "int")
+  (parameters
+    '("struct-vt_em*" "vt")
+    '("int" "signal")
+  )
+)
+
+(define-function vt_closepty
+  (c-name "vt_closepty")
+  (return-type "int")
+  (parameters
+    '("struct-vt_em*" "vt")
+  )
+)
+
+(define-function vt_reset_terminal
+  (c-name "vt_reset_terminal")
+  (return-type "none")
+  (parameters
+    '("struct-vt_em*" "vt")
+    '("int" "hard")
+  )
+)
+
+
+
+;; From /usr/include/libzvt-2.0/libzvt/vtx.h
+
+(define-function vt_get_selection
+  (c-name "vt_get_selection")
+  (return-type "char*")
+  (parameters
+    '("struct-_vtx*" "vx")
+    '("int" "size")
+    '("int*" "len")
+  )
+)
+
+(define-function vt_clear_selection
+  (c-name "vt_clear_selection")
+  (return-type "none")
+  (parameters
+    '("struct-_vtx*" "vx")
+  )
+)
+
+(define-function vt_fix_selection
+  (c-name "vt_fix_selection")
+  (return-type "none")
+  (parameters
+    '("struct-_vtx*" "vx")
+  )
+)
+
+(define-function vt_draw_selection
+  (c-name "vt_draw_selection")
+  (return-type "none")
+  (parameters
+    '("struct-_vtx*" "vx")
+  )
+)
+
+(define-function vt_update_rect
+  (c-name "vt_update_rect")
+  (return-type "none")
+  (parameters
+    '("struct-_vtx*" "vx")
+    '("int" "fill")
+    '("int" "sx")
+    '("int" "sy")
+    '("int" "ex")
+    '("int" "ey")
+  )
+)
+
+(define-function vt_update
+  (c-name "vt_update")
+  (return-type "none")
+  (parameters
+    '("struct-_vtx*" "vt")
+    '("int" "state")
+  )
+)
+
+(define-function vt_draw_cursor
+  (c-name "vt_draw_cursor")
+  (return-type "none")
+  (parameters
+    '("struct-_vtx*" "vx")
+    '("int" "state")
+  )
+)
+
+(define-function vt_set_wordclass
+  (c-name "vt_set_wordclass")
+  (return-type "none")
+  (parameters
+    '("struct-_vtx*" "vx")
+    '("unsigned-char*" "s")
+  )
+)
+
+(define-function vt_get_attr_at
+  (c-name "vt_get_attr_at")
+  (return-type "int")
+  (parameters
+    '("struct-_vtx*" "vx")
+    '("int" "col")
+    '("int" "row")
+  )
+)
+
+(define-function vt_free_match_blocks
+  (c-name "vt_free_match_blocks")
+  (return-type "none")
+  (parameters
+    '("struct-_vtx*" "vx")
+  )
+)
+
+(define-function vt_getmatches
+  (c-name "vt_getmatches")
+  (return-type "none")
+  (parameters
+    '("struct-_vtx*" "vx")
+  )
+)
+
+(define-function vt_match_clear
+  (c-name "vt_match_clear")
+  (return-type "none")
+  (parameters
+    '("struct-_vtx*" "vx")
+    '("char*" "regex")
+  )
+)
+
+(define-function vt_match_highlight
+  (c-name "vt_match_highlight")
+  (return-type "none")
+  (parameters
+    '("struct-_vtx*" "vx")
+    '("struct-vt_match*" "m")
+  )
+)
+
+(define-function vtx_destroy
+  (c-name "vtx_destroy")
+  (return-type "none")
+  (parameters
+    '("struct-_vtx*" "vx")
+  )
+)
+
+

@@ -1,0 +1,56 @@
+-*- outline -*-
+
+TODO for guile-gnome
+====================
+
+* send updates to gw-standard upstream...
+
+* make method creation not so damn slow
+  - setting of precedure properties should not have to do so many
+    scm_c_lookups, perhaps g-wrap needs to be changed here
+  - making of methods takes way too damn long (in generics.scm)
+
+* review refcounting
+  - deal with gtk_object_destroy
+  - a nice test-suite would help here
+
+* wrap necessary parts of glib
+  - steal glist and gslist from g-wrap -- DONE
+  - wrap GMainLoops -- DONE, see examples/gobject/main-loop.scm
+  - GError support
+  - handle g_warnings gracefully -- DONE
+  - g_set_prgname, g_set_application_name -- DONE
+  - GString <-> scm string conversion
+  - quarks
+  - trees, perhaps?
+
+* what to do about unicode? can't exactly add support for it until guile
+  itself supports it...
+
+* types
+  - review all opaque types, wrapping if necessary: see
+    gtk-overrides.defs for more info on this
+  - fix call-by-reference like how guile-gtk does it -- or should we? it
+    seems it would be better to just wrap those functions to make them
+    more schemy. dunno.
+  - currently opaque types are just wrapped as anonymous pointers. they
+    should probably have some type information (eg the type name)
+    associated with them. also should make sure that eq? can reliably
+    work on them. -- DONE
+
+* wrap gtktreemodel (will be a pain in the ass)
+
+* identify all c-style functions and schemify them
+
+* packaging
+  - distcheck
+  - testsuite
+  - changelogs
+  - docs
+  - examples
+
+* is it possible to use define-class to subclass gobject classes? that
+  would be nice. perhaps we should be more like pygtk, definining
+  classes first then registering them with the gtype system.
+
+(last modified: 8 may 2003 by wingo)

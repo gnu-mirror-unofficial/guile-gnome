@@ -1,0 +1,23 @@
+;; -*- scheme -*-
+
+(ignore-glob  "_*"
+              "*_ref"
+              "*_unref"
+              "*_copy"
+              "*_free"
+              "*_newv"
+              "*_valist"
+              "*_setv"
+              "*_user_data"
+              "*_func"
+              "g_source_set_callback*"
+              "g_timeout_add*"
+              "g_timeout_remove*"
+              "g_idle_add*"
+              "g_idle_remove*"
+              "*win32*")
+
+(ignore "g_main_context_wait"
+        
+        "g_error_new"
+        "g_set_error")

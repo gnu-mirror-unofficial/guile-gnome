@@ -1,0 +1,57 @@
+2002-04-13  Ariel Rios  <ariel@gnu.org>
+
+	* guile-gnome-corba-types.c (scm_c_corba_demarshal_any): Correctly use %ld
+	instead of %d and kill warning.
+
+2002-01-28  Ariel Rios  <ariel@gnu.org>
+
+	* guile-gnome-corba-primitives.c (guile_corba_sys_register_interface): 
+	Kill interface->class.init_vepvmap since vepvmap cache is 
+	enabled by default.
+	
+2002-01-28  Ariel Rios  <ariel@gnu.org>
+	
+	* Makefile.am (INCLUDES): Added a -DORBIT2_INTERNAL_API  flag.
+
+2002-01-24  Ariel Rios  <ariel@gnu.org>
+
+	* guile-gnome-corba-primitives.h: Some clean up. 
+	I cannot track one warning, tho.
+
+2001-09-09  Martin Baulig  <baulig@suse.de>
+
+	* guile-gnome-corba-primitives.[ch]: Moved the low-level stuff here.
+
+	* primitives.scm: The (gnome corba primitives) module.
+
+	* types.scm: The (gnome corba types) module.
+
+2001-09-07  Martin Baulig  <baulig@suse.de>
+
+	* guile-corba.[ch]: Renamed to guile-gnome-corba.[ch].
+
+	* guile-corba-types.[ch]: Renamed to guile-gnome-corba-types.[ch].
+
+	* guile-corba-generic.[ch]: Renamed to guile-gnome-corba-generic.[ch].
+
+	* gnomecorba.gwp: Renamed to gnome-corba.gwp.
+
+	* orbit-idl-utils.c: Removed.
+
+2001-09-07  Martin Baulig  <baulig@suse.de>
+
+	* Foo.idl: Moved to ../demos/corba/.
+
+2001-08-25  Martin Baulig  <baulig@suse.de>
+
+	* guile-corba-generic.[ch]: New files. This contains non-Scheme stuff
+	which is generally useful.
+
+2001-07-09  Martin Baulig  <baulig@suse.de>
+
+	* Makefile.am: Removed the g-wrap stuff for the moment.
+
+	* guile-corba.[ch]: We now use guile 1.5.x (from CVS) here.
+
+	* ChangeLog: Now we have a ChangeLog here :-)
+

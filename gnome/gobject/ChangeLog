@@ -1,0 +1,462 @@
+2003-05-08  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject-primitives.[ch]: Added and exported log handler
+	for g_logv messages. I don't thing it returns, however, which can
+	cause recursion... dunno what to do about that.
+
+	* gw-gobject-spec.scm: wrap closures and g-source-set-closure.
+
+	* gw-glib-spec.scm: wrap main loops and some things from gutils.h.
+	Steal GList/GSList wrapper from g-wrap.
+
+	* defs-support.scm: prettify output, log opaque types and bad
+	methods to a file. We now wrap opaque types as <gw:wct>. Add
+	support for GList*-of-GtkWindow*. Support new commands "ignore",
+	"ignore-glob", and function attribute "overrides".
+
+2003-05-03  Andy Wingo  <wingo@pobox.com>
+
+	* gobject.scm: Cleanups. Also changed a few
+	gtype-instance-primitive function calls with (slot-ref obj
+	'gtype-instance). With the new directory structure, gobject.scm
+	moves into gnome/.
+
+	* primitives.scm: Don't hold extra data in the slot-definition,
+	it's needed by the latest guile 1.6. Change the old slot
+	allocation for gtype and gtype-instance to rely on a new kind of
+	allocation, #:set-once. Adapt to the new method of library
+	initialization with g-wrap.
+
+	* gw-utils.scm: New file. Provides utility syntax
+	re-export-bindings and functions->methods-public.
+
+	* gw-spec-utils.scm: New file. Provides utility functions for spec
+	files, such as gobject:wrap-object, gobject:wrap-enum, and the
+	like.
+
+	* defs-support.scm: New file. Provides support for natively
+	loading .defs-style api definitions into g-wrap wrapsets.
+
+	* gw-glib-spec.scm: New file. Will eventually wrap glib functions,
+	but for now just provides type wrappings for other wrapsets.
+
+	* gnome-gobject.gwp: Deleted. Functionality moved to
+	gw-gobject-spec.scm.
+	
+	* gw-gobject-spec.scm: New file. Wraps functions to initialize
+	gnome-gobject, as well as wrapping some fundamental types for
+	g-wrap.
+
+	* generics.scm: New file. Provides generic functions for
+	gobject.scm.
+
+	* guile-gnome-gobject.c: Added diagnostic macros to debug
+	allocation problems. Adapted to new slot allocation for 'gtype and
+	'gtype-instance. Return a a goops object of class (gtype->class
+	[type of gtypeinstance]) in scm_c_gtype_instance_to_scm. Exported
+	(to C) scm_sym_gtype_to_class, the symbol for gtype->class.
+	Adapted to new initialization via g-wrap.
+	
+	* guile-gnome-gobject-primitives.c: Muck about with refcounting.
+	Provide guile_gobject_register_sinkfunc(), much like what pygtk
+	does, to deal with GTK_OBJECT_FLOATING. Provide getters and
+	setters for #:set-once allocation and adapt accordingly for 'gtype
+	and 'gtype-instance. Refcounting is still not in a coherent state,
+	needs a bit of work.
+	
+2002-11-08  Ariel Rios <ariel@gnu.org>
+
+	* guile-gnome-gobject-primitives.c (s_scm_gobject_primitive_signal_emit): Rewrite the function
+	being more clever, more readable and hey! it works.
+
+	* gobject.scm (gobject-signal-emit): Do some cleanup.
+	
+	
+2002-08-01  Ariel Rios  <ariel@gnu.org>
+
+	* guile-gnome-gobject-primitives.c (s_scm_gparam_primitive_create_pspec_struct): Some cleanup
+
+2002-08-01  Ariel Rios  <ariel@gnu.org>
+
+	* guile-gnome-gobject-primitives.c (s_scm_gparam_primitive_create): Use the
+	new macros thus doing the right thing (TM)
+
+	* guile-gnome-gobject-primitives.h (SCM_G_IS_PARAM_SPEC_BOOLEAN) 
+	(SCM_G_IS_PARAM_SPEC_STRING, SCM_G_IS_PARAM_SPEC_OBJECT) 
+	(SCM_G_IS_PARAM_SPEC_BOXED, SCM_G_IS_PARAM_SPEC_CHAR) 
+	(SCM_G_IS_PARAM_SPEC_UCHAR, SCM_G_IS_PARAM_SPEC_INT) 
+	(SCM_G_IS_PARAM_SPEC_UINT, SCM_G_IS_PARAM_SPEC_LONG) 
+	(SCM_G_IS_PARAM_SPEC_ULONG, SCM_G_IS_PARAM_SPEC_FLOAT) 
+	(SCM_G_IS_PARAM_SPEC_DOUBLE, SCM_G_IS_PARAM_SPEC_POINTER) 
+	(SCM_G_IS_PARAM_SPEC_ENUM, SCM_G_IS_PARAM_SPEC_FLAGS): New macros
+
+2002-07-30  Ariel Rios  <ariel@gnu.org>
+
+	* guile-gnome-gobject.c (scm_init_gnome_gobject): Some cleanup of
+	unused code.
+
+2002-07-30  Ariel Rios  <ariel@gnu.org>
+
+	* guile-gnome-gobject.c (scm_init_gnome_gobject): Do the right thing.
+
+2002-07-30  Ariel Rios  <ariel@gnu.org>
+
+        * guile-gnome-gobject.c : Add string.h to make compiler happy
+	
+	* guile-gnome-gobject-primitives.c: Ditto
+
+	* guile-support.c: Ditto 
+
+2002-04-13  Ariel Rios  <ariel@gnu.org>
+
+	* guile-gnome-gobject-primitives.c (s_scm_gparam_primitive_create_pspec_struct): 
+	s/g_param_get_*/g_param_spec_get. 
+
+2002-01-23  Ariel Rios  <ariel@gnu.org>
+
+	* guile-gnome-gobject-primitives.c (s_scm_gparam_primitive_create): 
+	All fixes done. It compiles again. Need to check the fundamental
+	stuff.
+
+2002-01-23  Ariel Rios  <ariel@gnu.org>
+
+	* guile-gnome-gobject-primitives.c (s_scm_gparam_primitive_create): 
+	More clean ups. Almost done.
+
+2002-01-23  Ariel Rios  <ariel@gnu.org>
+
+	* guile-gnome-gobject-primitives.c (s_scm_gparam_primitive_create_pspec_struct): 
+	Functions now compiles. Still some work to do in some functions ahead.
+	
+
+2002-01-23  Ariel Rios  <ariel@gnu.org>
+
+        * guile-gnome-gobject-primitives.c:  glib-object.h
+	
+	* guile-gnome-gobject-primitives.h: Ditto.
+
+	* guile-gnome-gobject.c (scm_init_gnome_gobject): Do not use
+	G_TYPE_FUNDAMENTAL_LAST and other deprecated stuff, this
+	hack is a workaround and it is not guaranteed to work yet.
+	We now only include glib-object.h
+		
+2001-09-21  Ariel Rios  <ariel@gnu.org>
+
+	* guile-gnome-gobject-primitives.c (gboxed_scm_get_type): Use correct of
+	arguments required by recent glib changes.
+	(s_scm_gparam_primitive_create_pspec_struct): Do not access GParamSpec 
+	fields directly.
+	(s_scm_gparam_primitive_create): Correct number of arguments passed to
+	SCM_ASSERT
+
+2001-09-09  Martin Baulig  <baulig@suse.de>
+
+	* gobject.scm (gobject-class-find-property): New public function.
+
+2001-09-09  Martin Baulig  <baulig@suse.de>
+
+	* gobject.scm (vector-map): New private utility function.
+	(<gparam>): Removed the `pspec-struct' slot.
+	(<gparam-pointer> <gparam-string> <gparam-object> <gparam-boxed>): Added.
+	(<gparam-enum> <gparam-flags>): Added.
+	(gparam->pspec-struct): New public function.
+	(allocate-instance <gtype-class>): Moved <gparam> and <gobject> initialization
+	into (initialize <gtype-class>), only do the actual allocating here.
+
+	* guile-gnome-gobject-primitives.c (scm_c_debug_print): New utility function.
+	(SCM_DEBUG_PRINT): New utility macro.
+	(gparam-primitive->pspec-struct): Moved the functionality of this function into
+	`gparam-primitive-create-pspec-struct' (not exported), store the pspec-struct as
+	qdata in the param and return it.
+	(SCM_ERROR_NOT_YET_IMPLEMENTED): Added `what' argument.
+
+	* guile-gnome-gobject.c (gtype?): New function.
+	(gparam->value-type): New function.
+
+2001-09-08  Martin Baulig  <baulig@suse.de>
+
+	* foo.[ch]: Removed.
+
+2001-09-08  Martin Baulig  <baulig@suse.de>
+
+	* gobject.scm (gtype-instance:class-init, gtype-instance:instance-init
+	gobject:class-init gobject:instance-init gobject-class:install-property
+	gobject:set-property gobject:get-property): Moved here from primitives.scm.
+	(<gparam>): Added `pspec-struct' slot.
+	(<gobject>): The `gobject-properties' vector now contains <gparam> objects.
+	(make-gparam-instance): Added #:pspec-struct keyword to create a <gparam>
+	object from a pspec-struct.
+	(gobject:get-property, gobject:set-property): This now gets a <gparam> object
+	as argument, not a pspec-struct.
+	(gobject-class-install-property): Removed, implemented in C.	
+
+	* guile-gnome-gobject-primitives.c (scm_c_gtype_lookup_class): New function.
+	(scm_c_gtype_instance_bind_to_instance): New function.
+	(gtype-primitive-register-static): Moved to guile-gnome-gobject.c and renamed
+	to gtype-register-static.
+	(gobject-class-primitive-install-property): Moved to guile-gnome-gobject.c and
+	renamed to gobject-class-install-property.
+	(scm_gparam_spec_vtable): Added "param-type" field.
+
+	* guile-gnome-gobject.c (gtype-register-static): Moved here.
+	(gobject-class-install-property): Moved here.
+
+2001-09-07  Martin Baulig  <baulig@suse.de>
+
+	* guile-support.[ch]: New files. This stuff may be moved into
+	guile at a future time.
+
+2001-09-07  Martin Baulig  <baulig@suse.de>
+
+	* guile-gnome-gobject-primitives.c (scm_add_slot_closure): Removed.
+
+2001-09-06  Martin Baulig  <baulig@suse.de>
+
+	* gobject.scm
+	(<gparam-char> <gparam-uchar> <gparam-boolean> <gparam-int> <gparam-uint>
+	<gparam-long> <gparam-ulong> <gparam-float> <gparam-double>): New classes.
+	(gobject-class-install-property): New public function.
+	(allocate-instance (<gtype-class>)): Added support for <gparam> subclasses.
+
+	* guile-gnome-gobject-primitives.c (gparam-primitive-create):
+	This now takes 4 args like (gobject-primitive-create-instance).
+
+2001-09-05  Martin Baulig  <baulig@suse.de>
+
+	* guile-gnome-gobject-primitives.c (gparam-spec?): New func.
+	(gobject-class-primitive-install-property): New function.
+	Added support for properties.
+	(scm_gtype_instance_free): Don't free the instance if we have a
+	finalize func.
+
+	* primitives.scm (gobject:set-property gobject:get-property):
+	New generic functions.
+
+	* gobject.scm (gobject:set-property gobject:get-property):
+	Provide default implementation.
+
+2001-09-05  Martin Baulig  <baulig@suse.de>
+
+	* primitives.scm (gparam-spec:name gparam-spec:nick gparam-spec:blurb
+	gparam-spec:flags gparam-spec:value-type gparam-spec:owner-type
+	gparam-spec:args): New accessor functions.
+
+	* guile-gnome-gobject-primitives.c
+	(gobject-primitive-get-properties): Only return direct properties, not the
+	ones from our parent types.
+
+	* gobject.scm (gtype->class): Register parent classes if necessary.
+	gsignal:id gsignal:name gsignal:interface-type gsignal:return-type
+	gsignal:param-types gparam-spec:name gparam-spec:nick gparam-spec:blurb
+	gparam-spec:flags gparam-spec:value-type gparam-spec:owner-type
+	gparam-spec:args): Re-export them (from (gnome gobject primitives)).
+	(gobject-class-get-property-names): New convenience function.
+
+	* guile-gnome-gobject.c (scm_c_gtype_instance_is_a_p): New function.
+	(scm_c_scm_to_gtype_instance, scm_c_gtype_instance_to_scm): New functions.
+
+2001-09-03  Martin Baulig  <baulig@suse.de>
+
+	* guile-gnome-gobject-primitives.c
+	(scm_c_register_gtype): Unmangle the type with G_TYPE_FLAG_RESERVED_ID_BIT.
+
+2001-09-03  Martin Baulig  <baulig@suse.de>
+
+	* guile-gnome-gobject-primitives.c (gtype-primitive-create-instance):
+	Renamed to gobject-primitive-create-instance; its last argument is
+	now a vector containing the properties.
+
+	* gobject.scm: When creating new <gobject> instances, interpret all
+	arguments as GObject properties.
+
+2001-09-03  Martin Baulig  <baulig@suse.de>
+
+	* guile-gnome-gobject-primitives.c
+	(gobject:class-init, gobject:instance-init): When deriving
+	GObject's, use `gobject:class-init' and `gobject-instance-init'
+	instead of `gtype-instance:class-init' and
+	`gtype-instance:instance-init'.
+
+	* guile-gnome-gobject.c (gtype-fundamental?): New function.
+	This isn't really necessary, but it's faster to do this in C.
+
+	* primitives.scm (define-public-with-docs): New macro.
+	(define-generic-with-docs): New macro.
+
+	* gobject.scm: Documentation .....
+
+2001-09-03  Martin Baulig  <baulig@suse.de>
+
+	* guile-gnome-gobject-primitives.c
+	(gsignal-primitive-create): Actually pass the `param-types'
+	vector to g_signal_newv().
+
+	* gobject.scm (make-value-from-scm): Throw an exception if
+	we got the unspecified value, but a non-void type.
+
+2001-09-03  Martin Baulig  <baulig@suse.de>
+
+	Another batch of larger changes:
+
+	- improved gsignal support.
+	- we can now derive GObject's in scheme.
+
+	More detailed, but a bit uncomplete list:
+
+	* gobject.scm (gtype->class): For each class we create,
+	use its parent class as metaclass.
+	(<gboxed-scm>): New type. This is a GBoxed type to hold
+	a scheme value.
+	(gvalue->scm): Moved here from primitives.scm and export it.
+	(gtype-instance:class-init): New generic function.
+	(gtype-instance:instance-init): New generic function.
+	(gobject-class-define-signal): New public macro.
+
+	* guile-gnome-gobject-primitives.[ch]
+	(gvalue-primitive-get-basic): Renamed to gvalue-primitive-get.
+	(gvalue-primitive-set-basic): Renamed to gvalue-primitive-set.
+	(gtype-instance-primitive-type): Renamed to gtype-instance-primitive->type.
+	(gtype-instance-primitive-to-value): New function.
+	(scm_init_gnome_gobject_primitives): Don't export the "gsignal-*"
+	symbols, except "gsignal-struct-vtable".
+	(G_TYPE_GBOXED_SCM): New GBoxed type to hold a scheme value.
+	(gboxed-scm-primitive-new): New function.
+	(gboxed-scm-primitive->scm): New function.
+	(gsignal-primitive-create): New function.
+	(gtype-class->type): Removed. This is now implemented in scheme
+	and correctly handles the case if you create a GOOPS subclass of
+	a class.
+
+	* guile-gnome-gobject.[ch] (gtype->method-name): New function.
+
+	* primitives.scm
+	(gsignal:id, gsignal:name, gsignal:return-type,
+	gsignal:instance-type, gsignal:parameter-types):
+	New accessor functions.
+
+2001-09-01  Martin Baulig  <baulig@suse.de>
+
+	* primitives.scm (<gtype>): Removed, replaced with a smob.
+	(gobject-error): Renamed to gruntime-error.
+
+	* guile-gnome-gobject-primitives.[ch]: Removed the <gtype> class
+	and added new scm_tc16_gtype smob.
+
+	* gobject.scm (gtype->class): Use <gtype-class> as metaclass
+	and changed all <gtype-class-meta> to <gtype-class>.
+
+	* guile-gnome-gobject.c: Call the GType's "gtype:<type-name>"
+	instead of "gtype-type-<type-name>".
+
+2001-09-01  Martin Baulig  <baulig@suse.de>
+
+	* guile-gnome-gobject-primitives.c (scm_gtype_primitive_register_static): New function.
+
+	* guile-gnome-gobject-primitives.h (SCM_VALIDATE_FLOAT_COPY): Make this actually work.
+
+2001-09-01  Martin Baulig  <baulig@suse.de>
+
+	Added support for GParamSpec.
+
+	* gobject.scm (gobject-get-property, gobject-set-property): New functions.
+
+	* guile-gnome-gobject-primitives.c (scm_gparam_spec_struct_vtable): New struct type.
+	(scm_gtype_instance_primitive_to_instance): Renamed to scm_gtype_instance_primitive().
+	(scm_gtype_instance_primitive_type): New function.
+	(scm_gobject_primitive_signal_emit, scm_gobject_primitive_signal_connect): Take a
+	scm_tc16_gtype_instance smob, not a <gobject> object.
+	(scm_gparam_primitive_to_pspec_struct): New function.
+	(scm_gparam_primitive_create): New function.
+	(s_scm_gobject_primitive_get_properties): New function.
+	(scm_gobject_primitive_get_property): New function.
+	(scm_gobject_primitive_set_property): New function.
+
+	* foo.[ch]: Added properties.
+
+2001-08-31  Martin Baulig  <baulig@suse.de>
+
+	* gobject.scm (gobject-signal-connect-data): Use the new <gclosure> object.
+	(gsignal-handler-block gsignal-handler-unblock gsignal-handler-disconnect
+	gsignal-handler-connected?): New functions.
+
+	* guile-gnome-gobject-primitives.c
+	(GuileGTypeInstance): Killed, use GTypeInstance directly.
+	(scm_gtype_instance_primitive_to_instance): New func.
+	(scm_gsignal_primitive_handler_block): New func.
+	(scm_gsignal_primitive_handler_unblock): New func.
+	(scm_gsignal_primitive_handler_disconnect): New func.
+	(scm_gsignal_primitive_handler_connected_p): New func.
+
+2001-08-31  Martin Baulig  <baulig@suse.de>
+
+	* guile-gnome-gobject-primitives.c
+	(scm_gvalue_primitive_to_type): Removed, we already have scm_gvalue_to_type.
+
+2001-08-31  Martin Baulig  <baulig@suse.de>
+
+	* guile-gnome-gobject-primitives.c
+	(scm_tc16_gclosure_smob): Removed.
+	(scm_gclosure_primitive_invoke): Correctly GC protect the
+	GuileGClosure's `func' field.
+	
+2001-08-31  Martin Baulig  <baulig@suse.de>
+
+	* gobject.scm (<gclosure>): Implement this as a GOOPS class,
+	not as a GValue.
+	(gclosure-invoke): New generic function.
+
+	* guile-gnome-gobject-primitives.c
+	(scm_tc16_gclosure): Renamed to `scm_tc16_gclosure_smob'.
+	(scm_gclosure_primitive_invoke): Added return_type argument.
+	(scm_gvalue_primitive_to_type): New function.
+
+2001-08-31  Martin Baulig  <baulig@suse.de>
+
+	* gobject.scm (gtype-instance-write): Added method for
+	`(type <gtype>) (obj <gvalue>) file)' - creates the class using
+	(gtype->class type) and then calls the normal gtype-instance-write.
+
+	* guile-gnome-gobject-primitives.c (scm_gvalue_print): If the class
+	doesn't exist yet, use the type as first argument of gtype-instance-write.
+
+2001-08-27  Martin Baulig  <baulig@suse.de>
+
+	* primitives.scm (gflags->element-list): New primitive function.
+	(gflags->symbol-list gflags->name-list gflags->value-list): New functions.
+
+2001-08-27  Martin Baulig  <baulig@suse.de>
+
+	* primitives.scm, guile-gnome-gobject-primitives.[ch]: Moved some of the
+	internal stuff into a new `(gnome gobject primitives)' module and exported
+	most of the methods.
+
+2001-08-25  Martin Baulig  <baulig@suse.de>
+
+	- added basic support for signals.
+
+2001-08-23  Martin Baulig  <baulig@suse.de>
+
+	- added basic gclosure support.
+
+	- added gchararray.
+
+	- added support for flags.
+
+	- added genum-register-static.
+
+	- added gchar, guchar, gint, guint, glong, gulong, gfloat and gdouble.
+
+	- added support for enums.
+
+2001-08-21  Martin Baulig  <baulig@suse.de>
+
+	* guile-gnome-gobject.c (scm_gtype_children): New func.
+	(scm_init_gnome_gobject): Register all fundamental and derived types.
+
+2001-08-21  Martin Baulig  <baulig@suse.de>
+
+	* guile-gnome-gobject.c (scm_sys_gobject_scheme_dir): New func.
+	(scm_gobject_register_type): New func.
+
+	* Makefile.am: Create and install documentation.
+

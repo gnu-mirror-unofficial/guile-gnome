@@ -1,0 +1,8 @@
+2003-05-08  Andy Wingo  <wingo@pobox.com>
+
+	* glib.scm: new file. Imports gobject/gw-glib and defines
+	g-idle-add and g-timeout-add (in scheme).
+
+	* gtk.scm: import glib.scm.
+	
+

@@ -1,0 +1,48 @@
+2002-01-28  Ariel Rios  <ariel@gnu.org>
+
+	* configure.in: Bump version number to 0.3.0
+
+	* NEWS: What's new =)
+
+2001-09-10  Martin Baulig  <baulig@suse.de>
+
+	Released guile-gobject 0.2.0 "The Great Barrier Reef".
+
+	* configure.in: Bump version number to 0.2.0.
+
+	* RELEASE-NOTES-0.2.0.txt: Preparing the release ...
+
+2001-09-07  Martin Baulig  <baulig@suse.de>
+
+	* configure.in: Check for orbit-idl.
+	(ORBIT_IDL, BONOBO_IDL_DIR): Added.
+
+	* demos/: New directory.
+
+	* demos/corba/: New directory.
+
+2001-09-05  Martin Baulig  <baulig@suse.de>
+
+	* configure.in: Bump version number to 0.1.0.
+
+2001-09-05  Martin Baulig  <baulig@suse.de>
+
+	* configure.in: Check for GTK+.
+
+	* gtk/: New directory.
+
+2001-09-01  Martin Baulig  <baulig@suse.de>
+
+	* Makefile.am, configure.in: Don't build libgnome/ and orbit/
+	for the moment, nothing interesting in there.
+
+2001-08-27  Martin Baulig  <baulig@suse.de>
+
+	* test-suite/: New directory.
+
+2001-08-01  Martin Baulig  <baulig@suse.de>
+
+	* orbit/: New directory.
+
+	* libgnome/: New directory.
+

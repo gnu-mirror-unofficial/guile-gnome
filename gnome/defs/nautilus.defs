@@ -1,0 +1,274 @@
+;; -*- scheme -*-
+
+; object definitions ...
+
+(define-object View
+  (in-module "Nautilus")
+  (parent "BonoboObject")
+  (c-name "NautilusView")
+  (gtype-id "NAUTILUS_TYPE_VIEW")
+)
+	
+;; Enumerations and flags ...
+
+;; From /home/zilch/cvs/gnome2/nautilus/libnautilus/nautilus-view.h
+
+(define-function nautilus_view_get_type
+  (c-name "nautilus_view_get_type")
+  (return-type "GtkType")
+)
+
+(define-function view_new
+  (c-name "nautilus_view_new")
+  (is-constructor-of NautilusView)
+  (return-type "NautilusView*")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+)
+
+(define-function nautilus_view_new_from_bonobo_control
+  (c-name "nautilus_view_new_from_bonobo_control")
+  (return-type "NautilusView*")
+  (parameters
+    '("BonoboControl*" "bonobo_control")
+  )
+)
+
+(define-method get_bonobo_control
+  (of-object "NautilusView")
+  (c-name "nautilus_view_get_bonobo_control")
+  (return-type "BonoboControl*")
+)
+
+(define-method open_location_in_this_window
+  (of-object "NautilusView")
+  (c-name "nautilus_view_open_location_in_this_window")
+  (return-type "none")
+  (parameters
+    '("const-char*" "location_uri")
+  )
+)
+
+(define-method open_location_prefer_existing_window
+  (of-object "NautilusView")
+  (c-name "nautilus_view_open_location_prefer_existing_window")
+  (return-type "none")
+  (parameters
+    '("const-char*" "location_uri")
+  )
+)
+
+(define-method open_location_force_new_window
+  (of-object "NautilusView")
+  (c-name "nautilus_view_open_location_force_new_window")
+  (return-type "none")
+  (parameters
+    '("const-char*" "location_uri")
+    '("GList*" "selection")
+  )
+)
+
+(define-method report_location_change
+  (of-object "NautilusView")
+  (c-name "nautilus_view_report_location_change")
+  (return-type "none")
+  (parameters
+    '("const-char*" "location_uri")
+    '("GList*" "selection")
+    '("const-char*" "title")
+  )
+)
+
+(define-method report_redirect
+  (of-object "NautilusView")
+  (c-name "nautilus_view_report_redirect")
+  (return-type "none")
+  (parameters
+    '("const-char*" "from_location_uri")
+    '("const-char*" "to_location_uri")
+    '("GList*" "selection")
+    '("const-char*" "title")
+  )
+)
+
+(define-method report_selection_change
+  (of-object "NautilusView")
+  (c-name "nautilus_view_report_selection_change")
+  (return-type "none")
+  (parameters
+    '("GList*" "selection")
+  )
+)
+
+(define-method report_status
+  (of-object "NautilusView")
+  (c-name "nautilus_view_report_status")
+  (return-type "none")
+  (parameters
+    '("const-char*" "status")
+  )
+)
+
+(define-method report_load_underway
+  (of-object "NautilusView")
+  (c-name "nautilus_view_report_load_underway")
+  (return-type "none")
+)
+
+(define-method report_load_progress
+  (of-object "NautilusView")
+  (c-name "nautilus_view_report_load_progress")
+  (return-type "none")
+  (parameters
+    '("double" "fraction_done")
+  )
+)
+
+(define-method report_load_complete
+  (of-object "NautilusView")
+  (c-name "nautilus_view_report_load_complete")
+  (return-type "none")
+)
+
+(define-method report_load_failed
+  (of-object "NautilusView")
+  (c-name "nautilus_view_report_load_failed")
+  (return-type "none")
+)
+
+(define-method set_title
+  (of-object "NautilusView")
+  (c-name "nautilus_view_set_title")
+  (return-type "none")
+  (parameters
+    '("const-char*" "title")
+  )
+)
+
+(define-method go_back
+  (of-object "NautilusView")
+  (c-name "nautilus_view_go_back")
+  (return-type "none")
+)
+
+(define-method close_window
+  (of-object "NautilusView")
+  (c-name "nautilus_view_close_window")
+  (return-type "none")
+)
+
+(define-function nautilus_uri_list_from_g_list
+  (c-name "nautilus_uri_list_from_g_list")
+  (return-type "Nautilus_URIList*")
+  (parameters
+    '("GList*" "list")
+  )
+)
+
+(define-function nautilus_g_list_from_uri_list
+  (c-name "nautilus_g_list_from_uri_list")
+  (return-type "GList*")
+  (parameters
+    '("const-Nautilus_URIList*" "uri_list")
+  )
+)
+
+(define-method set_up_ui
+  (of-object "NautilusView")
+  (c-name "nautilus_view_set_up_ui")
+  (return-type "BonoboUIComponent*")
+  (parameters
+    '("const-char*" "datadir")
+    '("const-char*" "ui_xml_file_name")
+    '("const-char*" "application_name")
+  )
+)
+
+(define-method get_ambient_properties
+  (of-object "NautilusView")
+  (c-name "nautilus_view_get_ambient_properties")
+  (return-type "Bonobo_PropertyBag")
+  (parameters
+    '("CORBA_Environment*" "opt_ev")
+  )
+)
+
+(define-method set_listener_mask
+  (of-object "NautilusView")
+  (c-name "nautilus_view_set_listener_mask")
+  (return-type "none")
+  (parameters
+;;  '("NautilusViewListenerMask" "mask")
+    '("int" "mask")
+  )
+)
+
+(define-method construct
+  (of-object "NautilusView")
+  (c-name "nautilus_view_construct")
+  (return-type "NautilusView*")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+)
+
+(define-method construct_from_bonobo_control
+  (of-object "NautilusView")
+  (c-name "nautilus_view_construct_from_bonobo_control")
+  (return-type "NautilusView*")
+  (parameters
+    '("BonoboControl*" "bonobo_control")
+  )
+)
+
+
+
+;; From /home/zilch/cvs/gnome2/nautilus/libnautilus/nautilus-view-standard-main.h
+
+(define-function view_standard_main
+  (c-name "nautilus_view_standard_main")
+  (return-type "int")
+  (parameters
+    '("const-char*" "executable_name")
+    '("const-char*" "version")
+    '("const-char*" "gettext_package_name")
+    '("const-char*" "gettext_locale_directory")
+    '("int" "argc")
+    '("char**" "argv")
+    '("const-char*" "factory_iid")
+    '("const-char*" "view_iids")
+    '("NautilusViewCreateFunction" "create_function")
+    '("GVoidFunc" "post_initialize_callback")
+    '("void*" "user_data")
+  )
+)
+
+(define-function view_standard_main_multi
+  (c-name "nautilus_view_standard_main_multi")
+  (return-type "int")
+  (parameters
+    '("const-char*" "executable_name")
+    '("const-char*" "version")
+    '("const-char*" "gettext_package_name")
+    '("const-char*" "gettext_locale_directory")
+    '("int" "argc")
+    '("char**" "argv")
+    '("const-char*" "factory_iid")
+    '("GList*" "view_iids")
+    '("NautilusViewCreateFunction" "create_function")
+    '("GVoidFunc" "post_initialize_callback")
+    '("void*" "user_data")
+  )
+)
+
+(define-function nautilus_view_create_from_get_type_function
+  (c-name "nautilus_view_create_from_get_type_function")
+  (return-type "NautilusView*")
+  (parameters
+    '("const-char*" "iid")
+    '("void*" "user_data")
+  )
+)
+
+

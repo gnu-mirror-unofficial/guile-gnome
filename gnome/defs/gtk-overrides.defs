@@ -1,0 +1,127 @@
+;; -*- scheme -*-
+
+;; stealing most of these from python-gtk2
+
+(ignore-glob  "*_get_type"
+              "_*"
+              "*_ref"
+              "*_unref"
+              "*_copy"
+              "*_free"
+              "*_newv"
+              "*_valist"
+              "*_setv")
+
+(ignore-glob "gtk_gc_*"
+             "gtk_idle_*"
+             "gtk_init*"
+             "gtk_input_add*" ; there is also gtk_input_dialog
+             "gtk_input_remove"
+             "gtk_quit_*"
+             "gtk_timeout_*"
+             "gtk_target_list_*"
+             "gtk_tree_path_*"
+             "gtk_binding_*"
+             "gtk_object_*")
+
+(ignore "gtk_exit"
+        "gtk_set_locale"
+        ;; what fascinating function names...
+        "gtk_key_snooper_install"
+        "gtk_key_snooper_remove"
+        "gtk_get_current_event"
+        "gtk_get_event_widget"
+        "gtk_propagate_event"
+
+        "gtk_accel_groups_activate"
+        "gtk_accel_group_activate"
+        "gtk_accel_group_get_entry"
+        "gtk_accel_group_lock_entry"
+        "gtk_accel_group_unlock_entry"
+        "gtk_accel_group_add"
+        "gtk_accel_group_remove"
+        "gtk_accel_group_handle_add"
+        "gtk_accel_group_handle_remove"
+        "gtk_accel_group_create_add"
+        "gtk_accel_group_create_remove"
+        "gtk_accel_group_find"
+        "gtk_accel_groups_from_object"
+        "gtk_accel_group_entries_from_object"
+
+        ;; don't know why i'm ignoring these, but pygtk does
+        "gtk_container_get_toplevels"
+        "gtk_container_add_child_arg_type"
+        "gtk_container_query_child_args"
+        "gtk_container_child_args_collect"
+        "gtk_container_child_arg_get_info"
+        "gtk_container_forall"
+        "gtk_container_add_with_args"
+        "gtk_container_addv"
+
+        "gtk_dialog_new"
+
+        "gtk_entry_new"
+        
+        "gtk_item_factory_create_item"
+        "gtk_item_factory_delete_entry"
+        "gtk_item_factory_delete_entries"
+        "gtk_item_factory_popup_with_data"
+        "gtk_item_factory_popup_data"
+        "gtk_item_factory_set_translate_func"
+        "gtk_item_factory_create_items_ac"
+        "gtk_item_factory_create_menu_entries"
+
+        "gtk_preview_uninit"
+
+        "gtk_radio_menu_item_set_group"
+        "gtk_radio_button_set_group"
+
+        "gtk_selection_clear"
+        "gtk_selection_request"
+
+        "gtk_text_view_new"
+
+        "gtk_tooltips_data_get"
+
+        "gtk_widget_destroyed"
+        "gtk_widget_new"
+
+        "gtk_window_add_embedded_xid"
+        "gtk_window_remove_embedded_xid")
+
+;; Things that python-gtk does that we should do, ordered approximately
+;; according to priority
+
+;; Types:
+;;
+;; allocation <-> pair
+;; rectangle <-> boxed rect
+
+;; Functions:
+;;
+;; wrap container_foreach/all nicely
+;; nix new-with-label, new-with-mnemonic, etc in favor of kw args
+;; window-set-geometry-hints gets kwargs
+;; gtk-label-get-selection-bounds, layout-offsets, also editable-, entry-,
+;; spin-button-get-increments, get-offsets return pairs
+;; window-get-position,size,default-size return pairs
+;; wrap gtk-menu-popup nicely
+;; box-query-child-packing returns a list
+;; curve-get-vector returns a vector
+;; kill gtk-label-get!
+;; container_child_[gs]et needs to work like gobject-[gs]et-property
+;; gtk-calendar-get-date returns tuple (really should return a timeval, no?)
+;; menu-attach-to-widget, toolbar-(pre,ap)pend/insert-item
+;; notebook-query-tab-label-packing returns tuple
+;; widget_*_path sanity
+;; editable-insert-text returns position
+;; gtk_paint_polygon with kwargs
+;; gtkstyle property accessors for struct fields
+;; manual wrapper for GtkSelectionData
+
+;; Other things:
+;;
+;; gtktreeview
+;; gtktextview
+;; threading
+;; nice item factory support

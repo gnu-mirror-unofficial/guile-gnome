@@ -1,0 +1,1485 @@
+
+;; -*- scheme -*-
+; object definitions ...
+(define-object Client
+  (in-module "GConf")
+  (parent "GObject")
+  (c-name "GConfClient")
+  (gtype-id "GCONF_TYPE_CLIENT")
+)
+
+(define-boxed Value
+  (in-module "GConf")
+  (c-name "GConfValue")
+  (gtype-id "GCONF_TYPE_VALUE")
+  (copy-func "gconf_value_copy")
+  (release-func "gconf_value_free")
+  (fields
+    '("GConfValueType" "type")
+  )
+)
+
+(define-boxed Entry
+  (in-module "GConf")
+  (c-name "GConfEntry")
+  (gtype-id "GCONF_TYPE_ENTRY")
+  (copy-func "gconf_entry_copy")
+  (release-func "gconf_entry_free")
+  (fields
+    '("gchar*"      "key")
+    '("GConfValue*" "value")
+  )  
+)
+
+(define-boxed Schema
+  (in-module "GConf")
+  (c-name "GConfSchema")
+  (gtype-id "GCONF_TYPE_SCHEMA")
+  (copy-func "gconf_schema_copy")
+  (release-func "gconf_schema_free")
+)
+
+(define-boxed MetaInfo
+  (in-module "GConf")
+  (c-name "GConfMetaInfo")
+  (gtype-id "GCONF_TYPE_METAINFO")
+  (copy-func "gconf_metainfo_copy")
+  (release-func "gconf_metainfo_free")
+)
+				  
+;; Enumerations and flags ...
+
+(define-enum ConfClientPreloadType
+  (in-module "G")
+  (c-name "GConfClientPreloadType")
+  (gtype-id "GCONF_TYPE_CLIENT_PRELOAD_TYPE")
+  (values
+    '("none" "GCONF_CLIENT_PRELOAD_NONE")
+    '("onelevel" "GCONF_CLIENT_PRELOAD_ONELEVEL")
+    '("recursive" "GCONF_CLIENT_PRELOAD_RECURSIVE")
+  )
+)
+
+(define-enum ConfClientErrorHandlingMode
+  (in-module "G")
+  (c-name "GConfClientErrorHandlingMode")
+  (gtype-id "GCONF_TYPE_CLIENT_ERROR_HANDLING_MODE")
+  (values
+    '("none" "GCONF_CLIENT_HANDLE_NONE")
+    '("unreturned" "GCONF_CLIENT_HANDLE_UNRETURNED")
+    '("all" "GCONF_CLIENT_HANDLE_ALL")
+  )
+)
+
+(define-enum ConfValueType
+  (in-module "G")
+  (c-name "GConfValueType")
+  (gtype-id "GCONF_TYPE_VALUE_TYPE")
+  (values
+    '("invalid" "GCONF_VALUE_INVALID")
+    '("string" "GCONF_VALUE_STRING")
+    '("int" "GCONF_VALUE_INT")
+    '("float" "GCONF_VALUE_FLOAT")
+    '("bool" "GCONF_VALUE_BOOL")
+    '("schema" "GCONF_VALUE_SCHEMA")
+    '("list" "GCONF_VALUE_LIST")
+    '("pair" "GCONF_VALUE_PAIR")
+  )
+)
+
+
+;; From /home/zilch/cvs/gnome2/gconf/gconf/gconf-client.h
+
+(define-function gconf_client_get_type
+  (c-name "gconf_client_get_type")
+  (return-type "GType")
+)
+
+(define-function client_get_default
+  (c-name "gconf_client_get_default")
+  (return-type "GConfClient*")
+)
+
+(define-function client_get_for_engine
+  (c-name "gconf_client_get_for_engine")
+  (return-type "GConfClient*")
+  (parameters
+    '("GConfEngine*" "engine")
+  )
+)
+
+(define-method add_dir
+  (of-object "GConfClient")
+  (c-name "gconf_client_add_dir")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "dir")
+    '("GConfClientPreloadType" "preload")
+    '("GError**" "err")
+  )
+)
+
+(define-method remove_dir
+  (of-object "GConfClient")
+  (c-name "gconf_client_remove_dir")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "dir")
+    '("GError**" "err")
+  )
+)
+
+(define-method notify_add
+  (of-object "GConfClient")
+  (c-name "gconf_client_notify_add")
+  (return-type "guint")
+  (parameters
+    '("const-gchar*" "namespace_section")
+    '("GConfClientNotifyFunc" "func")
+    '("gpointer" "user_data")
+    '("GFreeFunc" "destroy_notify")
+    '("GError**" "err")
+  )
+)
+
+(define-method notify_remove
+  (of-object "GConfClient")
+  (c-name "gconf_client_notify_remove")
+  (return-type "none")
+  (parameters
+    '("guint" "cnxn")
+  )
+)
+
+(define-method set_error_handling
+  (of-object "GConfClient")
+  (c-name "gconf_client_set_error_handling")
+  (return-type "none")
+  (parameters
+    '("GConfClientErrorHandlingMode" "mode")
+  )
+)
+
+(define-function gconf_client_set_global_default_error_handler
+  (c-name "gconf_client_set_global_default_error_handler")
+  (return-type "none")
+  (parameters
+    '("GConfClientErrorHandlerFunc" "func")
+  )
+)
+
+(define-method clear_cache
+  (of-object "GConfClient")
+  (c-name "gconf_client_clear_cache")
+  (return-type "none")
+)
+
+(define-method preload
+  (of-object "GConfClient")
+  (c-name "gconf_client_preload")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "dirname")
+    '("GConfClientPreloadType" "type")
+    '("GError**" "err")
+  )
+)
+
+(define-method set
+  (of-object "GConfClient")
+  (c-name "gconf_client_set")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "key")
+    '("const-GConfValue*" "val")
+    '("GError**" "err")
+  )
+)
+
+(define-method get
+  (of-object "GConfClient")
+  (c-name "gconf_client_get")
+  (return-type "GConfValue*")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_without_default
+  (of-object "GConfClient")
+  (c-name "gconf_client_get_without_default")
+  (return-type "GConfValue*")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_entry
+  (of-object "GConfClient")
+  (c-name "gconf_client_get_entry")
+  (return-type "GConfEntry*")
+  (parameters
+    '("const-gchar*" "key")
+    '("const-gchar*" "locale")
+    '("gboolean" "use_schema_default")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_default_from_schema
+  (of-object "GConfClient")
+  (c-name "gconf_client_get_default_from_schema")
+  (return-type "GConfValue*")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method unset
+  (of-object "GConfClient")
+  (c-name "gconf_client_unset")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method all_entries
+  (of-object "GConfClient")
+  (c-name "gconf_client_all_entries")
+  (return-type "GSList*")
+  (parameters
+    '("const-gchar*" "dir")
+    '("GError**" "err")
+  )
+)
+
+(define-method all_dirs
+  (of-object "GConfClient")
+  (c-name "gconf_client_all_dirs")
+  (return-type "GSList*")
+  (parameters
+    '("const-gchar*" "dir")
+    '("GError**" "err")
+  )
+)
+
+(define-method suggest_sync
+  (of-object "GConfClient")
+  (c-name "gconf_client_suggest_sync")
+  (return-type "none")
+  (parameters
+    '("GError**" "err")
+  )
+)
+
+(define-method dir_exists
+  (of-object "GConfClient")
+  (c-name "gconf_client_dir_exists")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "dir")
+    '("GError**" "err")
+  )
+)
+
+(define-method key_is_writable
+  (of-object "GConfClient")
+  (c-name "gconf_client_key_is_writable")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_float
+  (of-object "GConfClient")
+  (c-name "gconf_client_get_float")
+  (return-type "gdouble")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_int
+  (of-object "GConfClient")
+  (c-name "gconf_client_get_int")
+  (return-type "gint")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_string
+  (of-object "GConfClient")
+  (c-name "gconf_client_get_string")
+  (return-type "gchar*")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_bool
+  (of-object "GConfClient")
+  (c-name "gconf_client_get_bool")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_schema
+  (of-object "GConfClient")
+  (c-name "gconf_client_get_schema")
+  (return-type "GConfSchema*")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_list
+  (of-object "GConfClient")
+  (c-name "gconf_client_get_list")
+  (return-type "GSList*")
+  (parameters
+    '("const-gchar*" "key")
+    '("GConfValueType" "list_type")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_pair
+  (of-object "GConfClient")
+  (c-name "gconf_client_get_pair")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("GConfValueType" "car_type")
+    '("GConfValueType" "cdr_type")
+    '("gpointer" "car_retloc")
+    '("gpointer" "cdr_retloc")
+    '("GError**" "err")
+  )
+)
+
+(define-method set_float
+  (of-object "GConfClient")
+  (c-name "gconf_client_set_float")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("gdouble" "val")
+    '("GError**" "err")
+  )
+)
+
+(define-method set_int
+  (of-object "GConfClient")
+  (c-name "gconf_client_set_int")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("gint" "val")
+    '("GError**" "err")
+  )
+)
+
+(define-method set_string
+  (of-object "GConfClient")
+  (c-name "gconf_client_set_string")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("const-gchar*" "val")
+    '("GError**" "err")
+  )
+)
+
+(define-method set_bool
+  (of-object "GConfClient")
+  (c-name "gconf_client_set_bool")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("gboolean" "val")
+    '("GError**" "err")
+  )
+)
+
+(define-method set_schema
+  (of-object "GConfClient")
+  (c-name "gconf_client_set_schema")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("const-GConfSchema*" "val")
+    '("GError**" "err")
+  )
+)
+
+(define-method set_list
+  (of-object "GConfClient")
+  (c-name "gconf_client_set_list")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("GConfValueType" "list_type")
+    '("GSList*" "list")
+    '("GError**" "err")
+  )
+)
+
+(define-method set_pair
+  (of-object "GConfClient")
+  (c-name "gconf_client_set_pair")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("GConfValueType" "car_type")
+    '("GConfValueType" "cdr_type")
+    '("gconstpointer" "address_of_car")
+    '("gconstpointer" "address_of_cdr")
+    '("GError**" "err")
+  )
+)
+
+(define-method error
+  (of-object "GConfClient")
+  (c-name "gconf_client_error")
+  (return-type "none")
+  (parameters
+    '("GError*" "error")
+  )
+)
+
+(define-method unreturned_error
+  (of-object "GConfClient")
+  (c-name "gconf_client_unreturned_error")
+  (return-type "none")
+  (parameters
+    '("GError*" "error")
+  )
+)
+
+(define-method value_changed
+  (of-object "GConfClient")
+  (c-name "gconf_client_value_changed")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "key")
+    '("GConfValue*" "value")
+  )
+)
+
+(define-method commit_change_set
+  (of-object "GConfClient")
+  (c-name "gconf_client_commit_change_set")
+  (return-type "gboolean")
+  (parameters
+    '("GConfChangeSet*" "cs")
+    '("gboolean" "remove_committed")
+    '("GError**" "err")
+  )
+)
+
+(define-method reverse_change_set
+  (of-object "GConfClient")
+  (c-name "gconf_client_reverse_change_set")
+  (return-type "GConfChangeSet*")
+  (parameters
+    '("GConfChangeSet*" "cs")
+    '("GError**" "err")
+  )
+)
+
+(define-method change_set_from_currentv
+  (of-object "GConfClient")
+  (c-name "gconf_client_change_set_from_currentv")
+  (return-type "GConfChangeSet*")
+  (parameters
+    '("const-gchar**" "keys")
+    '("GError**" "err")
+  )
+)
+
+(define-method change_set_from_current
+  (of-object "GConfClient")
+  (c-name "gconf_client_change_set_from_current")
+  (return-type "GConfChangeSet*")
+  (parameters
+    '("GError**" "err")
+    '("const-gchar*" "first_key")
+  )
+  (varargs #t)
+)
+
+
+;; From /home/zilch/cvs/gnome2/gconf/gconf/gconf-engine.h
+
+(define-function gconf_engine_get_for_address
+  (c-name "gconf_engine_get_for_address")
+  (return-type "GConfEngine*")
+  (parameters
+    '("const-gchar*" "address")
+    '("GError**" "err")
+  )
+)
+
+;; From /home/zilch/cvs/gnome2/gconf/gconf/gconf-error.h
+
+
+
+;; From /home/zilch/cvs/gnome2/gconf/gconf/gconf.h
+
+(define-method notify_remove
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_notify_remove")
+  (return-type "none")
+  (parameters
+    '("guint" "cnxn")
+  )
+)
+
+(define-method get
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_get")
+  (return-type "GConfValue*")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_without_default
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_get_without_default")
+  (return-type "GConfValue*")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_entry
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_get_entry")
+  (return-type "GConfEntry*")
+  (parameters
+    '("const-gchar*" "key")
+    '("const-gchar*" "locale")
+    '("gboolean" "use_schema_default")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_with_locale
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_get_with_locale")
+  (return-type "GConfValue*")
+  (parameters
+    '("const-gchar*" "key")
+    '("const-gchar*" "locale")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_default_from_schema
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_get_default_from_schema")
+  (return-type "GConfValue*")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method set
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_set")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("const-GConfValue*" "value")
+    '("GError**" "err")
+  )
+)
+
+(define-method unset
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_unset")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method associate_schema
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_associate_schema")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("const-gchar*" "schema_key")
+    '("GError**" "err")
+  )
+)
+
+(define-method all_entries
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_all_entries")
+  (return-type "GSList*")
+  (parameters
+    '("const-gchar*" "dir")
+    '("GError**" "err")
+  )
+)
+
+(define-method all_dirs
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_all_dirs")
+  (return-type "GSList*")
+  (parameters
+    '("const-gchar*" "dir")
+    '("GError**" "err")
+  )
+)
+
+(define-method suggest_sync
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_suggest_sync")
+  (return-type "none")
+  (parameters
+    '("GError**" "err")
+  )
+)
+
+(define-method dir_exists
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_dir_exists")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "dir")
+    '("GError**" "err")
+  )
+)
+
+(define-method remove_dir
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_remove_dir")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "dir")
+    '("GError**" "err")
+  )
+)
+
+(define-method key_is_writable
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_key_is_writable")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-function gconf_valid_key
+  (c-name "gconf_valid_key")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("gchar**" "why_invalid")
+  )
+)
+
+(define-function key_is_below
+  (c-name "gconf_key_is_below")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "above")
+    '("const-gchar*" "below")
+  )
+)
+
+(define-function concat_dir_and_key
+  (c-name "gconf_concat_dir_and_key")
+  (return-type "gchar*")
+  (parameters
+    '("const-gchar*" "dir")
+    '("const-gchar*" "key")
+  )
+)
+
+(define-function unique_key
+  (c-name "gconf_unique_key")
+  (return-type "gchar*")
+)
+
+(define-function escape_key
+  (c-name "gconf_escape_key")
+  (return-type "char*")
+  (parameters
+    '("const-char*" "arbitrary_text")
+    '("int" "len")
+  )
+)
+
+(define-function unescape_key
+  (c-name "gconf_unescape_key")
+  (return-type "char*")
+  (parameters
+    '("const-char*" "escaped_key")
+    '("int" "len")
+  )
+)
+
+(define-method get_float
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_get_float")
+  (return-type "gdouble")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_int
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_get_int")
+  (return-type "gint")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_string
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_get_string")
+  (return-type "gchar*")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_bool
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_get_bool")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_schema
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_get_schema")
+  (return-type "GConfSchema*")
+  (parameters
+    '("const-gchar*" "key")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_list
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_get_list")
+  (return-type "GSList*")
+  (parameters
+    '("const-gchar*" "key")
+    '("GConfValueType" "list_type")
+    '("GError**" "err")
+  )
+)
+
+(define-method get_pair
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_get_pair")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("GConfValueType" "car_type")
+    '("GConfValueType" "cdr_type")
+    '("gpointer" "car_retloc")
+    '("gpointer" "cdr_retloc")
+    '("GError**" "err")
+  )
+)
+
+(define-method set_float
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_set_float")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("gdouble" "val")
+    '("GError**" "err")
+  )
+)
+
+(define-method set_int
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_set_int")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("gint" "val")
+    '("GError**" "err")
+  )
+)
+
+(define-method set_string
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_set_string")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("const-gchar*" "val")
+    '("GError**" "err")
+  )
+)
+
+(define-method set_bool
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_set_bool")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("gboolean" "val")
+    '("GError**" "err")
+  )
+)
+
+(define-method set_schema
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_set_schema")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("const-GConfSchema*" "val")
+    '("GError**" "err")
+  )
+)
+
+(define-method set_list
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_set_list")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("GConfValueType" "list_type")
+    '("GSList*" "list")
+    '("GError**" "err")
+  )
+)
+
+(define-method set_pair
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_set_pair")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "key")
+    '("GConfValueType" "car_type")
+    '("GConfValueType" "cdr_type")
+    '("gconstpointer" "address_of_car")
+    '("gconstpointer" "address_of_cdr")
+    '("GError**" "err")
+  )
+)
+
+(define-function gconf_string_to_enum
+  (c-name "gconf_string_to_enum")
+  (return-type "gboolean")
+  (parameters
+    '("GConfEnumStringPair[]" "lookup_table")
+    '("const-gchar*" "str")
+    '("gint*" "enum_value_retloc")
+  )
+)
+
+(define-function gconf_enum_to_string
+  (c-name "gconf_enum_to_string")
+  (return-type "const-gchar*")
+  (parameters
+    '("GConfEnumStringPair[]" "lookup_table")
+    '("gint" "enum_value")
+  )
+)
+
+(define-function gconf_init
+  (c-name "gconf_init")
+  (return-type "gboolean")
+  (parameters
+    '("int" "argc")
+    '("char**" "argv")
+    '("GError**" "err")
+  )
+)
+
+(define-function gconf_is_initialized
+  (c-name "gconf_is_initialized")
+  (return-type "gboolean")
+)
+
+;; From /home/zilch/cvs/gnome2/gconf/gconf/gconf-listeners.h
+
+(define-method free
+  (of-object "GConfListeners")
+  (c-name "gconf_listeners_free")
+  (return-type "none")
+)
+
+(define-method add
+  (of-object "GConfListeners")
+  (c-name "gconf_listeners_add")
+  (return-type "guint")
+  (parameters
+    '("const-gchar*" "listen_point")
+    '("gpointer" "listener_data")
+    '("GFreeFunc" "destroy_notify")
+  )
+)
+
+(define-method remove
+  (of-object "GConfListeners")
+  (c-name "gconf_listeners_remove")
+  (return-type "none")
+  (parameters
+    '("guint" "cnxn_id")
+  )
+)
+
+(define-method notify
+  (of-object "GConfListeners")
+  (c-name "gconf_listeners_notify")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "all_above")
+    '("GConfListenersCallback" "callback")
+    '("gpointer" "user_data")
+  )
+)
+
+(define-method count
+  (of-object "GConfListeners")
+  (c-name "gconf_listeners_count")
+  (return-type "guint")
+)
+
+(define-method foreach
+  (of-object "GConfListeners")
+  (c-name "gconf_listeners_foreach")
+  (return-type "none")
+  (parameters
+    '("GConfListenersForeach" "callback")
+    '("gpointer" "user_data")
+  )
+)
+
+(define-method get_data
+  (of-object "GConfListeners")
+  (c-name "gconf_listeners_get_data")
+  (return-type "gboolean")
+  (parameters
+    '("guint" "cnxn_id")
+    '("gpointer*" "listener_data_p")
+    '("const-gchar**" "location_p")
+  )
+)
+
+(define-method remove_if
+  (of-object "GConfListeners")
+  (c-name "gconf_listeners_remove_if")
+  (return-type "none")
+  (parameters
+    '("GConfListenersPredicate" "predicate")
+    '("gpointer" "user_data")
+  )
+)
+
+
+
+;; From /home/zilch/cvs/gnome2/gconf/gconf/gconf-schema.h
+
+(define-function gconf_schema_new
+  (c-name "gconf_schema_new")
+  (is-constructor-of GConfSchema)
+  (return-type "GConfSchema*")
+)
+
+(define-method free
+  (of-object "GConfSchema")
+  (c-name "gconf_schema_free")
+  (return-type "none")
+)
+
+(define-method copy
+  (of-object "GConfSchema")
+  (c-name "gconf_schema_copy")
+  (return-type "GConfSchema*")
+)
+
+(define-method set_type
+  (of-object "GConfSchema")
+  (c-name "gconf_schema_set_type")
+  (return-type "none")
+  (parameters
+    '("GConfValueType" "type")
+  )
+)
+
+(define-method set_list_type
+  (of-object "GConfSchema")
+  (c-name "gconf_schema_set_list_type")
+  (return-type "none")
+  (parameters
+    '("GConfValueType" "type")
+  )
+)
+
+(define-method set_car_type
+  (of-object "GConfSchema")
+  (c-name "gconf_schema_set_car_type")
+  (return-type "none")
+  (parameters
+    '("GConfValueType" "type")
+  )
+)
+
+(define-method set_cdr_type
+  (of-object "GConfSchema")
+  (c-name "gconf_schema_set_cdr_type")
+  (return-type "none")
+  (parameters
+    '("GConfValueType" "type")
+  )
+)
+
+(define-method set_locale
+  (of-object "GConfSchema")
+  (c-name "gconf_schema_set_locale")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "locale")
+  )
+)
+
+(define-method set_short_desc
+  (of-object "GConfSchema")
+  (c-name "gconf_schema_set_short_desc")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "desc")
+  )
+)
+
+(define-method set_long_desc
+  (of-object "GConfSchema")
+  (c-name "gconf_schema_set_long_desc")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "desc")
+  )
+)
+
+(define-method set_owner
+  (of-object "GConfSchema")
+  (c-name "gconf_schema_set_owner")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "owner")
+  )
+)
+
+(define-method set_default_value
+  (of-object "GConfSchema")
+  (c-name "gconf_schema_set_default_value")
+  (return-type "none")
+  (parameters
+    '("const-GConfValue*" "val")
+  )
+)
+
+(define-method set_default_value_nocopy
+  (of-object "GConfSchema")
+  (c-name "gconf_schema_set_default_value_nocopy")
+  (return-type "none")
+  (parameters
+    '("GConfValue*" "val")
+  )
+)
+
+
+
+;; From gconf/gconf-value.h
+
+(define-function gconf_value_get_type
+  (c-name "gconf_value_get_type")
+  (return-type "GType")
+)
+
+(define-function gconf_value_new
+  (c-name "gconf_value_new")
+  (is-constructor-of GConfValue)
+  (return-type "GConfValue*")
+  (parameters
+    '("GConfValueType" "type")
+  )
+)
+
+(define-function gconf_value_new_from_string
+  (c-name "gconf_value_new_from_string")
+  (return-type "GConfValue*")
+  (parameters
+    '("GConfValueType" "type")
+    '("const-gchar*" "str")
+    '("GError**" "err")
+  )
+)
+
+(define-method copy
+  (of-object "GConfValue")
+  (c-name "gconf_value_copy")
+  (return-type "GConfValue*")
+)
+
+(define-method free
+  (of-object "GConfValue")
+  (c-name "gconf_value_free")
+  (return-type "none")
+)
+
+(define-method set_int
+  (of-object "GConfValue")
+  (c-name "gconf_value_set_int")
+  (return-type "none")
+  (parameters
+    '("gint" "the_int")
+  )
+)
+
+(define-method get_int
+  (of-object "GConfValue")
+  (c-name "gconf_value_get_int")
+  (return-type "gint")
+)
+
+(define-method set_string
+  (of-object "GConfValue")
+  (c-name "gconf_value_set_string")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "the_str")
+  )
+)
+
+(define-method get_string
+  (of-object "GConfValue")
+  (c-name "gconf_value_get_string")
+  (return-type "const-gchar*")
+)
+
+(define-method set_float
+  (of-object "GConfValue")
+  (c-name "gconf_value_set_float")
+  (return-type "none")
+  (parameters
+    '("gdouble" "the_float")
+  )
+)
+
+(define-method get_float
+  (of-object "GConfValue")
+  (c-name "gconf_value_get_float")
+  (return-type "double")
+)
+
+(define-method set_bool
+  (of-object "GConfValue")
+  (c-name "gconf_value_set_bool")
+  (return-type "none")
+  (parameters
+    '("gboolean" "the_bool")
+  )
+)
+
+(define-method get_bool
+  (of-object "GConfValue")
+  (c-name "gconf_value_get_bool")
+  (return-type "gboolean")
+)
+
+(define-method set_schema
+  (of-object "GConfValue")
+  (c-name "gconf_value_set_schema")
+  (return-type "none")
+  (parameters
+    '("const-GConfSchema*" "sc")
+  )
+)
+
+(define-method set_schema_nocopy
+  (of-object "GConfValue")
+  (c-name "gconf_value_set_schema_nocopy")
+  (return-type "none")
+  (parameters
+    '("GConfSchema*" "sc")
+  )
+)
+
+(define-method set_car
+  (of-object "GConfValue")
+  (c-name "gconf_value_set_car")
+  (return-type "none")
+  (parameters
+    '("const-GConfValue*" "car")
+  )
+)
+
+(define-method set_car_nocopy
+  (of-object "GConfValue")
+  (c-name "gconf_value_set_car_nocopy")
+  (return-type "none")
+  (parameters
+    '("GConfValue*" "car")
+  )
+)
+
+(define-method get_car
+  (of-object "GConfValue")
+  (c-name "gconf_value_get_car")
+  (return-type "GConfValue*")
+)
+
+(define-method set_cdr
+  (of-object "GConfValue")
+  (c-name "gconf_value_set_cdr")
+  (return-type "none")
+  (parameters
+    '("const-GConfValue*" "cdr")
+  )
+)
+
+(define-method set_cdr_nocopy
+  (of-object "GConfValue")
+  (c-name "gconf_value_set_cdr_nocopy")
+  (return-type "none")
+  (parameters
+    '("GConfValue*" "cdr")
+  )
+)
+
+(define-method get_cdr
+  (of-object "GConfValue")
+  (c-name "gconf_value_get_cdr")
+  (return-type "GConfValue*")
+)
+
+(define-method set_list_type
+  (of-object "GConfValue")
+  (c-name "gconf_value_set_list_type")
+  (return-type "none")
+  (parameters
+    '("GConfValueType" "type")
+  )
+)
+
+(define-method set_list_nocopy
+  (of-object "GConfValue")
+  (c-name "gconf_value_set_list_nocopy")
+  (return-type "none")
+  (parameters
+    '("GSList*" "list")
+  )
+)
+
+(define-method set_list
+  (of-object "GConfValue")
+  (c-name "gconf_value_set_list")
+  (return-type "none")
+  (parameters
+    '("GSList*" "list")
+  )
+)
+
+(define-method get_list_type
+  (of-object "GConfValue")
+  (c-name "gconf_value_get_list_type")
+  (return-type "GConfValueType")
+)
+
+(define-method get_list
+  (of-object "GConfValue")
+  (c-name "gconf_value_get_list")
+  (return-type "GSList*")
+)
+
+(define-method to_string
+  (of-object "GConfValue")
+  (c-name "gconf_value_to_string")
+  (return-type "gchar*")
+)
+
+(define-function gconf_meta_info_new
+  (c-name "gconf_meta_info_new")
+  (is-constructor-of GConfMetaInfo)
+  (return-type "GConfMetaInfo*")
+)
+
+(define-method free
+  (of-object "GConfMetaInfo")
+  (c-name "gconf_meta_info_free")
+  (return-type "none")
+)
+
+(define-method set_schema
+  (of-object "GConfMetaInfo")
+  (c-name "gconf_meta_info_set_schema")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "schema_name")
+  )
+)
+
+(define-method set_mod_user
+  (of-object "GConfMetaInfo")
+  (c-name "gconf_meta_info_set_mod_user")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "mod_user")
+  )
+)
+
+(define-method set_mod_time
+  (of-object "GConfMetaInfo")
+  (c-name "gconf_meta_info_set_mod_time")
+  (return-type "none")
+  (parameters
+    '("GTime" "mod_time")
+  )
+)
+
+(define-function gconf_entry_get_type
+  (c-name "gconf_entry_get_type")
+  (return-type "GType")
+)
+
+(define-method get_key
+  (of-object "GConfEntry")
+  (c-name "gconf_entry_get_key")
+  (return-type "const-char*")
+)
+
+(define-method get_value
+  (of-object "GConfEntry")
+  (c-name "gconf_entry_get_value")
+  (return-type "GConfValue*")
+)
+
+(define-method get_schema_name
+  (of-object "GConfEntry")
+  (c-name "gconf_entry_get_schema_name")
+  (return-type "const-char*")
+)
+
+(define-method get_is_default
+  (of-object "GConfEntry")
+  (c-name "gconf_entry_get_is_default")
+  (return-type "gboolean")
+)
+
+(define-method get_is_writable
+  (of-object "GConfEntry")
+  (c-name "gconf_entry_get_is_writable")
+  (return-type "gboolean")
+)
+
+(define-function gconf_entry_new
+  (c-name "gconf_entry_new")
+  (is-constructor-of GConfEntry)
+  (return-type "GConfEntry*")
+  (parameters
+    '("const-gchar*" "key")
+    '("const-GConfValue*" "val")
+  )
+)
+
+(define-function gconf_entry_new_nocopy
+  (c-name "gconf_entry_new_nocopy")
+  (return-type "GConfEntry*")
+  (parameters
+    '("gchar*" "key")
+    '("GConfValue*" "val")
+  )
+)
+
+(define-method free
+  (of-object "GConfEntry")
+  (c-name "gconf_entry_free")
+  (return-type "none")
+)
+
+(define-method steal_value
+  (of-object "GConfEntry")
+  (c-name "gconf_entry_steal_value")
+  (return-type "GConfValue*")
+)
+
+(define-method set_value
+  (of-object "GConfEntry")
+  (c-name "gconf_entry_set_value")
+  (return-type "none")
+  (parameters
+    '("const-GConfValue*" "val")
+  )
+)
+
+(define-method set_value_nocopy
+  (of-object "GConfEntry")
+  (c-name "gconf_entry_set_value_nocopy")
+  (return-type "none")
+  (parameters
+    '("GConfValue*" "val")
+  )
+)
+
+(define-method set_schema_name
+  (of-object "GConfEntry")
+  (c-name "gconf_entry_set_schema_name")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "name")
+  )
+)
+
+(define-method set_is_default
+  (of-object "GConfEntry")
+  (c-name "gconf_entry_set_is_default")
+  (return-type "none")
+  (parameters
+    '("gboolean" "is_default")
+  )
+)
+
+(define-method set_is_writable
+  (of-object "GConfEntry")
+  (c-name "gconf_entry_set_is_writable")
+  (return-type "none")
+  (parameters
+    '("gboolean" "is_writable")
+  )
+)
+

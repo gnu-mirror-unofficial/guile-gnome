@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@/guile-gobject
+toolsdir=${exec_prefix}/bin
+have_gtk=true # fix this later...
+
+Name: Guile-GObject
+Description: GNOME bindings for Guile
+Requires: gobject-2.0
+Version: @VERSION@
+Libs: -L${libdir} -lguile-gnome-gw-gobject
+Cflags: -I${includedir}

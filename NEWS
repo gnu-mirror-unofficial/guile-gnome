@@ -1,0 +1,24 @@
+May 2003 - Andy Wingo <wingo at pobox dot com>:
+===============================================
+
+* Released guile-gobject 0.5.0 "Out of Africa".
+
+  Please see the RELEASE-NOTES-0.5.0.txt file for details.
+
+January 28, 2001 - Ariel Rios <ariel@gnu.org>:
+==============================================
+
+* Released guile-gobject 0.3.0 "Otello"
+
+  Guile-gobject is now the base for gnome-guile.
+  Updates for latest GNOME 2 changes.
+
+September 10, 2001 - Martin Baulig <martin@gnome.org>:
+======================================================
+
+* Released guile-gobject 0.2.0 "The Great Barrier Reef".
+
+  Please see the RELEASE-NOTES-0.2.0.txt file for details.
+
+
+

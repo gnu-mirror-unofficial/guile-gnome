@@ -1,0 +1,122 @@
+AC_PREREQ(2.52)
+AC_INIT(gnome/gobject.scm)
+
+AM_CONFIG_HEADER(config.h)
+AM_INIT_AUTOMAKE(guile-gobject, 0.5.0)
+
+AC_SUBST(VERSION,0.5.0)
+
+AM_MAINTAINER_MODE
+AC_DISABLE_STATIC
+
+GNOME_COMMON_INIT
+GNOME_PLATFORM_GNOME_2(yes, force)
+
+AC_ISC_POSIX
+AC_PROG_CC
+AC_STDC_HEADERS
+AM_PROG_LIBTOOL
+
+AC_SUBST(CFLAGS)
+AC_SUBST(CPPFLAGS)
+AC_SUBST(LDFLAGS)
+
+GNOME_COMPILE_WARNINGS(maximum)
+
+# Define GNOME_ENABLE_DEBUG if the --enable-debug switch was given.
+GNOME_DEBUG_CHECK
+
+#
+# Check for Guile
+#
+AC_MSG_CHECKING(for Guile)
+guile-config link > /dev/null || {
+    echo "configure: cannot find guile-config; is Guile installed?" 1>&2
+    exit 1
+}
+GUILE_CFLAGS="`guile-config compile`"
+GUILE_LIBS="`guile-config link`"
+AC_SUBST(GUILE_CFLAGS)
+AC_SUBST(GUILE_LIBS)
+AC_MSG_RESULT(yes)
+
+#
+# Check for g-wrap
+#
+AM_PATH_GWRAP(1.3.3, ,[AC_MSG_ERROR([
+
+  g-wrap does not appear to be installed correctly, or is not new
+  enough. We need version 1.3.3.
+
+  If you need to install g-wrap, you can find it at
+  http://www.gnucash.org/pub/g-wrap.
+])])
+
+G_WRAP_CFLAGS=`${G_WRAP_CONFIG} --c-compile-args guile`
+G_WRAP_LIBS=`${G_WRAP_CONFIG} --c-link-args guile`
+G_WRAP_MODULE_DIR=`${G_WRAP_CONFIG} --guile-module-directory`
+G_WRAP_LIB_DIR=`echo $G_WRAP_MODULE_DIR | sed -e 's|share/guile|lib|'`
+
+AC_GWRAP_CHECK_GUILE
+
+AC_SUBST(G_WRAP_CONFIG)
+AC_SUBST(G_WRAP_CFLAGS)
+AC_SUBST(G_WRAP_LIBS)
+AC_SUBST(G_WRAP_MODULE_DIR)
+AC_SUBST(G_WRAP_LIB_DIR)
+
+#
+# Start of pkg-config checks
+#
+PKG_CHECK_MODULES(GLIB, glib-2.0)
+AC_SUBST(GLIB_CFLAGS)
+AC_SUBST(GLIB_LIBS)
+
+PKG_CHECK_MODULES(GOBJECT, gobject-2.0)
+AC_SUBST(GOBJECT_CFLAGS)
+AC_SUBST(GOBJECT_LIBS)
+
+PKG_CHECK_MODULES(ATK, atk)
+AC_SUBST(ATK_CFLAGS)
+AC_SUBST(ATK_LIBS)
+
+PKG_CHECK_MODULES(PANGO, pango)
+AC_SUBST(PANGO_CFLAGS)
+AC_SUBST(PANGO_LIBS)
+
+PKG_CHECK_MODULES(GDK, gdk-2.0)
+AC_SUBST(GDK_CFLAGS)
+AC_SUBST(GDK_LIBS)
+
+PKG_CHECK_MODULES(GTK, gtk+-2.0)
+AC_SUBST(GTK_CFLAGS)
+AC_SUBST(GTK_LIBS)
+
+PKG_CHECK_MODULES(LIBIDL, libIDL-2.0)
+AC_SUBST(LIBIDL_CFLAGS)
+AC_SUBST(LIBIDL_LIBS)
+
+PKG_CHECK_MODULES(CORBA, libbonobo-2.0)
+AC_SUBST(CORBA_CFLAGS)
+AC_SUBST(CORBA_LIBS)
+
+# orbit-idl
+ORBIT_IDL="`$PKG_CONFIG --variable=orbit_idl ORBit-2.0`"
+AC_SUBST(ORBIT_IDL)
+
+# Activation idl files
+BONOBO_IDL_DIR="`$PKG_CONFIG --variable=idldir libbonobo-2.0`"
+AC_SUBST(BONOBO_IDL_DIR)
+
+AC_OUTPUT([
+Makefile
+gnome/Makefile
+gnome/gobject/Makefile
+gnome/gtk/Makefile
+gnome/corba/Makefile
+gnome/defs/Makefile
+examples/Makefile
+demos/Makefile
+demos/corba/Makefile
+guile-gobject.pc
+])

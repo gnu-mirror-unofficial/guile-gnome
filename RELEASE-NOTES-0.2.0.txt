@@ -1,0 +1,501 @@
+Release Notes for guile-gobject 0.2.0 "The Great Barrier Reef"
+==============================================================
+
+This is the first public release of guile-gobject a new set of
+guile bindings for GNOME 2.
+
+Today is my last day of GNOME hacking before I leave for about
+four months to learn for the university - so I needed to do this
+release even if it's not completely finished and there's almost
+no documentation - but I spent every free minute to hack on the
+code so there was no time to write much documentation.
+
+To compile and use this stuff, you need a larger set of GNOME 2
+modules which you can get at
+
+        ftp://ftp.gnome.org/pub/GNOME/earthquake/
+
+The guile-gobject modules contains the following scheme modules:
+
+(gnome gobject):
+================
+
+The (gnome gobject) module is the guile wrapper for GNOME 2's type system,
+libgruntime (glib/gobject in GNOME CVS). Well, actually "wrapper" is the
+wrong word for it because it's much more than just a wrapper - it does not
+only wrap the C library glib/gobject - it gives you full access to GNOME 2's
+type system from guile - including support for creating new gruntime types
+in guile and then using these types in C.
+
+To understand this overview, you should be at least a bit familar with
+gruntime - since it wraps it very closely.
+
+Basic types:
+------------
+
+GRuntime defines a few basic C types for numbers, strings, enums etc - see
+<gobject/gtype.h> for details.
+
+To access these types from scheme, there are GOOPS classes:
+
+   <gchar> <guchar> <gboolean> <gint> <guint> <glong> <gulong>
+   <gfloat> <gdouble> <gchararray>
+
+Instances of this type are internally stored as GValues:
+
+   (make <gboolean> #:value #f)
+   (make <guint> #:value 85)
+   (make <gfloat> #:value 3.1415)
+   (make <gchararray> #:value "Hello World!")
+
+Enums and Flags:
+----------------
+
+In C, you can create a new enum/flags type by using (see <gobject/genums.h>)
+the C functions g_enum_register_static() / g_flags_register_static ().
+
+You can also create these types in scheme:
+
+   (define foo-vtable '#((hello "Hello World" 1) (test "Test" 2)))
+   (define gtype:foo (genum-register-static "Foo" foo-vtable))
+   (define <foo> (gtype->class gtype:foo))
+
+Now you can create instances:
+
+   (make <foo> #:value 'hello)
+   (make <foo> #:value "Hello World")
+   (make <foo> #:value 1)
+
+If there's an already existing enum or flags type, you can get information
+about it:
+
+   (genum->value-table gtype:foo)
+
+Instances of a enum / flags type can be converted to a native scheme value:
+
+   (define foo (make <foo> #:value 'hello))
+   (genum->symbol foo)
+   (genum->name foo)
+   (gvalue->scm foo)
+
+Closures:
+---------
+
+Closures are useful if you want to pass a scheme function as a callback
+argument to a C function - in C there's a special GClosure type for this
+(see <gobject/gclosure.h>) - in libbonobo, there's a bonobo_closure_invoke()
+function which makes this even easier.
+
+Let's assume we have a C function which return an `int' and takes two
+arguments - a `long' and a callback:
+
+    int
+    my_func (long long_argument, GClosure *callback)
+    {
+        int int_ret;
+
+        bonobo_closure_invoke (callback, G_TYPE_INT, &int_ret,
+                               G_TYPE_LONG, long_argument,
+                               0);
+
+        return int_ret;
+     }
+
+Implementing the callback function in scheme is really easy:
+
+   (define callback (lambda (x)
+     (let ((retval (* x 8)))
+       (display (list "HELLO" x "RETURNS" retval)) (newline)
+       retval)))
+
+   (define closure (make <gclosure> #:return-type gtype:gint
+                         #:param-types (list gtype:gulong)
+                         #:func callback))
+
+Now you can invoke the callback either from scheme or from C:
+(in the example above, `closure' is the same what a C function
+with a `GClosure *' return value would return to scheme):
+
+   (gclosure-invoke closure 256) ; returns 248
+
+But you can also pass the closure as callback to the C function:
+
+   (my-func 256 closure) ; returns 248
+
+GType:
+------
+
+One of the ideas behind guile-gobject was to provide complete acess to
+GNOME 2's type system - and to make it possible to use all GType's which
+are known in C in scheme without any additional C glue code.
+
+That is - if you use GNOME 2's type system to define a new GType "Foo" in
+C, you can automatically use this new type in scheme - and all you need to
+know is either its name or its GType.
+
+In GNOME 2, new types are normally declared in the header file like this:
+
+   #define FOO_TYPE_HELLO (foo_hello_get_type ())
+   GType foo_hello_get_type (void) G_GNUC_CONST;
+
+To wrap this new type in scheme, you can either provide C glue code for
+the foo_hello_get_type () function and do it like this:
+
+   (define foo-type:hello (foo-hello-get-type))
+   (define <foo-hello> (gtype->class foo-type:hello))
+
+Or you can just access the new type by its name - in C, the type is created
+by calling:
+
+   GType g_type_register_static (GType               parent_type,
+                                 const gchar        *type_name,
+                                 const GTypeInfo    *info,
+                                 GTypeFlags          flags);
+
+The `type_name' uniquely identifies the type in the gruntime system - so
+you can get the type by its name:
+
+   (define foo-type:hello (gtype-from-name "FooHello"))
+   (define <foo-hello> (gtype->class foo-type:hello))
+
+To create the GOOPS class for the new type, you should always use
+`gtype->class' - it takes care of creating the type's parent classes
+if necessary, putting the class into the correct metaclass, creating
+all the class slots etc.
+
+GObject:
+--------
+
+A <gobject> (`GObject *' in C) is the basic object type in the gruntime
+library - guile-gobject allows you both to access existing GObject types
+and to create new GObject types in scheme.
+
+To access an already existing GObject type, all you need is it's GType:
+
+   (define gtktype:label (gtype-from-name "GtkLabel"))
+   (define <gtk-label> (gtype->class gtktype:label))
+
+Now you can create instances:
+
+   (make <gtk-label> #:label "Hello World!")
+
+You can also emit signals on the new GObject instance:
+
+   (gobject-signal-emit test 'roswell)
+
+Or connect signal handlers:
+
+   (gobject-signal-connect test 'roswell
+     (lambda (object) (display (list "ROSWELL" object)) (newline)))
+
+Get properties:
+
+   (gobject-get-property test 'foo)
+
+Set properties:
+
+   (gobject-set-property test 'foo 345)
+   
+Creating new GObject types:
+---------------------------
+
+To create a new GObject type:
+
+   (define gtype:test (gobject-type-register-static gtype:gobject "Test"))
+   (define <test> (gtype->class gtype:test))
+
+This creates an entirely new GObject type - deriving from the parent
+type gtype:gobject - but you can also derive any other GObject type
+including types which you created in scheme:
+
+   (define gtype:super (gobject-type-register-static gtype:test "Super"))
+   (define <super> (gtype->class gtype:super))
+
+Now you can add new signals to your new type:
+
+   ;; Define a new signal "roswell".
+   (gobject-class-define-signal <test> 'roswell gtype:void)
+
+   ;; This is the default handler for this signal.
+   (define-method (test:roswell (object <test>))
+     (display (list "ROSWELL" object)) (newline))
+
+Or add a new property to it:
+
+   (define param (make <gparam-long> #:name 'test))
+   (gobject-class-install-property <test> param)
+
+(gnome corba):
+==============
+
+CORBA support for guile :-)
+
+This module depends heavily on ORBit2 - the ORB which we use in GNOME 2 -
+it doesn't work with any other ORB, but read the bootstraping section
+below.
+
+Bootstrapping your IDL:
+-----------------------
+
+ORBit2 is a CORBA 2.3 compliant ORB - and, of course, it's interoperable
+with other ORBs.
+
+However, it's not very useful to have an opaque <CORBA:Object> in scheme
+if you don't know anything about this object. It's also not very useful if
+you can't write your own CORBA servants in scheme.
+
+Basically, there are two ways to solve this problem: parsing the IDL at
+runtime or doing it the GNOME 2 way - loading a shared library which
+contains all the necessary information from the IDL.
+
+Some of the core GNOME 2 libraries like Bonobo provide so called "imodule"
+libraries which are installed in `$(libdir)/<modulename>_imodule.la'.
+
+To create such a library for your own IDL, you need to run ORBit2's
+IDL compiler, orbit-idl, with the --imodule argument - see the demos/corba/
+directory in this distribution for an example.
+
+NOTE: The rest of this section refers to the sample IDL which can be found
+      in  demos/corba/Foo.idl in this distribution.
+
+Once you installed this library, you can read it in scheme by calling
+
+   (corba-primitive-open-module "Foo")
+
+This creates all the GOOPS classes and methods you need.
+
+If there's a a CORBA interface Foo::Hello, the bootstrap process will create
+a GOOPS class <Foo:Hello> which serves as stub class and another GOOPS class
+<POA:Foo:Hello> which serves as skeleton class.
+
+All stub classes are derived from <CORBA:Object> and their CORBA class
+hierarchy is preserved in scheme.
+
+All skeleton classes are derived from <PortableServer-ServantBase> and
+their CORBA class hierarchy is preserved as well.
+
+Calling CORBA Methods:
+---------------------
+
+This section refers to the sample IDL in demos/corba/Foo.idl in this
+distribution.
+
+To call a CORBA method, all you need to do is to invoke the corresponding
+method in the stub class - let's assume `hello' is an instance of the
+<Foo:Hello> class:
+
+   (Foo:Hello:doHello hello) ; calls the CORBA method `Foo::Hello::doHello'
+                               on the CORBA Object `hello'.
+
+So to call CORBA methods, you don't even need to know that it's CORBA :-)
+
+Oh, btw. the cool thing about CORBA and scheme is that you don't need to
+worry about these annoying CORBA exceptions - since you automatically get
+a scheme exception `corba-system-exception' / `corba-user-exception'.
+
+Implementing CORBA servants:
+----------------------------
+
+Well, I guess the interesting part is to implement CORBA servants in
+scheme - so let's assume you want to write a servant for the `Foo::Hello'
+interface.
+
+The first thing you need to do is to derive its POA class (as a special
+"feature" you can also use the POA class directly to specify the default
+behavior for all servants of this interface, see below):
+
+   (define-class <hello> (<POA:Foo:Hello>))
+
+Then, you define methods 
+
+   (define-method (Foo:Hello:doHello (hello <hello>))
+     (display (list "Hello World!" hello)) (newline))
+
+If you call `(next-method)', the POA classes method will be run - and
+the default is to throw a CORBA::NO_IMPLEMENT system exception.
+
+However, you can override this:
+
+   (define-method (Foo:Bar:Baz:haveFun (object <POA:Foo:Bar:Baz>) a b)
+     (display (list "Default Foo:Bar:Baz:haveFun handler!" a b))
+     (newline))
+
+If you created all the methods, you can create servants and call
+`corba-servant->reference' to get a CORBA::Object reference:
+
+   (define servant (make <hello>))
+   (define hello (corba-servant->reference servant))
+
+Now you have a CORBA Object `hello' (for guile, this is an instance of
+the GOOPS class <Foo:Hello>) and you can invoke methods on it:
+
+   (Foo:Hello:doHello hello)
+
+Even if this looks like there's just a scheme method being called - this
+is a "real" CORBA call - for scheme `hello' is a "normal" CORBA Object.
+
+NOTE: Any CORBA Objects which you create in guile are "owned" by guile's
+      garbage collector - so make sure to CORBA_Object_duplicate() in a
+      C function before you store it somewhere !
+
+Implementing CORBA servants - multiple inheritance:
+---------------------------------------------------
+
+Like in C, you can also create servants for CORBA interfaces which are
+derived from other interfaces:
+
+   (define-class <maximum> (<hello> <POA:Foo:MaximumHello>))
+   (define-method (Foo:Hello:doHello (hello <maximum>))
+     (display (list "Hello Maximum World!" hello))
+     (newline)
+     (next-method))
+
+   (define maximum-servant (make <maximum>))
+   (define maximum (corba-servant->reference maximum-servant))
+
+This creates a new servant for the CORBA interface Foo::MaximumHello which
+is derived from Foo::Hello and Foo::Bar::Baz - this inheritance is reflected
+in scheme.
+
+   ;; Calls method `Foo:Hello:doHello' in class <maximum> and then
+   ;; in <hello> because of the (next-method).
+   (Foo:Hello:doHello maximum)
+
+   ;; Calls method `Foo:Bar:Baz:haveFun' in class <POA:Foo:Bar:Baz> -
+   ;; the default handler.
+   (Foo:Bar:Baz:haveFun maximum 1 2)
+
+Since we're using real CORBA calls, all of this also works for calls which
+are coming "from the outside" - ie. from C or a remote process.
+
+Implementing CORBA servants - an important limitation:
+------------------------------------------------------
+
+CORBA servants can be implemented either in C or in scheme - but you cannot
+mix them - to make it clear, an example:
+
+In the example above, you learned how to create a CORBA servant for the
+Foo::MaximumHello CORBA interface in scheme.
+
+Now let's assume you already have an implementation for the Foo::Hello
+interface in C.
+
+Even if Foo::MaximumHello is derived from Foo::Hello - you cannot use the
+Foo::Hello C implementation in scheme.
+
+This limitation may sound obvious, but it's not so obvious at all if you're
+a bit familiar with CORBA. In C, you would normally expect to have a `vepv'
+and a `epv' vector in a CORBA servant - and to be able to poke around in the
+vepv to override methods.
+
+As an ORBit2 specific implementation details, servants which you create from
+scheme don't have a `vepv' at all and the `epv' is not what you'd expect -
+the `epv' entries are scheme vectors and not pointers to C functions.
+
+[Implementation details:
+
+ This works because ORBit2 has a feature to call one single function to marshal
+ any calls on a CORBA object - the `impl_finder_func' and `relay_call' fields
+ in the class info (see ORBit2 source code for details).
+
+ This feature was explicitly added to ORBit2 to make it easy to use from
+ scripting languages - it'd be difficult to provide "normal" `epv' entries
+ for the scheme methods (you'd have to generate a C function at runtime which
+ also contains a data pointer somewhere - before we added this feature to
+ ORBit2 I was using weird assembler tricks here and it was also using much
+ more memory - about 40 more bytes / CORBA method).
+]
+
+CORBA structs / sequences:
+--------------------------
+
+There's support to access CORBA structs / sequences from scheme including
+a special record type for structs - see the (gnome corba) module for
+details.
+
+Summary, Remaining Issues, ....:
+================================
+
+To summarize, this code is in a state where the "base engine" is almost
+completed - that is, the code which deals with the classes types etc.
+
+What needs to be done is to write the glue code to actually call all the
+C functions:
+
+* we probably need to write a module (gnome glib) which knows how to deal
+  with glib data types (GList etc.) and which contains the glue for all
+  the glib functions.
+
+* (gnome gtk) is completely unfinished / not existant at all.
+
+  However, we already have all the functionality and we also have all the
+  types (just call `gtype-from-name' for all of GTK+'s types) - so it should
+  be possible to write a g-wrap file for all the GTK+ functions.
+
+  As a first step, we should try to reuse guile-gtk's .defs files.
+
+* (gnome corba types) needs some love.
+
+* (gnome corba primitives) - need to add support for the remaining types
+  to the marshallers.
+
+* (gnome corba) needs some love - someone needs to write good scheme
+  bindings for structs and sequences.
+
+* Bug files
+
+* More ....
+
+Last words:
+===========
+
+If was really fun to hack on this stuff and on GNOME 2 in general and I'd
+really like to continue hacking on it.
+
+However, it's already past midnight and I need to draw a clear line here.
+I guess it also doesn't really matter since in the Free Software word, a
+module is never really finished and there's always someone else who
+continues hacking on it.
+
+So, normally I'd terminate a release notes file with something like
+"comments, ..., are welcome" - but unfortunately the situation is a bit
+different.
+
+Since this announcement will also go to guile-devel, a little explanation:
+
+Today, I mean yesterday - it's already past midnight - was my last day of
+GNOME 2 hacking for the next four months. Hacking on GNOME was so much fun
+for me - but now I need to concentrate on my real life and learn for the
+university.
+
+Most likely, I won't be completely away during this time, but I won't have
+any time to hack, all I can do is to read my mail or to spent a few hours
+in IRC from time to time.
+
+However, after hacking so much on GNOME 2, I need to become familiar with
+being a student again, with spending most of the day with learning, getting
+up early and going to the library and all this stuff.
+
+On Thursday evening, I'll shut my machine down for at least 2-3 weeks or
+even longer - depending on how long it takes until I have enough distance
+to GNOME so that I can safely read my mail or come to IRC.
+
+I also set myself a hard limit of Friday morning 04:12 am local time -
+that's when the first train leaves the station - and I'll sit in this train
+to spend the weekend in Berlin. It's obvious that I can't boot my machine
+anymore when I'm back in Trier - since this weekend is the "barrier" between
+being a GNOME hacker and being a student ....
+
+So, any mails which arrive me until Thursday afternoon European time will
+get answered - anything which arrives later ....
+
+Hmm, I guess that's the longest release notes file I ever wrote :-)
+
+-------------
+September 10th, 2001
+Martin Baulig <martin@gnome.org>
+
+
+NOTE: Please don't use baulig@suse.de anymore, it'll become disfunctional
+      in two weeks since I'm no longer employed at SuSE !
+

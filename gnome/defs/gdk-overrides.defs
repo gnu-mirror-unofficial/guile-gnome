@@ -1,0 +1,52 @@
+;; -*- scheme -*-
+
+;; stealing most of these from python-gtk2
+
+(ignore-glob  "*_get_type"
+              "_*"
+              "*_ref"
+              "*_unref"
+              "*_copy"
+              "*_free"
+              "*_newv"
+              "*_valist"
+              "*_setv")
+
+(ignore "gdk_color_hash"
+        "gdk_color_equal"
+        "gdk_device_free_history"
+        "gdk_drag_begin" ; i have no clue what 'targets' is a list of
+        "gdk_draw_rgb_image_dithalign"
+        "gdk_draw_rgb_32_image_dithalign"
+        "gdk_window_invalidate_maybe_recurse")
+
+;; Things that python-gtk does that we should do
+
+;; Types:
+;;
+;; gdkcolor as a vector or list
+;; gdkfontset as boxed
+;; gdkevent, what a headache
+;; gdkdevice
+;; gdkgc
+;; gdkpixbuf as a vector of vectors
+;; gdkatom
+
+;; Functions:
+;;
+;; kwarg functions:
+;; draw-polygon,text,points,segments,lines,gray/[rgb-[32-]]image,
+;; pixmap-[colormap-]create-from-xpm[-d], cursor-new,
+;; gc-new-with-values, property-get, pixbuf-save, colormap-alloc-color,
+;; cursor-new-from-pixmap
+;;
+;; returning lists:
+;; text-extents, pixmap-[colormap-]create-from-xpm[-d],
+;; event-get-[root-]coords, device-get-[state/history],
+;; drag-find-window, drawable-get-size, window-get-geometry/position,
+;; origin,deskrelative-origin,root-origin,pointer,
+;; pixbuf-render-pixbuf-and-mask,
+;; 
+;; other wrappings:
+;; make-color, make-color-from-string, event/device-get-axis,
+;; gc-set-dashes, property-change
