@@ -1,3 +1,12 @@
+2004-10-06  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/defs/Makefile.am (gdk-pixbuf): Add rule to regenerate
+	gdk-pixbuf defs.
+
+	* gnome/defs/gdk-pixbuf-types.defs: New file.
+
+	* gnome/defs/gdk-pixbuf.defs: New file.
+
 2004-09-16  Andy Wingo  <wingo@pobox.com>
 
 	* Makefile.am (SUBDIRS): Dist fixes.

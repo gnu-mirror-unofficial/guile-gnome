@@ -13,6 +13,8 @@ guilemodule_DATA = 				\
 	gconf.defs				\
 	gdk.defs				\
 	gdk-types.defs				\
+	gdk-pixbuf.defs				\
+	gdk-pixbuf-types.defs			\
 	glib.defs				\
 	glib-types.defs 			\
 	gnome.defs				\
@@ -37,3 +39,10 @@ guilemodule_DATA = 				\
 	libwnck-types.defs
 
 EXTRA_DIST = $(guilemodule_DATA)
+
+gdk-pixbuf:
+	../../../h2def.py --types \
+	   /usr/include/gtk-2.0/gdk-pixbuf/*.h > gdk-pixbuf-types.defs
+	../../../h2def.py --procs \
+	   --with-header='(import "gdk-pixbuf-types.defs") (import overrides)' \
+	   /usr/include/gtk-2.0/gdk-pixbuf/*.h > gdk-pixbuf.defs
