@@ -1,3 +1,11 @@
+2004-07-06  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gobject-spec.scm: Same.
+
+	* gnome/gobject/gw-spec-utils.scm: Make sure that gw:error is
+	passed the wrapped var, not the scm var -- they are of different
+	types.
+
 2004-07-01  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/glib.scm: Include #:use-module (gnome gobject) before the

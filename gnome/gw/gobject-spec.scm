@@ -144,7 +144,7 @@
       "  " c-var " = NULL;\n")
      (list
       "if (!(" c-var " = (GParamSpec*)scm_c_scm_to_gtype_instance (" scm-var ", G_TYPE_PARAM)))\n"
-      `(gw:error ,status-var type ,scm-var)))))
+      `(gw:error ,status-var type ,(wrapped-var value))))))
 
 
 (define-method (wrap-value-cg (type <gparam-spec-type>)
@@ -165,7 +165,7 @@
      "  " c-var " = (GClosure*) g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
      "else if (SCM_GCLOSUREP ("  scm-var "))\n"
      "  " c-var " = (GClosure*) g_value_get_boxed ((GValue*)SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_str2symbol (\"closure\"))));\n"
-     "else " `(gw:error ,status-var type ,scm-var))))
+     "else " `(gw:error ,status-var type ,(wrapped-var value)))))
 
 (define-method (wrap-value-cg (type <gclosure-type>)
                               (value <gw-value>)
@@ -191,7 +191,7 @@
         "g_value_init (" ,c-var ", G_VALUE_TYPE (SCM_SMOB_DATA (" ,scm-var ")));\n"
         "g_value_copy ((GValue*)SCM_SMOB_DATA (" ,scm-var "), " ,c-var ");\n")
       `("  " ,c-var " = (GValue*) SCM_SMOB_DATA (" ,scm-var ");\n"))
-     "else " `(gw:error ,status-var type ,scm-var))))
+     "else " `(gw:error ,status-var type ,(wrapped-var scm-var)))))
 
 
 (define-method (wrap-value-cg (type <gvalue-type>)

@@ -281,7 +281,7 @@
           "  " c-var " = (" ctype ") g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"))
         " } else {\n"
         "  " c-var " = NULL;\n"
-        `(gw:error ,status-var type ,scm-var)
+        `(gw:error ,status-var type ,(wrapped-var value))
         "}\n")))))
 
 (define-method (wrap-value-cg (type <gobject-boxed-type>)
@@ -320,7 +320,7 @@
     "  " c-var " = (" ctype ") g_value_get_pointer ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
     "else {\n"
     "  " c-var " = NULL;\n"
-    `(gw:error ,status-var type ,scm-var)
+    `(gw:error ,status-var type ,(wrapped-var value))
     "}\n")))
 
 (define-method (wrap-value-cg (type <gobject-pointer-type>)
@@ -541,7 +541,7 @@
      (list
       "if (g_type_is_a (SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype)), " (gtype-id type) "))\n"
       "  " c-var " = (" ctype ") SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype_class));\n"
-      "else " `(gw:error ,status-var type ,scm-var)))))
+      "else " `(gw:error ,status-var type ,(wrapped-var value))))))
 
 (define-method (wrap-value-cg (type <gobject-class-type>)
                               (value <gw-value>)
