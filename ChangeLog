@@ -1,4 +1,49 @@
+2004-10-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gvalue.c (s_scm_gvalue_primitive_set): For
+	objects, interpret a #f value as NULL.
+	(s_scm_gvalue_primitive_set): Bugfix: convert SCM return value of
+	scm_list_p into a C boolean.
+
+	* gnome/gobject/gtype.c (scm_c_make_gtype_instance): Return #f if
+	the instance argument is NULL.
+
+2004-10-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gvalue.c (s_scm_gvalue_primitive_set): For
+	objects, assert that the type is compatible with the GValue type.
+
+2004-10-11  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gobject.scm (make-gobject-instance): Set the fluid
+	%gobject_initargs to the init-keyword kwargs for the duration of
+	the gobject-primitive-create-instance. This allows the call back
+	into scheme for `initialize' to pass the kwargs. However, if (not
+	 (scheme-gclass? class), call `initialize' manually. Also, in the
+	error message, "No such s/property/property or init-keyword/ ...".
+
+	* gnome/gobject/gtype.scm (initialize): For <gtype-instance>, no
+	need to provide a method that does nothing, and no need to avoid
+	the <gobject> initialize method. Removed.
+
+	* gnome/gobject/gobject.h: 
+	* gnome/gobject/gobject.c (s_scm_scheme_gclass_p): New predicate,
+	returns #t iff `class' is derived from within scheme. Normally it
+	doesn't matter, but we want to avoid calling `initialize' twice on
+	the instance.
+	(scm_init_gnome_gobject): Initialize the _gobject_initargs_fluid
+	to '(), define it for scheme.
+	(scm_c_gtype_instance_instance_init): Call initialize with the
+	proper initargs.
+
 2004-10-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.c (scm_c_gtype_instance_to_scm): Don't error
+	out if ginstance is NULL, we're probably going to scheme anyway.
+	Better to just return #f and stay quiet.
+
+	* gnome/gw/support/defs.scm (load-defs): Better error when a
+	symbolic include isn't file isn't found.
 
 	* gnome/gobject/gsignal.scm (gtype-class-get-signal-names): Copy
 	vector-map from gobject.scm.

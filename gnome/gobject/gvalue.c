@@ -289,18 +289,24 @@ SCM_DEFINE (scm_gvalue_primitive_set, "gvalue-primitive-set", 2, 0, 0,
     /* could probably add G_TYPE_PARAM as well */
     case G_TYPE_OBJECT:
     case G_TYPE_INTERFACE: /* assuming GObject is a prereq */ {
-        GTypeInstance *ginstance;
-        GType gtype;
+        if (SCM_FALSEP (value)) {
+            g_value_set_object (gvalue, NULL);
+        } else {
+            GTypeInstance *ginstance;
+            GType gtype;
 
-        SCM_VALIDATE_GTYPE_INSTANCE_COPY (2, value, ginstance);
-        gtype = G_TYPE_FROM_INSTANCE (ginstance);
+            SCM_VALIDATE_GTYPE_INSTANCE_COPY (2, value, ginstance);
+            gtype = G_TYPE_FROM_INSTANCE (ginstance);
 
-        switch (G_TYPE_FUNDAMENTAL (gtype)) {
-        case G_TYPE_OBJECT:
-            g_value_set_object (gvalue, G_OBJECT (ginstance));
-            break;
-        default:
-            SCM_ERROR_NOT_YET_IMPLEMENTED (value);
+            switch (G_TYPE_FUNDAMENTAL (gtype)) {
+            case G_TYPE_OBJECT:
+                SCM_ASSERT (g_type_is_a (gtype, G_VALUE_TYPE (gvalue)),
+                            value, SCM_ARG2, FUNC_NAME);
+                g_value_set_object (gvalue, G_OBJECT (ginstance));
+                break;
+            default:
+                SCM_ERROR_NOT_YET_IMPLEMENTED (value);
+            }
         }
         break;
     }
@@ -314,7 +320,7 @@ SCM_DEFINE (scm_gvalue_primitive_set, "gvalue-primitive-set", 2, 0, 0,
             GValueArray *arr;
             gint len;
             
-            SCM_ASSERT (scm_list_p (value),
+            SCM_ASSERT (SCM_BOOL (scm_list_p (value)),
                         value, SCM_ARG2, FUNC_NAME);
 
             len = SCM_INUM (scm_length (value));
@@ -568,7 +574,9 @@ SCM_DEFINE (scm_scm_to_gvalue, "scm->gvalue", 2, 0, 0,
     }
     else if (fundamental == G_TYPE_OBJECT || fundamental == G_TYPE_INTERFACE) {
         SCM ret = scm_gvalue_primitive_new (type);
-        scm_gvalue_primitive_set (ret, scm_slot_ref (scm, scm_sym_gtype_instance));
+        scm_gvalue_primitive_set (ret, (SCM_FALSEP (scm) 
+                                        ? scm
+                                        : scm_slot_ref (scm, scm_sym_gtype_instance)));
         return ret;
     }
     else if (gtype == G_TYPE_CLOSURE) {

@@ -181,14 +181,6 @@ magic way to its GType.
       (gruntime-error "Can't get type of unknown class: ~S" class)))
 
 ;;;
-;;; {Instance Allocation and Initialization}
-;;;
-
-;; Noop so that you can always call (next-method) without problems
-(define-method (initialize (instance <gtype-instance>) initargs)
-  *unspecified*)
-
-;;;
 ;;; {Methods for Writing}
 ;;;
 

@@ -185,6 +185,8 @@
 
 ;; This is a method so that it can be extended by subclasses, e.g. so
 ;; that <gtk-object> can implement explicit destruction.
+;;
+;; By the time this function exits, the object should be initialized.
 (define-method (make-gobject-instance class type object options)
   (define (last l)
     (if (null? (cdr l))
@@ -210,7 +212,9 @@
 	     (let* ((option-value (cadr options))
 		    (param-name (keyword->symbol (car options)))
 		    (param (or (find-property class-properties param-name)
-			       (gruntime-error "No such property in class ~S: ~S" class param-name)))
+			       (gruntime-error
+                                "No such property or init-keyword in class ~S: ~S"
+                                class param-name)))
 		    (pspec (gparam->param-struct param))
 		    (pspec-value-type (gparam-struct:value-type pspec))
 		    (pspec-value (scm->gvalue pspec-value-type option-value)))
@@ -218,9 +222,18 @@
 		     (append
 		      init-properties (list (cons param-name pspec-value))))
 	       (loop (cddr options) res)))))
-    (gobject-primitive-create-instance class type object
-				       (list->vector init-properties))
-    ((method-procedure (last (generic-function-methods initialize))) object kwargs)))
+    (with-fluids ((%gobject-initargs kwargs))
+       (gobject-primitive-create-instance class type object
+                                          (list->vector init-properties))
+       ;; If the object was a scheme-derived type, `initialize' was
+       ;; already called on the object by the callback from
+       ;; scm_c_gtype_instance_instance_init. Otherwise, although I know
+       ;; from looking at the source that all it does is process keyword
+       ;; arguments (which we know to be null from the above
+       ;; option-filtering code), we should (and do) call the <object>
+       ;; initializer on the instance.
+       (if (not (scheme-gclass? class))
+           (initialize object kwargs)))))
 
 (define (make-ginterface-instance class type instance initargs)
   (let ((value (get-keyword #:value initargs *unspecified*)))

@@ -72,6 +72,7 @@ SCM scm_gobject_set_data_x (SCM object, SCM key, SCM val);
 SCM scm_gobject_get_data (SCM object, SCM key);
 
 SCM scm_gtype_register_static (SCM name, SCM parent_type);
+SCM scm_scheme_gclass_p (SCM class);
 SCM scm_gobject_class_install_property (SCM type, SCM param);
 
 SCM scm_gobject_type_get_properties (SCM type);

@@ -624,7 +624,8 @@ scm_c_gtype_instance_to_scm (GTypeInstance *ginstance)
     GType type;
     SCM instance_smob, class, object;
 
-    g_return_val_if_fail (ginstance != NULL, SCM_BOOL_F);
+    if (!ginstance)
+        return SCM_BOOL_F;
 
     type = G_TYPE_FROM_INSTANCE (ginstance);
 
@@ -664,6 +665,9 @@ SCM
 scm_c_make_gtype_instance (GTypeInstance *ginstance)
 {
     SCM ret;
+
+    if (!ginstance)
+        return SCM_BOOL_F;
 
     switch (G_TYPE_FUNDAMENTAL (G_TYPE_FROM_INSTANCE (ginstance))) {
     case G_TYPE_OBJECT:
