@@ -34,7 +34,7 @@
   (c-name "g_main_context_iteration")
   (return-type "gboolean")
   (parameters
-    '("gboolean" "may_block")
+    '("gboolean" "may_block" (default "TRUE"))
   )
 )
 
@@ -159,7 +159,7 @@
   (return-type "none")
   (parameters
     '("GPollFD*" "fd")
-    '("gint" "priority")
+    '("gint" "priority" (default "G_PRIORITY_DEFAULT"))
   )
 )
 
@@ -177,8 +177,8 @@
   (is-constructor-of "GMainLoop")
   (return-type "GMainLoop*")
   (parameters
-    '("GMainContext*" "context" (null-ok))
-    '("gboolean" "is_running")
+    '("GMainContext*" "context" (null-ok) (default "NULL"))
+    '("gboolean" "is_running" (default "TRUE"))
   )
 )
 
@@ -245,7 +245,7 @@
   (c-name "g_source_attach")
   (return-type "guint")
   (parameters
-    '("GMainContext*" "context" (null-ok))
+    '("GMainContext*" "context" (null-ok) (default "NULL"))
   )
 )
 
@@ -1059,7 +1059,7 @@
   (return-type "GIOStatus")
   (parameters
     '("gint64" "offset")
-    '("GSeekType" "type")
+    '("GSeekType" "type" (default "G_SEEK_SET"))
     '("GError**" "error")
   )
 )
@@ -1069,7 +1069,7 @@
   (return-type "GIOChannel*")
   (parameters
     '("const-gchar*" "filename")
-    '("const-gchar*" "mode")
+    '("const-gchar*" "mode" (default "\"r\""))
     '("GError**" "error")
   )
 )
