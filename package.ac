@@ -10,3 +10,5 @@ AC_SUBST(ORBIT_IDL)
 # Activation idl files
 BONOBO_IDL_DIR="`pkg-config --variable=idldir libbonobo-2.0`"
 AC_SUBST(BONOBO_IDL_DIR)
+
+record_check corba $HAVE_CORBA
