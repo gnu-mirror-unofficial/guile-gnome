@@ -1,3 +1,40 @@
+2004-11-07  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (all-local): Only make/install the pkg-config files
+	if we actually build the wrapset.
+
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-libgnomeui.pc.in (Requires): 
+	* guile-gnome-libgnomeui-uninstalled.pc.in (Requires): Require
+	* glib-checks.ac: 
+	* defs-checks.ac: Versioned pkg-config checks.
+
+	* Makefile.am (all-local): Versioned pkg-config files.
+
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
+	versioned directory.
+
+2004-10-16  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Up required version of libgnomeui to 2.8.0.
+
+2004-10-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/Makefile.am: Dist/install type overrides.
+
+	* gnome/overrides/ui.defs: Adjust to ignore deprecated API.
+
+	* gnome/overrides/ui.defs-type-ignores: New file. Overrides
+	GnomeAppBar->GNOME_APPBAR, ignores deprecated types.
+
+	* Makefile.am:
+	* guile-gnome-libgnomeui-uninstalled.pc.in: 
+	* guile-gnome-libgnomeui.pc.in:
+	* files.ac: Add pkg-config files.
+
 2004-09-27  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/overrides/ui.defs: Ignore href_construct and
