@@ -103,6 +103,4 @@
      "if (" c-var " == GNOME_VFS_OK)\n"
      "  " scm-var " = SCM_UNSPECIFIED;\n"
      "else\n"
-     "  scm_throw (scm_str2symbol (g_enum_get_value ("
-     "(GEnumClass*)g_type_class_peek (GNOME_VFS_TYPE_VFS_RESULT), " c-var
-     ")->value_nick), SCM_EOL);\n")))
+     "  RESULT_ERROR(" c-var ");\n")))

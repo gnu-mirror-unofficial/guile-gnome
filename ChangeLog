@@ -1,4 +1,16 @@
+2004-10-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gnome-vfs-spec.scm (wrap-value-cg): Throw to
+	'gnome-vfs-error with the specific kind of error as an argument.
+	* gnome/gw/gnome-vfs-support.h (RESULT_ERROR): Same.
+
+	* gnome/overrides/gnome-vfs.defs (gnome_vfs_result_to_string):
+	Define as a function, not a method.
+
 2004-10-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/Makefile.am (module_DATA): Dist the
+	type-ignores.
 
 	* gnome/overrides/gnome-vfs.defs: Adjust the prototypes of the
 	open/create procs to return SCM. Add a wrapper for port->handle.
