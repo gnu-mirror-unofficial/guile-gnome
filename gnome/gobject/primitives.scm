@@ -12,6 +12,7 @@
               %post-init-gnome-gobject
               gtype-name
               gtype-from-name
+              gtype-from-instance
               gtype-parent
               gtype-is-a?
               g-source-set-closure))

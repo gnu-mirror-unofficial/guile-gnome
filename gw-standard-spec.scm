@@ -264,7 +264,7 @@
         ;; <gw:long-long>
         (let ((wt (wrap-simple-ranged-integer-type
                    ws '<gw:long-long> "long long"
-                   "((long long)0x7fffffffffffffff)" "((long long)0x8000000000000000)"
+                   "((long long)0x7fffffffffffffffLL)" "((long long)0x8000000000000000LL)"
                    "scm_num2long_long" "scm_long_long2num")))
           (set! limits-requiring-types (cons wt limits-requiring-types)))
   
@@ -272,7 +272,7 @@
         ;; <gw:unsigned-long-long>
         (let ((wt (wrap-simple-ranged-integer-type
                    ws '<gw:unsigned-long-long> "unsigned long long"
-                   #f "((unsigned long long)0xffffffffffffffff)"
+                   #f "((unsigned long long)0xffffffffffffffffLL)"
                    "scm_num2ulong_long" "scm_ulong_long2num")))
           (set! limits-requiring-types (cons wt limits-requiring-types)))))
   
@@ -298,6 +298,7 @@
                    options-form))
         (set! remainder (delq 'caller-owned remainder))
         (set! remainder (delq 'callee-owned remainder))
+        (set! remainder (delq 'null-ok remainder))
         (if (null? remainder)
             options-form
             (throw 'gw:bad-typespec
@@ -308,9 +309,13 @@
       (list
        c-var " = NULL;\n"
        "\n"
-       "if(SCM_FALSEP(" scm-var "))\n"
-       "  " c-var " = NULL;\n"
-       "else if(SCM_STRINGP(" scm-var "))\n"
+       (if (memq 'null-ok (gw:typespec-get-options typespec))
+           (list
+            "if (SCM_FALSEP (" scm-var "))\n"
+            "  " c-var " = NULL;\n"
+            "else ")
+           '())
+       "if(SCM_STRINGP(" scm-var "))\n"
        "  " c-var " = gh_scm2newstr(" scm-var ", NULL);\n"
        "else\n"
        `(gw:error ,status-var type ,scm-var)))

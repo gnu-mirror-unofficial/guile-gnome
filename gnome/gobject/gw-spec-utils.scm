@@ -76,6 +76,7 @@
             (set! options-form (cons 'caller-owned options-form)))
         (set! remainder (delq 'caller-owned remainder))
         (set! remainder (delq 'callee-owned remainder))
+        (set! remainder (delq 'null-ok remainder))
         (if (null? remainder)
             options-form
             (throw 'gw:bad-typespec
@@ -135,13 +136,14 @@
 
   (define (scm->c-ccg c-var scm-var typespec status-var)
     (list
-     "if (SCM_FALSEP (" scm-var ")) {\n"
-     "  " c-var " = NULL;\n"
-     "} else {\n"
-     "  " c-var " = (" (c-type-name-func typespec) ") scm_c_scm_to_gtype_instance (" scm-var ", " gtype-id ");\n"
-     "  if (" c-var " == NULL)\n"
-     `(gw:error ,status-var type ,scm-var)
-     "}\n"))
+     (if (memq 'null-ok (gw:typespec-get-options typespec))
+         (list
+          "if (SCM_FALSEP (" scm-var "))\n"
+          "  " c-var " = NULL;\n"
+          "else ")
+         '())
+     "if (!(" c-var " = (" (c-type-name-func typespec) ") scm_c_scm_to_gtype_instance (" scm-var ", " gtype-id ")))\n"
+     `(gw:error ,status-var type ,scm-var)))
   
   (define (c->scm-ccg scm-var c-var typespec status-var)
     (list
@@ -151,7 +153,7 @@
      "  " scm-var " = scm_c_gtype_instance_to_scm ((GTypeInstance *)" c-var ");\n"
      (if (memq 'caller-owned (gw:typespec-get-options typespec))
          '()
-         (list "g_object_ref ((GObject*)" c-var ");\n"))))
+         (list "if (" c-var ") g_object_ref ((GObject*)" c-var ");\n"))))
   
   (define (c-destructor c-var typespec status-var force?)
     ;; our temp vars are just pointers, there's nothing to clean up
@@ -171,10 +173,14 @@
 
   (define (scm->c-ccg c-var scm-var typespec status-var)
     (list
-     "if (SCM_FALSEP (" scm-var "))\n"
-     "  " c-var " = NULL;\n"
-     "else if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
-     "         && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " gtype-id "))\n"
+     (if (memq 'null-ok (gw:typespec-get-options typespec))
+         (list
+          "if (SCM_FALSEP (" scm-var "))\n"
+          "  " c-var " = NULL;\n"
+          "else ")
+         '())
+     "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
+     "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " gtype-id "))\n"
      "  " c-var " = (" (c-type-name-func typespec) ") g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
      "else {\n"
      "  " c-var " = NULL;\n"
@@ -209,10 +215,14 @@
 
   (define (scm->c-ccg c-var scm-var typespec status-var)
     (list
-     "if (SCM_FALSEP (" scm-var "))\n"
-     "  " c-var " = NULL;\n"
-     "else if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
-     "         && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " gtype-id "))\n"
+     (if (memq 'null-ok (gw:typespec-get-options typespec))
+         (list
+          "if (SCM_FALSEP (" scm-var "))\n"
+          "  " c-var " = NULL;\n"
+          "else ")
+         '())
+     "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
+     "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " gtype-id "))\n"
      "  " c-var " = (" (c-type-name-func typespec) ") g_value_get_pointer ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
      "else {\n"
      "  " c-var " = NULL;\n"
@@ -247,10 +257,14 @@
 
   (define (scm->c-ccg c-var scm-var typespec status-var)
     (list
-     "if (SCM_FALSEP (" scm-var "))\n"
-     "  " c-var " = NULL;\n"
-     "else if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
-     "         && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " gtype-id "))\n"
+     (if (memq 'null-ok (gw:typespec-get-options typespec))
+         (list
+          "if (SCM_FALSEP (" scm-var "))\n"
+          "  " c-var " = NULL;\n"
+          "else ")
+         '())
+     "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
+     "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " gtype-id "))\n"
      "  " c-var " = (" (c-type-name-func typespec) ") g_value_get_pointer ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
      "else {\n"
      "  " c-var " = NULL;\n"

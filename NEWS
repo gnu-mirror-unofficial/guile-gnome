@@ -1,3 +1,18 @@
+2 June 2003 - Andy Wingo <wingo at pobox dot com>:
+===============================================
+
+* Released guile-gobject 0.5.1 "Efudho".
+
+  Changes in this release are as follows:
+   - changes in defs support
+    - always ref objects returned unless (caller-owns-return #t)
+      is present in the defs
+    - don't allow NULL values unless (null-ok) is present in the
+      defs parameter specification
+   - gobject.scm
+    - better enum support in make-value-from-scm
+    - make objects of the proper type in gvalue->scm
+
 May 2003 - Andy Wingo <wingo at pobox dot com>:
 ===============================================
 

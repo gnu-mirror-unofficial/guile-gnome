@@ -1,3 +1,23 @@
+2003-05-30  Andy Wingo  <wingo@pobox.com>
+
+	* defs-support.scm (type-lookup): Without an explicit value for
+	ownership, we only assume that we own non-const strings. Other
+	things represented by pointers are treated conservatively. This is
+	so that a function returning a GObject* has its return
+	g_object_ref'd; non-const is not the same as caller-owned.
+
+2003-05-26  Andy Wingo  <wingo@pobox.com>
+
+	* defs-support.scm (load-defs): Add support for null-ok in defs
+	files, e.g. '("GdkWindow*" "window" (null-ok)).
+
+	* gw-spec-utils.scm: Only allow NULL values for objects, pointers,
+	boxeds, and interfaces if 'null-ok appears in the typespec.
+
+	* gw-gobject-spec.scm: Added input checks for generic GValue type
+	wrapper. Only allow NULL for closures if 'null-ok appears in the
+	typespec.
+
 2003-05-08  Andy Wingo  <wingo@pobox.com>
 
 	* guile-gnome-gobject-primitives.[ch]: Added and exported log handler

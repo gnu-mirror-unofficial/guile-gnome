@@ -129,6 +129,10 @@
      (make (gtype->class type) #:value init-value))
     ((gtype-eq? (gtype->fundamental type) gtype:gobject)
      (gtype-instance-primitive->value (slot-ref init-value 'gtype-instance)))
+    ((gtype-eq? (gtype->fundamental type) gtype:genum)
+     (if (is-a? init-value <gvalue>)
+         init-value
+         (make (gtype->class type) #:value init-value)))
     (else
      init-value)))
 
@@ -523,12 +527,19 @@ signals/properties of the class and all its parent classes.
       ((gtype-primitive-basic? value-type)
        (gvalue-primitive-get value))
 
-      ((gtype-eq? fundamental-value-type gtype:gobject)
-       (make (gtype->class value-type)
-	 #:%real-instance (gvalue-primitive-get value)))
-
       ((gtype-eq? value-type gtype:gboxed-scm)
        (gboxed-scm-primitive->scm value))
+
+      ((or (gtype-eq? fundamental-value-type gtype:gobject)
+           (gtype-eq? fundamental-value-type gtype:gparam)
+           ;; are there others that should go here?
+           )
+       ;; is it a bug if the value-type isn't the actual value type of
+       ;; the object? e.g. if it's really a GstPad and the value type is
+       ;; set to GObject. FIXME.
+       (let ((instance (gvalue-primitive-get value)))
+         (make (gtype->class (gtype-from-instance instance))
+           #:%real-instance instance)))
 
       (else
        value))))

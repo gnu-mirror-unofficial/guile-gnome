@@ -58,17 +58,20 @@
    '(c-var " = (GTypeInstance*) SCM_SMOB_DATA (" scm-var ");\n")
    '(scm-var " = scm_c_gtype_instance_to_scm (" c-var ");\n")) ; fixme: unref the scm_var
 
-  (gobject:gwrap-helper ws "GValue"
-                        (lambda (typespec) "GValue*")
-                        (lambda (c-var scm-var typespec status-var)
-                          (list c-var " = (GValue*) SCM_SMOB_DATA (" scm-var ");\n"))
-                        (lambda (scm-var c-var typespec status-var)
-                          (list "SCM_NEWSMOB (" scm-var ", scm_tc16_gvalue, " c-var ");\n"))
-                        (lambda (c-var typespec status-var force?)
-                          (list "g_value_unset (" c-var "); g_free (" c-var ");\n")))
-
   (gobject:gwrap-object ws "GObject" "G_TYPE_OBJECT")
 
+  (gobject:gwrap-helper
+   ws "GValue"
+   (lambda (typespec) "GValue*")
+   (lambda (c-var scm-var typespec status-var)
+     (list "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var "))\n"
+           "  " c-var " = (GValue*) SCM_SMOB_DATA (" scm-var ");\n"
+           "else " `(gw:error ,status-var type ,scm-var)))
+   (lambda (scm-var c-var typespec status-var)
+     (list "SCM_NEWSMOB (" scm-var ", scm_tc16_gvalue, " c-var ");\n"))
+   (lambda (c-var typespec status-var force?)
+     (list)))
+  
   (gobject:gwrap-helper
    ws "GClosure"
    (lambda (typespec) "GClosure*")
@@ -90,9 +93,13 @@
    ws "GParamSpec"
    (lambda (typespec) "GParamSpec*")
    (lambda (c-var scm-var typespec status-var)
-     (list "if (SCM_FALSEP (" scm-var "))\n"
-           "  " c-var " = NULL;\n"
-           "else if (!(" c-var " = (GParamSpec*)scm_c_scm_to_gtype_instance (" scm-var ", G_TYPE_PARAM)))\n"
+     (list (if (memq 'null-ok (gw:typespec-get-options typespec))
+               (list
+                "if (SCM_FALSEP (" scm-var "))\n"
+                "  " c-var " = NULL;\n"
+                "else ")
+               '())
+           "if (!(" c-var " = (GParamSpec*)scm_c_scm_to_gtype_instance (" scm-var ", G_TYPE_PARAM)))\n"
            `(gw:error ,status-var type ,scm-var)))
    (lambda (scm-var c-var typespec status-var)
      (list scm-var " = scm_c_gtype_instance_to_scm ((GTypeInstance*)" c-var ");\n"))
@@ -145,6 +152,14 @@ pull scheme definitions back into the C world.")
    "g_type_from_name"
    '(((<gw:mchars> caller-owned const) name))
    "Given a name, return the corresponding gtype or #f if not found.")
+
+  (gw:wrap-function
+   ws
+   'gtype-from-instance
+   '<gtype>
+   "G_TYPE_FROM_INSTANCE"
+   '((<gtype-instance> instance))
+   "Given a primitive GTypeInstance, return its corresponding gtype.")
 
   (gw:wrap-function
    ws

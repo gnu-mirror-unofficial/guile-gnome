@@ -1,3 +1,6 @@
+#! /usr/bin/guile -s
+!#
+
 (use-modules (gnome gtk))
 
 (define (app)

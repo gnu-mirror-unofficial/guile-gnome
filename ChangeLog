@@ -1,3 +1,10 @@
+2003-05-30  Andy Wingo  <wingo@pobox.com>
+
+	* gw-standard-spec.scm (<gw:long-long>, <gw:unsigned-long-long>):
+	Add LL to the end of the max/min 64 bit constants to appease gcc
+	3.3. However, gcc-3.3 fails to compile the gtk bindings, at least
+	on my machine. gcc 3.2 does work.
+
 2002-01-28  Ariel Rios  <ariel@gnu.org>
 
 	* configure.in: Bump version number to 0.3.0

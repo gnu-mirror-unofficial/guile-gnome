@@ -1,3 +1,6 @@
+#! /usr/bin/guile -s
+!#
+
 ;; load up gtk -- also pulls in goops bindings
 (use-modules (gnome gtk))
 

@@ -49,12 +49,12 @@
         "gtk_accel_group_entries_from_object"
 
         ;; don't know why i'm ignoring these, but pygtk does
-        "gtk_container_get_toplevels"
         "gtk_container_add_child_arg_type"
         "gtk_container_query_child_args"
         "gtk_container_child_args_collect"
         "gtk_container_child_arg_get_info"
-        "gtk_container_forall"
+        "gtk_container_forall" ;; scm equivalent unimplemented
+        "gtk_container_foreach" ;; use (for-each f (get-children c))
         "gtk_container_add_with_args"
         "gtk_container_addv"
 
@@ -99,7 +99,6 @@
 
 ;; Functions:
 ;;
-;; wrap container_foreach/all nicely
 ;; nix new-with-label, new-with-mnemonic, etc in favor of kw args
 ;; window-set-geometry-hints gets kwargs
 ;; gtk-label-get-selection-bounds, layout-offsets, also editable-, entry-,

@@ -1,3 +1,9 @@
+2003-05-25  Andy Wingo  <wingo@pobox.com>
+
+	* gtk-overrides.defs: Ignore gtk_container_foreach -- to use this,
+	just (for-each f (get-children c)). Ignore gtk_container_forall --
+	scheme equivalent unimplemeted.
+
 2003-05-08  Andy Wingo  <wingo@pobox.com>
 
 	* glib.defs: Added to support GMainLoop, etc.

@@ -63,15 +63,23 @@
         (options (list))
         (const? #f)
         (gwrap-type-name #f))
-    (if (string-prefix? "const-" type)
-        (begin (set! options (cons (or ownership (if return? 'callee-owned 'caller-owned))
-                                   options))
-               (set! options (cons 'const options))
-               (set! const? #t)
-               (set! type (substring type (string-length "const-"))))
-        (if (string-index type #\*)
-            (set! options (cons (or ownership (if return? 'caller-owned 'callee-owned))
-                                options))))
+    (cond
+     ((string-prefix? "const-" type)
+      (set! options (cons (or ownership (if return? 'callee-owned 'caller-owned))
+                          options))
+      (set! options (cons 'const options))
+      (set! const? #t)
+      (set! type (substring type (string-length "const-"))))
+     ((string-contains type "char*")
+      ;; without an explicit value for ownership, we only assume that we
+      ;; own non-const strings
+      (set! options (cons (or ownership (if return? 'caller-owned 'callee-owned))
+                          options)))
+     ((string-index type #\*)
+      ;; other things represented by pointers are treated conservatively
+      (set! options (cons (or ownership (if return? 'callee-owned 'caller-owned))
+                          options))))
+
     ;; support GList*-of-GtkWindow*
     (if (string-contains type "-of-")
         (begin (set! options (cons
@@ -264,14 +272,29 @@
                                                  'caller-owned
                                                  'callee-owned))
                     c-name
-                    (map (lambda (defs-parameter-spec)
-                           (list (type-lookup
-                                  ws
-                                  (car defs-parameter-spec)
-                                  #f)
-                                 (string->symbol
-                                  (cadr defs-parameter-spec))))
-                         parameters))
+                    (let ((parse-restargs
+                           (lambda (restargs)
+                             (let ((options (list)))
+                               (for-each
+                                (lambda (restarg)
+                                  (case (car restarg)
+                                    ((null-ok)
+                                     (set! options (cons 'null-ok options)))))
+                                restargs)
+                               options))))
+                      (map (lambda (defs-parameter-spec)
+                             (let ((looked-up (type-lookup
+                                               ws
+                                               (car defs-parameter-spec)
+                                               #f))
+                                   (parsed (parse-restargs
+                                            (cddr defs-parameter-spec)))
+                                   (arg-name (string->symbol
+                                              (cadr defs-parameter-spec))))
+                               (if (list? looked-up)
+                                   (list (append looked-up parsed) arg-name)
+                                   (list looked-up arg-name))))
+                           parameters)))
                    (if is-method?
                        (add-method-property
                         (symbol->string scm-name)
