@@ -1,3 +1,12 @@
+2004-10-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/defs/gconf.defs: Regenerated.
+
+	* gnome/defs/gconf-types.defs: Added.
+
+	* gnome/defs/Makefile.am (guilemodule_DATA): Added
+	gconf-types.defs and a target for generating gconf defs.
+
 2004-10-09  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/defs/gnome-vfs.defs: 

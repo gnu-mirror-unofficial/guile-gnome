@@ -11,6 +11,7 @@ guilemodule_DATA = 				\
 	bonoboui-types.defs			\
 	common-ignores.defs			\
 	gconf.defs				\
+	gconf-types.defs			\
 	gdk.defs				\
 	gdk-types.defs				\
 	gdk-pixbuf.defs				\
@@ -62,4 +63,11 @@ gnome-vfs:
 	../../../h2def.py --procs \
 	   --with-header='(include type-ignores) (include "gnome-vfs-types.defs") (include overrides)' \
 	   /usr/include/gnome-vfs-2.0/libgnomevfs/*.h > gnome-vfs.defs
+
+gconf:
+	../../../h2def.py --types \
+	   /usr/include/gconf/2/gconf/*.h > gconf-types.defs
+	../../../h2def.py --procs \
+	   --with-header='(include type-ignores) (include "gconf-types.defs") (include overrides)' \
+	   /usr/include/gconf/2/gconf/*.h > gconf.defs
 
