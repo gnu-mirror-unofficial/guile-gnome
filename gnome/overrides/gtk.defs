@@ -65,6 +65,15 @@
     '("SCM"  "on_change")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkClipboard
+(define-method set_text
+  (of-object "GtkClipboard")
+  (c-name "_wrap_gtk_clipboard_set_text")
+  (overrides "gtk_clipboard_set_text")
+  (parameters
+   '("const-gchar*" "text")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkColorSelectionDialog
 (define-method get_colorsel
   (of-object "GtkColorSelectionDialog")
@@ -322,6 +331,13 @@
   (parameters
     '("GtkRadioGroup*" "group")))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkSelectionData
+(define-method get_as_string
+  (of-object "GtkSelectionData")
+  (c-name "_gtk_selection_data_get_as_string")
+  (overrides "gtk_selection_data_get_as_string")
+  (return-type "gchar*"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkStockItem
@@ -338,6 +354,30 @@
   (return-type "SCM")
   (parameters
     '("const-gchar*" "stock_id")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkStyle
+(define-method get-fg-gc
+  (of-object "GtkStyle")
+  (c-name "gtk_style_get_fg_gc")
+  (return-type "GdkGC*")
+  (parameters '("GtkStateType" "state")))
+
+(define-method get-bg-gc
+  (of-object "GtkStyle")
+  (c-name "gtk_style_get_bg_gc")
+  (return-type "GdkGC*")
+  (parameters '("GtkStateType" "state")))
+
+(define-method get-white-gc
+  (of-object "GtkStyle")
+  (c-name "gtk_style_get_white_gc")
+  (return-type "GdkGC*"))
+
+(define-method get-black-gc
+  (of-object "GtkStyle")
+  (c-name "gtk_style_get_black_gc")
+  (return-type "GdkGC*"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkTextBuffer
@@ -586,6 +626,37 @@
   (return-type "GtkTreeIter*")
   (parameters
     '("GtkTreeIter*" "parent" (null-ok))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkTreeViewColumn
+(define-method set_cell_data_func
+  (of-object "GtkTreeViewColumn")
+  (c-name "_wrap_gtk_tree_view_column_set_cell_data_func")
+  (overrides "gtk_tree_view_column_set_cell_data_func")
+  (parameters
+    '("GtkCellRenderer*" "cell")
+    '("SCM" "proc")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkWidget
+(define-method drag_dest_set
+  (of-object "GtkWidget")
+  (c-name "_wrap_gtk_drag_dest_set")
+  (overrides "gtk_drag_dest_set")
+  (parameters
+   '("GtkDestDefaults" "flags")
+   '("const-GList*-of-const-gchar*" "types")
+   '("GdkDragAction" "actions")))
+
+(define-method get-window
+  (of-object "GtkWidget")
+  (c-name "gtk_widget_get_window")
+  (return-type "GdkWindow*"))
+
+(define-method get-allocation
+  (of-object "GtkWidget")
+  (c-name "gtk_widget_get_allocation")
+  (return-type "GdkRectangle*")) ;; same as GtkAllocation
 
 (ignore-glob  "*_get_type"
               "_*"

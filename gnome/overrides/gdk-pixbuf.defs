@@ -38,6 +38,16 @@
   (return-type "GSList*-of-GdkPixbufFormat*")
 )
 
+(define-method gdk_pixbuf_save_to_port
+  (of-object "GdkPixbuf")
+  (c-name "gdk_pixbuf_save_to_port")
+  (return-type "gboolean")
+  (parameters
+   '("SCM" "port")
+   '("const-char*" "type")
+   '("SCM" "options_alist")
+   '("GError**" "error")))
+
 (ignore-glob  "*_get_type"
               "_*"
               "*_ref"

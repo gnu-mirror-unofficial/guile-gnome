@@ -25,3 +25,9 @@
 #include <gdk/gdk.h>
 
 SCM gdk_event_to_vector (GdkEvent *event);
+
+SCM scm_gdk_rectangle_to_scm (GdkRectangle *rect);
+GdkRectangle* scm_scm_to_gdk_rectangle (SCM scm);
+
+SCM scm_gdk_color_to_scm (GdkColor *c);
+GdkColor* scm_scm_to_gdk_color (SCM scm);

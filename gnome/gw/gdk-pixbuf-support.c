@@ -26,4 +26,29 @@
 
 #include "gdk-pixbuf-support.h"
 
-/* nothing */
+static gboolean
+port_write_cb (const gchar *buf, gsize count, GError **error,
+               gpointer data) 
+{
+    SCM port = SCM_PACK (GPOINTER_TO_INT (data));
+    scm_c_write (port, buf, count);
+    return TRUE;
+}
+
+gboolean
+gdk_pixbuf_save_to_port (GdkPixbuf *pixbuf, SCM port, const char *type,
+                         SCM options_alist, GError **error)
+#define FUNC_NAME "gdk-pixbuf-save-to-port"
+{
+    gboolean res;
+
+    SCM_VALIDATE_PORT (1, port);
+    /* ignoring options for now */
+
+    res = gdk_pixbuf_save_to_callback (pixbuf, port_write_cb,
+                                       GINT_TO_POINTER (SCM_UNPACK (port)),
+                                       type, error, NULL);
+    scm_remember_upto_here_1 (port);
+    return res;
+}
+#undef FUNC_NAME

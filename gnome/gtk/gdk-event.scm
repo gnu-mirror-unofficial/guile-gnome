@@ -40,91 +40,51 @@
            #:value (vector-ref vector 0)))
         #f))) ;; #f can happen if gdk-support.c needs some work...
 
-(define (gdk-event-key:modifiers event)
-  (let ((vector (gdk-event->vector event)))
-    (case (gdk-event:type event)
-      ((key-press key-release)
-       ;; We have to do some hackery here, because there are bitmasks
-       ;; used by XKB that we don't know about.
-       (gflags->symbol-list
-        (make <gdk-modifier-type>
-          #:value (logand #x1fff
-                          (vector-ref vector 4)))))
-      (else
-       (gruntime-error "Event not of the proper type: ~A" event)))))
+(define-macro (define-gdk-event-accessor types kind name index code)
+  (define (symbol-append . args)
+    (string->symbol (apply string-append (map symbol->string args))))
+  `(define (,(symbol-append 'gdk-event- kind (string->symbol ":") name) event)
+     (let ((vector (gdk-event->vector event)))
+       (case (gdk-event:type event)
+         (,types (let ((val (vector-ref vector ,index)))
+                   ,code))
+         (else (gruntime-error "Event not of the proper type: ~A" event))))))
 
-(define (gdk-event-key:keyval event)
-  (let ((vector (gdk-event->vector event)))
-    (case (gdk-event:type event)
-      ((key-press key-release)
-       (vector-ref vector 5))
-      (else
-       (gruntime-error "Event not of the proper type: ~A" event)))))
+(define-gdk-event-accessor (key-press key-release) key modifiers 4
+  (gflags->symbol-list
+   ;; We have to do some hackery here, because there are bitmasks
+   ;; used by XKB that we don't know about.
+   (make <gdk-modifier-type> #:value (logand #x1fff val))))
+(define-gdk-event-accessor (key-press key-release) key keyval 5
+  val)
 
-(define (gdk-event-selection:selection event)
-  (let ((vector (gdk-event->vector event)))
-    (case (gdk-event:type event)
-      ((selection-notify selection-clear selection-request)
-       (string->symbol (vector-ref vector 3)))
-      (else
-       (gruntime-error "Event not of the proper type: ~A" event)))))
+(define-gdk-event-accessor (selection-notify selection-clear selection-request)
+  selection selection 3
+  (string->symbol val))
    
-(define (gdk-event-button:x event)
-  (let ((vector (gdk-event->vector event)))
-    (case (gdk-event:type event)
-      ((button-press button-release)
-       (vector-ref vector 4))
-      (else
-       (gruntime-error "Event not of the proper type: ~A" event)))))
+(define-gdk-event-accessor (button-press button-release) button x 4
+  val)
+(define-gdk-event-accessor (button-press button-release) button y 5
+  val)
+(define-gdk-event-accessor (button-press button-release) button button 7
+  val)
+(define-gdk-event-accessor (button-press button-release) button x-root 9
+  val)
+(define-gdk-event-accessor (button-press button-release) button y-root 10
+  val)
 
-(define (gdk-event-button:y event)
-  (let ((vector (gdk-event->vector event)))
-    (case (gdk-event:type event)
-      ((button-press button-release)
-       (vector-ref vector 5))
-      (else
-       (gruntime-error "Event not of the proper type: ~A" event)))))
+(define-gdk-event-accessor (motion-notify) motion modifiers 6
+  (gflags->symbol-list (make <gdk-modifier-type> #:value val)))
+(define-gdk-event-accessor (motion-notify) motion x 4
+  val)
+(define-gdk-event-accessor (motion-notify) motion y 5
+  val)
 
-(define (gdk-event-button:button event)
-  (let ((vector (gdk-event->vector event)))
-    (case (gdk-event:type event)
-      ((button-press button-release)
-       (vector-ref vector 7))
-      (else
-       (gruntime-error "Event not of the proper type: ~A" event)))))
+(define-gdk-event-accessor (window-state) window-state changed-mask 3
+  (gflags->symbol-list (make <gdk-window-state> #:value val)))
+(define-gdk-event-accessor (window-state) window-state new-window-state 4
+  (gflags->symbol-list (make <gdk-window-state> #:value val)))
 
-(define (gdk-event-button:x-root event)
-  (let ((vector (gdk-event->vector event)))
-    (case (gdk-event:type event)
-      ((button-press button-release)
-       (vector-ref vector 9))
-      (else
-       (gruntime-error "Event not of the proper type: ~A" event)))))
-
-(define (gdk-event-button:y-root event)
-  (let ((vector (gdk-event->vector event)))
-    (case (gdk-event:type event)
-      ((button-press button-release)
-       (vector-ref vector 10))
-      (else
-       (gruntime-error "Event not of the proper type: ~A" event)))))
-
-(define (gdk-event-window-state:changed-mask event)
-  (let ((vector (gdk-event->vector event)))
-    (if (eq? (gdk-event:type event) 'window-state)
-	(gflags->symbol-list
-	 (make <gdk-window-state>
-	   #:value (vector-ref vector 3)))
-	(gruntime-error "Event not of the proper type: ~A" event))))
-
-(define (gdk-event-window-state:new-window-state event)
-  (let ((vector (gdk-event->vector event)))
-    (if (eq? (gdk-event:type event) 'window-state)
-	(gflags->symbol-list
-	 (make <gdk-window-state>
-	   #:value (vector-ref vector 4)))
-	(gruntime-error "Event not of the proper type: ~A" event))))
-   
 ;;
 ;; Update this list with the following bit of perl:
 ;; perl -p -e 's/#define GDK_/(define gdk:/; s/_/-/g; s/0x/#x/; s/$/)/;' \

@@ -35,6 +35,8 @@ void _wrap_gtk_action_group_add_actions (GtkActionGroup* action_group, SCM entri
 void _wrap_gtk_action_group_add_toggle_actions (GtkActionGroup *action_group, SCM entries);
 void _wrap_gtk_action_group_add_radio_actions (GtkActionGroup *action_group, SCM entries, gint value, SCM on_change);
 
+void _wrap_gtk_clipboard_set_text (GtkClipboard *clipboard, const gchar *text);
+
 GtkWidget* _wrap_gtk_dialog_get_vbox (GtkDialog *dialog);
 GtkWidget* _wrap_gtk_dialog_get_action_area (GtkDialog *dialog);
 
@@ -59,8 +61,15 @@ GtkTreeIter* _wrap_gtk_list_store_append (GtkListStore *store);
 
 SCM _wrap_gtk_message_dialog_new (GtkWindow* parent, GtkDialogFlags flags, GtkMessageType type, GtkButtonsType buttons, const gchar *text);
 
+gchar* _gtk_selection_data_get_as_string (GtkSelectionData *data);
+
 void _wrap_gtk_stock_add (SCM items);
 SCM _wrap_gtk_stock_lookup (const gchar *stock_id);
+
+GdkGC* gtk_style_get_fg_gc (GtkStyle *style, GtkStateType state);
+GdkGC* gtk_style_get_bg_gc (GtkStyle *style, GtkStateType state);
+GdkGC* gtk_style_get_white_gc (GtkStyle *style);
+GdkGC* gtk_style_get_black_gc (GtkStyle *style);
 
 void _wrap_gtk_text_buffer_set_text (GtkTextBuffer *buf, SCM stext);
 void _wrap_gtk_text_buffer_insert (GtkTextBuffer *buf, GtkTextIter* iter, SCM stext);
@@ -98,3 +107,9 @@ GtkTreeIter* _wrap_gtk_tree_store_insert_before (GtkTreeStore *store, GtkTreeIte
 GtkTreeIter* _wrap_gtk_tree_store_insert_after (GtkTreeStore *store, GtkTreeIter *parent, GtkTreeIter *sibling);
 GtkTreeIter* _wrap_gtk_tree_store_prepend (GtkTreeStore *store, GtkTreeIter *parent);
 GtkTreeIter* _wrap_gtk_tree_store_append (GtkTreeStore *store, GtkTreeIter *parent);
+
+void _wrap_gtk_tree_view_column_set_cell_data_func (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell_renderer, SCM proc);
+
+GdkWindow* gtk_widget_get_window (GtkWidget *widget);
+GdkRectangle* gtk_widget_get_allocation (GtkWidget *widget);
+void _wrap_gtk_drag_dest_set (GtkWidget *widget, GtkDestDefaults flags, const GList *types, GdkDragAction actions);

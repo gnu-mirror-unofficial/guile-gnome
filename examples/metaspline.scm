@@ -1,4 +1,5 @@
-#! /usr/local/bin/guile-gtk -s
+#! /bin/sh
+exec guile-gnome-0 -s $0 "$@"
 !#
 ;; guile-gnome
 ;; Copyright (C) 1999 Free Software Foundation, Inc.

@@ -1,3 +1,9 @@
+;; This demo is pure crack. Don't do this. Glib allocates things on the
+;; stack sometimes, then points to them from the heap -- any stack
+;; manipulation that does not allow GLib to unwind the stack (for which
+;; GLib supplies no hooks) will cause undefined behaviour. It's
+;; surprising this works. --wingo.
+
 ;; guile-gnome
 ;; Copyright (C) 2000,2003,2004 Free Software Foundation, Inc.
 

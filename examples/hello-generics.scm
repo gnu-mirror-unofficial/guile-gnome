@@ -1,4 +1,5 @@
-#! /usr/bin/guile -s
+#! /bin/sh
+exec guile-gnome-0 -s $0 "$@"
 !#
 
 ;; guile-gnome

@@ -1,3 +1,6 @@
+#! /bin/sh
+exec guile-gnome-0 -s $0 "$@"
+!#
 ;; guile-gnome
 ;; Copyright (C) 2001,2002,2003,2004 Free Software Foundation, Inc.
 
