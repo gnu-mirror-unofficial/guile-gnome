@@ -81,6 +81,7 @@ exec ${srcdir:-.}/guile-test-env guile --debug -e main -s "$0" "$@"
 
 (use-modules (test-suite lib)
              (oop goops)
+             (gnome gobject)
              (test-suite gw-test-gobject))
 
 (define (main . args)

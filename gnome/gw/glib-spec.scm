@@ -36,7 +36,7 @@
   #:use-module (gnome gobject defs-support))
 
 (define-class <glib-wrapset> (<gobject-wrapset-base>)
-  #:id 'gnome-glib)
+  #:id 'gnome-glib #:dependencies '(standard))
 
 (define-class <client-actions> (<gw-item>))
 
@@ -58,8 +58,6 @@
 (define-method (initialize (ws <glib-wrapset>) initargs)
   (next-method ws (append '(#:module (gnome gw glib)) initargs))
   
-  (depends-on! ws 'standard)
-
   (add-client-item! ws (make <client-actions>))
   
   (for-each

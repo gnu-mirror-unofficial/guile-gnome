@@ -1,3 +1,13 @@
+2004-06-24  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* test-suite/guile-gobject-test: Include (gnome gobject) in
+	use-modules before the generated wrapset (fixes segfault).
+	
+	* gnome/gw/glib-spec.scm, gnome/gw/gobject-spec.scm,
+	* test-suite/gw-test-gobject-spec.scm, 
+	* test-suite/gw-test-glib-spec.scm: Adapted for G-Wrap "depends-on!"
+	API change.
+
 2004-05-19  Andy Wingo  <wingo@pobox.com>
 
 	* ChangeLog: All changelogs have been merged, and the entries that
