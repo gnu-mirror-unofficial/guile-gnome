@@ -9,10 +9,10 @@ guile-gnome. This file documents the user-visible changes in
 guile-gnome-libgnome only.
 
 
-guile-gnome-libgnome 2.6.0 - Andy Wingo, 2004-09-XX
-===================================================
+guile-gnome-libgnome 2.7.97 - Andy Wingo, 2004-12-05
+====================================================
 
-* Initial release
+* Initial release with NEWS
 
 
 Copyright (C) 2004 Free Software Foundation, Inc.
