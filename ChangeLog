@@ -1,3 +1,91 @@
+2004-09-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm: Real keywords, avoid deprecated modules.
+
+	* gnome/glib.scm: Real keywords, avoid deprecated modules.
+
+	* gnome/gw/gobject-spec.scm (gnome, gnome): Adapt to new module
+	names.
+
+	* package.ac (GUILE_GLIB_LIBS): Use readlink, not realpath, for
+	portability.
+
+2004-09-08  Andy Wingo  <wingo@pobox.com>
+
+	* AUTHORS: Updated.
+
+	* NEWS: Updated, and put in a more Guile-like format.
+
+	* TODO: Removed many items.
+
+2004-09-07  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (load-defs): Change out a `cond' with
+	a series of and=> statements. Fixes some problems.
+
+2004-09-06  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am: Er, it's not in this module. I'm stupid.
+
+	* Makefile.am: Install the -defs pkg-config file.
+
+2004-09-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/Makefile.am (CLEANFILES): Clean the .x files.
+
+	* package.ac (GUILE_GLIB_CFLAGS): Include the builddir's gobject
+	dir as well.
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_gobject_la_CFLAGS): Add
+	the builddir to the CFLAGS as well: the link is placed in the
+	builddir.
+
+	* package.ac: Fix the link creation for non-srcdir builds.
+
+	* gnome/overrides/Makefile.am, gnome/Makefile.am: Add the
+	overrides to the dist.
+
+	* package.ac: Create the gnome/gobject/guile-gnome-gobject link
+	when config.status is created.
+
+	* guile-gnome-glib.pc.in, guile-gnome-glib-uninstalled.pc.in:
+	Moved from guile-gobject*.pc.in.
+
+	* gnome/overrides/glib.defs: Moved from glib-overrides in the defs
+	module. Otherwise unchanged.
+
+	* defs-checks.ac: New file. We depend on the defs module.
+
+	* For each of the files below, deprecated versions were left in
+	the original locations.
+	
+	* gnome/gw/support/modules.scm: Moved from (gnome gobject
+	gw-utils). Otherwise unchanged.
+
+	* gnome/gw/support/gobject.scm: Moved from (gnome gobject
+	gw-spec-utils). Otherwise unchanged.
+
+	* gnome/gw/support/defs.scm: Moved from (gnome gobject
+	defs-support). The parser was rewritten as an interpreter, rather
+	than using guile as the interpreter.
+	(load-defs): Take an optional argument, overrides, which should be
+	the path within %load-path of the overrides file. Handle (ignore
+	overrides).
+	(load-defs-with-overrides): New procedure, wraps load-defs.
+
+2004-07-28  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/glib-spec.scm (make-typespec): Use raise instead of throw.
+
+	* gnome/gw/glib-spec.scm: Adapt for destruct-value-cg ->
+	destroy-value-cg G-Wrap API change.
+
+2004-08-29  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gclosure.c (%scm-gclosure-marshal): A non-NULL
+	return_value of type G_TYPE_NONE or G_TYPE_INVALID does not need
+	to be filled.
+
 2004-09-14  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/glib-spec.scm: Wrap unsigned-char.

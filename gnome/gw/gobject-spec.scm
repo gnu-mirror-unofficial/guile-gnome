@@ -33,8 +33,7 @@
   #:use-module (g-wrap enumeration)
   #:use-module (g-wrap guile)
   #:use-module (gnome gw glib-spec)
-  #:use-module (gnome gobject defs-support)
-  #:use-module (gnome gobject gw-spec-utils))
+  #:use-module (gnome gw support gobject))
 
 ;; gw-gobject: a wrapset to assist in wrapping gobject-based apis
 

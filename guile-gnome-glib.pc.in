@@ -4,8 +4,8 @@ libdir=@libdir@
 includedir=@includedir@/guile-gnome
 toolsdir=${exec_prefix}/bin
 
-Name: Guile-GObject
-Description: GObject support runtime for Guile
+Name: Guile-Gnome GLib bindings
+Description: Guile-Gnome GLib bindings
 Requires: gobject-2.0 g-wrap-2.0-guile
 Version: @VERSION@
 Libs: -L${libdir} -lguile-gnome-gobject

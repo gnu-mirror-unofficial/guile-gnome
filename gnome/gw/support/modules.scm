@@ -1,6 +1,5 @@
 ;; guile-gnome
 ;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
-;; Copyright (C) 2004 Andreas Rottmann <rotty at debian dot org>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -21,14 +20,23 @@
 
 ;;; Commentary:
 ;;
-;;Routines useful to *-spec.scm g-wrap files.
+;;This module implements some procedures useful to modules that use
+;;g-wrapped libraries.
 ;;
 ;;; Code:
 
-(define-module (gnome gobject gw-spec-utils)
-  #:use-module (gnome gw support modules))
+(define-module (gnome gw support modules)
+  #:export-syntax (re-export-modules))
 
-(begin-deprecated
- (issue-deprecation-warning
-  "`(gnome gobject gw-spec-utils)' is deprecated. Use `(gnome gw support gobject)' instead.")
- (re-export-modules (gnome gw support gobject)))
+(define-macro (re-export-modules . args)
+  (if (not (null? args))
+      (begin
+        (or (list? (car args))
+            (error "Invalid module specification" (car args)))
+        `(begin
+           (module-use! (module-public-interface (current-module))
+                        (resolve-interface ',(car args)))
+           (re-export-modules ,@(cdr args))))))
+(set-object-property! re-export-modules 'documentation
+  "Re-export the public interface of a module; used like
+@code{use-modules}.")

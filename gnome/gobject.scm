@@ -28,13 +28,13 @@
 ;;; Code:
 
 (define-module (gnome gobject)
-  :use-module (gnome gobject gtype)
-  :use-module (gnome gobject gvalue)
-  :use-module (gnome gobject gclosure)
-  :use-module (gnome gobject gsignal)
-  :use-module (gnome gobject gparameter)
-  :use-module (gnome gobject gobject)
-  :use-module (gnome gobject gw-utils))
+  #:use-module (gnome gobject gtype)
+  #:use-module (gnome gobject gvalue)
+  #:use-module (gnome gobject gclosure)
+  #:use-module (gnome gobject gsignal)
+  #:use-module (gnome gobject gparameter)
+  #:use-module (gnome gobject gobject)
+  #:use-module (gnome gw support modules))
 
 (re-export-modules (gnome gobject gtype)
                    (gnome gobject gvalue)

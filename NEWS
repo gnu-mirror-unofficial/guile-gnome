@@ -1,90 +1,282 @@
--*- text -*-
+guile-gnome-glib NEWS --- history of user-visible changes.
+Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
+See the end for copying conditions.
 
-23 July 2003 - Andy Wingo <wingo at pobox dot com>:
-===================================================
+guile-gnome-glib contains the bindings generator for guile-gnome, the
+GObject wrapper, and the GLib bindings. This file documents the
+user-visible changes in guile-gnome-glib only.
 
-* Released guile-gobject 0.5.3.
+
+guile-gnome-glib 2.6.0 - Andy Wingo, 2004-09-XX
 
-  Guile-gobject is pretty stable now -- the author is stress-testing it
-  in a few applications of his own.
+* Changes to the distribution
 
-  Changes in this release are as follows:
-   - gw-standard is now distributed as (gnome gobject gw-standard),
-     which allows guile-gobject to be distributed without modifications
-     to other packages.
-   (some other things here!)
+** guile-gnome-glib is a part of GNU Guile-Gnome.
 
-1 July 2003 - Andy Wingo <wingo at pobox dot com>:
-==================================================
+GNU Guile-Gnome is the umbrella project for the Gnome 2.X Guile
+bindings. guile-gnome-glib is that part of the package that wraps
+GObject, provides a bindings generator, and the bindings for GLib.
 
-* Released guile-gobject 0.5.2.
+** guile-gnome-glib can be distributed separately.
 
-  guile-gobject is now in CVS over at savannah, as the guile-gobject
-  module in the guile-gtk project.
+guile-gnome can be configured to have any number of modules together in
+one source package. guile-gnome-glib can be installed on its own; its
+only dependency is on the .defs module, guile-gnome-defs.
 
-  Changes in this release are as follows:
-   - override the proper method in example-1.scm
-   - rewrite tic-tac-toe.scm to be a nice demo of subclassing GObjects,
-     with let-params
-   - create idle sources with G_PRIORITY_DEFAULT_IDLE, not
-     G_PRIORITY_DEFAULT -- thanks to owen taylor
-   - make commentary of gobject.scm help-compliant
-   - move pspec arg details to primitives.scm
-   - add support for setting pspec-flags when making a new pspec
-   - change prototypes for gobject:{get,set}-property to be sane and easily
-     overridable
-   - new syntax: define-gobject-class
-   - new syntax: let-params
-   - add null-ok to some glib function parameters
-   - gparam-spec:args actually returns the args, zipped up with their
-     corresponding keywords
-   - new procedure: gobject:gwrap-set-all-types-used
-   - made gtype-instances have a 1 to 1 correspondence with their
-     GTypeInstance counterparts
-   - generalized equal? to work on objects
-   - put generics in the root module, for better or for worse
-   - wrap GTypeClasses so we can wrap class methods
-   - new variable: gruntime:byte-order
-   - add gtype-class slot to all gtype-instances (set-once)
-   - added some files that were in the old CVS but not in releases
+Most common files were placed in guile-gnome-pkg. ChangeLogs from
+subdirectories were merged together, and entries that didn't have to do
+with GLib, GObject, or the bindings generator were elided from
+guile-gnome-glib's copy.
+
+** We depend on unstable G-Wrap 1.9.1.
+
+G-Wrap is an FFI generator for Guile and other languages. guile-gnome
+relies on many features of the new G-Wrap, including latent bindings for
+types and generic functions, which reduce wrapset load time
+considerably.
+
+** There's a test suite now.
+
+Andreas Rottmann rocks.
+
+* Changes to the GObject wrapper
+
+** (gnome gobject) has been split into pieces.
+
+Closures, GObject, parameters, GValues, signals and GTypes are now
+implemented in separate modules, with no circular dependencies.
+
+** The C interface has been cleaned up and split into pieces.
+
+The specious "gobject/primitives" distinction was removed in favor of a
+function decomposition of the wrapset mirroring the module hierarchy.
+The set of exported macros and functions was audited for relevance.
+
+** GInterfaces are supported via multiple inheritance.
+
+You can use standard type predicates such as `is-a?' on instances of
+types that implement interfaces. Methods on interfaces dispatch
+properly. For example,
+
+  (class-precedence-list <gtk-entry>
+  ==>  (#<<gobject-class> <gtk-entry> 40f329d0>
+        #<<gobject-class> <gtk-editable> 40f32a10>
+        #<<gobject-class> <gtk-cell-editable> 40f32a40>
+        #<<gobject-class> <gtk-widget> 8091f80>
+        #<<gobject-class> <atk-implementor-iface> 8091f90>
+        #<<gobject-class> <ginterface> 808b4b0>
+        #<<gobject-class> <gtk-object> 80920e0>
+        #<<gobject-class> <gobject> 808b610>
+        #<<gtype-instance-class> <gtype-instance> 808a250>
+        #<<class> <object> 80865a0>
+        #<<class> <top> 80865d0>)
+
+** The metaclass hierarchy was cleaned up.
+
+Metaclasses were cleaned up so that type predicates applied
+consistently. See gtype.scm for details.
+
+  (class-precedence-list (class-of <gtk-entry>)
+  ==> (#<<set-once-class> <gobject-class> 808b6c0>
+       #<<set-once-class> <gtype-instance-class> 808a2b0>
+       #<<set-once-class> <gtype-class> 808a330>
+       #<<class> <set-once-class> 808a3d0>
+       #<<class> <class> 8086600>
+       #<<class> <object> 80865a0>
+       #<<class> <top> 80865d0>)
+
+** Class slot names changed.
+
+`gobject-signals' => `gsignals'.
+
+** GValueArray support added.
+
+You can make GValueArrays just like you make GValues:
+
+  (make <gvalue-array> #:value '(1 2 3))
+
+If the values are not <gvalue> instances already, they will be passed to
+`scm->gvalue'.
+
+** GSignals can be emitted on any GTypeInstance.
+
+As such, many of the signal functions changed name. For instance,
+`gobject-signal-emit' changed to `gtype-instance-signal-emit'. The
+generics were adjusted accordingly.
+
+** GObject classes can be subclassed directly.
+
+As a result, `define-gobject-class' and `let-params' are gone.
+
+  (define-class <my-entry> (<gtk-entry>)
+   (prop #:gparam `(,<gparam-int> #:default-value 1))
+   #:gsignal '(my-signal #f))
+
+<genum> and <gflags> can also be subclassed. See the documentation for
+more details.
+
+*** `initialize' is called by libgobject for custom classes.
+
+This ensures that the ancestor classes have initialized the object
+before user code handles it. However, this means that any arguments
+passed to `make' are not seen by the `initialize' method, including
+:init-keyword options. This is a problem that needs resolution.
+
+** GObject instances can be marked as "destroyed".
+
+Gtk+ requires that one be able to explicitly destroy objects, which
+should cause all code to release references to an object. This is
+implemented by setting the SMOB's value to NULL.
+scm_c_scm_to_gtype_instance will check for a NULL value, throwing an
+exception as appropriate.
+
+* Changes to the bindings generator
+
+** Enums without GTypes are supported
+
+See the GLib bindings for an example.
+
+** Scheme name hyphenation better matches GNOME conventions.
+
+GtkIMContext => <gtk-im-context>, GtkHBox => <gtk-hbox>, etc. However,
+although GSource => <g-source>, GObject => <gobject>.
+
+** GErrors produce Scheme exceptions.
+
+As such, there is no longer a need to pass GError arguments to
+procedures.
+
+* Bug fixes.
 
 
-2 June 2003 - Andy Wingo <wingo at pobox dot com>:
-==================================================
+
+guile-gobject 0.5.3 - Andy Wingo, 2003-07-23
 
-* Released guile-gobject 0.5.1 "Efudho".
+Guile-gobject is pretty stable now -- the author is stress-testing it
+in a few applications of his own.
 
-  Changes in this release are as follows:
-   - changes in defs support
-    - always ref objects returned unless (caller-owns-return #t)
-      is present in the defs
-    - don't allow NULL values unless (null-ok) is present in the
-      defs parameter specification
-   - gobject.scm
-    - better enum support in make-value-from-scm
-    - make objects of the proper type in gvalue->scm
+* Changes to the distribution
 
-May 2003 - Andy Wingo <wingo at pobox dot com>:
-===============================================
+** gw-standard is now distributed as (gnome gobject gw-standard).
 
-* Released guile-gobject 0.5.0 "Out of Africa".
-
-  Please see the RELEASE-NOTES-0.5.0.txt file for details.
-
-January 28, 2001 - Ariel Rios <ariel@gnu.org>:
-==============================================
-
-* Released guile-gobject 0.3.0 "Otello"
-
-  Guile-gobject is now the base for gnome-guile.
-  Updates for latest GNOME 2 changes.
-
-September 10, 2001 - Martin Baulig <martin@gnome.org>:
-======================================================
-
-* Released guile-gobject 0.2.0 "The Great Barrier Reef".
-
-  Please see the RELEASE-NOTES-0.2.0.txt file for details.
+This allows guile-gobject to be distributed without modifications to
+other the upstream g-wrap.
 
 
+
+guile-gobject 0.5.2 - Andy Wingo, 2003-07-01
 
+* Changes to the distribution
+
+guile-gobject is now in CVS over at savannah, as the guile-gobject
+module in the guile-gtk project.
+
+added some files that were in the old CVS but not in releases
+
+* Changes to the GObject wrapper
+
+** New syntax: `define-gobject-class', `let-params'.
+
+These syntaxes allow for easy subclassing and property definition on
+custom GObject classes.
+
+** gtype-instances have a 1 to 1 correspondence with their GTypeInstance
+   counterparts.
+
+** `equal?' works on objects.
+
+** GTypeClasses are now wrapped.
+
+This is to support class methods.
+
+*** gtype-instances all have a gtype-class set-once slot
+
+** New variable: gruntime:byte-order
+
+* Changes to the bindings generator
+
+** New procedure: gobject:gwrap-set-all-types-used
+
+** Generics are now set in the root module
+
+This is to ensure that different bindings implement the same generic.
+
+* Changes to the bindings
+
+** GLib changes
+
+`null-ok' was added to some glib function parameters.
+
+** Gtk+ changes
+
+tic-tac-toe.scm demonstrates subclassing GObjects, with let-params.
+
+* Bug fixes
+
+
+
+guile-gobject 0.5.1 "Efudho" - Andy Wingo, 2003-06-02
+
+* Changes in the GObject wrapper
+
+** Better enum support in make-value-from-scm
+
+** Make objects of the proper type in gvalue->scm
+
+* Changes in the bindings generator
+
+** Always ref objects returned unless (caller-owns-return #t) is present
+   in the defs
+
+** Don't allow NULL values unless (null-ok) is present in the
+   defs parameter specification
+
+
+
+guile-gobject 0.5.0 "Out of Africa" - Andy Wingo, 2003-05-03
+
+* A .defs parser was written to generate wrapsets from API descriptions
+
+Please see the RELEASE-NOTES-0.5.0.txt file for details.
+
+* guile-gobject now has a Gtk+ binding
+
+The binding was generated with the .defs parser.
+
+
+
+guile-gobject 0.3.0 "Otello" - Ariel Rios, 2002-01-28
+
+* Guile-gobject is now the base for gnome-guile.
+
+* Updates for latest GNOME 2 changes.
+
+
+
+guile-gobject 0.2.0 "The Great Barrier Reef" - Martin Baulig, 2001-09-10
+
+* Initial release
+
+Please see the RELEASE-NOTES-0.2.0.txt file for details.
+
+
+
+Copyright information:
+
+Copyright (C) 2004 Free Software Foundation, Inc.
+
+   Permission is granted to anyone to make or distribute verbatim copies
+   of this document as received, in any medium, provided that the
+   copyright notice and this permission notice are preserved,
+   thus giving the recipient permission to redistribute in turn.
+
+   Permission is granted to distribute modified versions
+   of this document, or of portions of it,
+   under the above conditions, provided also that they
+   carry prominent notices stating who last changed them.
+
+
+Local variables:
+mode: outline
+paragraph-separate: "[ 	]*$"
+end:

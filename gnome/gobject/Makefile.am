@@ -47,6 +47,8 @@ guile-gnome-gobject-procedures.txt: guile-gnome-gobject.texi
 
 BUILT_SOURCES = $(DOT_X_FILES)
 
+CLEANFILES = $(DOT_X_FILES)
+
 #schemelib_DATA = guile-gnome-gobject-procedures.txt
 
-EXTRA_DIST = $(module_DATA)
+EXTRA_DIST = $(module_DATA) private.h
