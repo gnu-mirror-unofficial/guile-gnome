@@ -1,5 +1,10 @@
 2004-07-06  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/contrib/filtered-list.scm: New file, implements a tree
+	model whose backing store is a list. The model only exposes those
+	members of the list that pass a predicate. The predicate can be
+	set dynamically.
+
 	* gnome/gw/gdk-spec.scm (unwrap-value-cg): Report errors with the
 	wrapped var, not the scm var. This is for consistency with other
 	instances of gw:error -- I think it fixes a bug, but jan will tell
