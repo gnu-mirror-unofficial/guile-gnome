@@ -1,3 +1,11 @@
+2004-05-17  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gtk-support.h, gtk-support.c (_wrap_gtk_dialog_get_vbox)
+	(_wrap_gtk_dialog_get_action_area): New functions.
+
+	* Makefile.am (guilegtkmodule_DATA): Fixed, now is
+	guilegwmodule_DATA.
+
 2004-05-10  Andy Wingo  <wingo@pobox.com>
 
 	* Makefile.am (libguile_gnome_gw_*_la_LIBADD): Link all these to

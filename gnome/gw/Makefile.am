@@ -16,11 +16,9 @@ GTKMODULES =
 GTKLIB =
 endif
 
-guilegtkmoduledir = $(datadir)/guile/gnome/gtk
+guilegwmodule_DATA = $(GDKMODULES) $(GTKMODULES)
 
-guilegtkmodule_DATA = $(GDKMODULES) $(GTKMODULES)
-
-EXTRA_DIST = $(guilegtkmodule_DATA)
+EXTRA_DIST = gdk-spec.scm gtk-spec.scm
 
 CLEANFILES = $(wildcard gnome-*.log)
 

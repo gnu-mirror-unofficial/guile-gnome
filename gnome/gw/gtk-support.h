@@ -33,6 +33,9 @@ GtkTreePath* guile_gtk_scm_to_tree_path (SCM scm);
 
 GtkWidget* gtk_combo_get_entry (GtkCombo *combo);
 
+GtkWidget* _wrap_gtk_dialog_get_vbox (GtkDialog *dialog);
+GtkWidget* _wrap_gtk_dialog_get_action_area (GtkDialog *dialog);
+
 gint _wrap_gtk_editable_insert_text (GtkEditable *editable, const gchar *text, gint pos);
 
 GtkWidget* _wrap_gtk_file_selection_get_ok_button (GtkFileSelection* selection);
@@ -66,6 +69,10 @@ SCM _wrap_gtk_text_buffer_get_bounds (GtkTextBuffer *buf);
 SCM _wrap_gtk_text_buffer_get_selection_bounds (GtkTextBuffer *buf);
 GtkTextIter* _wrap_gtk_text_buffer_get_iter_at_mark (GtkTextBuffer *buf, GtkTextMark* mark);
 GtkTextIter* _wrap_gtk_text_buffer_get_iter_at_child_anchor (GtkTextBuffer *buf, GtkTextChildAnchor* anchor);
+
+/*
+ * GtkTree
+ */
 
 GtkTreeIter* _wrap_gtk_tree_model_get_iter (GtkTreeModel *model, GtkTreePath *path);
 GtkTreeIter* _wrap_gtk_tree_model_get_iter_first (GtkTreeModel *model);
