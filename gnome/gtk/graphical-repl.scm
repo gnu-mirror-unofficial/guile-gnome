@@ -32,7 +32,7 @@
   #:use-module (ice-9 session) ;; for the completer
   #:use-module (ice-9 regex) ;; for the completer
   #:use-module (gnome gtk)
-  #:use-module (gnome pango gw-pango)
+  #:use-module (gnome pango)
   #:use-module (gnome gtk gdk-event)
   #:export (<guile-gtk-repl>))
 
@@ -44,13 +44,13 @@
   new-read-hook
   read-complete-hook
   (port
-   #:param-spec `(,<gparam-boxed> #:boxed-type ,<gboxed-scm> #:flags (read)))
+   #:gparam `(,<gparam-boxed> #:boxed-type ,<gboxed-scm> #:flags (read)))
   (paren-matching-style
-   #:param-spec `(,<gparam-flags> #:flags-type ,<repl-paren-matching-style>
+   #:gparam `(,<gparam-flags> #:flags-type ,<repl-paren-matching-style>
                                   #:default-value 1 ;; arrg
                                   #:flags (read write construct)))
 
-  #:signal `(complete #f ,<gchararray> ,<gboxed-scm>))
+  #:gsignal `(complete #f ,<gchararray> ,<gboxed-scm>))
 
 
 (define (find-matching-open str pos)
@@ -311,7 +311,7 @@
 
 (define-class <guile-gtk-repl-output> (<gtk-text-buffer>)
   (port
-   #:param-spec `(,<gparam-boxed> #:boxed-type ,<gboxed-scm> #:flags (read))))
+   #:gparam `(,<gparam-boxed> #:boxed-type ,<gboxed-scm> #:flags (read))))
 
 (define-method (initialize (output <guile-gtk-repl-output>) initargs)
   (define (output-string str)
@@ -335,9 +335,9 @@
   output-view
   
   (in-port
-   #:param-spec `(,<gparam-boxed> #:boxed-type ,<gboxed-scm>))
+   #:gparam `(,<gparam-boxed> #:boxed-type ,<gboxed-scm>))
   (out-port
-   #:param-spec `(,<gparam-boxed> #:boxed-type ,<gboxed-scm>)))
+   #:gparam `(,<gparam-boxed> #:boxed-type ,<gboxed-scm>)))
 
 (define-method (gobject:get-property (obj <guile-gtk-repl>) (prop <symbol>))
   (case prop

@@ -1,4 +1,13 @@
+2004-07-06  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/contrib/delay-tree-model.scm: New file, implements a tree
+	model based on a delay tree. See (container delay-tree) in
+	guile-lib for details.
+
 2004-07-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk/graphical-repl.scm (gnome): Fix to use the right
+	module.
 
 	* gnome/contrib/texinfo-buffer.scm (gnome): Fix module name.
 
