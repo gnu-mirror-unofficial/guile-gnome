@@ -1,11 +1,12 @@
 include $(top_srcdir)/common.mk
 
-SUBDIRS = 
+SUBDIRS = overrides
+guilemodule_DATA =
 
 if HAVE_LIBGLADE
 SUBDIRS += gw
+guilemodule_DATA += glade.scm
 endif
 
-guilemodule_DATA = glade.scm
-
 EXTRA_DIST = glade.scm
+DIST_SUBDIRS = gw overrides

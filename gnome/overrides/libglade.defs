@@ -1,3 +1,4 @@
+;; -*- scheme -*-
 ;; guile-gnome
 ;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
 
@@ -20,16 +21,40 @@
 
 ;;; Commentary:
 ;;
-;;Libglade bindings.
-;;
-;;Should doc here about evaluating the signal handlers, and about
-;;modules.
+;;Custom wrapper definitions.
 ;;
 ;;; Code:
 
-(define-module (gnome glade)
-  #:use-module (gnome gtk)
-  #:use-module (gnome gw libglade)
-  #:use-module (gnome gw support modules))
+(define-function glade-xml-new-from-buffer
+  (c-name "_wrap_glade_xml_new_from_buffer")
+  (overrides "glade_xml_new_from_buffer")
+  (return-type "GladeXML*")
+  (is-constructor-of "GladeXML")
+  (parameters
+   '("const-char*" "buffer")
+   '("const-char*" "root" (null-ok) (default "NULL"))
+   '("const-char*" "domain" (null-ok) (default "NULL"))))
 
-(re-export-modules (gnome gw libglade))
+(define-method signal_connect
+  (of-object "GladeXML")
+  (c-name "_wrap_glade_xml_signal_connect")
+  (overrides "glade_xml_signal_connect")
+  (return-type "none")
+  (parameters
+    '("const-char*" "handlername")
+    '("SCM" "proc")
+  )
+)
+
+(define-method signal_autoconnect
+  (of-object "GladeXML")
+  (c-name "_wrap_glade_xml_signal_autoconnect")
+  (overrides "glade_xml_signal_autoconnect")
+  (return-type "none")
+  (parameters '("SCM" "module")))
+
+(ignore-glob "*_get_type"
+             "glade_xml_signal_*")
+
+(ignore "glade_xml_construct"
+        "glade_set_custom_handler")

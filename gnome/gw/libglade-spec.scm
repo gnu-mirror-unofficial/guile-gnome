@@ -29,8 +29,8 @@
   #:use-module (g-wrap)
   #:use-module (g-wrap guile)
   #:use-module (gnome gw gtk-spec)
-  #:use-module (gnome gobject defs-support)
-  #:use-module (gnome gobject gw-spec-utils))
+  #:use-module (gnome gw support defs)
+  #:use-module (gnome gw support gobject))
 
 (define-class <glade-wrapset> (<gobject-wrapset-base>)
   #:id 'gnome-libglade
@@ -39,7 +39,7 @@
 (define-method (initialize (ws <glade-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gw libglade) initargs)))
   
-  (load-defs ws "gnome/defs/libglade.defs"))
+  (load-defs-with-overrides ws "gnome/defs/libglade.defs"))
 
 (define-method (global-declarations-cg (self <glade-wrapset>))
   (list (next-method)

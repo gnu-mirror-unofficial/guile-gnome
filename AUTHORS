@@ -1,0 +1,14 @@
+To find out what should go in this file, see "Information For
+Maintainers of GNU Software" (maintain.texi), the section called
+"Recording Changes".
+
+
+Andy Wingo:
+In the directory gnome/gw, wrote:
+    libglade-spec.scm glade-support.c glade-support.h
+In the directory gnome/overrides, wrote:
+    libglade.defs
+In the directory gnome, wrote:
+    glade.scm
+In the directory examples, wrote:
+    test.glade test.scm
