@@ -26,6 +26,10 @@
 #define __GUILE_CORBA_TYPES_H__ 1
 
 #include <libguile.h>
+#define ORBIT2_INTERNAL_API
+/* we need RootObject_duplicate/release */
+#include <orbit/orb-core/orbit-object.h>
+#undef ORBIT2_INTERNAL_API
 #include <orbit/orbit.h>
 
 extern SCM scm_corba_struct_vtable;
@@ -140,7 +144,7 @@ SCM_MAKE_VALIDATE (pos, scm, CORBA_OBJECT_CLASSP)
   do { \
     SCM smob; \
     SCM_VALIDATE_CORBA_OBJECT_CLASS (pos, scm); \
-    smob = scm_call_2 (scm_sym_class_slot_ref, scm, scm_sym_corba_typecode); \
+    smob = scm_call_2 (scm_class_slot_ref, scm, scm_sym_corba_typecode); \
     SCM_ASSERT (SCM_TYP16_PREDICATE (scm_tc16_corba_typecode, smob), smob, \
 		pos, FUNC_NAME); \
     cvar = (CORBA_TypeCode) SCM_SMOB_DATA (smob); \

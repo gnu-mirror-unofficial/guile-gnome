@@ -27,7 +27,7 @@
 #include "guile-gnome-corba-primitives.h"
 #include "guile-gnome-corba-types.h"
 #include "guile-gnome-corba-generic.h"
-#include "guile-gnome-gobject-primitives.h"
+#include <guile-gnome-gobject.h>
 
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-context.h>
@@ -39,10 +39,9 @@
 
 #include <string.h>
 
-#define BONOBO_EX(ev) ((ev) && (ev)->_major != CORBA_NO_EXCEPTION)
-
 SCM scm_class_corba_object;
 SCM scm_class_portable_server_servant_base;
+SCM scm_class_slot_ref;
 SCM scm_f_skel_marshal_func;
 
 scm_t_bits scm_tc16_guile_corba_interface;
@@ -51,7 +50,21 @@ scm_t_bits scm_tc16_guile_portable_server_servant;
 DynamicAny_DynAnyFactory guile_corba_dynany_factory;
 PortableServer_POA guile_corba_poa;
 CORBA_ORB guile_corba_orb;
+static SCM _scm_make_class;
+static SCM scm_class_slot_set_x;
+
 static GMainLoop *guile_corba_main_loop = NULL;
+
+#define BONOBO_EX(ev) ((ev) && (ev)->_major != CORBA_NO_EXCEPTION)
+
+#define WITH_DEBUGGING
+
+#ifdef WITH_DEBUGGING
+#define DEBUG(str, args...) g_print ("I: " str "\n", ##args)
+#else
+#define DEBUG(str, args...)
+#endif
+#define WARN(str, args...) g_print ("W: " str "\n", ##args)
 
 #define CLASSP(x) (SCM_STRUCTP (x) && SCM_OBJ_CLASS_FLAGS (x) & SCM_CLASSF_METACLASS)
 
@@ -248,28 +261,23 @@ guile_corba_portable_server_servant_free (SCM smob_servant)
 
 
 
+#define FOREACH_LIST(l, init) for (l=(init); SCM_NNULLP (l); l = SCM_CDR (l))
+
 SCM_DEFINE (scm_corba_primitive_find_poa_class, "corba-primitive-find-poa-class", 1, 0, 0,
 	    (SCM class),
 	    "")
 #define FUNC_NAME s_scm_corba_primitive_find_poa_class
 {
     SCM cpl;
-    long i;
 
     SCM_VALIDATE_PORTABLE_SERVER_SERVANT_BASE_CLASS (1, class);
 
     cpl = scm_class_precedence_list (class);
 
-    for (i = 0; i < scm_ilength (cpl); i++) {
-	SCM this = scm_list_ref (cpl, SCM_MAKINUM (i));
-	SCM slots, slot;
-
-	slots = scm_class_slots (this);
-	slot = scm_assq (scm_sym_orbit_iinterface, slots);
-
-	if (SCM_NFALSEP (scm_slot_bound_using_class_p (this, class, scm_sym_orbit_iinterface)))
-	    return this;
-    }
+    FOREACH_LIST (cpl, scm_class_precedence_list (class))
+	if (SCM_NFALSEP (scm_slot_bound_using_class_p
+                         (SCM_CAR (cpl), class, scm_sym_orbit_iinterface)))
+	    return SCM_CAR (cpl);
 
     SCM_ASSERT (FALSE, class, SCM_ARG1, FUNC_NAME);
     return SCM_UNDEFINED;
@@ -379,11 +387,11 @@ scm_c_generic_skel_func_exception (void *data, SCM tag, SCM throw_args)
     scm_display (throw_args, cur_outp); scm_newline (cur_outp);
 
     if (SCM_EQ_P (tag, scm_sym_corba_system_exception)) {
-	g_message (G_STRLOC ": CORBA system exception");
+	DEBUG (G_STRLOC ": CORBA system exception");
     } else if (SCM_EQ_P (tag, scm_sym_corba_user_exception)) {
-	g_message (G_STRLOC ": CORBA user exception");
+	DEBUG (G_STRLOC ": CORBA user exception");
     } else {
-	g_message (G_STRLOC ": Unknown exception");
+	DEBUG (G_STRLOC ": Unknown exception");
 	CORBA_exception_set_system (ev, ex_CORBA_UNKNOWN, CORBA_COMPLETED_MAYBE);
     }
 
@@ -403,7 +411,7 @@ scm_c_generic_skel_func (PortableServer_ServantBase *servant,
     gulong i, length;
     SCM cur_outp = scm_current_output_port();
 
-    g_message (G_STRLOC ": %p - %p", servant, implementation);
+    DEBUG (G_STRLOC ": %p - %p", servant, implementation);
 
     poa_vector = (SCM) implementation;
     scm_display (poa_vector, cur_outp); scm_newline (cur_outp);
@@ -460,10 +468,10 @@ impl_finder_func (PortableServer_ServantBase *servant, const gchar *opname,
     SCM poa_vector;
     gpointer value;
 
-    g_message (G_STRLOC ": %p - |%s|", servant, opname);
+    DEBUG (G_STRLOC ": %p - |%s|", servant, opname);
 
     if (!g_hash_table_lookup_extended (gservant->interface->epv_hash, opname, NULL, &value)) {
-	g_warning (G_STRLOC ": Invalid operation '%s'", opname);
+	WARN (G_STRLOC ": Invalid operation '%s'", opname);
 	return NULL;
     }
 
@@ -510,8 +518,8 @@ guile_corba_sys_register_interface (ORBit_IInterface *iinterface)
 	iinterface_hash = g_hash_table_new (g_str_hash, g_str_equal);
 
     if (g_hash_table_lookup (iinterface_hash, iinterface->tc->repo_id)) {
-	g_warning (G_STRLOC ": Already registered interface `%s'",
-		   iinterface->tc->repo_id);
+	WARN (G_STRLOC ": Already registered interface `%s'",
+              iinterface->tc->repo_id);
 	return;
     }
 
@@ -523,7 +531,7 @@ guile_corba_sys_register_interface (ORBit_IInterface *iinterface)
     interface = g_new0 (GuileCorbaInterface, 1);
     interface->iinterface = iinterface;
 
-    interface->class_info.small_relay_call = &impl_finder_func;
+    interface->class_info.impl_finder = &impl_finder_func;
     //interface->class_info.vepvmap = &init_vepvmap_func; //init_
     interface->class_info.class_name = g_strdup (iinterface->tc->repo_id);
     interface->class_info.class_id = g_new0 (CORBA_unsigned_long,1 );
@@ -555,8 +563,8 @@ guile_corba_sys_register_interface (ORBit_IInterface *iinterface)
 	repo_id = iinterface->base_interfaces._buffer [i];
 	base_interface = g_hash_table_lookup (iinterface_hash, repo_id);
 	if (!base_interface) {
-	    g_warning (G_STRLOC ": Unknown base interface `%s' in interface `%s'",
-		       repo_id, iinterface->tc->repo_id);
+	    WARN (G_STRLOC ": Unknown base interface `%s' in interface `%s'",
+                  repo_id, iinterface->tc->repo_id);
 	    continue;
 	}
 
@@ -576,24 +584,24 @@ guile_corba_sys_register_interface (ORBit_IInterface *iinterface)
 	}
     }
 
-    stub_class = scm_apply (scm_sym_make_class,
+    stub_class = scm_apply (_scm_make_class,
 			    scm_cons2 (stub_parent_classes, SCM_EOL,
 				       SCM_LIST4 (k_name, stub_class_name,
 						  k_metaclass, stub_meta_class)),
 			    SCM_EOL);
 
-    scm_call_3 (scm_sym_class_slot_set_x, stub_class, scm_sym_corba_typecode,
+    scm_call_3 (scm_class_slot_set_x, stub_class, scm_sym_corba_typecode,
 		scm_c_make_corba_typecode (iinterface->tc));
 
     scm_define (stub_class_name, stub_class);
 
-    poa_class = scm_apply (scm_sym_make_class,
+    poa_class = scm_apply (_scm_make_class,
 			   scm_cons2 (poa_parent_classes, SCM_EOL,
 				      SCM_LIST4 (k_name, poa_class_name,
 						 k_metaclass, poa_meta_class)),
 			   SCM_EOL);
 
-    scm_call_3 (scm_sym_class_slot_set_x, poa_class, scm_sym_orbit_iinterface,
+    scm_call_3 (scm_class_slot_set_x, poa_class, scm_sym_orbit_iinterface,
 		iinterface_smob);
 
     scm_define (poa_class_name, poa_class);
@@ -818,6 +826,15 @@ scm_init_gnome_corba_primitives (void)
 
     scm_class_portable_server_servant_base = scm_permanent_object
 	(SCM_VARIABLE_REF (scm_c_lookup ("<PortableServer-ServantBase>")));
+
+    scm_class_slot_ref = scm_permanent_object
+	(SCM_VARIABLE_REF (scm_c_lookup ("class-slot-ref")));
+
+    _scm_make_class = scm_permanent_object
+	(SCM_VARIABLE_REF (scm_c_lookup ("make-class")));
+
+    scm_class_slot_set_x = scm_permanent_object
+	(SCM_VARIABLE_REF (scm_c_lookup ("class-slot-set!")));
 
     scm_c_export (
 		  s_scm_corba_primitive_invoke_method,

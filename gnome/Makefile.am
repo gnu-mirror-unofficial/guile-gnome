@@ -5,8 +5,8 @@ guilemodule_DATA =
 
 if HAVE_CORBA
 guilemodule_DATA += corba.scm
-SUBDIRS += corba
+SUBDIRS += corba gw
 endif
 
 EXTRA_DIST = corba.scm
-DIST_SUBDIRS = corba
+DIST_SUBDIRS = corba gw

@@ -57,9 +57,20 @@ guile_corba_generic_repo_id_to_name (const gchar *format, const gchar *repo_id)
 }
 
 gchar *
-guile_corba_generic_make_type_name (const gchar *format, const gchar *name)
+guile_corba_generic_make_type_name (const gchar *StudlyCaps)
 {
-    return scm_c_make_gtype_name (format, name);
+    static SCM de_studly_capsify = SCM_BOOL_F;
+    SCM ret;
+    
+    if (SCM_FALSEP (de_studly_capsify)) {
+        de_studly_capsify = SCM_VARIABLE_REF
+            (scm_c_module_lookup (scm_c_resolve_module ("gnome gobject utils"),
+                                  "gtype-name->class-name"));
+    }
+    
+    ret = scm_call_1 (de_studly_capsify, scm_makfrom0str (StudlyCaps));
+
+    return strdup (SCM_STRING_CHARS (ret));
 }
 
 static gchar *
@@ -68,7 +79,7 @@ make_enum_name (const gchar *repo_id, const gchar *name)
     gchar *new_repo_id, *new_name, *retval;
 
     new_repo_id = guile_corba_generic_repo_id_to_name (NULL, repo_id);
-    new_name = guile_corba_generic_make_type_name (NULL, name);
+    new_name = guile_corba_generic_make_type_name (name);
 
     retval = g_strdup_printf ("%s:%s", new_repo_id, new_name);
 
@@ -104,7 +115,7 @@ guile_corba_generic_typecode_to_type (CORBA_TypeCode tc)
 	for (i = 0; i < real_tc->sub_parts; i++) {
 	    values [i].value = i;
 	    values [i].value_name = make_enum_name (tc->repo_id, real_tc->subnames [i]);
-	    values [i].value_nick = guile_corba_generic_make_type_name ("%s", real_tc->subnames [i]);
+	    values [i].value_nick = guile_corba_generic_make_type_name (real_tc->subnames [i]);
 	}
 
 	name = guile_corba_generic_repo_id_to_name (NULL, tc->repo_id);

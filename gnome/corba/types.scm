@@ -26,7 +26,7 @@
 ;;; Code:
 
 (define-module (gnome corba types)
-  :use-module (gnome corba gw-corba)
+  :use-module (gnome gw corba)
   :use-module (gnome gobject)
   :use-module (oop goops))
 

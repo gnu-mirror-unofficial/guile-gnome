@@ -25,35 +25,30 @@
 ;;
 ;;; Code:
 
-(define-module (gnome corba gw-corba-spec)
+(define-module (gnome gw corba-spec)
   :use-module (oop goops)
   :use-module (g-wrap)
   :use-module (g-wrap guile)
   :use-module (g-wrap guile ws standard)
-  :use-module (gnome gobject gw-spec-utils))
+  :use-module (gnome gw support gobject))
 
 ;; gw-corba: an internal glue binding, probably not useful to other people...
 (define-class <corba-wrapset> (<gobject-wrapset-base>)
-  #:language guile #:id 'gnome-corba)
+  #:id 'gnome-corba #:dependencies '(standard))
+
+(define-method (global-declarations-cg (ws <corba-wrapset>)
+                                       (item <gw-item>))
+  (list "#include <guile-gnome-corba.h>\n"))
+
+(define-method (initializations-cg (ws <corba-wrapset>) err)
+  (list (next-method)
+        "scm_pre_init_gnome_corba_generic ();\n"
+        "scm_pre_init_gnome_corba_types ();\n"
+        "scm_pre_init_gnome_corba_primitives ();\n"))
 
 (define-method (initialize (ws <corba-wrapset>) initargs)
-  (next-method ws (append '(#:module (gnome corba gw-corba)) initargs))
+  (next-method ws (append '(#:module (gnome gw corba)) initargs))
   
-  (depends-on! ws 'standard)
-
-  (add-cs-global-declarator!
-   ws
-   (lambda (lang)
-     (list
-      "#include <guile-gnome-corba.h>\n")))
-
-  (add-cs-initializer!
-   ws
-   (lambda (lang status-var)
-     (list "scm_pre_init_gnome_corba_generic ();\n"
-           "scm_pre_init_gnome_corba_types ();\n"
-           "scm_pre_init_gnome_corba_primitives ();\n")))
-
   ;; Here we wrap some functions to bootstrap the core library.
 
   (wrap-function! ws
@@ -64,7 +59,7 @@
                   #:description "Export a number of fundamental gtypes and functions to operate on objects.")
 
   (wrap-function! ws
-                 #:name '%init-'%init-gnome-corba-primitives
+                 #:name '%init-gnome-corba-primitives
                  #:returns 'void
                  #:c-name "scm_init_gnome_corba_primitives"
                  #:arguments '()

@@ -26,6 +26,10 @@
 #define __GUILE_CORBA_PRIMITIVES_H__ 1
 
 #include <libguile.h>
+#define ORBIT2_INTERNAL_API
+/* we need RootObject_duplicate/release */
+#include <orbit/orb-core/orbit-object.h>
+#undef ORBIT2_INTERNAL_API
 #include <orbit/orbit.h>
 #include <orbit/poa/poa-types.h>
 
@@ -62,6 +66,7 @@ extern CORBA_ORB guile_corba_orb;
 
 extern SCM scm_class_corba_object;
 extern SCM scm_class_portable_server_servant_base;
+extern SCM scm_class_slot_ref;
 
 extern scm_t_bits scm_tc16_guile_corba_interface;
 extern scm_t_bits scm_tc16_guile_portable_server_servant;
@@ -97,7 +102,7 @@ SCM_MAKE_VALIDATE (pos, scm, PORTABLE_SERVER_SERVANT_BASE_CLASSP)
     SCM tmp_smob, tmp_class; \
     SCM_VALIDATE_PORTABLE_SERVER_SERVANT_BASE_CLASS (pos, scm); \
     tmp_class = scm_corba_primitive_find_poa_class (scm); \
-    tmp_smob = scm_call_2 (scm_sym_class_slot_ref, tmp_class, scm_sym_orbit_iinterface); \
+    tmp_smob = scm_call_2 (scm_class_slot_ref, tmp_class, scm_sym_orbit_iinterface); \
     SCM_ASSERT (SCM_TYP16_PREDICATE (scm_tc16_guile_corba_interface, tmp_smob), \
 		tmp_smob, pos, FUNC_NAME); \
     cvar = (GuileCorbaInterface *) SCM_SMOB_DATA (tmp_smob); \

@@ -413,7 +413,9 @@ SCM_DEFINE (scm_corba_sequence_type, "corba-sequence-type", 1, 0, 0,
 
     tc = SCM_CORBA_SEQUENCE_TYPECODE (corba_sequence);
 
-    SCM_RETURN_NEWSMOB (scm_tc16_corba_typecode, ORBit_RootObject_duplicate (tc->subtypes [0]));
+    /* internal API? */
+    SCM_RETURN_NEWSMOB (scm_tc16_corba_typecode, ORBit_RootObject_duplicate
+                        (tc->subtypes [0]));
 }
 #undef FUNC_NAME
 
@@ -500,7 +502,8 @@ case CORBA_tk_ ## k:								\
 	gtype = guile_corba_generic_typecode_to_type (tc);
 	g_message (G_STRLOC ": %ld", gtype);
 
-	retval = scm_c_make_genum (gtype, * (CORBA_unsigned_long *) any->_value);
+	retval = scm_c_make_gvalue (gtype);
+        scm_gvalue_primitive_set (retval, SCM_MAKINUM(*(CORBA_unsigned_long*)any->_value));
 
 	break;
     }
@@ -646,6 +649,8 @@ SCM_DEFINE (scm_corba_struct_type, "corba-struct-type", 1, 0, 0,
 static size_t
 guile_orbit_object_free (SCM type)
 {
+    /* RootObject_release is internal API? */
+       
     gpointer objptr = (gpointer) SCM_SMOB_DATA (type);
     ORBit_RootObject_release (objptr);
     return 0;
@@ -762,7 +767,7 @@ SCM_DEFINE (scm_corba_object_class_to_typecode, "corba-object-class->typecode", 
 
     SCM_VALIDATE_CORBA_OBJECT_CLASS (1, class);
 
-    tc_smob = scm_call_2 (scm_sym_class_slot_ref, class, scm_sym_corba_typecode);
+    tc_smob = scm_call_2 (scm_class_slot_ref, class, scm_sym_corba_typecode);
     SCM_ASSERT (SCM_TYP16_PREDICATE (scm_tc16_corba_typecode, tc_smob),
 		class, SCM_ARG3, FUNC_NAME);
 

@@ -25,7 +25,7 @@
 #include <guile-gnome-corba.h>
 #include <guile-gnome-corba-types.h>
 #include <guile-gnome-corba-generic.h>
-#include <guile-gnome-gobject-primitives.h>
+#include <guile-gnome-gobject.h>
 #include <guile/gh.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-context.h>

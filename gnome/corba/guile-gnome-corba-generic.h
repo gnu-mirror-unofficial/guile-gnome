@@ -33,7 +33,7 @@ gchar *
 guile_corba_generic_repo_id_to_name (const gchar *format, const gchar *repo_id);
 
 gchar *
-guile_corba_generic_make_type_name (const gchar *format, const gchar *name);
+guile_corba_generic_make_type_name (const gchar *StudlyCaps);
 
 GType
 guile_corba_generic_typecode_to_type (CORBA_TypeCode tc);
