@@ -1,3 +1,30 @@
+2004-09-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am: Don't dist the C files.
+
+	* gnome/Makefile.am, gnome/overrides/Makefile.am: Add overrides/
+	to the dist.
+
+	* gnome/overrides/gdk.defs, gnome/overrides/gtk.defs: Moved from
+	the *-overrides.defs in the defs module.
+
+	* gnome/gw/gdk-spec.scm, gnome/gw/gtk-spec.scm: Adapted to module
+	location changes, load-defs changes.
+
+	* gnome/contrib/Makefile.am: Add filtered-list.scm,
+	delay-tree-model.scm, and help-browser.scm to the dist/install
+	list.
+
+	* defs-checks.ac: Added.
+
+	* guile-gnome-gtk.pc.in, guile-gnome-gtk-uninstalled.pc.in: Moved
+	from guile-gtk*.pc.in.
+
+2004-09-04  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am: Add CFLAGS=-g, so that the user doesn't
+	inadvertantly compile with optimizations.
+
 2004-09-14  Andy Wingo  <wingo@pobox.com>
 
 	* examples/calc.scm: Updated from guile-gtk 1.2 by Patrick

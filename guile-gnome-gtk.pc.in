@@ -4,5 +4,5 @@ libdir=@libdir@
 
 Name: (gnome gtk)
 Description: Guile bindings for Gtk+
-Requires: guile-gobject
+Requires: guile-gnome-glib
 Version: @GUILE_GTK_VERSION@

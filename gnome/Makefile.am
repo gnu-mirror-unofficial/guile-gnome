@@ -1,8 +1,8 @@
 include $(top_srcdir)/common.mk
 
-SUBDIRS = gtk contrib
+SUBDIRS = gtk contrib overrides
 
-DIST_SUBDIRS = gtk contrib gw
+DIST_SUBDIRS = gtk contrib gw overrides
 
 guilemodule_DATA = 
 

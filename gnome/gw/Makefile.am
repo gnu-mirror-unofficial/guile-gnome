@@ -16,6 +16,10 @@ GTKMODULES =
 GTKLIB =
 endif
 
+# Make sure the user isn't compiling with -O, because it makes gcc 3.3
+# and up break
+CFLAGS=-g 
+
 guilegwmodule_DATA = $(GDKMODULES) $(GTKMODULES)
 
 EXTRA_DIST = gdk-spec.scm gtk-spec.scm
@@ -29,8 +33,8 @@ lib_LTLIBRARIES = $(GDKLIB) $(GTKLIB)
 
 ########################################################################
 ## gdk
-libgw_guile_gnome_gdk_la_SOURCES = guile-gnome-gw-gdk.c \
-	gdk-support.c gdk-support.h
+nodist_libgw_guile_gnome_gdk_la_SOURCES = guile-gnome-gw-gdk.c
+libgw_guile_gnome_gdk_la_SOURCES = gdk-support.c gdk-support.h
 
 libgw_guile_gnome_gdk_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(AM_CFLAGS) $(GDK_CFLAGS) $(GUILE_CFLAGS) \
@@ -45,7 +49,8 @@ CLEANFILES += $(wildcard guile-gnome-gw-gdk.*) gdk.scm
 
 ########################################################################
 ## gtk
-libgw_guile_gnome_gtk_la_SOURCES = guile-gnome-gw-gtk.c	\
+nodist_libgw_guile_gnome_gtk_la_SOURCES = guile-gnome-gw-gtk.c
+libgw_guile_gnome_gtk_la_SOURCES = \
 	guile-gtk-tree-model.c guile-gtk-tree-model.h gtk-support.c gtk-support.h
 
 libgw_guile_gnome_gtk_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
