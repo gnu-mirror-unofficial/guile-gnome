@@ -1,0 +1,90 @@
+-*- text -*-
+
+23 July 2003 - Andy Wingo <wingo at pobox dot com>:
+===================================================
+
+* Released guile-gobject 0.5.3.
+
+  Guile-gobject is pretty stable now -- the author is stress-testing it
+  in a few applications of his own.
+
+  Changes in this release are as follows:
+   - gw-standard is now distributed as (gnome gobject gw-standard),
+     which allows guile-gobject to be distributed without modifications
+     to other packages.
+   (some other things here!)
+
+1 July 2003 - Andy Wingo <wingo at pobox dot com>:
+==================================================
+
+* Released guile-gobject 0.5.2.
+
+  guile-gobject is now in CVS over at savannah, as the guile-gobject
+  module in the guile-gtk project.
+
+  Changes in this release are as follows:
+   - override the proper method in example-1.scm
+   - rewrite tic-tac-toe.scm to be a nice demo of subclassing GObjects,
+     with let-params
+   - create idle sources with G_PRIORITY_DEFAULT_IDLE, not
+     G_PRIORITY_DEFAULT -- thanks to owen taylor
+   - make commentary of gobject.scm help-compliant
+   - move pspec arg details to primitives.scm
+   - add support for setting pspec-flags when making a new pspec
+   - change prototypes for gobject:{get,set}-property to be sane and easily
+     overridable
+   - new syntax: define-gobject-class
+   - new syntax: let-params
+   - add null-ok to some glib function parameters
+   - gparam-spec:args actually returns the args, zipped up with their
+     corresponding keywords
+   - new procedure: gobject:gwrap-set-all-types-used
+   - made gtype-instances have a 1 to 1 correspondence with their
+     GTypeInstance counterparts
+   - generalized equal? to work on objects
+   - put generics in the root module, for better or for worse
+   - wrap GTypeClasses so we can wrap class methods
+   - new variable: gruntime:byte-order
+   - add gtype-class slot to all gtype-instances (set-once)
+   - added some files that were in the old CVS but not in releases
+
+
+2 June 2003 - Andy Wingo <wingo at pobox dot com>:
+==================================================
+
+* Released guile-gobject 0.5.1 "Efudho".
+
+  Changes in this release are as follows:
+   - changes in defs support
+    - always ref objects returned unless (caller-owns-return #t)
+      is present in the defs
+    - don't allow NULL values unless (null-ok) is present in the
+      defs parameter specification
+   - gobject.scm
+    - better enum support in make-value-from-scm
+    - make objects of the proper type in gvalue->scm
+
+May 2003 - Andy Wingo <wingo at pobox dot com>:
+===============================================
+
+* Released guile-gobject 0.5.0 "Out of Africa".
+
+  Please see the RELEASE-NOTES-0.5.0.txt file for details.
+
+January 28, 2001 - Ariel Rios <ariel@gnu.org>:
+==============================================
+
+* Released guile-gobject 0.3.0 "Otello"
+
+  Guile-gobject is now the base for gnome-guile.
+  Updates for latest GNOME 2 changes.
+
+September 10, 2001 - Martin Baulig <martin@gnome.org>:
+======================================================
+
+* Released guile-gobject 0.2.0 "The Great Barrier Reef".
+
+  Please see the RELEASE-NOTES-0.2.0.txt file for details.
+
+
+
