@@ -1,3 +1,8 @@
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
+	versioned directory.
+
 2004-09-27  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gnome.scm: Avoid deprecated modules.
