@@ -1,5 +1,7 @@
 2004-08-06  Andreas Rottmann  <a.rottmann@gmx.at>
 
+	* gnome/Makefile.am: Distribute and install glade.scm.
+
 	* examples/test.scm: Use (gnome glade) instead of 
 	(gnome gw libglade).
 
