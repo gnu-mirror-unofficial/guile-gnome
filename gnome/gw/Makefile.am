@@ -22,7 +22,7 @@ libgw_guile_gnome_canvas_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(G_WRAP_CFLAGS) -DGTK_DISABLE_DEPRECATED
 
 libgw_guile_gnome_canvas_la_LIBADD = $(CANVAS_LIBS) $(GUILE_GLIB_LIBS) \
-	$(GUILE_LIBS) $(G_WRAP_LINK_ARGS) 
+	$(GUILE_LIBS) $(G_WRAP_LIBS) 
 
 libgw_guile_gnome_canvas_la_LDFLAGS = -module
 

@@ -1,4 +1,11 @@
+2004-09-27  Andy Wingo  <wingo@pobox.com>
+
+	* examples/canvas.scm: Add license block.
+
 2004-09-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_canvas_la_LIBADD): Not
+	G_WRAP_LINK_ARGS, it's G_WRAP_LIBS.
 
 	* gnome/gw/canvas-spec.scm (<canvas-wrapset>): Depend on gtk.
 
