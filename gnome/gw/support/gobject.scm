@@ -311,28 +311,32 @@
 (define-method (unwrap-value-cg (type <gobject-pointer-type>)
                                 (value <gw-value>)
                                 status-var)
-  ;; fixme: how to deal with consts?
-  (unwrap-null-checked
-   value status-var
-   (list                    
-    "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
-    "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " (gtype-id type) "))\n"
-    "  " c-var " = (" ctype ") g_value_get_pointer ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
-    "else {\n"
-    "  " c-var " = NULL;\n"
-    `(gw:error ,status-var type ,(wrapped-var value))
-    "}\n")))
+  (let ((c-var (var value))
+        (scm-var (scm-var value))
+        (ctype (c-type-name type)))
+    (unwrap-null-checked
+     value status-var
+     (list                    
+      "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
+      "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " (gtype-id type) "))\n"
+      "  " c-var " = (" ctype ") g_value_get_pointer ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
+      "else {\n"
+      "  " c-var " = NULL;\n"
+      `(gw:error ,status-var type ,(wrapped-var value))
+      "}\n"))))
 
 (define-method (wrap-value-cg (type <gobject-pointer-type>)
                               (value <gw-value>)
                               status-var)
-  (list
-   "if (" c-var " == NULL) {\n"
-   "  " scm-var " = SCM_BOOL_F;\n"
-   "} else {\n"
-   "  " scm-var " = scm_c_make_gvalue (" (gtype-id type) ");\n"
-   "  g_value_set_pointer ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n"
-   "}\n"))
+  (let ((c-var (var value))
+        (scm-var (scm-var value)))
+    (list
+     "if (" c-var " == NULL) {\n"
+     "  " scm-var " = SCM_BOOL_F;\n"
+     "} else {\n"
+     "  " scm-var " = scm_c_make_gvalue (" (gtype-id type) ");\n"
+     "  g_value_set_pointer ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n"
+     "}\n")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Wrap interfaces. We only understand interfaces implemented by objects.

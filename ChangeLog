@@ -1,3 +1,9 @@
+2004-10-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (unwrap-value-cg, wrap-value-cg):
+	Define c-var, scm-var, and gtype-id within the body of the
+	wrap-pointer! value wrappers.
+
 2004-10-07  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/defs.scm (construct-argument-list): Fail
