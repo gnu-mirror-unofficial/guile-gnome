@@ -30,8 +30,8 @@
   #:use-module (g-wrap)
   #:use-module (g-wrap guile)
   #:use-module (gnome gw pango-spec)
-  #:use-module (gnome gobject gw-spec-utils)
-  #:use-module (gnome gobject defs-support))
+  #:use-module (gnome gw support gobject)
+  #:use-module (gnome gw support defs))
 
 (define-class <gdk-wrapset> (<gobject-wrapset-base>)
   #:id 'gnome-gdk
@@ -81,7 +81,7 @@
   ;; a hack now -- dunno what to do with this...
   (add-type-alias! ws "GdkNativeWindow" 'unsigned-long)
   
-  (load-defs ws "gnome/defs/gdk.defs"))
+  (load-defs-with-overrides ws "gnome/defs/gdk.defs"))
 
 
 (define-class <gdk-event-type> (<gobject-classed-pointer-type>))

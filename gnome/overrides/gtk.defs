@@ -1,0 +1,682 @@
+;; -*- scheme -*-
+;; guile-gnome
+;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+
+;; This program is free software; you can redistribute it and/or    
+;; modify it under the terms of the GNU General Public License as   
+;; published by the Free Software Foundation; either version 2 of   
+;; the License, or (at your option) any later version.              
+;;                                                                  
+;; This program is distributed in the hope that it will be useful,  
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of   
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+;; GNU General Public License for more details.                     
+;;                                                                  
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, contact:
+;;
+;; Free Software Foundation           Voice:  +1-617-542-5942
+;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+;; Boston, MA  02111-1307,  USA       gnu@gnu.org
+
+;;; Commentary:
+;;
+;;Custom wrapper definitions.
+;;
+;;; Code:
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Types
+(define-object GenericTreeModel
+  (in-module "GuileGtk")
+  (parent "GtkTreeModel")
+  (c-name "GuileGtkGenericTreeModel")
+  (gtype-id "GUILE_GTK_TYPE_GENERIC_TREE_MODEL"))
+
+(define-interface FileChooser
+  (in-module "Gtk")
+  (c-name "GtkFileChooser")
+  (gtype-id "GTK_TYPE_FILE_CHOOSER"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkActionGroup
+(define-method add_actions
+  (of-object "GtkActionGroup")
+  (c-name "_wrap_gtk_action_group_add_actions")
+  (overrides "gtk_action_group_add_actions")
+  (return-type "none")
+  (parameters
+    '("SCM" "entries")))
+
+(define-method add_toggle_actions
+  (of-object "GtkActionGroup")
+  (c-name "_wrap_gtk_action_group_add_toggle_actions")
+  (overrides "gtk_action_group_add_toggle_actions")
+  (return-type "none")
+  (parameters
+    '("SCM" "entries")))
+
+(define-method add_radio_actions
+  (of-object "GtkActionGroup")
+  (c-name "_wrap_gtk_action_group_add_radio_actions")
+  (overrides "gtk_action_group_add_radio_actions")
+  (return-type "none")
+  (parameters
+    '("SCM"  "entries")
+    '("gint" "value")
+    '("SCM"  "on_change")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkCombo
+(define-method get_entry
+  (of-object "GtkCombo")
+  (c-name "gtk_combo_get_entry")
+  (return-type "GtkWidget*"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkColorSelectionDialog
+(define-method get_colorsel
+  (of-object "GtkColorSelectionDialog")
+  (c-name "_wrap_gtk_color_selection_dialog_get_colorsel")
+  (overrides "gtk-color-selection-dialog-get-colorsel")
+  (return-type "GtkWidget*"))
+(define-method get_ok_button
+  (of-object "GtkColorSelectionDialog")
+  (c-name "_wrap_gtk_color_selection_dialog_get_ok_button")
+  (overrides "gtk-color-selection-dialog-get-ok-button")
+  (return-type "GtkWidget*"))
+(define-method get_cancel_button
+  (of-object "GtkColorSelectionDialog")
+  (c-name "_wrap_gtk_color_selection_dialog_get_cancel_button")
+  (overrides "gtk-color-selection-dialog-get-cancel-button")
+  (return-type "GtkWidget*"))
+(define-method get_help_button
+  (of-object "GtkColorSelectionDialog")
+  (c-name "_wrap_gtk_color_selection_dialog_get_help_button")
+  (overrides "gtk-color-selection-dialog-get-help-button")
+  (return-type "GtkWidget*"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkDialog
+(define-method get_vbox
+  (of-object "GtkDialog")
+  (c-name "_wrap_gtk_dialog_get_vbox")
+  (overrides "gtk_dialog_get_vbox")
+  (return-type "GtkWidget*"))
+(define-method get_action_area
+  (of-object "GtkDialog")
+  (c-name "_wrap_gtk_dialog_get_action_area")
+  (overrides "gtk_dialog_get_action_area")
+  (return-type "GtkWidget*"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkEditable
+(define-method insert_text
+  (of-object "GtkEditable")
+  (c-name "_wrap_gtk_editable_insert_text")
+  (overrides "gtk_editable_insert_text")
+  (return-type "gint")
+  (parameters
+    '("const-gchar*" "new_text")
+    '("gint" "position")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkFileSelection
+;; NB: As of Gtk+-2.4, this API is obsolete.
+(define-function gtk-file-selection:ok-button
+  (c-name "_wrap_gtk_file_selection_get_ok_button")
+  (overrides "gtk-file-selection:ok-button") ;; scm-name hack
+  (return-type "GtkWidget*")
+  (parameters
+   '("GtkFileSelection*" "selection")))
+(define-function gtk-file-selection:cancel-button
+  (c-name "_wrap_gtk_file_selection_get_cancel_button")
+  (overrides "gtk-file-selection:cancel-button") ;; scm-name hack
+  (return-type "GtkWidget*")
+  (parameters
+   '("GtkFileSelection*" "selection")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkListStore
+(define-function gtk_list_store_new
+  (c-name "_wrap_gtk_list_store_new")
+  (overrides "gtk_list_store_new")
+  (is-constructor-of GtkListStore)
+  (return-type "GtkListStore*")
+  (parameters
+    '("SCM" "types")))
+(define-method set_value
+  (of-object "GtkListStore")
+  (c-name "_wrap_gtk_list_store_set_value")
+  (overrides "gtk_list_store_set_value")
+  (return-type "void")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("gint" "column")
+    '("SCM" "value")))
+(define-method remove
+  (of-object "GtkListStore")
+  (c-name "_wrap_gtk_list_store_remove")
+  (overrides "gtk_list_store_remove")
+  (return-type "GtkTreeIter*")
+  (parameters
+    '("GtkTreeIter*" "iter")))
+(define-method insert
+  (of-object "GtkListStore")
+  (c-name "_wrap_gtk_list_store_insert")
+  (overrides "gtk_list_store_insert")
+  (return-type "GtkTreeIter*")
+  (parameters
+    '("gint" "position")))
+(define-method insert_before
+  (of-object "GtkListStore")
+  (c-name "_wrap_gtk_list_store_insert_before")
+  (overrides "gtk_list_store_insert_before")
+  (return-type "GtkTreeIter*")
+  (parameters
+    '("GtkTreeIter*" "sibling" (null-ok))))
+(define-method insert_after
+  (of-object "GtkListStore")
+  (c-name "_wrap_gtk_list_store_insert_after")
+  (overrides "gtk_list_store_insert_after")
+  (return-type "GtkTreeIter*")
+  (parameters
+    '("GtkTreeIter*" "sibling" (null-ok))))
+(define-method prepend
+  (of-object "GtkListStore")
+  (c-name "_wrap_gtk_list_store_prepend")
+  (overrides "gtk_list_store_prepend")
+  (return-type "GtkTreeIter*"))
+(define-method append
+  (of-object "GtkListStore")
+  (c-name "_wrap_gtk_list_store_append")
+  (overrides "gtk_list_store_append")
+  (return-type "GtkTreeIter*"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkMessageDialog
+(ignore "gtk_message_dialog_new")
+(define-function gtk_message_dialog_new
+  (c-name "_wrap_gtk_message_dialog_new")
+  (overrides "%gtk-message-dialog-new") ;; hack
+  (is-constructor-of GtkMessageDialog)
+  (return-type "SCM")
+  (parameters
+    '("GtkWindow*" "parent" (null-ok) (default "NULL"))
+    '("GtkDialogFlags" "flags" (default "0"))
+    '("GtkMessageType" "type" (default "GTK_MESSAGE_INFO"))
+    '("GtkButtonsType" "buttons" (default "GTK_BUTTONS_NONE"))
+    '("const-gchar*" "text")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkRadio*
+;; Note that GtkRadioGroup is #defined to GSList in the g-wrap spec.
+;; This is done because the group should be treated opaquely, not as a
+;; list.
+(define-function gtk_radio_button_new
+  (c-name "gtk_radio_button_new")
+  (overrides "gtk_radio_button_new")
+  (is-constructor-of GtkRadioButton)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkRadioGroup*" "group")))
+(define-function radio_button_new_with_label
+  (c-name "gtk_radio_button_new_with_label")
+  (overrides "gtk_radio_button_new_with_label")
+  (is-constructor-of GtkRadioButton)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkRadioGroup*" "group")
+    '("const-gchar*" "label")))
+(define-function radio_button_new_with_mnemonic
+  (c-name "gtk_radio_button_new_with_mnemonic")
+  (overrides "gtk_radio_button_new_with_mnemonic")
+  (is-constructor-of GtkRadioButton)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkRadioGroup*" "group")
+    '("const-gchar*" "label")))
+(define-method get_group
+  (of-object "GtkRadioButton")
+  (c-name "gtk_radio_button_get_group")
+  (overrides "gtk_radio_button_get_group")
+  (return-type "GtkRadioGroup*"))
+(define-method set_group
+  (of-object "GtkRadioButton")
+  (c-name "gtk_radio_button_set_group")
+  (overrides "gtk_radio_button_set_group")
+  (return-type "none")
+  (parameters
+    '("GtkRadioGroup*" "group")))
+(define-function gtk_radio_menu_item_new
+  (c-name "gtk_radio_menu_item_new")
+  (overrides "gtk_radio_menu_item_new")
+  (is-constructor-of GtkRadioMenuItem)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkRadioGroup*" "group")))
+(define-function gtk_radio_menu_item_new_with_label
+  (c-name "gtk_radio_menu_item_new_with_label")
+  (overrides "gtk_radio_menu_item_new_with_label")
+  (is-constructor-of GtkRadioMenuItem)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkRadioGroup*" "group")
+    '("const-gchar*" "label")))
+(define-function gtk_radio_menu_item_new_with_mnemonic
+  (c-name "gtk_radio_menu_item_new_with_mnemonic")
+  (overrides "gtk_radio_menu_item_new_with_mnemonic")
+  (is-constructor-of GtkRadioMenuItem)
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkRadioGroup*" "group")
+    '("const-gchar*" "label")))
+(define-method get_group
+  (of-object "GtkRadioMenuItem")
+  (c-name "gtk_radio_menu_item_get_group")
+  (overrides "gtk_radio_menu_item_get_group")
+  (return-type "GtkRadioGroup*"))
+(define-method set_group
+  (of-object "GtkRadioMenuItem")
+  (c-name "gtk_radio_menu_item_set_group")
+  (overrides "gtk_radio_menu_item_set_group")
+  (return-type "none")
+  (parameters
+    '("GtkRadioGroup*" "group")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkStockItem
+(define-function gtk_stock_add
+  (c-name    "_wrap_gtk_stock_add")
+  (overrides "gtk_stock_add")
+  (return-type "none")
+  (parameters
+   '("SCM" "items")))
+
+(define-function gtk_stock_lookup
+  (c-name    "_wrap_gtk_stock_lookup")
+  (overrides "gtk_stock_lookup")
+  (return-type "SCM")
+  (parameters
+    '("const-gchar*" "stock_id")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkTextBuffer
+(define-method set_text
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_set_text")
+  (overrides "gtk_text_buffer_set_text")
+  (return-type "none")
+  (parameters
+    '("SCM" "stext")))
+(define-method insert
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_insert")
+  (overrides "gtk_text_buffer_insert")
+  (return-type "none")
+  (parameters
+    '("GtkTextIter*" "iter")
+    '("SCM" "stext")))
+(define-method insert_at_cursor
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_insert_at_cursor")
+  (overrides "gtk_text_buffer_insert_at_cursor")
+  (return-type "none")
+  (parameters
+    '("SCM" "stext")))
+(define-method insert_interactive
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_insert_interactive")
+  (overrides "gtk_text_buffer_insert_interactive")
+  (return-type "gboolean")
+  (parameters
+    '("GtkTextIter*" "iter")
+    '("SCM" "stext")
+    '("gboolean" "default_editable")))
+(define-method insert_interactive_at_cursor
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_insert_interactive_at_cursor")
+  (overrides "gtk_text_buffer_insert_interactive_at_cursor")
+  (return-type "gboolean")
+  (parameters
+    '("SCM" "stext")
+    '("gboolean" "default_editable")))
+(define-method insert_with_tags
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_insert_with_tags")
+  (overrides "gtk_text_buffer_insert_with_tags")
+  (return-type "none")
+  (parameters
+    '("GtkTextIter*" "iter")
+    '("SCM" "stext")
+    '("GList*-of-GtkTextTag*" "tag_list")))
+(define-method insert_with_tags_by_name
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_insert_with_tags_by_name")
+  (overrides "gtk_text_buffer_insert_with_tags_by_name")
+  (return-type "none")
+  (parameters
+    '("GtkTextIter*" "iter")
+    '("SCM" "stext")
+    '("GList*-of-const-gchar*" "tag_list")))
+(define-method get_iter_at_line_offset
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_get_iter_at_line_offset")
+  (overrides "gtk_text_buffer_get_iter_at_line_offset")
+  (return-type "GtkTextIter*")
+  (parameters
+    '("gint" "line_number")
+    '("gint" "char_offset")))
+(define-method get_iter_at_line_index
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_get_iter_at_line_index")
+  (overrides "gtk_text_buffer_get_iter_at_line_index")
+  (return-type "GtkTextIter*")
+  (parameters
+    '("gint" "line_number")
+    '("gint" "byte_index")))
+(define-method get_iter_at_offset
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_get_iter_at_offset")
+  (overrides "gtk_text_buffer_get_iter_at_offset")
+  (return-type "GtkTextIter*")
+  (parameters
+    '("gint" "char_offset")))
+(define-method get_iter_at_line
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_get_iter_at_line")
+  (overrides "gtk_text_buffer_get_iter_at_line")
+  (return-type "GtkTextIter*")
+  (parameters
+    '("gint" "line_number")))
+(define-method get_start_iter
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_get_start_iter")
+  (overrides "gtk_text_buffer_get_start_iter")
+  (return-type "GtkTextIter*"))
+(define-method get_bounds
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_get_bounds")
+  (overrides "gtk_text_buffer_get_bounds")
+  (return-type "SCM"))
+(define-method get_selection_bounds
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_get_selection_bounds")
+  (overrides "gtk_text_buffer_get_selection_bounds")
+  (return-type "SCM"))
+(define-method get_end_iter
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_get_end_iter")
+  (overrides "gtk_text_buffer_get_end_iter")
+  (return-type "GtkTextIter*"))
+(define-method get_iter_at_mark
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_get_iter_at_mark")
+  (overrides "gtk_text_buffer_get_iter_at_mark")
+  (return-type "GtkTextIter*")
+  (parameters
+    '("GtkTextMark*" "mark")))
+(define-method get_iter_at_child_anchor
+  (of-object "GtkTextBuffer")
+  (c-name "_wrap_gtk_text_buffer_get_iter_at_child_anchor")
+  (overrides "gtk_text_buffer_get_iter_at_child_anchor")
+  (return-type "GtkTextIter*")
+  (parameters
+    '("GtkTextChildAnchor*" "anchor")))
+;; TextView functions that get iters still need to be wrapped by some
+;; endeavoring soul
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkTreeModel
+(define-method get_iter
+  (of-object "GtkTreeModel")
+  (c-name "_wrap_gtk_tree_model_get_iter")
+  (overrides "gtk_tree_model_get_iter")
+  (return-type "GtkTreeIter*")
+  (parameters
+    '("GtkTreePath*" "path")))
+(define-method get_iter_first
+  (of-object "GtkTreeModel")
+  (c-name "_wrap_gtk_tree_model_get_iter_first")
+  (overrides "gtk_tree_model_get_iter_first")
+  (return-type "GtkTreeIter*"))
+(define-method get_value
+  (of-object "GtkTreeModel")
+  (c-name "_wrap_gtk_tree_model_get_value")
+  (overrides "gtk_tree_model_get_value")
+  (return-type "SCM")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("gint" "column")))
+(define-method iter_next
+  (of-object "GtkTreeModel")
+  (c-name "_wrap_gtk_tree_model_iter_next")
+  (overrides "gtk_tree_model_iter_next")
+  (return-type "GtkTreeIter*")
+  (parameters
+    '("GtkTreeIter*" "iter")))
+(define-method iter_children
+  (of-object "GtkTreeModel")
+  (c-name "_wrap_gtk_tree_model_iter_children")
+  (overrides "gtk_tree_model_iter_children")
+  (return-type "GList*-of-GtkTreeIter*")
+  (parameters
+    '("GtkTreeIter*" "parent" (null-ok))))
+(define-method iter_parent
+  (of-object "GtkTreeModel")
+  (c-name "_wrap_gtk_tree_model_iter_parent")
+  (overrides "gtk_tree_model_iter_parent")
+  (return-type "GtkTreeIter*")
+  (parameters
+    '("GtkTreeIter*" "child")))
+(define-method iter_nth_child
+  (of-object "GtkTreeModel")
+  (c-name "_wrap_gtk_tree_model_iter_nth_child")
+  (overrides "gtk_tree_model_iter_nth_child")
+  (return-type "GtkTreeIter*")
+  (parameters
+    '("GtkTreeIter*" "parent" (null-ok))
+    '("gint" "n")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkTreeSelection
+(define-method get_selected
+  (of-object "GtkTreeSelection")
+  (c-name "_wrap_gtk_tree_selection_get_selected")
+  (overrides "gtk_tree_selection_get_selected")
+  (return-type "SCM"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkTreeStore
+(define-function gtk_tree_store_new
+  (c-name "_wrap_gtk_tree_store_new")
+  (overrides "gtk_tree_store_new")
+  (is-constructor-of GtkTreeStore)
+  (return-type "GtkTreeStore*")
+  (parameters
+    '("SCM" "types")))
+(define-method set_value
+  (of-object "GtkTreeStore")
+  (c-name "_wrap_gtk_tree_store_set_value")
+  (overrides "gtk_tree_store_set_value")
+  (return-type "void")
+  (parameters
+    '("GtkTreeIter*" "iter")
+    '("gint" "column")
+    '("SCM" "value")))
+(define-method remove
+  (of-object "GtkTreeStore")
+  (c-name "_wrap_gtk_tree_store_remove")
+  (overrides "gtk_tree_store_remove")
+  (return-type "GtkTreeIter*")
+  (parameters
+    '("GtkTreeIter*" "iter")))
+(define-method insert
+  (of-object "GtkTreeStore")
+  (c-name "_wrap_gtk_tree_store_insert")
+  (overrides "gtk_tree_store_insert")
+  (return-type "GtkTreeIter*")
+  (parameters
+    '("GtkTreeIter*" "parent")
+    '("gint" "position")))
+(define-method insert_before
+  (of-object "GtkTreeStore")
+  (c-name "_wrap_gtk_tree_store_insert_before")
+  (overrides "gtk_tree_store_insert_before")
+  (return-type "GtkTreeIter*")
+  (parameters
+    '("GtkTreeIter*" "parent" (null-ok))
+    '("GtkTreeIter*" "sibling" (null-ok))))
+(define-method insert_after
+  (of-object "GtkTreeStore")
+  (c-name "_wrap_gtk_tree_store_insert_after")
+  (overrides "gtk_tree_store_insert_after")
+  (return-type "GtkTreeIter*")
+  (parameters
+    '("GtkTreeIter*" "parent" (null-ok))
+    '("GtkTreeIter*" "sibling" (null-ok))))
+(define-method prepend
+  (of-object "GtkTreeStore")
+  (c-name "_wrap_gtk_tree_store_prepend")
+  (overrides "gtk_tree_store_prepend")
+  (return-type "GtkTreeIter*")
+  (parameters
+    '("GtkTreeIter*" "parent" (null-ok))))
+(define-method append
+  (of-object "GtkTreeStore")
+  (c-name "_wrap_gtk_tree_store_append")
+  (overrides "gtk_tree_store_append")
+  (return-type "GtkTreeIter*")
+  (parameters
+    '("GtkTreeIter*" "parent" (null-ok))))
+
+(ignore-glob  "*_get_type"
+              "_*"
+              "*_ref"
+              "*_unref"
+              "*_copy"
+              "*_free"
+              "*_newv"
+              "*_valist"
+              "*_setv"
+              "*_foreach"
+              "*_valist")
+
+(ignore-glob "gtk_gc_*"
+             "gtk_idle_*"
+             "gtk_init*"
+             "gtk_input_add*" ; there is also gtk_input_dialog
+             "gtk_input_remove"
+             "gtk_quit_*"
+             "gtk_timeout_*"
+             "gtk_target_list_*"
+             "gtk_tree_path_*"
+             "gtk_binding_*"
+             "gtk_object_*")
+
+(ignore "gtk_exit"
+        "gtk_set_locale"
+        ;; what fascinating function names...
+        "gtk_key_snooper_install"
+        "gtk_key_snooper_remove"
+        "gtk_get_current_event"
+        "gtk_get_event_widget"
+        "gtk_propagate_event"
+
+        "gtk_accel_groups_activate"
+        "gtk_accel_group_activate"
+        "gtk_accel_group_get_entry"
+        "gtk_accel_group_lock_entry"
+        "gtk_accel_group_unlock_entry"
+        "gtk_accel_group_add"
+        "gtk_accel_group_remove"
+        "gtk_accel_group_handle_add"
+        "gtk_accel_group_handle_remove"
+        "gtk_accel_group_create_add"
+        "gtk_accel_group_create_remove"
+        "gtk_accel_group_find"
+        "gtk_accel_groups_from_object"
+        "gtk_accel_group_entries_from_object"
+
+        ;; don't know why i'm ignoring these, but pygtk does
+        "gtk_container_add_child_arg_type"
+        "gtk_container_query_child_args"
+        "gtk_container_child_args_collect"
+        "gtk_container_child_arg_get_info"
+        "gtk_container_forall" ;; scm equivalent unimplemented
+        "gtk_container_foreach" ;; use (for-each f (get-children c))
+        "gtk_container_add_with_args"
+        "gtk_container_addv"
+
+        "gtk_dialog_new"
+
+        "gtk_entry_new"
+
+        "gtk_icon_theme_set_search_path" ;; takes array
+        "gtk_icon_theme_get_search_path" ;; returns array
+        
+        "gtk_item_factory_create_item"
+        "gtk_item_factory_delete_entry"
+        "gtk_item_factory_delete_entries"
+        "gtk_item_factory_popup_with_data"
+        "gtk_item_factory_popup_data"
+        "gtk_item_factory_set_translate_func"
+        "gtk_item_factory_create_items_ac"
+        "gtk_item_factory_create_menu_entries"
+
+        "gtk_list_store_set_column_types"
+
+        "gtk_preview_uninit"
+
+        "gtk_selection_clear"
+        "gtk_selection_request"
+
+        "gtk_text_buffer_create_tag"
+
+        "gtk_text_view_new"
+
+        "gtk_tooltips_data_get"
+
+        "gtk_tree_model_get_iter_from_string"
+
+        "gtk_tree_store_set_column_types"
+
+        "gtk_widget_destroyed"
+        "gtk_widget_new"
+
+        "gtk_window_add_embedded_xid"
+        "gtk_window_remove_embedded_xid")
+
+;; Things that python-gtk does that we should do, ordered approximately
+;; according to priority
+
+;; Types:
+;;
+;; allocation <-> pair
+;; rectangle <-> boxed rect
+
+;; Functions:
+;;
+;; nix new-with-label, new-with-mnemonic, etc in favor of kw args
+;; window-set-geometry-hints gets kwargs
+;; gtk-label-get-selection-bounds, layout-offsets, also editable-, entry-,
+;; spin-button-get-increments, get-offsets return pairs
+;; window-get-position,size,default-size return pairs
+;; wrap gtk-menu-popup nicely
+;; box-query-child-packing returns a list
+;; curve-get-vector returns a vector
+;; kill gtk-label-get!
+;; container_child_[gs]et needs to work like gobject-[gs]et-property
+;; gtk-calendar-get-date returns tuple (really should return a timeval, no?)
+;; menu-attach-to-widget, toolbar-(pre,ap)pend/insert-item
+;; notebook-query-tab-label-packing returns tuple
+;; widget_*_path sanity
+;; editable-insert-text returns position
+;; gtk_paint_polygon with kwargs
+;; gtkstyle property accessors for struct fields
+;; manual wrapper for GtkSelectionData
+
+;; Other things:
+;;
+;; threading -- coming in 1.8
+;; nice item factory support

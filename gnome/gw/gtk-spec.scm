@@ -30,8 +30,8 @@
   #:use-module (g-wrap guile)
   #:use-module (gnome gw atk-spec)
   #:use-module (gnome gw gdk-spec)
-  #:use-module (gnome gobject defs-support)
-  #:use-module (gnome gobject gw-spec-utils))
+  #:use-module (gnome gw support gobject)
+  #:use-module (gnome gw support defs))
 
 (define-class <gtk-wrapset> (<gobject-wrapset-base>)
   #:id 'gnome-gtk
@@ -82,7 +82,7 @@
                   #:wrapped "Custom"))
   (add-type-alias! ws "GtkTreePath*" '<gtk-tree-path>)
   
-  (load-defs ws "gnome/defs/gtk.defs"))
+  (load-defs-with-overrides ws "gnome/defs/gtk.defs"))
 
 (define-class <gtk-tree-path-type> (<gobject-type-base>))
 

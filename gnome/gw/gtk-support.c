@@ -75,6 +75,188 @@ guile_gtk_scm_to_tree_path (SCM scm)
 }
 #undef FUNC_NAME
 
+#define GET_ACTION_STR(var,n)\
+do {\
+    if (n < l) {\
+        SCM x = scm_list_ref (entry, SCM_MAKINUM (n));\
+        SCM_ASSERT (SCM_FALSEP (x) || SCM_STRINGP (x), entry,\
+                    2, FUNC_NAME);\
+        var = SCM_FALSEP (x) ? NULL : SCM_STRING_CHARS (x);\
+    } else {\
+        var = NULL;\
+    }\
+}while (0)
+#define GET_ACTION_BOOL(var,n)\
+do {\
+    if (n < l) {\
+        var = SCM_NFALSEP (scm_list_ref (entry, SCM_MAKINUM (n)));\
+    } else {\
+        var = FALSE;\
+    }\
+}while (0)
+#define GET_ACTION_INUM(var,n)\
+do {\
+    if (n < l) {\
+        SCM x = scm_list_ref (entry, SCM_MAKINUM (n));\
+        SCM_ASSERT (SCM_INUMP (x), entry,\
+                    2, FUNC_NAME);\
+        var = SCM_INUM (x);\
+    } else {\
+        var = FALSE;\
+    }\
+}while (0)
+
+void
+_wrap_gtk_action_group_add_actions (GtkActionGroup *action_group,
+                                    SCM entries)
+#define FUNC_NAME "gtk-action-group-add-actions"
+{
+    static SCM connect = SCM_BOOL_F;
+    SCM entry, x;
+    GtkAction *action;
+    char *name, *stock_id, *label, *accelerator, *tooltip;
+    gint l;
+
+    SCM_VALIDATE_NONEMPTYLIST (1, entries);
+
+    if (SCM_FALSEP (connect))
+        connect = SCM_VARIABLE_REF (scm_c_module_lookup
+                                    (scm_c_resolve_module ("gnome gobject"),
+                                     "gtype-instance-signal-connect"));
+
+    for (; SCM_NNULLP (entries); entries = SCM_CDR (entries)) {
+        entry = SCM_CAR (entries);
+        SCM_VALIDATE_NONEMPTYLIST (1, entry);
+        l = scm_ilength (entry);
+        SCM_ASSERT (l > 0 && l <= 6, entry, 2, FUNC_NAME);
+		
+        GET_ACTION_STR (name, 0);
+        SCM_ASSERT (name != NULL, entry, 2, FUNC_NAME);
+        GET_ACTION_STR (stock_id, 1);
+        GET_ACTION_STR (label, 2);
+        GET_ACTION_STR (accelerator, 3);
+        GET_ACTION_STR (tooltip, 4);
+
+        action = g_object_new (GTK_TYPE_ACTION,
+                               "name", name, "label", label, "tooltip", tooltip,
+                               "stock_id", stock_id, NULL);
+
+        if (5 < l && SCM_NFALSEP ((x = scm_list_ref (entry, SCM_MAKINUM (5)))))
+            scm_call_3 (connect,
+                        scm_c_gtype_instance_to_scm ((GTypeInstance*)action),
+                        scm_str2symbol ("activate"), x);
+
+        gtk_action_group_add_action_with_accel (action_group, action, accelerator);
+        g_object_unref (action);
+    }
+}
+#undef FUNC_NAME
+
+void
+_wrap_gtk_action_group_add_toggle_actions (GtkActionGroup *action_group,
+                                           SCM entries)
+#define FUNC_NAME "gtk-action-group-add-toggle-actions"
+{
+    static SCM connect = SCM_BOOL_F;
+    SCM entry, x;
+    GtkToggleAction *action;
+    char *name, *stock_id, *label, *accelerator, *tooltip;
+    gboolean is_active;
+    gint l;
+
+    SCM_VALIDATE_NONEMPTYLIST (1, entries);
+
+    if (SCM_FALSEP (connect))
+        connect = SCM_VARIABLE_REF (scm_c_module_lookup
+                                    (scm_c_resolve_module ("gnome gobject"),
+                                     "gtype-instance-signal-connect"));
+
+    for (; SCM_NNULLP (entries); entries = SCM_CDR (entries)) {
+        entry = SCM_CAR (entries);
+        SCM_VALIDATE_NONEMPTYLIST (1, entry);
+        l = scm_ilength (entry);
+        SCM_ASSERT (l > 0 && l <= 7, entry, 2, FUNC_NAME);
+		
+        GET_ACTION_STR (name, 0);
+        SCM_ASSERT (name != NULL, entry, 2, FUNC_NAME);
+        GET_ACTION_STR (stock_id, 1);
+        GET_ACTION_STR (label, 2);
+        GET_ACTION_STR (accelerator, 3);
+        GET_ACTION_STR (tooltip, 4);
+
+        action = g_object_new (GTK_TYPE_TOGGLE_ACTION,
+                               "name", name, "label", label, "tooltip", tooltip,
+                               "stock_id", stock_id, NULL);
+
+        if (5 < l && SCM_NFALSEP ((x = scm_list_ref (entry, SCM_MAKINUM (5)))))
+            scm_call_3 (connect,
+                        scm_c_gtype_instance_to_scm ((GTypeInstance*)action),
+                        scm_str2symbol ("activate"), x);
+
+        GET_ACTION_BOOL (is_active, 6);
+        gtk_toggle_action_set_active (action, is_active);
+
+        gtk_action_group_add_action_with_accel (action_group, GTK_ACTION (action), accelerator);
+        g_object_unref (action);
+    }
+}
+#undef FUNC_NAME
+
+static void
+action_group_radio_actions_callback(GtkAction *action,
+                                    GtkRadioAction *current,
+                                    gpointer user_data)
+{
+    SCM proc;
+
+    proc = SCM_PACK (GPOINTER_TO_INT (user_data));
+
+    scm_call_2 (proc,
+                scm_c_gtype_instance_to_scm ((GTypeInstance*) action),
+                scm_c_gtype_instance_to_scm ((GTypeInstance*) current));
+	
+}
+
+void
+_wrap_gtk_action_group_add_radio_actions (GtkActionGroup *action_group,
+                                          SCM entries,
+                                          gint value,
+                                          SCM on_change)
+#define FUNC_NAME "gtk-action-group-add-radio-actions"
+{
+    GtkRadioActionEntry *raes;
+    SCM entry;    
+    gint len, i, l;
+
+    SCM_VALIDATE_NONEMPTYLIST (1, entries);
+    SCM_VALIDATE_PROC (4, on_change);
+
+    len = scm_ilength (entries);
+    raes = g_new0 (GtkRadioActionEntry, len);
+
+    for (i=0; SCM_NNULLP (entries); entries = SCM_CDR (entries), i++) {
+        entry = SCM_CAR (entries);
+        SCM_VALIDATE_NONEMPTYLIST (1, entry);
+        l = scm_ilength (entry);
+        SCM_ASSERT (l == 6, entry, 2, FUNC_NAME);
+		
+        GET_ACTION_STR (raes[i].name, 0);
+        SCM_ASSERT (raes[i].name != NULL, entry, 2, FUNC_NAME);
+        GET_ACTION_STR (raes[i].stock_id, 1);
+        GET_ACTION_STR (raes[i].label, 2);
+        GET_ACTION_STR (raes[i].accelerator, 3);
+        GET_ACTION_STR (raes[i].tooltip, 4);
+        GET_ACTION_INUM (raes[i].value, 5);
+    }
+
+    gtk_action_group_add_radio_actions (action_group, raes, len, value,
+                                        G_CALLBACK (action_group_radio_actions_callback),
+                                        GINT_TO_POINTER (SCM_UNPACK (on_change)));
+
+    g_free (raes);
+}
+#undef FUNC_NAME
+
 GtkWidget*
 gtk_combo_get_entry (GtkCombo *combo)
 {
@@ -91,13 +273,37 @@ _wrap_gtk_editable_insert_text (GtkEditable *editable, const gchar *text, gint p
 GtkWidget*
 _wrap_gtk_dialog_get_vbox (GtkDialog *dialog)
 {
-  return dialog->vbox;
+    return dialog->vbox;
 }
 
 GtkWidget*
 _wrap_gtk_dialog_get_action_area (GtkDialog *dialog)
 {
-  return dialog->action_area;
+    return dialog->action_area;
+}
+
+GtkWidget*
+_wrap_gtk_color_selection_dialog_get_colorsel (GtkColorSelectionDialog *dialog)
+{
+    return dialog->colorsel;
+}
+
+GtkWidget*
+_wrap_gtk_color_selection_dialog_get_ok_button (GtkColorSelectionDialog *dialog)
+{
+    return dialog->ok_button;
+}
+
+GtkWidget*
+_wrap_gtk_color_selection_dialog_get_cancel_button (GtkColorSelectionDialog *dialog)
+{
+    return dialog->cancel_button;
+}
+
+GtkWidget*
+_wrap_gtk_color_selection_dialog_get_help_button (GtkColorSelectionDialog *dialog)
+{
+    return dialog->help_button;
 }
 
 GtkWidget*
@@ -210,6 +416,66 @@ _wrap_gtk_message_dialog_new (GtkWindow* parent, GtkDialogFlags flags, GtkMessag
     SCM_NEWSMOB2 (ret, scm_tc16_gtype_instance, w, NULL);
     return ret;
 }
+
+void
+_wrap_gtk_stock_add (SCM items)
+#define FUNC_NAME "gtk-stock-add"
+{
+    int len, i;
+    GtkStockItem *stockitems;
+
+    SCM_ASSERT (SCM_NIMP (items) && SCM_CONSP (items) && SCM_NNULLP (items),
+                items, 1, FUNC_NAME);
+
+    len = scm_ilength (items);
+
+    stockitems = g_new0 (GtkStockItem, len);
+	
+    for (i = 0; i < len ; i++) {
+        SCM item = SCM_CAR(items);
+
+        SCM_ASSERT (SCM_NIMP (item) && SCM_CONSP (item) &&
+                    scm_ilength(item) == 5 &&
+                    SCM_STRINGP (SCM_CAR (item)) &&
+                    SCM_STRINGP (SCM_CADR (item)) &&
+                    SCM_INUMP   (SCM_CADDR (item)) &&
+                    SCM_INUMP   (SCM_CADDDR (item)),
+                    item, 1, FUNC_NAME);
+
+        stockitems[i].stock_id = SCM_STRING_CHARS (SCM_CAR (item));
+        stockitems[i].label    = SCM_STRING_CHARS (SCM_CADR (item));
+        stockitems[i].modifier = SCM_INUM (SCM_CADDR (item));
+        stockitems[i].keyval   = (guint) SCM_INUM (SCM_CADDDR (item));
+        stockitems[i].translation_domain =
+            SCM_STRINGP (SCM_CADDDR (SCM_CDR (item))) ?
+            SCM_STRING_CHARS (SCM_CADDDR (SCM_CDR (item))) : NULL;
+		
+        items = SCM_CDR(items);
+    }
+
+    gtk_stock_add (stockitems, len);
+    g_free(stockitems);
+}
+#undef FUNC_NAME
+
+SCM
+_wrap_gtk_stock_lookup (const gchar *stock_id)
+#define FUNC_NAME "gtk-stock-add"
+{
+    GtkStockItem item;
+	
+    if (gtk_stock_lookup (stock_id, &item)) {
+        return SCM_LIST5 (scm_makfrom0str (item.stock_id),
+                          scm_makfrom0str (item.label),
+                          SCM_MAKINUM (item.modifier),
+                          SCM_MAKINUM (item.keyval),
+                          scm_makfrom0str (item.translation_domain));
+    }
+
+    return SCM_BOOL_F;
+
+}
+#undef FUNC_NAME
 
 void
 _wrap_gtk_text_buffer_set_text (GtkTextBuffer *buf, SCM stext)

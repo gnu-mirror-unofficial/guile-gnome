@@ -135,7 +135,7 @@
 (define-public (gtk-stock-id nick)
   (string-append "gtk-" (symbol->string nick)))
 
-(use-modules (gnome gobject gw-utils))
+(use-modules (gnome gw support modules))
 
 ;; re-export everything you need to have a nice gtk session...
 
