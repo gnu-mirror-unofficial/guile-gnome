@@ -1,0 +1,14 @@
+To find out what should go in this file, see "Information For
+Maintainers of GNU Software" (maintain.texi), the section called
+"Recording Changes".
+
+
+<Name>:
+In the directory gnome/gw, wrote:
+    template-spec.scm template-support.c template-support.h
+In the directory gnome/overrides, wrote:
+    template.defs
+In the directory gnome, wrote:
+    template.scm
+In the directory examples/template, wrote:
+    ...

@@ -1,0 +1,22 @@
+guile-gnome-template NEWS --- history of user-visible changes.
+Copyright (C) 2004 Free Software Foundation, Inc.
+See the end for copying conditions of this file.
+Last updated 16 September 2004.
+
+
+guile-gnome-template is a Guile binding for template. It is part of GNU
+guile-gnome. This file documents the user-visible changes in
+guile-gnome-template only.
+
+
+guile-gnome-template 2.6.0 - <Name>, <Date>
+==============================================
+
+* Initial release
+
+
+Copyright (C) 2004 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice
+and this notice are preserved.
