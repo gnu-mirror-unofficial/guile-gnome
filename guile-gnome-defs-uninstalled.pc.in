@@ -1,0 +1,9 @@
+# the standard variables don't make sense for an uninstalled copy
+prefix=
+exec_prefix=
+libdir=${pcfiledir}
+includedir=${pcfiledir}
+
+Name: Guile-Gnome .defs files, Uninstalled
+Description: Guile-Gnome .defs files, Uninstalled
+Version: @VERSION@

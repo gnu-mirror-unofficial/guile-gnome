@@ -3,7 +3,7 @@
 ;; (include "gtk-extrafuncs.defs")
 
 (include "gtk-types.defs")
-(include "gtk-overrides.defs")
+(include overrides)
 
 
 ;; In the future, we need:
@@ -7248,8 +7248,8 @@
   (c-name "gtk_menu_popup")
   (return-type "none")
   (parameters
-    '("GtkWidget*" "parent_menu_shell")
-    '("GtkWidget*" "parent_menu_item")
+    '("GtkWidget*" "parent_menu_shell" (null-ok))
+    '("GtkWidget*" "parent_menu_item" (null-ok))
     '("GtkMenuPositionFunc" "func")
     '("gpointer" "data")
     '("guint" "button")

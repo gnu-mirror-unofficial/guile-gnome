@@ -62,7 +62,7 @@
 )
 
 
-(include "gnome-overrides.defs")
+(include overrides)
 
 ;; From /usr/include/gnome-2.0/libgnome/gnome-config.h
 

@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@/guile-gnome
+toolsdir=${exec_prefix}/bin
+
+Name: Guile-Gnome .defs files, Uninstalled
+Description: Guile-Gnome .defs files, Uninstalled
+Requires:
+Version: @VERSION@

@@ -59,6 +59,10 @@
               "*_search_path" ;; can't deal with argv
               "gnome_scores*" ;; h2defs butchers this one
               "gnome_theme_file*" ;; not included by default?
+
+              "gnome_pixmap_new_from_xpm_d*" ;; can't handle char**
+              "gnome_pixmap_load_xpm_d*" ;; ditto
+              "gnome_window_icon_set_*from_file_list" ;; char**
               )
 
 (ignore "gnome_app_message"
@@ -79,5 +83,10 @@
         "gnome_icon_theme_list_icons" ;; what does this return?
 
         "gnome_init_with_popt_table"
+        
+        "gnome_about_new" ;; can't handle char**
+        "gnome_about_construct" ;; not needed
+
+        "gnome_icon_theme_lookup_icon" ;; can't handle GnomeIconData**
         )
 

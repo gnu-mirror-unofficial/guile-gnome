@@ -452,7 +452,7 @@
 )
 
 
-(include "gnome-ui-overrides.defs")
+(include overrides)
 
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-about.h
 

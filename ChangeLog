@@ -1,3 +1,73 @@
+2004-09-16  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (SUBDIRS): Dist fixes.
+
+	* README: Added.
+
+	* NEWS: Added.
+
+	* AUTHORS: Added.
+
+2004-09-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/defs/libgnomecanvas.defs: Include the overrides after the
+	types are defined.
+
+2004-09-12  Andy Wingo  <wingo@pobox.com>
+
+	* Removed more overrides files to their respective modules:
+	libgnomecanvas, libgnome, libglade, libgnomeui.
+
+2004-09-06  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am: Install the .defs pkg-config files.
+
+2004-09-05  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-defs.pc.in, guile-gnome-defs-uninstalled.pc.in: New
+	files. Pointed to by files.ac.
+
+	* gnome/defs/*: Begin removal of overrides. Change all (include
+	"foo-overrides.defs) forms to (include overrides).
+
+2004-09-09  Andreas Rottmann  <andy@findus>
+
+	* gnome/defs/libgnomecanvas.defs: Now include
+	libgnomecanvas-types.defs, instead of having its contents in-file.
+	Rescanned the headers and merged with old file.
+	
+	* gnome/defs/libgnomecanvas-overrides.defs: Added affine wrappers back.
+
+2004-07-28  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/defs/libgnomecanvas.defs (gnome_canvas_path_def_concat)
+	(gnome_canvas_path_def_split): Annotated GSList* with types (fixes
+	build).
+
+2004-07-02  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/defs/libwnck.defs: 
+	* gnome/defs/libwnck-types.defs: Additions: almost full API support.
+
+2004-07-01  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/defs/gtk.defs (gtk-menu:popup): Add (null-ok) for
+	PARENT_MENU_SHELL and PARENT_MENU_ITEM.
+
+2004-06-11  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/defs/libgnomecanvas.defs (gnome_canvas_item_new): New function.
+	(root): New method.
+
+	* gnome/defs/Makefile.am: Update.
+
+	* gnome/defs/libgnomecanvas.defs: 
+
+	* gnome/defs/libgnomecanvas-overrides.defs (affine_absolute)
+	(affine_relative): New override.
+
+	* gnome/defs/libgnomecanvas-types.defs: New file.
+
 2004-05-22  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/defs/glade.defs: Include the right overrides file...

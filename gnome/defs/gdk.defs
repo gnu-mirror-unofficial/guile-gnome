@@ -1,7 +1,7 @@
 ;; -*- scheme -*-
 
 (include "gdk-types.defs")
-(include "gdk-overrides.defs")
+(include overrides)
 
 ;; From /opt/gtk2/include/gtk-2.0/gdk/gdk.h
 
@@ -3269,3 +3269,9 @@
     '("GdkRectangle*" "dest")
   )
 )
+
+;; From /usr/include/gtk-2.0/gdk/gdkscreen.h 
+(define-method get_number
+  (of-object "GdkScreen")		      
+  (c-name "gdk_screen_get_number")
+  (return-type "gint"))
