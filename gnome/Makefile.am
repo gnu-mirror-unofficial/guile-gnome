@@ -1,6 +1,6 @@
 include $(top_srcdir)/common.mk
 
-SUBDIRS = gobject gw
+SUBDIRS = gobject gw overrides
 
 guilemodule_DATA = gobject.scm glib.scm
 

@@ -1,5 +1,10 @@
 2004-09-05  Andy Wingo  <wingo@pobox.com>
 
+	* package.ac: Fix the link creation for non-srcdir builds.
+
+	* gnome/overrides/Makefile.am, gnome/Makefile.am: Add the
+	overrides to the dist.
+
 	* package.ac: Create the gnome/gobject/guile-gnome-gobject link
 	when config.status is created.
 
