@@ -16,7 +16,7 @@ libgw_guile_gnome_libgnomeui_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(G_WRAP_CFLAGS)
 
 libgw_guile_gnome_libgnomeui_la_LIBADD = $(LIBGNOMEUI_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LINK_ARGS) $(GUILE_GLIB_LIBS)
+	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS)
 
 libgw_guile_gnome_libgnomeui_la_LDFLAGS = -module
 
