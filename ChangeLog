@@ -1,5 +1,7 @@
 2004-09-06  Andy Wingo  <wingo@pobox.com>
 
+	* Makefile.am: Er, it's not in this module. I'm stupid.
+
 	* Makefile.am: Install the -defs pkg-config file.
 
 2004-09-05  Andy Wingo  <wingo@pobox.com>
