@@ -1,3 +1,13 @@
+2004-09-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am: Don't dist the C file.
+
+	* gnome/gw/atk-spec.scm: Fixes for module name changes.
+
+	* defs-checks.ac: Added.
+
+	* glib-checks.ac: Fixed.
+
 2004-06-13  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/gw/atk-spec.scm: Use #:dependencies instead of

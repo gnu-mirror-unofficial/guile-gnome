@@ -13,7 +13,7 @@ lib_LTLIBRARIES = libgw-guile-gnome-atk.la
 
 ########################################################################
 ## atk
-libgw_guile_gnome_atk_la_SOURCES = guile-gnome-gw-atk.c
+nodist_libgw_guile_gnome_atk_la_SOURCES = guile-gnome-gw-atk.c
 
 libgw_guile_gnome_atk_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(AM_CFLAGS) $(ATK_CFLAGS) $(GUILE_CFLAGS) \
