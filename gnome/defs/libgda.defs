@@ -22,8 +22,8 @@
   (return-type "GdaConnection*")
   (parameters
     '("const-gchar*" "dsn")
-    '("const-gchar*" "username")
-    '("const-gchar*" "password")
+    '("const-gchar*" "username" (null-ok))
+    '("const-gchar*" "password" (null-ok))
     '("GdaConnectionOptions" "options")
   )
 )

@@ -57,10 +57,12 @@
 (define-method get_vbox
   (of-object "GtkDialog")
   (c-name "_wrap_gtk_dialog_get_vbox")
+  (overrides "gtk_dialog_get_vbox")
   (return-type "GtkWidget*"))
 (define-method get_action_area
   (of-object "GtkDialog")
   (c-name "_wrap_gtk_dialog_get_action_area")
+  (overrides "gtk_dialog_get_action_area")
   (return-type "GtkWidget*"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

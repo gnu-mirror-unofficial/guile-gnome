@@ -32,10 +32,7 @@ guilemodule_DATA = 				\
 	libglade.defs				\
 	libglade-overrides.defs			\
 	libgnomecanvas.defs			\
-	libgnomecanvas-types.defs 		\
 	libgnomecanvas-overrides.defs		\
-	libwnck.defs				\
-	libwnck-types.defs			\
 	Makefile.am				\
 	nautilus.defs				\
 	pango.defs				\

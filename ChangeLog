@@ -1,3 +1,9 @@
+2004-07-28  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/defs/libgnomecanvas.defs (gnome_canvas_path_def_concat)
+	(gnome_canvas_path_def_split): Annotated GSList* with types (fixes
+	build).
+
 2004-07-02  Jan Nieuwenhuizen  <janneke@gnu.org>
 
 	* gnome/defs/libwnck.defs: 
