@@ -249,6 +249,9 @@
 
 (define-class <gobject-boxed-type> (<gobject-classed-pointer-type>))
 
+(define-method (make-typespec (type <gobject-boxed-type>) (options <list>))
+  (next-method type (cons 'unspecialized options)))
+
 (define-method (initialize (type <gobject-boxed-type>) initargs)
   (let-keywords
    initargs #t (ctype)
@@ -392,10 +395,11 @@
    initargs #t (ctype)
    (next-method type
                 (append!
-                 (cons #:ffspec (cons 'uint  initargs))))))
+                 (list #:ffspec 'uint)
+                 initargs))))
 
 (define-method (make-typespec (type <gobject-enum-type>) (options <list>))
-  (next-method type (cons 'caller-owned options)))
+  (next-method type (append '(caller-owned unspecialized) options)))
 
 (define-method (wrap-enum! (ws <gobject-wrapset-base>) . args)
   (let-keywords
@@ -564,9 +568,12 @@
   (wrap-func #:init-keyword #:wrap-func #:getter wrap-func)
   (wrap #:init-keyword #:wrap #:getter wrap)
   (unwrap-func #:init-keyword #:unwrap-func #:getter unwrap-func)
-  (unwrap #:init-keyword #:unwrap #:getter unwrap))
+  (unwrap #:init-keyword #:unwrap #:getter unwrap)
   
-(class-slot-set! <gobject-custom-boxed-type> 'allowed-options '(null-ok))
+  #:allowed-options '(null-ok))
+
+(define-method (make-typespec (type <gobject-custom-boxed-type>) (options <list>))
+  (next-method type (cons 'unspecialized options)))
 
 (define gen-c-tmp
   (let ((i -1))
