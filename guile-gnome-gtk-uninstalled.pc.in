@@ -6,5 +6,5 @@ includedir=${pcfiledir}
 
 Name: (gnome gtk), Uninstalled
 Description: Guile bindings for Gtk+, Not Installed
-Version: @GUILE_GTK_VERSION@
+Version: @VERSION@
 Requires: guile-gnome-glib

@@ -1,5 +1,15 @@
 2004-09-19  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/Makefile.am (libgw_guile_gnome_gdk_la_LIBADD)
+	(libgw_guile_gnome_gtk_la_LIBADD): Not G_WRAP_LINK_ARGS, it's
+	G_WRAP_LIBS.
+
+	* guile-gnome-gtk.pc.in, guile-gnome-gtk-uninstalled.pc.in: Use
+	@VERSION@.
+
+	* package.ac: No more GUILE_GTK_VERSION, just use the platform
+	version.
+
 	* Makefile.am (pkgconfig_DATA): Install the pkg-config file.
 
 2004-09-16  Andy Wingo  <wingo@pobox.com>
