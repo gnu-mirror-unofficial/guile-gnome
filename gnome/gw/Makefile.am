@@ -13,7 +13,7 @@ lib_LTLIBRARIES = libgw-guile-gnome-pango.la
 
 ########################################################################
 ## pango
-libgw_guile_gnome_pango_la_SOURCES = guile-gnome-gw-pango.c 
+nodist_libgw_guile_gnome_pango_la_SOURCES = guile-gnome-gw-pango.c 
 
 libgw_guile_gnome_pango_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(AM_CFLAGS) $(PANGO_CFLAGS) $(GUILE_CFLAGS) \

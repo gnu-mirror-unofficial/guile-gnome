@@ -1,3 +1,19 @@
+2004-09-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/pango.scm (gnome): Added.
+
+	* gnome/Makefile.am: Dist (gnome pango).
+
+2004-09-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am: Don't dist the gw C files.
+
+	* defs-checks.ac: Added.
+
+	* glib-checks.ac: Updated.
+
+	* gnome/gw/pango-spec.scm: Adapted for module name changes.
+
 2004-06-24  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/gw/pango-spec.scm: Adapt for G-Wrap "depends-on!" API change.
