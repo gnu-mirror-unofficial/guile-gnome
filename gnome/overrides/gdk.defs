@@ -28,8 +28,8 @@
 ;; stealing most of these from python-gtk2
 
 (define-function gdk-event->event-struct
-  (c-name "gdk_event_to_event_struct")
-  (overrides "gdk-event->event-struct") ;; hackeroo
+  (c-name "gdk_event_to_vector")
+  (overrides "gdk-event->vector") ;; hackeroo
   (return-type "SCM")
   (parameters '("GdkEvent*" "event")))
 

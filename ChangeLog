@@ -1,3 +1,16 @@
+2004-09-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gdk.defs (gdk-event->event-struct): Adapted to
+	gdk-event->vector.
+
+	* gnome/gtk/gdk-event.scm: Adapted to gdk-event->vector.
+
+	* gnome/gw/gdk-support.c (gdk_event_to_vector): Renamed from
+	gdk_event_to_event_struct, changed to return a vector instead of a
+	custom struct.
+	(gdk_event_to_vector): Add a case for GDK_MOTION_NOTIFY. No more
+	irritating warnings about "events of type 3" blah blah...
+
 2004-09-05  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/Makefile.am: Don't dist the C files.

@@ -24,4 +24,4 @@
 #include <libguile.h>
 #include <gdk/gdk.h>
 
-SCM gdk_event_to_event_struct (GdkEvent *event);
+SCM gdk_event_to_vector (GdkEvent *event);
