@@ -1,3 +1,11 @@
+2004-10-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/defs/gnome-vfs.defs: 
+	* gnome/defs/gnome-vfs-types.defs: New files.
+
+	* gnome/defs/Makefile.am: Added a target to generate the gnome-vfs
+	defs, and added them to the dist/install list.
+
 2004-10-07  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/defs/gtk.defs, gnome/defs/gtk-types.defs: Regenerated.

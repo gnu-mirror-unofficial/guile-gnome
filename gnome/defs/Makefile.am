@@ -18,6 +18,8 @@ guilemodule_DATA = 				\
 	glib.defs				\
 	glib-types.defs 			\
 	gnome.defs				\
+	gnome-vfs.defs				\
+	gnome-vfs-types.defs			\
 	gtk.defs				\
 	gtk-extrafuncs.defs			\
 	gtk-types.defs				\
@@ -53,3 +55,11 @@ gtk:
 	../../../h2def.py --procs \
 	   --with-header='(include type-ignores) (include "gtk-types.defs") (include overrides)' \
 	   /usr/include/gtk-2.0/gtk/gtk*.h > gtk.defs
+
+gnome-vfs:
+	../../../h2def.py --types \
+	   /usr/include/gnome-vfs-2.0/libgnomevfs/*.h > gnome-vfs-types.defs
+	../../../h2def.py --procs \
+	   --with-header='(include type-ignores) (include "gnome-vfs-types.defs") (include overrides)' \
+	   /usr/include/gnome-vfs-2.0/libgnomevfs/*.h > gnome-vfs.defs
+
