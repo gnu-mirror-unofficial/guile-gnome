@@ -35,7 +35,7 @@
 (define-class <atk-wrapset> (<gobject-wrapset-base>)
   #:id 'gnome-atk)
 
-(define-method (global-declarations-cg (self <gobject-wrapset-base>))
+(define-method (global-declarations-cg (self <atk-wrapset>))
   (list
    (next-method)
    "#include <atk/atk.h>\n"

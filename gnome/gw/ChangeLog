@@ -1,3 +1,8 @@
+2004-05-19  Andy Wingo  <wingo@pobox.com>
+
+	* atk-spec.scm (global-declarations-cg): Specialize on the correct
+	class.
+
 2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* Makefile.am (libguile_gnome_gw_gtk_la_CFLAGS): Added -O0, to
