@@ -1,0 +1,24 @@
+2004-01-14  Andy Wingo  <wingo@pobox.com>
+
+	* gw-ui-spec.scm: New file.
+
+	* gw-gnome-spec.scm: New file.
+
+	* gw-canvas-spec.scm: New file.
+
+	* Makefile.am: Add bindings for libgnomecanvas, libgnomeui, and
+	libgnome.
+
+2003-10-24  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* Makefile.am: 'make distcheck' fixes.
+
+2003-10-16  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/Makefile.am: New file.
+
+	* gw-vte-spec.scm: New file, wraps vte.
+
+	* ChangeLog: New file.
+	
+

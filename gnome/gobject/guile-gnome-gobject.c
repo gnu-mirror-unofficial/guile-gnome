@@ -1,32 +1,58 @@
+/* guile-gnome
+ * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+ *
+ * guile-gnome-gobject.c: The GObject wrapper
+ *
+ * This program is free software; you can redistribute it and/or    
+ * modify it under the terms of the GNU General Public License as   
+ * published by the Free Software Foundation; either version 2 of   
+ * the License, or (at your option) any later version.              
+ *                                                                  
+ * This program is distributed in the hope that it will be useful,  
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of   
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+ * GNU General Public License for more details.                     
+ *                                                                  
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, contact:
+ *
+ * Free Software Foundation           Voice:  +1-617-542-5942
+ * 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+ * Boston, MA  02111-1307,  USA       gnu@gnu.org
+ */
+
 #include <guile-gnome-gobject.h>
 #include "guile-support.h"
 #include <glib-object.h>
 #include <glib.h>
 #include <string.h>
+#include <stdio.h>
 
 
+
+SCM scm_module_gobject;
 
 SCM scm_class_gparam;
 SCM scm_class_gobject;
 SCM scm_sym_make;
-SCM scm_sym_gtype_instance_instance_init;
-SCM scm_sym_gtype_instance_class_init;
-SCM scm_sym_gobject_instance_init;
-SCM scm_sym_gobject_class_init;
+SCM scm_sym_initialize;
 SCM scm_sym_gobject_set_property;
 SCM scm_sym_gobject_get_property;
-SCM scm_sym_gobject_class_install_property;
+SCM scm_sym_gobject_class_set_properties_x;
 SCM scm_sym_gtype_to_class;
 SCM scm_sym_gvalue_to_scm;
+SCM scm_sym_scm_to_gvalue;
 
 
 /* #define DEBUG_PRINT */
 
 #ifdef DEBUG_PRINT
-#define DEBUG_ALLOC(str, args...) g_message (str, ##args)
+#define DEBUG_ALLOC(str, args...) g_print ("I: " str "\n", ##args)
 #else
 #define DEBUG_ALLOC(str, args...)
 #endif
+
+#define DEBUG_REFCOUNTING
 
 
 
@@ -41,12 +67,13 @@ struct _GuileGTypeClass {
     SCM class;
 };
 
-static GQuark quark_object = 0;
 static GQuark quark_guile_gtype_class = 0;
+static GQuark quark_instance_wrapper = 0;
 
 
 
 SCM_SYMBOL  (sym_gruntime_error,"gruntime-error");
+SCM_SYMBOL  (sym_name,"name");
 
 SCM_KEYWORD (k_real_instance,	"%real-instance");
 SCM_KEYWORD (k_value,		"value");
@@ -59,38 +86,6 @@ SCM_DEFINE (scm_gobject_scheme_dir, "gobject-scheme-dir", 0, 0, 0,
 #define FUNC_NAME s_scm_gobject_scheme_dir
 {
     return scm_makfrom0str (GUILE_GOBJECT_DIR);
-}
-#undef FUNC_NAME
-
-
-
-SCM_DEFINE (scm_gobject_register_type, "gobject-register-type", 2, 0, 0,
-	    (SCM symbol, SCM name),
-	    "Binds scheme symbol @var{symbol} to the GType with name @var{name} "
-	    "(which must already exist in the GType system).\n\n"
-	    "This is a very convenient way to make an already-existing GType accessible "
-	    "from scheme.\n\n"
-	    "Example:\n\n"
-	    "@lisp\n"
-	    "(gobject-register-type 'gtype-type-object \"GObject\")\n"
-	    "@end lisp\n")
-#define FUNC_NAME s_scm_gobject_register_type
-{
-    SCM object;
-    GType type;
-
-    SCM_VALIDATE_SYMBOL (1, symbol);
-    SCM_VALIDATE_STRING (2, name);
-
-    type = g_type_from_name (SCM_STRING_CHARS (name));
-    if (!type)
-	scm_error (sym_gruntime_error, FUNC_NAME,
-		   "No such type: ~S", SCM_LIST1 (name), SCM_EOL);
-
-    object = scm_c_register_gtype (type);
-    scm_define (symbol, object);
-
-    return SCM_UNSPECIFIED;
 }
 #undef FUNC_NAME
 
@@ -183,32 +178,11 @@ SCM_DEFINE (scm_gtype_to_method_name, "gtype->method-name", 2, 0, 0,
 
 
 
-SCM_DEFINE (scm_gtype_eq_p, "gtype-eq?", 2, 0, 0,
-	    (SCM a, SCM b),
-	    "Returns @code{#t} if @var{a} and @var{b} are equal and @code{#f} if not.\n"
-	    "It is recommended to use this function to compare GType's, even though it's\n"
-	    "the same than just using @code{eq?}.\n")
-#define FUNC_NAME s_scm_gtype_eq_p
-{
-    GType gtype_a, gtype_b;
-
-    SCM_VALIDATE_GTYPE_COPY (1, a, gtype_a);
-    SCM_VALIDATE_GTYPE_COPY (2, b, gtype_b);
-
-    
-    return gtype_a == gtype_b ? SCM_BOOL_T : SCM_BOOL_F;
-}
-#undef FUNC_NAME
-
-
-
 SCM_DEFINE (scm_gtype_p, "gtype?", 1, 0, 0,
 	    (SCM type),
 	    "Returns @code{#t} if @var{type} is a GType and @code{#f} if not.\n")
 #define FUNC_NAME s_scm_gtype_p
 {
-    GType gtype;
-
     return SCM_TYP16_PREDICATE (scm_tc16_gtype, type) ? SCM_BOOL_T : SCM_BOOL_F;
 }
 #undef FUNC_NAME
@@ -349,7 +323,7 @@ scm_c_gtype_instance_is_a_p (SCM instance, GType gtype)
 GTypeInstance *
 scm_c_scm_to_gtype_instance (SCM instance, GType gtype)
 {
-    SCM type, class;
+    SCM type, class, pinstance;
 
     if (SCM_TYP16_PREDICATE (scm_tc16_gtype_instance, instance)) {
 	GTypeInstance *ginstance = (GTypeInstance *) SCM_SMOB_DATA (instance);
@@ -368,9 +342,14 @@ scm_c_scm_to_gtype_instance (SCM instance, GType gtype)
     if (!SCM_IS_A_P (instance, class))
 	return NULL;
 
-    instance = scm_slot_ref (instance, scm_sym_gtype_instance);
-    if (SCM_TYP16_PREDICATE (scm_tc16_gtype_instance, instance)) {
-	GTypeInstance *ginstance = (GTypeInstance *) SCM_SMOB_DATA (instance);
+    pinstance = scm_slot_ref (instance, scm_sym_gtype_instance);
+    if (SCM_TYP16_PREDICATE (scm_tc16_gtype_instance, pinstance)) {
+	GTypeInstance *ginstance = (GTypeInstance *) SCM_SMOB_DATA (pinstance);
+
+        if (!ginstance)
+            scm_error (sym_gruntime_error, "%scm->gtype-instance",
+                       "Object ~A is either uninitialized or has been destroyed.",
+                       SCM_LIST1 (instance), SCM_EOL);
 
 	if (G_TYPE_CHECK_INSTANCE_TYPE (ginstance, gtype))
 	    return ginstance;
@@ -390,50 +369,166 @@ scm_c_gtype_instance_to_scm (GTypeInstance *ginstance)
     GType type;
     SCM instance_smob, class, object;
 
+    g_return_val_if_fail (ginstance != NULL, SCM_BOOL_F);
+
     type = G_TYPE_FROM_INSTANCE (ginstance);
 
+    switch (G_TYPE_FUNDAMENTAL (type)) {
+    case G_TYPE_OBJECT:
+        object = g_object_get_qdata ((GObject*)ginstance, quark_instance_wrapper);
+        if (object) return object;
+        break;
+    }
+    
     instance_smob = scm_c_make_gtype_instance (ginstance);
     
     class = scm_c_gtype_lookup_class (type);
-    if (SCM_FALSEP (class)) {
+    if (SCM_FALSEP (class))
         class = scm_call_1 (scm_sym_gtype_to_class, scm_c_register_gtype (type));
-    }
     g_assert (SCM_NFALSEP (class));
 
     /* call the scheme version of make, not the c version (aargh) */
     object = scm_call_3 (scm_sym_make, class, k_real_instance, instance_smob);
 
+    /* Cache the return value, so that if a callback or another function returns
+     * this ginstance while the ginstance is visible elsewhere, the same wrapper
+     * will be used. Since this doesn't happen much with params, we don't cache
+     * their wrappers. This qdata is unset in the SMOB's free function. */
+    switch (G_TYPE_FUNDAMENTAL (type)) {
+    case G_TYPE_OBJECT:
+        g_object_set_qdata ((GObject*)ginstance, quark_instance_wrapper, object);
+        break;
+    }
+    
     return object;
 }
 
 
 
-static void
-scm_c_gobject_get_property (GObject *gobject, guint param_id, GValue *dest_gvalue, GParamSpec *pspec)
-#define FUNC_NAME "%gobject-get-property"
+SCM scm_c_gvalue_to_scm (const GValue *value)
 {
-    SCM object, value;
-    GValue *gvalue;
+    SCM svalue;
+    GValue *new = g_new0 (GValue, 1);
 
-    object = g_object_get_qdata (gobject, quark_object);
-    g_assert (object != 0);
+    g_value_init (new, G_VALUE_TYPE (value));
+    g_value_copy (value, new);
+    SCM_NEWSMOB (svalue, scm_tc16_gvalue, new);
+    return scm_call_1 (scm_sym_gvalue_to_scm, svalue);
+}
 
-    value = scm_c_make_gvalue (G_VALUE_TYPE (dest_gvalue));
-    scm_gvalue_primitive_set (value, scm_call_2 (scm_sym_gobject_get_property,
-                                                 object, scm_str2symbol (pspec->name)));
+GValue* scm_c_scm_to_gvalue (GType type, SCM scm)
+#define FUNC_NAME "%scm->gvalue"
+{
+    SCM svalue;
+    GValue *value, *new = g_new0 (GValue, 1);
     
-    SCM_VALIDATE_GVALUE_TYPE_COPY (0, value, G_PARAM_SPEC_VALUE_TYPE (pspec), gvalue);
-    g_value_copy (gvalue, dest_gvalue);
+    svalue = scm_call_2 (scm_sym_scm_to_gvalue, scm_c_register_gtype (type), scm);
+
+    /* doesn't actually copy the value. rather disingenuous i would say :P */
+    SCM_VALIDATE_GVALUE_COPY (0, svalue, value);
+    g_value_init (new, G_VALUE_TYPE (value));
+    g_value_copy (value, new);
+    return new;
 }
 #undef FUNC_NAME
+
+SCM_DEFINE (scm_sys_gtype_instance_value_to_scm, "%gtype-instance-value->scm", 1, 0, 0,
+	    (SCM svalue),
+	    "")
+#define FUNC_NAME s_scm_sys_gtype_instance_value_to_scm
+{
+    GValue *value;
+    GTypeInstance *instance = NULL;
+    
+    SCM_VALIDATE_GVALUE_COPY (1, svalue, value);
+    
+    switch (G_TYPE_FUNDAMENTAL (G_VALUE_TYPE (value))) {
+    case G_TYPE_OBJECT:
+        instance = (GTypeInstance*)g_value_get_object (value);
+        break;
+    case G_TYPE_PARAM:
+        instance = (GTypeInstance*)g_value_get_param (value);
+        break;
+    default:
+        scm_error (sym_gruntime_error, FUNC_NAME,
+                   "Don't know what to do with object of "
+                   "type ~A: ~S",
+                   SCM_LIST2 (scm_makfrom0str (g_type_name (G_VALUE_TYPE (value))), svalue),
+                   SCM_EOL);
+    }
+    
+    return scm_c_gtype_instance_to_scm (instance);
+}
+#undef FUNC_NAME
+
+SCM_DEFINE (scm_gobject_set_data_x, "gobject-set-data!", 3, 0, 0,
+	    (SCM object, SCM key, SCM val),
+	    "")
+#define FUNC_NAME s_scm_gobject_set_data_x
+{
+    GObject *gobject;
+    gchar *sym;
+
+    SCM_VALIDATE_GOBJECT_COPY (1, object, gobject);
+    SCM_VALIDATE_SYMBOL (2, key);
+
+    sym = g_strndup (SCM_SYMBOL_CHARS (key), SCM_SYMBOL_LENGTH (key));
+
+    if (SCM_NFALSEP (val))
+        g_object_set_qdata_full
+            (gobject, g_quark_from_string (sym),
+             GINT_TO_POINTER (SCM_UNPACK (scm_gc_protect_object (val))),
+             (GDestroyNotify)scm_gc_unprotect_object);
+    else
+        g_object_set_qdata (gobject, g_quark_from_string (sym), NULL);
+        
+    return SCM_UNSPECIFIED;
+}
+#undef FUNC_NAME
+
+SCM_DEFINE (scm_gobject_get_data, "gobject-get-data", 2, 0, 0,
+	    (SCM object, SCM key),
+	    "")
+#define FUNC_NAME s_scm_gobject_get_data
+{
+    GObject *gobject;
+    gchar *sym;
+    gpointer data;
+
+    SCM_VALIDATE_GOBJECT_COPY (1, object, gobject);
+    SCM_VALIDATE_SYMBOL (2, key);
+
+    sym = g_strndup (SCM_SYMBOL_CHARS (key), SCM_SYMBOL_LENGTH (key));
+
+    data = g_object_get_qdata (gobject, g_quark_from_string (sym));
+    
+    if (data)
+        return SCM_PACK (GPOINTER_TO_INT (data));
+    else
+        return SCM_BOOL_F;
+}
+#undef FUNC_NAME
+
+static void
+scm_c_gobject_get_property (GObject *gobject, guint param_id, GValue *dest_gvalue, GParamSpec *pspec)
+{
+    SCM object;
+    GValue *gvalue;
+
+    object = scm_c_gtype_instance_to_scm ((GTypeInstance*)gobject);
+
+    gvalue = scm_c_scm_to_gvalue (G_VALUE_TYPE (dest_gvalue),
+                                  scm_call_2 (scm_sym_gobject_get_property,
+                                              object, scm_str2symbol (pspec->name)));
+    g_value_copy (gvalue, dest_gvalue);
+}
 
 static void
 scm_c_gobject_set_property (GObject *gobject, guint param_id, const GValue *src_value, GParamSpec *pspec)
 {
     SCM object, value;
 
-    object = g_object_get_qdata (gobject, quark_object);
-    g_assert (object != 0);
+    object = scm_c_gtype_instance_to_scm ((GTypeInstance*)gobject);
 
     value = scm_c_make_gvalue (G_VALUE_TYPE (src_value));
     g_value_copy (src_value, (GValue *) SCM_SMOB_DATA (value));
@@ -443,82 +538,36 @@ scm_c_gobject_set_property (GObject *gobject, guint param_id, const GValue *src_
 }
 
 static void
-remove_object_quark (SCM instance)
-{
-    GObject *gobject = G_OBJECT (SCM_SMOB_DATA (instance));
-
-    /* This is called immediately before the instance smob is freed
-     * from GC, so remove it from the GObject. */
-    g_object_steal_qdata (gobject, quark_object);
-}
-
-static void
-free_object_quark (gpointer data)
-{
-    SCM object, instance;
-    GObject *gobject;
-
-    object = (SCM) data;
-    instance = scm_slot_ref (object, scm_sym_gtype_instance);
-    SCM_SET_SMOB_DATA (instance, NULL);
-
-    DEBUG_ALLOC ("unprotecting servant %p of freed gobject %p", object, instance);
-
-    scm_gc_unprotect_object (object);
-}
-
-static void
 scm_c_gtype_instance_instance_init (GTypeInstance *g_instance,
 				    gpointer g_class)
 {
-    SCM class, object = SCM_UNDEFINED;
+    SCM class;
 
     class = scm_c_gtype_lookup_class (G_TYPE_FROM_CLASS (g_class));
     g_assert (SCM_NFALSEP (class));
 
-    switch (G_TYPE_FUNDAMENTAL (G_TYPE_FROM_INSTANCE (g_instance))) {
+    /* It seems that as an object is initialized, the g_class argument to the
+     * init function is the same for each level of inherited classes. However --
+     * and this shit tripped me up for a while -- _the class of the instance
+     * changes for each level of the init process_. Thus if you want to know the
+     * real type of the object, use G_TYPE_FROM_CLASS (g_class). If you want to
+     * know which derived class is being initialized (as in a gobject class
+     * doubly-specialized on the scheme side), use G_TYPE_FROM_INSTANCE
+     * (g_instance). Fucked up! */
+
+    switch (G_TYPE_FUNDAMENTAL (G_TYPE_FROM_CLASS (g_class))) {
     case G_TYPE_OBJECT: {
 	GuileGTypeClass *guile_class;
-	SCM instance;
 
 	guile_class = g_type_get_qdata (G_TYPE_FROM_CLASS (g_class), quark_guile_gtype_class);
 	guile_class->first_instance_created = TRUE;
 
-        instance = scm_c_make_gtype_instance (g_instance);
-
-	/* The GOOPS object which we create here is only used on the servant
-	 * side - when a signal handler or a property getter/setter function
-	 * is called from C.
-         *
-         * Which is to say, it has the same primitive GTypeInstance smob as
-         * every wrapper, but it is a different object than anything available
-         * on the scheme side. The only time you'll see it is is in a
-         * gobject:instance-init, gobject:set-property, gobject:get-property, or
-         * signal handler. So don't set object properties on it.
-	 */
-
-        /* argh! scm_make not the same as calling scm_sym_make! argh! */
-	object = scm_call_3 (scm_sym_make, class, k_real_instance, instance);
-
-        DEBUG_ALLOC ("  protecting servant %p with instance %p of %s %p", object,
-                     instance, g_type_name (G_TYPE_FROM_INSTANCE (g_instance)),
-                     g_instance);
-
-	g_object_set_qdata_full (G_OBJECT (g_instance), quark_object,
-				 scm_gc_protect_object (object),
-				 free_object_quark);
+        scm_call_2 (scm_sym_initialize, scm_c_gtype_instance_to_scm (g_instance), SCM_EOL);
 	break;
     }
 
     default:
 	break;
-    }
-
-    if (!SCM_UNBNDP (object)) {
-	if (G_TYPE_IS_OBJECT (G_TYPE_FROM_INSTANCE (g_instance)))
-	    scm_call_2 (scm_sym_gobject_instance_init, class, object);
-	else
-	    scm_call_2 (scm_sym_gtype_instance_instance_init, class, object);
     }
 }
 
@@ -544,12 +593,16 @@ scm_c_gtype_instance_class_init (gpointer g_class, gpointer class_data)
 
     guile_class->class = scm_gc_protect_object (class);
 
+    /* Not calling a class-init generic will prevent GOOPS classes that are
+     * subclassed on the scheme side from being initialized, but that's a corner
+     * case. Perhaps we should support it, but I'm removing it for now. */
+    /* NOTE: The proper way for supporting class-init is to override initialize
+     * for gtype-instance-class. */
+
     if (G_TYPE_IS_OBJECT (G_TYPE_FROM_CLASS (g_class))) {
 	((GObjectClass *) g_class)->get_property = scm_c_gobject_get_property;
 	((GObjectClass *) g_class)->set_property = scm_c_gobject_set_property;
-	scm_call_1 (scm_sym_gobject_class_init, class);
-    } else
-	scm_call_1 (scm_sym_gtype_instance_class_init, class);
+    }
 }
 
 
@@ -615,7 +668,7 @@ SCM_DEFINE (scm_gobject_class_install_property, "gobject-class-install-property"
     GuileGTypeClass *guile_class;
     guint id;
 
-    SCM_VALIDATE_GOBJECT_CLASS_COPY (1, class, gtype);
+    SCM_VALIDATE_GOBJECT_CLASS_GET_TYPE (1, class, gtype);
     SCM_VALIDATE_GPARAM_COPY (2, param, gparam);
 
     gclass = g_type_class_ref (gtype);
@@ -643,7 +696,7 @@ SCM_DEFINE (scm_gobject_class_install_property, "gobject-class-install-property"
     g_hash_table_insert (guile_class->properties_hash, GINT_TO_POINTER (id),
 			 scm_gc_protect_object (param));
 
-    scm_call_2 (scm_sym_gobject_class_install_property, class, param);
+    scm_call_1 (scm_sym_gobject_class_set_properties_x, class);
 
     return SCM_UNSPECIFIED;
 }
@@ -666,6 +719,7 @@ SCM_DEFINE (scm_gparam_to_value_type, "gparam->value-type", 1, 0, 0,
 
 
 
+#ifdef DEBUG_REFCOUNTING
 SCM_DEFINE (scm_sys_gobject_get_refcount, "%gobject-get-refcount", 1, 0, 0,
 	    (SCM object),
 	    "Get the refcount of an object (for debugging purposes)")
@@ -678,26 +732,110 @@ SCM_DEFINE (scm_sys_gobject_get_refcount, "%gobject-get-refcount", 1, 0, 0,
     return SCM_MAKINUM (gobject->ref_count);
 }
 #undef FUNC_NAME
+#endif
+
+
+
+/* 1. methods of generic functions can come from any module.
+ *    eg gst_props_entry_get and g_object_get.
+ *
+ * 2. the generic function can only be defined in one place, or it loses
+ *    all knowledge of other methods (gst_props_entry_get replaces all
+ *    definitions from other modules, eg g_object_get.)
+ *
+ * 3. therefore, we export the bindings for generics to the root module
+ *
+ * This is a temporary hack. We will be more sane we move to Guile 1.{7,8},
+ * because the module system will have support for merging generic functions.
+ */
+
+SCM_DEFINE (scm_sys_function_to_method_public,
+            "%function->method-public", 3, 0, 0,
+	    (SCM proc, SCM of_object, SCM generic_name),
+	    "")
+#define FUNC_NAME s_scm_sys_function_to_method_public
+{
+    static SCM the_root_module = SCM_BOOL_F, module_add_x = SCM_BOOL_F;
+    SCM arg_syms, specializers, generic, meth, closure;
+    int i;
+    char buffer[32];
+  
+    if (SCM_FALSEP (the_root_module)) {
+        the_root_module = scm_permanent_object
+            (SCM_VARIABLE_REF (scm_c_lookup ("the-root-module")));
+        module_add_x = scm_permanent_object
+            (SCM_VARIABLE_REF (scm_c_lookup ("module-add!")));
+    }
+
+    SCM_VALIDATE_PROC (0, proc);
+
+    /* use a previously available generic, if possible */
+    generic = scm_sym2var (generic_name,
+                           scm_module_lookup_closure (the_root_module),
+                           SCM_BOOL_F);
+    if (SCM_NFALSEP (generic)) {
+        generic = scm_variable_ref (generic);
+        
+        if (!SCM_IS_A_P (generic, scm_class_generic)) {
+            /* if the existing value is not a generic, we choose a new name */
+            gchar *new_name = g_strconcat (".", SCM_SYMBOL_CHARS (generic_name), NULL);
+            generic_name = scm_str2symbol (new_name);
+            g_free (new_name);
+            generic = SCM_BOOL_F;
+        }
+    }
+
+    /* make the method's specializer list */
+    arg_syms = specializers = SCM_EOL;
+    for (i = SCM_NUM2INT (0, SCM_CAR (scm_i_procedure_arity (proc))) - 1; i > 0; i--) {
+        specializers = scm_cons (scm_class_top, specializers);
+        sprintf (buffer, "arg%d", i);
+        arg_syms = scm_cons (scm_str2symbol (buffer), arg_syms);
+    }
+    specializers = scm_cons (of_object, specializers);
+    arg_syms = scm_cons (scm_str2symbol ("obj"), arg_syms);
+  
+    /* make a new generic if needed, and add it to the root module */
+    if (SCM_FALSEP (generic)) {
+        generic = scm_call_1 (scm_sym_make, scm_class_generic);
+        scm_call_3 (module_add_x, the_root_module, generic_name,
+                    scm_make_variable (generic));
+        scm_set_procedure_property_x (generic, sym_name, generic_name);
+    }
+  
+    /* proc has to be a closure: methinks this is a goops bug */
+    closure = scm_closure (scm_list_2 (arg_syms, scm_cons (proc, arg_syms)),
+                           scm_top_level_env (SCM_TOP_LEVEL_LOOKUP_CLOSURE));
+    
+    /* make the method, and add it to the generic */
+    meth = scm_apply_0 (scm_sym_make,
+                        scm_list_5 (scm_class_method,
+                                    scm_c_make_keyword ("specializers"), specializers,
+                                    scm_c_make_keyword ("procedure"), closure));
+    scm_add_method (generic, meth);
+
+    return SCM_UNSPECIFIED;
+}
+#undef FUNC_NAME
 
 
 
 void scm_init_gnome_gobject_helper (GType type)
 {
-
-  gchar *scheme_name;
-  scheme_name = scm_c_make_gtype_name ("gtype:%s", g_type_name (type));
-
-  scm_c_define (scheme_name, scm_c_register_gtype (type));
-  scm_c_export (scheme_name, NULL);
-  
-  g_free (scheme_name);
+    gchar *scheme_name;
+    scheme_name = scm_c_make_gtype_name ("gtype:%s", g_type_name (type));
+    
+    scm_c_define (scheme_name, scm_c_register_gtype (type));
+    scm_c_export (scheme_name, NULL);
+    
+    g_free (scheme_name);
 }
 
 
 void scm_pre_init_gnome_gobject (void) 
 {
-    quark_object = g_quark_from_static_string ("%scm-gtype->object");
     quark_guile_gtype_class = g_quark_from_static_string ("%scm-guile-gtype-class");
+    quark_instance_wrapper = g_quark_from_static_string ("%scm-instance-wrapper");
 }
 
 void
@@ -709,15 +847,20 @@ scm_init_gnome_gobject (void)
 #endif
 
     scm_c_export (s_scm_gobject_scheme_dir,
-		  s_scm_gobject_register_type, s_scm_gtype_children,
+		  s_scm_gtype_children,
 		  s_scm_gtype_to_fundamental, s_scm_gtype_to_class_name,
-		  s_scm_gtype_to_method_name, s_scm_gtype_eq_p,
+		  s_scm_gtype_to_method_name,
 		  s_scm_gtype_p, s_scm_gtype_fundamental_p,
 		  s_scm_genum_register_static, s_scm_gflags_register_static,
 		  s_scm_gtype_register_static,
+		  s_scm_gobject_set_data_x,
+		  s_scm_gobject_get_data,
 		  s_scm_gobject_class_install_property,
 		  s_scm_gparam_to_value_type,
+#ifdef DEBUG_REFCOUNTING
                   s_scm_sys_gobject_get_refcount,
+#endif
+                  s_scm_sys_function_to_method_public,
 		  NULL);
 
     scm_init_gnome_gobject_helper (G_TYPE_NONE);
@@ -760,21 +903,22 @@ scm_init_gnome_gobject (void)
     scm_init_gnome_gobject_helper (G_TYPE_PARAM_POINTER);
     scm_init_gnome_gobject_helper (G_TYPE_PARAM_BOXED);
     scm_init_gnome_gobject_helper (G_TYPE_PARAM_OBJECT);
+    scm_init_gnome_gobject_helper (G_TYPE_VALUE_ARRAY);
 }
 
 void
 scm_post_init_gnome_gobject (void)
 {
+    scm_module_gobject = scm_current_module ();
+
     scm_sym_make = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("make")));
     scm_sym_gobject_get_property = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gobject:get-property")));
     scm_sym_gobject_set_property = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gobject:set-property")));
-    scm_sym_gobject_class_install_property = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gobject-class:install-property")));
+    scm_sym_gobject_class_set_properties_x = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gobject-class-set-properties!")));
     scm_class_gobject = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("<gobject>")));
     scm_class_gparam = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("<gparam>")));
     scm_sym_gvalue_to_scm = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gvalue->scm")));
-    scm_sym_gtype_instance_class_init = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gtype-instance:class-init")));
-    scm_sym_gtype_instance_instance_init = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gtype-instance:instance-init")));
-    scm_sym_gobject_class_init = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gobject:class-init")));
-    scm_sym_gobject_instance_init = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gobject:instance-init")));
+    scm_sym_scm_to_gvalue = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("scm->gvalue")));
+    scm_sym_initialize = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("initialize")));
     scm_sym_gtype_to_class = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gtype->class")));
 }

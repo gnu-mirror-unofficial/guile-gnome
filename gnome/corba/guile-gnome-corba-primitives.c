@@ -1,15 +1,42 @@
-#include <guile-gnome-corba-primitives.h>
-#include <guile-gnome-corba-types.h>
-#include <guile-gnome-corba-generic.h>
-#include <guile-gnome-gobject-primitives.h>
-#include <guile/gh.h>
+/* guile-gnome
+ * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
+ * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
+ *
+ * guile-gnome-corba-primitives.c:
+ *
+ * This program is free software; you can redistribute it and/or    
+ * modify it under the terms of the GNU General Public License as   
+ * published by the Free Software Foundation; either version 2 of   
+ * the License, or (at your option) any later version.              
+ *                                                                  
+ * This program is distributed in the hope that it will be useful,  
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of   
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+ * GNU General Public License for more details.                     
+ *                                                                  
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, contact:
+ *
+ * Free Software Foundation           Voice:  +1-617-542-5942
+ * 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+ * Boston, MA  02111-1307,  USA       gnu@gnu.org
+ */
+
+#include "guile-support.h"
+
+#include "guile-gnome-corba-primitives.h"
+#include "guile-gnome-corba-types.h"
+#include "guile-gnome-corba-generic.h"
+#include "guile-gnome-gobject-primitives.h"
+
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-context.h>
 #include <bonobo/bonobo-moniker-util.h>
 #include <bonobo/bonobo-exception.h>
+
 #include <glib-object.h>
 #include <orbit/orbit.h>
-#include <libguile.h>
+
 #include <string.h>
 
 #define BONOBO_EX(ev) ((ev) && (ev)->_major != CORBA_NO_EXCEPTION)
@@ -18,8 +45,8 @@ SCM scm_class_corba_object;
 SCM scm_class_portable_server_servant_base;
 SCM scm_f_skel_marshal_func;
 
-scm_bits_t scm_tc16_guile_corba_interface;
-scm_bits_t scm_tc16_guile_portable_server_servant;
+scm_t_bits scm_tc16_guile_corba_interface;
+scm_t_bits scm_tc16_guile_portable_server_servant;
 
 DynamicAny_DynAnyFactory guile_corba_dynany_factory;
 PortableServer_POA guile_corba_poa;
@@ -44,7 +71,8 @@ make_scm_module_name (const gchar *module_name)
 
     parts = g_strsplit (module_name, ":", 0);
     for (ptr = parts; *ptr; ptr++)
-	scm_name = scm_append_x (SCM_LIST2 (scm_name, SCM_LIST1 (gh_symbol2scm (*ptr))));
+	scm_name = scm_append_x (SCM_LIST2 (scm_name, SCM_LIST1 (
+                                                    scm_str2symbol (*ptr))));
     g_strfreev (parts);
 
     return scm_name;
@@ -345,9 +373,10 @@ static SCM
 scm_c_generic_skel_func_exception (void *data, SCM tag, SCM throw_args)
 {
     CORBA_Environment *ev = data;
-
-    gh_display (tag); gh_newline ();
-    gh_display (throw_args); gh_newline ();
+    SCM cur_outp = scm_current_output_port();
+    
+    scm_display (tag, cur_outp); scm_newline (cur_outp);
+    scm_display (throw_args, cur_outp); scm_newline (cur_outp);
 
     if (SCM_EQ_P (tag, scm_sym_corba_system_exception)) {
 	g_message (G_STRLOC ": CORBA system exception");
@@ -362,20 +391,23 @@ scm_c_generic_skel_func_exception (void *data, SCM tag, SCM throw_args)
 }
 
 static void
-scm_c_generic_skel_func (PortableServer_ServantBase *servant, gpointer retvalptr, gpointer *argptr,
-			 gpointer ctx, CORBA_Environment *ev, gpointer implementation)
+scm_c_generic_skel_func (PortableServer_ServantBase *servant,
+                         gpointer retvalptr, gpointer *argptr,
+			 gpointer ctx, CORBA_Environment *ev,
+                         gpointer implementation)
 {
     GuilePortableServer_Servant *gservant = (GuilePortableServer_Servant *) servant;
     ORBit_IMethod *imethod;
     SCM poa_vector, generic, func, proc, args, thunk, retval;
     struct scm_body_thunk_data thunk_data;
     gulong i, length;
+    SCM cur_outp = scm_current_output_port();
 
     g_message (G_STRLOC ": %p - %p", servant, implementation);
 
     poa_vector = (SCM) implementation;
-    gh_display (poa_vector); gh_newline ();
-    gh_display (gservant->this); gh_newline ();
+    scm_display (poa_vector, cur_outp); scm_newline (cur_outp);
+    scm_display (gservant->this, cur_outp); scm_newline (cur_outp);
 
     imethod = (ORBit_IMethod *) SCM_SMOB_DATA (SCM_VELTS (poa_vector)[1]);
     generic = SCM_VELTS (poa_vector)[3];
@@ -408,8 +440,8 @@ scm_c_generic_skel_func (PortableServer_ServantBase *servant, gpointer retvalptr
     }
 
     thunk = scm_makcclo (scm_f_skel_marshal_func, 3L);
-    SCM_VELTS (thunk)[1] = generic;
-    SCM_VELTS (thunk)[2] = args;
+    SCM_VECTOR_SET (thunk, 1, generic);
+    SCM_VECTOR_SET (thunk, 2, args);
 
     thunk_data.tag = SCM_BOOL_T;
     thunk_data.body_proc = thunk;
@@ -417,12 +449,12 @@ scm_c_generic_skel_func (PortableServer_ServantBase *servant, gpointer retvalptr
     retval = scm_internal_catch (SCM_BOOL_T, scm_body_thunk, &thunk_data,
 				 scm_c_generic_skel_func_exception, ev);
 
-    gh_display (retval); gh_newline ();
+    scm_display (retval, cur_outp); scm_newline (cur_outp);
 }
 
 static ORBitSmallSkeleton
-impl_finder_func (PortableServer_ServantBase *servant, const gchar *opname, gpointer *m_data,
-		  gpointer *impl)
+impl_finder_func (PortableServer_ServantBase *servant, const gchar *opname,
+                  gpointer *m_data, gpointer *impl)
 {
     GuilePortableServer_Servant *gservant = (GuilePortableServer_Servant *) servant;
     SCM poa_vector;
@@ -437,7 +469,7 @@ impl_finder_func (PortableServer_ServantBase *servant, const gchar *opname, gpoi
 
     poa_vector = (SCM) value;
 
-    *m_data = (ORBit_IMethod *) SCM_SMOB_DATA (SCM_VELTS (poa_vector)[1]);
+    *m_data = (ORBit_IMethod *) SCM_SMOB_DATA (SCM_VECTOR_REF (poa_vector, 1));
     *impl = poa_vector;
 
     return scm_c_generic_skel_func;
@@ -616,10 +648,10 @@ guile_corba_sys_register_interface (ORBit_IInterface *iinterface)
 	scm_define (method_name, method);
 	
 	poa_vector = scm_c_make_vector (4L, SCM_UNDEFINED);
-	SCM_VELTS (poa_vector)[0] = iinterface_smob;
-	SCM_VELTS (poa_vector)[1] = imethod_smob;
-	SCM_VELTS (poa_vector)[2] = SCM_MAKINUM (i);
-	SCM_VELTS (poa_vector)[3] = method;
+	SCM_VECTOR_SET (poa_vector, 0, iinterface_smob);
+	SCM_VECTOR_SET (poa_vector, 1, imethod_smob);
+	SCM_VECTOR_SET (poa_vector, 2, SCM_MAKINUM (i));
+	SCM_VECTOR_SET (poa_vector, 3, method);
 
 	interface->epv [i] = (gpointer)(scm_gc_protect_object (poa_vector));
 

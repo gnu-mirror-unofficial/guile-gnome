@@ -1262,6 +1262,21 @@
 
 ;; From /opt/gtk2/include/gtk-2.0/gtk/gtkclipboard.h
 
+(define-function gtk_clipboard_get
+  (is-constructor-of "GtkClipboard")
+  (c-name "gtk_clipboard_get")
+  (return-type "GtkClipboard*")
+  (parameters
+    '("GdkAtom" "selection")))
+
+(define-function gtk_clipboard_get_for_display
+  (is-constructor-of "GtkClipboard")
+  (c-name "gtk_clipboard_get_for_display")
+  (return-type "GtkClipboard*")
+  (parameters
+    '("GdkDisplay*" "display")
+    '("GdkAtom" "selection")))
+
 (define-method set_with_data
   (of-object "GtkClipboard")
   (c-name "gtk_clipboard_set_with_data")
@@ -1292,6 +1307,12 @@
   (of-object "GtkClipboard")
   (c-name "gtk_clipboard_get_owner")
   (return-type "GObject*")
+)
+
+(define-method get_display
+  (of-object "GtkClipboard")
+  (c-name "gtk_clipboard_get_display")
+  (return-type "GdkDisplay*")
 )
 
 (define-method clear
@@ -2569,7 +2590,8 @@
 
 (define-function gtk_file_selection_new
   (c-name "gtk_file_selection_new")
-  (is-constructor-of GtkFileSelection)
+  ;;(is-constructor-of GtkFileSelection) ; we don't hold a ref to this,
+                                        ; so it's not a constructor
   (return-type "GtkWidget*")
   (parameters
     '("const-gchar*" "title" (null-ok) (default "NULL"))
@@ -8306,7 +8328,7 @@
   (return-type "none")
   (parameters
     '("GtkClipboard*" "clipboard")
-    '("GtkTextIter*" "override_location")
+    '("GtkTextIter*" "override_location" (null-ok))
     '("gboolean" "default_editable")
   )
 )
@@ -11292,6 +11314,15 @@
   (of-object "GtkTreeView")
   (c-name "gtk_tree_view_row_expanded")
   (return-type "gboolean")
+  (parameters
+    '("GtkTreePath*" "path")
+  )
+)
+
+(define-method expand_to_path
+  (of-object "GtkTreeView")
+  (c-name "gtk_tree_view_expand_to_path")
+  (return-type "none")
   (parameters
     '("GtkTreePath*" "path")
   )

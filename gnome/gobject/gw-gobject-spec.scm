@@ -1,3 +1,29 @@
+;; guile-gnome
+;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+
+;; This program is free software; you can redistribute it and/or    
+;; modify it under the terms of the GNU General Public License as   
+;; published by the Free Software Foundation; either version 2 of   
+;; the License, or (at your option) any later version.              
+;;                                                                  
+;; This program is distributed in the hope that it will be useful,  
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of   
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+;; GNU General Public License for more details.                     
+;;                                                                  
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, contact:
+;;
+;; Free Software Foundation           Voice:  +1-617-542-5942
+;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+;; Boston, MA  02111-1307,  USA       gnu@gnu.org
+
+;;; Commentary:
+;;
+;;A g-wrap specification for GObject.
+;;
+;;; Code:
+
 ;;; -*-scheme-*-
 
 (define-module (gnome gobject gw-gobject-spec)
@@ -58,20 +84,33 @@
    '(c-var " = (GTypeInstance*) SCM_SMOB_DATA (" scm-var ");\n")
    '(scm-var " = scm_c_gtype_instance_to_scm (" c-var ");\n")) ; fixme: unref the scm_var
 
+  ;; should <gobject> really be <g-object>?
+  (set! glib:type-cname->symbol-alist
+        (acons "GObject" '<gobject> glib:type-cname->symbol-alist))
   (gobject:gwrap-object ws "GObject" "G_TYPE_OBJECT")
 
+  (set! glib:type-cname->symbol-alist
+        (acons "GValue" '<gvalue> glib:type-cname->symbol-alist))
   (gobject:gwrap-helper
    ws "GValue"
-   (lambda (typespec) "GValue*")
+   (lambda (typespec)
+     (if (memq 'const (gw:typespec-get-options typespec))
+         "const GValue*"
+         "GValue*"))
    (lambda (c-var scm-var typespec status-var)
+     ;; should use scm_c_scm_to_gvalue here, except we'd have to make a
+     ;; cleanup function to free the value, and I can't think right now
      (list "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var "))\n"
            "  " c-var " = (GValue*) SCM_SMOB_DATA (" scm-var ");\n"
            "else " `(gw:error ,status-var type ,scm-var)))
    (lambda (scm-var c-var typespec status-var)
      (list "SCM_NEWSMOB (" scm-var ", scm_tc16_gvalue, " c-var ");\n"))
    (lambda (c-var typespec status-var force?)
-     (list)))
+     (list))
+   "Custom")
   
+  (set! glib:type-cname->symbol-alist
+        (acons "GClosure" '<gclosure> glib:type-cname->symbol-alist))
   (gobject:gwrap-helper
    ws "GClosure"
    (lambda (typespec) "GClosure*")
@@ -87,8 +126,11 @@
      (list scm-var " = scm_c_make_gvalue (G_TYPE_CLOSURE);\n"
            "g_value_set_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "), " c-var ");\n"))
    (lambda (c-var typespec status-var force?)
-     (list)))
+     (list))
+   "Custom")
 
+  (set! glib:type-cname->symbol-alist
+        (acons "GParamSpec" '<gparam> glib:type-cname->symbol-alist))
   (gobject:gwrap-helper
    ws "GParamSpec"
    (lambda (typespec) "GParamSpec*")
@@ -105,7 +147,7 @@
      (list scm-var " = scm_c_gtype_instance_to_scm ((GTypeInstance*)" c-var ");\n"))
    (lambda (c-var typespec status-var force?)
      (list))
-   #:type-sym '<gparam>)
+   "Custom")
 
   ;; Here we wrap some functions to bootstrap the core library.
 
@@ -175,13 +217,29 @@ pull scheme definitions back into the C world.")
    '<gw:bool>
    "g_type_is_a"
    '((<gtype> type) (<gtype> is-a-type))
-   "Returns #t if is-a-type is a parent of type, #f otherwise.")
+   "Returns #t if IS-A-TYPE is a parent of TYPE, #f otherwise.")
+
+  (gw:wrap-function
+   ws
+   'gtype-is-classed?
+   '<gw:bool>
+   "G_TYPE_IS_CLASSED"
+   '((<gtype> type))
+   "Returns #t if TYPE is classed, #f otherwise.")
+
+  (gw:wrap-function
+   ws
+   'gtype-is-instantiatable?
+   '<gw:bool>
+   "G_TYPE_IS_INSTANTIATABLE"
+   '((<gtype> type))
+   "Returns #t if TYPE is instantiatable, #f otherwise.")
 
   (gw:wrap-function
    ws
    'g-source-set-closure
    '<gw:void>
    "g_source_set_closure"
-   '((<gsource*> source) (<gclosure> closure))
+   '((<g-source*> source) (<gclosure> closure))
    "Set the closure for SOURCE to CLOSURE."))
 

@@ -1,4 +1,28 @@
-;; Support for reading in Gtk .defs files as g-wrap instructions
+;; guile-gnome
+;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+
+;; This program is free software; you can redistribute it and/or    
+;; modify it under the terms of the GNU General Public License as   
+;; published by the Free Software Foundation; either version 2 of   
+;; the License, or (at your option) any later version.              
+;;                                                                  
+;; This program is distributed in the hope that it will be useful,  
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of   
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+;; GNU General Public License for more details.                     
+;;                                                                  
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, contact:
+;;
+;; Free Software Foundation           Voice:  +1-617-542-5942
+;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+;; Boston, MA  02111-1307,  USA       gnu@gnu.org
+
+;;; Commentary:
+;;
+;;Support for reading in Gtk .defs files as g-wrap instructions
+;;
+;;; Code:
 
 (define-module (gnome gobject defs-support)
   :use-module (g-wrap)
@@ -15,13 +39,11 @@
 
 (define opaque-types '())
 
-(define (register-type ws-name cname type . args)
+(define (register-type ws-name cname type)
   (let* ((types-hash (hash-ref types-hash-hash ws-name)))
     (if (not types-hash)
         (begin (set! types-hash (make-hash-table 31))
                (hash-create-handle! types-hash-hash ws-name types-hash)))
-    (if (eq? args '())
-        (format #t "New type ~A/~A (~A)\n" cname type ws-name))
     (hash-create-handle! types-hash cname type))
   *unspecified*)
 
@@ -34,20 +56,20 @@
 (define (recursive-type-find ws type)
   (let* ((ws-name (gw:wrapset-get-name ws))
          (types-hash (hash-ref types-hash-hash ws-name)))
-    (if types-hash
-        (let ((ret (hash-ref types-hash type)))
-          (if ret
-              ret
-              (call-with-current-continuation
-               (lambda (exit)
-                 (for-each
-                  (lambda (ws)
-                    (let ((ret (recursive-type-find ws type)))
-                      (if ret
-                          (exit ret))))
-                  (wrapset-get-wrapsets-depended-on ws))
-                 #f))))
-        #f)))
+    (let ((ret (if types-hash
+                   (hash-ref types-hash type)
+                   #f)))
+      (if ret
+          ret
+          (call-with-current-continuation
+           (lambda (exit)
+             (for-each
+              (lambda (ws)
+                (let ((ret (recursive-type-find ws type)))
+                  (if ret
+                      (exit ret))))
+              (wrapset-get-wrapsets-depended-on ws))
+             #f))))))
 
 ;; find the gwrap type name for a given type name in a defs file, or
 ;; wrap the type as an opaque gpointer -- this thing is getting nasty!
@@ -92,7 +114,8 @@
           (if (eq? (length opaque-types) 0)
               (gw:wrapset-depends-on ws "gw-wct"))
           (set! opaque-types (cons (list type gwrap-type-name) opaque-types))
-          (register-type ws-name type gwrap-type-name #f)))
+          ;;(glib:print-info "Opaque" type gwrap-type-name ws)
+          (register-type ws-name type gwrap-type-name)))
 
     ;; gw:wct does not take caller/callee owned type options
     (if (null? options)
@@ -113,7 +136,11 @@
          (ignore-matchers '())
          (methods-used? #f))
 
-    (format #f "Loading defs file \"~S\"..." file)
+    (let ((absolute-path (%search-load-path file)))
+      (if absolute-path
+          (format #f "Loading defs file \"~S\"...\n" file)
+          (error (format #t "Could not find file ~S in the load path ~A\n"
+                         file %load-path))))
 
     ;; hm, should use dynamic-wind here...
     (set! %load-path (list (dirname (%search-load-path file))))
@@ -123,7 +150,10 @@
             (lambda (gwrap-function args)
               (let* ((ctype #f)
                      (gtype-id #f)
-                     (wrapped-type #f))
+                     (wrapped-type #f)
+                     (is-enum-or-flags (memv gwrap-function 
+                                             (list gobject:gwrap-enum
+                                                   gobject:gwrap-flags))))
                 (set! num-types (1+ num-types))
                 (for-each
                  (lambda (arg)
@@ -136,15 +166,27 @@
                      ((gtype-id) (set! gtype-id (cadr arg)))
                      ((c-name) (set! ctype (cadr arg)))))
                  args)
-
-                (if (or (not gtype-id) (not ctype))
-                    (error "Type lacks a c-name or gtype-id:\n\n" args))
-
-                (set! wrapped-type (gwrap-function ws ctype gtype-id))
+                
+                (if (not ctype)
+                    (error "Type lacks a c-name:\n\n" args))
+                
+                (if (and (not gtype-id) (not is-enum-or-flags))
+                    (error "Non-enum/flags-type lacks a gtype-id:\n\n" args))
+                
+                (if (not gtype-id)
+                    ;; Do the wrapping of enums/flags without a GType
+                    (let ((values #f))
+                      (for-each 
+                       (lambda (arg)
+                         (case (car arg)
+                           ((values) (set! values (cdr arg)))))
+                       args)
+                      (set! wrapped-type (gwrap-function ws ctype gtype-id 
+                                                         values)))
+                    (set! wrapped-type (gwrap-function ws ctype gtype-id)))
+                
                 (register-type (gw:wrapset-get-name ws)
-                               (if (memv gwrap-function (list
-                                                         gobject:gwrap-flags
-                                                         gobject:gwrap-enum))
+                               (if is-enum-or-flags
                                    ctype
                                    (string-append ctype "*"))
                                (gw:type-get-name wrapped-type))
@@ -158,7 +200,7 @@
                      ws
                      (lambda (wrapset client-wrapset)
                        (if (not client-wrapset)
-                           "SCM sym_of_object, sym_generic_name;\n"
+                           "static SCM sym_of_object, sym_generic_name;\n"
                            '())))
                     (gw:wrapset-add-cs-wrapper-initializers!
                      ws
@@ -173,18 +215,19 @@
                ws
                (lambda (wrapset client-wrapset status-var)
                  (if (not client-wrapset)
-                     (list "scm_set_procedure_property_x (SCM_VARIABLE_REF (scm_c_lookup (\""
-                           func-name "\")), sym_of_object, scm_str2symbol(\"" of-object "\"));\n"
-                           "scm_set_procedure_property_x (SCM_VARIABLE_REF (scm_c_lookup (\""
-                           func-name "\")), sym_generic_name, scm_str2symbol(\"" generic-name "\"));\n")
+                     (list "scm_sys_function_to_method_public ( "
+                           "SCM_VARIABLE_REF (scm_c_lookup (\""
+                           func-name "\")), "
+                           "SCM_VARIABLE_REF (scm_c_lookup (\""
+                           of-object "\")), "
+                           "scm_str2symbol (\"" generic-name "\"));")
                      '())))))
-
+           
            (add-method-property
             (lambda (func-name of-object)
               (let ((generic-name #f)
                     (sanitized-of-obj (substring of-object 1
-                                                 (or (string-index of-object #\*)
-                                                     (1- (string-length of-object))))))
+                                                 (1- (string-length of-object)))))
                 (if (string-prefix? (string-append sanitized-of-obj "-") func-name)
                     (add-method-property-with-generic-name
                      func-name
@@ -238,6 +281,8 @@
                          (if (member (cadr arg) overrides)
                              (error "Function ~S already overridden" (cadr arg))
                              (set! overrides (cons (cadr arg) overrides))))
+                        ((varargs)
+                         (display "x") (exit #f))
                         ((c-name)
                          (set! c-name (cadr arg))
                          (if (ignored? c-name)
@@ -339,7 +384,7 @@
                           (if (not (member file already-included))
                               (let* ((filename (%search-load-path file)))
                                 (if (not filename)
-                                    (error "Could not find file" file)
+                                    (error "Could not find file" file %load-path)
                                     (let* ((port (open-input-file filename))
                                            (sexp (read port)))
                                       (set! already-included (cons file already-included))

@@ -1,1 +1,6 @@
-SUBDIRS = corba
+SUBDIRS = 
+
+if HAVE_CORBA
+SUBDIRS += corba
+endif
+

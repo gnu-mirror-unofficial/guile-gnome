@@ -1,3 +1,27 @@
+/* guile-gnome
+ * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
+ * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
+ *
+ * guile-gnome-corba-types.c: Support routines for the GLib wrapper
+ *
+ * This program is free software; you can redistribute it and/or    
+ * modify it under the terms of the GNU General Public License as   
+ * published by the Free Software Foundation; either version 2 of   
+ * the License, or (at your option) any later version.              
+ *                                                                  
+ * This program is distributed in the hope that it will be useful,  
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of   
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+ * GNU General Public License for more details.                     
+ *                                                                  
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, contact:
+ *
+ * Free Software Foundation           Voice:  +1-617-542-5942
+ * 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+ * Boston, MA  02111-1307,  USA       gnu@gnu.org
+ */
+
 #include <guile-gnome-corba-types.h>
 #include <guile-gnome-corba-generic.h>
 #include <guile-gnome-corba.h>
@@ -10,12 +34,12 @@
 
 SCM scm_corba_struct_vtable;
 SCM scm_corba_sequence_vtable;
-scm_bits_t scm_tc16_corba_typecode;
-scm_bits_t scm_tc16_orbit_object;
-scm_bits_t scm_tc16_corba_data;
-scm_bits_t scm_tc16_corba_object;
-scm_bits_t scm_tc16_orbit_imethod;
-scm_bits_t scm_tc16_orbit_iinterface;
+scm_t_bits scm_tc16_corba_typecode;
+scm_t_bits scm_tc16_orbit_object;
+scm_t_bits scm_tc16_corba_data;
+scm_t_bits scm_tc16_corba_object;
+scm_t_bits scm_tc16_orbit_imethod;
+scm_t_bits scm_tc16_orbit_iinterface;
 
 SCM_GLOBAL_SYMBOL (scm_sym_corba_objref, "corba-objref");
 SCM_GLOBAL_SYMBOL (scm_sym_corba_typecode, "corba-typecode");

@@ -4,9 +4,9 @@
 ;; load up gtk -- also pulls in goops bindings
 (use-modules (gnome gtk))
 
-;; define the app as a function -- there are many other ways to do this,
+;; define the hello as a function -- there are many other ways to do this,
 ;; of course...
-(define (app)
+(define (hello)
   ;; we can make new widgets just like we make goops objects -- there is
   ;; a corresponding goops class for every GType we know about. the
   ;; arguments to make, after the class, are interpreted as properties
@@ -21,7 +21,7 @@
     (gtk-container-add window button)
     
     ;; and of course you can attach a lambda to a signal :-)
-    (gobject-signal-connect button 'clicked (lambda (b) (gtk-main-quit)))
+    (gtype-instance-signal-connect button 'clicked (lambda (b) (gtk-main-quit)))
 
     (gtk-widget-show-all window)
 
@@ -29,4 +29,4 @@
     (gtk-main)))
 
 ;; meaning this blocks until the button is clicked.
-(app)
+(hello)

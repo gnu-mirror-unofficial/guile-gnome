@@ -1,3 +1,47 @@
+2003-12-13  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* Makefile.am (guilemodule_DATA): Added gnome-overrides.defs,
+	ui-overrides.defs and canavas-overrides.defs.
+
+2003-12-09  Andy Wingo  <wingo@pobox.com>
+
+	* gtk-overrides.defs (iter_children): Return a list of the
+	children instead of only the first iterator.
+
+2003-11-25  Andy Wingo  <wingo@pobox.com>
+
+	* gtk-overrides.defs: Added accessors for ok and cancel buttons in
+	file selections.
+
+2003-11-01  Andy Wingo  <wingo@pobox.com>
+
+	* gtk.defs (gtk_clipboard_get): New wrapping, was missing before.
+	(gtk_clipboard_get_for_display): Same.
+	(gtk_clipboard_get_display): Same.
+
+2003-10-16  Andy Wingo  <wingo@pobox.com>
+
+	* gtk-overrides.defs: New wrappers for TextBuffer operations, and
+	GtkTreeSelection::get_selected.
+
+	* vte.defs, vte-overrides.defs: New files. The overrides still
+	need some work and a vte-support.[ch], but I want to get a repl
+	working first.
+	* zvt.defs: Deleted.
+
+2003-10-12  Andy Wingo  <wingo@pobox.com>
+
+	* gtk-overrides.defs: Define the custom Guile treemodel object.
+	Some custom wrappings for GtkTreeModel, GtkTreeStore, and
+	GtkListStore. Ignore *_foreach and *_valist.
+
+2003-10-01  Andy Wingo  <wingo@pobox.com>
+
+	* libglade.defs: Include overrides file, specify that
+	get-widget-prefix returns a GList* of GtkWidget*, remove pygtk
+	stuff.
+	* libglade-overrides.defs: New file.
+
 2003-05-25  Andy Wingo  <wingo@pobox.com>
 
 	* gtk-overrides.defs: Ignore gtk_container_foreach -- to use this,

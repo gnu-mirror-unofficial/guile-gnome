@@ -62,10 +62,12 @@
 )
 
 
+(include "gnome-overrides.defs")
+
 ;; From /usr/include/gnome-2.0/libgnome/gnome-config.h
 
-(define-function config_get_translated_string_with_default_
-  (c-name "gnome_config_get_translated_string_with_default_")
+(define-function config_get_translated_string_with_default
+  (c-name "gnome_config_get_translated_string_with_default")
   (return-type "char*")
   (parameters
     '("const-char*" "path")
@@ -74,8 +76,8 @@
   )
 )
 
-(define-function config_get_int_with_default_
-  (c-name "gnome_config_get_int_with_default_")
+(define-function config_get_int_with_default
+  (c-name "gnome_config_get_int_with_default")
   (return-type "gint")
   (parameters
     '("const-char*" "path")
@@ -84,8 +86,8 @@
   )
 )
 
-(define-function config_get_float_with_default_
-  (c-name "gnome_config_get_float_with_default_")
+(define-function config_get_float_with_default
+  (c-name "gnome_config_get_float_with_default")
   (return-type "gdouble")
   (parameters
     '("const-char*" "path")
@@ -94,8 +96,8 @@
   )
 )
 
-(define-function config_get_bool_with_default_
-  (c-name "gnome_config_get_bool_with_default_")
+(define-function config_get_bool_with_default
+  (c-name "gnome_config_get_bool_with_default")
   (return-type "gboolean")
   (parameters
     '("const-char*" "path")
@@ -104,8 +106,8 @@
   )
 )
 
-(define-function config_get_vector_with_default_
-  (c-name "gnome_config_get_vector_with_default_")
+(define-function config_get_vector_with_default
+  (c-name "gnome_config_get_vector_with_default")
   (return-type "none")
   (parameters
     '("const-char*" "path")
@@ -116,8 +118,8 @@
   )
 )
 
-(define-function config_set_translated_string_
-  (c-name "gnome_config_set_translated_string_")
+(define-function config_set_translated_string
+  (c-name "gnome_config_set_translated_string")
   (return-type "none")
   (parameters
     '("const-char*" "path")
@@ -126,8 +128,8 @@
   )
 )
 
-(define-function config_set_int_
-  (c-name "gnome_config_set_int_")
+(define-function config_set_int
+  (c-name "gnome_config_set_int")
   (return-type "none")
   (parameters
     '("const-char*" "path")
@@ -136,8 +138,8 @@
   )
 )
 
-(define-function config_set_float_
-  (c-name "gnome_config_set_float_")
+(define-function config_set_float
+  (c-name "gnome_config_set_float")
   (return-type "none")
   (parameters
     '("const-char*" "path")
@@ -146,8 +148,8 @@
   )
 )
 
-(define-function config_set_bool_
-  (c-name "gnome_config_set_bool_")
+(define-function config_set_bool
+  (c-name "gnome_config_set_bool")
   (return-type "none")
   (parameters
     '("const-char*" "path")
@@ -156,8 +158,8 @@
   )
 )
 
-(define-function config_set_vector_
-  (c-name "gnome_config_set_vector_")
+(define-function config_set_vector
+  (c-name "gnome_config_set_vector")
   (return-type "none")
   (parameters
     '("const-char*" "path")
@@ -177,8 +179,8 @@
   (return-type "gboolean")
 )
 
-(define-function config_sync_file_
-  (c-name "gnome_config_sync_file_")
+(define-function config_sync_file
+  (c-name "gnome_config_sync_file")
   (return-type "gboolean")
   (parameters
     '("char*" "path")
@@ -504,7 +506,7 @@
     '("const-GnomeModuleInfo*" "module_info")
     '("int" "argc")
     '("char**" "argv")
-    '("const-char*" "first_property_name")
+    '("const-char*" "first_property_name" (null-ok))
     '("va_list" "args")
   )
 )

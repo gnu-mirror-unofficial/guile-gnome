@@ -27,10 +27,13 @@ def to_upper_str(name):
     name = _upperstr_pat3.sub(r'\1_\2', name, count=1)
     return string.upper(name)
 
-def typecode(typename):
+def typecode_prefix(typename):
     """create a typecode (eg. GTK_TYPE_WIDGET) from a typename"""
     return string.replace(to_upper_str(typename), '_', '_TYPE_', 1)
 
+def typecode_postfix(typename):
+    """create a typecode (eg. GST_MEDIA_INFO_TYPE) from a typename"""
+    return to_upper_str(typename) + '_TYPE'
 
 # ------------------ Find object definitions -----------------
 
@@ -186,7 +189,7 @@ def find_enum_defs(buf, enums=[]):
         
         pos = m.end()
 
-def write_enum_defs(enums, output=None):
+def write_enum_defs(enums, output=None, without_gtype=0):
     if type(output)==types.StringType:
         fp=open(output,'w')
     elif type(output)==types.FileType:
@@ -210,7 +213,8 @@ def write_enum_defs(enums, output=None):
         if module:
             fp.write('  (in-module "' + module + '")\n')
         fp.write('  (c-name "' + cname + '")\n')
-        fp.write('  (gtype-id "' + typecode(cname) + '")\n')
+        if not without_gtype:
+            fp.write('  (gtype-id "' + typecode(cname) + '")\n')
         prefix = entries[0]
         for ent in entries:
             # shorten prefix til we get a match ...
@@ -396,14 +400,19 @@ def write_def(input,output=None):
 # ------------------ Main function -----------------
 
 verbose=0
+typecode = typecode_prefix # default
+
 if __name__ == '__main__':
     import getopt
 
     onlyenums = 0
     onlyobjdefs = 0
-
+    enums_without_gtype = 0
+    
     opts, args = getopt.getopt(sys.argv[1:], 'v',
-                               ['onlyenums', 'onlyobjdefs'])
+                               ['onlyenums', 'onlyobjdefs',
+                                'enums-without-gtype',
+                                'type-postfix'])
     for o, v in opts:
         if o == '-v':
             verbose = 1
@@ -411,7 +420,11 @@ if __name__ == '__main__':
             onlyenums = 1
         if o == '--onlyobjdefs':
             onlyobjdefs = 1
-            
+        if o == '--enums-without-gtype':
+            enums_without_gtype = 1
+        if o == '--type-postfix':
+            typecode = typecode_postfix
+        
     if not args[0:1]:
         print 'Must specify at least one input file name'
         sys.exit(-1)
@@ -425,12 +438,12 @@ if __name__ == '__main__':
         find_enum_defs(buf, enums)
     objdefs = sort_obj_defs(objdefs)
     if onlyenums:
-        write_enum_defs(enums,None)
+        write_enum_defs(enums,None, without_gtype = enums_without_gtype)
     elif onlyobjdefs:
         write_obj_defs(objdefs,None)
     else:
         write_obj_defs(objdefs,None)
-        write_enum_defs(enums,None)
+        write_enum_defs(enums,None, without_gtype = enums_without_gtype)
 
         for filename in args:
             write_def(filename,None)

@@ -111,6 +111,8 @@
   (return-type "GtkType")
 )
 
+(include "canvas-overrides.defs")
+
 (define-method add
   (of-object "GnomeCanvasGroup")
   (c-name "gnome_canvas_item_new")

@@ -9,6 +9,7 @@ guilemodule_DATA = applet.defs			\
 	bonoboui.defs				\
 	bonoboui-types.defs			\
 	canvas.defs				\
+	canvas-overrides.defs			\
 	gconf.defs				\
 	gdk.defs				\
 	gdk-types.defs				\
@@ -16,12 +17,16 @@ guilemodule_DATA = applet.defs			\
 	glib.defs				\
 	glib-overrides.defs			\
 	gnome.defs				\
+	gnome-overrides.defs			\
 	gtk.defs				\
 	gtk-overrides.defs			\
 	gtk-extrafuncs.defs			\
-	gtkhtml2.defs				\
 	gtk-types.defs				\
+	gtkhtml2.defs				\
+	gtksourceview.defs			\
+	gtksourceview-overrides.defs		\
 	libglade.defs				\
+	libglade-overrides.defs			\
 	Makefile.am				\
 	nautilus.defs				\
 	pango.defs				\
@@ -29,6 +34,8 @@ guilemodule_DATA = applet.defs			\
 	print.defs				\
 	printui.defs				\
 	ui.defs					\
-	zvt.defs
+	ui-overrides.defs			\
+	vte.defs				\
+	vte-overrides.defs
 
 EXTRA_DIST = $(guilemodule_DATA) ChangeLog

@@ -3,7 +3,7 @@
 
 (use-modules (gnome gtk))
 
-(define (app)
+(define (hello)
   (let* ((window (make <gtk-window> #:type 'toplevel))
 	 (button (make <gtk-button> #:label "Hello, World!")))
 
@@ -36,4 +36,4 @@
 
     (gtk-main)))
 
-(app)
+(hello)

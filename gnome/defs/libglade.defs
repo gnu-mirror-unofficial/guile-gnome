@@ -9,6 +9,7 @@
 
 ;; Enumerations and flags ...
 
+(include "libglade-overrides.defs")
 
 ;; From /opt/gtk2/include/glade-2.0/glade/glade-init.h
 
@@ -130,7 +131,7 @@
 (define-method get_widget_prefix
   (of-object "GladeXML")
   (c-name "glade_xml_get_widget_prefix")
-  (return-type "GList*")
+  (return-type "GList*-of-GtkWidget*")
   (parameters
     '("const-char*" "name")
   )
@@ -169,24 +170,3 @@
     '("gpointer" "user_data")
   )
 )
-
-
-;; pylibglade2 extras
-
-(define-function bindtextdomain
-  (c-name "glade_bindtextdomain")
-  (return-type "char*")
-  (parameters
-    '("const-char*" "domainname")
-    '("const-char*" "dirname" (null-ok) (default "NULL"))
-  )
-)
-
-(define-function textdomain
-  (c-name "glade_textdomain")
-  (return-type "char*")
-  (parameters
-    '("const-char*" "domainname")
-  )
-)
-

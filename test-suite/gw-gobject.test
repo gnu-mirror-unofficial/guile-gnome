@@ -1,0 +1,25 @@
+#!/bin/sh
+exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
+!#
+
+(define-module (test-suite test-gw-gobject)
+  #:use-module (oop goops)
+  #:use-module (gnome gobject)
+  #:use-module (gnome gobject primitives)
+  #:use-module (test-suite lib)
+  #:use-module (test-suite gw-test-gobject))
+
+(with-test-prefix "<test-obj>"
+  (pass-if "creating"
+           (is-a? (make <test-obj>) <test-obj>))
+  
+  (pass-if "creating with parameters"
+           (let ((obj (make <test-obj> #:arr '(1 2 3))))
+             (is-a? obj <test-obj>)))
+
+  (pass-if "calling foo"
+           (= (foo (make <test-obj>) 65000) 65000)))
+
+;; Local Variables:
+;; mode: scheme
+;; End:

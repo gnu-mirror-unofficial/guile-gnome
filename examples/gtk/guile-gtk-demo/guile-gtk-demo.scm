@@ -1,40 +1,154 @@
-(use-modules (gnome gtk)
-             (srfi srfi-13))
+#!/usr/bin/guile -s
+!#
 
+(read-set! keywords 'prefix)
+(use-modules (gnome gtk)
+             (srfi srfi-13)
+             (srfi srfi-1)
+             (ice-9 rw)
+             (ice-9 receive))
+
+;; Why aren't these part of the distro?
+(define (file-size f)
+  (stat:size (stat f)))
+(define (read-file f)
+  (let* ((size (file-size f))
+         (str (make-string size #\ )))
+    (with-input-from-file f
+      (lambda () (if (eq? size (read-string!/partial str)) str "")))))
+
+;; Detecting and loading up the demos
+(define this-dir (dirname (car (program-arguments))))
+(set! %load-path (cons this-dir %load-path))
 (define (build-path . args)
   (string-join args "/"))
-
-(define (get-demo-files)
-  (let* ((this-dir (dirname (car (program-arguments))))
-         (demo-files '())
-         (dir (opendir this-dir)))
+(define (get-demos)
+  (let* ((demo-dir (build-path this-dir "demos"))
+         (demos '())
+         (dir (opendir demo-dir)))
     (do ((entry (readdir dir) (readdir dir)))
         ((eof-object? entry))
-      (if (eq? 'regular (stat:type (stat (build-path this-dir entry))))
-          (set! demo-files (cons (build-path this-dir entry) demo-files))))
-    demo-files))
+      (if (and (eq? 'regular (stat:type (stat (build-path demo-dir entry))))
+               (string-suffix? ".scm" entry))
+          ;; cons on the module and source of the file
+          (set! demos
+                (cons 
+                 (cons
+                  (resolve-module
+                   (list 'demos
+                         (string->symbol (substring entry 0 (- (string-length entry) 4))))
+                   #t)
+                  (read-file (build-path demo-dir entry)))
+                 demos))))
+    demos))
+(define (demo-module demo)
+  (car demo))
+(define (demo-source demo)
+  (cdr demo))
+(define (demo-name demo)
+  (eval 'name (demo-module demo)))
+(define (demo-main demo)
+  (eval 'main (demo-module demo)))
+(define (demo-description demo)
+  (eval 'description (demo-module demo)))
+  
+;; The main window
+(define main-window (make <gtk-window> :title "Guile-Gtk Demo" :type 'toplevel))
+(define (make-scrolled)
+  (make <gtk-scrolled-window>
+    :hscrollbar-policy 'automatic
+    :vscrollbar-policy 'automatic))
+(define tree-view
+  (let* ((store (gtk-list-store-new
+                 (list gtype:gboxed-scm gtype:gchararray)))
+         (tree-view (make <gtk-tree-view> :model store))
+         (cellrenderer (make <gtk-cell-renderer-text>))
+         (column (make <gtk-tree-view-column> :title "Widget (double-click to show)"))
+         (selection (get-selection tree-view)))
+    (for-each
+     (lambda (demo)
+       (gtk-tree-or-list-store-set
+        store (gtk-list-store-append store)
+        0 demo
+        1 (demo-name demo)))
+     (get-demos))
+    (set-mode selection 'single)
+    (pack-start column cellrenderer #t)
+    (add-attribute column cellrenderer "text" 1)
+    (append-column tree-view column)
+    (set-size-request tree-view 200 -1)
+    tree-view))
+(define notebook (make <gtk-notebook>))
+(define (make-text-view wrap-mode pix name)
+  (let* ((scrolled (make-scrolled))
+         (text-view (make <gtk-text-view>))
+         (text-buffer (get-buffer text-view)))
+    (set text-view 'editable #f)
+    (set text-view 'cursor-visible #f)
+    (set text-view 'wrap-mode wrap-mode)
+    (set text-view 'pixels-above-lines pix)
+    (set text-view 'pixels-below-lines pix)
+    (set scrolled 'shadow-type 'in)
+    (add scrolled text-view)
+    (append-page notebook scrolled
+                 (make <gtk-label> :label name :use-underline #t))
+    text-buffer))
+(define info-buffer (make-text-view 'word 2 "_Info"))
+(define source-buffer (make-text-view 'none 0 "_Source"))
+(create-tag info-buffer "title" 'font "Sans 18")
+(create-tag source-buffer "source" 'font "Courier 12"
+            'pixels-above-lines 0 'pixels-below-lines 0)
+(define (clear-buffer buf)
+  (receive (start end) (get-bounds buf)
+    (gtk-text-buffer-delete buf start end)))
+(define (set-demo demo)
+  (clear-buffer info-buffer)
+  (let ((name (demo-name demo))
+        (desc (demo-description demo))
+        (iter (get-iter-at-offset info-buffer 0))
+        (start #f))
+    (insert info-buffer iter name)
+    (set! start (get-iter-at-offset info-buffer 0))
+    (apply-tag-by-name info-buffer "title" start iter)
+    (insert info-buffer iter "\n")
+    (insert info-buffer iter desc))
+  (clear-buffer source-buffer)
+  (let ((source (demo-source demo))
+        (iter (get-iter-at-offset source-buffer 0))
+        (start #f))
+    (insert source-buffer iter source)
+    (set! start (get-iter-at-offset source-buffer 0))
+    (apply-tag-by-name source-buffer "source" start iter)))
 
-;; unfortunately, we have to use nonstandard function calls to subclass
-;; gobject types. maybe we can make this go away sometime and just use
-;; define-class somehow, that would be nice.
-(define gtype:demo (gobject-type-register-static 
-                    (gtype-class->type <gtk-window>) "Demo"))
-(define <demo> (gtype->class gtype:demo))
+(set-default-size main-window 600 400)
 
-(define-method (initialize (self <demo>) initargs)
-  (let ((hbox (make <gtk-hbox>))
-        (tree-view (make <gtk-tree-view>))
-        (notebook (make <gtk-notebook>))
-        (scrolled-factory (lambda () (make <gtk-scrolled-window>)))
-        (text-factory (lambda () (make <gtk-text>))))
-    (next-method)
-    (connect self 'delete-event (lambda (s e) (gtk-main-quit) #f))
-    (set-default-size self 600 400)
-    
-    (add self hbox)
-    (pack-start hbox tree-view #t #t 0)
-    (pack-start hbox notebook #t #t 0)))
+;; Pack the widgets
+(let ((hbox (make <gtk-hbox>)))
+  (add main-window hbox)
+  (let ((scrolled (make-scrolled)))
+    (add scrolled tree-view)
+    (pack-start hbox scrolled #f #f 0))
+  (pack-start hbox notebook #t #t 0))
 
-(define d (make <demo>))
-(show-all d)
+;; Signals...
+(connect main-window 'delete-event (lambda (w e) (gtk-main-quit) #f))
+(connect
+ tree-view 'row-activated
+ (lambda (tview path col)
+   (let* ((model (get-model tview))
+          (iter (gtk-tree-model-get-iter model path))
+          (demo (gtk-tree-model-get-value model iter 0))
+          (main (demo-main demo)))
+     (main))))
+(connect
+ (get-selection tree-view) 'changed
+ (lambda (selection)
+   (receive (model iter)
+            (get-selected selection)
+     (if iter
+         (set-demo (gtk-tree-model-get-value model iter 0))))))
+
+(emit (get-selection tree-view) 'changed)
+
+(show-all main-window)
 (gtk-main)

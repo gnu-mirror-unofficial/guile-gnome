@@ -1,3 +1,377 @@
+2004-01-14  Andy Wingo  <wingo@pobox.com>
+
+	* primitives.scm (<gtype-instance-class>): There's no special
+	get-n-set here any more, that's done with qdata. See gobject.scm
+	for more details.
+
+	* gw-spec-utils.scm (gobject:gwrap-object): Don't ref returned
+	objects here, only unref them if we own them. This complements the
+	change in make_gtype_instance.
+	(gobject:gwrap-interface): Same.
+
+	* guile-gnome-gobject.c (s_scm_gobject_set_data_x,
+	s_scm_gobject_get_data): New functions implementing object
+	properties using qdata so the state persists for all wrappers.
+	(scm_c_gobject_get_property): Use scm_c_gtype_instance_to_scm to
+	get the object -- will retrieve a cached object.
+	(scm_c_gobject_set_property): Same.
+	(remove_object_quark, free_object_quark): Removed.
+	(s_scm_sys_function_to_method_public): Set the generic's name. A
+	bit slower, but necessary for debugging.
+
+	* guile-gnome-gobject-primitives.c (s_scm_gclosure_primitive_new):
+	Make free_closure the invalidate notifier, not the finalize
+	notifier.
+	(s_scm_gclosure_primitive_new): Don't actually hold a ref on the
+	closure by using g_value_set_static_boxed. This is to compensate
+	for an over-conservative GC.
+	(everywhere): Add some more debugging printouts (not enabled by
+	default).
+	(scm_gtype_instance_free): Remove vestigial finalize_func code,
+	set the SMOB's data to NULL, and remove cached wrapper info. Can
+	be called multiple times.
+	(s_scm_sys_gtype_instance_primitive_destroy_x): New function,
+	analogous to gtk_object_destroy, called by gtk.scm in response to
+	the ::destroy signal.
+	(line 710): A couple of pages of comment on the design of the
+	GObject wrapper.
+	(scm_c_make_gtype_instance): Check for a cached wrapper before
+	sinking object. Cache the primitive wrapper separately from the
+	GOOPS wrapper. Actually ref the object, in accordance with the
+	design doc. Ref params too.
+	(s_scm_gobject_primitive_get_properties): Don't ref the param
+	here, it's done in make_gtype_instance.
+	(s_scm_gparam_primitive_create): Remove floating reference, still
+	holding the one from make_gtype_instance.
+	(s_scm_gobject_primitive_create_instance): Remove extra ref on
+	object, as we own the one given by g_object_new. Cache the
+	wrapper.
+	(s_scm_gvalue_primitive_get): Don't ref the objects or params
+	here, it's done in make_gtype_instance.
+
+2004-01-13  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject.c (scm_c_scm_to_gtype_instance): Error if
+	the SMOB's data is NULL (meaning the object has been destroyed).
+	(scm_c_gtype_instance_to_scm): Cache return values as qdata on the
+	objects. The qdata is removed when the SMOB is freed.
+	(s_scm_sys_gtype_instance_value_to_scm): New function. An
+	optimization so that callbacks can use existing object wrappers.
+
+	* gw-utils.scm: Remove re-export-bindings in favor of
+	re-export-module. Add a copyright notice.
+
+2004-01-22  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* guile-gnome-gobject-primitives.c
+	(s_scm_gvalue_array_primitive_new)
+	(s_scm_gvalue_array_primitive_append): Don't wrap SCM_DEFINE
+	invocation too much, since it seems to confuse older snarfers.
+
+2003-12-30  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* guile-gnome-gobject-primitives.c (scm_c_make_gtype_name) 
+	(s_scm_gtype_primitive_get_signals): Plugged memory leaks.
+
+2003-12-13  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gw-glib-spec.scm (GSList): Initialize the c-var in the
+	scm->c-ccg with NULL.
+
+2003-12-09  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject.c (scm_c_gtype_instance_instance_init):
+	Switch on the type from the class, not the instance, as the
+	instance's type changes in different phases of initialization.
+	Check to see if we have a servant already before making another
+	one. Fixes some bugs in doubly-derived gobject classes.
+
+	* guile-gnome-gobject-primitives.c (scm_c_make_gtype_instance):
+	Sink objects after checking to see if we have a wrapper.
+
+2003-12-03  Andy Wingo  <wingo@pobox.com>
+
+	* gw-glib-spec.scm: Fixed some longstanding bugs, embarassingly
+	enough related to the size of fundamental types. Also added gshort
+	and gushort as types.
+
+2003-11-22  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* glib-support.h: Added #include guards.
+	* glib-support.c: Quick-fixed to work with Guile 1.7.
+	
+	* guile-support.h (scm_gc_free): Fixed parameter list.
+	* guile-gnome-gobject-primitives.c (scm_gvalue_free): Fix 
+	scm_gc_free() invocation.
+
+2003-11-18  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject-primitives.c
+	(s_scm_gboxed_scm_primitive_to_scm): If the boxed value is NULL,
+	we return SCM_UNSPECIFIED to prevent a segfault when the value is
+	printed.
+	(s_scm_gvalue_primitive_set): If we don't know how to handle the
+	GValue, signal a wrong type arg on the GValue, not the value we are
+	trying to set.
+
+2003-11-09  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject-primitives.c (s_scm_especify_metaclass_x):
+	New function. Makes the metaclass of an existing GTypeClass more
+	specific, hence the novel new word `especify'. Exists to hack
+	around GOOPS' lack of class methods.
+
+2003-11-06  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject.c (s_scm_sys_function_to_method_public):
+	Don't set the name keyword when making the generic, it's faster
+	according to Andreas.
+
+2003-11-01  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject.[ch] (scm_c_gvalue_to_scm): This one is const
+	now.
+
+	* guile-gnome-gobject-primitives.c (%scm-gclosure-marshal): Add
+	some hacky prototypes to allow us to use scm_c_gvalue_to_scm in
+	the marshaller.
+
+2003-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gw-glib-spec.scm (gslist-of): Fix some const pointer warnings.
+
+	* gw-spec-utils.scm (gobject:gwrap-class): Use slot-ref, not
+	slot-ref-using-class.
+
+	* guile-gnome-gobject-primitives.c (slot_definition_using_name):
+	Removed.
+
+	* primitives.scm (define-with-docs): Renamed from
+	define-public-with-docs, doesn't export the binding any more
+	(let's just use the :export option when defining the module).
+	(gruntime-debug): Removed.
+	(%gruntime-debug): Removed.
+
+	* guile-gnome-gobject.c (scm_gobject_register_type): Removed. Just
+	use (define foo (gtype-from-name name)).
+	(scm_c_gtype_instance_class_init): Don't call the
+	gobject:class-init, just initialize after you define your class.
+	This prevents custom initialization of scheme classes further
+	subclassed in C, but that's a corner case that is maybe better
+	left out.
+	(scm_sys_gobject_get_refcount): Only define if DEBUG_REFCOUNTING
+	is defined.
+	(scm_c_gtype_instance_instance_init): Only call
+	gtype-instance:initialize (was :instance-init), not a specific one
+	for gobject.
+
+2003-10-25  Andy Wingo  <wingo@pobox.com>
+
+	* primitives.scm (<gtype-instance-class>): A new metaclass
+	descending from <gtype-class>. <gtype-instance> is now an instance
+	of this class.
+	(compute-get-n-set): For <gtype-instance-class>, overrides
+	#:instance allocation to set properties on the <%gtype-instance>
+	smob.
+
+	* guile-gnome-gobject.c (scm_gtype_eq_p): Removed. Just use eq?.
+
+2003-10-25  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* guile-gnome-gobject-primitives.c
+	(s_scm_gparam_primitive_create_pspec_struct,
+	s_scm_gparam_primitive_create): GValue support for param specs.
+	* guile-gnome-gobject-primitives.h (SCM_G_IS_PARAM_SPEC_VALUE_ARRAY): 
+	New macro.
+
+2003-10-23  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject.c (%gobject-get-property): Use scm->gvalue
+	to process the return from gobject:get-property.
+
+2003-10-22  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* guile-gnome-gobject-primitives.c,
+	guile-gnome-gobject-primitives.h,
+	guile-gnome-gobject.c: Implement GValue array support.
+	
+	* guile-gnome-gobject-primitives.c (scm_c_make_gvalue)
+	(scm_gvalue_free): Replaced deprecated scm_must_malloc/free
+	invokations with scm_gc_malloc/free.
+
+	* guile-support.h (SCM_VECTOR_REF, SCM_VECTOR_SET): New compat
+	macros, to be used instead of SCM_VELTS().
+	(scm_gc_malloc, scm_gc_free): New compat macros, to be used instead
+	of scm_must_malloc/free.
+	(scm_gc_unregister_collectable_memory)
+	(scm_gc_register_collectable_memory): New compat macros.
+
+2003-10-22  Andy Wingo  <wingo@pobox.com>
+
+	* primitives.scm: The big changes! There's no more
+	<gtype-class-meta>.
+	(<set-once-class>): New metaclass implementing set-once slots.
+	(<gtype-class>): Now a metaclass. Its metaclass is
+	<set-once-class>, so it has set-once slots for gtype and
+	gtype-class. All gtype classes are now instances of this
+	metaclass.
+	(<gtype-instance>): New class, has a set-once slot for the
+	gtype-instance. Instance of <gtype-class>. Parent class of all
+	instantiatable types (like <gobject>).
+
+	* gw-gobject-spec.scm: New wrappers for gtype-is-classed? and
+	gtype-is-instantiatable?.
+
+	* guile-gnome-gobject.h (SCM_GOBJECTP): Use new SUBCLASSP macro.
+	(SCM_GOBJECT_CLASSP): Use SUBCLASSP macro.
+	(SCM_VALIDATE_GOBJECT_CLASS_GET_TYPE): Get the gtype by a
+	slot-ref, not a class-slot-ref.
+
+	* guile-gnome-gobject-primitives.h (SCM_GPARAM_SPEC_P): Allow
+	SCM_BOOL_F for owner-type.
+	(SCM_GTYPE_CLASS_SUBCLASSP): New macro.
+
+	* guile-gnome-gobject-primitives.c
+	(s_scm_sys_gtype_bind_to_class): Re-set the 'signals slot on
+	implemented interfaces after g_type_class_ref()ing an implementor.
+	Hackery, but that's the GObject system for you!
+	(scm_gtype_class_print): Print gtype-class smobs with a %.
+	(s_scm_sys_gtype_bind_to_class): Set the gtype and gtype-class
+	slots using slot-set!, in accordance with the new hierarchy. Also
+	loop through the implemented interfaces to re-set 'gsignals,
+	because they aren't there until after a g_type_class_ref () on an
+	implementor.
+	(s_scm_sys_get_struct_slot): Work on any instance.
+	(s_scm_sys_set_struct_slot): Same.
+	(s_scm_gtype_primitive_get_signals): Rename from
+	gobject-primitive-get-signals, because it works on interfaces too.
+	(s_scm_gtype_instance_primitive_signal_emit): Renamed.
+	(s_scm_gtype_instance_primitive_signal_connect): Renamed.
+
+	* generics.scm (all functions): Updated to the new class
+	hierarchy.
+
+	* guile-gnome-gobject.h (SCM_VALIDATE_GOBJECT_CLASS_COPY): Renamed
+	to SCM_VALIDATE_GOBJECT_CLASS_GET_GTYPE, since that's what it
+	actually does.
+
+2003-10-21  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject-primitives.c
+	(scm_pre_init_gnome_gobject_primitives): Make the smob for
+	GTypeClass called "%gtype-class" to avoid conflicts between the
+	GOOPS smob class and the real wrapper class.
+
+	* gw-gobject-spec.scm: New wrapped function: gtype-is-classed?.
+
+	* guile-gnome-gobject-primitives.c (scm_gtype_interfaces): New
+	function, returns the interfaces implemented by a type.
+	(scm_gtype_primitive_get_signals): Renamed from
+	gobject-primitive-get-signals, although no code change is
+	required.
+
+2003-10-16  Andy Wingo  <wingo@pobox.com>
+
+	* gw-spec-utils.scm: Export gobject:gwrap-helper-with-class.
+
+2003-10-15  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject.c (scm_c_gtype_instance_instance_init): Only
+	call the instance-inits with one argument, the object.
+
+2003-10-13  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject.c (scm_c_gvalue_to_scm): Copy the incoming
+	GValue so that we have our own.
+
+2003-10-12  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject.c (scm_c_scm_to_gvalue): New function, calls
+	scm->gvalue.
+	(scm_c_gvalue_to_scm): New function, calls gvalue->scm.
+
+	* gw-spec-utils.scm (gobject:gwrap-interface): Wrap interfaces
+	properly, now that we use them.
+
+2003-10-11  Andy Wingo  <wingo@pobox.com>
+
+	* defs-support.scm (load-defs): Ignore .defs entries where there
+	is a (varargs ...) line.
+
+	* guile-gnome-gobject.c (s_scm_sys_function_to_method_public):
+	Some cleanups. Use the same coding style as the rest of the file.
+	Use static variables to reference the-root-module and module-add!.
+	Don't check to see if objects are actually classes, that's done by
+	g-wrap now. We still have to make a new closure for the procedure,
+	due to a bug in Guile 1.6.4.
+
+2003-10-07  Kevin Ryde  <user42@zip.com.au>
+
+	* guile-gnome-gobject.c (scm_sys_function_to_method_public): Don't put
+	variable declarations in the middle of the function, that's a c99-ism.
+
+2003-10-01  Andy Wingo  <wingo@pobox.com>
+
+	* gw-spec-utils.scm: General cleanups all around...
+	(GStudlyCapsExpand): New function, based on StudlyCapsExpand from
+	slib's strcase.scm (public domain). Given a C type name, returns
+	the appropriate scheme type name. Normally a lower case letter
+	preceded by one capital letter forces a hyphenation before the
+	capital letter: GSource => g-source, GtkIMContext =>
+	gtk-im-context. However, a lower case letter preceded by exactly
+	two capital letters that is not at the beginning of the string is
+	treated specially: GtkHBox => gtk-hbox
+	(like the C api).
+	(glib:type-cname->symbol-alist): New alist of overrides for
+	converting C type names to scheme names.
+	(glib:type-cname->symbol): uses GStudlyCapsExpand, mapping
+	underscores to hyphens. GSource* => <g-source*>.
+	(print-info): Gives more feedback when the bindings are being
+	created. This uses slib's printf.
+	(gwrap-helper): New argument HOW-WRAPPED. If not false, will cause
+	gwrap-helper to call print-info for the type.
+	(gwrap-helper-with-class): New argument HOW-WRAPPED, passed on to
+	gwrap-helper. Cleanups.
+	(gobject:gwrap-*): Pass appropriate values for HOW-WRAPPED.
+
+	* gw-gobject-spec.scm: use the new glib:type-cname->symbol-alist
+	to override scheme names for <gobject>, <gvalue>, <gclosure>, and
+	<gparam>. When wrapping g-source-set-closure, use the new name for
+	GSource (<g-source*>).
+
+	* defs-support.scm (register-type): Removed last argument relating
+	to information printing -- that's done in gw-spec-utils now.
+	(load-defs): When checking to see if a method has a bad name,
+	don't ignore asterisks at the end of the type name. Thus we avoid
+	creating methods for opaque pointers.
+
+2003-07-27  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject-primitives.[ch] (G_TYPE_BOXED_SCM): renamed
+	from G_TYPE_GBOXED_SCM. There have been other changes recently
+	that I haven't been putting in the changelogs...
+
+2003-08-26  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gw-utils.scm (function->method-public)
+	(functions->methods-public): Unecessary now, removed.
+	
+	* defs-support.scm (load-defs): Make sym_of_object and
+	sym_generic_name static.
+	(load-defs): Create generic functions immediatly instead of
+	setting the of-object procedure property.
+
+	* guile-gnome-gobject.c, guile-gnome-gobject.h
+	(scm_sys_function_to_method_public): New function.
+	
+	* defs-support.scm (recursive-type-find): Fixed behavior for empty
+	type-hashes.
+	
+	* defs-support.scm, gw-spec-utils.scm: Support for enums/flags
+	without gtype-id.
+
+	* Makefile.am (GUILE_FLAGS): New variable.
+
 2003-06-21  Andy Wingo  <wingo@pobox.com>
 
 	* gw-spec-utils.scm (gobject:gwrap-class): New function.

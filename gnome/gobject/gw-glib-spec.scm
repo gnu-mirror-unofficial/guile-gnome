@@ -1,4 +1,28 @@
-;;; -*-scheme-*-
+;; guile-gnome
+;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+
+;; This program is free software; you can redistribute it and/or    
+;; modify it under the terms of the GNU General Public License as   
+;; published by the Free Software Foundation; either version 2 of   
+;; the License, or (at your option) any later version.              
+;;                                                                  
+;; This program is distributed in the hope that it will be useful,  
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of   
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+;; GNU General Public License for more details.                     
+;;                                                                  
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, contact:
+;;
+;; Free Software Foundation           Voice:  +1-617-542-5942
+;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+;; Boston, MA  02111-1307,  USA       gnu@gnu.org
+
+;;; Commentary:
+;;
+;;A g-wrap specification for GLib 2.x.
+;;
+;;; Code:
 
 (define-module (gnome gobject gw-glib-spec)
   :use-module (g-wrap)
@@ -7,39 +31,46 @@
 
 (for-each
  (lambda (pair) (register-type "guile-gnome-gw-glib" (car pair) (cadr pair)))
- '(("gboolean" <gw:bool>)
+ '(;; fixed-point numbers
    ("char" <gw:char>)
    ("gchar" <gw:char>)
    ("guchar" <gw:unsigned-char>)
-   ("char*" <gw:mchars>)
-   ("gchar*" <gw:mchars>)
-   ("double" <gw:double>)
-   ("gdouble" <gw:double>)
-   ("float" <gw:float>)
-   ("gfloat" <gw:float>)
+   ("gint8" <gw:char>)
+   ("guint8" <gw:unsigned-char>)
    ("short" <gw:short>)
-   ("gint8" <gw:short>)
-   ("guint8" <gw:unsigned-short>)
+   ("gshort" <gw:short>)
+   ("gushort" <gw:unsigned-short>)
+   ("gint16" <gw:short>)
+   ("guint16" <gw:unsigned-short>)
    ("int" <gw:int>)
    ("gint" <gw:int>)
-   ("gint16" <gw:int>)
    ("guint" <gw:unsigned-int>)
-   ("guint16" <gw:unsigned-int>)
-
-   ("SCM" <gw:scm>) ; not really glib, but oh well
-
-   ("GQuark" <gw:unsigned-int>) ; need to wrap this one better
-
-   ("gssize" <gw:int>) ; fixme: system-dependant
-   ("gsize" <gw:unsigned-int>) ; fixme: system-dependant
-
-   ("gint32" <gw:long>) ; fixme: what about when longs are 64 bits?
+   ("gint32" <gw:long>) ; fixme: system-dependent
+   ("guint32" <gw:unsigned-long>) ; fixme: system-dependent
    ("glong" <gw:long>)
-   ("guint32" <gw:unsigned-long>)
-   ("gunichar" <gw:unsigned-long>)
    ("gulong" <gw:unsigned-long>)
    ("gint64" <gw:long-long>)
    ("guint64" <gw:unsigned-long-long>)
+
+   ;; floating-point numbers
+   ("float" <gw:float>)
+   ("gfloat" <gw:float>)
+   ("double" <gw:double>)
+   ("gdouble" <gw:double>)
+
+   ;; strings
+   ("char*" <gw:mchars>)
+   ("gchar*" <gw:mchars>)
+
+   ;; misc GLib types
+   ("GQuark" <gw:unsigned-int>) ; need to wrap this one better
+   ("gunichar" <gw:unsigned-long>) ; fixme: system-dependent
+   ("gboolean" <gw:bool>)
+   ("gssize" <gw:int>) ; fixme: system-dependant
+   ("gsize" <gw:unsigned-int>) ; fixme: system-dependant
+
+   ;; misc other types
+   ("SCM" <gw:scm>) ; not really glib, but oh well
    ("none" <gw:void>)
    ("void" <gw:void>)))
 
@@ -341,8 +372,12 @@
              (tmp-cursor (gw:gen-c-tmp "cursor")))
         
         (list
+         ;; Quiets gcc -Wall, although I think everything is covered here
+         c-var " = NULL;\n"
+         
          "{\n"
          "  SCM " tmp-rest-var " = " scm-var ";\n"
+         "  GSList *" tmp-cursor "= NULL;\n"
          "  " c-var "= NULL;\n"
          "  while(!SCM_NULLP(" tmp-rest-var ")\n"
          "        && (! " `(gw:error? ,status-var) "))\n"
@@ -357,17 +392,17 @@
          "\n"
          "    if(! " `(gw:error? ,status-var) " )\n"
          "    {\n"
-         "       " c-var " = g_slist_prepend (" c-var ", (gpointer)" tmp-sub-item-c-var");\n"
+         "       " tmp-cursor " = g_slist_prepend (" tmp-cursor ", (gpointer)" tmp-sub-item-c-var");\n"
          "    }\n"
          "    " tmp-rest-var " = SCM_CDR (" tmp-rest-var ");\n"
          "  }\n"
          "  if(!" `(gw:error? ,status-var) ")\n"
          "  {\n"
-         "    " c-var " = g_slist_reverse(" c-var ");\n"
+         "    " c-var " = g_slist_reverse(" tmp-cursor ");\n"
          "  }\n"
          "  else\n"
          "  {\n"
-         "    GSList * " tmp-cursor " = " c-var ";\n"
+         "    " tmp-cursor " = (GSList*)" c-var ";\n"
          "    while(" tmp-cursor ")\n"
          "    {\n"
          "      " sub-item-c-type " " tmp-sub-item-c-var ";\n"
@@ -378,7 +413,7 @@
              '())
          tmp-cursor " = " (string-append tmp-cursor "->next") ";\n"
          "    }\n"
-         "    g_slist_free(" c-var ");\n"
+         "    g_slist_free((GSList*)" c-var ");\n"
          "    " c-var " = NULL;\n"
          "  }\n"
          "}\n")))
@@ -395,7 +430,7 @@
              (sub-c->scm-ccg (gw:type-get-c->scm-ccg sub-type)))
         
         (list
-         "GSList * " tmp-rest-var " = " c-var ";\n"
+         (c-type-name-func typespec) " " tmp-rest-var " = " c-var ";\n"
          scm-var "= SCM_EOL;\n"
          "while(" tmp-rest-var " && (! " `(gw:error? ,status-var) "))\n"
          "{\n"
@@ -432,7 +467,7 @@
              (tmp-cursor (gw:gen-c-tmp "cursor")))
         (list
          "{\n"
-         "  GSList * " tmp-cursor " = " c-var ";\n"
+         "  " (c-type-name-func typespec) " " tmp-cursor " = " c-var ";\n"
          "  while(" tmp-cursor ")\n"
          "  {\n"
          "    " sub-item-c-type " " tmp-sub-item-c-var ";\n"
@@ -447,7 +482,7 @@
                  force?)
              (list "  if(" c-var ")\n"
                    "  {\n"
-                   "    g_slist_free(" c-var ");\n"
+                   "    g_slist_free((GSList*)" c-var ");\n"
                    "    " c-var " = NULL;\n"
                    "  }\n")
              '())

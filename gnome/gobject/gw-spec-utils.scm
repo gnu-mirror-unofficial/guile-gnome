@@ -1,13 +1,41 @@
-;; things that are useful to *-spec.scm g-wrap files.
+;; guile-gnome
+;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+
+;; This program is free software; you can redistribute it and/or    
+;; modify it under the terms of the GNU General Public License as   
+;; published by the Free Software Foundation; either version 2 of   
+;; the License, or (at your option) any later version.              
+;;                                                                  
+;; This program is distributed in the hope that it will be useful,  
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of   
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+;; GNU General Public License for more details.                     
+;;                                                                  
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, contact:
+;;
+;; Free Software Foundation           Voice:  +1-617-542-5942
+;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+;; Boston, MA  02111-1307,  USA       gnu@gnu.org
+
+;;; Commentary:
+;;
+;;Routines useful to *-spec.scm g-wrap files.
+;;
+;;; Code:
 
 (define-module (gnome gobject gw-spec-utils)
   :use-module (g-wrap)
   :use-module (g-wrap gw-wct-spec)
   :use-module (ice-9 optargs)
-  :export (glib:type-cname->symbol
+  :use-module (ice-9 slib)
+  :use-module (srfi srfi-13)
+  :export (glib:type-cname->symbol-alist
+           glib:type-cname->symbol
            glib:func-cname->symbol
            gobject:gwrap-set-all-types-used
            gobject:gwrap-helper
+           gobject:gwrap-helper-with-class
            gobject:gwrap-object
            gobject:gwrap-boxed
            gobject:gwrap-pointer
@@ -16,6 +44,8 @@
            gobject:gwrap-flags
            gobject:gwrap-enum
            gobject:gwrap-class))
+
+(require 'printf)
 
 (define (wrapset-get-types-used ws)
   (let ((rtd (record-type-descriptor ws)))
@@ -28,7 +58,7 @@
 ;; stuff) for types that are actually used in the api. some types,
 ;; however, do not show up in the api -- <gtk-hbox>, for instance. Of
 ;; course we want to be able to (make <gtk-hbox>), this function exists
-;; to sat that all of the types are used by the wrapset.
+;; to say that all of the types are used by the wrapset.
 (define (gobject:gwrap-set-all-types-used ws)
   (let ((gw-types-used (wrapset-get-types-used ws)))
     (for-each (lambda (pair)
@@ -37,116 +67,164 @@
                             (cdr pair)))
               (wrapset-get-wrapped-types ws))))
 
-;; (c-name->scm-name "GtkAccelGroup") => "gtk-accel-group"
-;; (c-name->scm-name "gtk_accel_group") => "gtk-accel-group"
-(define (c-name->scm-name cname)
-  (letrec ((schemify (lambda (lst last-lower)
-                       (if (null? lst)
-                           lst
-                           (if (char-upper-case? (car lst))
-                               (if last-lower
-                                   (cons #\- (cons (char-downcase (car lst))
-                                                   (schemify (cdr lst) #f)))
-                                   (cons (char-downcase (car lst))
-                                         (schemify (cdr lst) #f)))
-                               (case (car lst)
-                                 ((#\_) (cons #\- (schemify (cdr lst)
-                                                            #f)))
-                                 (else (cons (car lst) (schemify (cdr lst) #t)))))))))
-    (list->string (schemify (string->list cname) #f))))
+;; Based on code from slib's strcase.scm, written 1992 by Dirk
+;; Lutzebaeck (lutzeb@cs.tu-berlin.de). Public domain.
+;;
+;; We're tring to mimic the naming conventions of the C functions here.
+;; Normally a lower case letter preceded by one capital letter forces a
+;; hyphenation before the capital letter: GSource => g-source,
+;; GtkIMContext => gtk-im-context. However, a lower case letter preceded
+;; by exactly two capital letters that is not at the beginning of the
+;; string is treated specially: GtkHBox => gtk-hbox (as the C api does).
+(define (GStudlyCapsExpand nstr)
+  (do ((idx (+ -1 (string-length nstr)) (+ -1 idx)))
+      ((> 1 idx) (string-downcase nstr))
+    (cond ((and (> idx 2)
+                (char-lower-case? (string-ref nstr (+ -3 idx)))
+                (char-upper-case? (string-ref nstr (+ -2 idx)))
+                (char-upper-case? (string-ref nstr (+ -1 idx)))
+                (char-lower-case? (string-ref nstr idx)))
+           (set! idx (1- idx))
+           (set! nstr
+                 (string-append (substring nstr 0 (+ -1 idx))
+                                "-"
+                                (substring nstr (+ -1 idx)
+                                           (string-length nstr)))))
+          ((and (> idx 1)
+                (char-upper-case? (string-ref nstr (+ -1 idx)))
+                (char-lower-case? (string-ref nstr idx)))
+           (set! nstr
+                 (string-append (substring nstr 0 (+ -1 idx))
+                                "-"
+                                (substring nstr (+ -1 idx)
+                                           (string-length nstr)))))
+          ((and (char-lower-case? (string-ref nstr (+ -1 idx)))
+                (char-upper-case? (string-ref nstr idx)))
+           (set! nstr
+                 (string-append (substring nstr 0 idx)
+                                "-"
+                                (substring nstr idx
+                                           (string-length nstr))))))))
+
+;; Default name transformations can be overridden (e.g. "GObject" =>
+;; '<gobject>) by adding entries to this alist.
+(define glib:type-cname->symbol-alist '())
 
 ;; (glib:type-cname->symbol "GtkAccelGroup") => <gtk-accel-group>
+;; (glib:type-cname->symbol "GSource*") => <g-source*>
 (define (glib:type-cname->symbol cname)
-  (string->symbol (string-append "<" (c-name->scm-name cname) ">")))
+  (or (assoc-ref glib:type-cname->symbol-alist cname)
+      (string->symbol
+       (string-append
+        "<"
+        (string-trim-right
+         (GStudlyCapsExpand
+          ;; only change _ to -, other characters are not valid c names
+          (string-map (lambda (c) (if (eq? c #\_) #\- c)) cname))
+         #\-)
+        ">"))))
 
-;; (glib:type-cname->symbol "GtkAccelGroup") => gtk-accel-group
+;; (glib:type-cname->symbol "gtk_accel_group") => gtk-accel-group
 (define (glib:func-cname->symbol cname)
-  (string->symbol (c-name->scm-name cname)))
+  ;; only change _ to -, other characters are not valid c names
+  (string->symbol (string-map (lambda (c) (if (eq? c #\_) #\- c)) cname)))
+
+(define (print-info how-wrapped c-name scm-name ws)
+  (printf "%-8.8s|%-18.18s|%-25.25s|%-25.25s\n"
+          how-wrapped c-name scm-name (gw:wrapset-get-name ws)))
+
+(define (gwrap-helper ws ctype c-type-name-func scm->c-ccg c->scm-ccg c-destructor
+                       how-wrapped)
+  (define wrapped-type (gw:wrap-type ws (glib:type-cname->symbol ctype)))
+  
+  (define (typespec-options-parser options-form wrapset)
+    (let ((remainder options-form))
+      (set! remainder (delq 'const remainder))
+      (if (and (memq 'caller-owned remainder)
+               (memq 'callee-owned remainder))
+          (throw 'gw:bad-typespec
+                 "Bad gobject-based options form (caller and callee owned!)."
+                 options-form))
+      (if (not (or (memq 'caller-owned remainder)
+                   (memq 'callee-owned remainder)))
+          (set! options-form (cons 'caller-owned options-form)))
+      (set! remainder (delq 'caller-owned remainder))
+      (set! remainder (delq 'callee-owned remainder))
+      (set! remainder (delq 'null-ok remainder))
+      (if (null? remainder)
+          options-form
+          (throw 'gw:bad-typespec
+                 "Bad gobject-based options form - spurious options: "
+                 remainder))))
+  
+  (define (pre-call-arg-ccg param status-var)
+    (let* ((scm-name (gw:param-get-scm-name param))
+           (c-name (gw:param-get-c-name param))
+           (typespec (gw:param-get-typespec param)))
+      (list
+       (scm->c-ccg c-name scm-name typespec status-var)
+       "if(" `(gw:error? ,status-var type) ")"
+       `(gw:error ,status-var arg-type)
+       "else if(" `(gw:error? ,status-var range) ")"
+       `(gw:error ,status-var arg-range))))
+  
+  (define (call-ccg result func-call-code status-var)
+    (list (gw:result-get-c-name result) " = " func-call-code ";\n"))
+  
+  (define (post-call-arg-ccg param status-var)
+    (let* ((c-name (gw:param-get-c-name param))
+           (typespec (gw:param-get-typespec param)))
+      (c-destructor c-name typespec status-var #f)))
+  
+  (define (post-call-result-ccg result status-var)
+    (let* ((scm-name (gw:result-get-scm-name result))
+           (c-name (gw:result-get-c-name result))
+           (typespec (gw:result-get-typespec result)))
+      (list
+       (c->scm-ccg scm-name c-name typespec status-var)
+       (c-destructor c-name typespec status-var #f))))
+  
+  (gw:type-set-c-type-name-func! wrapped-type c-type-name-func)
+  (gw:type-set-typespec-options-parser! wrapped-type typespec-options-parser)
+  
+  (gw:type-set-scm->c-ccg! wrapped-type scm->c-ccg)
+  (gw:type-set-c->scm-ccg! wrapped-type c->scm-ccg)
+  (gw:type-set-c-destructor! wrapped-type c-destructor)  
+  
+  (gw:type-set-pre-call-arg-ccg! wrapped-type pre-call-arg-ccg)
+  (gw:type-set-call-ccg! wrapped-type call-ccg)
+  (gw:type-set-post-call-arg-ccg! wrapped-type post-call-arg-ccg)
+  (gw:type-set-post-call-result-ccg! wrapped-type post-call-result-ccg)
+  
+  (if how-wrapped
+      (print-info how-wrapped ctype (glib:type-cname->symbol ctype) ws))
+
+  wrapped-type)
+(define gobject:gwrap-helper gwrap-helper)
 
 (define (gwrap-helper-with-class ws gtype-id ctype c-type-name-func
-                                 scm->c-ccg c->scm-ccg c-destructor)
-  (if (not (and (string? gtype-id) (string? ctype) (closure? c-type-name-func)
-                (closure? scm->c-ccg) (closure? c->scm-ccg) (closure? c-destructor)))
+                                  scm->c-ccg c->scm-ccg c-destructor how-wrapped)
+  (if (not (and (string? gtype-id)
+                (string? ctype)
+                (closure? c-type-name-func)
+                (closure? scm->c-ccg)
+                (closure? c->scm-ccg)
+                (closure? c-destructor)))
       (error "Bad arguments to gwrap-helper-with-class."))
-  (let ((t (gwrap-helper ws ctype c-type-name-func scm->c-ccg c->scm-ccg c-destructor)))
+  (let ((t (gwrap-helper ws ctype c-type-name-func scm->c-ccg c->scm-ccg
+                         c-destructor how-wrapped))
+        (type-string (symbol->string (glib:type-cname->symbol ctype))))
     (gw:type-set-global-initializations-ccg!
      t
      (lambda (type client-wrapset status-var)
        (if client-wrapset
-           (list "scm_c_define (\"" (symbol->string (glib:type-cname->symbol ctype)) "\",\n"
+           (list "scm_c_define (\"" type-string "\",\n"
                  "              scm_call_1 (scm_sym_gtype_to_class,\n"
                  "                          scm_c_register_gtype (" gtype-id ")));\n"
-                 "scm_c_export (\"" (symbol->string (glib:type-cname->symbol ctype)) "\", NULL);\n")
+                 "scm_c_export (\"" type-string "\", NULL);\n")
            '())))
     t))
-
-(define* (gwrap-helper ws ctype c-type-name-func scm->c-ccg c->scm-ccg c-destructor
-                       #:key (type-sym #f))
-  (let ((type-sym (or type-sym (glib:type-cname->symbol ctype))))
-    (define wrapped-type (gw:wrap-type ws type-sym))
-
-    (define (typespec-options-parser options-form wrapset)
-      (let ((remainder options-form))
-        (set! remainder (delq 'const remainder))
-        (if (and (memq 'caller-owned remainder)
-                 (memq 'callee-owned remainder))
-            (throw 'gw:bad-typespec
-                   "Bad gobject-based options form (caller and callee owned!)."
-                   options-form))
-        (if (not (or (memq 'caller-owned remainder)
-                     (memq 'callee-owned remainder)))
-            (set! options-form (cons 'caller-owned options-form)))
-        (set! remainder (delq 'caller-owned remainder))
-        (set! remainder (delq 'callee-owned remainder))
-        (set! remainder (delq 'null-ok remainder))
-        (if (null? remainder)
-            options-form
-            (throw 'gw:bad-typespec
-                   "Bad gobject-based options form - spurious options: "
-                   remainder))))
-    
-    (define (pre-call-arg-ccg param status-var)
-      (let* ((scm-name (gw:param-get-scm-name param))
-             (c-name (gw:param-get-c-name param))
-             (typespec (gw:param-get-typespec param)))
-        (list
-         (scm->c-ccg c-name scm-name typespec status-var)
-         "if(" `(gw:error? ,status-var type) ")"
-         `(gw:error ,status-var arg-type)
-         "else if(" `(gw:error? ,status-var range) ")"
-         `(gw:error ,status-var arg-range))))
-    
-    (define (call-ccg result func-call-code status-var)
-      (list (gw:result-get-c-name result) " = " func-call-code ";\n"))
-    
-    (define (post-call-arg-ccg param status-var)
-      (let* ((c-name (gw:param-get-c-name param))
-             (typespec (gw:param-get-typespec param)))
-        (c-destructor c-name typespec status-var #f)))
-    
-    (define (post-call-result-ccg result status-var)
-      (let* ((scm-name (gw:result-get-scm-name result))
-             (c-name (gw:result-get-c-name result))
-             (typespec (gw:result-get-typespec result)))
-        (list
-         (c->scm-ccg scm-name c-name typespec status-var)
-         (c-destructor c-name typespec status-var #f))))
-    
-    (gw:type-set-c-type-name-func! wrapped-type c-type-name-func)
-    (gw:type-set-typespec-options-parser! wrapped-type typespec-options-parser)
-    
-    (gw:type-set-scm->c-ccg! wrapped-type scm->c-ccg)
-    (gw:type-set-c->scm-ccg! wrapped-type c->scm-ccg)
-    (gw:type-set-c-destructor! wrapped-type c-destructor)  
-    
-    (gw:type-set-pre-call-arg-ccg! wrapped-type pre-call-arg-ccg)
-    (gw:type-set-call-ccg! wrapped-type call-ccg)
-    (gw:type-set-post-call-arg-ccg! wrapped-type post-call-arg-ccg)
-    (gw:type-set-post-call-result-ccg! wrapped-type post-call-result-ccg)
-
-    wrapped-type))
-
-(define gobject:gwrap-helper gwrap-helper)
+(define gobject:gwrap-helper-with-class gwrap-helper-with-class)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Wrap objects.
@@ -174,15 +252,17 @@
      "else\n"
      "  " scm-var " = scm_c_gtype_instance_to_scm ((GTypeInstance *)" c-var ");\n"
      (if (memq 'caller-owned (gw:typespec-get-options typespec))
-         '()
-         (list "if (" c-var ") g_object_ref ((GObject*)" c-var ");\n"))))
+         ;; the _to_scm will ref the object; if the function is a
+         ;; constructor, we don't need that ref
+         (list "if (" c-var ") g_object_unref ((GObject*)" c-var ");\n")
+         '())))
   
   (define (c-destructor c-var typespec status-var force?)
     ;; our temp vars are just pointers, there's nothing to clean up
     '())
 
-  (format #f "Wrapping type ~A as a GObject...\n" ctype)
-  (gwrap-helper-with-class ws gtype-id ctype c-type-name-func scm->c-ccg c->scm-ccg c-destructor))
+  (gwrap-helper-with-class ws gtype-id ctype c-type-name-func scm->c-ccg
+                           c->scm-ccg c-destructor "GObject"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Wrap boxed types, represented on the scheme side by GValues.
@@ -222,8 +302,8 @@
     ;; our temp vars are just pointers, there's nothing to clean up
     '())
   
-  (format #f "Wrapping type ~A as a GBoxed...\n" ctype)
-  (gwrap-helper-with-class ws gtype-id ctype c-type-name-func scm->c-ccg c->scm-ccg c-destructor))
+  (gwrap-helper-with-class ws gtype-id ctype c-type-name-func scm->c-ccg
+                           c->scm-ccg c-destructor "GBoxed"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Wrap pointers. This is an opaque value type; scheme doesn't know what
@@ -263,19 +343,16 @@
   (define (c-destructor c-var typespec status-var force?)
     '())
   
-  (format #f "Wrapping type ~A as a gpointer...\n" ctype)
-
-  ;; don't create the gtype class? dunno. this function is often called
-  ;; with gtype-id == G_TYPE_POINTER.
-  (gwrap-helper ws ctype c-type-name-func scm->c-ccg c->scm-ccg c-destructor))
+  (gwrap-helper ws ctype c-type-name-func scm->c-ccg c->scm-ccg c-destructor
+                "GPointer"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Wrap interfaces, for now just as opaque pointers...
+;; Wrap interfaces. We only understand interfaces implemented by objects.
 (define (gobject:gwrap-interface ws ctype gtype-id)
   (define (c-type-name-func typespec)
     (if (memq 'const (gw:typespec-get-options typespec))
-        (string-append "const " ctype "*")
-        (string-append ctype "*")))
+        (string-append "const " ctype " *")
+        (string-append ctype " *")))
 
   (define (scm->c-ccg c-var scm-var typespec status-var)
     (list
@@ -285,32 +362,34 @@
           "  " c-var " = NULL;\n"
           "else ")
          '())
-     "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
-     "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " gtype-id "))\n"
-     "  " c-var " = (" (c-type-name-func typespec) ") g_value_get_pointer ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
-     "else {\n"
-     "  " c-var " = NULL;\n"
+     "if (!(" c-var " = (" (c-type-name-func typespec) ") scm_c_scm_to_gtype_instance (" scm-var ", G_TYPE_OBJECT)))\n"
      `(gw:error ,status-var type ,scm-var)
-     "}\n"))
+     "if (!g_type_is_a (G_TYPE_FROM_INSTANCE (" c-var "), " gtype-id "))\n"
+     `(gw:error ,status-var type ,scm-var)
+     ))
   
   (define (c->scm-ccg scm-var c-var typespec status-var)
     (list
-     "if (" c-var " == NULL) {\n"
+     "if (" c-var " == NULL)\n"
      "  " scm-var " = SCM_BOOL_F;\n"
-     "} else {\n"
-     "  " scm-var " = scm_c_make_gvalue (" gtype-id ");\n"
-     "  g_value_set_pointer ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n"
-     "}\n"))
+     "else\n"
+     "  " scm-var " = scm_c_gtype_instance_to_scm ((GTypeInstance *)" c-var ");\n"
+     (if (memq 'caller-owned (gw:typespec-get-options typespec))
+         ;; the _to_scm will ref the object; if the function is a
+         ;; constructor, we don't need that ref
+         (list "if (" c-var ") g_object_unref ((GObject*)" c-var ");\n")
+         '())))
   
   (define (c-destructor c-var typespec status-var force?)
+    ;; our temp vars are just pointers, there's nothing to clean up
     '())
-  
-  (format #f "Wrapping type ~A as a gpointer...\n" ctype)
-  (gwrap-helper-with-class ws gtype-id ctype c-type-name-func scm->c-ccg c->scm-ccg c-destructor))
+
+  (gwrap-helper-with-class ws gtype-id ctype c-type-name-func scm->c-ccg
+                           c->scm-ccg c-destructor "GInterface"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Wrap flags, represented on the scheme side as GValues.
-(define (gobject:gwrap-flags ws ctype gtype-id)
+(define (gobject-wrap-flags ws ctype gtype-id)
   ;; flags are just guints...
   (define (c-type-name-func typespec) ctype)
 
@@ -338,15 +417,33 @@
   (define (c-destructor c-var typespec status-var force?)
     '())
   
-  (format #f "Wrapping type ~A as a GFlags...\n" ctype)
-  (gwrap-helper-with-class ws gtype-id ctype c-type-name-func scm->c-ccg c->scm-ccg c-destructor))
+  (gwrap-helper-with-class ws gtype-id ctype c-type-name-func scm->c-ccg
+                           c->scm-ccg c-destructor "GFlags"))
 
+(define (gw-wrap-flags ws ctype values)
+  (let* ((enum (gw:wrap-enumeration ws (string->symbol ctype)
+                                    ctype))
+         (enum-c-sym
+          (gw:any-str->c-sym-str (symbol->string (gw:type-get-name enum))))
+         (val-alist (map (lambda (l)
+                           (cons (string->symbol (caadr l)) 
+                                 (cadr (cadr l))))
+                         values)))
+    (print-info "C Flags" ctype ctype ws)
+    enum))
+
+
+(define (gobject:gwrap-flags ws ctype gtype-id . args)
+  (if gtype-id
+      (gobject-wrap-flags ws ctype gtype-id)
+      (gw-wrap-flags ws ctype (car args))))
+  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Wrap enums, just like flags.
-(define (gobject:gwrap-enum ws ctype gtype-id)
+(define (gobject:gwrap-enum ws ctype gtype-id . args)
   ;; enums are just guints...
   (define (c-type-name-func typespec) ctype)
-
+  
   (define (scm->c-ccg c-var scm-var typespec status-var)
     (list
      "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
@@ -369,10 +466,24 @@
   (define (c-destructor c-var typespec status-var force?)
     '())
   
-  (format #f "Wrapping type ~A as a GEnum...\n" ctype)
-  (gwrap-helper-with-class ws gtype-id ctype c-type-name-func scm->c-ccg c->scm-ccg c-destructor))
+  (cond
+   (gtype-id
+    (gwrap-helper-with-class ws gtype-id ctype c-type-name-func scm->c-ccg
+                             c->scm-ccg c-destructor "GEnum"))
+   (else
+    ;; Wrap enum without GType
+    (print-info "C Enum" ctype ctype ws)
+    (let ((values (car args))
+          (enum (gw:wrap-enumeration ws (string->symbol ctype) ctype)))
+      (for-each 
+       (lambda (l)
+         (gw:enum-add-value! enum (cadr (cadr l)) (string->symbol (caadr l))))
+       values)
+      enum))))
+  
 
 (define (gobject:gwrap-opaque-pointer ws ctype)
+  ;; don't print, defs-support writes a list of these to the log file
   (gw:wrap-as-wct ws (glib:type-cname->symbol ctype)
                   ctype (string-append "const " ctype)))
 
@@ -381,10 +492,11 @@
    ws ctype
    (lambda (typespec) (list ctype "*"))
    (lambda (c-var scm-var typespec status-var)
-     (list "if (g_type_is_a (SCM_SMOB_DATA (scm_slot_ref_using_class (" scm-var ", " scm-var ", scm_sym_gtype)), " gtype-id "))\n"
-           "  " c-var " = (" ctype "*) SCM_SMOB_DATA (scm_slot_ref_using_class (" scm-var ", " scm-var ", scm_sym_gtype_class));\n"
+     (list "if (g_type_is_a (SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype)), " gtype-id "))\n"
+           "  " c-var " = (" ctype "*) SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype_class));\n"
            "else " `(gw:error ,status-var type ,scm-var)))
    (lambda (scm-var c-var typespec status-var) ; not ideal but ok
      (list scm-var " = scm_c_gtype_lookup_class (G_TYPE_FROM_CLASS (" c-var "));\n"))
    (lambda (c-var typespec status-var force?)
-     (list))))
+     (list))
+   "GObjectClass"))

@@ -1,0 +1,67 @@
+;; -*- scheme -*-
+;; guile-gnome
+;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+
+;; This program is free software; you can redistribute it and/or    
+;; modify it under the terms of the GNU General Public License as   
+;; published by the Free Software Foundation; either version 2 of   
+;; the License, or (at your option) any later version.              
+;;                                                                  
+;; This program is distributed in the hope that it will be useful,  
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of   
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+;; GNU General Public License for more details.                     
+;;                                                                  
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, contact:
+;;
+;; Free Software Foundation           Voice:  +1-617-542-5942
+;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+;; Boston, MA  02111-1307,  USA       gnu@gnu.org
+
+;;; Commentary:
+;;
+;;Custom wrapper definitions.
+;;
+;;; Code:
+
+(define-method get_iter_at_marker
+  (of-object "GtkSourceBuffer")
+  (c-name "_wrap_gtk_source_buffer_get_iter_at_marker")
+  (overrides "gtk_source_buffer_get_iter_at_marker")
+  (return-type "GtkTextIter*")
+  (parameters
+    '("GtkSourceMarker*" "marker")
+  )
+)
+
+(define-function gtk_source_iter_backward_search
+  (c-name "_wrap_gtk_source_iter_backward_search")
+  (overrides "gtk_source_iter_backward_search")
+  (return-type "SCM")
+  (parameters
+    '("const-GtkTextIter*" "iter")
+    '("const-gchar*" "str")
+    '("GtkSourceSearchFlags" "flags")
+    '("const-GtkTextIter*" "limit")
+  )
+)
+
+(define-function gtk_source_iter_find_matching_bracket
+  (c-name "_wrap_gtk_source_iter_find_matching_bracket")
+  (overrides "gtk_source_iter_find_matching_bracket")
+  (return-type "GtkTextIter*")
+  (parameters '("GtkTextIter*" "bracket")))
+
+
+(ignore-glob  "*_get_type"
+              "_*"
+              "*_ref"
+              "*_unref"
+              "*_copy"
+              "*_free"
+              "*_newv"
+              "*_valist"
+              "*_setv"
+              "*_foreach"
+              "*_valist")

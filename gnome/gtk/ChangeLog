@@ -1,3 +1,106 @@
+2004-01-14  Andy Wingo  <wingo@pobox.com>
+
+	* gtk-support.c (_wrap_gtk_tree_model_iter_children): Return a
+	list of all children instead of the first sibling. Makes it
+	slower, but integrates better with higher-level procedures like
+	map and for-each.
+	(_wrap_gtk_tree_model_iter_parent): New wrapper.
+
+	* glade-support.c (handle_read_error): New function.
+	(connect_many): Use scm_internal_catch with handle_read_error
+	around scm_c_read_string.
+
+2004-01-13  Andy Wingo  <wingo@pobox.com>
+
+	* generics.scm: Removed. All functions added directly to gtk.scm.
+
+2003-12-13  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* Makefile.am (GDKMODULES): Added gdk-event.scm.
+
+2003-12-03  Andy Wingo  <wingo@pobox.com>
+
+	* gdk-support.c (gdk_event_to_event_struct): Wrap button and
+	crossing events.
+
+2003-11-25  Andy Wingo  <wingo@pobox.com>
+
+	* gtk-support.[ch]: Added accessors for the ok and cancel buttons
+	in file selections. Note that this API will be deprecated in
+	Gtk+-2.4.
+
+2003-11-18  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gtk-tree-model.c (guile_gtk_generic_tree_model_get_value):
+	Call scm_c_scm_to_gvalue instead of rolling our own conversion --
+	allows gboxed-scm tree columns.
+
+2003-11-02  Andy Wingo  <wingo@pobox.com>
+
+	* generics.scm (gtk-text-buffer-get-bounds): Remove, implemented
+	in C now.
+
+2003-10-29  Andy Wingo  <wingo@pobox.com>
+
+	* generics.scm (initialize): Override initialize for
+	<gtk-message-dialog>, because the API is broken (the constructor
+	takes varargs, and there's no property for the message text).
+
+	* glade-support.c (guile_glade_custom_handler): Don't expect a
+	procedure from the widget handler, only a widget. So if you want
+	to call a procedure, put it in parentheses.
+
+2003-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gw-glade-spec.scm: Set the custom handler on library init.
+
+	* glade-support.c (connect_many): Use scm_c_eval_str instead of
+	scm_c_lookup; this allows lambda expressions, etc.
+	(guile_glade_custom_handler): New function, handles glade's custom
+	widget facility.
+
+	* gw-gdk-spec.scm: Fix GdkEvent wrappers to properly type the
+	pointers.
+
+2003-10-16  Andy Wingo  <wingo@pobox.com>
+
+	* generics.scm (gtk-text-buffer-create-tag): New function.
+	(create-tag): New generic function.
+	(gtk-text-buffer-get-bounds): New function.
+	(get-bounds): New generic function.
+
+	* gtk-support.[ch]: New wrapper functions for GtkTextBuffer
+	operations, as well as GtkTreeSelection::get_selected.
+
+	* gw-gtk-spec.scm: Add a custom type wrapper for GtkTreePath.
+	Ideally these should also be available to gvalue->scm, but that's
+	not the case now.
+
+2003-10-12  Andy Wingo  <wingo@pobox.com>
+
+	* generics.scm: New generic functions to support the Guile tree
+	model. 
+	(gtk-tree-or-list-store-set): Wrap the one-value
+	gtk-{list|tree}-store-set-value with a multi-arg equivalent.
+	(set): Wrap the preceding function as a method for generic set.
+	* gtk-support.[ch]: New files.
+	* guile-gtk-tree-model.[ch]: New files, implement a tree model
+	interface for guile.
+	
+2003-10-01  Andy Wingo  <wingo@pobox.com>
+
+	* glade-support.[ch]: New files. Contains custom wrappers for
+	glade_xml_new_from_buffer, glade_xml_signal_connect, and
+	glade_xml_signal_autoconnect.
+	* Makefile.am: Support the glade build.
+	* generics.scm: Remove functions->methods-public.
+	* gw-glade-spec.scm: New file.
+
+2003-08-26  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* Makefile.am (GTKMODULES): Don't add generics.scm, as it's no
+	longer needed.
+
 2003-05-08  Andy Wingo  <wingo@pobox.com>
 
 	* event-repl.scm: New file, from gnome-guile 0.10.0.

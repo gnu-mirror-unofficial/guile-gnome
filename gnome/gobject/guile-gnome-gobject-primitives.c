@@ -1,4 +1,27 @@
 /* -*- Mode: C; c-basic-offset: 4 -*- */
+/* guile-gnome
+ * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+ *
+ * guile-gnome-gobject-primitives.c: Primitive routines for the GObject wrapper
+ *
+ * This program is free software; you can redistribute it and/or    
+ * modify it under the terms of the GNU General Public License as   
+ * published by the Free Software Foundation; either version 2 of   
+ * the License, or (at your option) any later version.              
+ *                                                                  
+ * This program is distributed in the hope that it will be useful,  
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of   
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+ * GNU General Public License for more details.                     
+ *                                                                  
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, contact:
+ *
+ * Free Software Foundation           Voice:  +1-617-542-5942
+ * 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+ * Boston, MA  02111-1307,  USA       gnu@gnu.org
+ */
+
 
 #include <stdio.h>
 #include <guile-gnome-gobject-primitives.h>
@@ -10,17 +33,18 @@
 
 
 SCM scm_class_gtype_class;
-SCM scm_gobject_module;
 SCM scm_sym_gtype_instance_write;
 SCM scm_sym_make_class;
 SCM scm_sym_class_slot_ref;
 SCM scm_sym_class_slot_set_x;
-scm_bits_t scm_tc16_gtype;
-scm_bits_t scm_tc16_gvalue;
-scm_bits_t scm_tc16_gtype_class;
-scm_bits_t scm_tc16_gtype_instance;
+scm_t_bits scm_tc16_gtype;
+scm_t_bits scm_tc16_gvalue;
+scm_t_bits scm_tc16_gvalue_array;
+scm_t_bits scm_tc16_gtype_class;
+scm_t_bits scm_tc16_gtype_instance;
 SCM scm_gsignal_vtable;
 SCM scm_gparam_spec_vtable;
+static SCM scm_sym_class_redefinition;
 
 
 
@@ -30,19 +54,20 @@ static GQuark quark_pspec_struct = 0;
 static GQuark quark_class = 0;
 static GQuark quark_type = 0;
 static GQuark quark_instance_wrapper = 0;
+static GQuark quark_primitive_instance_wrapper = 0;
 
 /* #define DEBUG_PRINT */
 
 #ifdef DEBUG_PRINT
-#define DEBUG_ALLOC(str, args...) g_print (str "\n", ##args)
+#define DEBUG_ALLOC(str, args...) g_print ("I: " str "\n", ##args)
 #else
 #define DEBUG_ALLOC(str, args...)
 #endif
 
 
 
-SCM_SYMBOL  (sym_gtype_instance,"gtype-instance");
 SCM_SYMBOL  (sym_gruntime_error,"gruntime-error");
+SCM_SYMBOL  (sym_gsignals,	"gsignals");
 
 SCM_KEYWORD (k_name,		"name");
 SCM_KEYWORD (k_class,		"class");
@@ -56,9 +81,10 @@ SCM_KEYWORD (k_read_only,	"read-only");
 SCM_KEYWORD (k_init_value,	"init-value");
 SCM_KEYWORD (k_value,		"value");
 SCM_KEYWORD (k_metaclass,	"metaclass");
+SCM_KEYWORD (k_gtype,		"gtype");
 
 SCM_GLOBAL_SYMBOL  (scm_sym_gtype,		"gtype");
-SCM_GLOBAL_SYMBOL  (scm_sym_gtype_class,		"gtype-class");
+SCM_GLOBAL_SYMBOL  (scm_sym_gtype_class,	"gtype-class");
 SCM_GLOBAL_SYMBOL  (scm_sym_gtype_instance,	"gtype-instance");
 SCM_GLOBAL_SYMBOL  (scm_sym_pspec_struct,	"pspec-struct");
 
@@ -82,6 +108,10 @@ sink_object (GObject *obj)
 	    if (g_type_is_a (G_OBJECT_TYPE (obj),
                              g_array_index (sink_funcs, SinkFunc, i).type)) {
 		g_array_index (sink_funcs, SinkFunc, i).sinkfunc (obj);
+
+                DEBUG_ALLOC ("sunk gobject (%p) of type %s, ->%u",
+                             obj, g_type_name (G_TYPE_FROM_INSTANCE (obj)),
+                             obj->ref_count);
 		break;
 	    }
 	}
@@ -131,6 +161,9 @@ post_make_object (GObject *obj)
 	    if (g_type_is_a (G_OBJECT_TYPE (obj),
                              g_array_index (post_make_funcs, PostMakeFunc, i).type)) {
 		g_array_index (post_make_funcs, PostMakeFunc, i).postmakefunc (obj);
+                DEBUG_ALLOC ("post-made gobject (%p) of type %s, ->%u",
+                             obj, g_type_name (G_TYPE_FROM_INSTANCE (obj)),
+                             obj->ref_count);
 		break;
 	    }
 	}
@@ -210,8 +243,9 @@ SCM_DEFINE (scm_gboxed_scm_primitive_new, "gboxed-scm-primitive-new", 1, 0, 0,
 {
     SCM retval;
 
-    retval = scm_c_make_gvalue (G_TYPE_GBOXED_SCM);
-    g_value_set_boxed ((GValue *) SCM_SMOB_DATA (retval), scm_value); 
+    retval = scm_c_make_gvalue (G_TYPE_BOXED_SCM);
+    g_value_set_boxed ((GValue *) SCM_SMOB_DATA (retval),
+                       GINT_TO_POINTER (SCM_UNPACK (scm_value))); 
 
     return retval;
 }
@@ -223,9 +257,12 @@ SCM_DEFINE (scm_gboxed_scm_primitive_to_scm, "gboxed-scm-primitive->scm", 1, 0, 
 #define FUNC_NAME s_scm_gboxed_scm_primitive_to_scm
 {
     GValue *gvalue;
+    gpointer p;
 
     SCM_VALIDATE_GVALUE_TYPE_COPY (1, value, G_TYPE_BOXED, gvalue);
-    return g_value_get_boxed (gvalue);
+    p = g_value_get_boxed (gvalue);
+    /* prevent segfaults on uninitialized gboxed-scm values */
+    return p ? SCM_PACK (GPOINTER_TO_INT (p)) : SCM_UNSPECIFIED;
 }
 #undef FUNC_NAME
 
@@ -254,7 +291,7 @@ scm_gtype_class_print (SCM smob, SCM port, scm_print_state *pstate)
 {
     GTypeClass *gtype_class = (GTypeClass*) SCM_SMOB_DATA (smob);
 
-    scm_puts ("#<gtype-class ", port);
+    scm_puts ("#<%gtype-class ", port);
     scm_puts (g_type_name (G_TYPE_FROM_CLASS (gtype_class)), port);
     scm_puts (">", port);
 
@@ -263,26 +300,24 @@ scm_gtype_class_print (SCM smob, SCM port, scm_print_state *pstate)
 
 
 
+/* A GTypeInstance is a SMOB whose first word is the GTypeInstance* pointer, and
+   whose second word is nothing. */
 static size_t
 scm_gtype_instance_free (SCM smob)
 {
     GTypeInstance *instance = (GTypeInstance *) SCM_SMOB_DATA (smob);
-    void (*finalize_func) (SCM) = (void (*) (SCM)) SCM_CELL_WORD_2 (smob);
+
+    SCM_SET_SMOB_DATA (smob, NULL);
 
     if (!instance)
 	return 0;
 
-    if (finalize_func) {
-        DEBUG_ALLOC ("calling finalize_func for %s %p",
-                     g_type_name (G_TYPE_FROM_INSTANCE (instance)),
-                     instance);
-	finalize_func (smob);
-	return 0;
-    }
-
     switch (G_TYPE_FUNDAMENTAL (G_TYPE_FROM_INSTANCE (instance))) {
     case G_TYPE_OBJECT:
-        DEBUG_ALLOC ("g_object_unref (%p) %u->%u", instance,
+        /* unset the cached wrapper data, if there was any */
+        g_object_set_qdata ((GObject*)instance, quark_instance_wrapper, NULL);
+        g_object_set_qdata ((GObject*)instance, quark_primitive_instance_wrapper, NULL);
+        DEBUG_ALLOC ("g_object_unref (%p) for SMOB %p: %u->%u", instance, smob,
                      ((GObject*)instance)->ref_count,
                      ((GObject*)instance)->ref_count - 1);
 	g_object_unref (G_OBJECT (instance));
@@ -302,6 +337,19 @@ scm_gtype_instance_free (SCM smob)
 
     return 0;
 }
+
+SCM_DEFINE (scm_sys_gtype_instance_primitive_destroy_x, "%gtype-instance-primitive-destroy!", 1, 0, 0,
+	    (SCM instance),
+	    "")
+#define FUNC_NAME s_scm_sys_gtype_instance_primitive_destroy_x
+{
+    SCM_VALIDATE_GTYPE_INSTANCE (1, instance);
+
+    scm_gtype_instance_free (instance);
+
+    return SCM_UNSPECIFIED;
+}
+#undef FUNC_NAME
 
 static int
 scm_gtype_instance_print (SCM smob, SCM port, scm_print_state *pstate)
@@ -325,7 +373,7 @@ scm_gvalue_print (SCM smob, SCM port, scm_print_state *pstate)
 
     class = g_type_get_qdata (G_VALUE_TYPE (value), quark_class);
     if (!class)
-	class = scm_c_register_gtype (G_VALUE_TYPE (value));
+    class = scm_c_register_gtype (G_VALUE_TYPE (value));
 
     scm_call_3 (scm_sym_gtype_instance_write, class, smob, port);
     return 1;
@@ -336,20 +384,46 @@ scm_gvalue_free (SCM smob)
 {
     GValue *value = (GValue *) SCM_SMOB_DATA (smob);
 
+    DEBUG_ALLOC ("freeing SMOB %p's GValue %p", smob, value);
     g_value_unset (value);
-    scm_must_free (value);
+    scm_gc_free (value, sizeof (GValue), "%gvalue");
 
     return 0;
 }
 
-static SCM
-slot_definition_using_name (SCM class, SCM slot_name)
+static int
+scm_gvalue_array_print (SCM smob, SCM port, scm_print_state *pstate)
 {
-    register SCM slots = SCM_SLOT (class, scm_si_getters_n_setters);
-    for (; SCM_NIMP (slots); slots = SCM_CDR (slots))
-	if (SCM_CAAR (slots) == slot_name)
-	    return SCM_CAR (slots);
-    return SCM_BOOL_F;
+    GValueArray *varray = (GValueArray *) SCM_SMOB_DATA (smob);
+    int i;
+    const char *prefix = "#<<gvalue-array> (";
+    const char *suffix = ")>";
+
+    scm_c_write (port, prefix, strlen(prefix));
+    for (i = 0; i < varray->n_values; i++)
+    {
+        GValue *val = g_value_array_get_nth(varray, i);
+        SCM vsmob;
+
+        /* [rotty:] I'm not sure this is really OK. It should be, if
+         * the SMOB destructor is not called. */
+        SCM_NEWSMOB (vsmob, scm_tc16_gvalue, val);
+        scm_gvalue_print (vsmob, port, pstate);
+    }
+    scm_c_write (port, suffix, strlen(suffix));
+
+    return 1;
+}
+
+static size_t
+scm_gvalue_array_free (SCM smob)
+{
+    GValueArray *varray = (GValueArray *) SCM_SMOB_DATA (smob);
+    scm_gc_unregister_collectable_memory (varray, sizeof (GValueArray),
+                                          "%make-gvalue-array");
+    g_value_array_free (varray);
+
+    return 0;
 }
 
 
@@ -364,8 +438,8 @@ scm_gclosure_marshal (GClosure *closure, GValue *return_value,
     SCM params = SCM_EOL, retval;
     guint i;
 
-    /* FIXME: use scm_c_gtype_intance_to_scm here, somehow -- although that
-     * function is defined in -gobject.c... */
+    /* Only deals with <gvalue>s. Conversion to and from native scheme values is
+     * done at a higher level (see gobject.scm) */
 
     for (i = 0; i < n_param_values; i++) {
 	const GValue *current = &param_values [i];
@@ -420,16 +494,20 @@ SCM_DEFINE (scm_gclosure_primitive_new, "gclosure-primitive-new", 1, 0, 0,
  
     SCM_VALIDATE_PROC (1, func);
 
+    /* <gclosure> instances fail to get unreffed, I think due to Guile's
+       conservative GC. So to compensate we don't actually hold any references
+       on the closure itself -- we allow it to remain floating. */
     closure = g_closure_new_simple (sizeof (GuileGClosure), NULL);
 
-    DEBUG_ALLOC ("  protecting closure %p of GuileGClosure %p", func, closure);
+    DEBUG_ALLOC ("  protecting new closure %p of GuileGClosure %p", func, closure);
     ((GuileGClosure *) closure)->func = scm_gc_protect_object (func);
 
     g_closure_set_marshal (closure, scm_gclosure_marshal);
-    g_closure_add_finalize_notifier (closure, NULL, free_closure);
+    g_closure_add_invalidate_notifier (closure, NULL, free_closure);
 
     retval = scm_c_make_gvalue (G_TYPE_CLOSURE);
-    g_value_set_boxed ((GValue *) SCM_SMOB_DATA (retval), closure);
+    g_value_set_static_boxed ((GValue *) SCM_SMOB_DATA (retval), closure);
+    /* closure->ref_count is 1, and is floating */
 
     return retval;
 }
@@ -551,6 +629,9 @@ scm_c_make_gtype_name (const gchar *format, const gchar *name)
     } else
 	real_retval = retval;
 
+    for (i = 0; i < words->len; i++)
+	g_free (g_ptr_array_index (words, i));
+    
     g_ptr_array_free (words, TRUE);
 
     return real_retval;
@@ -609,7 +690,7 @@ scm_c_make_gvalue (GType gtype)
 {
     GValue *gvalue;
 
-    gvalue = scm_must_malloc (sizeof (GValue), "%make-gvalue");
+    gvalue = scm_gc_malloc (sizeof (GValue), "%gvalue");
     gvalue->g_type = 0;
     g_value_init (gvalue, gtype);
 
@@ -631,37 +712,131 @@ SCM_DEFINE (scm_gvalue_primitive_new, "gvalue-primitive-new", 1, 0, 0,
 }
 #undef FUNC_NAME
 
+SCM_DEFINE (scm_gvalue_array_primitive_new, "gvalue-array-primitive-new", 0, 0, 0,
+	    (),
+	    "")
+#define FUNC_NAME s_scm_gvalue_array_primitive_new
+{
+    GValueArray *varray;
+
+    varray = g_value_array_new (4);
+    scm_gc_register_collectable_memory (varray, sizeof (GValueArray),
+                                        "%make-gvalue-array");
+    
+    SCM_RETURN_NEWSMOB (scm_tc16_gvalue_array, varray);
+}
+#undef FUNC_NAME
+
 
+
+/* The GObject wrapper (a short post-hoc re-design statement)
+   ==========================================================
+
+   Specifications:
+
+     1. For each GObject wrapper alive in Guile-land, Guile needs to hold
+        exactly one reference on the GObject.
+
+     2. When a wrapper vanishes from Guile-land, i.e., is garbage-collected,
+        Guile needs to drop its reference on the GObject.
+
+     3. If a wrapper is created again after having been garbage-collected, we
+        need to have a way of holding state with regards to the wrapped GObject,
+        i.e. object properties.
+
+     4. If the GObject itself goes away (not possible if there is a wrapper
+        alive), any state associated with it should go away as well.
+
+   Stipulation 4 means that the state must not hold a reference on the GObject,
+   and thus cannot be associated with the wrapper. Fortunately, GObject itself
+   provides such a mechanism, g_object_{set,get}_qdata. Therefore we need to
+   provide a special interface so that we can attach arbitrary data to gobjects,
+   as well as provide non-parameterized slots on derived GObjects.
+
+   Stipulation 2 means that we need a way of knowing when the wrapper is
+   garbage-collected. As far as I know, the only way to do this is via SMOBs. Of
+   course we want the wrapper to be a GOOPS object, though. We have two options
+   for this, either (somehow) representing the wrappers as GOOPS objects that
+   are really SMOBs, or having a special SMOB, existing on a 1-to-1 basis with
+   the wrapper, that will go away when the wrapper goes away. However, we do not
+   want details of this arrangement leaking out into scheme-land.
+
+   As the latter arrangement is easier to implement, and closer to the
+   historical situation, we choose it over the former. The SMOB is then
+   responsible for the ref and unref of the GObject. If the first reference of
+   the GObject is actually owned by Guile, then the constructor function (i.e.
+   gobject-primitive-create-instance) should unref the object. We might as well
+   use the GObject as the SMOB's data. As long as we can retrieve the SMOB given
+   the wrapper, this allows us to retrieve the GObject when we need to.
+
+   It would be good, from an optimization perspective, not to unnecessarily
+   create new wrappers when old ones are still alive. A cached piece of qdata on
+   the GObject does the trick (see scm_c_gtype_instance_to_scm in -gobject.c).
+   The cached data is removed when the SMOB is collected.
+
+   OK, so far so good. The one remaining problem is with regards to closures. We
+   have some more specifications here:
+
+     1. A closure connected to a GObject signal should not be collected until
+        either the closure is disconnected, or the object itself (not the
+        wrapper) goes out of existence.
+
+     2. Attaching closures to an object should not prevent the object from being
+        freed. Otherwise, any object with a connected signal will live forever.
+        Closures should only have a weak reference on an object.
+
+   These specifications are mutually exclusive. Stipulation 2 means that a
+   closure cannot be a permanent object, because its environment will always
+   reference the wrapper. But for it to be invoked after the wrapper is
+   collected would mean that its environment would have to be valid, which would
+   always include the wrapper object. So, either the closure must be invalidated
+   and collected when the object is collected (violating stipulation 1), or the
+   object must be immortal as long as it has signals connected to it (violating
+   stipulation 2).
+
+   Since it is a common idiom to find an object, connect to it, and then forget
+   about it, we will choose to violate stipulation 2. However, when
+   %gtype-instance-primitive-destroy! is called on a GTypeInstance, we
+   invalidate all guile closures.
+*/
 
 SCM
 scm_c_make_gtype_instance (GTypeInstance *ginstance)
 {
     SCM ret;
-    gpointer qdata;
 
     switch (G_TYPE_FUNDAMENTAL (G_TYPE_FROM_INSTANCE (ginstance))) {
     case G_TYPE_OBJECT:
-        /* sink the floating ref, if any */
-        sink_object ((GObject*)ginstance);
+        if ((ret = g_object_get_qdata ((GObject*)ginstance,
+                                       quark_primitive_instance_wrapper)))
+            return ret;
 
-        qdata = g_object_get_qdata ((GObject*)ginstance, quark_instance_wrapper);
-        
-        if (qdata) {
-            ret = SCM_PACK (qdata);
-            break;
-        }
+        /* ref the object: see above */
+        g_object_ref ((GObject*)ginstance);
 
-        SCM_NEWSMOB2 (ret, scm_tc16_gtype_instance, ginstance, NULL);
-
-        g_object_set_qdata_full ((GObject*)ginstance, quark_instance_wrapper,
-                                 (gpointer)SCM_UNPACK (scm_gc_protect_object (ret)),
-                                 (GDestroyNotify)scm_gc_unprotect_object);
-
-        DEBUG_ALLOC ("sunk gobject (%p) of type %s, ->%u",
+        DEBUG_ALLOC ("reffed gobject (%p) of type %s, ->%u",
                      ginstance, g_type_name (G_TYPE_FROM_INSTANCE (ginstance)),
                      ((GObject*)ginstance)->ref_count);
+
+        /* sink the floating ref, if any */
+        sink_object ((GObject*)ginstance);
+        SCM_NEWSMOB2 (ret, scm_tc16_gtype_instance, ginstance, NULL);
+
+        /* cache the return value */
+        g_object_set_qdata ((GObject*)ginstance, quark_primitive_instance_wrapper, ret);
         break;
       
+    case G_TYPE_PARAM:
+        /* ignoring floating status, the creation functions will sink if
+         * necessary */
+        g_param_spec_ref ((GParamSpec*)ginstance);
+
+        DEBUG_ALLOC ("reffed param (%p) of type %s, ->%u", 
+                     ginstance, g_type_name (G_TYPE_FROM_INSTANCE (ginstance)),
+                     ((GParamSpec*)ginstance)->ref_count);
+        SCM_NEWSMOB2 (ret, scm_tc16_gtype_instance, ginstance, NULL);
+        break;
+
     default:
         SCM_NEWSMOB2 (ret, scm_tc16_gtype_instance, ginstance, NULL);
         break;
@@ -706,22 +881,74 @@ SCM_DEFINE (scm_sys_gtype_bind_to_class, "%gtype-bind-to-class", 2, 0, 0,
 	    "")
 #define FUNC_NAME s_scm_sys_gtype_bind_to_class
 {
-    SCM name, type_class;
+    SCM type_class;
     GType gtype;
     GTypeClass *gtype_class;
+    gint n_interfaces, i;
+    GType *interfaces;
 
     SCM_VALIDATE_GTYPE_CLASS (1, class);
     SCM_VALIDATE_GTYPE_COPY (2, type, gtype);
 
-    scm_slot_set_using_class_x (class, class, scm_sym_gtype, type);
+    scm_slot_set_x (class, scm_sym_gtype, type);
 
     if (G_TYPE_IS_CLASSED (gtype)) {
         gtype_class = g_type_class_ref (gtype);
         SCM_NEWSMOB (type_class, scm_tc16_gtype_class, gtype_class);
-        scm_slot_set_using_class_x (class, class, scm_sym_gtype_class, type_class);
+        scm_slot_set_x (class, scm_sym_gtype_class, type_class);
     }
 
     g_type_set_qdata (gtype, quark_class, scm_permanent_object (class));
+
+    /* It takes a g_type_class_ref () on an implementing class to initialize
+     * signals on GInterfaces, so we loop through the implemented interfaces and
+     * re-set their classes' gsignals slot. */
+    interfaces = g_type_interfaces (gtype, &n_interfaces);
+    for (i=0; i<n_interfaces; i++) {
+        SCM class = scm_c_gtype_lookup_class (interfaces[i]);
+        if (SCM_NFALSEP (class))
+            scm_call_3 (scm_sym_class_slot_set_x, class, sym_gsignals,
+                        scm_gtype_primitive_get_signals (scm_c_register_gtype (interfaces[i])));
+    }
+    if (interfaces)
+        g_free (interfaces);
+
+    return SCM_UNSPECIFIED;
+}
+#undef FUNC_NAME
+
+
+
+SCM_DEFINE (scm_especify_metaclass_x,
+            "especify-metaclass!", 2, 0, 0,
+	    (SCM class, SCM metaclass),
+	    "")
+#define FUNC_NAME s_scm_especify_metaclass_x
+{
+    SCM sgtype, new_class;
+    GType gtype;
+    
+    SCM_VALIDATE_GTYPE_CLASS(1, class);
+
+    if (!SCM_SUBCLASSP (metaclass, SCM_CLASS_OF (class)))
+        scm_error (sym_gruntime_error, FUNC_NAME,
+                   "New metaclass ~A is not a subclass of old metaclass ~S",
+                   SCM_LIST2 (metaclass, SCM_CLASS_OF (class)),
+                   SCM_EOL);
+
+    sgtype = scm_slot_ref (class, scm_sym_gtype);
+    gtype = (GType)SCM_SMOB_DATA (sgtype);
+
+    /* unbind the type and the class */
+    g_type_set_qdata (gtype, quark_class, NULL);
+    
+    new_class = scm_apply_0 (scm_sym_make_class,
+                             SCM_LIST8 (scm_class_direct_supers (class),
+                                        scm_class_direct_slots (class),
+                                        k_name, scm_class_name (class),
+                                        k_gtype, sgtype,
+                                        k_metaclass, metaclass));
+    scm_call_2 (scm_sym_class_redefinition, class, new_class);
 
     return SCM_UNSPECIFIED;
 }
@@ -736,7 +963,7 @@ SCM_DEFINE (scm_sys_get_struct_slot, "%get-struct-slot", 2, 0, 0,
 {
     SCM retval;
 
-    SCM_VALIDATE_GTYPE_CLASS (1, object);
+    SCM_VALIDATE_INSTANCE (1, object);
     SCM_VALIDATE_INUM (2, offset);
 
     retval = SCM_SLOT (object, SCM_INUM (offset));
@@ -752,9 +979,7 @@ SCM_DEFINE (scm_sys_set_struct_slot, "%set-struct-slot!", 3, 0, 0,
 	    "Set the contents of a slot directly (without the setter)")
 #define FUNC_NAME s_scm_sys_set_struct_slot
 {
-    SCM retval;
-
-    SCM_VALIDATE_GTYPE_CLASS (1, object);
+    SCM_VALIDATE_INSTANCE (1, object);
     SCM_VALIDATE_INUM (2, offset);
     /* do i have to validate 'value' ? */
 
@@ -799,19 +1024,20 @@ print_gsignal_struct (SCM gsignal, SCM port)
 
 
 
-SCM_DEFINE (scm_gobject_primitive_get_signals, "gobject-primitive-get-signals", 1, 0, 0,
+SCM_DEFINE (scm_gtype_primitive_get_signals, "gtype-primitive-get-signals", 1, 0, 0,
 	    (SCM type),
 	    "")
-#define FUNC_NAME s_scm_gobject_primitive_get_signals
+#define FUNC_NAME s_scm_gtype_primitive_get_signals
 {
     guint *ids, n_ids, i;
-    GTypeClass *type_class;
+    GTypeClass *type_class = NULL;
     GType gtype;
     SCM vector;
 
     SCM_VALIDATE_GTYPE_COPY (1, type, gtype);
 
-    type_class = g_type_class_ref (gtype);
+    if (G_TYPE_IS_CLASSED (gtype))
+        type_class = g_type_class_ref (gtype);
 
     ids = g_signal_list_ids (gtype, &n_ids);
 
@@ -845,8 +1071,11 @@ SCM_DEFINE (scm_gobject_primitive_get_signals, "gobject-primitive-get-signals", 
 	scm_vector_set_x (vector, SCM_MAKINUM (i), this);
     }
 
-    g_type_class_unref (type_class);
+    if (type_class)
+        g_type_class_unref (type_class);
 
+    g_free (ids);
+    
     return vector;
 }
 #undef FUNC_NAME
@@ -956,10 +1185,6 @@ SCM_DEFINE (scm_gobject_primitive_get_properties, "gobject-primitive-get-propert
 	if (properties [i]->owner_type != gtype)
 	    continue;
 
-        DEBUG_ALLOC ("g_param_spec_ref ((%s*)%p)", 
-                     g_type_name (G_TYPE_FROM_INSTANCE (properties[i])),
-                     properties[i]);
-        g_param_spec_ref (properties [i]);
 	this = scm_c_make_gtype_instance ((GTypeInstance *) properties [i]);
 
 	scm_vector_set_x (vector, SCM_MAKINUM (count), this);
@@ -967,6 +1192,8 @@ SCM_DEFINE (scm_gobject_primitive_get_properties, "gobject-primitive-get-propert
     }
 
     g_type_class_unref (object_class);
+
+    g_free (properties);
 
     return vector;
 }
@@ -981,16 +1208,16 @@ SCM_DEFINE (scm_gparam_primitive_create_pspec_struct, "gparam-primitive-create-p
 {
     GParamSpec *pspec;
     guint n_args = 0;
-    SCM this, smob;
-    GType gtype;
+    SCM this;
+    char *blurb;
     
     SCM_VALIDATE_GTYPE_INSTANCE_TYPE_COPY (1, param, G_TYPE_PARAM, GParamSpec, pspec);
 
     if (G_IS_PARAM_SPEC_BOOLEAN (pspec) || G_IS_PARAM_SPEC_STRING (pspec) ||
 	G_IS_PARAM_SPEC_OBJECT(pspec) || G_IS_PARAM_SPEC_BOXED (pspec) ||
-        G_IS_PARAM_SPEC_UNICHAR (pspec))
+        G_IS_PARAM_SPEC_UNICHAR (pspec) || G_IS_PARAM_SPEC_VALUE_ARRAY (pspec))
       n_args = 1;
-
+    
     else if (G_IS_PARAM_SPEC_CHAR (pspec) || G_IS_PARAM_SPEC_UCHAR (pspec) ||
 	     G_IS_PARAM_SPEC_INT (pspec) || G_IS_PARAM_SPEC_UINT (pspec) ||
 	     G_IS_PARAM_SPEC_LONG (pspec) || G_IS_PARAM_SPEC_ULONG (pspec) ||
@@ -1007,11 +1234,13 @@ SCM_DEFINE (scm_gparam_primitive_create_pspec_struct, "gparam-primitive-create-p
     else
       SCM_ERROR_NOT_YET_IMPLEMENTED (param);
       
-    this = scm_make_struct (scm_gparam_spec_vtable, SCM_MAKINUM (n_args), SCM_EOL);
+    this = scm_make_struct (scm_gparam_spec_vtable, SCM_MAKINUM (n_args),
+                            SCM_EOL);
 
     SCM_SET_GPARAM_SPEC_NAME (this, (char *) g_param_spec_get_name (pspec)); //ariel
     SCM_SET_GPARAM_SPEC_NICK (this, (char *) g_param_spec_get_nick (pspec));
-    SCM_SET_GPARAM_SPEC_BLURB (this, (char *) g_param_spec_get_blurb (pspec));
+    blurb = (char *) g_param_spec_get_blurb (pspec);
+    SCM_SET_GPARAM_SPEC_BLURB (this, blurb ? blurb : "");
     SCM_SET_GPARAM_SPEC_FLAGS (this, SCM_MAKINUM (pspec->flags));
     SCM_SET_GPARAM_SPEC_PARAM_TYPE (this, G_TYPE_FROM_INSTANCE (pspec));
     SCM_SET_GPARAM_SPEC_VALUE_TYPE (this, pspec->value_type);
@@ -1104,11 +1333,13 @@ SCM_DEFINE (scm_gparam_primitive_create_pspec_struct, "gparam-primitive-create-p
     
     else if (G_IS_PARAM_SPEC_STRING (pspec)) {
       GParamSpecString *s = (GParamSpecString *) pspec;
-      SCM_SET_GPARAM_SPEC_ARG (this, 0, scm_str2string (s->default_value));
+      SCM_SET_GPARAM_SPEC_ARG (
+              this, 0, (s->default_value ? scm_str2string (s->default_value)
+                        : SCM_BOOL_F));
     }
     
     else if (G_IS_PARAM_SPEC_OBJECT (pspec) || G_IS_PARAM_SPEC_BOXED (pspec)) {
-        SCM_SET_GPARAM_SPEC_ARG (this, 0, scm_c_register_gtype (pspec->value_type));    
+        SCM_SET_GPARAM_SPEC_ARG (this, 0, scm_c_register_gtype (pspec->value_type));
     }
     
     else if (G_IS_PARAM_SPEC_ENUM (pspec)){
@@ -1126,7 +1357,15 @@ SCM_DEFINE (scm_gparam_primitive_create_pspec_struct, "gparam-primitive-create-p
       SCM_SET_GPARAM_SPEC_ARG (this, 0, scm_c_register_gtype (flags_type));
       SCM_SET_GPARAM_SPEC_ARG (this, 1, SCM_MAKINUM (f->default_value));
     }
+    else if (G_IS_PARAM_SPEC_VALUE_ARRAY (pspec))
+    {
+        GParamSpecValueArray *va = (GParamSpecValueArray *) pspec;
 
+        SCM_SET_GPARAM_SPEC_ARG (this, 0, (va->element_spec
+                                           ? scm_c_make_gtype_instance 
+                                           ((GTypeInstance*)va->element_spec)
+                                           : SCM_BOOL_F));
+    }
     else
       SCM_ERROR_NOT_YET_IMPLEMENTED (param);
         
@@ -1183,31 +1422,38 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 {
     GParamSpec *pspec = NULL;
     GParamFlags flags;
-    GType gtype, param_type, value_type, owner_type;
+    GType gtype, param_type, value_type;
     guint n_args = 0;
     SCM smob;
 
     SCM_VALIDATE_GTYPE_CLASS (1, class);
     SCM_VALIDATE_GTYPE_COPY (2, type, gtype);
-    SCM_VALIDATE_GTYPE_CLASS (3, object);
+    SCM_ASSERT (SCM_IS_A_P (SCM_CLASS_OF (object), scm_class_gtype_class), object, 3, FUNC_NAME);
     SCM_ASSERT (G_TYPE_IS_PARAM (gtype), type, 2, FUNC_NAME);
     SCM_VALIDATE_GPARAM_SPEC (4, pspec_struct);
 
     param_type = SCM_GPARAM_SPEC_PARAM_TYPE (pspec_struct);
     value_type = SCM_GPARAM_SPEC_VALUE_TYPE (pspec_struct);
-    owner_type = SCM_GPARAM_SPEC_OWNER_TYPE (pspec_struct);
     flags = SCM_NUM2INT (4, SCM_GPARAM_SPEC_FLAGS (pspec_struct));
       
-    if (SCM_G_IS_PARAM_SPEC_BOOLEAN(param_type) || SCM_G_IS_PARAM_SPEC_STRING(param_type) ||
-	SCM_G_IS_PARAM_SPEC_OBJECT(param_type) || SCM_G_IS_PARAM_SPEC_BOXED(param_type) ||
-        SCM_G_IS_PARAM_SPEC_UNICHAR(param_type))
+    if (SCM_G_IS_PARAM_SPEC_BOOLEAN(param_type)
+        || SCM_G_IS_PARAM_SPEC_STRING(param_type)
+        || SCM_G_IS_PARAM_SPEC_OBJECT(param_type)
+        || SCM_G_IS_PARAM_SPEC_BOXED(param_type)
+        || SCM_G_IS_PARAM_SPEC_UNICHAR(param_type)
+        || SCM_G_IS_PARAM_SPEC_VALUE_ARRAY (param_type))
       n_args = 1;
     
-    else if (SCM_G_IS_PARAM_SPEC_CHAR (param_type) || SCM_G_IS_PARAM_SPEC_UCHAR (param_type) ||
-	     SCM_G_IS_PARAM_SPEC_INT (param_type) || SCM_G_IS_PARAM_SPEC_UINT (param_type) ||
-	     SCM_G_IS_PARAM_SPEC_LONG (param_type) || SCM_G_IS_PARAM_SPEC_ULONG (param_type) ||
-	     SCM_G_IS_PARAM_SPEC_INT64 (param_type) || SCM_G_IS_PARAM_SPEC_UINT64 (param_type) ||
-	     SCM_G_IS_PARAM_SPEC_FLOAT (param_type) || SCM_G_IS_PARAM_SPEC_DOUBLE(param_type))
+    else if (SCM_G_IS_PARAM_SPEC_CHAR (param_type)
+             || SCM_G_IS_PARAM_SPEC_UCHAR (param_type)
+             || SCM_G_IS_PARAM_SPEC_INT (param_type)
+             || SCM_G_IS_PARAM_SPEC_UINT (param_type)
+             || SCM_G_IS_PARAM_SPEC_LONG (param_type)
+             || SCM_G_IS_PARAM_SPEC_ULONG (param_type)
+	     || SCM_G_IS_PARAM_SPEC_INT64 (param_type)
+             || SCM_G_IS_PARAM_SPEC_UINT64 (param_type)
+	     || SCM_G_IS_PARAM_SPEC_FLOAT (param_type)
+             || SCM_G_IS_PARAM_SPEC_DOUBLE(param_type))
       n_args = 3;
 
     else if (SCM_G_IS_PARAM_SPEC_POINTER (param_type))
@@ -1404,7 +1650,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				   flags);
     }
 
-     else if (SCM_G_IS_PARAM_SPEC_FLAGS (param_type)){
+    else if (SCM_G_IS_PARAM_SPEC_FLAGS (param_type)){
        GType flags_type;
 
        SCM_VALIDATE_GTYPE_COPY (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 0), flags_type);
@@ -1414,8 +1660,15 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				   flags_type,
 				   SCM_INUM (SCM_GPARAM_SPEC_ARG (pspec_struct, 1)),
 				   flags);
-     }
-
+    }
+    else if (SCM_G_IS_PARAM_SPEC_VALUE_ARRAY (param_type))
+    {
+        pspec = g_param_spec_value_array (SCM_GPARAM_SPEC_NAME (pspec_struct),
+                                          SCM_GPARAM_SPEC_NICK (pspec_struct),
+                                          SCM_GPARAM_SPEC_BLURB (pspec_struct),
+                                          NULL,
+                                          flags);
+    }
     else {SCM_ERROR_NOT_YET_IMPLEMENTED (pspec_struct);}
 			  
     if (!pspec)
@@ -1424,6 +1677,12 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 		   SCM_LIST2 (type, pspec_struct), SCM_EOL);
 
     smob = scm_c_make_gtype_instance ((GTypeInstance *) pspec);
+    /* remove floating reference (we still hold the one from
+     * make_gtype_instance) */
+    g_param_spec_sink (pspec);
+    DEBUG_ALLOC ("sunk guile-owned param spec %p of type %s, ->%u", 
+                 pspec, g_type_name (G_TYPE_FROM_INSTANCE (pspec)),
+                 pspec->ref_count);
 
     scm_slot_set_x (object, scm_sym_gtype_instance, smob);
 
@@ -1457,7 +1716,6 @@ SCM_DEFINE (scm_gtype_instance_primitive_to_value, "gtype-instance-primitive->va
 {
     SCM retval = SCM_UNSPECIFIED;
     GTypeInstance *ginstance;
-    GValue *value;
     GType gtype;
 
     SCM_VALIDATE_GTYPE_INSTANCE_COPY (1, instance, ginstance);
@@ -1480,16 +1738,16 @@ SCM_DEFINE (scm_gtype_instance_primitive_to_value, "gtype-instance-primitive->va
 
 
 
-SCM_DEFINE (scm_gobject_primitive_signal_emit, "gobject-primitive-signal-emit", 3, 0, 0,
+SCM_DEFINE (scm_gtype_instance_primitive_signal_emit, "gtype-instance-primitive-signal-emit", 3, 0, 0,
 	    (SCM object, SCM id, SCM args),
 	    "")
-#define FUNC_NAME s_scm_gobject_primitive_signal_emit
+#define FUNC_NAME s_scm_gtype_instance_primitive_signal_emit
 {
   GValue *params;
   GType gtype, signal_return_type;
   SCM retval = SCM_UNSPECIFIED;
   GTypeInstance *instance;
-  GValue *param_values,ret = { 0, };
+  GValue ret = { 0, };
   GSignalQuery query;
   guint i;
 
@@ -1502,7 +1760,15 @@ SCM_DEFINE (scm_gobject_primitive_signal_emit, "gobject-primitive-signal-emit", 
   
   params = g_new0(GValue, query.n_params + 1);
   g_value_init(&params[0], gtype);
-  g_value_set_object (&params[0], G_OBJECT (SCM_SMOB_DATA (object)));
+  if (g_type_is_a (gtype, G_TYPE_OBJECT))
+      g_value_set_object (&params[0], G_OBJECT (SCM_SMOB_DATA (object)));
+  else
+      scm_error (sym_gruntime_error, FUNC_NAME,
+                 "Don't know what to do with object of "
+                 "type ~A: ~S",
+                 SCM_LIST2 (scm_makfrom0str (g_type_name (gtype)), object),
+                 SCM_EOL);
+      
 
   for (i = 0; i < query.n_params; i++){
     SCM this = scm_vector_ref (args, SCM_MAKINUM (i));
@@ -1512,7 +1778,6 @@ SCM_DEFINE (scm_gobject_primitive_signal_emit, "gobject-primitive-signal-emit", 
     g_value_copy (value, &params[i+1]);
   }
   for (i = 0; i < query.n_params; i++) {
-    GType ptype = query.param_types [i] & ~G_SIGNAL_TYPE_STATIC_SCOPE;
     SCM this = scm_vector_ref (args, SCM_MAKINUM (i));
     const GValue *value;
     
@@ -1537,10 +1802,10 @@ SCM_DEFINE (scm_gobject_primitive_signal_emit, "gobject-primitive-signal-emit", 
 
 
 
-SCM_DEFINE (scm_gobject_primitive_signal_connect, "gobject-primitive-signal-connect", 4, 0, 0,
+SCM_DEFINE (scm_gtype_instance_primitive_signal_connect, "gtype-instance-primitive-signal-connect", 4, 0, 0,
 	    (SCM object, SCM id, SCM closure, SCM after),
 	    "")
-#define FUNC_NAME s_scm_gobject_primitive_signal_connect
+#define FUNC_NAME s_scm_gtype_instance_primitive_signal_connect
 {
     GClosure *gclosure;
     GValue *gvalue;
@@ -1548,6 +1813,9 @@ SCM_DEFINE (scm_gobject_primitive_signal_connect, "gobject-primitive-signal-conn
     GSignalQuery query;
     GType gtype;
     gulong signal_id;
+#ifdef DEBUG_PRINT
+    guint old_ref_count;
+#endif
 
     SCM_VALIDATE_GTYPE_INSTANCE_COPY (1, object, instance);
     SCM_VALIDATE_INUM (2, id);
@@ -1560,8 +1828,13 @@ SCM_DEFINE (scm_gobject_primitive_signal_connect, "gobject-primitive-signal-conn
     g_signal_query (SCM_INUM (id), &query);
     SCM_ASSERT (g_type_is_a (gtype, query.itype), object, SCM_ARG1, FUNC_NAME);
 
+#ifdef DEBUG_PRINT
+    old_ref_count = gclosure->ref_count;
+#endif
     signal_id = g_signal_connect_closure_by_id (instance, SCM_INUM (id), 0, gclosure,
 						SCM_NFALSEP (after));
+    DEBUG_ALLOC ("GClosure %p connecting: %u->%u",
+                 gclosure, old_ref_count, gclosure->ref_count);
 
     return scm_ulong2num (signal_id);
 }
@@ -1624,7 +1897,7 @@ SCM_DEFINE (scm_gobject_primitive_set_property, "gobject-primitive-set-property"
     SCM_VALIDATE_GVALUE_TYPE_COPY (3, value, pspec->value_type, gvalue);
 
     g_object_set_property (gobject, SCM_SYMBOL_CHARS (name), gvalue);
-
+    
     return SCM_UNSPECIFIED;
 }
 #undef FUNC_NAME
@@ -1644,7 +1917,7 @@ SCM_DEFINE (scm_gobject_primitive_create_instance, "gobject-primitive-create-ins
 
     SCM_VALIDATE_GTYPE_CLASS (1, class);
     SCM_VALIDATE_GTYPE_COPY (2, type, gtype);
-    SCM_VALIDATE_GTYPE_CLASS (3, object);
+    SCM_VALIDATE_INSTANCE (3, object);
     SCM_VALIDATE_VECTOR (4, properties);
     SCM_ASSERT (G_TYPE_IS_OBJECT (gtype), type, 2, FUNC_NAME);
 
@@ -1652,24 +1925,30 @@ SCM_DEFINE (scm_gobject_primitive_create_instance, "gobject-primitive-create-ins
     for (i = 0; i < length; i++) {
 	SCM this = scm_vector_ref (properties, SCM_MAKINUM (i));
 
-	SCM_VALIDATE_PAIR (4, this);
 	SCM_VALIDATE_SYMBOL (4, SCM_CAR (this));
-	SCM_VALIDATE_GVALUE (4, SCM_CDR (this));
+        if (!SCM_GVALUE_ARRAYP (SCM_CDR (this)))
+            SCM_VALIDATE_GVALUE (4, SCM_CDR (this));
     }
-
+    
     params = g_new0 (GParameter, length);
 
     for (i = 0; i < length; i++) {
+	const GValue *gvalue;
 	SCM this = scm_vector_ref (properties, SCM_MAKINUM (i));
 	GParameter *current = &params [i];
-	const GValue *gvalue;
-
-	SCM_VALIDATE_GVALUE_COPY (4, SCM_CDR (this), gvalue);
 
 	current->name = SCM_SYMBOL_CHARS (SCM_CAR (this));
 	current->value.g_type = 0;
-	g_value_init (&current->value, G_VALUE_TYPE (gvalue));
-	g_value_copy (gvalue, &current->value);
+        if (SCM_GVALUE_ARRAYP (SCM_CDR (this))) {
+            g_value_init (&current->value, G_TYPE_VALUE_ARRAY);
+            g_value_set_boxed (&current->value,
+                               (GValueArray *)SCM_SMOB_DATA (SCM_CDR (this)));
+        }
+        else {
+            SCM_VALIDATE_GVALUE_COPY (4, SCM_CDR (this), gvalue);
+            g_value_init (&current->value, G_VALUE_TYPE (gvalue));
+            g_value_copy (gvalue, &current->value);
+        }
     }
 
     gobject = g_object_newv (gtype, length, params);
@@ -1680,8 +1959,16 @@ SCM_DEFINE (scm_gobject_primitive_create_instance, "gobject-primitive-create-ins
     g_free (params);
 
     smob = scm_c_make_gtype_instance ((GTypeInstance *) gobject);
+    /* gobject was just reffed by make_gtype_instance, but we need to unref it
+       now -- see the note above */
+    DEBUG_ALLOC ("unreffing guile-owned gobject %p, ->%u",
+                 gobject, ((GObject*)gobject)->ref_count - 1);
+    g_object_unref (gobject);
     scm_slot_set_x (object, scm_sym_gtype_instance, smob);
     
+    /* cache this wrapper, like in scm_c_gtype_instance_to_scm */
+    g_object_set_qdata (gobject, quark_instance_wrapper, object);
+
     return SCM_UNSPECIFIED;
 }
 #undef FUNC_NAME
@@ -1853,6 +2140,28 @@ SCM_DEFINE (scm_gflags_primitive_bit_set_p, "gflags-primitive-bit-set?", 2, 0, 0
 
 
 
+SCM_DEFINE (scm_gtype_interfaces, "gtype-interfaces", 1, 0, 0,
+	    (SCM type),
+	    "")
+#define FUNC_NAME s_scm_gtype_interfaces
+{
+    GType gtype, *interfaces;
+    gint n_interfaces, i;
+    SCM ret = SCM_EOL;
+
+    SCM_VALIDATE_GTYPE_COPY (1, type, gtype);
+
+    interfaces = g_type_interfaces (gtype, &n_interfaces);
+    if (interfaces) {
+        for (i=0; i<n_interfaces; i++)
+            ret = scm_cons (scm_c_register_gtype (interfaces[i]), ret);
+        g_free (interfaces);
+    }
+
+    return ret;
+}
+#undef FUNC_NAME
+
 SCM_DEFINE (scm_gtype_primitive_basic_p, "gtype-primitive-basic?", 1, 0, 0,
 	    (SCM type),
 	    "")
@@ -1957,7 +2266,7 @@ SCM_DEFINE (scm_gvalue_primitive_set, "gvalue-primitive-set", 2, 0, 0,
 	break;
 
     default:
-	scm_wrong_type_arg (FUNC_NAME, SCM_ARG2, value);
+	scm_wrong_type_arg (FUNC_NAME, SCM_ARG1, instance);
 	break;
     }
 
@@ -2020,10 +2329,12 @@ SCM_DEFINE (scm_gvalue_primitive_get, "gvalue-primitive-get", 1, 0, 0,
 	return scm_makfrom0str (g_value_get_string (gvalue));
 
     case G_TYPE_OBJECT:
-	return scm_c_make_gtype_instance ((GTypeInstance *) g_value_dup_object (gvalue));
+        /* scm_c_make_gtype_instance will ref the object for us */
+	return scm_c_make_gtype_instance ((GTypeInstance *) g_value_get_object (gvalue));
 
     case G_TYPE_PARAM:
-	return scm_c_make_gtype_instance ((GTypeInstance *) g_value_dup_param (gvalue));
+        /* scm_c_make_gtype_instance will ref the object for us */
+	return scm_c_make_gtype_instance ((GTypeInstance *) g_value_get_param (gvalue));
 
     default:
 	scm_wrong_type_arg (FUNC_NAME, SCM_ARG1, value);
@@ -2033,6 +2344,27 @@ SCM_DEFINE (scm_gvalue_primitive_get, "gvalue-primitive-get", 1, 0, 0,
     return SCM_UNDEFINED;
 }
 #undef FUNC_NAME
+
+
+SCM_DEFINE (scm_gvalue_array_primitive_append, "gvalue-array-primitive-append", 2, 0, 0,
+	    (SCM array, SCM value),
+	    "")
+#define FUNC_NAME s_scm_gvalue_array_primitive_append
+{
+    GValueArray *garray;
+    GValue *gvalue;
+    
+    SCM_VALIDATE_SMOB (1, array, gvalue_array);
+    SCM_VALIDATE_GVALUE_COPY (2, value, gvalue);
+
+    garray = (GValueArray *) SCM_SMOB_DATA (array);
+    
+    g_value_array_append (garray, gvalue);
+
+    return SCM_UNSPECIFIED;
+}
+#undef FUNC_NAME
+
 
 
 
@@ -2141,22 +2473,31 @@ scm_pre_init_gnome_gobject_primitives (void)
     quark_type = g_quark_from_static_string ("%scm-gtype->type");
     quark_class = g_quark_from_static_string ("%scm-gtype->class");
     quark_pspec_struct = g_quark_from_static_string ("%scm-pspec-struct");
-    quark_instance_wrapper = g_quark_from_static_string ("%scm-gtype-instance");
+    quark_instance_wrapper = g_quark_from_static_string ("%scm-instance-wrapper");
+    quark_primitive_instance_wrapper = g_quark_from_static_string ("%scm-primitive-instance-wrapper");
 
     scm_tc16_gtype = scm_make_smob_type ("gtype", 0);
     scm_set_smob_free (scm_tc16_gtype, scm_gtype_free);
     scm_set_smob_print (scm_tc16_gtype, scm_gtype_print);
 
-    scm_tc16_gtype_class = scm_make_smob_type ("gtype-class", 0);
+    /* If we just call this "gtype-class" then a goops class <gtype-class> will
+       automagically be created for the smob. We don't want that of course, so
+       we prefix with %. */
+    scm_tc16_gtype_class = scm_make_smob_type ("%gtype-class", 0);
     scm_set_smob_print (scm_tc16_gtype_class, scm_gtype_class_print);
 
-    scm_tc16_gtype_instance = scm_make_smob_type ("gtype-instance", 0);
+    /* Same reason. */
+    scm_tc16_gtype_instance = scm_make_smob_type ("%gtype-instance", 0);
     scm_set_smob_free (scm_tc16_gtype_instance, scm_gtype_instance_free);
     scm_set_smob_print (scm_tc16_gtype_instance, scm_gtype_instance_print);
 
     scm_tc16_gvalue = scm_make_smob_type ("gvalue", 0);
     scm_set_smob_free (scm_tc16_gvalue, scm_gvalue_free);
     scm_set_smob_print (scm_tc16_gvalue, scm_gvalue_print);
+
+    scm_tc16_gvalue_array = scm_make_smob_type ("gvalue-array", 0);
+    scm_set_smob_free (scm_tc16_gvalue_array, scm_gvalue_array_free);
+    scm_set_smob_print (scm_tc16_gvalue_array, scm_gvalue_array_print);
 }
 
 void
@@ -2172,8 +2513,7 @@ scm_init_gnome_gobject_primitives (void)
     scm_sym_make_class = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("make-class")));
     scm_sym_class_slot_ref = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("class-slot-ref")));
     scm_sym_class_slot_set_x = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("class-slot-set!")));
-
-    scm_gobject_module = scm_permanent_object (scm_c_resolve_module ("(gnome gobject)"));
+    scm_sym_class_redefinition = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("class-redefinition")));
 
     gsubr = scm_c_make_gsubr ("%print-gsignal", 2, 0, 0, print_gsignal_struct);
 
@@ -2243,10 +2583,13 @@ scm_init_gnome_gobject_primitives (void)
 		  s_scm_gobject_primitive_create_instance,
 		  s_scm_gtype_instance_primitive_to_type,
 		  s_scm_gtype_instance_primitive_to_value,
-		  s_scm_gobject_primitive_get_signals,
+                  s_scm_sys_gtype_instance_primitive_destroy_x,
+		  s_scm_gtype_primitive_get_signals,
+		  s_scm_gtype_instance_primitive_signal_emit,
+		  s_scm_gtype_instance_primitive_signal_connect,
+                  s_scm_sys_gtype_lookup_class,
+                  s_scm_sys_gtype_bind_to_class,
 		  s_scm_gobject_primitive_get_properties,
-		  s_scm_gobject_primitive_signal_emit,
-		  s_scm_gobject_primitive_signal_connect,
 		  s_scm_gobject_primitive_get_property,
 		  s_scm_gobject_primitive_set_property,
 		  s_scm_genum_primitive_get_values,
@@ -2255,10 +2598,13 @@ scm_init_gnome_gobject_primitives (void)
 		  s_scm_gvalue_primitive_set_flags,
 		  s_scm_gclosure_primitive_new,
 		  s_scm_gclosure_primitive_invoke,
+		  s_scm_gtype_interfaces,
 		  s_scm_gtype_primitive_basic_p,
 		  s_scm_gvalue_primitive_new,
 		  s_scm_gvalue_primitive_get,
 		  s_scm_gvalue_primitive_set,
+		  s_scm_gvalue_array_primitive_new,
+		  s_scm_gvalue_array_primitive_append,
 		  s_scm_gflags_primitive_bit_set_p,
 		  s_scm_gsignal_primitive_handler_block,
 		  s_scm_gsignal_primitive_handler_unblock,
@@ -2270,5 +2616,6 @@ scm_init_gnome_gobject_primitives (void)
 		  s_scm_gparam_spec_p,
 		  s_scm_gboxed_scm_primitive_new,
 		  s_scm_gboxed_scm_primitive_to_scm,
+                  s_scm_especify_metaclass_x,
 		  NULL);
 }

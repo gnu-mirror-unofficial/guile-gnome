@@ -1,0 +1,14 @@
+#!/bin/sh
+
+GUILE_VERSION=$(guile -c '(display (version))')
+
+export LTDL_LIBRARY_PATH=".:../gnome/gobject:${LTDL_LIBRARY_PATH}"
+
+export GUILE_LOAD_PATH=".:${srcdir:-.}/..:..:${GUILE_LOAD_PATH}"
+
+CMD=$1
+if [ -n "$CMD" ]; then
+  shift
+  echo $GUILE_LOAD_PATH
+  exec "${CMD}" "$@"
+fi

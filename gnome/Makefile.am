@@ -1,21 +1,18 @@
+SUBDIRS = gobject gnome defs
+
 if HAVE_GTK
-GTKDIR=gtk
-GTKMODULE=gtk.scm
+GTKMODULE = gtk.scm
+SUBDIRS += gtk
 else
-GTKDIR=
-GTKMODULE=
+GTKMODULE =
 endif
 
 if HAVE_CORBA
-CORBADIR=corba
-CORBAMODULE=corba.scm
+CORBAMODULE = corba.scm
+SUBDIRS += corba
 else
-CORBADIR=
-CORBAMODULE=
+CORBAMODULE =
 endif
-
-SUBDIRS=gobject $(GTKDIR) $(CORBADIR) defs
-DIST_SUBDIRS=gobject gtk corba defs
 
 guilemoduledir = $(datadir)/guile/gnome
 

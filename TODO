@@ -13,6 +13,9 @@ TODO for (gnome gobject)
 * review refcounting
   - a nice test-suite would help here
 
+* get rid of the procedure->macro in gobject.scm; this is deprecated
+  and should be replaced with e.g. define-macro.
+
 TODO for (gnome glib)
 ====================
 
@@ -29,12 +32,14 @@ TODO for (gnome gtk)
 ====================
 
 * deal with gtk_object_destroy
+  => done
 
 * types
   - review all opaque types, wrapping if necessary: see
     gtk-overrides.defs for more info on this
 
 * wrap gtktreemodel (will be a pain in the ass)
+  => done
 
 * identify all c-style functions and schemify them
   - see gtk-overrides.defs for more details
@@ -42,4 +47,4 @@ TODO for (gnome gtk)
 * translate some more example code from guile-gtk and other language bindings
 
 
-$Id: TODO,v 1.2 2003/07/03 15:16:02 wingo Exp $
+$Id: TODO,v 1.4 2004/02/01 14:51:17 rottmann Exp $

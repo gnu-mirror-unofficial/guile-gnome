@@ -12,4 +12,4 @@ Build from CVS using ./autogen.sh && make.
 
 You can run without installing, just run './dev-environ guile'.
 
-Andy Wingo, 07 May 2003
+Andy Wingo, 21 Sept 2003

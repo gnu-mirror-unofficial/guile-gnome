@@ -1,6 +1,26 @@
+;; guile-gnome
+;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+
+;; This program is free software; you can redistribute it and/or    
+;; modify it under the terms of the GNU General Public License as   
+;; published by the Free Software Foundation; either version 2 of   
+;; the License, or (at your option) any later version.              
+;;                                                                  
+;; This program is distributed in the hope that it will be useful,  
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of   
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+;; GNU General Public License for more details.                     
+;;                                                                  
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, contact:
+;;
+;; Free Software Foundation           Voice:  +1-617-542-5942
+;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+;; Boston, MA  02111-1307,  USA       gnu@gnu.org
+
 ;;; Commentary:
 ;;
-;; This is the GObject wrapper for Guile.
+;;The GObject wrapper for Guile (primitive routines).
 ;;
 ;;; Code:
 
@@ -9,30 +29,44 @@
   :use-module (ice-9 documentation)
   :use-module (gnome gobject gw-gobject)
   :use-module (srfi srfi-1) ; zip
-  :re-export (%init-gnome-gobject
-              %post-init-gnome-gobject
-              gtype-name
-              gtype-from-name
-              gtype-from-instance
-              gtype-parent
-              gtype-is-a?
-              g-source-set-closure))
-
-
-(define %gruntime-debug #t)
+  :re-export  (%init-gnome-gobject
+               %post-init-gnome-gobject
+               gtype-name
+               gtype-from-name
+               gtype-from-instance
+               gtype-parent
+               gtype-is-a?
+               gtype-is-classed?
+               gtype-is-instantiatable?
+               g-source-set-closure)
+  :export     (;; Classes
+               <gtype-class> <gtype-instance-class> <gtype-instance>
+               ;; Misc
+               gruntime-error define-with-docs define-generic-with-docs
+               gtype-instance:write
+               ;; Enums
+               enum-by-index enum-by-symbol enum-by-name 
+               genum->value-table genum->symbol genum->name
+               ;; Flags
+               flags-by-index flags-by-symbol flags-by-name 
+               gflags->element-list gflags->symbol-list gflags->name-list
+               gflags->value-list
+               ;; Signals
+               gsignal:id gsignal:name gsignal:interface-type
+               gsignal:return-type gsignal:param-types
+               ;; Paramspecs
+               gparam-spec:name gparam-spec:nick gparam-spec:blurb
+               gparam-spec:flags gparam-spec:param-type
+               gparam-spec:value-type gparam-spec:owner-type
+               gparam-spec:args
+               ;; The C code also exports bindings
+               ))
 
 (define (gruntime-error format-string . args)
   (save-stack)
   (scm-error 'gruntime-error #f format-string args '()))
 
-(define (gruntime-debug format-string . args)
-  (if %gruntime-debug
-      (apply format (append (list #t (string-append "gruntime: "
-                                                    format-string))
-                            args)))
-  *unspecified*)
-
-(defmacro define-public-with-docs args
+(defmacro define-with-docs args
   (define (syntax)
     (error "bad syntax" (list 'define-public args)))
   (define (get-name n)
@@ -51,15 +85,13 @@
      (let ((name (get-name (car args)))
 	   (object-documentation (get-documentation (cdr args))))
        `(begin
-	  (define-private ,(car args) ,@(cddr args))
+	  (define ,(car args) ,@(cddr args))
 	  (set-object-property! ,name 'documentation ,object-documentation)
-	  (eval-case ((load-toplevel) (export ,name))))))))
+          *unspecified*)))))
 
 (define-macro (define-generic-with-docs name documentation)
-  `(define-public-with-docs ,name ,documentation
+  `(define-with-docs ,name ,documentation
      (make-generic ',name)))
-
-(define-class <gtype-class-meta> (<class>))
 
 (define (create-set-once-g-n-s class s class-slot?)
   (let* ((already-allocated (slot-ref class 'nfields))
@@ -70,40 +102,44 @@
                                 (%set-struct-slot! (if class-slot? class x)
                                                    already-allocated
                                                    o)
-                                (gruntime-error "set-once slot already set: ~S"
-                                                name)))))
-    (slot-set! class 'nfields (+ already-allocated 1))
+                                (gruntime-error "set-once slot already set: ~S=~A"
+                                                name (get x))))))
+    (slot-set! class 'nfields (1+ already-allocated))
     (list get set)))
 
-(define-method (compute-get-n-set (class <gtype-class-meta>) s)
+(define-generic gtype-instance:write)
+
+(define-class <set-once-class> (<class>))
+(define-method (compute-get-n-set (class <set-once-class>) s)
   (case (slot-definition-allocation s)
     ((#:set-once)
      (create-set-once-g-n-s class s #f))
 
-    ((#:each-subclass)
-     (case (slot-definition-name s)
-       ((gtype gtype-class)
-        (create-set-once-g-n-s class s #t))
-       (else
-        (next-method))))
+    ((#:set-once-each-subclass)
+     (create-set-once-g-n-s class s #t))
 
     ;; Chain up for the default allocation methods...
     (else (next-method))))
 
-(define-class <gtype-class> (<gtype-class-meta>)
-  (gtype #:allocation #:each-subclass)
-  (gtype-class #:allocation #:each-subclass)
-  (gtype-instance #:allocation #:set-once)
-  #:metaclass <gtype-class-meta>)
+;; We have to inherit from class because we're a metaclass. We do that
+;; via <set-once-class>. We have #:set-once slots, so we also need to
+;; have <set-once-class> as our metaclass.
+(define-class <gtype-class> (<set-once-class>)
+  (gtype #:allocation #:set-once)
+  (gtype-class #:allocation #:set-once)
+  #:metaclass <set-once-class>)
 
-(define-generic gtype-instance:write)
+(define-class <gtype-instance-class> (<gtype-class>))
+(define-class <gtype-instance> ()
+  (gtype-instance #:allocation #:set-once)
+  #:metaclass <gtype-instance-class>)
 
 (%init-gnome-gobject-primitives)
 
 (define (find-enum vtable func index)
   (let loop ((l (vector->list vtable)))
     (if (null? l)
-	#f
+	(gruntime-error "No such value in ~A: ~A" vtable index)
 	(begin
 	  (if (equal? (func (car l)) index)
 	      (car l)
@@ -280,19 +316,3 @@
        (if (>= arg offset)
            (loop (1- arg) (cons (struct-ref pspec arg) ret))
            ret)))))
-
-(export <gtype-class> <gtype-class-meta>
-        %gruntime-debug gruntime-error gruntime-debug
-	gtype-instance:write gtype-instance-primitive
-	define-public-with-docs define-generic-with-docs
-	enum-by-index enum-by-symbol enum-by-name 
-	flags-by-index flags-by-symbol flags-by-name 
-	genum->value-table genum->symbol genum->name
-	gflags->element-list gflags->symbol-list gflags->name-list
-	gflags->value-list
-	%gtype-bind-to-class %gtype-lookup-class
-	gsignal:id gsignal:name gsignal:interface-type gsignal:return-type
-	gsignal:param-types gparam-spec:name gparam-spec:nick gparam-spec:blurb
-	gparam-spec:flags gparam-spec:param-type gparam-spec:value-type
-	gparam-spec:owner-type gparam-spec:args
-	)

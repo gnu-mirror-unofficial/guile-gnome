@@ -33,37 +33,19 @@
    " from this one.\n\n")
 
 (p "We can derive new object types, like ")
-(define gtype:test
-  (gobject-type-register-static gtype:gobject "Test"))
-(p gtype:test ".\n\n")
-
-(p "Of course, we need to override some class methods to make\n"
-   "this type interesting to us. Overriding the base GObject\n"
-   "initializer can allow us to see new types as they come in\n"
-   "to existence.\n\n")
-(define-method (gobject:class-init (class <gobject>))
-  (p "custom gobject:class-init: New GObject class! (" class ")\n")
-  (next-method))
-
-(p "Let's get the class from " gtype:test ".\n")
-(define <test> (gtype->class gtype:test))
-
-(p "\nNow that we have the class, we can add signals and properties...")
-
-(gobject-class-define-signal <test> 'touch-me gtype:void)
+(define-class <test> (<gobject>)
+  (my-property #:param-spec (list <gparam-long>))
+  #:signal (list 'touch-me gtype:void))
+(p <test> ".\n\n")
 
 (define-method (test:touch-me (obj <test>))
   (p "(In the default test::touch-me signal handler)\n"))
-
-(gobject-class-install-property <test> (make <gparam-long> #:name 'my-property))
 
 (define-method (gobject:set-property (obj <test>) (name <symbol>) init-value)
   (p "(In the test::set-property handler. You can implement your own storage\n"
      " mechanism, or call (next-method) for a default implementation, as we\n"
      " are doing now (value " init-value ").)\n")
   (next-method))
-
-(p " done.\n\n")
 
 (p "We have instantiated the class " <test> ", but we have not\n"
    "made any instances of this class. Let's do that.\n")
@@ -72,7 +54,7 @@
 
 (p "\nWe can now emit the touch-me signal on our new object, " test-instance
    ":\n")
-(gobject-signal-emit test-instance 'touch-me)
+(gtype-instance-signal-emit test-instance 'touch-me)
 
 (p "\nAnd set test::my-property on the new object as well.\n")
 (gobject-set-property test-instance 'my-property 2112)

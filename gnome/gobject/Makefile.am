@@ -1,6 +1,6 @@
 schemelibdir = $(pkgdatadir)/$(VERSION)
 
-AM_CFLAGS = -I. -I$(srcdir) $(WARN_CFLAGS) -Werror -Wno-unused
+AM_CFLAGS = -I. -I$(srcdir) $(WARN_CFLAGS) $(DEBUG_CFLAGS)
 
 # fixme: what is this for?
 ETAGS_ARGS = --regex='/SCM_\(GLOBAL_\)?\(G?PROC\|G?PROC1\|SYMBOL\|VCELL\|CONST_LONG\).*\"\([^\"]\)*\"/\3/' \
@@ -44,7 +44,8 @@ libguile_gnome_gobject_la_SOURCES = \
 	guile-support.c				\
 	guile-support.h
 
-libguile_gnome_gobject_la_CFLAGS = $(GOBJECT_CFLAGS) $(GUILE_CFLAGS) \
+libguile_gnome_gobject_la_CFLAGS = $(AM_CFLAGS) \
+				   $(GOBJECT_CFLAGS) $(GUILE_CFLAGS) \
 	-DGUILE_GOBJECT_DIR=\""$(schemelibdir)"\"
 
 libguile_gnome_gobject_la_LIBADD = $(GOBJECT_LIBS) $(GUILE_LIBS)
@@ -61,8 +62,8 @@ libguile_gnome_gw_gobject_la_SOURCES = \
 
 noinst_HEADERS=glib-support.h
 
-libguile_gnome_gw_gobject_la_CFLAGS = $(GOBJECT_CFLAGS) $(GUILE_CFLAGS) \
-	$(G_WRAP_CFLAGS)
+libguile_gnome_gw_gobject_la_CFLAGS = $(AM_CFLAGS) $(GOBJECT_CFLAGS) \
+	$(GUILE_CFLAGS) $(G_WRAP_CFLAGS)
 
 libguile_gnome_gw_gobject_la_LIBADD = $(GOBJECT_LIBS) $(GUILE_LIBS) \
 	$(G_WRAP_LINK_ARGS) libguile-gnome-gobject.la
@@ -112,6 +113,9 @@ SUFFIXES = .x .doc
 
 GUILE_SNARF_CFLAGS = $(DEFS) $(AM_CFLAGS) $(GUILE_CFLAGS) $(GOBJECT_CFLAGS)
 
+# For overriding from the command line (e.g. --debug)
+GUILE_FLAGS = 
+
 .c.x:
 	guile-snarf $(GUILE_SNARF_CFLAGS) $< > $@ \
 	|| { rm $@; false; }
@@ -121,7 +125,7 @@ GUILE_SNARF_CFLAGS = $(DEFS) $(AM_CFLAGS) $(GUILE_CFLAGS) $(GOBJECT_CFLAGS)
 	guile_filter_doc_snarfage --filter-snarfage) > $@ || { rm $@; false; }
 
 gw-gobject.scm guile-gnome-gw-gobject.c guile-gnome-gw-gobject.h: gw-gobject-spec.scm
-	guile -c \
+	guile $(GUILE_FLAGS) -c \
 	  "(set! %load-path (cons \"${G_WRAP_MODULE_DIR}\" %load-path)) \
 	   (set! %load-path (cons \"${top_srcdir}\" %load-path)) \
 	   (primitive-load \"$(srcdir)/gw-gobject-spec.scm\") \
@@ -129,7 +133,7 @@ gw-gobject.scm guile-gnome-gw-gobject.c guile-gnome-gw-gobject.h: gw-gobject-spe
 	mv guile-gnome-gw-gobject.scm gw-gobject.scm
 
 gw-glib.scm guile-gnome-gw-glib.c guile-gnome-gw-glib.h: gw-glib-spec.scm
-	guile -c \
+	guile $(GUILE_FLAGS) -c \
 	  "(set! %load-path (cons \"${G_WRAP_MODULE_DIR}\" %load-path)) \
 	   (set! %load-path (cons \"${top_srcdir}\" %load-path)) \
 	   (primitive-load \"$(srcdir)/gw-glib-spec.scm\") \

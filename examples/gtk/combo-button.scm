@@ -1,7 +1,7 @@
 (use-modules (gnome gtk))
 
 
-(define (app)
+(define (demo)
   (let* ((w (make <gtk-window> #:type 'toplevel))
 	 (cb (make <gtk-combo>)))
 
@@ -21,4 +21,4 @@
 
     (gtk-main)))
 
-(app)
+(demo)

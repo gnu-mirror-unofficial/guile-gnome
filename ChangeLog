@@ -1,3 +1,78 @@
+2004-01-14  Andy Wingo  <wingo@pobox.com>
+
+	* WARTS: You've been able to subclass with define-class for a
+	while now...
+
+	* configure.in: Add checks for libgnome, libgnomeui, and
+	libgnomecanvas.
+
+2004-01-22  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* configure.in: Check for GLib >= 2.2.0, since 2.1.X has no
+	g_{set,get}_application_name.
+
+2003-12-17  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* TODO: Added entry on procedure->macro usage.
+
+	* h2def.py: Added option --type-postfix, as needed for APIs
+	that use PREFIX_CLASSNAME_TYPE instead of PREFIX_TYPE_CLASSNAME,
+	as GTK+ does.
+
+2003-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* examples/gobject/example-1.scm: Updated to the new
+	property/signal/subclassing API.
+
+2003-10-25  Andy Wingo  <wingo@pobox.com>
+
+	* examples/gtk/tic-tac-toe.scm: Updated to the new
+	property/signal/subclassing API.
+
+2003-10-21  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* configure.in: Disable ORBit check, since the code needs internal
+	API headers that are not installed by default.
+
+2003-10-16  Andy Wingo  <wingo@pobox.com>
+
+	* examples/gtk/guile-gtk-demo/guile-gtk-demo.scm: Actually works
+	now, yay!
+
+	* configure.in: Check for libvte.
+
+2003-10-13  Andy Wingo  <wingo@pobox.com>
+
+	* configure.in: -Wall always. -Werror unless you pass
+	--disable-Werror. --disable-Wall is gone. Put in debugging symbols
+	unless --disable-debug is passed.
+
+2003-10-12  Andy Wingo  <wingo@pobox.com>
+
+	* configure.in: We do -Wall by default (--disable-Wall to disable)
+
+2003-10-11  Andy Wingo  <wingo@pobox.com>
+
+	* examples/gtk/hello-generics.scm, examples/gtk/hello.scm:
+	s/app/hello/ so we don't confuse the [stupid] module system.
+
+	* examples/gtk/combo-button.scm: s/app/demo/.
+
+2003-10-01  Andy Wingo  <wingo@pobox.com>
+
+	* configure.in: Check to see if glade is installed.
+
+2003-09-22  Andy Wingo  <wingo@pobox.com>
+
+	* autogen.sh: remove build-dependency on gnome2-dev by using
+	gstreamer's build system
+	* autogen-support.sh: gstreamer's build system (new file)
+
+2003-08-26  Andreas Rottmann  <rottmann@users.sourceforge.net>
+ 
+	* h2def.py: Added --enums-without-gtype option, which will emit
+	the enum and flags defs without gtype-id.
+
 2003-05-30  Andy Wingo  <wingo@pobox.com>
 
 	* gw-standard-spec.scm (<gw:long-long>, <gw:unsigned-long-long>):

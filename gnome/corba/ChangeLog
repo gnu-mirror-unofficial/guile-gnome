@@ -1,21 +1,35 @@
+2003-10-22  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* guile-gnome-corba-primitives.c: Use for "" instead of <> for our
+	own headers.
+	
+	* guile-gnome-corba-primitives.c: Get rid of gh_* usage.
+
+	* guile-gnome-corba-primitives.h, guile-gnome-corba-primitives.c,
+	guile-gnome-corba-types.c, guile-gnome-corba-types.h: Use
+	scm_t_bits instead of scm_bits_t.
+
+	* guile-gnome-corba-primitives.h, guile-gnome-corba-primitives.c:
+	Use SCM_VECTOR_SET and SCM_VECTOR_REF instead of SCM_VELTS.
+
 2002-04-13  Ariel Rios  <ariel@gnu.org>
 
-	* guile-gnome-corba-types.c (scm_c_corba_demarshal_any): Correctly use %ld
-	instead of %d and kill warning.
+	* guile-gnome-corba-types.c (scm_c_corba_demarshal_any): Correctly
+	use %ld instead of %d and kill warning.
 
 2002-01-28  Ariel Rios  <ariel@gnu.org>
 
-	* guile-gnome-corba-primitives.c (guile_corba_sys_register_interface): 
-	Kill interface->class.init_vepvmap since vepvmap cache is 
+	* guile-gnome-corba-primitives.c (guile_corba_sys_register_interface):
+	Kill interface->class.init_vepvmap since vepvmap cache is
 	enabled by default.
-	
+
 2002-01-28  Ariel Rios  <ariel@gnu.org>
-	
-	* Makefile.am (INCLUDES): Added a -DORBIT2_INTERNAL_API  flag.
+
+	* Makefile.am (INCLUDES): Added a -DORBIT2_INTERNAL_API flag.
 
 2002-01-24  Ariel Rios  <ariel@gnu.org>
 
-	* guile-gnome-corba-primitives.h: Some clean up. 
+	* guile-gnome-corba-primitives.h: Some clean up.
 	I cannot track one warning, tho.
 
 2001-09-09  Martin Baulig  <baulig@suse.de>

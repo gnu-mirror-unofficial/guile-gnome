@@ -9,5 +9,5 @@ Name: Guile-GObject
 Description: GNOME bindings for Guile
 Requires: gobject-2.0
 Version: @VERSION@
-Libs: -L${libdir} -lguile-gnome-gw-gobject
-Cflags: -I${includedir}
+Libs: -L${libdir} -lguile-gnome-gw-gobject @GUILE_LIBS@
+Cflags: -I${includedir} @GUILE_CFLAGS@

@@ -1,3 +1,26 @@
+/* guile-gnome
+ * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
+ *
+ * guile-gnome-gobject-primitives.h: Primitive routines for the GObject wrapper
+ *
+ * This program is free software; you can redistribute it and/or    
+ * modify it under the terms of the GNU General Public License as   
+ * published by the Free Software Foundation; either version 2 of   
+ * the License, or (at your option) any later version.              
+ *                                                                  
+ * This program is distributed in the hope that it will be useful,  
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of   
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+ * GNU General Public License for more details.                     
+ *                                                                  
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, contact:
+ *
+ * Free Software Foundation           Voice:  +1-617-542-5942
+ * 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+ * Boston, MA  02111-1307,  USA       gnu@gnu.org
+ */
+
 #ifndef __GUILE_GNOME_GOBJECT_PRIMITIVES_H__
 #define __GUILE_GNOME_GOBJECT_PRIMITIVES_H__
 
@@ -18,7 +41,6 @@ struct _GuileGClosure {
 
 
 extern SCM scm_class_gtype_class;
-extern SCM scm_gobject_module;
 extern SCM scm_sym_gclosure;
 extern SCM scm_sym_gtype_instance;
 extern SCM scm_sym_gtype_class;
@@ -32,10 +54,11 @@ extern SCM scm_sym_class_slot_ref;
 extern SCM scm_sym_class_slot_set_x;
 extern SCM scm_sym_gtype;
 extern SCM scm_sym_pspec_struct;
-extern scm_bits_t scm_tc16_gtype;
-extern scm_bits_t scm_tc16_gvalue;
-extern scm_bits_t scm_tc16_gtype_class;
-extern scm_bits_t scm_tc16_gtype_instance;
+extern scm_t_bits scm_tc16_gtype;
+extern scm_t_bits scm_tc16_gvalue;
+extern scm_t_bits scm_tc16_gvalue_array;
+extern scm_t_bits scm_tc16_gtype_class;
+extern scm_t_bits scm_tc16_gtype_instance;
 extern SCM scm_gsignal_vtable;
 extern SCM scm_gparam_spec_vtable;
 
@@ -131,14 +154,20 @@ extern SCM scm_gparam_spec_vtable;
 #define SCM_G_IS_PARAM_SPEC_POINTER(x) (x == G_TYPE_PARAM_POINTER)
 #define SCM_G_IS_PARAM_SPEC_ENUM(x) (x == G_TYPE_PARAM_ENUM)
 #define SCM_G_IS_PARAM_SPEC_FLAGS(x) (x == G_TYPE_PARAM_FLAGS)
+#define SCM_G_IS_PARAM_SPEC_VALUE_ARRAY(x) (x == G_TYPE_PARAM_VALUE_ARRAY)
 
 
 #define SCM_GTYPEP(scm)				SCM_TYP16_PREDICATE (scm_tc16_gtype, scm)
 #define SCM_GTYPE_CLASSP(scm)			SCM_IS_A_P (scm, scm_class_gtype_class)
+/* Roll our own SUBCLASSP, the GOOPS one only works on metaclasses */
+#define SCM_GTYPE_CLASS_SUBCLASSP(scm,class)	(SCM_GTYPE_CLASSP (scm) && (!SCM_FALSEP (scm_c_memq (class, scm_class_precedence_list (scm)))))
+#define SCM_GVALUEP(scm)			SCM_TYP16_PREDICATE (scm_tc16_gvalue, scm)
+#define SCM_GVALUE_ARRAYP(scm)			SCM_TYP16_PREDICATE (scm_tc16_gvalue_array, scm)
 
 #define SCM_VALIDATE_GTYPE(pos, scm)		SCM_VALIDATE_SMOB (pos, scm, gtype)
 #define SCM_VALIDATE_GTYPE_CLASS(pos, scm)	SCM_MAKE_VALIDATE (pos, scm, GTYPE_CLASSP)
 #define SCM_VALIDATE_GVALUE(pos, scm)		SCM_VALIDATE_SMOB (pos, scm, gvalue)
+
 #define SCM_VALIDATE_GTYPE_INSTANCE(pos, scm)	SCM_VALIDATE_SMOB (pos, scm, gtype_instance)
 
 #define SCM_VALIDATE_GTYPE_COPY(pos, type, cvar) \
@@ -188,7 +217,8 @@ extern SCM scm_gparam_spec_vtable;
       SCM_STRINGP (SCM_PACK (SCM_STRUCT_DATA (value) [scm_si_gparam_spec_blurb]))) && \
      SCM_GTYPEP (SCM_PACK (SCM_STRUCT_DATA (value) [scm_si_gparam_spec_param_type])) && \
      SCM_GTYPEP (SCM_PACK (SCM_STRUCT_DATA (value) [scm_si_gparam_spec_value_type])) && \
-     SCM_GTYPEP (SCM_PACK (SCM_STRUCT_DATA (value) [scm_si_gparam_spec_owner_type])) && \
+     (SCM_FALSEP (SCM_PACK (SCM_STRUCT_DATA (value) [scm_si_gparam_spec_owner_type])) || \
+      SCM_GTYPEP (SCM_PACK (SCM_STRUCT_DATA (value) [scm_si_gparam_spec_owner_type]))) && \
      TRUE)
 
 #define SCM_VALIDATE_GPARAM_SPEC(pos, value) \
@@ -228,7 +258,7 @@ void scm_init_gnome_gobject_primitives (void);
 
 
 GType gboxed_scm_get_type (void) G_GNUC_CONST;
-#define G_TYPE_GBOXED_SCM (gboxed_scm_get_type ())
+#define G_TYPE_BOXED_SCM (gboxed_scm_get_type ())
 
 
 
@@ -237,10 +267,10 @@ SCM scm_gobject_primitive_create_instance (SCM class, SCM type, SCM object, SCM 
 SCM scm_gtype_instance_primitive (SCM object);
 SCM scm_gtype_instance_primitive_to_type (SCM instance);
 SCM scm_gtype_instance_primitive_to_value (SCM instance);
-SCM scm_gobject_primitive_get_signals (SCM type);
+SCM scm_gtype_primitive_get_signals (SCM type);
+SCM scm_gtype_instance_primitive_signal_emit (SCM object, SCM signal, SCM args);
+SCM scm_gtype_instance_primitive_signal_connect (SCM object, SCM id, SCM closure, SCM after);
 SCM scm_gobject_primitive_get_properties (SCM type);
-SCM scm_gobject_primitive_signal_emit (SCM object, SCM signal, SCM args);
-SCM scm_gobject_primitive_signal_connect (SCM object, SCM id, SCM closure, SCM after);
 SCM scm_gobject_primitive_get_property (SCM object, SCM name);
 SCM scm_gobject_primitive_set_property (SCM object, SCM name, SCM value);
 SCM scm_genum_primitive_get_values (SCM type);
@@ -250,9 +280,12 @@ SCM scm_gvalue_primitive_set_flags (SCM instance, SCM value);
 SCM scm_gclosure_primitive_new (SCM func);
 SCM scm_gclosure_primitive_invoke (SCM instance, SCM return_type, SCM args);
 SCM scm_gtype_primitive_basic_p (SCM instance);
+SCM scm_gtype_interfaces (SCM type);
 SCM scm_gvalue_primitive_new (SCM type);
 SCM scm_gvalue_primitive_get (SCM instance);
 SCM scm_gvalue_primitive_set (SCM instance, SCM value);
+SCM scm_gvalue_array_primitive_new (void);
+SCM scm_gvalue_array_primitive_append (SCM instance, SCM value);
 SCM scm_gflags_primitive_bit_set_p (SCM value, SCM bit);
 SCM scm_gsignal_primitive_handler_block (SCM instance, SCM handler_id);
 SCM scm_gsignal_primitive_handler_unblock (SCM instance, SCM handler_id);
@@ -265,7 +298,6 @@ SCM scm_gparam_primitive_create (SCM class, SCM type, SCM object, SCM pspec_stru
 SCM scm_gparam_spec_p (SCM pspect_struct);
 SCM scm_gboxed_scm_primitive_new (SCM scm_value);
 SCM scm_gboxed_scm_primitive_to_scm (SCM value);
-
 
 
 SCM scm_sys_gtype_lookup_class (SCM type);

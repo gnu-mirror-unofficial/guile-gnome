@@ -12,3 +12,5 @@ function?
 So, we always need to ref once when making a new wrapper around a
 gobject.
 
+Also see gnome/gobject/guile-gnome-gobject-primitives.c, at about line
+710.
