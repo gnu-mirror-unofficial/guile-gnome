@@ -1,3 +1,15 @@
+2004-07-18  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/glib-spec.scm (<glist-of-type>): Added #:type-cname and
+	#:func prefix slots, so that <glist-of-type> can be used for
+	slists as well. The wrap/destruct methods were changed
+	accordingly, and "GSList*" now maps to the gslist-of type.
+
+2004-07-11  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gvalue.scm (gtype-instance:write): Use logand, not
+	logior for flags.
+
 2004-07-07  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/gobject-spec.scm (unwrap-value-cg): Whoops, call

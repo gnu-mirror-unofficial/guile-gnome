@@ -271,7 +271,7 @@
 	     (value-text '()))
 	(for-each (lambda (x)
 		    (let ((f (caddr x)))
-		      (if (positive? (logior value f))
+		      (if (positive? (logand value f))
 			  (set! value-text (append! value-text (list x))))))
 		  (vector->list flags-values))
 	(display #\space file)
