@@ -526,6 +526,9 @@
         "gtk_dialog_new"
 
         "gtk_entry_new"
+
+        "gtk_icon_theme_set_search_path" ;; takes array
+        "gtk_icon_theme_get_search_path" ;; returns array
         
         "gtk_item_factory_create_item"
         "gtk_item_factory_delete_entry"

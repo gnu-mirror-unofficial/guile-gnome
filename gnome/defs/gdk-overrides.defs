@@ -49,7 +49,9 @@
         "gdk_drag_begin" ; i have no clue what 'targets' is a list of
         "gdk_draw_rgb_image_dithalign"
         "gdk_draw_rgb_32_image_dithalign"
-        "gdk_window_invalidate_maybe_recurse")
+        "gdk_window_invalidate_maybe_recurse"
+
+        "gdk_pixbuf_new_from_xpm_data") ;; needs array of strings
 
 ;; Things that python-gtk does that we should do
 
