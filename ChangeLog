@@ -1,3 +1,45 @@
+2004-09-27  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/exceptions.scm, gnome/gw/Makefile.am
+	* test-suite/test-gobject.c, examples/example-1.scm
+	* test-suite/gw-glib.test, test-suite/gw-gobject.test
+	* test-suite/gobject.test, test-suite/gw-test-gobject-spec.scm
+	* test-suite/guile-gobject-test, test-suite/gw-test-glib-spec.scm
+	* test-suite/test-glib.defs, test-suite/test-gobject.h: Added
+	license blocks.
+
+2004-09-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_glib_la_LIBADD): Not
+	G_WRAP_LINK_ARGS, it's G_WRAP_LIBS.
+
+	* gnome/gobject/Makefile.am (libguile_gnome_gobject_la_LIBADD):
+	Don't link to g-wrap.
+
+	* gnome/gobject/guile-support.h: Don't include
+	g-wrap/guile-compatibility.h -- no reason to depend on g-wrap.
+
+	* guile-gnome-glib.pc.in (includedir): Point to the versioned
+	directory.
+
+	* gnome/gobject/Makefile.am: Install headers to a versioned
+	directory.
+
+2004-09-16  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (SUBDIRS): Dist fixes.
+
+	* README: Added.
+
+	* NEWS: All pre-guile-gnome stuff elided. 
+
+	* NEWS.guile-gobject: Added the old news here.
+
+2004-09-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (load-defs): Ignore varargs functions,
+	like we used to before the rewrite.
+
 2004-09-12  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gobject.scm: Real keywords, avoid deprecated modules.

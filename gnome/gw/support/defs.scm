@@ -227,9 +227,11 @@
 
            (cond
             ((ignored? c-name)
-             (begin (display "x") (throw 'ignored)))
+             (display "x") (throw 'ignored))
             ((member c-name overridden)
              (throw 'ignored))
+            ((and=> (assq 'varargs args) cadr)
+             (display "v") (throw 'ignored))
             ((any
               (lambda (x) (eq? (string-ref (cadr x) 0) #\())
               parameters)

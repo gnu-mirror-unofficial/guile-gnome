@@ -44,7 +44,7 @@ libgw_guile_gnome_glib_la_SOURCES = glib-support.c
 libgw_guile_gnome_glib_la_CFLAGS = \
 	$(AM_CFLAGS) $(GLIB_CFLAGS) $(GUILE_CFLAGS) $(G_WRAP_CFLAGS)
 libgw_guile_gnome_glib_la_LIBADD = $(GLIB_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LINK_ARGS)
+	$(G_WRAP_LIBS)
 libgw_guile_gnome_glib_la_LDFLAGS = -module
 
 BUILT_SOURCES = \
