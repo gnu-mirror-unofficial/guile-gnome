@@ -1,3 +1,13 @@
+2004-07-01  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/glib.scm: Include #:use-module (gnome gobject) before the
+	generated wrapsets (fixes segfault).
+
+	* gnome/gobject/gw-spec-utils.scm (unwrap-null-check): Bugfix;
+	conversion code was always executed, even when null-ok and the
+	pointer actually was NULL. This is now named unwrap-null-checked
+	and takes the actual unwrap code as extra parameter.
+ 
 2004-06-30  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gobject/gtype.c (scm_gtype_instance_print): Same bug.
