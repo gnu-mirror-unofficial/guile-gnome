@@ -474,13 +474,13 @@ SCM_DEFINE (scm_gobject_set_data_x, "gobject-set-data!", 3, 0, 0,
 
     sym = g_strndup (SCM_SYMBOL_CHARS (key), SCM_SYMBOL_LENGTH (key));
 
-    if (SCM_NFALSEP (val))
+    if (SCM_EQ_P (val, SCM_UNBOUND))
+        g_object_set_qdata (gobject, g_quark_from_string (sym), NULL);
+    else
         g_object_set_qdata_full
             (gobject, g_quark_from_string (sym),
              GINT_TO_POINTER (SCM_UNPACK (scm_gc_protect_object (val))),
              (GDestroyNotify)scm_gc_unprotect_object);
-    else
-        g_object_set_qdata (gobject, g_quark_from_string (sym), NULL);
         
     return SCM_UNSPECIFIED;
 }
@@ -505,7 +505,7 @@ SCM_DEFINE (scm_gobject_get_data, "gobject-get-data", 2, 0, 0,
     if (data)
         return SCM_PACK (GPOINTER_TO_INT (data));
     else
-        return SCM_BOOL_F;
+        return SCM_UNBOUND;
 }
 #undef FUNC_NAME
 

@@ -145,52 +145,52 @@
 	      (loop (cdr l)))))))
 
 (define (enum-by-index type index)
-  (find-enum (genum-primitive-get-values type) (lambda (l) (caddr l)) index))
+  (find-enum (genum-type-get-values type) (lambda (l) (caddr l)) index))
 
 (define (enum-by-name type name)
-  (find-enum (genum-primitive-get-values type) (lambda (l) (cadr l)) name))
+  (find-enum (genum-type-get-values type) (lambda (l) (cadr l)) name))
 
 (define (enum-by-symbol type symbol)
-  (find-enum (genum-primitive-get-values type) (lambda (l) (car l)) symbol))
+  (find-enum (genum-type-get-values type) (lambda (l) (car l)) symbol))
 
 (define (flags-by-index type index)
-  (find-enum (gflags-primitive-get-values type) (lambda (l) (caddr l)) index))
+  (find-enum (gflags-type-get-values type) (lambda (l) (caddr l)) index))
 
 (define (flags-by-name type name)
-  (find-enum (gflags-primitive-get-values type) (lambda (l) (cadr l)) name))
+  (find-enum (gflags-type-get-values type) (lambda (l) (cadr l)) name))
 
 (define (flags-by-symbol type symbol)
-  (find-enum (gflags-primitive-get-values type) (lambda (l) (car l)) symbol))
+  (find-enum (gflags-type-get-values type) (lambda (l) (car l)) symbol))
 
 (define (genum->symbol obj)
   (let* ((type (gvalue->type obj))
-	 (enum-values (genum-primitive-get-values type))
+	 (enum-values (genum-type-get-values type))
 	 (value (gvalue-primitive-get obj))
 	 (the-value (enum-by-index type value)))
     (car the-value)))
 
 (define (genum->name obj)
   (let* ((type (gvalue->type obj))
-	 (enum-values (genum-primitive-get-values type))
+	 (enum-values (genum-type-get-values type))
 	 (value (gvalue-primitive-get obj))
 	 (the-value (enum-by-index type value)))
     (cadr the-value)))
 
 (define (genum->value obj)
   (let* ((type (gvalue->type obj))
-	 (enum-values (genum-primitive-get-values type))
+	 (enum-values (genum-type-get-values type))
 	 (value (gvalue-primitive-get obj))
 	 (the-value (enum-by-index type value)))
     (caddr the-value)))
 
 (define (gflags->element-list obj)
   (let* ((type (gvalue->type obj))
-	 (flags-values (gflags-primitive-get-values type))
+	 (flags-values (gflags-type-get-values type))
 	 (value (gvalue-primitive-get obj))
 	 (element-list '()))
     (for-each (lambda (x)
 		(let ((f (caddr x)))
-		  (if (gflags-primitive-bit-set? value f)
+		  (if (positive? (logand value f))
 		    (set! element-list (append! element-list (list x))))))
 	      (vector->list flags-values))
     element-list))
@@ -284,6 +284,9 @@
     ("GParamFlags"   . (gtype:gflags
                         (#:flags-type gtype? *unspecified*)
                         (#:default-value number? *unspecified*)))
+    ("GParamValueArray"   . (gtype:gvalue-array
+                             (#:flags-type gtype? *unspecified*)
+                             (#:element-param gparam-spec? *unspecified*)))
     ))
 
 (define (gparam-spec:name pspec)

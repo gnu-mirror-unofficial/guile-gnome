@@ -1,3 +1,26 @@
+2004-02-22  Andy Wingo  <wingo@pobox.com>
+
+	* gobject.scm (make-gparam-instance): Make params (read write) by
+	default.
+	(make-gobject-instance): Allow keyword initargs that are defined
+	via :init-keyword. Call the <object> initializer directly to set
+	these. Somewhat hacky, but doesn't really break any rules.
+	(scm->gvalue): Work with closures.
+
+2004-02-21  Andy Wingo  <wingo@pobox.com>
+
+	* gobject.scm (gtype-instance:write): If we get a GValue from
+	somewhere else, the "primitive" code doesn't know how to make the
+	class. So we have a new hacky method to accept a gtype as the arg
+	and do the gtype->class in gobject.scm now.
+
+2004-02-12  Andy Wingo  <wingo@pobox.com>
+
+	* gobject.scm (scm->gvalue): Add a case for setting flags.
+	(allocate-instance): Use gvalue-primitive-new for basic types.
+	(gvalue->scm, scm->gvalue): Simplifications based on basic types.
+	All over: adapt to primitives changes.
+
 2004-02-08  Andy Wingo  <wingo@pobox.com>
 
 	* gobject.scm: Removed most of the commentary. Instead, refer to

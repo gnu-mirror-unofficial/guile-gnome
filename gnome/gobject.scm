@@ -56,7 +56,7 @@
   :export     (;; Simple classes
                <gboolean> <gchar> <guchar> <gint> <guint> <glong>
                <gulong> <gint64> <guint64> <gfloat> <gdouble>
-               <gchararray> <gboxed> <gboxed-scm>
+               <gchararray> <gboxed> <gboxed-scm> <gvalue-array>
                ;; Other classes
                <gclosure> <genum> <gflags> <gobject> <gparam> <gsignal>
                ;; GEnum/GFlags helpers
@@ -230,12 +230,12 @@
 	  ((eq? fundamental gtype:genum) 
 	   (if (not is-fundamental)
 	     (class-slot-set! class 'genum-values
-			      (genum-primitive-get-values gtype))))
+			      (genum-type-get-values gtype))))
 
 	  ((eq? fundamental gtype:gflags) 
 	   (if (not is-fundamental)
 	     (class-slot-set! class 'genum-values
-			      (gflags-primitive-get-values gtype))))
+			      (gflags-type-get-values gtype))))
 
 	  ((eq? fundamental gtype:gobject)
 	   (init-gobject-class gtype class initargs))
@@ -291,22 +291,23 @@ magic way to its GType.
       (slot-ref class 'gtype)
       (gruntime-error "Can't get type of unknown class: ~S" class)))
 
-(define <gchar>      (gtype->class gtype:gchar))
-(define <guchar>     (gtype->class gtype:guchar))
-(define <gboolean>   (gtype->class gtype:gboolean))
-(define <gint>       (gtype->class gtype:gint))
-(define <guint>      (gtype->class gtype:guint))
-(define <glong>      (gtype->class gtype:glong))
-(define <gulong>     (gtype->class gtype:gulong))
-(define <gint64>     (gtype->class gtype:gint64))
-(define <guint64>    (gtype->class gtype:guint64))
-(define <gfloat>     (gtype->class gtype:gfloat))
-(define <gdouble>    (gtype->class gtype:gdouble))
-(define <gchararray> (gtype->class gtype:gchararray))
+(define <gchar>        (gtype->class gtype:gchar))
+(define <guchar>       (gtype->class gtype:guchar))
+(define <gboolean>     (gtype->class gtype:gboolean))
+(define <gint>         (gtype->class gtype:gint))
+(define <guint>        (gtype->class gtype:guint))
+(define <glong>        (gtype->class gtype:glong))
+(define <gulong>       (gtype->class gtype:gulong))
+(define <gint64>       (gtype->class gtype:gint64))
+(define <guint64>      (gtype->class gtype:guint64))
+(define <gfloat>       (gtype->class gtype:gfloat))
+(define <gdouble>      (gtype->class gtype:gdouble))
+(define <gchararray>   (gtype->class gtype:gchararray))
 
-(define <gboxed>     (gtype->class gtype:gboxed))
-(define <gboxed-scm> (gtype->class gtype:gboxed-scm))
-(define <gparam>     (gtype->class gtype:gparam))
+(define <gboxed>       (gtype->class gtype:gboxed))
+(define <gboxed-scm>   (gtype->class gtype:gboxed-scm))
+(define <gvalue-array> (gtype->class gtype:gvalue-array))
+(define <gparam>       (gtype->class gtype:gparam))
 
 (define <gparam-char>    (gtype->class gtype:gparam-char))
 (define <gparam-uchar>   (gtype->class gtype:gparam-uchar))
@@ -388,21 +389,13 @@ magic way to its GType.
       (let* ((type (gtype-class->type class))
              (fundamental (gtype->fundamental type)))
         (cond
-         ;; Basic types - implemented as GValues.
-         ((gtype-primitive-basic? type)
-          (gtype-primitive-create-basic-instance type))
+         ;; Types stored as GValues: basic types + enum and flags.
+         ((gtype-is-valued? type)
+          (gvalue-primitive-new type))
 
          ;; Fundamental type - but not a basic one.
          ((eq? type fundamental)
           (gruntime-error "Can't make instances of fundamental type: ~S" type))
-
-         ;; GEnum
-         ((eq? fundamental gtype:genum)
-          (gtype-primitive-create-basic-instance type))
-
-         ;; GFlags
-         ((eq? fundamental gtype:gflags)
-          (gtype-primitive-create-basic-instance type))
 
          ;; GInterface
          ((eq? fundamental gtype:ginterface)
@@ -420,13 +413,6 @@ magic way to its GType.
          ((eq? type gtype:gclosure)
           (next-method))
 
-         ;; GBoxedScm
-         ((eq? type gtype:gboxed-scm)
-          (let* ((init-value (get-keyword #:value initargs *unspecified*)))
-            (if (unspecified? init-value)
-                (gruntime-error "Missing #:value argument"))
-            (gboxed-scm-primitive-new init-value)))
-
          ;; Oooops. Unknown or non-instantiable type.
          (else
           (gruntime-error "Don't know how to make instances of this type: ~S" type))))))
@@ -434,15 +420,26 @@ magic way to its GType.
 ;; This is a method so that it can be extended by subclasses, e.g. so
 ;; that <gtk-object> can implement explicit destruction.
 (define-method (make-gobject-instance class type object options)
+  (define (last l)
+    (if (null? (cdr l))
+        (car l)
+        (last (cdr l))))
   (let* ((class-properties (gobject-class-get-properties class))
-	 (init-properties '()))
+	 (init-properties '())
+         (init-keywords (map slot-definition-init-keyword (class-slots class)))
+         (kwargs '()))
     (let loop ((options options) (res '()))
       (cond ((null? options)
-	     (reverse res))
+             ;; We want to set the keyword args using the <object>
+             ;; initialize. Kindof hacky, but doesn't really break any
+             ;; rules...
+             (set! kwargs res))
 	    ((null? (cdr options))
-	     (goops-error "malformed argument list"))
+	     (goops-error "malformed argument list" options))
 	    ((not (keyword? (car options)))
-	     (goops-error "malformed argument list"))
+	     (goops-error "malformed argument list" options))
+            ((memq (car options) init-keywords)
+             (loop (cddr options) (cons* (car options) (cadr options) res)))
 	    (else
 	     (let* ((option-value (cadr options))
 		    (param-name (keyword->symbol (car options)))
@@ -454,12 +451,10 @@ magic way to its GType.
 	       (set! init-properties
 		     (append
 		      init-properties (list (cons param-name pspec-value))))
-	       (loop (cddr options)
-		     (cons (cadr options)
-			   (cons (car options)
-				 res)))))))
+	       (loop (cddr options) res)))))
     (gobject-primitive-create-instance class type object
-				       (list->vector init-properties))))
+				       (list->vector init-properties))
+    ((method-procedure (last (generic-function-methods initialize))) object kwargs)))
 
 (define (make-ginterface-instance class type instance initargs)
   (let ((value (get-keyword #:value initargs *unspecified*)))
@@ -480,7 +475,7 @@ magic way to its GType.
 	   (let* ((value (get-keyword (car argdesc) initargs
 				      (eval (caddr argdesc) gobject-module))))
 	     (if (unspecified? value)
-	       (gruntime-error "Missing init keyword: ~A " (car argdesc)))
+                 (gruntime-error "Missing init keyword: ~A " (car argdesc)))
 	     (or (eval (list (cadr argdesc) value) gobject-module)
                  ;; Accept gtype-classes where we can take gtypes
                  (if (and (eq? (eval (cadr argdesc) gobject-module) gtype?)
@@ -514,7 +509,7 @@ magic way to its GType.
 			   (value-type (eval (car pspec-descr) (current-module)))
 			   (flags (apply + (gflags->value-list
                                             (make <guile-param-spec-flags> #:value
-                                                  (get-keyword #:flags initargs '())))))
+                                                  (get-keyword #:flags initargs '(read write))))))
 			   (owner-type type))
 		      (or (symbol? name)
 			  (gruntime-error "Wrong #:name keyword"))
@@ -591,7 +586,11 @@ magic way to its GType.
     (let* ((newfunc (lambda (. args)
 		      (let* ((newargs (map (lambda (x) (gvalue->scm x)) args))
 			     (retval (apply func newargs)))
-			(scm->gvalue rettype retval)))))
+                        (if (and (not (eq? rettype gtype:void))
+                                 (unspecified? retval))
+                            (gruntime-error
+                             "Function returned no value, but expected ~S" rettype)
+                            (scm->gvalue rettype retval))))))
       (slot-set! closure 'closure (gclosure-primitive-new newfunc)))
     (slot-set! closure 'return-type rettype)
     (slot-set! closure 'param-types paramtypes)
@@ -602,11 +601,11 @@ magic way to its GType.
 	 (fundamental (gtype->fundamental type))
 	 (is-fundamental (eq? type fundamental)))
     (cond
-     ;; Basic types - implemented as GValues.
-     ((gtype-primitive-basic? type)
-      (let* ((init-value (get-keyword #:value initargs *unspecified*)))
-	(and (unspecified? init-value) (gruntime-error "Missing #:value argument"))
-	(gvalue-primitive-set instance init-value)))
+     ;; Basic types have only one possible Scheme representation.
+     ((gtype-is-basic? type)
+      (or (memq #:value initargs)
+          (gruntime-error "Missing #:value argument"))
+      (gvalue-primitive-set instance (get-keyword #:value initargs 'foo)))
 
      ;; Fundamental type - but not a basic one.
      ((eq? type fundamental)
@@ -626,7 +625,7 @@ magic way to its GType.
 		     (enum-by-name type init-value))
 		    (else
 		     (gruntime-error "Wrong type argument: ~S" init-value)))))
-	(gvalue-primitive-set-enum instance (caddr enum))))
+	(gvalue-primitive-set instance (caddr enum))))
 
      ;; GFlags
      ((eq? fundamental gtype:gflags)
@@ -667,7 +666,7 @@ magic way to its GType.
                                init-values))
         (set! init-values (map (lambda (x) (caddr x)) init-values))
         (set! flags-value (apply logior init-values))
-	(gvalue-primitive-set-flags instance flags-value)))
+	(gvalue-primitive-set instance flags-value)))
 
      (else
       (noop)))))
@@ -678,7 +677,7 @@ magic way to its GType.
 
 ;; These gtype-instance:write methods are necessary for some reason.
 ;; Just defining a write method specialized to <gvalue> doesn't seem to
-;; work, probably because <gvalue> and <%gtype-instance> are smobs
+;; work, probably because <gvalue> and <%gtype-instance> are smob
 ;; types.
 (define-method (gtype-instance:write (class <gtype-class>) (obj <gvalue>) file)
   (display "#<gvalue " file)
@@ -689,14 +688,14 @@ magic way to its GType.
 	 (fundamental (gtype->fundamental type))
 	 (is-fundamental (eq? type fundamental)))
     (cond
-     ;; Basic types
-     ((gtype-primitive-basic? type)
+     ;; Basic types, with one possible Scheme representation.
+     ((gtype-is-basic? type)
       (display #\space file)
       (display (gvalue-primitive-get obj) file))
 
      ;; GEnum
      ((eq? fundamental gtype:genum)
-      (let* ((enum-values (genum-primitive-get-values type))
+      (let* ((enum-values (genum-type-get-values type))
 	     (value (gvalue-primitive-get obj))
 	     (value-text (enum-by-index type value)))
 	(display #\space file)
@@ -704,23 +703,23 @@ magic way to its GType.
 
      ;; GFlags
      ((eq? fundamental gtype:gflags)
-      (let* ((flags-values (gflags-primitive-get-values type))
+      (let* ((flags-values (gflags-type-get-values type))
 	     (value (gvalue-primitive-get obj))
 	     (value-text '()))
 	(for-each (lambda (x)
 		    (let ((f (caddr x)))
-		      (if (gflags-primitive-bit-set? value f)
+		      (if (positive? (logor value f))
 			  (set! value-text (append! value-text (list x))))))
 		  (vector->list flags-values))
 	(display #\space file)
-	(display value-text file)))
-
-     ;; GBoxedScm
-     ((eq? type gtype:gboxed-scm)
-      (display #\space file)
-      (display (gboxed-scm-primitive->scm obj) file))))
+	(display value-text file)))))
 
   (display #\> file))
+
+;; If we get a GValue from somewhere else, the "primitive" code doesn't
+;; know how to make the class. So we have this hacky function.
+(define-method (gtype-instance:write (type <gtype>) (obj <gvalue>) file)
+  (gtype-instance:write (gtype->class type) obj file))
 
 (define-method (gtype-instance:write (class <gtype-class>) (obj <%gtype-instance>) file)
   (display "#<%gtype-instance " file)
@@ -731,7 +730,6 @@ magic way to its GType.
 	 (fundamental (gtype->fundamental type))
 	 (is-fundamental (eq? type fundamental)))
     (cond
-      ;; Basic types
       ((eq? fundamental gtype:gparam)
        (display #\space file)
        (display (gparam-primitive->pspec-struct obj) file))))
@@ -770,69 +768,52 @@ magic way to its GType.
 
 (define (scm->gvalue type init-value)
   (cond
+    ((is-a? init-value <gvalue>)
+     init-value)
+
+    ;; Make things easy when you're ignoring a return val.
     ((or (unspecified? type) (eq? type gtype:void))
      *unspecified*)
-    ((gtype-primitive-basic? type)
-     (if (unspecified? init-value)
-       (gruntime-error "Function returned no value, but expected ~S" type))
+
+    ;; Some types can be converted to GValues with the same incantation.
+    ((gtype-is-valued? type)
      (make (gtype->class type) #:value init-value))
-    ((eq? (gtype->fundamental type) gtype:gobject)
-     (gtype-instance-primitive->value (slot-ref init-value 'gtype-instance)))
-    ((eq? (gtype->fundamental type) gtype:ginterface)
-     (gtype-instance-primitive->value (slot-ref init-value 'gtype-instance)))
-    ((eq? (gtype->fundamental type) gtype:genum)
-     (if (is-a? init-value <gvalue>)
-         init-value
-         (make (gtype->class type) #:value init-value)))
-    ((eq? type gtype:gvalue-array)
-     (if (is-a? init-value <gvalue>)
-         init-value
-         (let ((gvarray (gvalue-array-primitive-new)))
-           (for-each
-            (lambda (v)
-              (let ((gvalue
-                     (gvalue-primitive-new
-                      (cond
-                       ((string? v) gtype:gchararray)
-                       ((boolean? v) gtype:gboolean)
-                       ((integer? v) gtype:glong)
-                       ((real? v) gtype:gdouble)
-                       ((char? v) gtype:gchar)
-                       (else
-                        (gruntime-error "Cannot convert ~A to a GValue" v))))))
-                (gvalue-primitive-set gvalue v)
-                (gvalue-array-primitive-append gvarray gvalue)))
-            init-value)
-           gvarray)))
-    ((eq? type gtype:gboxed-scm)
-     (if (is-a? init-value <gvalue>)
-         init-value
-         (gboxed-scm-primitive-new init-value)))
+
+    ;; Instantiated types have to be treated specially.
+    ((or (eq? (gtype->fundamental type) gtype:gobject)
+         (eq? (gtype->fundamental type) gtype:ginterface))
+     (let ((v (gvalue-primitive-new type)))
+       (gvalue-primitive-set v (slot-ref init-value 'gtype-instance))
+       v))
+
+    ;; GOOPS closures only -- the primitive ones were already caught
+    ;; above with the <gvalue> check.
+    ((eq? type gtype:gclosure)
+     (or (is-a? init-value <gclosure>)
+         (gruntime-error "Invalid closure" init-value))
+     (slot-ref init-value 'closure))
+
     (else
-     init-value)))
+     (gruntime-error "Don't know how to make values of type ~A" type))))
 
 (define (gvalue->scm value)
   "Converts a <gvalue> into a scheme object."
   (let* ((value-type (gvalue->type value))
 	 (fundamental-value-type (gtype->fundamental value-type)))
     (cond
-      ((gtype-primitive-basic? value-type)
-       (gvalue-primitive-get value))
+     ;; Basic types have one and only one native Scheme representation.
+     ((gtype-is-basic? value-type)
+      (gvalue-primitive-get value))
 
-      ((eq? value-type gtype:gboxed-scm)
-       (gboxed-scm-primitive->scm value))
-
-      ((eq? fundamental-value-type gtype:gobject)
-       ;; An optimization to avoid excessive allocation and reffing --
-       ;; we could make with :real-instance instead.
-       (%gtype-instance-value->scm value))
+     ;; An optimization to avoid excessive allocation and reffing -- we
+     ;; could make with :real-instance instead.
+     ((eq? fundamental-value-type gtype:gobject)
+      (%gtype-instance-value->scm value))
       
-      ((eq? fundamental-value-type gtype:gparam)
-       (let ((instance (gvalue-primitive-get value)))
-         (make (gtype->class (gtype-from-instance instance))
-           #:%real-instance instance)))
-      (else
-       value))))
+     ;; Enums and flags are natively represented as GValues. Also most
+     ;; boxed and pointer values will fall here.
+     (else
+      value))))
 
 ;;;
 ;;; {Miscellaneous}

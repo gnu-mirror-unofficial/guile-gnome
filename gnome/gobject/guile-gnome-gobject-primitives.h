@@ -30,16 +30,6 @@
 
 G_BEGIN_DECLS
 
-typedef struct _GuileGClosure      GuileGClosure;
-
-struct _GuileGClosure {
-    GClosure closure;
-
-    SCM func;
-};
-
-
-
 extern SCM scm_class_gtype_class;
 extern SCM scm_sym_gclosure;
 extern SCM scm_sym_gtype_instance;
@@ -56,7 +46,6 @@ extern SCM scm_sym_gtype;
 extern SCM scm_sym_pspec_struct;
 extern scm_t_bits scm_tc16_gtype;
 extern scm_t_bits scm_tc16_gvalue;
-extern scm_t_bits scm_tc16_gvalue_array;
 extern scm_t_bits scm_tc16_gtype_class;
 extern scm_t_bits scm_tc16_gtype_instance;
 extern SCM scm_gsignal_vtable;
@@ -162,7 +151,6 @@ extern SCM scm_gparam_spec_vtable;
 /* Roll our own SUBCLASSP, the GOOPS one only works on metaclasses */
 #define SCM_GTYPE_CLASS_SUBCLASSP(scm,class)	(SCM_GTYPE_CLASSP (scm) && (!SCM_FALSEP (scm_c_memq (class, scm_class_precedence_list (scm)))))
 #define SCM_GVALUEP(scm)			SCM_TYP16_PREDICATE (scm_tc16_gvalue, scm)
-#define SCM_GVALUE_ARRAYP(scm)			SCM_TYP16_PREDICATE (scm_tc16_gvalue_array, scm)
 
 #define SCM_VALIDATE_GTYPE(pos, scm)		SCM_VALIDATE_SMOB (pos, scm, gtype)
 #define SCM_VALIDATE_GTYPE_CLASS(pos, scm)	SCM_MAKE_VALIDATE (pos, scm, GTYPE_CLASSP)
@@ -250,84 +238,91 @@ extern SCM scm_gparam_spec_vtable;
     cvar = (float) x; \
   } while (0)
 #endif
-
-
-void scm_pre_init_gnome_gobject_primitives (void);
-void scm_init_gnome_gobject_primitives (void);
 
 
 
-GType gboxed_scm_get_type (void) G_GNUC_CONST;
-#define G_TYPE_BOXED_SCM (gboxed_scm_get_type ())
+/* API Functions Start */
 
 
 
-SCM scm_gtype_primitive_create_basic_instance (SCM type);
-SCM scm_gobject_primitive_create_instance (SCM class, SCM type, SCM object, SCM properties);
-SCM scm_gtype_instance_primitive (SCM object);
+/* First, the exported SCM API */
+
+/* GTypeInstance */
 SCM scm_gtype_instance_primitive_to_type (SCM instance);
 SCM scm_gtype_instance_primitive_to_value (SCM instance);
-SCM scm_gtype_primitive_get_signals (SCM type);
+SCM scm_sys_gtype_instance_primitive_destroy_x (SCM instance);
 SCM scm_gtype_instance_primitive_signal_emit (SCM object, SCM signal, SCM args);
 SCM scm_gtype_instance_primitive_signal_connect (SCM object, SCM id, SCM closure, SCM after);
-SCM scm_gobject_primitive_get_properties (SCM type);
-SCM scm_gobject_primitive_get_property (SCM object, SCM name);
-SCM scm_gobject_primitive_set_property (SCM object, SCM name, SCM value);
-SCM scm_genum_primitive_get_values (SCM type);
-SCM scm_gflags_primitive_get_values (SCM type);
-SCM scm_gvalue_primitive_set_enum (SCM instance, SCM value);
-SCM scm_gvalue_primitive_set_flags (SCM instance, SCM value);
-SCM scm_gclosure_primitive_new (SCM func);
-SCM scm_gclosure_primitive_invoke (SCM instance, SCM return_type, SCM args);
-SCM scm_gtype_primitive_basic_p (SCM instance);
+
+/* GType / GTypeClass */
+SCM scm_sys_gtype_lookup_class (SCM type);
+SCM scm_sys_gtype_bind_to_class (SCM class, SCM type);
 SCM scm_gtype_interfaces (SCM type);
-SCM scm_gvalue_primitive_new (SCM type);
-SCM scm_gvalue_primitive_get (SCM instance);
-SCM scm_gvalue_primitive_set (SCM instance, SCM value);
-SCM scm_gvalue_array_primitive_new (void);
-SCM scm_gvalue_array_primitive_append (SCM instance, SCM value);
-SCM scm_gflags_primitive_bit_set_p (SCM value, SCM bit);
+SCM scm_gtype_is_basic_p (SCM instance);
+SCM scm_gtype_is_valued_p (SCM instance);
+
+/* Signals */
+SCM scm_gtype_primitive_get_signals (SCM type);
+SCM scm_gsignal_primitive_create (SCM signal, SCM closure);
 SCM scm_gsignal_primitive_handler_block (SCM instance, SCM handler_id);
 SCM scm_gsignal_primitive_handler_unblock (SCM instance, SCM handler_id);
 SCM scm_gsignal_primitive_handler_disconnect (SCM instance, SCM handler_id);
 SCM scm_gsignal_primitive_handler_connected_p (SCM instance, SCM handler_id);
-SCM scm_gsignal_primitive_create (SCM signal, SCM closure);
-SCM scm_gparam_primitive_create_pspec_struct (SCM param);
+
+/* Types stored as GValues */
+SCM scm_gvalue_p (SCM class);
+SCM scm_gvalue_to_type (SCM value);
+SCM scm_gvalue_primitive_new (SCM type);
+SCM scm_gvalue_primitive_get (SCM instance);
+SCM scm_gvalue_primitive_set (SCM instance, SCM value);
+
+/* Closures. Although they are stored as GValues, they cannot be manipulated
+   with the gvalue-primitive API. */
+SCM scm_gclosure_primitive_new (SCM func);
+SCM scm_gclosure_primitive_invoke (SCM instance, SCM return_type, SCM args);
+
+/* Querying enum/flag values from type */
+SCM scm_genum_type_get_values (SCM type);
+SCM scm_gflags_type_get_values (SCM type);
+
+/* GParamSpec */
 SCM scm_gparam_primitive_to_pspec_struct (SCM param);
 SCM scm_gparam_primitive_create (SCM class, SCM type, SCM object, SCM pspec_struct);
 SCM scm_gparam_spec_p (SCM pspect_struct);
-SCM scm_gboxed_scm_primitive_new (SCM scm_value);
-SCM scm_gboxed_scm_primitive_to_scm (SCM value);
+
+/* GObject */
+SCM scm_gobject_primitive_create_instance (SCM class, SCM type, SCM object, SCM properties);
+SCM scm_gobject_primitive_get_properties (SCM type);
+SCM scm_gobject_primitive_get_property (SCM object, SCM name);
+SCM scm_gobject_primitive_set_property (SCM object, SCM name, SCM value);
+
+/* Misc */
+SCM scm_especify_metaclass_x (SCM class, SCM metaclass);
+
 
 
-SCM scm_sys_gtype_lookup_class (SCM type);
-SCM scm_sys_gtype_bind_to_class (SCM class, SCM type);
-SCM scm_sys_gtype_get_roslot (SCM object, SCM offset);
+/* Then, API that's only for C */
 
-
+GType gboxed_scm_get_type (void) G_GNUC_CONST;
+#define G_TYPE_BOXED_SCM (gboxed_scm_get_type ())
 
 gchar *scm_c_make_gtype_name (const gchar *format, const gchar *name);
 SCM scm_c_register_gtype (GType type);
-SCM scm_c_make_genum (GType type, gint value);
-gint scm_c_get_enum (SCM obj);
 SCM scm_c_make_gvalue (GType gtype);
 SCM scm_c_make_gtype_instance (GTypeInstance *instance);
-void scm_c_gtype_instance_bind_to_instance (SCM object, SCM instance);
 SCM scm_c_gtype_lookup_class (GType gtype);
-void scm_c_debug_print (const gchar *pos, SCM value);
-
-#define SCM_DEBUG_PRINT(obj) scm_c_debug_print (G_STRLOC, obj)
-
-
-
-SCM scm_gtype_class_to_type (SCM class);
-SCM scm_gvalue_p (SCM class);
-SCM scm_gvalue_to_type (SCM value);
 
 void guile_gobject_log_handler (const gchar *log_domain, GLogLevelFlags log_level,
                                 const gchar *message, gpointer user_data);
 void guile_gobject_register_sinkfunc (GType type, void (*sinkfunc) (GObject *));
 void guile_gobject_register_postmakefunc (GType type, gpointer (*postmakefunc) (gpointer));
+
+
+
+/* Private API (only here because of G-Wrap) */
+
+void scm_pre_init_gnome_gobject_primitives (void);
+void scm_init_gnome_gobject_primitives (void);
 
 G_END_DECLS
 

@@ -1,3 +1,81 @@
+2004-02-22  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject.c (s_scm_gobject_get_data) 
+	(s_scm_gobject_set_data_x): Use SCM_UNBOUND to indicate an unbound
+	slot.
+
+2004-02-12  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject-primitives.c (guile_gobject_log_handler):
+	Handle a NULL for log_domain.
+
+	* primitives.scm (gparam-spec-type-args): Add a pair for
+	GParamValueArray, but there's probably more work to do before you
+	can make the param in scheme.
+
+	* guile-gnome-gobject-primitives.h: GuileGClosure struct moved to
+	the .c file to make it private.
+
+	* guile-gnome-gobject-primitives.c (scm_c_debug_print): Removed.
+	(scm_c_get_enum): Removed.
+	(scm_c_make_genum): Removed.
+
+	* guile-gnome-gobject-primitives.h: No more exporting (as C api)
+	gparam-primitive-create-pspec-struct.
+
+	* guile-gnome-gobject-primitives.c (s_scm_gvalue_primitive_set):
+	Accept object and interface types as well.
+	(s_scm_gtype_instance_primitive_to_value): Replaced by
+	gvalue-primitive-new then gvalue-primitive-set.
+	(s_scm_gvalue_primitive_set): Also handle gboxed-scm.
+	(s_scm_gvalue_primitive_get): Handle gboxed-scm.
+	(s_scm_gboxed_scm_primitive_new): Removed, now redundant.
+	(s_scm_gboxed_scm_primitive_to_scm): Same.
+	(s_scm_gtype_is_basic_p): Changed name to include -is and remove
+	-primitive, like the standard GLib functions. Documented what a
+	basic type is.
+	(s_scm_gtype_is_basic_p): Boxed SCM is a basic type.
+	(s_scm_gtype_is_valued_p): New function. Predicate that's true
+	when you can make a GValue with (make class :value val).
+	(scm_gvalue_array_primitive_new): Remove, just use
+	gvalue-primitive-new.
+	(scm_gvalue_array_primitive_append): Removed. There are no value
+	array manipulation procedures any more. Use gvalue-primitive-set
+	with a list as the argument.
+
+	* primitives.scm (gflags->element-list): Replace
+	gflags-primitive-bit-set?.
+
+	* guile-gnome-gobject-primitives.c
+	(s_scm_gvalue_primitive_set_enum): Functionality moved to
+	gvalue-primitive-set.
+	(s_scm_gvalue_primitive_set): Accept enum and flags types.
+	(s_scm_gvalue_primitive_set_flags): Removed, like set-enum.
+	(s_scm_gflags_primitive_bit_set_p): Removed, it's the same as
+	(positive? (logand value bit)).
+
+	* guile-gnome-gobject-primitives.h (scm_gtype_instance_primitive):
+	Undefined function, somehow in the API? Removed.
+	(scm_sys_gtype_instance_primitive_destroy_x): Since we export it
+	to scheme, we can export it to C.
+
+	* guile-gnome-gobject-primitives.c (genum_type_get_values):
+	Changed name, from genum_primitive_get_values.
+	(s_scm_gflags_type_get_values): Same.
+	(scm_init_gnome_gobject_primitives): Organized and documented
+	export list. The source file could also use such a reorganization.
+	(s_scm_gtype_primitive_create_basic_instance): Removed, it does
+	the same thing as gvalue-primitive-new.
+
+	* guile-gnome-gobject-primitives.h (scm_tc16_gvalue_array): Gone.
+
+	* guile-gnome-gobject-primitives.c
+	(scm_gvalue_array_primitive_new): Just allocate GValueArray as a
+	standard boxed type.
+	(scm_gvalue_array_print): Removed, use just normal GValue
+	printing.
+	(scm_gvalue_array_free): Removed, no more tc16_gvalue_array.
+
 2004-02-08  Andy Wingo  <wingo@pobox.com>
 
 	* primitives.scm (genum->value): New public function.

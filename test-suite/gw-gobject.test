@@ -17,6 +17,13 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
            (let ((obj (make <test-obj> #:arr '(1 2 3))))
              (is-a? obj <test-obj>)))
 
+  (pass-if "getting the param spec args for the value array property"
+           (let ((args (gparam-spec:args
+                        (gparam->pspec-struct
+                         (gobject-class-find-property <test-obj> 'arr)))))
+             (and (list? args)
+                  (= (length args) 1))))
+
   (pass-if "calling foo"
            (= (foo (make <test-obj>) 65000) 65000)))
 
