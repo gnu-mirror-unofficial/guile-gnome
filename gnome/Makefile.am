@@ -1,6 +1,6 @@
 include $(top_srcdir)/common.mk
 
-SUBDIRS = 
+SUBDIRS = overrides
 
 guilegwmodule_DATA = 
 
@@ -10,3 +10,4 @@ SUBDIRS += gw
 endif
 
 EXTRA_DIST = gnome.scm
+DIST_SUBDIRS = gw overrides

@@ -25,11 +25,11 @@
 ;;; Code:
 
 (define-module (gnome gnome)
-  :use-module (gnome gobject)
-  :use-module (gnome gw libgnome)
-  :use-module (oop goops)
-  :use-module (gnome gobject gw-utils)
-  :export (gnome-program-init))
+  #:use-module (gnome gobject)
+  #:use-module (gnome gw libgnome)
+  #:use-module (oop goops)
+  #:use-module (gnome gobject gw-utils)
+  #:export (gnome-program-init))
 
 (re-export-modules (gnome gw libgnome))
 
