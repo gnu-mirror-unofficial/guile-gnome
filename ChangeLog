@@ -1,3 +1,7 @@
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (all-local): Versioned pkg-config files.
+
 2004-10-16  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/defs/Makefile.am: Integrate with common.mk.
