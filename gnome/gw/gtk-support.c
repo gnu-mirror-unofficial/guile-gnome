@@ -64,12 +64,6 @@ guile_gtk_scm_to_tree_path (SCM scm)
             gtk_tree_path_append_index (path, SCM_NUM2INT (0, SCM_CAR (scm)));
 
 	return path;
-    } else if (SCM_GVALUEP (scm)) {
-        /* we have to allow for GValues, because the code that takes a
-           marshalled GValue doesn't know how to convert that into a scm */
-        GValue *value;
-        SCM_VALIDATE_GVALUE_TYPE_COPY (1, scm, GTK_TYPE_TREE_PATH, value);
-	return g_value_dup_boxed (value);
     }
     return NULL;
 }

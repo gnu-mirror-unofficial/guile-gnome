@@ -74,10 +74,9 @@
 
   (wrap-custom-boxed!
    "GtkTreePath" "GTK_TYPE_TREE_PATH"
-   ;; unwrap
-   (list c-var " = guile_gtk_scm_to_tree_path (" scm-var ");\n")
    ;; wrap
-   (list scm-var " = guile_gtk_tree_path_to_scm (" c-var ");\n"
-         "gtk_tree_path_free (" c-var ");\n"))
+   (list scm-var " = guile_gtk_tree_path_to_scm (" c-var ");\n")
+   ;; unwrap
+   (list c-var " = guile_gtk_scm_to_tree_path (" scm-var ");\n"))
 
   (load-defs-with-overrides ws "gnome/defs/gtk.defs"))
