@@ -1,0 +1,58 @@
+To find out what should go in this file, see "Information For
+Maintainers of GNU Software" (maintain.texi), the section called
+"Recording Changes".
+
+
+Andy Wingo:
+In the directory gnome/gw, wrote:
+    gtk-spec.scm gtk-support.c gtk-support.h
+    gdk-spec.scm gdk-support.c gdk-support.h
+    guile-gtk-tree-model.c guile-gtk-tree-model.h
+In the directory gnome/overrides, wrote:
+    gtk.defs gdk.defs
+In the directory gnome/gtk, wrote:
+    graphical-repl.scm gdk-event.scm
+In the directory gnome/contrib, wrote:
+    delay-tree-model.scm filtered-list.scm help-browser.scm
+    texinfo-buffer.scm
+In the directory gnome, wrote:
+    gtk.scm
+In the directory examples, wrote:
+    combo-button.scm repl.scm tic-tac-toe.scm hello.scm
+    hello-generics.scm texinfo-browser.scm
+In the directory examples, changes to:
+    calendar.scm continuations.scm
+In the directory examples/tutorial, wrote:
+    hello.scm hello2.scm
+In the directory examples/guile-gtk-demo, wrote:
+    guile-gtk-demo.scm
+In the directory examples/guile-gtk-demo/demos, wrote:
+    tree-model.scm
+In the directory examples/guile-gtk-demo/demos, changes to:
+    continuations.scm
+
+Ariel Rios:
+In the directory examples, wrote:
+    calendar.scm
+
+Marius Vollmer:
+In the directory examples, wrote:
+    calc.scm metaspline.scm test-gdk.scm continuations.scm
+In the directory examples/guile-gtk-demo/demos, wrote:
+    continuations.scm
+
+Patrick Bernaud:
+In the directory examples/guile-gtk-demo/demos, wrote:
+    button-box.scm sizegroup.scm appwindow.scm dialog.scm
+    editable-cells.scm entry-completion.scm list-store.scm menus.scm
+    panes.scm tree-store.scm ui-manager.scm
+In the directory gnome/gtk, changes to:
+    gdk-event.scm
+In the directory gnome/gw, changes to:
+    gdk-support.c gtk-support.c gtk-support.h
+
+Jan Nieuwenhuizen:
+In the directory gnome/gtk, changes to:
+    gdk-event.scm
+In the directort gnome/gw, changes to:
+    gdk-support.c

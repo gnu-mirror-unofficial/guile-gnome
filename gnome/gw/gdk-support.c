@@ -26,37 +26,30 @@
 
 #include "gdk-support.h"
 
-#define SLOT(n) (n+scm_vtable_offset_user)
-#define MAKSLOT(n) (SCM_MAKINUM (SLOT (n)))
-
 SCM
-gdk_event_to_event_struct (GdkEvent *event)
+gdk_event_to_vector (GdkEvent *event)
 {
     switch (event->type) {
     case GDK_KEY_PRESS:
     case GDK_KEY_RELEASE:
         {
             GdkEventKey ekey = event->key;
-            SCM layout, ret;
-            char *fields = "pwpwpwpwpwpwpwpw"; /* 8 fields (we ignore key.string
-                                                * and key.length) */
+            SCM ret;
 
-            /* not so efficient, but this can be fixed later */
-            layout = scm_make_vtable_vtable (scm_makfrom0str (fields), SCM_INUM0, SCM_EOL);
-            ret = scm_make_struct (layout, SCM_INUM0, SCM_EOL);
+            /* 8 fields (we ignore key.string and key.length) */
+            ret = scm_c_make_vector (8, SCM_BOOL_F);
             
-            /* can be make more efficient with macros */
-            scm_struct_set_x (ret, MAKSLOT (0), SCM_MAKINUM (event->type));
-            scm_struct_set_x (ret, MAKSLOT (1),
+            scm_vector_set_x (ret, SCM_MAKINUM (0), SCM_MAKINUM (event->type));
+            scm_vector_set_x (ret, SCM_MAKINUM (1),
                               scm_c_gtype_instance_to_scm ((GTypeInstance*)ekey.window));
-            scm_struct_set_x (ret, MAKSLOT (2), ekey.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            scm_struct_set_x (ret, MAKSLOT (3),
+            scm_vector_set_x (ret, SCM_MAKINUM (2), ekey.send_event ? SCM_BOOL_T : SCM_BOOL_F);
+            scm_vector_set_x (ret, SCM_MAKINUM (3),
                               ekey.time > SCM_MOST_POSITIVE_FIXNUM
                               ? scm_i_ulong2big (ekey.time) : SCM_MAKINUM (ekey.time));
-            scm_struct_set_x (ret, MAKSLOT (4), SCM_MAKINUM ((int)ekey.state));
-            scm_struct_set_x (ret, MAKSLOT (5), SCM_MAKINUM (ekey.keyval));
-            scm_struct_set_x (ret, MAKSLOT (6), SCM_MAKINUM (ekey.hardware_keycode));
-            scm_struct_set_x (ret, MAKSLOT (7), SCM_MAKINUM (ekey.group));
+            scm_vector_set_x (ret, SCM_MAKINUM (4), SCM_MAKINUM ((int)ekey.state));
+            scm_vector_set_x (ret, SCM_MAKINUM (5), SCM_MAKINUM (ekey.keyval));
+            scm_vector_set_x (ret, SCM_MAKINUM (6), SCM_MAKINUM (ekey.hardware_keycode));
+            scm_vector_set_x (ret, SCM_MAKINUM (7), SCM_MAKINUM (ekey.group));
             return ret;
         }
     case GDK_BUTTON_PRESS:
@@ -65,65 +58,59 @@ gdk_event_to_event_struct (GdkEvent *event)
     case GDK_BUTTON_RELEASE:
         {
             GdkEventButton ebutton = event->button;
-            SCM layout, ret;
-            char *fields = "pwpwpwpwpwpwpwpwpwpwpw"; /* 11 fields (we ignore axes) */
+            SCM ret;
 
-            /* not so efficient, but this can be fixed later */
-            layout = scm_make_vtable_vtable (scm_makfrom0str (fields), SCM_INUM0, SCM_EOL);
-            ret = scm_make_struct (layout, SCM_INUM0, SCM_EOL);
+            /* 11 fields (we ignore axes) */
+            ret = scm_c_make_vector (11, SCM_BOOL_F);
             
-            /* can be make more efficient with macros */
-            scm_struct_set_x (ret, MAKSLOT (0), SCM_MAKINUM (event->type));
-            scm_struct_set_x (ret, MAKSLOT (1),
+            scm_vector_set_x (ret, SCM_MAKINUM (0), SCM_MAKINUM (event->type));
+            scm_vector_set_x (ret, SCM_MAKINUM (1),
                               scm_c_gtype_instance_to_scm ((GTypeInstance*)ebutton.window));
-            scm_struct_set_x (ret, MAKSLOT (2), ebutton.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            scm_struct_set_x (ret, MAKSLOT (3),
+            scm_vector_set_x (ret, SCM_MAKINUM (2), ebutton.send_event ? SCM_BOOL_T : SCM_BOOL_F);
+            scm_vector_set_x (ret, SCM_MAKINUM (3),
                               ebutton.time > SCM_MOST_POSITIVE_FIXNUM
                               ? scm_i_ulong2big (ebutton.time) : SCM_MAKINUM (ebutton.time));
-            scm_struct_set_x (ret, MAKSLOT (4), scm_double2num (ebutton.x));
-            scm_struct_set_x (ret, MAKSLOT (5), scm_double2num (ebutton.y));
-            scm_struct_set_x (ret, MAKSLOT (6), SCM_MAKINUM ((int)ebutton.state));
-            scm_struct_set_x (ret, MAKSLOT (7), SCM_MAKINUM ((int)ebutton.button));
-            scm_struct_set_x (ret, MAKSLOT (8), 
+            scm_vector_set_x (ret, SCM_MAKINUM (4), scm_double2num (ebutton.x));
+            scm_vector_set_x (ret, SCM_MAKINUM (5), scm_double2num (ebutton.y));
+            scm_vector_set_x (ret, SCM_MAKINUM (6), SCM_MAKINUM ((int)ebutton.state));
+            scm_vector_set_x (ret, SCM_MAKINUM (7), SCM_MAKINUM ((int)ebutton.button));
+            scm_vector_set_x (ret, SCM_MAKINUM (8), 
                               scm_c_gtype_instance_to_scm ((GTypeInstance*)ebutton.device));
-            scm_struct_set_x (ret, MAKSLOT (9), scm_double2num (ebutton.x_root));
-            scm_struct_set_x (ret, MAKSLOT (10), scm_double2num (ebutton.y_root));
+            scm_vector_set_x (ret, SCM_MAKINUM (9), scm_double2num (ebutton.x_root));
+            scm_vector_set_x (ret, SCM_MAKINUM (10), scm_double2num (ebutton.y_root));
             return ret;
         }
     case GDK_ENTER_NOTIFY:
     case GDK_LEAVE_NOTIFY:
         {
             GdkEventCrossing ecrossing = event->crossing;
-            SCM layout, ret;
-            char *fields = "pwpwpwpwpwpwpwpwpwpwpwpwpw"; /* 13 fields */
+            SCM ret;
 
-            /* not so efficient, but this can be fixed later */
-            layout = scm_make_vtable_vtable (scm_makfrom0str (fields), SCM_INUM0, SCM_EOL);
-            ret = scm_make_struct (layout, SCM_INUM0, SCM_EOL);
-            
-            /* can be make more efficient with macros */
-            scm_struct_set_x (ret, MAKSLOT (0), SCM_MAKINUM (event->type));
-            scm_struct_set_x (ret, MAKSLOT (1),
+            /* 13 fields */
+            ret = scm_c_make_vector (13, SCM_BOOL_F);
+
+            scm_vector_set_x (ret, SCM_MAKINUM (0), SCM_MAKINUM (event->type));
+            scm_vector_set_x (ret, SCM_MAKINUM (1),
                               scm_c_gtype_instance_to_scm ((GTypeInstance*)ecrossing.window));
-            scm_struct_set_x (ret, MAKSLOT (2), ecrossing.send_event ? SCM_BOOL_T : SCM_BOOL_F);
+            scm_vector_set_x (ret, SCM_MAKINUM (2), ecrossing.send_event ? SCM_BOOL_T : SCM_BOOL_F);
 	    /* subwindow may be NULL. --jcn */
 	    if (ecrossing.subwindow)
-	      scm_struct_set_x (ret, MAKSLOT (3),
+	      scm_vector_set_x (ret, SCM_MAKINUM (3),
 				scm_c_gtype_instance_to_scm ((GTypeInstance*)ecrossing.subwindow));
 	    else
-	      scm_struct_set_x (ret, MAKSLOT (3), SCM_BOOL_F);
+	      scm_vector_set_x (ret, SCM_MAKINUM (3), SCM_BOOL_F);
 	      
-            scm_struct_set_x (ret, MAKSLOT (4),
+            scm_vector_set_x (ret, SCM_MAKINUM (4),
                               ecrossing.time > SCM_MOST_POSITIVE_FIXNUM
                               ? scm_i_ulong2big (ecrossing.time) : SCM_MAKINUM (ecrossing.time));
-            scm_struct_set_x (ret, MAKSLOT (5), scm_double2num (ecrossing.x));
-            scm_struct_set_x (ret, MAKSLOT (6), scm_double2num (ecrossing.y));
-            scm_struct_set_x (ret, MAKSLOT (7), scm_double2num (ecrossing.x_root));
-            scm_struct_set_x (ret, MAKSLOT (8), scm_double2num (ecrossing.y_root));
-            scm_struct_set_x (ret, MAKSLOT (9), SCM_MAKINUM ((int)ecrossing.mode));
-            scm_struct_set_x (ret, MAKSLOT (10), SCM_MAKINUM ((int)ecrossing.detail));
-            scm_struct_set_x (ret, MAKSLOT (11), SCM_BOOL ((int)ecrossing.focus));
-            scm_struct_set_x (ret, MAKSLOT (12), SCM_MAKINUM ((int)ecrossing.state));
+            scm_vector_set_x (ret, SCM_MAKINUM (5), scm_double2num (ecrossing.x));
+            scm_vector_set_x (ret, SCM_MAKINUM (6), scm_double2num (ecrossing.y));
+            scm_vector_set_x (ret, SCM_MAKINUM (7), scm_double2num (ecrossing.x_root));
+            scm_vector_set_x (ret, SCM_MAKINUM (8), scm_double2num (ecrossing.y_root));
+            scm_vector_set_x (ret, SCM_MAKINUM (9), SCM_MAKINUM ((int)ecrossing.mode));
+            scm_vector_set_x (ret, SCM_MAKINUM (10), SCM_MAKINUM ((int)ecrossing.detail));
+            scm_vector_set_x (ret, SCM_MAKINUM (11), SCM_BOOL ((int)ecrossing.focus));
+            scm_vector_set_x (ret, SCM_MAKINUM (12), SCM_MAKINUM ((int)ecrossing.state));
             return ret;
         }
     case GDK_SELECTION_CLEAR:
@@ -131,26 +118,68 @@ gdk_event_to_event_struct (GdkEvent *event)
     case GDK_SELECTION_REQUEST:
         {
             GdkEventSelection eselection = event->selection;
-            SCM layout, ret;
-            char *fields = "pwpwpwpwpwpwpwpw"; /* 8 fields */
+            SCM ret;
 
-            /* not so efficient, but this can be fixed later */
-            layout = scm_make_vtable_vtable (scm_makfrom0str (fields), SCM_INUM0, SCM_EOL);
-            ret = scm_make_struct (layout, SCM_INUM0, SCM_EOL);
+            /* 8 fields */
+            ret = scm_c_make_vector (8, SCM_BOOL_F);
             
-            /* can be make more efficient with macros */
-            scm_struct_set_x (ret, MAKSLOT (0), SCM_MAKINUM (event->type));
-            scm_struct_set_x (ret, MAKSLOT (1),
+            scm_vector_set_x (ret, SCM_MAKINUM (0), SCM_MAKINUM (event->type));
+            scm_vector_set_x (ret, SCM_MAKINUM (1),
                               scm_c_gtype_instance_to_scm ((GTypeInstance*)eselection.window));
-            scm_struct_set_x (ret, MAKSLOT (2), eselection.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            scm_struct_set_x (ret, MAKSLOT (3), scm_take0str (gdk_atom_name (eselection.selection)));
-            scm_struct_set_x (ret, MAKSLOT (4), scm_take0str (gdk_atom_name (eselection.target)));
-            scm_struct_set_x (ret, MAKSLOT (5), scm_take0str (gdk_atom_name (eselection.property)));
-            scm_struct_set_x (ret, MAKSLOT (6),
+            scm_vector_set_x (ret, SCM_MAKINUM (2), eselection.send_event ? SCM_BOOL_T : SCM_BOOL_F);
+            scm_vector_set_x (ret, SCM_MAKINUM (3), scm_take0str (gdk_atom_name (eselection.selection)));
+            scm_vector_set_x (ret, SCM_MAKINUM (4), scm_take0str (gdk_atom_name (eselection.target)));
+            scm_vector_set_x (ret, SCM_MAKINUM (5), scm_take0str (gdk_atom_name (eselection.property)));
+            scm_vector_set_x (ret, SCM_MAKINUM (6),
                               eselection.time > SCM_MOST_POSITIVE_FIXNUM
                               ? scm_i_ulong2big (eselection.time) : SCM_MAKINUM (eselection.time));
-            scm_struct_set_x (ret, MAKSLOT (7), SCM_MAKINUM (eselection.requestor));
+            scm_vector_set_x (ret, SCM_MAKINUM (7), SCM_MAKINUM (eselection.requestor));
 
+            return ret;
+        }
+    case GDK_MOTION_NOTIFY:
+        {
+            GdkEventMotion emotion = event->motion;
+            SCM ret;
+
+            /* 11 fields (we ignore axes) */
+            ret = scm_c_make_vector (11, SCM_BOOL_F);
+            
+            scm_vector_set_x (ret, SCM_MAKINUM (0), SCM_MAKINUM (event->type));
+            scm_vector_set_x (ret, SCM_MAKINUM (1),
+                              scm_c_gtype_instance_to_scm ((GTypeInstance*)emotion.window));
+            scm_vector_set_x (ret, SCM_MAKINUM (2), emotion.send_event ? SCM_BOOL_T : SCM_BOOL_F);
+            scm_vector_set_x (ret, SCM_MAKINUM (3),
+                              emotion.time > SCM_MOST_POSITIVE_FIXNUM
+                              ? scm_i_ulong2big (emotion.time) : SCM_MAKINUM (emotion.time));
+            scm_vector_set_x (ret, SCM_MAKINUM (4), scm_double2num (emotion.x));
+            scm_vector_set_x (ret, SCM_MAKINUM (5), scm_double2num (emotion.y));
+            scm_vector_set_x (ret, SCM_MAKINUM (6), SCM_MAKINUM ((int)emotion.state));
+            scm_vector_set_x (ret, SCM_MAKINUM (7), emotion.is_hint ? SCM_BOOL_T : SCM_BOOL_F);
+            scm_vector_set_x (ret, SCM_MAKINUM (8), 
+                              scm_c_gtype_instance_to_scm ((GTypeInstance*)emotion.device));
+            scm_vector_set_x (ret, SCM_MAKINUM (9), scm_double2num (emotion.x_root));
+            scm_vector_set_x (ret, SCM_MAKINUM (10), scm_double2num (emotion.y_root));
+            return ret;
+        }
+    case GDK_WINDOW_STATE:
+        {
+            GdkEventWindowState ewinstate = event->window_state;
+            SCM ret;
+
+            /* 5 fields */
+            ret = scm_c_make_vector (5, SCM_BOOL_F);
+
+            scm_vector_set_x (ret, SCM_MAKINUM (0), SCM_MAKINUM (event->type));
+            scm_vector_set_x (ret, SCM_MAKINUM (1),
+                              scm_c_gtype_instance_to_scm ((GTypeInstance *)ewinstate.window));
+            scm_vector_set_x (ret, SCM_MAKINUM (2),
+                              ewinstate.send_event ? SCM_BOOL_T : SCM_BOOL_F);
+            scm_vector_set_x (ret, SCM_MAKINUM (3),
+                              SCM_MAKINUM ((int)ewinstate.changed_mask));
+            scm_vector_set_x (ret, SCM_MAKINUM (4),
+                              SCM_MAKINUM ((int)ewinstate.new_window_state));
+            
             return ret;
         }
     default:

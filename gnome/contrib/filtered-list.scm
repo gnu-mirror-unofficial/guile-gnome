@@ -30,7 +30,9 @@
 (define-module (gnome contrib filtered-list)
   #:use-module (gnome gtk)
   #:use-module (scheme documentation)
-  #:export (<filtered-list-model> set-filter))
+  #:export (<filtered-list-model>)
+  #:re-export (set-filter)) ;; <gtk-file-chooser> has a set-filter
+			    ;; method too
 
 (define-class-with-docs <filtered-list-model> (<guile-gtk-tree-model>)
   "An abstract tree model supporting filtered lists. Uses a scheme

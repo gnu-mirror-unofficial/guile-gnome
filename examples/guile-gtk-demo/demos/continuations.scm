@@ -1,3 +1,8 @@
+;; Copyright (C) 2000,2003,2004 Free Software Foundation, Inc.
+;; GNU General Public License version 2 or later. No warrantee.
+
+;; Don't try this at home, kids: it's a broken strategy.
+
 (define-module (demos continuations)
   :use-module (gnome gtk))
 

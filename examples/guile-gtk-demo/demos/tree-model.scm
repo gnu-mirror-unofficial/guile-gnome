@@ -1,4 +1,5 @@
-(read-set! keywords 'prefix)
+;; Copyright (C) 2003,2004 Free Software Foundation, Inc.
+;; GNU General Public License version 2 or later. No warrantee.
 
 (define-module (demos tree-model)
   :use-module (gnome gtk))

@@ -41,7 +41,7 @@ libgw_guile_gnome_gdk_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(G_WRAP_CFLAGS) -DGTK_DISABLE_DEPRECATED
 
 libgw_guile_gnome_gdk_la_LIBADD = $(GDK_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LINK_ARGS)  $(GUILE_GLIB_LIBS)
+	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS)
 
 libgw_guile_gnome_gdk_la_LDFLAGS = -module
 
@@ -58,7 +58,7 @@ libgw_guile_gnome_gtk_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(G_WRAP_CFLAGS) # -DGTK_DISABLE_DEPRECATED
 
 libgw_guile_gnome_gtk_la_LIBADD = $(GTK_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LINK_ARGS) $(GUILE_GLIB_LIBS)
+	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS)
 
 libgw_guile_gnome_gtk_la_LDFLAGS = -module
 

@@ -1,3 +1,125 @@
+2004-09-28  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gtk-support.c: Cleaned up the action wrappers.
+	Reindented code.
+
+	* examples/guile-gtk-demo/demos/appwindow.scm:
+	* examples/guile-gtk-demo/demos/dialog.scm:
+	* examples/guile-gtk-demo/demos/editable-cells.scm:
+	* examples/guile-gtk-demo/demos/entry-completion.scm:
+	* examples/guile-gtk-demo/demos/list-store.scm:
+	* examples/guile-gtk-demo/demos/menus.scm:
+	* examples/guile-gtk-demo/demos/panes.scm:
+	* examples/guile-gtk-demo/demos/tree-store.scm:
+	* examples/guile-gtk-demo/demos/ui-manager.scm: Use abbreviated
+	license statement.
+	
+	* gnome/overrides/gtk.defs: Added GtkColorSelection,
+	GtkActionGroup, gtk_stock overrides from Patrick's branch.
+
+	* gnome/gw/gdk-support.c (gdk_event_to_vector): Cleaned up the
+	window state code.
+
+	* gnome/gtk/gdk-event.scm (gdk-event-window-state:changed-mask)
+	(gdk-event-window-state:new-window-state): New functions by
+	Patrick Bernaud. Cleaned up by me.
+
+	* AUTHORS: Updated for Patrick's contributions.
+
+2004-09-27  Patrick Bernaud  <patrickb@chez.com>
+
+	* examples/guile-gtk-demo/demos/sizegroup.scm:
+	* examples/guile-gtk-demo/demos/button-box.scm: Style cleanups.
+
+	* gnome/gw/gtk-support.h, gnome/gw/gtk-support.c (_wrap_gtk_stock_*)
+	(_wrap_gtk_action_group_add_*_actions): New functions.
+
+	* gnome/gw/gdk-support.c: Wrap window-state event.
+	
+	* gnome/gw/gtk-support.h, gnome/gw/gtk-support.c
+	(_wrap_gtk_color_selection_dialog_get_*): New functions.
+	
+	* examples/guile-gtk-demo/demos/appwindow.scm:
+	* examples/guile-gtk-demo/demos/dialog.scm:
+	* examples/guile-gtk-demo/demos/editable-cells.scm:
+	* examples/guile-gtk-demo/demos/entry-completion.scm:
+	* examples/guile-gtk-demo/demos/list-store.scm:
+	* examples/guile-gtk-demo/demos/menus.scm:
+	* examples/guile-gtk-demo/demos/panes.scm:
+	* examples/guile-gtk-demo/demos/tree-store.scm:
+	* examples/guile-gtk-demo/demos/ui-manager.scm: New files.
+	* examples/guile-gtk-demo/gtk-logo-rgb.gif: New file, from GTK+. LGPL.
+
+2004-09-27  Andy Wingo  <wingo@pobox.com>
+
+	* examples/tic-tac-toe.scm
+	* examples/hello.scm
+	* examples/guile-gtk-demo/guile-gtk-demo.scm
+	* examples/hello-generics.scm
+	* examples/texinfo-browser.scm
+	* examples/metaspline.scm
+	* examples/continuations.scm
+	* examples/calendar.scm
+	* examples/repl.scm
+	* examples/test-gdk.scm
+	* examples/combo-button.scm: Add license blocks.
+	* examples/guile-gtk-demo/demos/sizegroup.scm
+	* examples/guile-gtk-demo/demos/tree-model.scm
+	* examples/guile-gtk-demo/demos/button-box.scm
+	* examples/guile-gtk-demo/demos/continuations.scm: Add abbreviated
+	license blocks.
+	
+	* gnome/contrib/filtered-list.scm: Re-export set-filter, since
+	there are some gtkfilechooser methods that implement it.
+
+2004-09-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gtk.defs (FileChooser): Add interface.
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_gdk_la_LIBADD)
+	(libgw_guile_gnome_gtk_la_LIBADD): Not G_WRAP_LINK_ARGS, it's
+	G_WRAP_LIBS.
+
+	* guile-gnome-gtk.pc.in, guile-gnome-gtk-uninstalled.pc.in: Use
+	@VERSION@.
+
+	* package.ac: No more GUILE_GTK_VERSION, just use the platform
+	version.
+
+	* Makefile.am (pkgconfig_DATA): Install the pkg-config file.
+
+2004-09-16  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (SUBDIRS): Dist fixes.
+
+	* NEWS: Added.
+
+	* README: Added.
+
+	* AUTHORS: Added.
+
+	* gnome/gw/glade-support.[ch]: Removed these wayward support
+	files.
+
+	* pango-checks.ac: Check the right package.
+
+	* atk-checks.ac: Check the right package.
+
+	* gnome/gtk.scm: Avoid deprecated modules.
+
+2004-09-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gdk.defs (gdk-event->event-struct): Adapted to
+	gdk-event->vector.
+
+	* gnome/gtk/gdk-event.scm: Adapted to gdk-event->vector.
+
+	* gnome/gw/gdk-support.c (gdk_event_to_vector): Renamed from
+	gdk_event_to_event_struct, changed to return a vector instead of a
+	custom struct.
+	(gdk_event_to_vector): Add a case for GDK_MOTION_NOTIFY. No more
+	irritating warnings about "events of type 3" blah blah...
+
 2004-09-05  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/Makefile.am: Don't dist the C files.
@@ -173,7 +295,7 @@
 	(gdk-event-button:y):
 	(gdk-event-button:x-root):
 	(gdk-event-button:y-root): New function.
-       
+
 2004-05-26  Jan Nieuwenhuizen  <janneke@gnu.org>
 
 	* examples/canvas.scm: Remove.

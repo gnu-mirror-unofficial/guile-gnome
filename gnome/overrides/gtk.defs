@@ -33,11 +33,80 @@
   (c-name "GuileGtkGenericTreeModel")
   (gtype-id "GUILE_GTK_TYPE_GENERIC_TREE_MODEL"))
 
+(define-interface FileChooser
+  (in-module "Gtk")
+  (c-name "GtkFileChooser")
+  (gtype-id "GTK_TYPE_FILE_CHOOSER"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkActionGroup
+(define-method add_actions
+  (of-object "GtkActionGroup")
+  (c-name "_wrap_gtk_action_group_add_actions")
+  (overrides "gtk_action_group_add_actions")
+  (return-type "none")
+  (parameters
+    '("SCM" "entries")))
+
+(define-method add_toggle_actions
+  (of-object "GtkActionGroup")
+  (c-name "_wrap_gtk_action_group_add_toggle_actions")
+  (overrides "gtk_action_group_add_toggle_actions")
+  (return-type "none")
+  (parameters
+    '("SCM" "entries")))
+
+(define-method add_radio_actions
+  (of-object "GtkActionGroup")
+  (c-name "_wrap_gtk_action_group_add_radio_actions")
+  (overrides "gtk_action_group_add_radio_actions")
+  (return-type "none")
+  (parameters
+    '("SCM"  "entries")
+    '("gint" "value")
+    '("SCM"  "on_change")))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkCombo
 (define-method get_entry
   (of-object "GtkCombo")
   (c-name "gtk_combo_get_entry")
+  (return-type "GtkWidget*"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkColorSelectionDialog
+(define-method get_colorsel
+  (of-object "GtkColorSelectionDialog")
+  (c-name "_wrap_gtk_color_selection_dialog_get_colorsel")
+  (overrides "gtk-color-selection-dialog-get-colorsel")
+  (return-type "GtkWidget*"))
+(define-method get_ok_button
+  (of-object "GtkColorSelectionDialog")
+  (c-name "_wrap_gtk_color_selection_dialog_get_ok_button")
+  (overrides "gtk-color-selection-dialog-get-ok-button")
+  (return-type "GtkWidget*"))
+(define-method get_cancel_button
+  (of-object "GtkColorSelectionDialog")
+  (c-name "_wrap_gtk_color_selection_dialog_get_cancel_button")
+  (overrides "gtk-color-selection-dialog-get-cancel-button")
+  (return-type "GtkWidget*"))
+(define-method get_help_button
+  (of-object "GtkColorSelectionDialog")
+  (c-name "_wrap_gtk_color_selection_dialog_get_help_button")
+  (overrides "gtk-color-selection-dialog-get-help-button")
+  (return-type "GtkWidget*"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkDialog
+(define-method get_vbox
+  (of-object "GtkDialog")
+  (c-name "_wrap_gtk_dialog_get_vbox")
+  (overrides "gtk_dialog_get_vbox")
+  (return-type "GtkWidget*"))
+(define-method get_action_area
+  (of-object "GtkDialog")
+  (c-name "_wrap_gtk_dialog_get_action_area")
+  (overrides "gtk_dialog_get_action_area")
   (return-type "GtkWidget*"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -50,20 +119,6 @@
   (parameters
     '("const-gchar*" "new_text")
     '("gint" "position")))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; GtkEditable
-(define-method get_vbox
-  (of-object "GtkDialog")
-  (c-name "_wrap_gtk_dialog_get_vbox")
-  (overrides "gtk_dialog_get_vbox")
-  (return-type "GtkWidget*"))
-(define-method get_action_area
-  (of-object "GtkDialog")
-  (c-name "_wrap_gtk_dialog_get_action_area")
-  (overrides "gtk_dialog_get_action_area")
-  (return-type "GtkWidget*"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkFileSelection
@@ -228,6 +283,22 @@
   (return-type "none")
   (parameters
     '("GtkRadioGroup*" "group")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkStockItem
+(define-function gtk_stock_add
+  (c-name    "_wrap_gtk_stock_add")
+  (overrides "gtk_stock_add")
+  (return-type "none")
+  (parameters
+   '("SCM" "items")))
+
+(define-function gtk_stock_lookup
+  (c-name    "_wrap_gtk_stock_lookup")
+  (overrides "gtk_stock_lookup")
+  (return-type "SCM")
+  (parameters
+    '("const-gchar*" "stock_id")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkTextBuffer
