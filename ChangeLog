@@ -1,3 +1,14 @@
+2004-10-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gsignal.scm (gtype-class-get-signal-names): Copy
+	vector-map from gobject.scm.
+
+	* gnome/gw/glib-spec.scm (initialize): GTime -> int32.
+
+	* gnome/gobject/gvalue.[ch] (scm_c_gboxed_to_scm) 
+	(scm_c_dup_gboxed_to_scm): New helper functions. Take a pointer to
+	an object along with its GType and return a SCM gvalue.
+
 2004-10-09  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gobject.scm (unwrap-value-cg, wrap-value-cg):

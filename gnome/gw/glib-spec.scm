@@ -118,6 +118,7 @@
      
      ("GQuark" unsigned-int) ; need to wrap this one better
      ("GPid" int)
+     ("GTime" int32)
      
      ("gssize" int) ; fixme: system-dependant
      ("gsize" unsigned-int) ; fixme: system-dependant

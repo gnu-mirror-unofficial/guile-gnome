@@ -462,6 +462,30 @@ SCM_DEFINE (scm_gvalue_primitive_get, "gvalue-primitive-get", 1, 0, 0,
 
 
 
+SCM
+scm_c_gboxed_to_scm (GType boxed_type, gpointer boxed_value)
+{
+    SCM svalue;
+    GValue *gvalue = g_new0 (GValue, 1);
+
+    g_value_init (gvalue, boxed_type);
+    g_value_take_boxed (gvalue, boxed_value);
+    SCM_NEWSMOB (svalue, scm_tc16_gvalue, gvalue);
+    return svalue;
+}
+
+SCM
+scm_c_dup_gboxed_to_scm (GType boxed_type, gconstpointer boxed_value)
+{
+    SCM svalue;
+    GValue *gvalue = g_new0 (GValue, 1);
+
+    g_value_init (gvalue, boxed_type);
+    g_value_set_boxed (gvalue, boxed_value);
+    SCM_NEWSMOB (svalue, scm_tc16_gvalue, gvalue);
+    return svalue;
+}
+
 SCM_DEFINE (scm_gvalue_to_scm, "gvalue->scm", 1, 0, 0,
 	    (SCM value),
 	    "")

@@ -73,6 +73,8 @@ SCM scm_gflags_type_get_values (SCM type);
 /* C only */
 
 SCM scm_c_make_gvalue (GType gtype);
+SCM scm_c_gboxed_to_scm (GType boxed_type, gpointer boxed_value);
+SCM scm_c_dup_gboxed_to_scm (GType boxed_type, gconstpointer boxed_value);
 SCM scm_c_gvalue_to_scm (const GValue *gvalue);
 GValue* scm_c_scm_to_gvalue (GType gtype, SCM scm);
 

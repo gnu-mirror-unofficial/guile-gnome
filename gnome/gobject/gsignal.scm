@@ -99,6 +99,13 @@ Returns a vector of signals belonging to CLASS and all parent classes."
       (gruntime-error "Not a <gtype-class>: ~S" class))
   (gtype-class-get-vector-slot class 'gsignals <gtype-instance>))
 
+(define (vector-map proc vector)
+  (let* ((length (vector-length vector))
+	 (result-vector (make-vector length)))
+    (do ((index 0 (+ index 1)))
+	((>= index length) result-vector)
+      (vector-set! result-vector index (proc (vector-ref vector index))))))
+
 (define (gtype-class-get-signal-names class)
   "(gtype-class-get-signal-names class)
 
