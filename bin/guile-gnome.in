@@ -1,0 +1,52 @@
+#! /bin/sh
+
+# Copyright (C) 2004 Free Software Foundation, Inc.
+# Public domain.
+# Written by Andy Wingo for guile-gnome.
+
+# The purpose of this script is twofold. First, it serves to find
+# `guile' in the load path instead of statically "linking" to
+# /usr/bin/guile. Second, it will set up the guile load path and the
+# library path such that using guile-gnome modules will Just Work. This
+# is necessary because we might choose to break the application
+# interfaces in the future, so we need to allow for parallel installs.
+
+# Note that the proper way to make a script that will use this as the
+# interpreter is as follows, removing `# ' on each line:
+
+# #! /bin/sh
+# exec guile-gnome -s $0 "$@"
+# !#
+
+# This will allow the shell to find `guile-gnome' in the path.
+
+if test "x$GUILE_LOAD_PATH" = "x"; then
+  GUILE_LOAD_PATH="@guilegnomedir@"
+else
+  GUILE_LOAD_PATH="@guilegnomedir@":$GUILE_LOAD_PATH
+fi
+
+# Probably will always be necessary to resolve libguile-gnome-gobject
+# link.
+if test @libdir@ != /usr/lib -a @libdir@ != /usr/local/lib; then
+  if test "x$LD_LIBRARY_PATH" = "x"; then
+    LD_LIBRARY_PATH=@libdir@
+  else
+    LD_LIBRARY_PATH=@libdir@:$LD_LIBRARY_PATH
+  fi
+fi
+
+# Can be removed after g-wrap is fixed.
+if test "x$LD_LIBRARY_PATH" = "x"; then
+  LD_LIBRARY_PATH=@guilegnomelibdir@
+else
+  LD_LIBRARY_PATH=@guilegnomelibdir@:$LD_LIBRARY_PATH
+fi
+
+export GUILE_LOAD_PATH LD_LIBRARY_PATH
+
+# Taken from autoconf.info, "Portable Shell"
+case $# in
+0) exec guile;;
+*) exec guile "$@";;
+esac

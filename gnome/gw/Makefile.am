@@ -22,7 +22,7 @@ guilegwmodule_DATA = gobject-spec.scm gobject.scm glib-spec.scm glib.scm
 # Also, there's a g-wrap-produced wrapper for glib types and functions,
 # libgw-guile-gnome-glib.la.
 
-lib_LTLIBRARIES = libgw-guile-gnome-gobject.la \
+guilegnomelib_LTLIBRARIES = libgw-guile-gnome-gobject.la \
 	          libgw-guile-gnome-glib.la
 
 # libgw-guile-gnome-gobject (g-wrap support)
@@ -32,7 +32,7 @@ libgw_guile_gnome_gobject_la_CFLAGS = -I$(srcdir)/../gobject -I../gobject \
         $(AM_CFLAGS) $(GOBJECT_CFLAGS) $(GUILE_CFLAGS) $(G_WRAP_CFLAGS)
 libgw_guile_gnome_gobject_la_LIBADD = $(G_WRAP_LIBS) $(GOBJECT_LIBS) \
 	$(GUILE_LIBS) \
-	 ../gobject/libguile-gnome-gobject.la
+	 ../gobject/libguile-gnome-gobject-@API_VERSION@.la
 libgw_guile_gnome_gobject_la_LDFLAGS = -module
 
 # libgw-guile-gnome-glib (g-wrap support for glib)

@@ -27,6 +27,7 @@
 (define-module (gnome gobject gtype)
   :use-module (oop goops)
   :use-module (gnome gobject utils)
+  :use-module (gnome gobject config)
   :export     (;; From C:
 
                ;; GType
@@ -99,7 +100,7 @@
   #:metaclass <gtype-instance-class>)
 
 (dynamic-call "scm_init_gnome_gobject_types"
-              (dynamic-link "libguile-gnome-gobject"))
+              (dynamic-link *guile-gnome-gobject-lib-path*))
 
 ;;;
 ;;; {Class Allocation and Initialization}

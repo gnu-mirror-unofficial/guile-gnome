@@ -30,6 +30,7 @@
 (define-module (gnome gobject gobject)
   :use-module (oop goops)
   :use-module (gnome gobject utils)
+  :use-module (gnome gobject config)
   :use-module (gnome gobject gtype)
   :use-module (gnome gobject gvalue)
   :use-module (gnome gobject gparameter)
@@ -51,7 +52,7 @@
                gobject-get-property gobject-set-property))
 
 (dynamic-call "scm_init_gnome_gobject"
-              (dynamic-link "libguile-gnome-gobject"))
+              (dynamic-link *guile-gnome-gobject-lib-path*))
 
 ;;;
 ;;; {Class Initialization}

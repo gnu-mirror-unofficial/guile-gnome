@@ -1,4 +1,4 @@
-SUBDIRS = gnome test-suite examples 
+SUBDIRS = gnome test-suite examples bin
 
 EXTRA_DIST = guile-gnome-glib.pc.in guile-gnome-glib-uninstalled.pc.in \
 	AUTHORS NEWS TODO WARTS REFCOUNTING THREADING NEWS.guile-gobject \

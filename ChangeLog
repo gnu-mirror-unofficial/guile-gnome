@@ -1,3 +1,32 @@
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac (GUILE_GLIB_LIBS): Link to the versioned lib.
+
+	* guile-gnome-glib-uninstalled.pc.in, guile-gnome-glib.pc.in: Link
+	to the versioned lib.
+
+	* gnome/gobject/config.scm.in: New file, exports
+	*guile-gnome-gobject-lib-path*.
+
+	* gnome/gobject/gobject.scm, gtype.scm, gvalue.scm,
+	gparameter.scm, gsignal.scm, gclosure.scm: dynamic-link the path
+	from (gnome gobject config).
+
+	* gnome/gobject/Makefile.am: Version the libguile-gnome-gobject
+	lib. Make config.scm work in the source tree and in the
+	installdir. Define GUILE_GOBJECT_DIR to be $guilegnomedir.
+
+	* bin/Makefile.am: New file. Will install a versioned
+	guile-gnome-$apiversion into $bindir.
+
+	* bin/guile-gnome.in: New script, wraps guile with a munged load
+	path for modules and libraries.
+
+	* Makefile.am (SUBDIRS): Add bin/.
+
+	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
+	versioned directory.
+
 2004-10-12  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* shlib-dirs.ac: New file, to be used by dev-environ.

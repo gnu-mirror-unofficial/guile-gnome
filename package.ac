@@ -7,7 +7,7 @@ AC_SUBST(GOBJECT_CFLAGS)
 AC_SUBST(GOBJECT_LIBS)
 
 GUILE_GLIB_CFLAGS='-I$(top_srcdir)/glib/gnome/gobject -I$(top_builddir)/glib/gnome/gobject'
-GUILE_GLIB_LIBS='$(top_builddir)/glib/gnome/gobject/libguile-gnome-gobject.la'
+GUILE_GLIB_LIBS='$(top_builddir)/glib/gnome/gobject/libguile-gnome-gobject-$(API_VERSION).la'
 AC_SUBST(GUILE_GLIB_CFLAGS)
 AC_SUBST(GUILE_GLIB_LIBS)
 

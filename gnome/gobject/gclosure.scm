@@ -28,6 +28,7 @@
 ;;; Code:
 
 (define-module (gnome gobject gclosure)
+  :use-module (gnome gobject config)
   :use-module (gnome gobject gtype)
   :use-module (gnome gobject gvalue)
   :use-module (oop goops)
@@ -35,7 +36,7 @@
   :export     (<gclosure> gclosure-invoke))
 
 (dynamic-call "scm_init_gnome_gobject_closures"
-              (dynamic-link "libguile-gnome-gobject"))
+              (dynamic-link *guile-gnome-gobject-lib-path*))
 
 (define-class <gclosure-class> (<gtype-class>))
 (define-class <gclosure> ()
