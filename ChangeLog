@@ -1,3 +1,11 @@
+2004-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.97 ==
+
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Add record_check.
+
 2004-10-28  Andy Wingo  <wingo@pobox.com>
 
 	* glib-checks.ac: 
