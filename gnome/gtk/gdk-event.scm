@@ -66,6 +66,8 @@
   val)
 (define-gdk-event-accessor (button-press button-release) button y 5
   val)
+(define-gdk-event-accessor (button-press button-release) button modifiers 6
+  (gflags->symbol-list (make <gdk-modifier-type> #:value val)))
 (define-gdk-event-accessor (button-press button-release) button button 7
   val)
 (define-gdk-event-accessor (button-press button-release) button x-root 9
