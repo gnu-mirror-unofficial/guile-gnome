@@ -1,3 +1,7 @@
+2004-06-14  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/gw/Makefile.am (BUILT_SOURCES): Build fix.
+
 2004-06-13  Jan Nieuwenhuizen  <janneke@gnu.org>
 
 	* examples/canvas.scm: Update canvas module import.

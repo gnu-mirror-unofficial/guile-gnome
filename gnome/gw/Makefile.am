@@ -27,5 +27,4 @@ libgw_guile_gnome_canvas_la_LDFLAGS = -module
 
 CLEANFILES += $(wildcard guile-gnome-gw-canvas.*) canvas.scm
 
-BUILT_SOURCES = guile-gnome-gw-libgnomecanvas.c
-
+BUILT_SOURCES = guile-gnome-gw-canvas.c
