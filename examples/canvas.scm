@@ -1,4 +1,5 @@
-#! /usr/bin/guile -s
+#! /bin/sh
+exec guile-gnome-0 -s $0 "$@"
 !#
 ;; guile-gnome
 ;; Copyright (C) 2004 Free Software Foundation, Inc.
@@ -89,6 +90,7 @@
              (lambda (b) (gtk-main-quit)))
 
     (connect window 'key-press-event key-press-event)
+    (connect window 'delete-event (lambda args (gtk-main-quit) #t))
     
     ;; (set-size-request button canvas-width 20) ?
     (set-child-packing vbox button #f #f 0 'end)
