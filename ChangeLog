@@ -1,3 +1,7 @@
+2005-01-25  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/defs/Makefile.am (defs_DATA): Make out-of-tree-build-safe.
+
 2005-01-11  Andy Wingo  <wingo@pobox.com>
 
 	* == Released platform version 2.7.98 ==
