@@ -30,7 +30,7 @@
   :use-module (gnome gobject gw-utils)
   :use-module (oop goops))
 
-(re-export-modules (gnome gobject gw-glib))
+(re-export-modules (gnome gw glib))
 
 (define-public (g-idle-add proc)
   (let ((closure (make <gclosure>

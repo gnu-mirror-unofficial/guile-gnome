@@ -26,7 +26,7 @@
 ;;; Code:
 
 (define-module (gnome gobject gw-utils)
-  :export (re-export-modules))
+  #:export (re-export-modules))
 
 (define-macro (re-export-modules . args)
   (if (not (null? args))

@@ -2,19 +2,18 @@ include $(top_srcdir)/common.mk
 
 noinst_LTLIBRARIES = libgw-guile-test-gobject.la libgw-guile-test-glib.la 
 
+std_cflags = $(GUILE_GLIB_CFLAGS) $(GOBJECT_CFLAGS) $(G_WRAP_CFLAGS)
+
 libgw_guile_test_gobject_la_SOURCES = test-gobject.c
 nodist_libgw_guile_test_gobject_la_SOURCES = gw-test-gobject.c
-libgw_guile_test_gobject_la_CFLAGS = \
-	-I$(top_srcdir)/glib/gnome/gobject $(GOBJECT_CFLAGS) $(G_WRAP_CFLAGS)
+libgw_guile_test_gobject_la_CFLAGS = $(std_cflags)
 libgw_guile_test_gobject_la_LDFLAGS = -module -rpath $(libdir) 
 libgw_guile_test_gobject_la_LIBADD = \
-	$(top_builddir)/glib/gnome/gobject/libguile-gnome-gobject.la \
-	$(G_WRAP_LIBS) $(GUILE_LIBS)
+	$(GUILE_GLIB_LIBS) $(G_WRAP_LIBS) $(GUILE_LIBS)
 
 libgw_guile_test_glib_la_SOURCES = test-glib.c
 nodist_libgw_guile_test_glib_la_SOURCES = gw-test-glib.c
-libgw_guile_test_glib_la_CFLAGS = \
-	-I$(top_srcdir)/glib/gnome/gobject $(GOBJECT_CFLAGS) $(G_WRAP_CFLAGS)
+libgw_guile_test_glib_la_CFLAGS = $(std_cflags)
 libgw_guile_test_glib_la_LDFLAGS = -module -rpath $(libdir) 
 libgw_guile_test_glib_la_LIBADD = \
 	$(G_WRAP_LIBS) $(GUILE_LIBS)
@@ -34,6 +33,7 @@ CLEANFILES = $(wildcard gnome-*.log test-*.log) 		\
 TESTS = guile-gobject-test
 
 gw-test-%.scm gw-test-%.c: gw-test-%-spec.scm
+	echo GLP=$(GUILE_LOAD_PATH)
 	guile $(GUILE_FLAGS) -c \
 	  "(use-modules (g-wrap)) \
 	   (use-modules (g-wrap guile)) \

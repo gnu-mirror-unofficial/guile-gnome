@@ -68,13 +68,17 @@
     ;; support GList*-of-GtkWindow*
     (let ((index (string-contains type "-of-")))
       (if index
-          (begin (set! options (cons
-                                (type-lookup
-                                 ws
-                                 (substring type (+ index 4))
-                                 return?)
-                                options))
-                  (set! type (substring type 0 index)))))
+          (begin
+            (set! options (cons
+                           (let ((subtype (type-lookup
+                                           ws
+                                           (substring type (+ index 4))
+                                           return?)))
+                             (if (list? subtype)
+                                 subtype
+                                 (list subtype)))
+                           options))
+            (set! type (substring type 0 index)))))
     (let ((type-obj (or (lookup-type ws type)
                         (wrap-opaque-pointer! ws type))))
       

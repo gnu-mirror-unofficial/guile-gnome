@@ -1,6 +1,7 @@
-SUBDIRS = gobject
+include $(top_srcdir)/common.mk
 
-guilemoduledir = $(datadir)/guile/gnome
-guilemodule_DATA = gobject.scm glib.scm
+SUBDIRS = gobject gw
 
-EXTRA_DIST = $(guilemodule_DATA)
+guilemodule_DATA = gobject.scm $(wildcard gobject/*.scm)
+
+EXTRA_DIST = gobject.scm

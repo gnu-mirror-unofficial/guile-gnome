@@ -27,7 +27,7 @@
 (define-module (gnome gobject primitives)
   :use-module (oop goops)
   :use-module (ice-9 documentation)
-  :use-module (gnome gobject gw-gobject)
+  :use-module (gnome gw gobject)
   :use-module (srfi srfi-1) ; zip
   :re-export  (%init-gnome-gobject
                %post-init-gnome-gobject

@@ -24,7 +24,7 @@
 ;;
 ;;; Code:
 
-(define-module (gnome gobject gw-glib-spec)
+(define-module (gnome gw glib-spec)
   #:use-module (oop goops)
   #:use-module (g-wrap)
   #:use-module (g-wrap util)
@@ -37,7 +37,7 @@
   #:language guile #:id 'gnome-glib)
 
 (define-method (initialize (ws <glib-wrapset>) initargs)
-  (next-method ws (append '(#:module (gnome gobject gw-glib)) initargs))
+  (next-method ws (append '(#:module (gnome gw glib)) initargs))
   
   (depends-on! ws 'standard)
 
@@ -144,7 +144,7 @@
         (throw
          'gw:bad-typespec
          "glist-of options form must have a sub-typespec as first option."
-         options))
+         (list sub-typespec options)))
     
     (set! remainder (delq 'const remainder))
     (if (and (memq 'caller-owned remainder)

@@ -27,12 +27,12 @@
 
 ;;; -*-scheme-*-
 
-(define-module (gnome gobject gw-gobject-spec)
+(define-module (gnome gw gobject-spec)
   #:use-module (oop goops)
   #:use-module (g-wrap)
   #:use-module (g-wrap enumeration)
   #:use-module (g-wrap guile)
-  #:use-module (gnome gobject gw-glib-spec)
+  #:use-module (gnome gw glib-spec)
   #:use-module (gnome gobject defs-support)
   #:use-module (gnome gobject gw-spec-utils))
 
@@ -46,7 +46,7 @@
                                (list
                                 "#include <guile-gnome-gobject.h>\n"))
   
-  (next-method ws (append '(#:module (gnome gobject gw-gobject)) initargs))
+  (next-method ws (append '(#:module (gnome gw gobject)) initargs))
   
   (depends-on! ws 'standard 'gnome-glib)
 
