@@ -1,3 +1,7 @@
+2004-07-01  Andy Wingo  <wingo@pobox.com>
+
+	* libgnome-spec.scm (initialize): Fix for depends-on!.
+
 2004-02-08  Andy Wingo  <wingo@pobox.com>
 
 	* Makefile.am: Reverted to my local copy.

@@ -32,12 +32,11 @@
   :use-module (gnome gobject defs-support))
 
 (define-class <libgnome-wrapset> (<gobject-wrapset-base>)
-  #:id 'gnome-libgnome)
+  #:id 'gnome-libgnome
+  #:dependencies '(standard gnome-glib gnome-gobject))
 
 (define-method (initialize (ws <libgnome-wrapset>) initargs)
   (next-method ws (append '(#:module (gnome gw libgnome)) initargs))
-  
-  (depends-on! ws 'standard 'gnome-glib 'gnome-gobject)
 
   (load-defs ws "gnome/defs/gnome.defs"))
 
