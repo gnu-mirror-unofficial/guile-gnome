@@ -1,3 +1,55 @@
+2004-09-28  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gtk-support.c: Cleaned up the action wrappers.
+	Reindented code.
+
+	* examples/guile-gtk-demo/demos/appwindow.scm:
+	* examples/guile-gtk-demo/demos/dialog.scm:
+	* examples/guile-gtk-demo/demos/editable-cells.scm:
+	* examples/guile-gtk-demo/demos/entry-completion.scm:
+	* examples/guile-gtk-demo/demos/list-store.scm:
+	* examples/guile-gtk-demo/demos/menus.scm:
+	* examples/guile-gtk-demo/demos/panes.scm:
+	* examples/guile-gtk-demo/demos/tree-store.scm:
+	* examples/guile-gtk-demo/demos/ui-manager.scm: Use abbreviated
+	license statement.
+	
+	* gnome/overrides/gtk.defs: Added GtkColorSelection,
+	GtkActionGroup, gtk_stock overrides from Patrick's branch.
+
+	* gnome/gw/gdk-support.c (gdk_event_to_vector): Cleaned up the
+	window state code.
+
+	* gnome/gtk/gdk-event.scm (gdk-event-window-state:changed-mask)
+	(gdk-event-window-state:new-window-state): New functions by
+	Patrick Bernaud. Cleaned up by me.
+
+	* AUTHORS: Updated for Patrick's contributions.
+
+2004-09-27  Patrick Bernaud  <patrickb@chez.com>
+
+	* examples/guile-gtk-demo/demos/sizegroup.scm:
+	* examples/guile-gtk-demo/demos/button-box.scm: Style cleanups.
+
+	* gnome/gw/gtk-support.h, gnome/gw/gtk-support.c (_wrap_gtk_stock_*)
+	(_wrap_gtk_action_group_add_*_actions): New functions.
+
+	* gnome/gw/gdk-support.c: Wrap window-state event.
+	
+	* gnome/gw/gtk-support.h, gnome/gw/gtk-support.c
+	(_wrap_gtk_color_selection_dialog_get_*): New functions.
+	
+	* examples/guile-gtk-demo/demos/appwindow.scm:
+	* examples/guile-gtk-demo/demos/dialog.scm:
+	* examples/guile-gtk-demo/demos/editable-cells.scm:
+	* examples/guile-gtk-demo/demos/entry-completion.scm:
+	* examples/guile-gtk-demo/demos/list-store.scm:
+	* examples/guile-gtk-demo/demos/menus.scm:
+	* examples/guile-gtk-demo/demos/panes.scm:
+	* examples/guile-gtk-demo/demos/tree-store.scm:
+	* examples/guile-gtk-demo/demos/ui-manager.scm: New files.
+	* examples/guile-gtk-demo/gtk-logo-rgb.gif: New file, from GTK+. LGPL.
+
 2004-09-27  Andy Wingo  <wingo@pobox.com>
 
 	* examples/tic-tac-toe.scm
@@ -243,7 +295,7 @@
 	(gdk-event-button:y):
 	(gdk-event-button:x-root):
 	(gdk-event-button:y-root): New function.
-       
+
 2004-05-26  Jan Nieuwenhuizen  <janneke@gnu.org>
 
 	* examples/canvas.scm: Remove.

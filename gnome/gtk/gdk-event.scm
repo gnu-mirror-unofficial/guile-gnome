@@ -68,7 +68,7 @@
        (string->symbol (vector-ref vector 3)))
       (else
        (gruntime-error "Event not of the proper type: ~A" event)))))
-       
+   
 (define (gdk-event-button:x event)
   (let ((vector (gdk-event->vector event)))
     (case (gdk-event:type event)
@@ -109,6 +109,22 @@
       (else
        (gruntime-error "Event not of the proper type: ~A" event)))))
 
+(define (gdk-event-window-state:changed-mask event)
+  (let ((vector (gdk-event->vector event)))
+    (if (eq? (gdk-event:type event) 'window-state)
+	(gflags->symbol-list
+	 (make <gdk-window-state>
+	   #:value (vector-ref vector 3)))
+	(gruntime-error "Event not of the proper type: ~A" event))))
+
+(define (gdk-event-window-state:new-window-state event)
+  (let ((vector (gdk-event->vector event)))
+    (if (eq? (gdk-event:type event) 'window-state)
+	(gflags->symbol-list
+	 (make <gdk-window-state>
+	   #:value (vector-ref vector 4)))
+	(gruntime-error "Event not of the proper type: ~A" event))))
+   
 ;;
 ;; Update this list with the following bit of perl:
 ;; perl -p -e 's/#define GDK_/(define gdk:/; s/_/-/g; s/0x/#x/; s/$/)/;' \

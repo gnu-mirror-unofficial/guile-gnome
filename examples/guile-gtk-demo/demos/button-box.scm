@@ -6,40 +6,32 @@
 
 
 (define (create-bbox horizontal title spacing layout)
-  (let (
-	(frame (make <gtk-frame> :label title))
-	(bbox  (make (if horizontal <gtk-hbutton-box> <gtk-vbutton-box>) 
-		 :layout-style layout :spacing spacing))
-	)
-    (set-border-width bbox 5)
+  (let ((frame (make <gtk-frame> :label title))
+	(bbox  (make (if horizontal <gtk-hbutton-box> <gtk-vbutton-box>)
+		 :layout-style layout :spacing spacing :border-width 5)))
     (add frame bbox)
-
+    
     (for-each (lambda (s)
-		(add bbox (gtk-button-new-from-stock (gtk-stock-id s))))
+		(add bbox (make <gtk-button> 
+			    :label (gtk-stock-id s) :use-stock #t)))
 	      '(ok cancel help))
 
-    frame
-    )
-  )
+    frame))
 
 (define (main)
-  (let (
-	 (window    (make <gtk-window> :type 'toplevel))
-	 (mainvbox  (gtk-vbox-new #f 0))
-	 (framehorz (make <gtk-frame> :label "Horizontal Button Boxes"))
-	 (vbox      (gtk-vbox-new #f 0))
-	 (framevert (make <gtk-frame> :label "Vertical Button Boxes"))
-	 (hbox      (gtk-hbox-new #f 0))
-	 )
-    (set-title window "Button Boxes")
-
-    (set-border-width window 10)
-    
+  (let ((window    (make <gtk-window> 
+		     :type 'toplevel :title "Button Boxes" :border-width 10))
+	(mainvbox  (make <gtk-vbox> :homogeneous #f :spacing 0))
+	(framehorz (make <gtk-frame> :label "Horizontal Button Boxes"))
+	(vbox      (make <gtk-vbox> 
+		     :homogeneous #f :spacing 0 :border-width 10))
+	(framevert (make <gtk-frame> :label "Horizontal Button Boxes"))
+	(hbox      (make <gtk-hbox> 
+		     :homogeneous #f :spacing 0 :border-width 10)))
     (add window mainvbox)
 
     (pack-start mainvbox framehorz #t #t 10)
 
-    (set-border-width vbox 10)
     (add framehorz vbox)
 
     (pack-start vbox
@@ -57,7 +49,6 @@
 
     (pack-start mainvbox framevert #t #t 10)
 
-    (set-border-width hbox 10)
     (add framevert hbox)
 
     (pack-start hbox
@@ -73,9 +64,7 @@
 		(create-bbox #f "End" 30 'end)
 		#t #t 5)
 
-    (show-all window)
-    )
-  )
+    (show-all window)))
 
 
 (define name "Button Boxes")

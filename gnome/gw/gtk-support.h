@@ -31,10 +31,19 @@
 SCM guile_gtk_tree_path_to_scm (GtkTreePath *path);
 GtkTreePath* guile_gtk_scm_to_tree_path (SCM scm);
 
+void _wrap_gtk_action_group_add_actions (GtkActionGroup* action_group, SCM entries);
+void _wrap_gtk_action_group_add_toggle_actions (GtkActionGroup *action_group, SCM entries);
+void _wrap_gtk_action_group_add_radio_actions (GtkActionGroup *action_group, SCM entries, gint value, SCM on_change);
+
 GtkWidget* gtk_combo_get_entry (GtkCombo *combo);
 
 GtkWidget* _wrap_gtk_dialog_get_vbox (GtkDialog *dialog);
 GtkWidget* _wrap_gtk_dialog_get_action_area (GtkDialog *dialog);
+
+GtkWidget* _wrap_gtk_color_selection_dialog_get_colorsel (GtkColorSelectionDialog *dialog);
+GtkWidget* _wrap_gtk_color_selection_dialog_get_ok_button (GtkColorSelectionDialog *dialog);
+GtkWidget* _wrap_gtk_color_selection_dialog_get_cancel_button (GtkColorSelectionDialog *dialog);
+GtkWidget* _wrap_gtk_color_selection_dialog_get_help_button (GtkColorSelectionDialog *dialog);
 
 gint _wrap_gtk_editable_insert_text (GtkEditable *editable, const gchar *text, gint pos);
 
@@ -51,6 +60,9 @@ GtkTreeIter* _wrap_gtk_list_store_prepend (GtkListStore *store);
 GtkTreeIter* _wrap_gtk_list_store_append (GtkListStore *store);
 
 SCM _wrap_gtk_message_dialog_new (GtkWindow* parent, GtkDialogFlags flags, GtkMessageType type, GtkButtonsType buttons, const gchar *text);
+
+void _wrap_gtk_stock_add (SCM items);
+SCM _wrap_gtk_stock_lookup (const gchar *stock_id);
 
 void _wrap_gtk_text_buffer_set_text (GtkTextBuffer *buf, SCM stext);
 void _wrap_gtk_text_buffer_insert (GtkTextBuffer *buf, GtkTextIter* iter, SCM stext);
@@ -69,10 +81,6 @@ SCM _wrap_gtk_text_buffer_get_bounds (GtkTextBuffer *buf);
 SCM _wrap_gtk_text_buffer_get_selection_bounds (GtkTextBuffer *buf);
 GtkTextIter* _wrap_gtk_text_buffer_get_iter_at_mark (GtkTextBuffer *buf, GtkTextMark* mark);
 GtkTextIter* _wrap_gtk_text_buffer_get_iter_at_child_anchor (GtkTextBuffer *buf, GtkTextChildAnchor* anchor);
-
-/*
- * GtkTree
- */
 
 GtkTreeIter* _wrap_gtk_tree_model_get_iter (GtkTreeModel *model, GtkTreePath *path);
 GtkTreeIter* _wrap_gtk_tree_model_get_iter_first (GtkTreeModel *model);

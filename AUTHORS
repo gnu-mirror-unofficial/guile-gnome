@@ -43,7 +43,13 @@ In the directory examples/guile-gtk-demo/demos, wrote:
 
 Patrick Bernaud:
 In the directory examples/guile-gtk-demo/demos, wrote:
-    button-box.scm sizegroup.scm
+    button-box.scm sizegroup.scm appwindow.scm dialog.scm
+    editable-cells.scm entry-completion.scm list-store.scm menus.scm
+    panes.scm tree-store.scm ui-manager.scm
+In the directory gnome/gtk, changes to:
+    gdk-event.scm
+In the directory gnome/gw, changes to:
+    gdk-support.c gtk-support.c gtk-support.h
 
 Jan Nieuwenhuizen:
 In the directory gnome/gtk, changes to:

@@ -162,6 +162,26 @@ gdk_event_to_vector (GdkEvent *event)
             scm_vector_set_x (ret, SCM_MAKINUM (10), scm_double2num (emotion.y_root));
             return ret;
         }
+    case GDK_WINDOW_STATE:
+        {
+            GdkEventWindowState ewinstate = event->window_state;
+            SCM ret;
+
+            /* 5 fields */
+            ret = scm_c_make_vector (5, SCM_BOOL_F);
+
+            scm_vector_set_x (ret, SCM_MAKINUM (0), SCM_MAKINUM (event->type));
+            scm_vector_set_x (ret, SCM_MAKINUM (1),
+                              scm_c_gtype_instance_to_scm ((GTypeInstance *)ewinstate.window));
+            scm_vector_set_x (ret, SCM_MAKINUM (2),
+                              ewinstate.send_event ? SCM_BOOL_T : SCM_BOOL_F);
+            scm_vector_set_x (ret, SCM_MAKINUM (3),
+                              SCM_MAKINUM ((int)ewinstate.changed_mask));
+            scm_vector_set_x (ret, SCM_MAKINUM (4),
+                              SCM_MAKINUM ((int)ewinstate.new_window_state));
+            
+            return ret;
+        }
     default:
         g_print ("Conversions for events of type %d are not implemented.\n"
                  "How about doing it yourself?\n", event->type);
