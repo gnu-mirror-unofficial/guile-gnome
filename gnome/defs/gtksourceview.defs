@@ -65,7 +65,7 @@
   )
 )
 
-(include "gtksourceview-overrides.defs")
+(include overrides)
 
 ;; From /usr/include/gtksourceview-1.0/gtksourceview/gtksourcebuffer.h
 

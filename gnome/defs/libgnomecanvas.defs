@@ -1,7 +1,6 @@
 ;; -*- scheme -*-
 
 (include "libgnomecanvas-types.defs")
-(include "libgnomecanvas-overrides.defs")
 
 ;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-bpath.h
 
@@ -29,6 +28,7 @@
 )
 
 
+(include overrides)
 
 ;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-path-def.h
 

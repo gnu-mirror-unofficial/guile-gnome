@@ -1,7 +1,7 @@
 ;; -*- scheme -*-
 
 (include "gdk-types.defs")
-(include "gdk-overrides.defs")
+(include overrides)
 
 ;; From /opt/gtk2/include/gtk-2.0/gdk/gdk.h
 

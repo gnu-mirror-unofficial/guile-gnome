@@ -3,7 +3,7 @@
 ;; (include "gtk-extrafuncs.defs")
 
 (include "gtk-types.defs")
-(include "gtk-overrides.defs")
+(include overrides)
 
 
 ;; In the future, we need:

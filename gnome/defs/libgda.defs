@@ -1,7 +1,7 @@
 ;; -*- scheme -*-
 
 (include "libgda-types.defs")
-(include "libgda-overrides.defs")
+(include overrides)
 
 ;; From /usr/include/libgda/gda-client.h
 

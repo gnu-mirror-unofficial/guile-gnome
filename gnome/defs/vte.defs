@@ -21,7 +21,7 @@
   )
 )
 
-(include "vte-overrides.defs")
+(include overrides)
 
 ;; From /usr/include/vte/vte.h
 

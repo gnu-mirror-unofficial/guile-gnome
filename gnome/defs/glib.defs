@@ -1,6 +1,6 @@
 ;; -*- scheme -*-
 
-(include "glib-overrides.defs")
+(include overrides)
 (include "glib-types.defs")
 
 ;; From /usr/include/glib-2.0/glib/gmain.h

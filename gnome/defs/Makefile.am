@@ -13,26 +13,18 @@ guilemodule_DATA = 				\
 	gconf.defs				\
 	gdk.defs				\
 	gdk-types.defs				\
-	gdk-overrides.defs			\
 	glib.defs				\
 	glib-types.defs 			\
-	glib-overrides.defs			\
 	gnome.defs				\
-	gnome-overrides.defs			\
 	gtk.defs				\
-	gtk-overrides.defs			\
 	gtk-extrafuncs.defs			\
 	gtk-types.defs				\
 	gtkhtml2.defs				\
 	gtksourceview.defs			\
-	gtksourceview-overrides.defs		\
 	libgda.defs 				\
-	libgda-overrides.defs			\
 	libgda-types.defs			\
 	libglade.defs				\
-	libglade-overrides.defs			\
 	libgnomecanvas.defs			\
-	libgnomecanvas-overrides.defs		\
 	Makefile.am				\
 	nautilus.defs				\
 	pango.defs				\
@@ -40,9 +32,7 @@ guilemodule_DATA = 				\
 	print.defs				\
 	printui.defs				\
 	ui.defs					\
-	ui-overrides.defs			\
 	vte.defs				\
-	vte-overrides.defs			\
 	libwnck.defs				\
 	libwnck-types.defs
 
