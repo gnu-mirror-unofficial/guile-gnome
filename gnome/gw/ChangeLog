@@ -28,6 +28,11 @@
 	* defs-support.scm (load-defs): Cope with slib 3 (and hopefully 2
 	as well) by changing the glob:match?? call to glob:make-matcher.
 
+2004-05-02  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* Makefile.am (pkginclude_HEADERS): Use a fixed (not depended on
+	$(PACKAGE)) directory for the headers.
+
 2004-04-27  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* Makefile.am: Also distribute and install glib.scm.

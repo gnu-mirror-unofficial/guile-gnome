@@ -64,53 +64,65 @@
   
   (for-each
    (lambda (pair) (add-type-alias! ws (car pair) (cadr pair)))
-   '(("gboolean" bool)
+   '(
+     ;; Basic C types
+     ("void" void)
+     ("int" int)
      ("char" char)
+     ("float" float)
+     ("double" double)
+     ("short" short)
+     ("unsigned-short" unsigned-short)
+     ("unsigned" unsigned-int)
+     ("unsigned-int" unsigned-int)
+     ("long" long)
+     ("unsigned-long" unsigned-long)
+     ("long-long" long-long)
+     ("unsigned-long-long" unsigned-long-long)
+
+     ;; <inttypes.h>
+     ("uint8_t" unsigned-int8)
+     ("uint16_t" unsigned-int16)
+     ("uint32_t" unsigned-int32)
+     ("uint64_t" unsigned-int64)
+     ("int8_t" int8)
+     ("int16_t" int16)
+     ("int32_t" int32)
+     ("int64_t" int64)
+
+     ("SCM" scm) ; not really glib, but oh well
+
+     ;; GLib type aliases
+     ("gboolean" bool)
      ("gchar" char)
      ("guchar" unsigned-char)
      ("char*" mchars)
      ("gchar*" mchars)
-     ("double" double)
      ("gdouble" double)
-     ("float" float)
      ("gfloat" float)
-     ("short" short)
      ("gshort" short)
      ("gushort" unsigned-short)
-     ("unsigned-short" unsigned-short)
-     ("gint8" short)
-     ("guint8" unsigned-short)
-     ("int" int)
+     ("gint8" int8)
+     ("guint8" unsigned-int8)
      ("gint" int)
-     ("gint16" int)
+     ("gint16" int16)
      ("guint" unsigned-int)
-     ("unsigned" unsigned-int)
-     ("unsigned-int" unsigned-int)
-     ("guint16" unsigned-int)
-
-     ("SCM" scm) ; not really glib, but oh well
-
+     ("guint16" unsigned-int16)
+     ("gint32" int32)
+     ("glong" long)
+     ("gulong" unsigned-long)
+     ("guint32" unsigned-int32)
+     ("gint64" int64)
+     ("guint64" unsigned-int64)
+     
      ("GQuark" unsigned-int) ; need to wrap this one better
      ("GPid" int)
      
      ("gssize" int) ; fixme: system-dependant
      ("gsize" unsigned-int) ; fixme: system-dependant
-
-     ("gint32" long) ; fixme: what about when longs are 64 bits?
-     ("long" long)
-     ("glong" long)
-     ("unsigned-long" unsigned-long)
-     ("gulong" unsigned-long)
-     ("guint32" unsigned-long)
      ("gunichar" unsigned-long)
-     ("long-long" long-long)
-     ("gint64" long-long)
-     ("unsigned-long-long" unsigned-long-long)
-     ("guint64" unsigned-long-long)
-     ("none" void)
-
      
-     ("void" void)))
+     ("none" void)))
 
   (add-type! ws (make <glist-of-type> #:name 'glist-of))
   (add-type-alias! ws "GList*" 'glist-of)

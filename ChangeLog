@@ -1,3 +1,7 @@
+2004-04-30  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* package.ac: Depend on glib-2.0 >= 2.4.0.
+
 2004-04-12  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* h2def.py: Quick hack to fix G_*_DECLS misparsing.
