@@ -1,3 +1,10 @@
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm: Don't make generics if the of-object
+	is an enum, flags, boxed, or custom boxed. This is a nasty nasty
+	hack to make sure generics aren't created with unspecialized args,
+	to prevent e.g. (foo-append <top> <top>) -> (append <top> <top>). 
+
 2005-03-01  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/overrides/glib.defs: Added g_io_add_watch_full to ignore

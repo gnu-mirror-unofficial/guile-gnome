@@ -454,7 +454,7 @@
 (define-class <gobject-flags-type> (<gobject-enum-type>))
 
 (define-method (make-typespec (type <gobject-flags-type>) (options <list>))
-  (next-method type (cons 'caller-owned options)))
+  (next-method type (append '(unspecialized caller-owned) options)))
 
 ;; (wrap-flags! wrapset #:gtype-id foo [#:values '((a 1) ...)])
 ;; (wrap-flags! wrapset #:values '((a 1) ...))
