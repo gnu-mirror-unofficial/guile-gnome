@@ -1,3 +1,7 @@
+2004-10-12  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* shlib-dirs.ac: New file, to be used by dev-environ.
+
 2004-10-14  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gobject/gvalue.c (s_scm_gvalue_primitive_set): For
