@@ -34,8 +34,35 @@
   #:use-module (gnome gobject gw-spec-utils))
 
 (define-class <gtk-wrapset> (<gobject-wrapset-base>)
-  #:language guile #:id 'gnome-gtk)
+  #:id 'gnome-gtk)
 
+(define-method (global-declarations-cg (self <gobject-wrapset-base>))
+  (list
+   (next-method)
+   "#include <gtk/gtk.h>\n"
+   "#include \"gtk-support.h\"\n"
+   "#include \"guile-gtk-tree-model.h\"\n"
+   "\n"
+   ;; Opaquely wrap groups for radio buttons and menu items
+   "#define GtkRadioGroup GSList\n"))
+
+(define-method (global-definitions-cg (self <gobject-wrapset-base>))
+  '("static void\n"
+    "sink_gtkobject (GObject *object)\n"
+    "{\n"
+    "  if (GTK_OBJECT_FLOATING (object)) {\n"
+    "    g_object_ref (object);\n"
+    "    gtk_object_sink (GTK_OBJECT (object));\n"
+    "  }\n"
+    "}\n"))
+  
+(define-method (initializations-cg (self <gobject-wrapset-base>) err)
+  '("gtk_init (NULL, NULL);\n"
+    "guile_gobject_register_sinkfunc (GTK_TYPE_OBJECT, sink_gtkobject);\n"
+    "guile_gobject_register_postmakefunc (GTK_TYPE_WINDOW, g_object_ref);\n"
+    "guile_gobject_register_postmakefunc (GTK_TYPE_INVISIBLE, g_object_ref);\n"))
+
+  
 (define-method (initialize (ws <gtk-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gtk gw-gtk) initargs)))
   
@@ -44,31 +71,6 @@
   
   (add-type-alias! ws "GtkType" '<gtype>)
 
-  (add-cs-global-declarator! ws
-                             (lambda (wrapset)
-                               '("#include <gtk/gtk.h>\n"
-                                 "#include \"gtk-support.h\"\n"
-                                 "#include \"guile-gtk-tree-model.h\"\n")))
-
-  (add-cs-definer! ws
-                   (lambda (wrapset)
-                     '("static void\n"
-                       "sink_gtkobject (GObject *object)\n"
-                       "{\n"
-                       "  if (GTK_OBJECT_FLOATING (object)) {\n"
-                       "    g_object_ref (object);\n"
-                       "    gtk_object_sink (GTK_OBJECT (object));\n"
-                       "  }\n"
-                       "}\n")))
-  
-  (add-cs-initializer!
-   ws
-   (lambda (wrapset status-var)
-     '("gtk_init (NULL, NULL);\n"
-       "guile_gobject_register_sinkfunc (GTK_TYPE_OBJECT, sink_gtkobject);\n"
-       "guile_gobject_register_postmakefunc (GTK_TYPE_WINDOW, g_object_ref);\n"
-       "guile_gobject_register_postmakefunc (GTK_TYPE_INVISIBLE, g_object_ref);\n")))
-  
   (add-type! ws (make <gtk-tree-path-type>
                   #:gtype-id "GTK_TYPE_TREE_PATH" 
                   #:ctype "GtkTreePath"
@@ -76,21 +78,13 @@
                   #:c-const-type-name "GtkTreePath*"
                   #:ffspec 'pointer
                   #:wrapped "Custom"))
-  
   (add-type-alias! ws "GtkTreePath*" '<gtk-tree-path>)
   
-  ;; Opaquely wrap groups for radio buttons and menu items
-  (add-cs-global-declarator!
-   ws
-   (lambda (wrapset)
-     '("#define GtkRadioGroup GSList\n")))
-
   (load-defs ws "gtk.defs"))
 
 (define-class <gtk-tree-path-type> (<gobject-type-base>))
 
-(define-method (unwrap-value-cg (lang <gw-guile>)
-                                (type <gtk-tree-path-type>)
+(define-method (unwrap-value-cg (type <gtk-tree-path-type>)
                                 (value <gw-value>)
                                 status-var)
   (let ((c-var (var value))
@@ -98,8 +92,7 @@
     (list "if (!(" c-var " = guile_gtk_scm_to_tree_path (" scm-var ")))\n"
           "  " `(gw:error ,status-var type ,scm-var))))
 
-(define-method (wrap-value-cg (lang <gw-guile>)
-                              (type <gtk-tree-path-type>)
+(define-method (wrap-value-cg (type <gtk-tree-path-type>)
                               (value <gw-value>)
                               status-var)
   (let ((c-var (var value))

@@ -34,24 +34,22 @@
   #:use-module (gnome gobject defs-support))
 
 (define-class <gdk-wrapset> (<gobject-wrapset-base>)
-  #:language guile #:id 'gnome-gdk)
+  #:id 'gnome-gdk)
 
+(define-method (global-declarations-cg (self <gobject-wrapset-base>))
+  (list
+   (next-method)
+   "#include <gdk/gdk.h>\n"
+   "#include \"gdk-support.h\"\n"))
+  
+(define-method (initializations-cg (self <gobject-wrapset-base>) err)
+  '("gdk_init (NULL, NULL);\n"))
+  
 (define-method (initialize (ws <gdk-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gtk gw-gdk) initargs)))
   
   (depends-on! ws 'standard 'gnome-glib 'gnome-gobject 'gnome-pango)
 
-  (add-cs-global-declarator! ws
-                             (lambda (wrapset)
-                                (list
-                                 "#include <gdk/gdk.h>\n"
-                                 "#include \"gdk-support.h\"\n")))
-  
-  (add-cs-initializer!
-   ws
-   (lambda (wrapset status-var)
-     '("gdk_init (NULL, NULL);\n")))
-  
   (add-type-alias! ws "GdkWChar" 'unsigned-long)
   
   (for-each
@@ -91,14 +89,13 @@
 (define-method (initialize (type <gdk-event-type>) initargs)
   (next-method type (cons #:gtype-id (cons "GDK_TYPE_EVENT" initargs))))
 
-(define-method (unwrap-value-cg (lang <gw-guile>)
-                                (type <gdk-event-type>)
+(define-method (unwrap-value-cg (type <gdk-event-type>)
                                 (value <gw-value>)
                                 status-var)
   (let ((c-var (var value))
         (scm-var (scm-var value)))
     (list
-     (unwrap-null-check lang value status-var)
+     (unwrap-null-check value status-var)
      "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
      "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), GDK_TYPE_EVENT))\n"
      "  " c-var " = (" (c-type-name type)  ") g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
@@ -107,8 +104,7 @@
      `(gw:error ,status-var type ,scm-var)
     "}\n")))
 
-(define-method (wrap-value-cg (lang <gw-guile>)
-                              (type <gdk-event-type>)
+(define-method (wrap-value-cg (type <gdk-event-type>)
                               (value <gw-value>)
                               status-var)
   (let ((c-var (var value))
