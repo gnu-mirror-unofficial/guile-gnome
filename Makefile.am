@@ -1,3 +1,3 @@
 SUBDIRS = gnome
 
-EXTRA_DIST = glib-checks.ac package.ac
+EXTRA_DIST = ChangeLog NEWS AUTHORS README $(wildcard *.ac)

@@ -1,0 +1,12 @@
+To find out what should go in this file, see "Information For
+Maintainers of GNU Software" (maintain.texi), the section called
+"Recording Changes".
+
+
+Andy Wingo:
+In the directory gnome/gw, wrote:
+    libgnomeui-spec.scm
+In the directory gnome, wrote:
+    gnome-ui.scm
+In the directory gnome/overrides, wrote:
+    libgnomeui.defs

@@ -1,3 +1,46 @@
+2004-09-27  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/ui.defs: Ignore href_construct and
+	entry_construct, they have never been implemented.
+
+2004-09-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/Makefile.am (guilemodule_DATA): Install to the proper
+	directory.
+
+2004-09-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_libgnomeui_la_LIBADD):
+	Not G_WRAP_LINK_ARGS, it's G_WRAP_LIBS.
+
+2004-09-16  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (SUBDIRS): Dist fixes.
+
+	* README: Added.
+
+	* NEWS: Added.
+
+	* AUTHORS: Added.
+
+	* gtk-checks.ac: Check the right package.
+
+	* glib-checks.ac: Check the right package.
+
+2004-09-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/ui.defs, gnome/overrides/Makefile.am: Add
+	overrides.
+
+	* gnome/Makefile.am: Dist fixes, add overrides.
+
+	* gnome/gw/libgnomeui-spec.scm (initialize): Adapted to module
+	name changes, load-defs-with-overrides, real keywords.
+
+	* gnome/gw/Makefile.am
+	(nodist_libgw_guile_gnome_libgnomeui_la_SOURCES): Don't dist the
+	g-wrap generated C file.
+
 2004-08-06  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/Makefile.am: Distribute and install gnome-ui.scm.
