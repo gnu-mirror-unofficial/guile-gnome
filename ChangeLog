@@ -1,4 +1,37 @@
 2004-10-09  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/Makefile.am: Adjusted for (gnome vfs).
+
+	* gnome/vfs.scm: Moved from (gnome gnome-vfs). Don't bring in GTK.
+
+	* package.ac: Check for gnome-vfs-2.0.
+
+	* gnome/gw/gnome-vfs-spec.scm: Add a custom wrapper for
+	GnomeVFSResult that will throw an error if the result is not ok,
+	unspecified otherwise. Alias FileSize and FileOffset to the
+	appropriate g-wrap/standard types.
+	(global-declarations-cg): Include a bunch more headers.
+	(initializations-cg): Call gnome_vfs_init(). Ref the
+	GnomeVFSResult enum class so we can just peek it later.
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_gnome_vfs_la_CFLAGS):
+	Compile with -DGNOME_VFS_DISABLE_DEPRECATED.
+
+	* gnome/overrides/gnome-vfs.defs-type-ignores: Ignore
+	GnomeVFSResult due to a custom wrapper. Ignore deprecated types.
+
+	* gnome/gw/gnome-vfs-support.[ch] (_wrap_gnome_vfs_directory_open)
+	(_wrap_gnome_vfs_directory_open_from_uri, _wrap_gnome_vfs_open)
+	(_wrap_gnome_vfs_open_uri, _wrap_gnome_vfs_create)
+	(_wrap_gnome_vfs_create_uri): Custom wrappers for procedures that
+	create handles.
+
+	* gnome/overrides/gnome-vfs.defs: Add subtype specifiers for
+	functions taking or returning lists, custom wrappers for
+	procedures that create handles, and ignores for deprecated
+	procedures.
+
+	* package.ac: Check the right pkg-config module.
+
 	* Initial import via guile-gnome-template's `templatize' routine.
 

@@ -5,8 +5,8 @@ guilemodule_DATA =
 
 if HAVE_GNOME_VFS
 SUBDIRS += gw
-guilemodule_DATA += gnome-vfs.scm
+guilemodule_DATA += vfs.scm
 endif
 
-EXTRA_DIST = gnome-vfs.scm
+EXTRA_DIST = vfs.scm
 DIST_SUBDIRS = gw overrides

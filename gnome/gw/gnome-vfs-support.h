@@ -21,7 +21,17 @@
  * Boston, MA  02111-1307,  USA       gnu@gnu.org
  */
 
-#include <gnome-vfs/gnome-vfs.h>
+#include <libgnomevfs/gnome-vfs.h>
 #include <libguile.h>
 #include "guile-gnome-gobject.h"
 
+#define GNOME_VFS_DIRECTORY_HANDLE_TYPE (_wrap_gnome_vfs_directory_handle_get_type ())
+#define GNOME_VFS_HANDLE_TYPE (_wrap_gnome_vfs_handle_get_type ())
+
+GnomeVFSDirectoryHandle *_wrap_gnome_vfs_directory_open (const gchar *text_uri, GnomeVFSFileInfoOptions options);
+GnomeVFSDirectoryHandle *_wrap_gnome_vfs_directory_open_from_uri (GnomeVFSURI *uri, GnomeVFSFileInfoOptions options);
+
+GnomeVFSHandle *_wrap_gnome_vfs_open (const gchar *text_uri, GnomeVFSOpenMode open_mode);
+GnomeVFSHandle *_wrap_gnome_vfs_open_uri (GnomeVFSURI *uri, GnomeVFSOpenMode open_mode);
+GnomeVFSHandle *_wrap_gnome_vfs_create (const gchar *text_uri, GnomeVFSOpenMode open_mode, gboolean exclusive, guint perm);
+GnomeVFSHandle *_wrap_gnome_vfs_create_uri (GnomeVFSURI *uri, GnomeVFSOpenMode open_mode, gboolean exclusive, guint perm);

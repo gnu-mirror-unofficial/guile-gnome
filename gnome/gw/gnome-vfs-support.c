@@ -24,9 +24,91 @@
 #include "gnome-vfs-support.h"
 #include "guile-gnome-gobject.h"
 
-#define GRUNTIME_ERROR(format, func_name, args...) \
-  scm_error_scm (scm_str2symbol ("gruntime-error"), scm_makfrom0str (func_name), \
-                 scm_simple_format (SCM_BOOL_F, scm_makfrom0str (format), \
-                                    scm_list_n (args, SCM_UNDEFINED)), \
-                 SCM_EOL, SCM_EOL)
+#define RESULT_ERROR(result) \
+  scm_throw (scm_str2symbol (g_enum_get_value \
+                             ((GEnumClass*)g_type_class_peek \
+                              (GNOME_VFS_TYPE_VFS_RESULT), result)->value_nick), \
+                             SCM_EOL)
+
+GnomeVFSDirectoryHandle*
+_wrap_gnome_vfs_directory_open (const gchar *text_uri,
+                                GnomeVFSFileInfoOptions options)
+{
+    GnomeVFSDirectoryHandle *handle = NULL;
+    GnomeVFSResult res;
+    
+    res = gnome_vfs_directory_open (&handle, text_uri, options);
+    if (res != GNOME_VFS_OK)
+        RESULT_ERROR (res);
+    
+    return handle;
+}
+
+GnomeVFSDirectoryHandle*
+_wrap_gnome_vfs_directory_open_from_uri (GnomeVFSURI *uri,
+                                         GnomeVFSFileInfoOptions options)
+{
+    GnomeVFSDirectoryHandle *handle = NULL;
+    GnomeVFSResult res;
+    
+    res = gnome_vfs_directory_open_from_uri (&handle, uri, options);
+    if (res != GNOME_VFS_OK)
+        RESULT_ERROR (res);
+    
+    return handle;
+}
+
+GnomeVFSHandle*
+_wrap_gnome_vfs_open (const gchar *text_uri, GnomeVFSOpenMode open_mode)
+{
+    GnomeVFSHandle *handle = NULL;
+    GnomeVFSResult res;
+    
+    res = gnome_vfs_open (&handle, text_uri, open_mode);
+    if (res != GNOME_VFS_OK)
+        RESULT_ERROR (res);
+    
+    return handle;
+}
+
+GnomeVFSHandle*
+_wrap_gnome_vfs_open_uri (GnomeVFSURI *uri, GnomeVFSOpenMode open_mode)
+{
+    GnomeVFSHandle *handle = NULL;
+    GnomeVFSResult res;
+    
+    res = gnome_vfs_open_uri (&handle, uri, open_mode);
+    if (res != GNOME_VFS_OK)
+        RESULT_ERROR (res);
+    
+    return handle;
+}
+
+GnomeVFSHandle*
+_wrap_gnome_vfs_create (const gchar *text_uri, GnomeVFSOpenMode open_mode,
+                        gboolean exclusive, guint perm)
+{
+    GnomeVFSHandle *handle = NULL;
+    GnomeVFSResult res;
+    
+    res = gnome_vfs_create (&handle, text_uri, open_mode, exclusive, perm);
+    if (res != GNOME_VFS_OK)
+        RESULT_ERROR (res);
+    
+    return handle;
+}
+
+GnomeVFSHandle*
+_wrap_gnome_vfs_create_uri (GnomeVFSURI *uri, GnomeVFSOpenMode open_mode,
+                            gboolean exclusive, guint perm)
+{
+    GnomeVFSHandle *handle = NULL;
+    GnomeVFSResult res;
+    
+    res = gnome_vfs_create_uri (&handle, uri, open_mode, exclusive, perm);
+    if (res != GNOME_VFS_OK)
+        RESULT_ERROR (res);
+    
+    return handle;
+}
 

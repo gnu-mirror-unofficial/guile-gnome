@@ -25,6 +25,370 @@
 ;;
 ;;; Code:
 
+(define-function gnome_vfs_directory_open
+  (c-name "_wrap_gnome_vfs_directory_open")
+  (overrides "gnome_vfs_directory_open")
+  (return-type "GnomeVFSDirectoryHandle*")
+  (parameters
+    '("const-gchar*" "text_uri")
+    '("GnomeVFSFileInfoOptions" "options")
+  )
+)
+
+(define-function gnome_vfs_directory_open_from_uri
+  (c-name "_wrap_gnome_vfs_directory_open_from_uri")
+  (overrides "gnome_vfs_directory_open_from_uri")
+  (return-type "GnomeVFSDirectoryHandle*")
+  (parameters
+    '("GnomeVFSURI*" "uri")
+    '("GnomeVFSFileInfoOptions" "options")
+  )
+)
+
+(define-function gnome_vfs_open
+  (c-name "_wrap_gnome_vfs_open")
+  (overrides "gnome_vfs_open")
+  (return-type "GnomeVFSHandle*")
+  (parameters
+    '("const-gchar*" "text_uri")
+    '("GnomeVFSOpenMode" "open_mode")
+  )
+)
+
+(define-function gnome_vfs_open_uri
+  (c-name "_wrap_gnome_vfs_open_uri")
+  (overrides "gnome_vfs_open_uri")
+  (return-type "GnomeVFSHandle*")
+  (parameters
+    '("GnomeVFSURI*" "uri")
+    '("GnomeVFSOpenMode" "open_mode")
+  )
+)
+
+(define-function gnome_vfs_create
+  (c-name "_wrap_gnome_vfs_create")
+  (overrides "gnome_vfs_create")
+  (return-type "GnomeVFSHandle*")
+  (parameters
+    '("const-gchar*" "text_uri")
+    '("GnomeVFSOpenMode" "open_mode")
+    '("gboolean" "exclusive")
+    '("guint" "perm")
+  )
+)
+
+(define-function gnome_vfs_create_uri
+  (c-name "_wrap_gnome_vfs_create_uri")
+  (overrides "gnome_vfs_create_uri")
+  (return-type "GnomeVFSHandle*")
+  (parameters
+    '("GnomeVFSURI*" "uri")
+    '("GnomeVFSOpenMode" "open_mode")
+    '("gboolean" "exclusive")
+    '("guint" "perm")
+  )
+)
+
+;; from here on out, just list-of specializations
+
+(define-function gnome_vfs_async_get_file_info
+  (c-name "gnome_vfs_async_get_file_info")
+  (overrides "gnome_vfs_async_get_file_info")
+  (return-type "none")
+  (parameters
+    '("GnomeVFSAsyncHandle**" "handle_return")
+    '("GList*-of-GnomeVFSURI*" "uri_list")
+    '("GnomeVFSFileInfoOptions" "options")
+    '("int" "priority")
+    '("GnomeVFSAsyncGetFileInfoCallback" "callback")
+    '("gpointer" "callback_data")
+  )
+)
+
+(define-function gnome_vfs_async_xfer
+  (c-name "gnome_vfs_async_xfer")
+  (overrides "gnome_vfs_async_xfer")
+  (return-type "GnomeVFSResult")
+  (parameters
+    '("GnomeVFSAsyncHandle**" "handle_return")
+    '("GList*-of-GnomeVFSURI*" "source_uri_list")
+    '("GList*-of-GnomeVFSURI*" "target_uri_list")
+    '("GnomeVFSXferOptions" "xfer_options")
+    '("GnomeVFSXferErrorMode" "error_mode")
+    '("GnomeVFSXferOverwriteMode" "overwrite_mode")
+    '("int" "priority")
+    '("GnomeVFSAsyncXferProgressCallback" "progress_update_callback")
+    '("gpointer" "update_callback_data")
+    '("GnomeVFSXferProgressCallback" "progress_sync_callback")
+    '("gpointer" "sync_callback_data")
+  )
+)
+
+(define-function gnome_vfs_async_find_directory
+  (c-name "gnome_vfs_async_find_directory")
+  (overrides "gnome_vfs_async_find_directory")
+  (return-type "none")
+  (parameters
+    '("GnomeVFSAsyncHandle**" "handle_return")
+    '("GList*-of-GnomeVFSURI*" "near_uri_list")
+    '("GnomeVFSFindDirectoryKind" "kind")
+    '("gboolean" "create_if_needed")
+    '("gboolean" "find_if_needed")
+    '("guint" "permissions")
+    '("int" "priority")
+    '("GnomeVFSAsyncFindDirectoryCallback" "callback")
+    '("gpointer" "user_data")
+  )
+)
+
+(define-function gnome_vfs_directory_visit_files
+  (c-name "gnome_vfs_directory_visit_files")
+  (overrides "gnome_vfs_directory_visit_files")
+  (return-type "GnomeVFSResult")
+  (parameters
+    '("const-gchar*" "text_uri")
+    '("GList*-of-gchar*" "file_list")
+    '("GnomeVFSFileInfoOptions" "info_options")
+    '("GnomeVFSDirectoryVisitOptions" "visit_options")
+    '("GnomeVFSDirectoryVisitFunc" "callback")
+    '("gpointer" "data")
+  )
+)
+
+(define-function gnome_vfs_directory_visit_files_at_uri
+  (c-name "gnome_vfs_directory_visit_files_at_uri")
+  (overrides "gnome_vfs_directory_visit_files_at_uri")
+  (return-type "GnomeVFSResult")
+  (parameters
+    '("GnomeVFSURI*" "uri")
+    '("GList*-of-gchar*" "file_list")
+    '("GnomeVFSFileInfoOptions" "info_options")
+    '("GnomeVFSDirectoryVisitOptions" "visit_options")
+    '("GnomeVFSDirectoryVisitFunc" "callback")
+    '("gpointer" "data")
+  )
+)
+
+(ignore "gnome_vfs_directory_list_load")
+; (define-function gnome_vfs_directory_list_load
+;   (c-name "gnome_vfs_directory_list_load")
+;   (overrides "gnome_vfs_directory_list_load")
+;   (return-type "GnomeVFSResult")
+;   (parameters
+;     '("GList**" "list")
+;     '("const-gchar*" "text_uri")
+;     '("GnomeVFSFileInfoOptions" "options")
+;   )
+; )
+
+(ignore "gnome_vfs_dns_sd_list_browse_domains_sync")
+; (define-function gnome_vfs_dns_sd_list_browse_domains_sync
+;   (c-name "gnome_vfs_dns_sd_list_browse_domains_sync")
+;   (overrides "gnome_vfs_dns_sd_list_browse_domains_sync")
+;   (return-type "GnomeVFSResult")
+;   (parameters
+;     '("const-char*" "domain")
+;     '("int" "timeout_msec")
+;     '("GList**" "domains")
+;   )
+; )
+
+(define-function gnome_vfs_get_default_browse_domains
+  (c-name "gnome_vfs_get_default_browse_domains")
+  (overrides "gnome_vfs_get_default_browse_domains")
+  (return-type "GList*-of-gchar*")
+)
+
+(define-method get_mounted_volumes
+  (of-object "GnomeVFSDrive")
+  (c-name "gnome_vfs_drive_get_mounted_volumes")
+  (overrides "gnome_vfs_drive_get_mounted_volumes")
+  (return-type "GList*-of-GnomeVFSVolume*")
+)
+
+(define-function gnome_vfs_mime_get_all_applications
+  (c-name "gnome_vfs_mime_get_all_applications")
+  (overrides "gnome_vfs_mime_get_all_applications")
+  (return-type "GList*-of-const-gchar*")
+  (parameters
+    '("const-char*" "mime_type")
+  )
+)
+
+(define-function gnome_vfs_mime_get_all_components
+  (c-name "gnome_vfs_mime_get_all_components")
+  (overrides "gnome_vfs_mime_get_all_components")
+  (return-type "GList*-of-const-gchar*")
+  (parameters
+    '("const-char*" "mime_type")
+  )
+)
+
+(define-function gnome_vfs_mime_id_in_application_list
+  (c-name "gnome_vfs_mime_id_in_application_list")
+  (overrides "gnome_vfs_mime_id_in_application_list")
+  (return-type "gboolean")
+  (parameters
+    '("const-char*" "id")
+    '("GList*-of-const-gchar*" "applications")
+  )
+)
+
+(define-function gnome_vfs_mime_id_in_component_list
+  (c-name "gnome_vfs_mime_id_in_component_list")
+  (overrides "gnome_vfs_mime_id_in_component_list")
+  (return-type "gboolean")
+  (parameters
+    '("const-char*" "iid")
+    '("GList*-of-const-gchar*" "components")
+  )
+)
+
+(ignore "gnome_vfs_mime_remove_application_from_list")
+; (define-function gnome_vfs_mime_remove_application_from_list
+;   (c-name "gnome_vfs_mime_remove_application_from_list")
+;   (overrides "gnome_vfs_mime_remove_application_from_list")
+;   (return-type "GList*-of-const-gchar*")
+;   (parameters
+;     '("GList*-of-const-gchar*" "applications")
+;     '("const-char*" "application_id")
+;     '("gboolean*" "did_remove")
+;   )
+; )
+
+(ignore "gnome_vfs_mime_remove_component_from_list")
+; (define-function gnome_vfs_mime_remove_component_from_list
+;   (c-name "gnome_vfs_mime_remove_component_from_list")
+;   (overrides "gnome_vfs_mime_remove_component_from_list")
+;   (return-type "GList*")
+;   (parameters
+;     '("GList*-of-const-gchar*" "components")
+;     '("const-char*" "iid")
+;     '("gboolean*" "did_remove")
+;   )
+; )
+
+(ignore "gnome_vfs_mime_id_list_from_component_list")
+; (define-function gnome_vfs_mime_id_list_from_component_list
+;   (c-name "gnome_vfs_mime_id_list_from_component_list")
+;   (overrides "gnome_vfs_mime_id_list_from_component_list")
+;   (return-type "GList*")
+;   (parameters
+;     '("GList*-of-const-gchar*" "components")
+;   )
+; )
+
+(ignore "gnome_vfs_mime_id_list_from_application_list")
+; (define-function gnome_vfs_mime_id_list_from_application_list
+;   (c-name "gnome_vfs_mime_id_list_from_application_list")
+;   (overrides "gnome_vfs_mime_id_list_from_application_list")
+;   (return-type "GList*")
+;   (parameters
+;     '("GList*-of-const-gchar*" "applications")
+;   )
+; )
+
+(define-method launch
+  (of-object "GnomeVFSMimeAction")
+  (c-name "gnome_vfs_mime_action_launch")
+  (overrides "gnome_vfs_mime_action_launch")
+  (return-type "GnomeVFSResult")
+  (parameters
+    '("GList*-of-GnomeVFSURI*" "uris")
+  )
+)
+
+(define-method launch_with_env
+  (of-object "GnomeVFSMimeAction")
+  (c-name "gnome_vfs_mime_action_launch_with_env")
+  (overrides "gnome_vfs_mime_action_launch_with_env")
+  (return-type "GnomeVFSResult")
+  (parameters
+    '("GList*-of-GnomeVFSURI*" "uris")
+    '("char**" "envp")
+  )
+)
+
+(define-method launch
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_launch")
+  (overrides "gnome_vfs_mime_application_launch")
+  (return-type "GnomeVFSResult")
+  (parameters
+    '("GList*-of-GnomeVFSURI*" "uris")
+  )
+)
+
+(define-method launch_with_env
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_launch_with_env")
+  (overrides "gnome_vfs_mime_application_launch_with_env")
+  (return-type "GnomeVFSResult")
+  (parameters
+    '("GList*-of-GnomeVFSURI*" "uris")
+    '("char**" "envp")
+  )
+)
+
+(define-function gnome_vfs_mime_get_all_desktop_entries
+  (c-name "gnome_vfs_mime_get_all_desktop_entries")
+  (overrides "gnome_vfs_mime_get_all_desktop_entries")
+  (return-type "GList*-of-const-gchar*")
+  (parameters
+    '("const-char*" "mime_type")
+  )
+)
+
+(define-function gnome_vfs_uri_list_parse
+  (c-name "gnome_vfs_uri_list_parse")
+  (overrides "gnome_vfs_uri_list_parse")
+  (return-type "GList*-of-GnomeVFSURI*")
+  (parameters
+    '("const-gchar*" "uri_list")
+  )
+)
+
+(define-method get_mounted_volumes
+  (of-object "GnomeVFSVolumeMonitor")
+  (c-name "gnome_vfs_volume_monitor_get_mounted_volumes")
+  (overrides "gnome_vfs_volume_monitor_get_mounted_volumes")
+  (return-type "GList*-of-GnomeVFSVolume*")
+)
+
+(define-method get_connected_drives
+  (of-object "GnomeVFSVolumeMonitor")
+  (c-name "gnome_vfs_volume_monitor_get_connected_drives")
+  (overrides "gnome_vfs_volume_monitor_get_connected_drives")
+  (return-type "GList*-of-GnomeVFSDrive*")
+)
+
+(define-function gnome_vfs_xfer_uri_list
+  (c-name "gnome_vfs_xfer_uri_list")
+  (overrides "gnome_vfs_xfer_uri_list")
+  (return-type "GnomeVFSResult")
+  (parameters
+    '("const-GList*-of-GnomeVFSURI*" "source_uri_list")
+    '("const-GList*-of-GnomeVFSURI*" "target_uri_list")
+    '("GnomeVFSXferOptions" "xfer_options")
+    '("GnomeVFSXferErrorMode" "error_mode")
+    '("GnomeVFSXferOverwriteMode" "overwrite_mode")
+    '("GnomeVFSXferProgressCallback" "progress_callback")
+    '("gpointer" "data")
+  )
+)
+(define-function gnome_vfs_xfer_delete_list
+  (c-name "gnome_vfs_xfer_delete_list")
+  (overrides "gnome_vfs_xfer_delete_list")
+  (return-type "GnomeVFSResult")
+  (parameters
+    '("const-GList*-of-GnomeVFSURI*" "source_uri_list")
+    '("GnomeVFSXferErrorMode" "error_mode")
+    '("GnomeVFSXferOptions" "xfer_options")
+    '("GnomeVFSXferProgressCallback" "progress_callback")
+    '("gpointer" "data")
+  )
+)
+
 (ignore-glob  "*_get_type"
               "_*"
               "*_ref"
@@ -35,4 +399,38 @@
               "*_valist"
               "*_setv"
               "*_foreach"
-              "*_valist")
+              "*_valist"
+
+              ;; 1) Guile 1.6 doesn't support callbacks from other threads.
+              ;; 2) These functions need special help anyway.
+              "gnome_vfs_async_*"
+
+              "gnome_vfs_application_registry_*"
+              "*_sockaddr")
+
+;; Deprecated
+(ignore "gnome_vfs_mime_add_extension"
+        "gnome_vfs_mime_remove_extension"
+        "gnome_vfs_mime_set_default_action_type"
+        "gnome_vfs_mime_set_default_application"
+        "gnome_vfs_mime_set_default_component"
+        "gnome_vfs_mime_set_icon"
+        "gnome_vfs_mime_set_description"
+        "gnome_vfs_mime_set_can_be_executable"
+        "gnome_vfs_mime_extend_all_applications"
+        "gnome_vfs_mime_remove_from_all_applications"
+        "gnome_vfs_mime_get_short_list_applications"
+        "gnome_vfs_mime_get_short_list_components"
+        "gnome_vfs_mime_set_short_list_applications"
+        "gnome_vfs_mime_set_short_list_components"
+        "gnome_vfs_mime_add_application_to_short_list"
+        "gnome_vfs_mime_remove_application_from_short_list"
+        "gnome_vfs_mime_add_component_to_short_list"
+        "gnome_vfs_mime_remove_component_from_short_list"
+        "gnome_vfs_drive_get_mounted_volume"
+        "gnome_vfs_make_uri_full_from_relative"
+        "gnome_vfs_loadinit"
+        "gnome_vfs_preinit"
+        "gnome_vfs_postinit"
+        "gnome_vfs_async_create_uri_as_channel" ; prototyped, but not implemented!
+        )

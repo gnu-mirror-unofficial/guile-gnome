@@ -26,8 +26,7 @@
 ;;
 ;;; Code:
 
-(define-module (gnome gnome-vfs)
-  #:use-module (gnome gtk)
+(define-module (gnome vfs)
   #:use-module (gnome gw gnome-vfs)
   #:use-module (gnome gw support modules))
 
