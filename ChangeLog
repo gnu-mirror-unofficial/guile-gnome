@@ -1,3 +1,17 @@
+2004-09-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/ui.defs, gnome/overrides/Makefile.am: Add
+	overrides.
+
+	* gnome/Makefile.am: Dist fixes, add overrides.
+
+	* gnome/gw/libgnomeui-spec.scm (initialize): Adapted to module
+	name changes, load-defs-with-overrides, real keywords.
+
+	* gnome/gw/Makefile.am
+	(nodist_libgw_guile_gnome_libgnomeui_la_SOURCES): Don't dist the
+	g-wrap generated C file.
+
 2004-08-06  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/Makefile.am: Distribute and install gnome-ui.scm.

@@ -25,13 +25,13 @@
 ;;; Code:
 
 (define-module (gnome gw libgnomeui-spec)
-  :use-module (oop goops)
-  :use-module (g-wrap)
-  :use-module (g-wrap guile)
-  :use-module (gnome gw gobject-spec)
-  :use-module (gnome gw gtk-spec)
-  :use-module (gnome gobject gw-spec-utils)
-  :use-module (gnome gobject defs-support))
+  #:use-module (oop goops)
+  #:use-module (g-wrap)
+  #:use-module (g-wrap guile)
+  #:use-module (gnome gw gobject-spec)
+  #:use-module (gnome gw gtk-spec)
+  #:use-module (gnome gw support gobject)
+  #:use-module (gnome gw support defs))
 
 (define-class <gnome-ui-wrapset> (<gobject-wrapset-base>)
   #:id 'gnome-libgnomeui
@@ -49,7 +49,7 @@
      ("BonoboDockItemBehavior" int)
      ("BonoboDockPlacement" int)))
   
-  (load-defs ws "gnome/defs/ui.defs"))
+  (load-defs-with-overrides ws "gnome/defs/ui.defs"))
 
 (define-method (global-declarations-cg (self <gnome-ui-wrapset>))
   (list (next-method)

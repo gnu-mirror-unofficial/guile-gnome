@@ -27,6 +27,6 @@
 (define-module (gnome gnome-ui)
   #:use-module (gnome gtk)
   #:use-module (gnome gw libgnomeui)
-  #:use-module (gnome gobject gw-utils))
+  #:use-module (gnome gw support modules))
 
 (re-export-modules (gnome gw libgnomeui))
