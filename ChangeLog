@@ -1,4 +1,23 @@
+2004-07-07  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/contrib/texinfo-buffer.scm (<stexi-ref-tag>): Name changed
+	from stext-..., s/#:param-spec/#:gparam/, fix the hook.
+	(ref): Fix typo.
+
+	* gnome/contrib/help-browser.scm: New file, implements a help
+	browser whose native data format is stexi.
+
+	* examples/texinfo-browser.scm: New file, implements a help
+	browser that will open a file given on the command line.
+
+	* gnome/contrib/help-browser.scm: 
+	* gnome/contrib/delay-tree-model.scm:
+	* gnome/contrib/texinfo-buffer.scm: Make sure keywords have #:.
+
 2004-07-06  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/contrib/texinfo-buffer.scm (gnome):
+	s/(sxml texinfo)/(texinfo)/, don't use gw modules
 
 	* gnome/contrib/filtered-list.scm: New file, implements a tree
 	model whose backing store is a list. The model only exposes those

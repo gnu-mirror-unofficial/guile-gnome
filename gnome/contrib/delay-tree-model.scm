@@ -35,7 +35,7 @@
 (define-class-with-docs <delay-tree-model> (<guile-gtk-tree-model>)
   "An interface that exports delay trees as GTK+ tree models. Suitable
 for use with @code{<gtk-tree-view>}."
-  (top-nodes :init-value '()))
+  (top-nodes #:init-value '()))
 
 (define-method (on-get-n-columns (obj <delay-tree-model>))
   2) ;; name and value
