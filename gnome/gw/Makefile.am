@@ -9,7 +9,7 @@ lib_LTLIBRARIES = libgw-guile-gnome-libgnomeui.la
 
 ########################################################################
 ## libgnomeui
-libgw_guile_gnome_libgnomeui_la_SOURCES = guile-gnome-gw-libgnomeui.c
+nodist_libgw_guile_gnome_libgnomeui_la_SOURCES = guile-gnome-gw-libgnomeui.c
 
 libgw_guile_gnome_libgnomeui_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(AM_CFLAGS) $(LIBGNOMEUI_CFLAGS) $(GUILE_CFLAGS) \
