@@ -24,7 +24,7 @@
 ;;
 ;;; Code:
 
-(define-module (gnome gw libglade-spec)
+(define-module (gnome gw glade-spec)
   #:use-module (oop goops)
   #:use-module (g-wrap)
   #:use-module (g-wrap guile)
@@ -33,21 +33,23 @@
   #:use-module (gnome gobject gw-spec-utils))
 
 (define-class <glade-wrapset> (<gobject-wrapset-base>)
-  #:id 'gnome-libglade)
+  #:id 'gnome-glade)
 
 (define-method (initialize (ws <glade-wrapset>) initargs)
-  (next-method ws (cons #:module (cons '(gnome gw libglade) initargs)))
+  (next-method ws (cons #:module (cons '(gnome gw glade) initargs)))
   
   (depends-on! ws 'standard 'gnome-glib 'gnome-gobject 'gnome-gtk)
 
-  (load-defs ws "gnome/defs/libglade.defs"))
+  (load-defs ws "gnome/defs/glade.defs"))
 
 (define-method (global-declarations-cg (self <glade-wrapset>))
   (list (next-method)
         "#include <glade/glade.h>\n"
-        "#include \"glade-support.h\"\n"))
+        "#include \"glade-support.h\"\n"
+        "SCM scm_glade_module = SCM_BOOL_F;\n"))
 
 (define-method (initializations-cg (self <glade-wrapset>) err)
    (list (next-method)
+         "scm_glade_module = scm_permanent_object (scm_current_module ());\n"
          "glade_set_custom_handler (guile_glade_custom_handler, NULL);\n"))
 
