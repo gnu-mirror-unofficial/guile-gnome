@@ -1,4 +1,4 @@
-;; Commentary:
+;;; Commentary:
 ;;
 ;; This is the GObject wrapper for Guile.
 ;;
@@ -549,65 +549,8 @@ signals/properties of the class and all its parent classes.
       (gparam-primitive->pspec-struct param)
       (gparam-primitive->pspec-struct (slot-ref param 'gtype-instance))))
 
-(define pspec-args '(("GParamChar"    . (gtype:gchar
-					 (#:minimum char? (integer->char 0))
-					 (#:maximum char? (integer->char 127))
-					 (#:default-value char? (integer->char 127))))
-		     ("GParamUChar"   . (gtype:guchar
-					 (#:minimum char? (integer->char 0))
-					 (#:maximum char? (integer->char 255))
-					 (#:default-value char? (integer->char 255))))
-		     ("GParamBoolean" . (gtype:gboolean
-					 (#:default-value boolean? #f)))
-		     ("GParamInt"     . (gtype:gint
-					 (#:minimum integer? gruntime:int-min)
-					 (#:maximum integer? gruntime:int-max)
-					 (#:default-value integer? 0)))
-		     ("GParamUInt"    . (gtype:guint
-					 (#:minimum integer? 0)
-					 (#:maximum integer? gruntime:uint-max)
-					 (#:default-value integer? 0)))
-		     ("GParamLong"    . (gtype:glong
-					 (#:minimum integer? gruntime:long-min)
-					 (#:maximum integer? gruntime:long-max)
-					 (#:default-value integer? 0)))
-		     ("GParamULong"   . (gtype:gulong
-					 (#:minimum integer? 0)
-					 (#:maximum integer? gruntime:ulong-max)
-					 (#:default-value integer? 0)))
-		     ("GParamInt64"   . (gtype:gint
-					 (#:minimum integer? gruntime:int64-min)
-					 (#:maximum integer? gruntime:int64-max)
-					 (#:default-value integer? 0)))
-		     ("GParamUInt64"  . (gtype:guint
-					 (#:minimum integer? 0)
-					 (#:maximum integer? gruntime:uint64-max)
-					 (#:default-value integer? 0)))
-		     ("GParamFloat"   . (gtype:gfloat
-					 (#:minimum real? (- 0 gruntime:float-max))
-					 (#:maximum real? gruntime:float-max)
-					 (#:default-value real? 0.0)))
-		     ("GParamDouble"  . (gtype:gdouble
-					 (#:minimum real? (- 0 gruntime:double-max))
-					 (#:maximum real? gruntime:double-max)
-					 (#:default-value real? 0.0)))
-		     ("GParamPointer" . (gtype:gpointer))
-		     ("GParamString"  . (gtype:gchararray
-					 (#:default-value string? "")))
-		     ("GParamObject"  . (gtype:gobject
-					 (#:object-type gtype? *unspecified*)))
-		     ("GParamBoxed"   . (gtype:gboxed
-					 (#:boxed-type gtype? *unspecified*)))
-		     ("GParamEnum"    . (gtype:genum
-					 (#:enum-type gtype? *unspecified*)
-					 (#:default-value number? *unspecified*)))
-		     ("GParamFlags"   . (gtype:gflags
-					 (#:flags-type gtype? *unspecified*)
-					 (#:default-value number? *unspecified*)))
-		     ))
-
 (define (make-pspec-args type initargs)
-  (let* ((args (or (assoc-ref pspec-args (gtype-name type))
+  (let* ((args (or (assoc-ref gparam-spec-type-args (gtype-name type))
 		   (gruntime-error "Unknown type: ~A" type))))
     (map (lambda (argdesc)
 	   (let* ((value (get-keyword (car argdesc) initargs
@@ -619,6 +562,17 @@ signals/properties of the class and all its parent classes.
 	     value))
 	 (cdr args))))
 
+;; no need to export this, it's really just for private usage
+(define <guile-param-spec-flags>
+  (gtype->class
+   (gflags-register-static
+    "GuileParamSpecFlags"
+    #((read "Readable" 1)
+      (write "Writable" 2)
+      (construct "Set on object construction" 4)
+      (construct-only "Only set on object construction" 8)
+      (lax-validation "Don't require strict validation on parameter conversion" 16)))))
+
 (define (make-gparam-instance class type object initargs)
   (let* ((type (gtype-class->type class))
 	 (pspec (or (get-keyword #:pspec-struct initargs #f)
@@ -627,14 +581,16 @@ signals/properties of the class and all its parent classes.
 				     (gruntime-error "Missing #:name keyword")))
 			   (nick (get-keyword #:nick initargs #f))
 			   (blurb (get-keyword #:blurb initargs #f))
-			   (pspec-descr (or (assoc-ref pspec-args (gtype-name type))
+			   (pspec-descr (or (assoc-ref gparam-spec-type-args (gtype-name type))
 					    (gruntime-error "Unknown type: ~A" type)))
 			   (value-type (eval (car pspec-descr) (current-module)))
-			   (flags #f)
+			   (flags (apply + (gflags->value-list
+                                            (make <guile-param-spec-flags> #:value
+                                                  (get-keyword #:flags initargs '())))))
 			   (owner-type type))
 		      (or (symbol? name)
 			  (gruntime-error "Wrong #:name keyword"))
-		      (or (or (eq? nick #f) (string? name))
+		      (or (or (eq? nick #f) (string? nick))
 			  (gruntime-error "Wrong #:nick keyword"))
 		      (or (or (eq? blurb #f) (string? blurb))
 			  (gruntime-error "Wrong #:blurb keyword"))
@@ -777,7 +733,7 @@ signals/properties of the class and all its parent classes.
     (if (null? l)
 	#f
 	(let* ((this (car l)) (name (gsignal:name this)))
-	  (if (equal? symbol (string->symbol name))
+	  (if (eq? symbol (string->symbol name))
               this
               (loop (cdr l)))))))
 
@@ -919,6 +875,7 @@ gsignal-handler-unblock, gsignal-handler-disconnect and gsignal-handler-connecte
 	 (value (make-value-from-scm value-type init-value)))
     (gobject-primitive-set-property instance name value)))
 
+;; these are the ones that should be overridden by subclasses.
 (define-method (gobject:class-init (class <gtype-class>))
   *unspecified*)
 
@@ -928,24 +885,20 @@ gsignal-handler-unblock, gsignal-handler-disconnect and gsignal-handler-connecte
     (for-each (lambda (param)
 		(let* ((pspec (gparam->pspec-struct param))
 		       (pspec-name (gparam-spec:name pspec))
-		       (pspec-value-type (gparam-spec:value-type pspec))
-		       (value (gvalue-primitive-new pspec-value-type)))
+                       (pspec-args (gparam-spec:args pspec))
+		       (value (assq #:default-value pspec-args)))
 		  (hashq-set! property-hash pspec-name value)))
 	      (vector->list properties))
     (slot-set! object 'gobject-servant-properties property-hash)
     *unspecified*))
 
-(define-method (gobject:get-property (object <gobject>) (param <gparam>))
-  (let* ((property-hash (slot-ref object 'gobject-servant-properties))
-	 (pspec-struct (gparam->pspec-struct param))
-	 (pspec-name (gparam-spec:name pspec-struct)))
-    (hashq-ref property-hash pspec-name)))
+(define-method (gobject:get-property (object <gobject>) (name <symbol>))
+  (let* ((property-hash (slot-ref object 'gobject-servant-properties)))
+    (hashq-ref property-hash name)))
 
-(define-method (gobject:set-property (object <gobject>) (value <gvalue>) (param <gparam>))
-  (let* ((property-hash (slot-ref object 'gobject-servant-properties))
-	 (pspec-struct (gparam->pspec-struct param))
-	 (pspec-name (gparam-spec:name pspec-struct)))
-    (hashq-set! property-hash pspec-name value)))
+(define-method (gobject:set-property (object <gobject>) (name <symbol>) value)
+  (let* ((property-hash (slot-ref object 'gobject-servant-properties)))
+    (hashq-set! property-hash name value)))
 
 (define-method (gobject-class:install-property (class <gobject>) (param <gparam>))
   (init-gobject-class (gtype-class->type class) class))
@@ -1083,6 +1036,57 @@ This function is used to derive existing GObject classes:
       (gruntime-error "Type name is not a string: ~S" name))
   (gtype-register-static name parent-type))
 
+(define-macro (define-gobject-class class-name parent-class gtype-name . signals)
+  (let ((signal-defs (map
+                      (lambda (s) (cons* 'gobject-class-define-signal class-name
+                                         (list 'quote (car s)) (cadr s) (cddr s)))
+                      signals)))
+  `(begin
+     (define ,class-name
+       (gtype->class (gobject-type-register-static (gtype-class->type ,parent-class)
+                                                   ,gtype-name)))
+     ,@signal-defs)))
+
+(define (filter-map f l)
+  (if (null? l)
+      l
+      (let ((val (f (car l))))
+        (if val
+            (cons val (filter-map f (cdr l)))
+            (filter-map f (cdr l))))))
+
+;; set properties on the gtype instance, of which there is exactly one
+;; per C object
+(define (make-gobject-property)
+  (let ((p (primitive-make-property #f)))
+    (make-procedure-with-setter
+     (lambda (o) (primitive-property-ref p (slot-ref o 'gtype-instance)))
+     (lambda (o v) (primitive-property-set! p (slot-ref o 'gtype-instance) v)))))
+
+;; (let-params <parent-class> ((param-name (param-class . param-args)) ...) body)
+;; see examples/gobject/my-object.scm for details
+(define-macro (let-params class bindings . body)
+  (let ((params (cons 'list
+                      (filter-map
+                       (lambda (b)
+                         (cond
+                          ((list? (cadr b))
+                           (cons 'make (append (cadr b) (list :name (list quote (car b))))))
+                          ((eq? (cadr b) #f)
+                           #f)
+                          (else
+                           (error "let-params binding must be a list or #f." (cadr b)))))
+                       bindings)))
+        (props (map
+                (lambda (b)
+                  (list (car b) (make-gobject-property)))
+                bindings)))
+  `(begin
+     (for-each
+      (lambda (param) (gobject-class-install-property ,class param))
+      ,params)
+     (let ,props ,@body))))
+
 (%post-init-gnome-gobject)
 
 (let* ((doc-dir (gobject-scheme-dir))
@@ -1115,4 +1119,4 @@ This function is used to derive existing GObject classes:
 	gsignal-handler-block gsignal-handler-unblock gsignal-handler-disconnect
 	gsignal-handler-connected? gobject-get-property gobject-set-property
 	gclosure-invoke gobject-class-create-signal gobject-class-define-signal
-	gparam->pspec-struct)
+	gparam->pspec-struct define-gobject-class let-params)

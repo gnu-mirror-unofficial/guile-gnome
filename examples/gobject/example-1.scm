@@ -1,9 +1,9 @@
 #! /usr/bin/guile -s
 !#
 
-(use-modules (gnome gobject)
-             (gnome gobject primitives)
-             (oop goops))
+(use-modules (oop goops)
+             (gnome gobject)
+             (gnome gobject primitives))
 
 (debug-enable 'backtrace)
 
@@ -57,9 +57,10 @@
 
 (gobject-class-install-property <test> (make <gparam-long> #:name 'my-property))
 
-(define-method (gobject-set-property (obj <test>) (name <symbol>) init-value)
-  (p "(In the test::get-property handler, chaining up to actually set the\n"
-     " value to " init-value ")\n")
+(define-method (gobject:set-property (obj <test>) (name <symbol>) init-value)
+  (p "(In the test::set-property handler. You can implement your own storage\n"
+     " mechanism, or call (next-method) for a default implementation, as we\n"
+     " are doing now (value " init-value ").)\n")
   (next-method))
 
 (p " done.\n\n")

@@ -29,12 +29,6 @@
 (define (wrapset-get-wrapsets-depended-on ws)
   (let ((rtd (record-type-descriptor ws)))
     ((record-accessor rtd 'wrapsets-depended-on) ws)))
-(define (wrapset-get-types-used ws)
-  (let ((rtd (record-type-descriptor ws)))
-    ((record-accessor rtd 'types-used) ws)))
-(define (wrapset-get-wrapped-types ws)
-  (let ((rtd (record-type-descriptor ws)))
-    ((record-accessor rtd 'wrapped-types) ws)))
 
 ;; the first time i've ever used call/cc :-)
 (define (recursive-type-find ws type)
@@ -359,19 +353,7 @@
 
         (include file)
 
-        ;; g-wrap will only output type initialization code (ie,
-        ;; gtype->class stuff) for types that are actually used in the
-        ;; api. some types, however, do not show up in the api --
-        ;; <gtk-hbox>, for instance. Of course we want to be able to
-        ;; (make <gtk-hbox>), so we just say that all of the types are
-        ;; used by the wrapset.
-
-        (let ((gw-types-used (wrapset-get-types-used ws)))
-          (for-each (lambda (pair)
-                      (hashq-set! gw-types-used
-                                  (cdr pair)
-                                  (cdr pair)))
-                    (wrapset-get-wrapped-types ws)))))
+        (gobject:gwrap-set-all-types-used ws)))
 
     (format log-file "Opaque types in the ~A wrapset: c-name scm-name\n\n"
             (gw:wrapset-get-name ws))

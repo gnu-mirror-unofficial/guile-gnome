@@ -1,0 +1,8 @@
+(use-modules (gnome corba) (oop goops))
+(corba-open-module "/gnome/head/INSTALL/lib/orbit/Foo_module")
+;(define s (make-corba-struct TC:Foo:MyType))
+(define a (make-corba-record-type TC:Foo:MyType))
+(define b ((corba-record-constructor a) 7 49))
+(define c (make-corba-record-type TC:ORBit:IInterface))
+(define d ((corba-record-constructor-from-struct c) IF:Foo:Hello))
+(define e (make-corba-struct TC:ORBit:IInterface 0 IF:Foo:Hello))

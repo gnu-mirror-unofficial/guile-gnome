@@ -17,6 +17,7 @@ SCM scm_sym_gobject_set_property;
 SCM scm_sym_gobject_get_property;
 SCM scm_sym_gobject_class_install_property;
 SCM scm_sym_gtype_to_class;
+SCM scm_sym_gvalue_to_scm;
 
 
 /* #define DEBUG_PRINT */
@@ -48,6 +49,7 @@ static GQuark quark_guile_gtype_class = 0;
 SCM_SYMBOL  (sym_gruntime_error,"gruntime-error");
 
 SCM_KEYWORD (k_real_instance,	"%real-instance");
+SCM_KEYWORD (k_value,		"value");
 
 
 
@@ -410,41 +412,34 @@ static void
 scm_c_gobject_get_property (GObject *gobject, guint param_id, GValue *dest_gvalue, GParamSpec *pspec)
 #define FUNC_NAME "%gobject-get-property"
 {
-    GuileGTypeClass *guile_class;
-    SCM object, instance, value;
+    SCM object, value;
     GValue *gvalue;
-
-    guile_class = g_type_get_qdata (G_TYPE_FROM_INSTANCE (gobject), quark_guile_gtype_class);
-    instance = g_hash_table_lookup (guile_class->properties_hash, GINT_TO_POINTER (param_id));
-    g_assert (instance != 0);
 
     object = g_object_get_qdata (gobject, quark_object);
     g_assert (object != 0);
 
-    value = scm_call_2 (scm_sym_gobject_get_property, object, instance);
+    value = scm_c_make_gvalue (G_VALUE_TYPE (dest_gvalue));
+    scm_gvalue_primitive_set (value, scm_call_2 (scm_sym_gobject_get_property,
+                                                 object, scm_str2symbol (pspec->name)));
+    
     SCM_VALIDATE_GVALUE_TYPE_COPY (0, value, G_PARAM_SPEC_VALUE_TYPE (pspec), gvalue);
     g_value_copy (gvalue, dest_gvalue);
 }
-
 #undef FUNC_NAME
 
 static void
 scm_c_gobject_set_property (GObject *gobject, guint param_id, const GValue *src_value, GParamSpec *pspec)
 {
-    GuileGTypeClass *guile_class;
-    SCM object, instance, value;
+    SCM object, value;
 
     object = g_object_get_qdata (gobject, quark_object);
     g_assert (object != 0);
 
-    guile_class = g_type_get_qdata (G_TYPE_FROM_INSTANCE (gobject), quark_guile_gtype_class);
-    instance = g_hash_table_lookup (guile_class->properties_hash, GINT_TO_POINTER (param_id));
-    g_assert (instance != 0);
-
     value = scm_c_make_gvalue (G_VALUE_TYPE (src_value));
     g_value_copy (src_value, (GValue *) SCM_SMOB_DATA (value));
 
-    scm_call_3 (scm_sym_gobject_set_property, object, value, instance);
+    scm_call_3 (scm_sym_gobject_set_property, object, scm_str2symbol (pspec->name),
+                scm_call_1 (scm_sym_gvalue_to_scm, value));
 }
 
 static void
@@ -489,15 +484,21 @@ scm_c_gtype_instance_instance_init (GTypeInstance *g_instance,
 	guile_class = g_type_get_qdata (G_TYPE_FROM_CLASS (g_class), quark_guile_gtype_class);
 	guile_class->first_instance_created = TRUE;
 
-	SCM_NEWSMOB2 (instance, scm_tc16_gtype_instance,
-		      g_instance, remove_object_quark);
+        instance = scm_c_make_gtype_instance (g_instance);
 
 	/* The GOOPS object which we create here is only used on the servant
 	 * side - when a signal handler or a property getter/setter function
 	 * is called from C.
+         *
+         * Which is to say, it has the same primitive GTypeInstance smob as
+         * every wrapper, but it is a different object than anything available
+         * on the scheme side. The only time you'll see it is is in a
+         * gobject:instance-init, gobject:set-property, gobject:get-property, or
+         * signal handler. So don't set object properties on it.
 	 */
 
-	object = scm_make (SCM_LIST3 (class, k_real_instance, instance));
+        /* argh! scm_make not the same as calling scm_sym_make! argh! */
+	object = scm_call_3 (scm_sym_make, class, k_real_instance, instance);
 
         DEBUG_ALLOC ("  protecting servant %p with instance %p of %s %p", object,
                      instance, g_type_name (G_TYPE_FROM_INSTANCE (g_instance)),
@@ -506,7 +507,6 @@ scm_c_gtype_instance_instance_init (GTypeInstance *g_instance,
 	g_object_set_qdata_full (G_OBJECT (g_instance), quark_object,
 				 scm_gc_protect_object (object),
 				 free_object_quark);
-
 	break;
     }
 
@@ -529,6 +529,11 @@ scm_c_gtype_instance_class_init (gpointer g_class, gpointer class_data)
     SCM class;
 
     class = scm_c_gtype_lookup_class (G_TYPE_FROM_CLASS (g_class));
+    if (SCM_FALSEP (class)) {
+        /* this can happen for scheme-defined classes */
+        class = scm_call_1 (scm_sym_gtype_to_class,
+                            scm_c_register_gtype (G_TYPE_FROM_CLASS (g_class)));
+    }
     g_assert (SCM_NFALSEP (class));
 
     guile_class = g_type_get_qdata (G_TYPE_FROM_CLASS (g_class), quark_guile_gtype_class);
@@ -766,6 +771,7 @@ scm_post_init_gnome_gobject (void)
     scm_sym_gobject_class_install_property = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gobject-class:install-property")));
     scm_class_gobject = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("<gobject>")));
     scm_class_gparam = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("<gparam>")));
+    scm_sym_gvalue_to_scm = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gvalue->scm")));
     scm_sym_gtype_instance_class_init = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gtype-instance:class-init")));
     scm_sym_gtype_instance_instance_init = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gtype-instance:instance-init")));
     scm_sym_gobject_class_init = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gobject:class-init")));

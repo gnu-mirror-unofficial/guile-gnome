@@ -1,0 +1,11 @@
+Makefile.in
+Makefile
+.deps
+.libs
+gnomegobject.c
+gnomegobject.h
+gnomegobject.html
+*.x
+*.doc
+*.txt
+guile-gnome-gobject.texi

@@ -1,3 +1,21 @@
+2003-06-18  Andy Wingo  <wingo@pobox.com>
+
+	* gobject.scm (make-gparam-instance): Fix typo (name->nick).
+	(make-gparam-instance): Make the pspec->flags actually set, with a
+	#:flags initarg -- also required some changes in -primitives.c.
+
+2003-06-07  Andy Wingo  <wingo@pobox.com>
+
+	* gobject.scm: Made the commentary retrievable with
+	file-commentary, see (ice-9 documentation) for more details.
+
+	* glib.scm (g-timeout-add, g-idle-add): As it turns out,
+	g-idle-source-new creates an idle source, but with priority
+	G_PRIORITY_DEFAULT instead of G_PRIORITY_DEFAULT_IDLE. This means
+	that after g-idle-add is called, no Gtk events get processed (Bad
+	Thing (tm)). Now we set the priority manually to DEFAULT_IDLE.
+	Thanks to Owen Taylor for pointers on this one.
+
 2003-05-08  Andy Wingo  <wingo@pobox.com>
 
 	* glib.scm: new file. Imports gobject/gw-glib and defines

@@ -12,7 +12,8 @@
                    #:func proc))
         (source (g-idle-source-new)))
     (g-source-set-closure source closure)
-    (g-source-attach source (g-main-context-default))))
+    (g-source-set-priority source 200) ; G_PRIORITY_DEFAULT_IDLE
+    (g-source-attach source #f)))
 
 (define-public (g-timeout-add milliseconds proc)
   (let ((closure (make <gclosure>
@@ -20,7 +21,8 @@
                    #:func proc))
         (source (g-timeout-source-new milliseconds)))
     (g-source-set-closure source closure)
-    (g-source-attach source (g-main-context-default))))
+    (g-source-set-priority source 200) ; G_PRIORITY_DEFAULT_IDLE
+    (g-source-attach source #f)))
 
 (use-modules (gnome gobject event-repl))
 

@@ -6,6 +6,7 @@
   :use-module (ice-9 optargs)
   :export (glib:type-cname->symbol
            glib:func-cname->symbol
+           gobject:gwrap-set-all-types-used
            gobject:gwrap-helper
            gobject:gwrap-object
            gobject:gwrap-boxed
@@ -13,7 +14,28 @@
            gobject:gwrap-opaque-pointer
            gobject:gwrap-interface
            gobject:gwrap-flags
-           gobject:gwrap-enum))
+           gobject:gwrap-enum
+           gobject:gwrap-class))
+
+(define (wrapset-get-types-used ws)
+  (let ((rtd (record-type-descriptor ws)))
+    ((record-accessor rtd 'types-used) ws)))
+(define (wrapset-get-wrapped-types ws)
+  (let ((rtd (record-type-descriptor ws)))
+    ((record-accessor rtd 'wrapped-types) ws)))
+
+;; g-wrap will only output type initialization code (ie, gtype->class
+;; stuff) for types that are actually used in the api. some types,
+;; however, do not show up in the api -- <gtk-hbox>, for instance. Of
+;; course we want to be able to (make <gtk-hbox>), this function exists
+;; to sat that all of the types are used by the wrapset.
+(define (gobject:gwrap-set-all-types-used ws)
+  (let ((gw-types-used (wrapset-get-types-used ws)))
+    (for-each (lambda (pair)
+                (hashq-set! gw-types-used
+                            (cdr pair)
+                            (cdr pair)))
+              (wrapset-get-wrapped-types ws))))
 
 ;; (c-name->scm-name "GtkAccelGroup") => "gtk-accel-group"
 ;; (c-name->scm-name "gtk_accel_group") => "gtk-accel-group"
@@ -353,3 +375,16 @@
 (define (gobject:gwrap-opaque-pointer ws ctype)
   (gw:wrap-as-wct ws (glib:type-cname->symbol ctype)
                   ctype (string-append "const " ctype)))
+
+(define (gobject:gwrap-class ws ctype gtype-id)
+  (gobject:gwrap-helper
+   ws ctype
+   (lambda (typespec) (list ctype "*"))
+   (lambda (c-var scm-var typespec status-var)
+     (list "if (g_type_is_a (SCM_SMOB_DATA (scm_slot_ref_using_class (" scm-var ", " scm-var ", scm_sym_gtype)), " gtype-id "))\n"
+           "  " c-var " = (" ctype "*) SCM_SMOB_DATA (scm_slot_ref_using_class (" scm-var ", " scm-var ", scm_sym_gtype_class));\n"
+           "else " `(gw:error ,status-var type ,scm-var)))
+   (lambda (scm-var c-var typespec status-var) ; not ideal but ok
+     (list scm-var " = scm_c_gtype_lookup_class (G_TYPE_FROM_CLASS (" c-var "));\n"))
+   (lambda (c-var typespec status-var force?)
+     (list))))

@@ -177,7 +177,7 @@
   (is-constructor-of "GMainLoop")
   (return-type "GMainLoop*")
   (parameters
-    '("GMainContext*" "context")
+    '("GMainContext*" "context" (null-ok))
     '("gboolean" "is_running")
   )
 )
@@ -245,7 +245,7 @@
   (c-name "g_source_attach")
   (return-type "guint")
   (parameters
-    '("GMainContext*" "context")
+    '("GMainContext*" "context" (null-ok))
   )
 )
 

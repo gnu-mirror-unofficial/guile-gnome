@@ -1,0 +1,223 @@
+;;;; -*- scheme -*-
+
+(use-modules (test-suite lib)
+	     (gnome gobject)
+	     (gnome gobject primitives)
+	     (oop goops))
+
+(defmacro deferr (name-frag error re)
+  (let ((name (symbol-append 'exception: name-frag)))
+    `(define ,name (cons ,error ,re))))
+
+(deferr value-arg-missing     'gobject-error "^Missing #:value argument")
+(deferr wrong-number-of-args  'gobject-error "^Wrong number of arguments")
+(deferr out-of-range          'out-of-range  "^Argument out of range")
+
+(pass-if "basic types defined"
+	 (and (defined? 'gtype-type-gchar)
+	      (defined? 'gtype-type-guchar)
+	      (defined? 'gtype-type-gboolean)
+	      (defined? 'gtype-type-gint)
+	      (defined? 'gtype-type-guint)
+	      (defined? 'gtype-type-glong)
+	      (defined? 'gtype-type-gulong)
+	      (defined? 'gtype-type-gfloat)
+	      (defined? 'gtype-type-gdouble)
+	      (defined? 'gtype-type-gchararray)))
+
+(pass-if "extended types defined"
+	 (and (defined? 'gtype-type-genum)
+	      (defined? 'gtype-type-gflags)
+	      (defined? 'gtype-type-gboxed)
+	      (defined? 'gtype-type-gclosure)
+	      (defined? 'gtype-type-gobject)))
+
+(with-test-prefix "basic values"
+		  (define (test class value)
+		    (equal? (gvalue->scm (make class #:value value)) value))
+
+		  (pass-if-exception "#:value arg missing"
+				     exception:value-arg-missing
+				     (make <guchar>))
+
+		  (pass-if "creating gchar"
+			   (test <gchar> #\space))
+
+		  (pass-if "creating guchar"
+			   (test <guchar> #\space))
+
+		  (pass-if "creating gboolean #f"
+			   (test <gboolean> #f))
+
+		  (pass-if "creating gboolean #t"
+			   (test <gboolean> #t))
+
+		  (pass-if "creating gint"
+			   (test <gint> 511))
+
+		  (pass-if "creating guint"
+			   (test <guint> 511))
+
+		  (pass-if-exception "creating guint"
+				     exception:out-of-range
+				     (make <guint> #:value -1))
+
+		  (pass-if "creating glong"
+			   (test <glong> 511))
+
+		  (pass-if "creating gulong"
+			   (test <gulong> 511))
+
+		  (pass-if-exception "creating gulong"
+				     exception:out-of-range
+				     (make <gulong> #:value -1))
+
+		  (pass-if "creating gfloat"
+			   (test <gfloat> 4.5))
+
+		  (pass-if "creating gdouble"
+			   (test <gdouble> 4.1234))
+
+		  (pass-if "creating gchararray"
+			   (test <gchararray> "This is a test"))
+
+		  (pass-if "creating empty gchararray"
+			   (test <gchararray> #f))
+
+		  )
+
+(with-test-prefix "creating genum and gflags types"
+
+		  (pass-if "creating genum type"
+			   (let* ((enum-vtable #((a "Foo" 1) (b "Hello" 2)))
+				  (enum-type (genum-register-static "EnumTest" enum-vtable)))
+			     (and (gtype-eq? (gtype->fundamental enum-type) gtype-type-genum)
+				  (gtype-eq? enum-type (gtype-from-name "EnumTest")))))
+
+		  (pass-if "creating gflags type"
+			   (let* ((flags-vtable #((c "AAAA" 4) (d "BBBB" 8)))
+				  (flags-type (gflags-register-static "FlagsTest" flags-vtable)))
+			     (and (gtype-eq? (gtype->fundamental flags-type) gtype-type-gflags)
+				  (gtype-eq? flags-type (gtype-from-name "FlagsTest")))))
+		  )
+
+(with-test-prefix "genum values"
+
+		  (define enum-type  (gtype-from-name "EnumTest"))
+		  (define enum-class (gtype->class (gtype-from-name "EnumTest")))
+
+		  (pass-if "getting enum type from name"
+			   (is-a? enum-type <gtype>))
+
+		  (pass-if "getting enum type class"
+			   (is-a? enum-class <gtype-class-meta>))
+
+		  (pass-if "creating enum by nick"
+			   (gvalue? (make enum-class #:value 'a)))
+
+		  (pass-if "creating enum by name"
+			   (gvalue? (make enum-class #:value "Foo")))
+
+		  (pass-if "creating enum by value"
+			   (gvalue? (make enum-class #:value 1)))
+
+		  (pass-if "getting enum nick"
+			   (eq? (genum->symbol (make enum-class #:value 'a)) 'a))
+
+		  (pass-if "getting enum name"
+			   (equal? (genum->name (make enum-class #:value 'a)) "Foo"))
+
+		  (pass-if "getting enum value"
+			   (equal? (gvalue->scm (make enum-class #:value 'a)) 1))
+
+		  )
+
+(with-test-prefix "gflags values"
+
+		  (define flags-type  (gtype-from-name "FlagsTest"))
+		  (define flags-class (gtype->class (gtype-from-name "FlagsTest")))
+
+		  (pass-if "getting flags type from name"
+			   (is-a? flags-type <gtype>))
+
+		  (pass-if "getting flags type class"
+			   (is-a? flags-class <gtype-class-meta>))
+
+		  (pass-if "creating flags by nick"
+			   (gvalue? (make flags-class #:value '(c d))))
+
+		  (pass-if "creating flags by name"
+			   (gvalue? (make flags-class #:value '("AAAA" "BBBB"))))
+
+		  (pass-if "creating flags by value"
+			   (gvalue? (make flags-class #:value '(4 8))))
+
+		  (pass-if "creating flags by or'ed value"
+			   (gvalue? (make flags-class #:value 12)))
+
+		  (pass-if "creating flags by mixed list"
+			   (gvalue? (make flags-class #:value '(c "BBBB"))))
+
+		  (pass-if "getting flags nicks"
+			   (equal? (gflags->symbol-list (make flags-class #:value 12)) '(c d)))
+
+		  (pass-if "getting flags names"
+			   (equal? (gflags->name-list (make flags-class #:value 12)) '("AAAA" "BBBB")))
+
+		  (pass-if "getting flags values"
+			   (equal? (gflags->value-list (make flags-class #:value 12)) '(4 8)))
+
+		  (pass-if "getting flags value"
+			   (eq? (gvalue->scm (make flags-class #:value '(c d))) 12))
+
+		  )
+
+(with-test-prefix "creating gclosure"
+		  (define func-without-args (lambda () "Hello World"))
+		  (define my-closure? (lambda (x) (is-a? x <gclosure>)))
+		  (define long-arg (list->vector (list (make <glong> #:value 82))))
+
+		  (pass-if "creating gclosure"
+			   (my-closure? (make <gclosure> #:func func-without-args)))
+
+		  (pass-if "creating gclosure with return type"
+			   (my-closure? (make <gclosure> #:func func-without-args
+					      #:return-type gtype-type-gchararray)))
+
+		  (pass-if "creating gclosure with arg"
+			   (my-closure? (make <gclosure> #:func func-without-args
+					      #:return-type gtype-type-gchararray
+					      #:param-types (list gtype-type-glong))))
+		  )
+
+(with-test-prefix "invoking gclosure"
+		  (define long-arg (list->vector (list (make <glong> #:value 82))))
+
+		  (define closure-without-args
+		    (make <gclosure> #:func (lambda () "Hello World")))
+
+		  (define closure-with-retval
+		    (make <gclosure> #:func (lambda () "Hello World")
+			  #:return-type gtype-type-gchararray))
+
+		  (define closure-with-boxed-retval
+		    (make <gclosure> #:func (lambda () (gclosure-primitive-new (lambda () #t)))
+			  #:return-type gtype-type-gclosure))
+
+		  (pass-if "invoking gclosure"
+			   (unspecified? (gclosure-invoke closure-without-args)))
+
+		  (pass-if-exception "invoking gclosure"
+				     exception:wrong-number-of-args
+				     (gclosure-invoke closure-without-args long-arg))
+
+		  (pass-if "invoking gclosure with retval"
+			   (string? (gclosure-invoke closure-with-retval)))
+
+		  (pass-if "invoking gclosure checking retval"
+			   (equal? (gclosure-invoke closure-with-retval)
+				   "Hello World"))
+
+		  (pass-if "invoking gclosure with boxed retval"
+			   (gvalue? (gclosure-invoke closure-with-boxed-retval)))
+)

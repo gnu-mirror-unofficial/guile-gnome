@@ -17,6 +17,7 @@ SCM scm_sym_class_slot_ref;
 SCM scm_sym_class_slot_set_x;
 scm_bits_t scm_tc16_gtype;
 scm_bits_t scm_tc16_gvalue;
+scm_bits_t scm_tc16_gtype_class;
 scm_bits_t scm_tc16_gtype_instance;
 SCM scm_gsignal_vtable;
 SCM scm_gparam_spec_vtable;
@@ -28,6 +29,7 @@ SCM scm_gparam_spec_vtable;
 static GQuark quark_pspec_struct = 0;
 static GQuark quark_class = 0;
 static GQuark quark_type = 0;
+static GQuark quark_instance_wrapper = 0;
 
 /* #define DEBUG_PRINT */
 
@@ -56,6 +58,7 @@ SCM_KEYWORD (k_value,		"value");
 SCM_KEYWORD (k_metaclass,	"metaclass");
 
 SCM_GLOBAL_SYMBOL  (scm_sym_gtype,		"gtype");
+SCM_GLOBAL_SYMBOL  (scm_sym_gtype_class,		"gtype-class");
 SCM_GLOBAL_SYMBOL  (scm_sym_gtype_instance,	"gtype-instance");
 SCM_GLOBAL_SYMBOL  (scm_sym_pspec_struct,	"pspec-struct");
 
@@ -241,6 +244,18 @@ scm_gtype_print (SCM smob, SCM port, scm_print_state *pstate)
 
     scm_puts ("#<gtype ", port);
     scm_puts (g_type_name (gtype), port);
+    scm_puts (">", port);
+
+    return 1;
+}
+
+static int
+scm_gtype_class_print (SCM smob, SCM port, scm_print_state *pstate)
+{
+    GTypeClass *gtype_class = (GTypeClass*) SCM_SMOB_DATA (smob);
+
+    scm_puts ("#<gtype-class ", port);
+    scm_puts (g_type_name (G_TYPE_FROM_CLASS (gtype_class)), port);
     scm_puts (">", port);
 
     return 1;
@@ -624,12 +639,23 @@ scm_c_make_gtype_instance (GTypeInstance *ginstance)
     SCM ret;
     gpointer qdata;
 
-    SCM_NEWSMOB2 (ret, scm_tc16_gtype_instance, ginstance, NULL);
-
     switch (G_TYPE_FUNDAMENTAL (G_TYPE_FROM_INSTANCE (ginstance))) {
     case G_TYPE_OBJECT:
         /* sink the floating ref, if any */
         sink_object ((GObject*)ginstance);
+
+        qdata = g_object_get_qdata ((GObject*)ginstance, quark_instance_wrapper);
+        
+        if (qdata) {
+            ret = SCM_PACK (qdata);
+            break;
+        }
+
+        SCM_NEWSMOB2 (ret, scm_tc16_gtype_instance, ginstance, NULL);
+
+        g_object_set_qdata_full ((GObject*)ginstance, quark_instance_wrapper,
+                                 (gpointer)SCM_UNPACK (scm_gc_protect_object (ret)),
+                                 (GDestroyNotify)scm_gc_unprotect_object);
 
         DEBUG_ALLOC ("sunk gobject (%p) of type %s, ->%u",
                      ginstance, g_type_name (G_TYPE_FROM_INSTANCE (ginstance)),
@@ -637,6 +663,7 @@ scm_c_make_gtype_instance (GTypeInstance *ginstance)
         break;
       
     default:
+        SCM_NEWSMOB2 (ret, scm_tc16_gtype_instance, ginstance, NULL);
         break;
     }
         
@@ -679,13 +706,20 @@ SCM_DEFINE (scm_sys_gtype_bind_to_class, "%gtype-bind-to-class", 2, 0, 0,
 	    "")
 #define FUNC_NAME s_scm_sys_gtype_bind_to_class
 {
-    SCM name;
+    SCM name, type_class;
     GType gtype;
+    GTypeClass *gtype_class;
 
     SCM_VALIDATE_GTYPE_CLASS (1, class);
     SCM_VALIDATE_GTYPE_COPY (2, type, gtype);
 
     scm_slot_set_using_class_x (class, class, scm_sym_gtype, type);
+
+    if (G_TYPE_IS_CLASSED (gtype)) {
+        gtype_class = g_type_class_ref (gtype);
+        SCM_NEWSMOB (type_class, scm_tc16_gtype_class, gtype_class);
+        scm_slot_set_using_class_x (class, class, scm_sym_gtype_class, type_class);
+    }
 
     g_type_set_qdata (gtype, quark_class, scm_permanent_object (class));
 
@@ -1148,6 +1182,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 #define FUNC_NAME s_scm_gparam_primitive_create
 {
     GParamSpec *pspec = NULL;
+    GParamFlags flags;
     GType gtype, param_type, value_type, owner_type;
     guint n_args = 0;
     SCM smob;
@@ -1161,6 +1196,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
     param_type = SCM_GPARAM_SPEC_PARAM_TYPE (pspec_struct);
     value_type = SCM_GPARAM_SPEC_VALUE_TYPE (pspec_struct);
     owner_type = SCM_GPARAM_SPEC_OWNER_TYPE (pspec_struct);
+    flags = SCM_NUM2INT (4, SCM_GPARAM_SPEC_FLAGS (pspec_struct));
       
     if (SCM_G_IS_PARAM_SPEC_BOOLEAN(param_type) || SCM_G_IS_PARAM_SPEC_STRING(param_type) ||
 	SCM_G_IS_PARAM_SPEC_OBJECT(param_type) || SCM_G_IS_PARAM_SPEC_BOXED(param_type) ||
@@ -1193,7 +1229,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				    SCM_GPARAM_SPEC_NICK (pspec_struct),
 				    SCM_GPARAM_SPEC_BLURB (pspec_struct),
 				    SCM_NFALSEP (SCM_GPARAM_SPEC_ARG (pspec_struct, 0)),
-				    0);
+				    flags);
     }
 
     else if (SCM_G_IS_PARAM_SPEC_CHAR (param_type)){
@@ -1206,7 +1242,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				 SCM_INUM (SCM_GPARAM_SPEC_ARG (pspec_struct, 0)),
 				 SCM_INUM (SCM_GPARAM_SPEC_ARG (pspec_struct, 1)),
 				 SCM_INUM (SCM_GPARAM_SPEC_ARG (pspec_struct, 2)),
-				 0);
+				 flags);
     }
 
     else if  (SCM_G_IS_PARAM_SPEC_UCHAR (param_type)){
@@ -1219,7 +1255,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				  SCM_INUM (SCM_GPARAM_SPEC_ARG (pspec_struct, 0)),
 				  SCM_INUM (SCM_GPARAM_SPEC_ARG (pspec_struct, 1)),
 				  SCM_INUM (SCM_GPARAM_SPEC_ARG (pspec_struct, 2)),
-				  0);
+				  flags);
     }
     
     else if (SCM_G_IS_PARAM_SPEC_INT (param_type)) {
@@ -1229,7 +1265,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				SCM_NUM2LONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 0)),
 				SCM_NUM2LONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 1)),
 				SCM_NUM2LONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 2)),
-				0);
+				flags);
     }
     
     else if (SCM_G_IS_PARAM_SPEC_UINT (param_type)) {
@@ -1239,7 +1275,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				   SCM_NUM2ULONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 0)),
 				   SCM_NUM2ULONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 1)),
 				   SCM_NUM2ULONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 2)),
-				  0);
+				  flags);
     }
 
     else if (SCM_G_IS_PARAM_SPEC_LONG (param_type)) {
@@ -1249,7 +1285,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				   SCM_NUM2LONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 0)),
 				   SCM_NUM2LONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 1)),
 				   SCM_NUM2LONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 2)),
-				   0);
+				   flags);
     }
 
     else if (SCM_G_IS_PARAM_SPEC_ULONG (param_type)) {
@@ -1259,7 +1295,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				  SCM_NUM2ULONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 0)),
 				  SCM_NUM2ULONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 1)),
 				  SCM_NUM2ULONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 2)),
-				  0);
+				  flags);
     }
 
     else if (SCM_G_IS_PARAM_SPEC_INT64 (param_type)) {
@@ -1269,7 +1305,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
                                   SCM_NUM2LONG_LONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 0)),
                                   SCM_NUM2LONG_LONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 1)),
                                   SCM_NUM2LONG_LONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 2)),
-                                  0);
+                                  flags);
     }
 
     else if (SCM_G_IS_PARAM_SPEC_UINT64 (param_type)) {
@@ -1279,7 +1315,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
                                    SCM_NUM2ULONG_LONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 0)),
                                    SCM_NUM2ULONG_LONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 1)),
                                    SCM_NUM2ULONG_LONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 2)),
-                                   0);
+                                   flags);
     }
 
      else if (SCM_G_IS_PARAM_SPEC_FLOAT (param_type)) {
@@ -1293,7 +1329,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				    SCM_GPARAM_SPEC_NICK (pspec_struct),
 				    SCM_GPARAM_SPEC_BLURB (pspec_struct),
 				    min_value, max_value, default_value,
-				    0);
+				    flags);
      }
 
      else if (SCM_G_IS_PARAM_SPEC_DOUBLE (param_type)) {
@@ -1303,7 +1339,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				     scm_num2dbl (SCM_GPARAM_SPEC_ARG (pspec_struct, 0), FUNC_NAME),
 				     scm_num2dbl (SCM_GPARAM_SPEC_ARG (pspec_struct, 1), FUNC_NAME),
 				     scm_num2dbl (SCM_GPARAM_SPEC_ARG (pspec_struct, 2), FUNC_NAME),
-				     0);
+				     flags);
      }
 
      else if (SCM_G_IS_PARAM_SPEC_UNICHAR (param_type)) {
@@ -1311,14 +1347,14 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
                                      SCM_GPARAM_SPEC_NICK (pspec_struct),
                                      SCM_GPARAM_SPEC_BLURB (pspec_struct),
                                      (gunichar)SCM_NUM2LONG (0, SCM_GPARAM_SPEC_ARG (pspec_struct, 0)),
-                                     0);
+                                     flags);
      }
 
      else if (SCM_G_IS_PARAM_SPEC_POINTER (param_type)) {
        pspec = g_param_spec_pointer (SCM_GPARAM_SPEC_NAME (pspec_struct),
 				      SCM_GPARAM_SPEC_NICK (pspec_struct),
 				      SCM_GPARAM_SPEC_BLURB (pspec_struct),
-				      0);
+				      flags);
      }
 
     else if (SCM_G_IS_PARAM_SPEC_STRING (param_type)) {
@@ -1331,7 +1367,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				     SCM_GPARAM_SPEC_NICK (pspec_struct),
 				     SCM_GPARAM_SPEC_BLURB (pspec_struct),
 				     string,
-				     0);
+				     flags);
     }
 
     else if (SCM_G_IS_PARAM_SPEC_OBJECT (param_type)) {
@@ -1342,7 +1378,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				   SCM_GPARAM_SPEC_NICK (pspec_struct),
 				   SCM_GPARAM_SPEC_BLURB (pspec_struct),
 				   object_type,
-				   0);
+				   flags);
     }
 
     else if (SCM_G_IS_PARAM_SPEC_BOXED (param_type)) {
@@ -1353,7 +1389,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				    SCM_GPARAM_SPEC_NICK (pspec_struct),
 				    SCM_GPARAM_SPEC_BLURB (pspec_struct),
 				    boxed_type,
-				    0);
+				    flags);
     }
 
     else if (SCM_G_IS_PARAM_SPEC_ENUM (param_type)){
@@ -1365,7 +1401,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				   SCM_GPARAM_SPEC_BLURB (pspec_struct),
 				   enum_type,
 				   SCM_INUM (SCM_GPARAM_SPEC_ARG (pspec_struct, 1)),
-				   0);
+				   flags);
     }
 
      else if (SCM_G_IS_PARAM_SPEC_FLAGS (param_type)){
@@ -1377,7 +1413,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 				   SCM_GPARAM_SPEC_BLURB (pspec_struct),
 				   flags_type,
 				   SCM_INUM (SCM_GPARAM_SPEC_ARG (pspec_struct, 1)),
-				   0);
+				   flags);
      }
 
     else {SCM_ERROR_NOT_YET_IMPLEMENTED (pspec_struct);}
@@ -2105,10 +2141,14 @@ scm_pre_init_gnome_gobject_primitives (void)
     quark_type = g_quark_from_static_string ("%scm-gtype->type");
     quark_class = g_quark_from_static_string ("%scm-gtype->class");
     quark_pspec_struct = g_quark_from_static_string ("%scm-pspec-struct");
+    quark_instance_wrapper = g_quark_from_static_string ("%scm-gtype-instance");
 
     scm_tc16_gtype = scm_make_smob_type ("gtype", 0);
     scm_set_smob_free (scm_tc16_gtype, scm_gtype_free);
     scm_set_smob_print (scm_tc16_gtype, scm_gtype_print);
+
+    scm_tc16_gtype_class = scm_make_smob_type ("gtype-class", 0);
+    scm_set_smob_print (scm_tc16_gtype_class, scm_gtype_class_print);
 
     scm_tc16_gtype_instance = scm_make_smob_type ("gtype-instance", 0);
     scm_set_smob_free (scm_tc16_gtype_instance, scm_gtype_instance_free);
@@ -2184,11 +2224,13 @@ scm_init_gnome_gobject_primitives (void)
     scm_c_define ("gruntime:double-max", scm_make_real (G_MAXDOUBLE));
     scm_c_define ("gruntime:double-min", scm_make_real (G_MINDOUBLE));
 
+    scm_c_define ("gruntime:byte-order", scm_long2num (G_BYTE_ORDER));
+
     scm_c_export ("gruntime:uint-max", "gruntime:int-min", "gruntime:int-max",
 		  "gruntime:ulong-max", "gruntime:long-min", "gruntime:long-max",
 		  "gruntime:uint64-max", "gruntime:int64-min", "gruntime:int64-max",
 		  "gruntime:float-max", "gruntime:float-min", "gruntime:double-max",
-		  "gruntime:double-min",
+		  "gruntime:double-min", "gruntime:byte-order",
 		  NULL);
 
     scm_class_gtype_class = scm_permanent_object

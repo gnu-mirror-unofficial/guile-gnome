@@ -54,7 +54,10 @@ libguile_gnome_gobject_la_LDFLAGS = \
 
 libguile_gnome_gw_gobject_la_SOURCES = \
 	guile-gnome-gw-gobject.c	\
-	guile-gnome-gw-gobject.h
+	guile-gnome-gw-gobject.h	\
+	glib-support.c
+
+noinst_HEADERS=glib-support.h
 
 libguile_gnome_gw_gobject_la_CFLAGS = $(GOBJECT_CFLAGS) $(GUILE_CFLAGS) \
 	$(G_WRAP_CFLAGS)

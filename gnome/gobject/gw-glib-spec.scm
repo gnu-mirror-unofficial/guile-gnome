@@ -52,8 +52,10 @@
   (gw:wrapset-add-cs-declarations!
    ws
    (lambda (wrapset client-wrapset)
-     (list
-      "#include <glib.h>\n")))
+     (if (not client-wrapset)
+         '("#include <glib.h>\n"
+           "#include \"glib-support.h\"\n")
+         '("#include <glib.h>\n"))))
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; ((glist-of (<gtk-window> gw:const) gw:const) win-list)

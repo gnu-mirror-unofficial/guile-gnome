@@ -10,6 +10,6 @@ export PKG_CONFIG_PATH=$this_dir:$PKG_CONFIG_PATH
 export CFLAGS="-I$this_dir/gnome/gobject $CFLAGS"
 
 # why do i need .libs here?
-export LD_LIBRARY_PATH=$this_dir/gnome/corba/.libs:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$this_dir/gnome/corba:$LD_LIBRARY_PATH
 
 exec "$@"

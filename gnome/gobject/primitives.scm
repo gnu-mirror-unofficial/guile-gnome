@@ -8,6 +8,7 @@
   :use-module (oop goops)
   :use-module (ice-9 documentation)
   :use-module (gnome gobject gw-gobject)
+  :use-module (srfi srfi-1) ; zip
   :re-export (%init-gnome-gobject
               %post-init-gnome-gobject
               gtype-name
@@ -80,15 +81,18 @@
      (create-set-once-g-n-s class s #f))
 
     ((#:each-subclass)
-     (if (eq? (slot-definition-name s) 'gtype)
-        (create-set-once-g-n-s class s #t)
-        (next-method)))
+     (case (slot-definition-name s)
+       ((gtype gtype-class)
+        (create-set-once-g-n-s class s #t))
+       (else
+        (next-method))))
 
     ;; Chain up for the default allocation methods...
     (else (next-method))))
 
 (define-class <gtype-class> (<gtype-class-meta>)
   (gtype #:allocation #:each-subclass)
+  (gtype-class #:allocation #:each-subclass)
   (gtype-instance #:allocation #:set-once)
   #:metaclass <gtype-class-meta>)
 
@@ -187,6 +191,64 @@
 (define (gsignal:param-types signal)
   (struct-ref signal gsignal-param-types))
 
+(define-public gparam-spec-type-args
+  '(("GParamChar"    . (gtype:gchar
+                        (#:minimum char? (integer->char 0))
+                        (#:maximum char? (integer->char 127))
+                        (#:default-value char? (integer->char 127))))
+    ("GParamUChar"   . (gtype:guchar
+                        (#:minimum char? (integer->char 0))
+                        (#:maximum char? (integer->char 255))
+                        (#:default-value char? (integer->char 255))))
+    ("GParamBoolean" . (gtype:gboolean
+                        (#:default-value boolean? #f)))
+    ("GParamInt"     . (gtype:gint
+                        (#:minimum integer? gruntime:int-min)
+                        (#:maximum integer? gruntime:int-max)
+                        (#:default-value integer? 0)))
+    ("GParamUInt"    . (gtype:guint
+                        (#:minimum integer? 0)
+                        (#:maximum integer? gruntime:uint-max)
+                        (#:default-value integer? 0)))
+    ("GParamLong"    . (gtype:glong
+                        (#:minimum integer? gruntime:long-min)
+                        (#:maximum integer? gruntime:long-max)
+                        (#:default-value integer? 0)))
+    ("GParamULong"   . (gtype:gulong
+                        (#:minimum integer? 0)
+                        (#:maximum integer? gruntime:ulong-max)
+                        (#:default-value integer? 0)))
+    ("GParamInt64"   . (gtype:gint
+                        (#:minimum integer? gruntime:int64-min)
+                        (#:maximum integer? gruntime:int64-max)
+                        (#:default-value integer? 0)))
+    ("GParamUInt64"  . (gtype:guint
+                        (#:minimum integer? 0)
+                        (#:maximum integer? gruntime:uint64-max)
+                        (#:default-value integer? 0)))
+    ("GParamFloat"   . (gtype:gfloat
+                        (#:minimum real? (- 0 gruntime:float-max))
+                        (#:maximum real? gruntime:float-max)
+                        (#:default-value real? 0.0)))
+    ("GParamDouble"  . (gtype:gdouble
+                        (#:minimum real? (- 0 gruntime:double-max))
+                        (#:maximum real? gruntime:double-max)
+                        (#:default-value real? 0.0)))
+    ("GParamPointer" . (gtype:gpointer))
+    ("GParamString"  . (gtype:gchararray
+                        (#:default-value string? "")))
+    ("GParamObject"  . (gtype:gobject
+                        (#:object-type gtype? *unspecified*)))
+    ("GParamBoxed"   . (gtype:gboxed
+                        (#:boxed-type gtype? *unspecified*)))
+    ("GParamEnum"    . (gtype:genum
+                        (#:enum-type gtype? *unspecified*)
+                        (#:default-value number? *unspecified*)))
+    ("GParamFlags"   . (gtype:gflags
+                        (#:flags-type gtype? *unspecified*)
+                        (#:default-value number? *unspecified*)))
+    ))
+
 (define (gparam-spec:name pspec)
   (struct-ref pspec gparam-spec-name))
 
@@ -209,7 +271,15 @@
   (struct-ref pspec gparam-spec-owner-type))
 
 (define (gparam-spec:args pspec)
-  (struct-ref pspec gparam-spec-args))
+  (let ((n-args (struct-ref pspec gparam-spec-n-args))
+        (offset gparam-spec-args)
+        (param-type (gparam-spec:param-type pspec)))
+    (zip
+     (map car (cdr (assoc-ref gparam-spec-type-args (gtype-name param-type))))
+     (let loop ((arg (+ offset (1- n-args))) (ret '()))
+       (if (>= arg offset)
+           (loop (1- arg) (cons (struct-ref pspec arg) ret))
+           ret)))))
 
 (export <gtype-class> <gtype-class-meta>
         %gruntime-debug gruntime-error gruntime-debug

@@ -50,10 +50,10 @@
       (if client-wrapset
           (list (if c-minval-text
                     (list minvar " = " c->scm-function "(" c-minval-text ");\n"
-                          "scm_protect_object(" minvar ");\n")
+                          "scm_gc_protect_object(" minvar ");\n")
                     '())
                 maxvar " = " c->scm-function "(" c-maxval-text ");\n"
-                "scm_protect_object(" maxvar ");\n")
+                "scm_gc_protect_object(" maxvar ");\n")
           '()))
     
     (define (scm->c-ccg c-var scm-var typespec status-var)

@@ -1,0 +1,60 @@
+;;;; -*- scheme -*-
+
+(use-modules (test-suite lib)
+	     (gnome gobject)
+	     (gnome gobject primitives)
+	     (oop goops))
+
+(defmacro deferr (name-frag error re)
+  (let ((name (symbol-append 'exception: name-frag)))
+    `(define ,name (cons ,error ,re))))
+
+(deferr value-arg-missing     'gobject-error        "^Missing #:value argument")
+(deferr wrong-number-of-args  'wrong-number-of-args "^Wrong number of arguments")
+(deferr out-of-range          'out-of-range         "^Argument out of range")
+
+(with-test-prefix "gclosure primitives"
+		  (define closure-without-args
+		    (gclosure-primitive-new (lambda () (make <gchararray> #:value "Hello World"))))
+
+		  (define closure-check-value-p
+		    (gclosure-primitive-new (lambda (x)
+					      (or (gvalue? x)
+						  (throw 'wrong-type-arg "Not a GValue" x))
+					      (or (gtype-eq? (gvalue->type x) gtype-type-glong)
+						  (throw 'wrong-type-arg "Wrong value type" x))
+					      (or (eq? (gvalue-primitive-get-basic x) 82)
+						  (throw 'wrong-type-arg "Wrong value" x))
+					      #t)))
+
+		  (define long-arg
+		    (list->vector (list (make <glong> #:value 82))))
+
+		  (pass-if "gclosure-primitive-new"
+			   (gvalue? closure-without-args))
+
+		  (pass-if "gclosure-primitive-invoke"
+			   (unspecified? (gclosure-primitive-invoke closure-without-args #f #f)))
+
+		  (pass-if "gclosure-primitive-invoke"
+			   (gvalue? (gclosure-primitive-invoke closure-without-args
+							       gtype-type-gchararray
+							       #f)))
+
+		  (pass-if "gclosure-primitive-invoke"
+			   (equal? (gvalue->scm (gclosure-primitive-invoke closure-without-args
+									   gtype-type-gchararray
+									   #f))
+				   "Hello World"))
+
+		  (pass-if-exception "gclosure-primitive-invoke"
+				     exception:wrong-number-of-args
+				     (gclosure-primitive-invoke closure-without-args
+								gtype-type-gchararray
+								long-arg))
+
+		  (pass-if "gclosure-primitive-invoke"
+			   (unspecified? (gclosure-primitive-invoke closure-check-value-p #f
+								    long-arg)))
+
+		  )

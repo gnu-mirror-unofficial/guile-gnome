@@ -1,0 +1,12 @@
+2001-08-31  Martin Baulig  <baulig@suse.de>
+
+	* gobject-primitives.test: Added tests for gclosure primitives.
+
+	* gobject.test: Added tests for gclosure.
+
+2001-08-27  Martin Baulig  <baulig@suse.de>
+
+	* gobject.text: Testcase for `(gnome gobject)' module.
+
+	* gobject-primitives.test: Testcase for `(gnome gobject primitives)'.
+

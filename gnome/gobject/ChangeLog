@@ -1,3 +1,26 @@
+2003-06-21  Andy Wingo  <wingo@pobox.com>
+
+	* gw-spec-utils.scm (gobject:gwrap-class): New function.
+
+2003-06-19  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject.c (scm_c_gtype_instance_instance_init): Call
+	scm_c_make_gtype_instance to get the primitive GTypeInstance
+	wrapper for the servant. That way we really only have one
+	primitive wrapper, however many high level wrappers there are.
+	Seems to fix some flaky bugs as well, as a side effect.
+
+2003-06-14  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-gobject-primitives.c (scm_c_make_gtype_instance):
+	Cache the primitive gtype instance smob.
+
+2003-06-07  Andy Wingo  <wingo@pobox.com>
+
+	* primitives.scm (gparam-spec:args): Fix to actually return the
+	full list of args. Zip up the returned list with descriptive
+	keywords.
+
 2003-05-30  Andy Wingo  <wingo@pobox.com>
 
 	* defs-support.scm (type-lookup): Without an explicit value for
