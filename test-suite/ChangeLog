@@ -1,3 +1,8 @@
+2004-03-29  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* Makefile.am (libgw_test_gobject_la_LIBADD): Link against core
+	instead of wrapset.
+
 2003-10-31  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* guile-test-env: Drop support of Guile 1.3 and fix left-over

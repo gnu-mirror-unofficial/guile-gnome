@@ -3,13 +3,39 @@
 README for guile-gobject
 ========================
 
-Guile 1.6.4 or newer is required.
+Abstract:
+---------
+
+guile-gobject is a Guile wrapper collection for the GNOME
+libraries. It ships with an wrapper engine that allows semi-automatic
+wrapping of GObject-based C APIs (GNOME2, but also other non-GNOME
+projects).
+
+Copyright:
+----------
+Distribution of library and components is under the GPL as listed in the
+file COPYING.
+
+Contact info:
+-------------
+  Mailing List: mailto: guile-gtk-general@gnu.org
+  Homepage:     http://www.gnu.org/software/guile-gtk
+  Download:     http://www.gnu.org/software/guile-gtk/download
+
+Build-Dependencies:
+--------------------
+
+* Guile 1.6.4 or newer.
+* G-Wrap 1.3.4, available from http://www.gnucash.org/pub/g-wrap/source/.
+
+Installation Quickstart:
+------------------------
 
 Install using the standard autotools incantation:
   ./configure && make && make install.
 
-Build from CVS using ./autogen.sh && make.
+Build from CVS or Arch using ./autogen.sh && make.
 
 You can run without installing, just run './dev-environ guile'.
 
-Andy Wingo, 21 Sept 2003
+The guile-gobject Developers, 29 Mar 2004

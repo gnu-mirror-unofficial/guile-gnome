@@ -1,3 +1,19 @@
+2004-03-29  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* guile-gobject.pc.in, guile-gobject-uninstalled.pc.in: Moved to
+	gnome/gobject, where they belong. Makefiles adapted.
+	
+	* guile-gobject.pc.in (Libs): Link against against the core
+	support code, not a wrapset.
+	Remove have_gtk= line and FIXME comment, since these do not 
+	fall in the realm of pkg-config (no headers or regular shared 
+	libs installed).
+	* guile-gobject-uninstalled.pc.in: Ditto.
+	
+2004-03-29  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* README: Extended a little bit.
+
 2004-01-14  Andy Wingo  <wingo@pobox.com>
 
 	* WARTS: You've been able to subclass with define-class for a

@@ -4,9 +4,9 @@ libgw_test_gobject_la_SOURCES = test-gobject.c
 nodist_libgw_test_gobject_la_SOURCES = gw-test-gobject.c
 libgw_test_gobject_la_CFLAGS = \
 	-I$(top_srcdir)/gnome/gobject $(GOBJECT_CFLAGS) $(G_WRAP_CFLAGS)
-libgw_test_gobject_la_LDFLAGS = -export-dynamic -rpath $(libdir) 
+libgw_test_gobject_la_LDFLAGS = -module -rpath $(libdir) 
 libgw_test_gobject_la_LIBADD = \
-	$(top_builddir)/gnome/gobject/libguile-gnome-gw-gobject.la \
+	$(top_builddir)/gnome/gobject/libguile-gnome-gobject.la \
 	$(G_WRAP_LIBS) $(GUILE_LIBS)
 
 noinst_HEADERS = test-gobject.h

@@ -16,7 +16,10 @@ guilegobjectmodule_DATA = primitives.scm gw-gobject-spec.scm gw-gobject.scm \
 # There are two shared libraries:
 #
 # libguile-gnome-gobject, which contains the core gobject support code
-# (both types and functions)
+# (both types and functions).
+#
+# This library and its headers can be accessed via pkg-config (the
+# .pc.in files).
 #
 # libguile-gnome-gw-gobject, produced by g-wrap, which supports the
 # g-wrap type wrappings for gobject-related types. This one is not
@@ -32,9 +35,6 @@ lib_LTLIBRARIES = libguile-gnome-gobject.la \
 	libguile-gnome-gw-standard.la
 
 # libguile-gnome-gobject (core library)
-
-pkginclude_HEADERS = guile-gnome-gobject.h	\
-	guile-gnome-gobject-primitives.h
 
 libguile_gnome_gobject_la_SOURCES = \
 	guile-gnome-gobject.c			\
@@ -53,6 +53,11 @@ libguile_gnome_gobject_la_LIBADD = $(GOBJECT_LIBS) $(GUILE_LIBS)
 libguile_gnome_gobject_la_LDFLAGS = \
 	-export-dynamic
 
+pkginclude_HEADERS = guile-gnome-gobject.h guile-gnome-gobject-primitives.h
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = guile-gobject.pc
+
 # libguile-gnome-gw-gobject (g-wrap support)
 
 libguile_gnome_gw_gobject_la_SOURCES = \
@@ -60,7 +65,7 @@ libguile_gnome_gw_gobject_la_SOURCES = \
 	guile-gnome-gw-gobject.h	\
 	glib-support.c
 
-noinst_HEADERS=glib-support.h
+noinst_HEADERS = glib-support.h
 
 libguile_gnome_gw_gobject_la_CFLAGS = $(AM_CFLAGS) $(GOBJECT_CFLAGS) \
 	$(GUILE_CFLAGS) $(G_WRAP_CFLAGS)
@@ -175,7 +180,8 @@ DISTCLEANFILES = $(CLEANFILES)
 
 EXTRA_DIST = primitives.scm gw-gobject-spec.scm \
 	gw-glib-spec.scm gw-spec-utils.scm gw-utils.scm \
-	defs-support.scm event-repl.scm generics.scm gw-standard-spec.scm
+	defs-support.scm event-repl.scm generics.scm gw-standard-spec.scm \
+	guile-gobject.pc.in guile-gobject-uninstalled.pc.in
 
 dist-hook:
 	for file in $(DISTCLEANFILES); do rm -f $(distdir)/$$file; done

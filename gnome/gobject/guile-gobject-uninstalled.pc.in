@@ -3,11 +3,10 @@ prefix=
 exec_prefix=
 libdir=${pcfiledir}
 includedir=${pcfiledir}
-have_gtk=true # fix this later...
 
-Name: (gnome gobject), Uninstalled
-Description: Guile bindings for GObject and Gtk, Not Installed
+Name: Guile-GObject, Uninstalled
+Description: GObject support runtime for Guile, Not Installed
 Version: @VERSION@
 Requires: gobject-2.0
-Libs: ${libdir}/gnome/gobject/libguile-gnome-gw-gobject.la
+Libs: ${libdir}/gnome/gobject/libguile-gnome-gobject.la
 Cflags: -I${includedir}/gnome/gobject @GUILE_CFLAGS@
