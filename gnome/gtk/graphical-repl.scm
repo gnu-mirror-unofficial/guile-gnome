@@ -134,24 +134,25 @@
     (define (history-up)
       (if (< (+ position 1) (length history))
           (begin
-            (or (>= position 0)
+            (if (< position 0)
                 (set! non-history-line (get entry 'text)))
             (set! position (+ position 1))
-            (set entry 'text (list-ref history position)))))
+            (let ((text (list-ref history position)))
+              (set entry 'text text)
+              (set-position entry (string-length text))))))
 
     (define (history-down)
       (if (>= position 0)
           (begin
             (set! position (- position 1))
             (set entry 'text
-                 (if (>= position 0)
-                     (list-ref history position)
-                     non-history-line)))))
+                 (if (negative? position)
+                     non-history-line
+                     (list-ref history position))))))
 
     (connect entry
              'key-press-event
              (lambda (entry event)
-               ;; hackish but functional
                (let ((keyval (gdk-event-key:keyval event)))
                  (cond ((or (eq? keyval gdk:Up)
                             (eq? keyval gdk:KP-Up))
@@ -160,29 +161,36 @@
                             (eq? keyval gdk:KP-Down))
                         (history-down) #t)
                        (else #f)))))
-
-    (add-hook! new-read-hook
-               (lambda ()
-                 (let ((saved-handler handler)
-                       (saved-position (if (>= position 0)
-                                           (- (length history) position)
-                                           position))
-                       (saved-non-history-line non-history-line))
-                   (set! handler
-                         (lambda ()
-                           (set! handler saved-handler)
-                           (set! position (if (>= position 0)
-                                              (- (length history) saved-position)
-                                              saved-position))
-                           (set! non-history-line saved-non-history-line))))))
-
+    
     (add-hook! read-complete-hook
                (lambda (str)
-                 (or (string=? str "")
-                     (and (not (null? history))
-                          (string=? str (car history)))
+                 (if (not (string=? str ""))
                      (set! history (cons str history)))
-                 (handler)))))
+                 (set! position -1)))
+
+    (catch #t
+           (lambda ()
+             (let ((history-file (or (getenv "GUILE_HISTORY")
+                                     (string-append (passwd:dir (getpwuid (getuid)))
+                                                    "/.guile_history"))))
+               (with-input-from-file history-file
+                 (lambda ()
+                   (let lp ((out '()) (line (read-line)))
+                     (if (eof-object? line)
+                         (set! history out)
+                         (lp (cons line out) (read-line))))))
+
+               (let ((old history))
+                 (add-hook! exit-hook
+                            (lambda ()
+                              (with-output-to-port (open-file history-file "a")
+                                (lambda ()
+                                  (for-each write-line
+                                            (let lp ((in history) (out '()))
+                                              (if (eq? in old)
+                                                  out
+                                                  (lp (cdr in) (cons (car in) out))))))))))))
+           noop)))
 
 (if (provided? 'regex)
     (define (complete text)
@@ -192,13 +200,54 @@
     (define (complete text)
       '()))
 
+(define (do-completion entry)
+  ;; `extended' is from r5rs
+  (let* ((pos (get-position entry))
+         (head (get-chars entry 0 pos))
+         (text (let ((extended (string->list "!$%&*+-./:<=>?@^_~")))
+                 (let loop ((in (reverse (string->list head)))
+                            (out '()))
+                   (if (or (null? in)
+                           (not (or (char-alphabetic? (car in))
+                                    (char-numeric? (car in))
+                                    (memq (car in) extended))))
+                       (list->string out)
+                       (loop (cdr in) (cons (car in) out))))))
+         (completions (complete text))
+         (common (if (null? completions)
+                     ""
+                     (let loop ((l completions) (index 0) (ch #f))
+                       (cond
+                        ((null? l)
+                         (loop completions (1+ index) #f))
+                        ((< index (string-length (car l)))
+                         (if ch
+                             (if (eq? (string-ref (car l) index) ch)
+                                 (loop (cdr l) index ch)
+                                 (substring (car completions) 0 index))
+                             (loop (cdr l) index (string-ref (car l) index))))
+                        (else
+                         (substring (car completions) 0 index)))))))
+    (if (> (string-length common) (string-length head))
+        (set-position entry
+                      (insert-text
+                       entry
+                       (string-append
+                        (substring common (string-length text))
+                        (if (eq? (length completions) 1)
+                            " "
+                            ""))
+                       pos))
+        (emit entry 'complete head (sort-list completions string<?)))))
+
 (define-method (initialize (entry <guile-gtk-repl-entry>) initargs)
   (next-method)
   (slot-set! entry 'new-read-hook (make-hook))
   (slot-set! entry 'read-complete-hook (make-hook 1))
-  (let ((handler #f)
+  (let ((return-from-read #f)
         (new-read-hook (slot-ref entry 'new-read-hook))
-        (read-complete-hook (slot-ref entry 'read-complete-hook)))
+        (read-complete-hook (slot-ref entry 'read-complete-hook))
+        (main-loop (g-main-loop-new #f #f)))
 
     (slot-set! entry 'port
                (make-line-buffered-input-port
@@ -206,47 +255,36 @@
                   (call-with-current-continuation
                    (lambda (cont)
                      (run-hook new-read-hook)
-                     (let ((saved-handler handler)
-                           (saved-text (get entry 'text))
-                           (saved-position (get-position entry)))
-                       (set! handler
-                             (lambda (str)
-                               (set! handler saved-handler)
-                               (set entry 'text saved-text)
-                               (set-position entry saved-position)
-                               (or handler
-                                   (set entry 'sensitive #f))
-                               (cont str))))
-                     ;; FIXME!
-                     (g-main-loop-run (g-main-loop-new #f #f)))))))
+                     (set! return-from-read cont)
+                     (g-main-loop-run main-loop))))))
 
     (modify-font entry (pango-font-description-from-string "Monospace"))
 
-    ;; Define a new-read hook procedure that saves the current
-    ;; contents and cursor position of the entry and sets up handler
-    ;; to restore them when the read completes.
+    ;; Define a new-read hook procedure that prepares the entry.
     (add-hook! new-read-hook
                (lambda ()
                  (set entry 'sensitive #t)
-                 (grab-focus entry)
-                 (set entry 'text "")))
+                 (grab-focus entry)))
 
     ;; Define a read-complete hook procedure that clears the entry
-    ;; field and invokes the current handler.
+    ;; field and makes it insensitive.
     (add-hook! read-complete-hook
                (lambda (str)
+                 (set entry 'sensitive #f)
                  (set entry 'text "")))
 
-    ;; Run the read-complete hook when the user presses RETURN. Note
-    ;; that this will fail if the repl hasn't called read yet.
+    ;; When the user presses RETURN, run the read-complete hook and
+    ;; return the string to the continuation.
     (connect entry
              'activate
              (lambda (entry)
-               (let ((str (get entry 'text)))
-                 (run-hook read-complete-hook str)
-                 (handler str))))
+               (if return-from-read
+                   (let ((str (get entry 'text)))
+                     (run-hook read-complete-hook str)
+                     (return-from-read str)))))
 
-    ;; Can't be caught by the parent window, apparently...
+    ;; These keypresses can't be caught by the parent window,
+    ;; apparently...
     (connect entry 'key-press-event
              (lambda (entry event)
                (let ((keyval (gdk-event-key:keyval event))
@@ -258,45 +296,8 @@
                    (kill (getpid) SIGINT)
                    #f)
                   ((eq? keyval gdk:Tab)
-                   ;; `extended' is from r5rs
-                   (let* ((pos (get-position entry))
-                          (head (get-chars entry 0 pos))
-                          (text (let ((extended (string->list "!$%&*+-./:<=>?@^_~")))
-                                  (let loop ((in (reverse (string->list head)))
-                                             (out '()))
-                                    (if (or (null? in)
-                                            (not (or (char-alphabetic? (car in))
-                                                     (char-numeric? (car in))
-                                                     (memq (car in) extended))))
-                                        (list->string out)
-                                        (loop (cdr in) (cons (car in) out))))))
-                          (completions (complete text))
-                          (common (if (null? completions)
-                                      ""
-                                      (let loop ((l completions) (index 0) (ch #f))
-                                        (cond
-                                         ((null? l)
-                                          (loop completions (1+ index) #f))
-                                         ((< index (string-length (car l)))
-                                          (if ch
-                                              (if (eq? (string-ref (car l) index) ch)
-                                                  (loop (cdr l) index ch)
-                                                  (substring (car completions) 0 index))
-                                              (loop (cdr l) index (string-ref (car l) index))))
-                                         (else
-                                          (substring (car completions) 0 index)))))))
-                     (if (> (string-length common) (string-length head))
-                         (set-position entry
-                                       (insert-text
-                                        entry
-                                        (string-append
-                                         (substring common (string-length text))
-                                         (if (eq? (length completions) 1)
-                                             " "
-                                             ""))
-                                        pos))
-                         (emit entry 'complete head (sort-list completions string<?)))
-                     #t))
+                   (do-completion entry)
+                   #t)
                   (else
                    #f)))))
 
@@ -304,7 +305,7 @@
 
     (install-history-handlers entry)
 
-    ;; This will display to the repl-output if all goes well...
+    ;; This will display to the repl-output if all goes well.
     (add-hook! read-complete-hook
                (lambda (str) (display str) (newline)))))
 
@@ -412,7 +413,7 @@
                     completions)
                 ;; We don't really know how big the window is,
                 ;; unfortunately
-                72)
+                70)
                (newline)
                (display scm-repl-prompt)))
 

@@ -196,12 +196,12 @@ guile_gtk_generic_tree_model_get_flags (GtkTreeModel *tree_model)
     scm_obj = scm_c_gtype_instance_to_scm ((GTypeInstance*) (tree_model));
     scm_ret = scm_call_1 (PROC_FROM_INSTANCE (tree_model, on_get_flags), scm_obj);
 
-    SCM_VALIDATE_GVALUE_TYPE_COPY (0, scm_ret, GTK_TYPE_TREE_MODEL_FLAGS, flags_val);
-
-    if (flags_val)
+    if (SCM_NFALSEP (scm_ret)) {
+        SCM_VALIDATE_GVALUE_TYPE_COPY (0, scm_ret, GTK_TYPE_TREE_MODEL_FLAGS, flags_val);
         return g_value_get_flags (flags_val);
-    else
+    } else {
         return 0;
+    }
 }
 #undef FUNC_NAME
 

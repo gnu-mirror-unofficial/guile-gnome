@@ -27,8 +27,7 @@
 (define-module (gnome gtk gdk-event)
   :use-module (gnome gtk gw-gdk)
   :use-module (gnome gobject)
-  :use-module (oop goops)
-  :use-module (gnome gobject primitives))
+  :use-module (oop goops))
 
 ;; This hack allows us to export all definitions in this file.
 (module-use! (module-public-interface (current-module)) (current-module))

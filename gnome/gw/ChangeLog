@@ -1,3 +1,24 @@
+2004-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (libguile_gnome_gw_*_la_LIBADD): Link all these to
+	the real gobject module, not the -gw- module.
+
+2004-04-18  Andy Wingo  <wingo@pobox.com>
+
+	* graphical-repl.scm (install-history-handlers): Fix the
+	long-standing bug in history-up and history-down. Load and save
+	history files like ice-9/readline.scm does. Position the cursor at
+	the end of the new text. Yay.
+	(initialize for the entry): Lots of simplifications. Don't know
+	why it was so complicated before.
+
+	* Makefile.am (libguile_gnome_gw_gtk_la_CFLAGS): Temporarily
+	remove -DGTK_DISABLE_DEPRECATED until the trunk is synced to
+	Gtk+-2.4.
+
+	* guile-gtk-tree-model.c (guile-gtk-generic-tree-model-get-flags):
+	Allow the implementation to return #f for on-get-flags.
+
 2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* Makefile.am (libguile_gnome_gw_gtk_la_CFLAGS): Added -O0, to

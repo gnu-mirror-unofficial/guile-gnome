@@ -1,15 +1,16 @@
 (read-set! keywords 'prefix)
-(use-modules (gnome gtk) (gnome gobject primitives))
+(use-modules (gnome gtk))
 
 (define-class <tic-tac-toe> (<gtk-vbox>)
-  (board-size ;; this slot is exported as a gobject property
-   :param-spec `(,<gparam-int> :minimum 2 :maximum 100 :default-value 3
-                               :flags (read write construct)))
+  (board-size
+   ;; this slot is exported as a gobject property
+   :gparam `(,<gparam-int> :minimum 2 :maximum 100 :default-value 3
+                           :flags (read write construct)))
   table
   buttons
   winning-combinations
 
-  :signal '(tic-tac-toe #f))
+  :gsignal '(tic-tac-toe #f))
 
 (define (ttt-clear ttt)
   (let ((buttons (slot-ref ttt 'buttons)))
@@ -39,7 +40,7 @@
   (next-method) ;; actually store the values with the next-method
   (case name
     ((board-size)
-     (if (slot-ref ttt 'table) (destroy (slot-ref ttt 'table)))
+     (if (slot-bound? ttt 'table) (destroy (slot-ref ttt 'table)))
      (let ((t (gtk-table-new value value #f))
            (bvect (make-vector (* value value))))
        (do ((p 0 (1+ p)))
