@@ -1,3 +1,13 @@
+2004-12-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gtk-spec.scm: 
+	* gnome/gw/gdk-spec.scm: Updated to use wrap-custom-boxed!.
+
+2004-11-29  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk.scm (progress): New proc. Will display its argument if
+	the GUILE_GTK_DEBUG environment var is set, otherwise a noop.
+
 2004-11-11  Jan Nieuwenhuizen  <janneke@gnu.org>
 
 	* gnome/gtk/gdk-event.scm (button-press, button-release): Define
