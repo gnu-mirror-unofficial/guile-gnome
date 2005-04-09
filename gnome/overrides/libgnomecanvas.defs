@@ -91,7 +91,12 @@
  "*_foreach"
  "*_affine*"
  "*_valist"
+ "*_update_svp*" ;; use of ArtVSP**
+ )
 
+(ignore
+ "gnome_canvas_item_construct"  ;; use of va-list
+ 
  ;; ignore functions that deal in libart types
  "gnome_canvas_cap_gdk_to_art"
  "gnome_canvas_join_gdk_to_art"
