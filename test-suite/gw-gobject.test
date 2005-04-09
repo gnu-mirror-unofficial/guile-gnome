@@ -45,7 +45,17 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
                   (= (length args) 1))))
 
   (pass-if "calling foo"
-           (= (foo (make <test-obj>) 65000) 65000)))
+           (= (foo (make <test-obj>) 65000) 65000))
+
+  (pass-if "gvalue conversion"
+           (let ((obj (make <test-obj>)))
+             (eq? (gvalue->scm (scm->gvalue gtype:gobject obj)) obj)))
+
+  (pass-if "gvalue array conversion"
+           (let* ((obj (make <test-obj>))
+                  (array (make <gvalue-array> #:value (list obj obj))))
+             (equal? (gvalue->scm array) (list obj obj))))
+  )
 
 ;; Local Variables:
 ;; mode: scheme

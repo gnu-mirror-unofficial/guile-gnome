@@ -103,6 +103,8 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
   (pass-if "creating empty gchararray"
            (test <gchararray> #f))
 
+  (pass-if "creating gvalue array"
+           (test <gvalue-array> '(1 2 3)))
   )
 
 (with-test-prefix "creating genum and gflags types"
@@ -244,6 +246,7 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
   (pass-if "invoking gclosure with boxed retval"
            (gvalue? (gclosure-invoke closure-with-boxed-retval)))
   )
+
 
 ;; Local Variables:
 ;; mode: scheme

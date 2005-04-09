@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "gvalue.h"
+#include "gobject.h"
 #include "guile-support.h"
 
 
@@ -256,7 +257,7 @@ SCM_DEFINE (scm_gvalue_primitive_set, "gvalue-primitive-set", 2, 0, 0,
 	if (SCM_FALSEP (value))
 	    g_value_set_string (gvalue, NULL);
 	else
-	    g_value_set_string (gvalue, g_strdup (SCM_STRING_CHARS (value)));
+	    g_value_set_string (gvalue, SCM_STRING_CHARS (value));
 	break;
 
     case G_TYPE_ENUM: {
@@ -292,17 +293,22 @@ SCM_DEFINE (scm_gvalue_primitive_set, "gvalue-primitive-set", 2, 0, 0,
         if (SCM_FALSEP (value)) {
             g_value_set_object (gvalue, NULL);
         } else {
-            GTypeInstance *ginstance;
+            gpointer ginstance;
             GType gtype;
 
-            SCM_VALIDATE_GTYPE_INSTANCE_COPY (2, value, ginstance);
+            if (SCM_GOBJECTP (value)) {
+                SCM_VALIDATE_GOBJECT_COPY (2, value, ginstance);
+            }
+            else {
+                SCM_VALIDATE_GTYPE_INSTANCE_COPY (2, value, ginstance);
+            }
             gtype = G_TYPE_FROM_INSTANCE (ginstance);
 
             switch (G_TYPE_FUNDAMENTAL (gtype)) {
             case G_TYPE_OBJECT:
                 SCM_ASSERT (g_type_is_a (gtype, G_VALUE_TYPE (gvalue)),
                             value, SCM_ARG2, FUNC_NAME);
-                g_value_set_object (gvalue, G_OBJECT (ginstance));
+                g_value_set_object (gvalue, ginstance);
                 break;
             default:
                 SCM_ERROR_NOT_YET_IMPLEMENTED (value);
@@ -327,10 +333,10 @@ SCM_DEFINE (scm_gvalue_primitive_set, "gvalue-primitive-set", 2, 0, 0,
             arr = g_value_array_new (len);
             while (len--) {
                 GType value_type;
-                SCM val, v;
+                SCM v;
 
                 v = SCM_CAR (value);
-
+                
                 if (SCM_STRINGP (v))
                     value_type = G_TYPE_STRING;
                 else if (SCM_BOOLP (v))
@@ -341,15 +347,18 @@ SCM_DEFINE (scm_gvalue_primitive_set, "gvalue-primitive-set", 2, 0, 0,
                     value_type = G_TYPE_DOUBLE;
                 else if (SCM_CHARP (v))
                     value_type = G_TYPE_CHAR;
-                else if (scm_list_p (v))
+                else if (SCM_GOBJECTP (v)) {
+                    GObject *gobject;
+                    SCM_VALIDATE_GOBJECT_COPY (1, v, gobject);
+                    value_type = G_OBJECT_TYPE (gobject);
+                }
+                else if (SCM_BOOL (scm_list_p (v)))
                     value_type = G_TYPE_VALUE_ARRAY;
                 else
                     scm_wrong_type_arg (FUNC_NAME, SCM_ARG1, v);
 
-                val = scm_c_make_gvalue (value_type);
-                scm_gvalue_primitive_set (val, v);
                 /* will copy the val */
-                g_value_array_append (arr, (GValue*) SCM_SMOB_DATA (val));
+                g_value_array_append (arr, scm_c_scm_to_gvalue (value_type, v));
                 value = SCM_CDR (value);
             }
                 
@@ -450,8 +459,8 @@ SCM_DEFINE (scm_gvalue_primitive_get, "gvalue-primitive-get", 1, 0, 0,
     }
 
     case G_TYPE_OBJECT:
-        /* scm_c_make_gtype_instance will ref the object for us */
-	return scm_c_make_gtype_instance (g_value_get_object (gvalue));
+        /* scm_c_gtype_instance_to_scm will ref the object for us */
+	return scm_c_gtype_instance_to_scm (g_value_get_object (gvalue));
 
     case G_TYPE_PARAM:
         /* scm_c_make_gtype_instance will ref the object for us */

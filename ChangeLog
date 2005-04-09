@@ -1,3 +1,34 @@
+2005-04-09  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/glib-spec.scm (initialize): Fix gsize, gssize in- and 
+	out-arguments.
+	
+	* gnome/gw/glib-spec.scm (post-call-arg-cg): Use newly-added function
+	scm_c_raise_gerror.
+	* gnome/gobject/Makefile.am (C_FILES): Added gutil.c
+	* gnome/gobject/gobject.h: #include gutil.h
+	* gnome/gobject/gutil.c, gnome/gobject/gutil.h: New files.
+
+2005-04-07  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* test-suite/gw-gobject.test, test-suite/gobject.test: Added a few
+	tests relevant to the gvalue fixes.
+
+	* gnome/gw/support/defs.scm (load-defs): Improve error handling a
+	bit by re-raising stacked conditions where appropriate.
+
+	* gnome/gobject/gvalue.c (scm_gvalue_primitive_get): Return a full
+	goops instance when the gvalue contains an object.
+
+	* gnome/gobject/gvalue.c (scm_gvalue_primitive_set): Fix
+	scm_list_p() check, needs to wrapped with SCM_BOOL().
+	(scm_gvalue_primitive_set): Also handle goops gobject instances.
+
+2005-03-17  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/gvalue.c (scm_gvalue_primitive_set): Fix memleak
+	when setting a string value.
+
 2005-03-06  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/defs.scm: Don't make generics if the of-object

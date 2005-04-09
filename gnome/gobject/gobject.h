@@ -28,6 +28,7 @@
 #include <guile-gnome-gobject/gparameter.h>
 #include <guile-gnome-gobject/gvalue.h>
 #include <guile-gnome-gobject/gsignal.h>
+#include <guile-gnome-gobject/gutil.h>
 
 G_BEGIN_DECLS
 
