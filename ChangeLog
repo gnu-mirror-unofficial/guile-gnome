@@ -1,3 +1,8 @@
+2005-04-10  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/guile-gtk-tree-model.c, gnome/gw/gdk-pixbuf-support.c,
+	* gnome/gw/gtk-support.c: Use new SCM<->gpointer conversion macros.
+
 2005-03-01  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/gw/gdk-spec.scm (initialize): Added type-rules making
