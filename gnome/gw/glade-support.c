@@ -51,7 +51,7 @@ connect_one (const gchar *handler_name, GObject *object, const gchar *signal_nam
             SCM_VARIABLE_REF (scm_c_module_lookup (scm_glade_module,
                                                    "gtype-instance-signal-connect-data"));
 
-    proc = SCM_PACK (GPOINTER_TO_INT (user_data));
+    proc = GPOINTER_TO_SCM (user_data);
     scm_call_4 (gtype_instance_signal_connect_data,
                 scm_c_gtype_instance_to_scm ((GTypeInstance*)object),
                 scm_str2symbol (signal_name),
@@ -65,7 +65,7 @@ _wrap_glade_xml_signal_connect (GladeXML *xml, const char *handlername, SCM proc
 {
     SCM_VALIDATE_PROC (3, proc);
     glade_xml_signal_connect_full (xml, handlername, connect_one,
-                                   GINT_TO_POINTER (SCM_UNPACK (proc)));
+                                   SCM_TO_GPOINTER (proc));
 }
 #undef FUNC_NAME
 
@@ -81,7 +81,7 @@ connect_many (const gchar *handler_name, GObject *object, const gchar *signal_na
               const gchar *signal_data, GObject *connect_object, gboolean after,
               gpointer user_data)
 {
-    SCM module = SCM_PACK (GPOINTER_TO_INT (user_data));
+    SCM module = GPOINTER_TO_SCM (user_data);
     SCM proc = SCM_BOOL_F;
 
     proc = scm_eval (scm_internal_catch (SCM_BOOL_T,
@@ -96,14 +96,14 @@ connect_many (const gchar *handler_name, GObject *object, const gchar *signal_na
                         scm_makfrom0str (signal_name));
 
     connect_one (NULL, object, signal_name, NULL, NULL, after,
-                 GINT_TO_POINTER (SCM_UNPACK (proc)));
+                 SCM_TO_GPOINTER (proc));
 }
 
 void
 _wrap_glade_xml_signal_autoconnect (GladeXML *xml, SCM module)
 {
     glade_xml_signal_autoconnect_full (xml, connect_many,
-                                       GINT_TO_POINTER (SCM_UNPACK (module)));
+                                       SCM_TO_GPOINTER (module));
 }
 
 GtkWidget*
