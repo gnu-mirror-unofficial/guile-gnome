@@ -30,6 +30,9 @@
 
 G_BEGIN_DECLS
 
+#define SCM_TO_GPOINTER(scm) ((gpointer) SCM_UNPACK (scm))
+#define GPOINTER_TO_SCM(ptr) (SCM_PACK ((scm_t_bits) (ptr)))
+
 SCM scm_c_gerror_to_scm (GError *error);
 void scm_c_raise_gerror (GError *error);
 

@@ -71,7 +71,7 @@ SCM_DEFINE (scm_gobject_set_data_x, "gobject-set-data!", 3, 0, 0,
     else
         g_object_set_qdata_full
             (gobject, g_quark_from_string (sym),
-             GINT_TO_POINTER (SCM_UNPACK (scm_gc_protect_object (val))),
+             SCM_TO_GPOINTER (scm_gc_protect_object (val)),
              (GDestroyNotify)scm_gc_unprotect_object);
         
     return SCM_UNSPECIFIED;
@@ -95,7 +95,7 @@ SCM_DEFINE (scm_gobject_get_data, "gobject-get-data", 2, 0, 0,
     data = g_object_get_qdata (gobject, g_quark_from_string (sym));
     
     if (data)
-        return SCM_PACK (GPOINTER_TO_INT (data));
+        return GPOINTER_TO_SCM (data);
     else
         return SCM_UNBOUND;
 }

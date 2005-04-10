@@ -320,8 +320,7 @@ SCM_DEFINE (scm_gvalue_primitive_set, "gvalue-primitive-set", 2, 0, 0,
     case G_TYPE_BOXED:
         if (G_VALUE_TYPE (gvalue) == G_TYPE_BOXED_SCM) {
             /* the copy func will protect the scm_value from GC */
-            g_value_set_boxed (gvalue,
-                               GINT_TO_POINTER (SCM_UNPACK (value)));
+            g_value_set_boxed (gvalue, SCM_TO_GPOINTER (value));
         } else if (G_VALUE_TYPE (gvalue) == G_TYPE_VALUE_ARRAY) {
             GValueArray *arr;
             gint len;
@@ -437,7 +436,7 @@ SCM_DEFINE (scm_gvalue_primitive_get, "gvalue-primitive-get", 1, 0, 0,
         if (G_VALUE_TYPE (gvalue) == G_TYPE_BOXED_SCM) {
             if (!p)
                 return SCM_UNSPECIFIED;
-            return SCM_PACK (GPOINTER_TO_INT (p));
+            return GPOINTER_TO_SCM (p);
         } else if (G_VALUE_TYPE (gvalue) == G_TYPE_VALUE_ARRAY) {
             GValueArray *arr = p;
             gint i = arr ? arr->n_values : 0;

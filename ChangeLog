@@ -1,3 +1,10 @@
+2005-04-10  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/gobject.c, gnome/gobject/gvalue.c,
+	* gnome/gw/glib-support.c: Use the new macros.
+	* gnome/gobject/gutil.h (GPOINTER_TO_SCM, SCM_TO_GPOINTER): New
+	macros.
+	
 2005-04-09  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/gw/glib-spec.scm (initialize): Fix gsize, gssize in- and 
