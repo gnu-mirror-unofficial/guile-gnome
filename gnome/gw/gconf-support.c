@@ -230,7 +230,7 @@ notify_proc (GConfClient *client, guint cnxn_id, GConfEntry *entry,
 {
     SCM sclient, key, val, proc;
     
-    proc = SCM_PACK (GPOINTER_TO_INT (user_data));
+    proc = GPOINTER_TO_SCM (user_data);
     sclient = scm_c_gtype_instance_to_scm ((GTypeInstance*)client);
     key = scm_str2symbol (gconf_entry_get_key (entry));
     val = scm_c_gconf_value_to_scm (gconf_entry_get_value (entry));
@@ -244,7 +244,7 @@ _wrap_gconf_client_notify_add (GConfClient *client, const gchar *namespace_secti
 {
     return gconf_client_notify_add
         (client, namespace_section, notify_proc,
-         GINT_TO_POINTER (SCM_UNPACK (scm_gc_protect_object (proc))),
+         SCM_TO_GPOINTER (scm_gc_protect_object (proc)),
          (GFreeFunc)scm_gc_unprotect_object, err);
 }
 
