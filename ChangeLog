@@ -1,3 +1,7 @@
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.7.99 ==
+
 2005-01-25  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/defs/Makefile.am (defs_DATA): Make out-of-tree-build-safe.
