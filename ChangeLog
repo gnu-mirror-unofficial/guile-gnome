@@ -1,3 +1,13 @@
+2005-09-17  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/gtk-support.c (_gtk_selection_data_get_as_string): Fix
+	GCC 4.0 warnings.
+
+2005-04-11  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/gdk-support.c (gdk_event_to_vector): Fix compiler
+	warnings on alpha.
+
 2005-04-10  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/gw/guile-gtk-tree-model.c, gnome/gw/gdk-pixbuf-support.c,

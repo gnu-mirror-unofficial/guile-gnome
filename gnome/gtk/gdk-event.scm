@@ -87,6 +87,10 @@
 (define-gdk-event-accessor (window-state) window-state new-window-state 4
   (gflags->symbol-list (make <gdk-window-state> #:value val)))
 
+(define-gdk-event-accessor (expose) expose area 3
+  val)
+
+
 ;;
 ;; Update this list with the following bit of perl:
 ;; perl -p -e 's/#define GDK_/(define gdk:/; s/_/-/g; s/0x/#x/; s/$/)/;' \

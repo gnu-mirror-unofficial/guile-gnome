@@ -43,9 +43,7 @@ gdk_event_to_vector (GdkEvent *event)
             scm_vector_set_x (ret, SCM_MAKINUM (1),
                               scm_c_gtype_instance_to_scm ((GTypeInstance*)ekey.window));
             scm_vector_set_x (ret, SCM_MAKINUM (2), ekey.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            scm_vector_set_x (ret, SCM_MAKINUM (3),
-                              ekey.time > SCM_MOST_POSITIVE_FIXNUM
-                              ? scm_i_ulong2big (ekey.time) : SCM_MAKINUM (ekey.time));
+            scm_vector_set_x (ret, SCM_MAKINUM (3), scm_ulong2num (ekey.time));
             scm_vector_set_x (ret, SCM_MAKINUM (4), SCM_MAKINUM ((int)ekey.state));
             scm_vector_set_x (ret, SCM_MAKINUM (5), SCM_MAKINUM (ekey.keyval));
             scm_vector_set_x (ret, SCM_MAKINUM (6), SCM_MAKINUM (ekey.hardware_keycode));
@@ -67,9 +65,7 @@ gdk_event_to_vector (GdkEvent *event)
             scm_vector_set_x (ret, SCM_MAKINUM (1),
                               scm_c_gtype_instance_to_scm ((GTypeInstance*)ebutton.window));
             scm_vector_set_x (ret, SCM_MAKINUM (2), ebutton.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            scm_vector_set_x (ret, SCM_MAKINUM (3),
-                              ebutton.time > SCM_MOST_POSITIVE_FIXNUM
-                              ? scm_i_ulong2big (ebutton.time) : SCM_MAKINUM (ebutton.time));
+            scm_vector_set_x (ret, SCM_MAKINUM (3), scm_ulong2num (ebutton.time));
             scm_vector_set_x (ret, SCM_MAKINUM (4), scm_double2num (ebutton.x));
             scm_vector_set_x (ret, SCM_MAKINUM (5), scm_double2num (ebutton.y));
             scm_vector_set_x (ret, SCM_MAKINUM (6), SCM_MAKINUM ((int)ebutton.state));
@@ -100,9 +96,7 @@ gdk_event_to_vector (GdkEvent *event)
 	    else
 	      scm_vector_set_x (ret, SCM_MAKINUM (3), SCM_BOOL_F);
 	      
-            scm_vector_set_x (ret, SCM_MAKINUM (4),
-                              ecrossing.time > SCM_MOST_POSITIVE_FIXNUM
-                              ? scm_i_ulong2big (ecrossing.time) : SCM_MAKINUM (ecrossing.time));
+            scm_vector_set_x (ret, SCM_MAKINUM (4), scm_ulong2num (ecrossing.time));
             scm_vector_set_x (ret, SCM_MAKINUM (5), scm_double2num (ecrossing.x));
             scm_vector_set_x (ret, SCM_MAKINUM (6), scm_double2num (ecrossing.y));
             scm_vector_set_x (ret, SCM_MAKINUM (7), scm_double2num (ecrossing.x_root));
@@ -130,9 +124,7 @@ gdk_event_to_vector (GdkEvent *event)
             scm_vector_set_x (ret, SCM_MAKINUM (3), scm_take0str (gdk_atom_name (eselection.selection)));
             scm_vector_set_x (ret, SCM_MAKINUM (4), scm_take0str (gdk_atom_name (eselection.target)));
             scm_vector_set_x (ret, SCM_MAKINUM (5), scm_take0str (gdk_atom_name (eselection.property)));
-            scm_vector_set_x (ret, SCM_MAKINUM (6),
-                              eselection.time > SCM_MOST_POSITIVE_FIXNUM
-                              ? scm_i_ulong2big (eselection.time) : SCM_MAKINUM (eselection.time));
+            scm_vector_set_x (ret, SCM_MAKINUM (6), scm_ulong2num (eselection.time));
             scm_vector_set_x (ret, SCM_MAKINUM (7), SCM_MAKINUM (eselection.requestor));
 
             return ret;
@@ -149,9 +141,7 @@ gdk_event_to_vector (GdkEvent *event)
             scm_vector_set_x (ret, SCM_MAKINUM (1),
                               scm_c_gtype_instance_to_scm ((GTypeInstance*)emotion.window));
             scm_vector_set_x (ret, SCM_MAKINUM (2), emotion.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            scm_vector_set_x (ret, SCM_MAKINUM (3),
-                              emotion.time > SCM_MOST_POSITIVE_FIXNUM
-                              ? scm_i_ulong2big (emotion.time) : SCM_MAKINUM (emotion.time));
+            scm_vector_set_x (ret, SCM_MAKINUM (3), scm_ulong2num (emotion.time));
             scm_vector_set_x (ret, SCM_MAKINUM (4), scm_double2num (emotion.x));
             scm_vector_set_x (ret, SCM_MAKINUM (5), scm_double2num (emotion.y));
             scm_vector_set_x (ret, SCM_MAKINUM (6), SCM_MAKINUM ((int)emotion.state));
@@ -180,6 +170,25 @@ gdk_event_to_vector (GdkEvent *event)
             scm_vector_set_x (ret, SCM_MAKINUM (4),
                               SCM_MAKINUM ((int)ewinstate.new_window_state));
             
+            return ret;
+        }
+    case GDK_EXPOSE:
+        {
+            GdkEventExpose expose = event->expose;
+            SCM ret;
+
+            /* 6 fields */
+            ret = scm_c_make_vector (6, SCM_BOOL_F);
+
+            scm_vector_set_x (ret, SCM_MAKINUM (0), SCM_MAKINUM (event->type));
+            scm_vector_set_x (ret, SCM_MAKINUM (1),
+                              scm_c_gtype_instance_to_scm (
+                                  (GTypeInstance *)expose.window));
+            scm_vector_set_x (ret, SCM_MAKINUM (2), SCM_BOOL (expose.send_event));
+            scm_vector_set_x (ret, SCM_MAKINUM (3),
+                              scm_gdk_rectangle_to_scm (&expose.area));
+            scm_vector_set_x (ret, SCM_MAKINUM (4), SCM_BOOL_F); /* FIXME: region */
+            scm_vector_set_x (ret, SCM_MAKINUM (5), SCM_MAKINUM (expose.count));
             return ret;
         }
     default:
