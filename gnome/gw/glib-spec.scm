@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2003,2004-2005 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -175,39 +175,28 @@
                (type type) (options options)
                (message "Missing glist-of options form.")))))
   (if (< (length options) 2)
-      (raise
-       (condition
-        (&gw-bad-typespec
-         (type type) (options options)
-         (message "glist-of options form must have at least 2 options.")))))
+      (raise-bad-typespec type options
+                          "glist-of options form must have at least 2 options."))
   (let ((sub-typespec (car options))
         (glist-options (cdr options))
         (remainder (cdr options)))
     
     (if (not (is-a? sub-typespec <gw-typespec>))
-        (raise (condition
-                (&gw-bad-typespec
-                 (type type) (options options)
-                 (message "glist-of options form must have a sub-typespec as first option.")))))
-
+        (raise-bad-typespec
+         type options
+         "glist-of options form must have a sub-typespec as first option."))
     
     (set! remainder (delq 'const remainder))
     (if (and (memq 'caller-owned remainder)
              (memq 'callee-owned remainder))
-        (raise (condition
-                (&gw-bad-typespec
-                 (type type) (options options)
-                 (message
-                  "Bad glist-of options form (caller and callee owned!).")))))
+        (raise-bad-typespec type options 
+                  "Bad glist-of options form (caller and callee owned!)."))
     
     (if (not (or (memq 'caller-owned remainder)
                  (memq 'callee-owned remainder)))
-        (raise
-         (condition
-          (&gw-bad-typespec
-           (type type) (options options)
-           (message
-            "Bad glist-of options form (must be caller or callee owned!).")))))
+        (raise-bad-typespec
+         type options
+         "Bad glist-of options form (must be caller or callee owned!)."))
     (set! remainder (delq 'caller-owned remainder))
     (set! remainder (delq 'callee-owned remainder))
     (if (null? remainder)
@@ -215,12 +204,10 @@
           #:type type
           #:sub-typespec sub-typespec
           #:options glist-options)
-        (raise (condition
-                (&gw-bad-typespec
-                 (type type) (options options)
-                 (message
-                  (format #f "Bad glist-of options form - spurious options: ~S"
-                          remainder))))))))
+        (raise-bad-typespec
+         type options
+         (format #f "Bad glist-of options form - spurious options: ~S"
+                 remainder)))))
 
 (define-method (unwrap-value-cg (glist-type <glist-of-type>)
                                 (value <gw-value>)

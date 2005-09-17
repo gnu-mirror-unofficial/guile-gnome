@@ -1,3 +1,13 @@
+2005-09-17  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/gtype.c (s_scm_gtype_interfaces): Fix GCC 4.0
+	warnings.
+
+2005-04-20  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/glib.scm (g-error-domain, g-error-code, g-error-message):
+	New public functions.
+
 2005-04-10  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/gobject/gobject.c, gnome/gobject/gvalue.c,

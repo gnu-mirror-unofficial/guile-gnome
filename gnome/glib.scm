@@ -99,3 +99,12 @@
                        #t)))
     (prompt)
     (g-main-loop-run main-loop)))
+
+(define-public (g-error-domain error)
+  (car error))
+
+(define-public (g-error-code error)
+  (caddr error))
+
+(define-public (g-error-message error)
+  (caddr error))
