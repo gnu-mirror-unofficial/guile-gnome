@@ -1,3 +1,7 @@
+2005-09-17  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/gnome-vfs-port.c (vport_seek): Fix GCC 4.0 warnings.
+
 2005-03-06  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.7.99 ==
