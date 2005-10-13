@@ -265,7 +265,7 @@ SCM_DEFINE (scm_gtype_interfaces, "gtype-interfaces", 1, 0, 0,
 #define FUNC_NAME s_scm_gtype_interfaces
 {
     GType gtype, *interfaces;
-    gint n_interfaces, i;
+    guint n_interfaces, i;
     SCM ret = SCM_EOL;
 
     SCM_VALIDATE_GTYPE_COPY (1, type, gtype);
