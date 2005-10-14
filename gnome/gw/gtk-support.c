@@ -423,7 +423,7 @@ _wrap_gtk_message_dialog_new (GtkWindow* parent, GtkDialogFlags flags, GtkMessag
 gchar*
 _gtk_selection_data_get_as_string (GtkSelectionData *data) 
 {
-    return g_strndup (data->data, data->length);
+    return g_strndup ((gchar*)data->data, data->length);
 }
 
 void
