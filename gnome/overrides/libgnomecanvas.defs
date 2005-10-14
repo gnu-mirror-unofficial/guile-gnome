@@ -70,4 +70,5 @@
  "gnome_canvas_join_gdk_to_art"
  "gnome_canvas_request_redraw_svp"
  "gnome_canvas_request_redraw_uta"
+ "gnome_canvas_item_construct"
  )

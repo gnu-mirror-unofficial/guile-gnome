@@ -1,3 +1,8 @@
+2005-10-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/libgnomecanvas.defs: Ignore
+	gnome_canvas_item_construct, it has a va_list argument.
+
 2005-03-06  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.7.99 ==
