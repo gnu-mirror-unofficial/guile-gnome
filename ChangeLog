@@ -1,3 +1,7 @@
+2005-10-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gnome-vfs-port.c (vport_seek): Signedness fix.
+
 2005-03-06  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.7.99 ==

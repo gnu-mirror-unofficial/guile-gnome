@@ -219,7 +219,7 @@ vport_fill_input (SCM port)
 static off_t
 vport_seek (SCM port, off_t offset, int whence)
 {
-    GnomeVFSFileOffset count;
+    GnomeVFSFileSize count;
     GnomeVFSResult res;
     scm_t_port *pt = SCM_PTAB_ENTRY (port);
     GnomeVFSHandle *handle = (GnomeVFSHandle*)SCM_STREAM (port);
