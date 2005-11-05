@@ -1,4 +1,5 @@
 ;; guile-gnome
+;; Copyright (C) 2005 Andreas Rottmann <rotty at debian dot org>
 ;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
@@ -29,10 +30,12 @@
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-11)
   #:use-module (srfi srfi-13)
+  #:use-module (srfi srfi-34)
+  #:use-module (srfi srfi-35)
   #:use-module (ice-9 slib)
   #:use-module (ice-9 optargs)
   #:use-module (ice-9 regex)
-  
+
   #:use-module (g-wrap)
   #:use-module (g-wrap c-types)
   #:use-module (g-wrap enumeration)
@@ -343,7 +346,11 @@
           (warn "Invalid form in .defs file" exp file)
           (lp (read)))
          ((assq (car exp) defs-handlers)
-          => (lambda (x) ((cadr x) exp) (lp (read))))
+          => (lambda (x)
+               (guard
+                (c (#t (raise-stacked c "while processing def ~S" exp)))
+                ((cadr x) exp))
+               (lp (read))))
          ((eq? (car exp) 'include)
           (let ((f (cond
                     ((eq? (cadr exp) 'overrides)
@@ -371,25 +378,27 @@
     (dynamic-wind
         (lambda () (push (dirname abs-path) %load-path))
         (lambda ()
-          (with-input-from-file abs-path scan-defs)
-          ;; FIXME: re-establish
-          ;;     (format log-file "Opaque types in the ~A wrapset: c-name scm-name\n\n"
-          ;;             (name ws))
-          ;;     (for-each
-          ;;      (lambda (pair)
-          ;;        (format log-file "~A ~A\n" (car pair) (cadr pair)))
-          ;;      opaque-types)
-          (format log-file "\n\nBad method names in the ~A wrapset: c-name of-object\n\n"
-                  (name ws))
-          (for-each
-           (lambda (pair)
-             (format log-file "~A ~A\n" (car pair) (cadr pair)))
-           bad-methods)
-          (close log-file)
-          ;;     (format #t "\n\nWrapped ~A types (~A opaque) and ~A functions.\n"
-          ;;             (+ num-types (length opaque-types)) (length opaque-types) num-functions)
-          (format #t "\nA list of opaque types and bad method names has been written to ~A.\n\n"
-                  log-file-name))
+          (guard
+           (c
+            (#t (raise-stacked c "while processing defs `~A'" abs-path)))
+           (with-input-from-file abs-path scan-defs)
+           (format log-file "Opaque types in the ~A wrapset: c-name scm-name\n\n"
+                   (name ws))
+           (for-each-type (lambda (type)
+                            (if (is-a? type <gw-wct>)
+                                (format log-file "~A ~A\n" (c-type-name type) (name type))))
+                          ws)
+           (format log-file "\n\nBad method names in the ~A wrapset: c-name of-object\n\n"
+                   (name ws))
+           (for-each
+            (lambda (pair)
+              (format log-file "~A ~A\n" (car pair) (cadr pair)))
+            bad-methods)
+           (close log-file)
+           ;;     (format #t "\n\nWrapped ~A types (~A opaque) and ~A functions.\n"
+           ;;             (+ num-types (length opaque-types)) (length opaque-types) num-functions)
+           (format #t "\nA list of opaque types and bad method names has been written to ~A.\n\n"
+                   log-file-name)))
 
         (lambda () (pop %load-path)))))
 

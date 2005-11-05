@@ -112,7 +112,7 @@ g_io_func (GIOChannel *source,
     SCM proc;
     SCM result;
 
-    proc = SCM_PACK (GPOINTER_TO_INT (data));
+    proc = GPOINTER_TO_SCM (data);
     result = scm_call_2 (proc,
                          gw_wcp_assimilate_ptr (source, iochannel_type),
                          scm_long2num (condition));
@@ -134,6 +134,6 @@ _wrap_g_io_add_watch (GIOChannel *channel,
     return g_io_add_watch (channel,
                            condition,
                            ((GIOFunc) (g_io_func)),
-                           GINT_TO_POINTER (SCM_UNPACK (func)));
+                           SCM_TO_GPOINTER (func));
 }
 #undef FUNC_NAME

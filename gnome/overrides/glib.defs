@@ -1,5 +1,6 @@
 ;; -*- scheme -*-
 ;; guile-gnome
+;; Copyright (C) 2005 Andreas Rottmann <rotty at debian dot org>
 ;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
@@ -58,7 +59,7 @@
               "g_timeout_remove*"
               "g_idle_add*"
               "g_idle_remove*"
-              "g_io_add_watch"
+              "g_io_add_watch_full"
               "g_error_*"
               "g_child_watch_add*"
               "g_parse_debug_string"

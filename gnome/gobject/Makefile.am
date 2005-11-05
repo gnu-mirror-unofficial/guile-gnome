@@ -4,7 +4,7 @@ lib_LTLIBRARIES = libguile-gnome-gobject-@API_VERSION@.la
 
 # libguile-gnome-gobject (core library)
 
-C_FILES = gobject.c gsignal.c gclosure.c gvalue.c gparameter.c gtype.c
+C_FILES = gobject.c gsignal.c gclosure.c gvalue.c gparameter.c gtype.c gutil.c
 H_FILES = $(C_FILES:.c=.h)
 
 libguile_gnome_gobject_@API_VERSION@_la_SOURCES = \
