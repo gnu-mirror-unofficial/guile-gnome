@@ -1,11 +1,33 @@
 2005-10-14  Andy Wingo  <wingo@pobox.com>
 
-	* gnome/gw/gtk-support.c (_gtk_selection_data_get_as_string):
-	Signedness fix.
-
 	* gnome/overrides/gtk.defs: Don't ignore gtk_list_*, that catches
 	the list store too; instead ignore each one of the gtk_list
 	functions. 
+
+2005-09-17  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/gtk-support.c (_gtk_selection_data_get_as_string): Fix
+	GCC 4.0 warnings.
+
+2005-04-11  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/gdk-support.c (gdk_event_to_vector): Fix compiler
+	warnings on alpha.
+
+2005-04-10  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/guile-gtk-tree-model.c, gnome/gw/gdk-pixbuf-support.c,
+	* gnome/gw/gtk-support.c: Use new SCM<->gpointer conversion macros.
+
+2005-03-01  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/gdk-spec.scm (initialize): Added type-rules making
+	gint* and guint* output args.
+
+2005-02-28  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/overrides/gdk.defs (gdk_window_set_icon): Added override
+	with null-ok options for parameters.
 
 2005-03-06  Andy Wingo  <wingo@pobox.com>
 

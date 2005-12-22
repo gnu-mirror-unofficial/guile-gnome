@@ -34,7 +34,7 @@
 
 #define PROC_FROM_INSTANCE(instance, member) (((GuileGtkGenericTreeModel*)tree_model)->member)
 
-#define GET_ITER_VAL(iter) (SCM_PACK (GPOINTER_TO_INT (iter->user_data)))
+#define GET_ITER_VAL(iter) (GPOINTER_TO_SCM (iter->user_data))
 
 #define GET_ITER_VAL_OR_FALSE(iter) (iter ? GET_ITER_VAL (iter) : SCM_BOOL_F)
 
@@ -43,7 +43,7 @@ G_STMT_START{                                                                   
     if (iter->stamp == ((GuileGtkGenericTreeModel*)tree_model)->stamp && iter->user_data)\
         scm_gc_unprotect_object (GET_ITER_VAL (iter));                                  \
     iter->stamp = ((GuileGtkGenericTreeModel*)tree_model)->stamp;                       \
-    iter->user_data = GINT_TO_POINTER (SCM_UNPACK (scm_gc_protect_object (val)));       \
+    iter->user_data = SCM_TO_GPOINTER (scm_gc_protect_object (val));       \
 }G_STMT_END
 
 #define SET_ITER_NULL(iter)                                                     \

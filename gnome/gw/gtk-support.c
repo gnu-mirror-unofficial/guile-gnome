@@ -203,7 +203,7 @@ action_group_radio_actions_callback(GtkAction *action,
 {
     SCM proc;
 
-    proc = SCM_PACK (GPOINTER_TO_INT (user_data));
+    proc = GPOINTER_TO_SCM (user_data);
 
     scm_call_2 (proc,
                 scm_c_gtype_instance_to_scm ((GTypeInstance*) action),
@@ -245,7 +245,7 @@ _wrap_gtk_action_group_add_radio_actions (GtkActionGroup *action_group,
 
     gtk_action_group_add_radio_actions (action_group, raes, len, value,
                                         G_CALLBACK (action_group_radio_actions_callback),
-                                        GINT_TO_POINTER (SCM_UNPACK (on_change)));
+                                        SCM_TO_GPOINTER (on_change));
 
     g_free (raes);
 }
@@ -423,7 +423,7 @@ _wrap_gtk_message_dialog_new (GtkWindow* parent, GtkDialogFlags flags, GtkMessag
 gchar*
 _gtk_selection_data_get_as_string (GtkSelectionData *data) 
 {
-    return g_strndup ((gchar*)data->data, data->length);
+    return g_strndup ((gchar *)data->data, data->length);
 }
 
 void
@@ -898,7 +898,7 @@ cell_data_func (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell,
                 GtkTreeModel *tree_model, GtkTreeIter *iter, gpointer data)
 {
     SCM proc, scolumn, scell, smodel, siter;
-    proc = SCM_PACK (GPOINTER_TO_INT (data));
+    proc = GPOINTER_TO_SCM (data);
     scolumn = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_column);
     scell = scm_c_gtype_instance_to_scm ((GTypeInstance*)cell);
     smodel = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
@@ -914,7 +914,7 @@ _wrap_gtk_tree_view_column_set_cell_data_func (GtkTreeViewColumn *tree_column,
 {
     gtk_tree_view_column_set_cell_data_func
         (tree_column, cell_renderer, cell_data_func,
-         GINT_TO_POINTER (SCM_UNPACK (scm_gc_protect_object (proc))),
+         SCM_TO_GPOINTER (scm_gc_protect_object (proc)),
          (GtkDestroyNotify)scm_gc_unprotect_object);
 }
 

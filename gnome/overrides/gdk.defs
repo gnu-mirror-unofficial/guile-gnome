@@ -1,7 +1,8 @@
 ;; -*- scheme -*-
 ;; guile-gnome
+;; Copyright (C) 2005 Andreas Rottmann <rotty at debian dot org>
 ;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
-
+;;
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
 ;; published by the Free Software Foundation; either version 2 of   
@@ -32,6 +33,18 @@
   (overrides "gdk-event->vector") ;; hackeroo
   (return-type "SCM")
   (parameters '("GdkEvent*" "event")))
+
+(define-method set_icon
+  (of-object "GdkWindow")
+  (c-name "gdk_window_set_icon")
+  (overrides "gdk_window_set_icon")
+  (return-type "none")
+  (parameters
+    '("GdkWindow*" "icon_window" (null-ok))
+    '("GdkPixmap*" "pixmap" (null-ok))
+    '("GdkBitmap*" "mask" (null-ok))
+  )
+)
 
 (ignore-glob  "*_get_type"
               "_*"
