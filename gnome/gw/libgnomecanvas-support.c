@@ -70,3 +70,99 @@ _wrap_gnome_canvas_item_affine_relative (GnomeCanvasItem *item,
 						  x1, y1, x2, y2, x3, y3));
 }
 #undef FUNC_NAME
+
+/*
+typedef struct {
+	double *coords;
+	int num_points;
+	int ref_count;
+} GnomeCanvasPoints;
+*/
+
+#if SCM_MINOR_VERSION < 7
+/* guile-1.6.x compatibility */
+#define SCM_VECTOR_REF(v, i) (SCM_VELTS ((v))[(i)])
+#define scm_is_number(x) (scm_number_p (x) ==SCM_BOOL_T)
+#define scm_to_double(x) (scm_num2dbl (x, "scm_to_double"))
+#define scm_from_int(x) SCM_MAKINUM (x)
+#define scm_from_double(x) (scm_make_real (x))
+#endif
+
+GnomeCanvasPoints *
+guile_gnome_scm_to_canvas_points (SCM scm)
+#define FUNC_NAME "guile-gnome-scm-to-canvas-points"
+{
+  GnomeCanvasPoints *points = NULL;
+  if (scm_vector_p (scm) == SCM_BOOL_T)
+    {
+      int length = SCM_VECTOR_LENGTH (scm);
+      points = gnome_canvas_points_new (length);
+      for (int i = 0; i < length; i++)
+	{
+	  SCM s = SCM_VECTOR_REF (scm, i);
+	  /* Just return NULL? */
+	  SCM_ASSERT_TYPE (scm_is_number (s), s, SCM_ARG1, FUNC_NAME, "points");
+	  (points->coords)[i] = scm_to_double (s);
+	}
+    }
+  else if (SCM_GVALUEP (scm))
+    {
+      /* We have to cater for GValue, because the code that takes a
+	 marshalled GValue doesn't know how to convert that into a
+	 scm */
+      GValue *value;
+      SCM_VALIDATE_GVALUE_TYPE_COPY (1, scm, GNOME_TYPE_CANVAS_POINTS, value);
+      points = g_value_dup_boxed (value);
+    }
+  return points;
+}
+#undef FUNC_NAME
+
+SCM
+guile_gnome_canvas_points_to_scm (GnomeCanvasPoints *points)
+{
+  int i;
+  SCM scm = scm_make_vector (scm_from_int (points->num_points),
+			     scm_from_int (0));
+  for (i = 0; i < points->num_points; i++)
+    scm_vector_set_x (scm, scm_from_int (i),
+		    scm_from_double ((points->coords)[i]));
+  return scm;
+}
+
+#ifndef SCM_GNOME_CANVAS_POINTS
+// arg -Werror breaks this nice trick
+//#message POINTS-POINTER
+GnomeCanvasPoints *
+_wrap_gnome_canvas_points_new (SCM scm)
+#define FUNC_NAME "gnome-canvas-points-new"
+{
+  SCM_ASSERT_TYPE (scm_vector_p (scm) == SCM_BOOL_T, scm, SCM_ARG1, FUNC_NAME,
+		   "points");
+  return guile_gnome_scm_to_canvas_points (scm);
+}
+#undef FUNC_NAME
+#else
+//#warning POINTS-SCM
+SCM
+_wrap_gnome_canvas_points_new (SCM scm)
+#define FUNC_NAME "gnome-canvas-points-new"
+{
+  GnomeCanvasPoints *points;
+  SCM spoints;
+  SCM_ASSERT_TYPE (scm_vector_p (scm) == SCM_BOOL_T, scm, SCM_ARG1, FUNC_NAME,
+		   "points");
+  points = guile_gnome_scm_to_canvas_points (scm);
+  spoints = scm_c_make_gvalue (GNOME_TYPE_CANVAS_POINTS);
+  g_value_set_boxed_take_ownership ((GValue*) SCM_SMOB_DATA (spoints), points);
+  return spoints;
+}
+#endif
+
+GnomeCanvasPoints *
+guile_gnome_canvas_points_copy (GnomeCanvasPoints *points)
+{
+  SCM scm = guile_gnome_canvas_points_to_scm (points);
+  return guile_gnome_scm_to_canvas_points (scm);
+}
+#undef FUNC_NAME

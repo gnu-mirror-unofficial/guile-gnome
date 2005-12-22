@@ -51,6 +51,33 @@
     '("double" "x3")
     '("double" "y3")))
 
+(define-boxed
+  CanvasPoints
+  (in-module "Gnome")
+  (c-name "GnomeCanvasPoints")
+  (gtype-id "GNOME_TYPE_CANVAS_POINTS")
+  (copy-func "guile_gnome_canvas_points_copy")
+  (release-func "gnome_canvas_points_free")
+;;  (fields '("double*" "coords") '("int" "num_points") '("int" "ref_count"))
+  )
+
+(define-method
+  copy
+  (of-object "GnomeCanvasPoints")
+  (c-name "guile_gnome_canvas_points_copy")
+;;  (overrides "gtk_tree_iter_copy")
+  (return-type "GnomeCanvasPoints*")
+  (caller-owns-return #t))
+
+(define-function gnome_canvas_points_new
+  (c-name "_wrap_gnome_canvas_points_new")
+  (overrides "gnome_canvas_points_new")
+  (is-constructor-of CanvasPoints)
+;;  (return-type "GnomeCanvasPoints*")
+  (return-type "SCM")
+  (parameters
+   '("SCM" "points")))
+
 (ignore-glob
  ;; if you need these, use gtype-from-name or gtype-class->type
  "*_get_type"
@@ -64,7 +91,12 @@
  "*_foreach"
  "*_affine*"
  "*_valist"
+ "*_update_svp*" ;; use of ArtVSP**
+ )
 
+(ignore
+ "gnome_canvas_item_construct"  ;; use of va-list
+ 
  ;; ignore functions that deal in libart types
  "gnome_canvas_cap_gdk_to_art"
  "gnome_canvas_join_gdk_to_art"

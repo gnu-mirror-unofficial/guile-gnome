@@ -23,6 +23,7 @@ exec guile -s $0 "$@"
 
 (use-modules (gnome-0) 
              (gnome gtk)
+             (srfi srfi-8)
 	     (gnome gtk gdk-event)
 	     (gnome canvas))
 
@@ -63,7 +64,19 @@ exec guile -s $0 "$@"
     (add window vbox)
     (add vbox canvas)
 
-    (let* ((line (make <gnome-canvas-rect> #:parent canvas-root
+    (let* ((line (make <gnome-canvas-line> #:parent canvas-root
+		       #:fill-color "black"
+		       #:first-arrowhead #t
+		       #:arrow-shape-a 10
+		       #:arrow-shape-b 10
+		       #:arrow-shape-c 10
+		       #:line-style 'on-off-dash
+;;;FIXME: how to wrap this properly?
+;;;#:points #(0 0 100 100)))
+;;;ERROR: In procedure scm->gvalue:
+;;;ERROR: Don't know how to make values of type #<gtype GnomeCanvasPoints>
+		       #:points (gnome-canvas-points-new #(0 0 100 100))))
+	   (rect (make <gnome-canvas-rect> #:parent canvas-root
                        #:x1 0.0 #:y1 0.0 #:x2 100.0 #:y2 9.0
                        #:fill-color "black"))
     	   (text (make <gnome-canvas-text> #:parent canvas-root
@@ -94,7 +107,7 @@ exec guile -s $0 "$@"
       (for-each (lambda (item)
 		  (move item -40 70)
 		  (affine-relative item output-scale 0 0 output-scale 0 0))
-       (list line bezier)))
+       (list rect bezier)))
 
     (add vbox button)
     (connect button 'clicked
@@ -106,6 +119,12 @@ exec guile -s $0 "$@"
     ;; (set-size-request button canvas-width 20) ?
     (set-child-packing vbox button #f #f 0 'end)
     (set-size-request canvas canvas-width canvas-height)
+
+    (set-pixels-per-unit canvas output-scale)
+    (receive (r x y)
+	     (world-to-window canvas 1.0 1.0)
+	     (stderr "result: ~S (~S, ~S)\n" r x y))
+    (set-pixels-per-unit canvas 1.0)
     
     (show-all window)
     (gtk-main)))
