@@ -1,6 +1,6 @@
-2005-10-14  Andy Wingo  <wingo@pobox.com>
+2005-09-17  Andreas Rottmann  <a.rottmann@gmx.at>
 
-	* gnome/gw/gnome-vfs-port.c (vport_seek): Signedness fix.
+	* gnome/gw/gnome-vfs-port.c (vport_seek): Fix GCC 4.0 warnings.
 
 2005-03-06  Andy Wingo  <wingo@pobox.com>
 
