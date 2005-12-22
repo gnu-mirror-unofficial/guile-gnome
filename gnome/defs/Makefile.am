@@ -2,7 +2,7 @@ include $(top_srcdir)/common.mk
 
 defsdir = $(guilemoduledir)/defs
 
-defs_DATA = $(wildcard *.defs)
+defs_DATA = $(wildcard $(srcdir)/*.defs)
 
 EXTRA_DIST = $(defs_DATA)
 
