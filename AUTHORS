@@ -44,7 +44,7 @@ In the directory gnome/gobject, extensive changes to:
 In the directory gnome/gobject, wrote:
     generics.scm config.scm.in
 In the directory gnome/gw/support, wrote:
-    defs.scm gobject.scm util.scm
+    defs.scm gobject.scm util.scm slib.scm
 In the directory gnome/gw, wrote:
     glib-spec.scm glib-support.c glib-support.h
 In the directory gnome, wrote:
@@ -79,3 +79,15 @@ In the directory test-suite, changes to:
 Jim Blandy:
 In the directory test-suite, wrote:
     guile-gobject-test
+
+Marc Feeley:
+In the directory gnome/gw/support, wrote:
+    genwrite.scm
+
+Radey Shouman:
+In the directory gnome/gw/support, wrote:
+    glob.scm printf.scm
+
+Aubrey Jaffer:
+In the directory gnome/gw/support, changes to:
+    printf.scm

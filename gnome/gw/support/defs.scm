@@ -32,7 +32,6 @@
   #:use-module (srfi srfi-13)
   #:use-module (srfi srfi-34)
   #:use-module (srfi srfi-35)
-  #:use-module (ice-9 slib)
   #:use-module (ice-9 optargs)
   #:use-module (ice-9 regex)
 
@@ -41,11 +40,10 @@
   #:use-module (g-wrap enumeration)
   #:use-module (gnome gobject utils)
   #:use-module (gnome gw support gobject)
+  #:use-module (gnome gw support slib)
   
   #:export (load-defs
             load-defs-with-overrides))
-
-(require 'glob)
 
 (define (mklist x)
   (if (list? x) x (list x)))
