@@ -1,3 +1,8 @@
+2006-08-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/libgnome-spec.scm (gnome): Use (g-wrap guile); seems to
+	prevent problems with some g-wrap versions.
+
 2005-03-06  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.7.99 ==
