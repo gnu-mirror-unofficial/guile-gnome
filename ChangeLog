@@ -1,3 +1,8 @@
+2005-10-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/libgnomecanvas.defs: Ignore
+	gnome_canvas_item_construct, it has a va_list argument.
+
 2005-03-06  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.7.99 ==
@@ -20,9 +25,19 @@
 	* gnome/gw/canvas-spec.scm (initialize): Add return parameter
 	override for double*.
 
+2004-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.97 ==
+
 2004-11-16  Jan Nieuwenhuizen  <janneke@gnu.org>
 
 	* examples/canvas.scm: Add line.
+
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* examples/canvas.scm: Use (gnome-0) now. Schitzophrenia.
+
+	* package.ac: Add record_check.
 
 2004-11-14  Jan Nieuwenhuizen  <janneke@gnu.org>
 

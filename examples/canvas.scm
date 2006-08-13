@@ -1,5 +1,5 @@
 #! /bin/sh
-exec guile-gnome-0 -s $0 "$@"
+exec guile -s $0 "$@"
 !#
 ;; guile-gnome
 ;; Copyright (C) 2004 Free Software Foundation, Inc.
@@ -21,8 +21,9 @@ exec guile-gnome-0 -s $0 "$@"
 ;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
 ;; Boston, MA  02111-1307,  USA       gnu@gnu.org
 
-(use-modules (srfi srfi-8)
-	     (gnome gtk)
+(use-modules (gnome-0) 
+             (gnome gtk)
+             (srfi srfi-8)
 	     (gnome gtk gdk-event)
 	     (gnome canvas))
 
