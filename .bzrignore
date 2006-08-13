@@ -1,0 +1,7 @@
+*-gw-*.[ch]
+Makefile
+Makefile.in
+.deps
+.libs
+*.log
+gnome/gw/gnome-vfs.scm
