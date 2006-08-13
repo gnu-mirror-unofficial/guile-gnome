@@ -1,3 +1,22 @@
+2005-12-22  Andy Wingo  <wingo@pobox.com>
+
+	* AUTHORS: Updated.
+
+	* gnome/gw/support/Makefile.am (support_DATA): Updated
+	accordingly.
+
+	* gnome/gw/support/slib.scm: New module, provides printf and
+	glob:make-matcher. This removes the build dependency on slib.
+
+	* gnome/gw/support/printf.scm: 
+	* gnome/gw/support/glob.scm: 
+	* gnome/gw/support/genwrite.scm: Pulled in from SLIB. Without
+	modifications.
+
+2005-10-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.c (scm_gtype_interfaces): Signedness fix.
+
 2005-09-17  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/gobject/gtype.c (s_scm_gtype_interfaces): Fix GCC 4.0
@@ -46,13 +65,6 @@
 	* gnome/gobject/gvalue.c (scm_gvalue_primitive_set): Fix memleak
 	when setting a string value.
 
-2005-03-06  Andy Wingo  <wingo@pobox.com>
-
-	* gnome/gw/support/defs.scm: Don't make generics if the of-object
-	is an enum, flags, boxed, or custom boxed. This is a nasty nasty
-	hack to make sure generics aren't created with unspecialized args,
-	to prevent e.g. (foo-append <top> <top>) -> (append <top> <top>). 
-
 2005-03-01  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/overrides/glib.defs: Added g_io_add_watch_full to ignore
@@ -62,6 +74,21 @@
 
 	* gnome/gw/support/defs.scm (load-defs): Re-enable logging of
 	opaque types.
+
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.7.99 ==
+
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.7.99.
+
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm: Don't make generics if the of-object
+	is an enum, flags, boxed, or custom boxed. This is a nasty nasty
+	hack to make sure generics aren't created with unspecialized args,
+	to prevent e.g. (foo-append <top> <top>) -> (append <top> <top>). 
 
 2005-01-29  Andreas Rottmann  <a.rottmann@gmx.at>
 

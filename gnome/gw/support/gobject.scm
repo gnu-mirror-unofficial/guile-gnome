@@ -28,7 +28,6 @@
 (define-module (gnome gw support gobject)
   #:use-module (oop goops)
   #:use-module (ice-9 optargs)
-  #:use-module (ice-9 slib)
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-11)
   #:use-module (srfi srfi-13)
@@ -40,6 +39,7 @@
   #:use-module (g-wrap c-types)
   
   #:use-module (gnome gobject utils)
+  #:use-module (gnome gw support slib)
   
   #:export (unwrap-null-checked
             
@@ -65,8 +65,6 @@
             wrap-gobject-class!
             
             wrap-custom-boxed!))
-
-(require 'printf)
 
 (define-class <gobject-wrapset-base> (<gw-guile-wrapset>)
   (type-aliases #:init-form (make-hash-table 31))
