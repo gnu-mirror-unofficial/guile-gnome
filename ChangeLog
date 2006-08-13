@@ -1,3 +1,8 @@
+2006-08-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/libgnomecanvas.defs
+	("gnome_canvas_item_construct"): Don't ignore this one twice. Wha?
+
 2005-10-08  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/overrides/libgnomecanvas.defs: Ignore
