@@ -1,0 +1,17 @@
+Makefile
+Makefile.in
+*-gw-*.[ch]
+*.log
+*.pc
+./gnome-0.scm
+bin/guile-gnome
+bin/guile-gnome-0
+.deps
+.libs
+gnome/gobject/config.scm
+*.x
+gnome/gobject/guile-gnome-gobject
+gnome/gw/glib.scm
+gnome/gw/gobject.scm
+test-suite/gw-test-glib.*
+test-suite/gw-test-gobject.*
