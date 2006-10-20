@@ -1,3 +1,14 @@
+2006-10-20  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (initializations-cg): Tell g-wrap
+	to work with generic functions in the (gnome gw generics) module.
+	Makes it so that we don't pollute the root namespace.
+
+	* gnome/gw/Makefile.am (guilegwmodule_DATA): Autotoolage.
+
+	* gnome/gw/generics.scm: New file, created to hold guile-gnome's
+	generic functions.
+
 2005-12-22  Andy Wingo  <wingo@pobox.com>
 
 	* AUTHORS: Updated.

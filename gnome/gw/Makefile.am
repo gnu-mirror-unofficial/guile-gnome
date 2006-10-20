@@ -4,7 +4,7 @@ SUBDIRS = support
 
 package = glib
 
-guilegwmodule_DATA = gobject-spec.scm gobject.scm glib-spec.scm glib.scm 
+guilegwmodule_DATA = gobject-spec.scm gobject.scm glib-spec.scm glib.scm generics.scm
 
 # There are two shared libraries:
 #
@@ -60,7 +60,7 @@ CLEANFILES = $(BUILT_SOURCES) guile-gnome-gobject.texi			\
 
 DISTCLEANFILES = $(CLEANFILES) 
 
-EXTRA_DIST = gobject-spec.scm glib-spec.scm 
+EXTRA_DIST = gobject-spec.scm glib-spec.scm generics.scm
 
 dist-hook:
 	for file in $(DISTCLEANFILES); do rm -f $(distdir)/$$file; done

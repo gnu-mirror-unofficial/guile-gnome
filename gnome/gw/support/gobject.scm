@@ -70,6 +70,12 @@
   (type-aliases #:init-form (make-hash-table 31))
   (type-rules #:init-form (make-hash-table 7)))
 
+(define-method (initializations-cg (wrapset <gobject-wrapset-base>) err)
+  (list
+   (next-method)
+   "gw_guile_set_generics_module_x (scm_c_resolve_module\n"
+   "                                (\"gnome gw generics\"));\n"))
+
 (define-method (add-type-alias! (wrapset <gobject-wrapset-base>)
                                 (alias <string>)
                                 (name <symbol>))
