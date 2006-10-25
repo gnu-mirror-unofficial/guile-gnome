@@ -1,5 +1,8 @@
 2006-10-26  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/overrides/gnome-vfs.defs ("gnome_vfs_mime_add_extension"):
+	No more bonobo functions in new gnome-vfs.
+
 	* gnome/gw/gnome-vfs-port.c (LOCK, UNLOCK): Fix locking.
 
 	* package.ac: 

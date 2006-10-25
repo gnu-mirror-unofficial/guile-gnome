@@ -410,4 +410,7 @@
         "gnome_vfs_mime_get_default_action"
         "gnome_vfs_mime_get_icon"
         "gnome_vfs_mime_application_new_from_id"
-        "gnome_vfs_mime_get_default_desktop_entry")
+        "gnome_vfs_mime_get_default_desktop_entry"
+
+        ;; Bonobo
+        "gnome_vfs_mime_get_default_component")
