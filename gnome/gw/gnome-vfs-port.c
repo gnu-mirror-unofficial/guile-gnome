@@ -61,8 +61,8 @@ scm_new_port_table_entry (scm_t_bits tag)
 
 #else /* SCM_VERSION_17X */
 
-#define LOCK scm_mutex_lock (&scm_i_port_table_mutex)
-#define UNLOCK scm_mutex_lock (&scm_i_port_table_mutex)
+#define LOCK scm_i_pthread_mutex_lock (&scm_i_port_table_mutex)
+#define UNLOCK scm_i_pthread_mutex_unlock (&scm_i_port_table_mutex)
 
 #endif /* SCM_VERSION_17X */
 

@@ -1,3 +1,11 @@
+2006-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gnome-vfs-port.c (LOCK, UNLOCK): Fix locking.
+
+	* package.ac: 
+	* gnome/gw/Makefile.am (libgw_guile_gnome_gnome_vfs_la_CFLAGS):
+	Hook into the standard --disable-deprecated mechanism.
+
 2005-09-17  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/gw/gnome-vfs-port.c (vport_seek): Fix GCC 4.0 warnings.

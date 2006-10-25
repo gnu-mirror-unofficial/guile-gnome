@@ -18,7 +18,7 @@ libgw_guile_gnome_gnome_vfs_la_SOURCES = \
 
 libgw_guile_gnome_gnome_vfs_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(AM_CFLAGS) $(GNOME_VFS_CFLAGS) $(GUILE_CFLAGS) \
-	$(G_WRAP_CFLAGS) -DGNOME_VFS_DISABLE_DEPRECATED
+	$(G_WRAP_CFLAGS) $(GNOME_VFS_DEPRECATED_CFLAGS)
 
 libgw_guile_gnome_gnome_vfs_la_LIBADD = $(GNOME_VFS_LIBS) $(GUILE_LIBS) \
 	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS)
