@@ -183,7 +183,8 @@
 (define-method (add-type! (ws <gobject-wrapset-base>)
                           (type <gobject-classed-type>))
   (next-method)
-  (add-module-export! ws (class-name type)))
+  (if (slot-ref type 'define-class?)
+      (add-module-export! ws (class-name type))))
 
 (define-class <gobject-classed-pointer-type> (<gobject-classed-type>))
 

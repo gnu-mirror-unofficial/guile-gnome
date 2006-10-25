@@ -26,7 +26,8 @@
 ;;
 ;;; Code:
 
-(define-module (gnome gw generics))
+(define-module (gnome gw generics)
+  #:use-module (gnome gobject))
 
 (module-use! (module-public-interface (current-module))
              (current-module))

@@ -1,3 +1,12 @@
+2006-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (add-type!): Only export classes
+	that are actually defined. Fixes guile-gnome on guile 1.8.
+
+	* gnome/gw/generics.scm (gnome): Use (gnome gobject), so that any
+	methods we define hang off the same generics as the base gobject
+	library.
+
 2006-10-20  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gobject.scm (initializations-cg): Tell g-wrap
