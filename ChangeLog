@@ -1,3 +1,10 @@
+2006-10-27  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (construct-argument-list): Don't throw
+	away typespec options, like 'null-ok, when there are extras
+	arguments. Fixes cases like this:
+	'("GMainContext*" "context" (null-ok) (default "NULL")).
+
 2006-10-26  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gobject.scm (add-type!): Only export classes

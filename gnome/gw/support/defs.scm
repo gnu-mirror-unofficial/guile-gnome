@@ -144,7 +144,7 @@
                      (if (list? looked-up)
                          (append! (list (append looked-up options)
                                         arg-name) extras)
-                         (append! (list looked-up arg-name) extras))
+                         (append! (list (cons looked-up options) arg-name) extras))
                      result)
                     (list-tail params (if (= count 0) 1 count)))))))))
 
