@@ -26,6 +26,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "gc.h"
 #include "gclosure.h"
 
 
@@ -103,7 +104,7 @@ free_closure (gpointer data, GClosure *closure)
 {
     DEBUG_ALLOC ("  unprotecting closure %p of GuileGClosure %p", 
                  ((GuileGClosure *) closure)->func, closure);
-    scm_gc_unprotect_object (((GuileGClosure *) closure)->func);
+    scm_glib_gc_unprotect_object (((GuileGClosure *) closure)->func);
     ((GuileGClosure *) closure)->func = SCM_UNDEFINED;
 }
 
@@ -123,7 +124,7 @@ SCM_DEFINE (scm_gclosure_primitive_new, "gclosure-primitive-new", 1, 0, 0,
     closure = g_closure_new_simple (sizeof (GuileGClosure), NULL);
 
     DEBUG_ALLOC ("  protecting new closure %p of GuileGClosure %p", func, closure);
-    ((GuileGClosure *) closure)->func = scm_gc_protect_object (func);
+    ((GuileGClosure *) closure)->func = scm_glib_gc_protect_object (func);
 
     g_closure_set_marshal (closure, scm_gclosure_marshal);
     g_closure_add_invalidate_notifier (closure, NULL, free_closure);

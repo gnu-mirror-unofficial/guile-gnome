@@ -26,6 +26,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "gc.h"
 #include "gvalue.h"
 #include "gobject.h"
 #include "guile-support.h"
@@ -56,7 +57,7 @@ static gpointer
 copy_gboxed_scm (gpointer boxed)
 {
     DEBUG_ALLOC (G_STRLOC ": copying gboxed %p", boxed);
-    scm_gc_protect_object ((SCM) boxed);
+    scm_glib_gc_protect_object ((SCM) boxed);
     return boxed;
 }
 
@@ -64,7 +65,7 @@ static void
 free_gboxed_scm (gpointer boxed)
 {
     DEBUG_ALLOC (G_STRLOC ": freeing gboxed %p", boxed);
-    scm_gc_unprotect_object ((SCM) boxed);
+    scm_glib_gc_unprotect_object ((SCM) boxed);
 }
 
 GType

@@ -99,6 +99,8 @@
   (gtype-instance #:allocation #:set-once)
   #:metaclass <gtype-instance-class>)
 
+(dynamic-call "scm_init_gnome_gobject_gc"
+              (dynamic-link *guile-gnome-gobject-lib-path*))
 (dynamic-call "scm_init_gnome_gobject_types"
               (dynamic-link *guile-gnome-gobject-lib-path*))
 

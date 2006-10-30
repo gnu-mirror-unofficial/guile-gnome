@@ -26,6 +26,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "gc.h"
 #include "gparameter.h"
 #include "guile-support.h"
 
@@ -323,8 +324,8 @@ SCM_DEFINE (scm_gparam_to_param_struct, "gparam->param-struct", 1, 0, 0,
                     " be unreffed"); */
 
     g_param_spec_set_qdata_full (pspec, quark_param_struct,
-				 scm_gc_protect_object (pspec_struct),
-				 (GDestroyNotify) scm_gc_unprotect_object);
+				 scm_glib_gc_protect_object (pspec_struct),
+				 (GDestroyNotify) scm_glib_gc_unprotect_object);
 
     return pspec_struct;
 }

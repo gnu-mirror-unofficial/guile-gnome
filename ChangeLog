@@ -1,3 +1,21 @@
+2006-10-30  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gc.h:
+	* gnome/gobject/gc.c (scm_glib_gc_protect_object)
+	(scm_glib_gc_unprotect_object): New functions, like
+	scm_gc_[un]protect_object, but can be called from inside the gc's
+	sweep phase.
+
+	* gnome/gobject/gparameter.c (s_scm_gparam_to_param_struct): 
+	* gnome/gobject/gvalue.c (copy_gboxed_scm, free_gboxed_scm): 
+	* gnome/gobject/gobject.c (s_scm_gobject_set_data_x)
+	(scm_c_gtype_instance_class_init): 
+	* gnome/gobject/gclosure.c (free_closure)
+	(s_scm_gclosure_primitive_new): Use scm_glib_gc_protect_object
+	instead of guile's scm_gc_protect_object.
+
+	* gnome/gobject/Makefile.am (C_FILES): Add gc.c.
+
 2006-10-27  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/defs.scm (construct-argument-list): Don't throw
