@@ -1,3 +1,16 @@
+2006-11-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gobject-spec.scm: Use (gnome gw support g-wrap), the
+	g-wrap compatibility wrapper.
+
+	* gnome/gw/glib-spec.scm: Use (gnome gw support g-wrap), the
+	g-wrap compatibility wrapper.
+
+	* gnome/gw/support/Makefile.am (support_DATA): 
+	* gnome/gw/support/g-wrap.scm: New module, (gnome gw support
+	g-wrap), added to the dist. The idea is for wrapsets to have
+	access to all g-wrap generics from one module.
+
 2006-10-30  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gobject/gc.h:

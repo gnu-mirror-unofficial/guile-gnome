@@ -20,9 +20,8 @@
 
 (define-module (gw-test-glib-spec)
   #:use-module (oop goops)
-  #:use-module (g-wrap)
-  #:use-module (g-wrap guile)
   #:use-module (g-wrap guile ws standard)
+  #:use-module (gnome gw support g-wrap)
   #:use-module (gnome gw glib-spec)
   #:use-module (gnome gobject gw-spec-utils)
   #:use-module (gnome gobject defs-support))

@@ -35,7 +35,7 @@
   #:use-module (ice-9 optargs)
   #:use-module (ice-9 regex)
 
-  #:use-module (g-wrap)
+  #:use-module (gnome gw support g-wrap)
   #:use-module (g-wrap c-types)
   #:use-module (g-wrap enumeration)
   #:use-module (gnome gobject utils)

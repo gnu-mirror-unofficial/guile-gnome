@@ -32,10 +32,9 @@
   #:use-module (srfi srfi-11)
   #:use-module (srfi srfi-13)
   
-  #:use-module (g-wrap)
+  #:use-module (gnome gw support g-wrap)
   #:use-module (g-wrap enumeration)
   #:use-module (g-wrap rti)
-  #:use-module (g-wrap guile)
   #:use-module (g-wrap c-types)
   
   #:use-module (gnome gobject utils)

@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2003,2004 Andreas Rottmann
+;; Copyright (C) 2005 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -18,25 +18,21 @@
 ;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
 ;; Boston, MA  02111-1307,  USA       gnu@gnu.org
 
+;;; Commentary:
+;;
+;;G-Wrap compatibility layer, to ensure that all wrapsets have the right
+;;generic functions defined.
+;;
+;;; Code:
 
-(define-module (gw-test-gobject-spec)
-  #:use-module (oop goops)
-  #:use-module (g-wrap guile ws standard)
-  #:use-module (gnome gw support g-wrap)
-  #:use-module (gnome gw gobject-spec)
-  #:use-module (gnome gobject gw-spec-utils)
-  #:use-module (gnome gobject defs-support))
+(define-module (gnome gw support g-wrap)
+  #:use-module (g-wrap)
+  #:use-module (g-wrap guile)
+  #:use-module (g-wrap c-codegen)
+  #:use-module (g-wrap scm-codegen)
+  #:use-module (gnome gw support modules))
 
-(define-class <test-gobject-wrapset> (<gobject-wrapset-base>)
-  #:id 'test-gobject #:dependencies '(standard gnome-gobject))
-
-(define-method (global-declarations-cg (ws <test-gobject-wrapset>))
-  (list
-   (next-method)
-   "#include \"test-gobject.h\"\n"))
-
-(define-method (initialize (ws <test-gobject-wrapset>) initargs)
-  (next-method ws (append '(#:module (test-suite gw-test-gobject)) initargs))
-  
-  (load-defs ws "test-suite/test-gobject.defs"))
-
+(re-export-modules (g-wrap)
+                   (g-wrap guile)
+                   (g-wrap c-codegen)
+                   (g-wrap scm-codegen))
