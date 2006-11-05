@@ -1,3 +1,8 @@
+2006-11-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gconf-spec.scm: Use (gnome gw support g-wrap), the
+	g-wrap compatibility wrapper.
+
 2005-04-10  Andreas Rottmann  <a.rottmann@gmx.at>
 
 	* gnome/gw/gconf-support.c: Use new SCM<->gpointer conversion
