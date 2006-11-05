@@ -26,8 +26,7 @@
 
 (define-module (gnome gw pango-spec)
   #:use-module (oop goops)
-  #:use-module (g-wrap)
-  #:use-module (g-wrap guile)
+  #:use-module (gnome gw support g-wrap)
   #:use-module (gnome gw glib-spec)
   #:use-module (gnome gw gobject-spec)
   #:use-module (gnome gw support gobject)
