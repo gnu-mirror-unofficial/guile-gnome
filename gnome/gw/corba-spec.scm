@@ -26,11 +26,10 @@
 ;;; Code:
 
 (define-module (gnome gw corba-spec)
-  :use-module (oop goops)
-  :use-module (g-wrap)
-  :use-module (g-wrap guile)
-  :use-module (g-wrap guile ws standard)
-  :use-module (gnome gw support gobject))
+  #:use-module (oop goops)
+  #:use-module (gnome gw support g-wrap)
+  #:use-module (g-wrap guile ws standard)
+  #:use-module (gnome gw support gobject))
 
 ;; gw-corba: an internal glue binding, probably not useful to other people...
 (define-class <corba-wrapset> (<gobject-wrapset-base>)
