@@ -1,3 +1,11 @@
+2006-11-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gtk-spec.scm: Use (gnome gw support g-wrap), the
+	g-wrap compatibility wrapper.
+
+	* gnome/gw/gdk-spec.scm: Use (gnome gw support g-wrap), the g-wrap
+	compatibility wrapper.
+
 2005-10-14  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/overrides/gtk.defs: Don't ignore gtk_list_*, that catches
