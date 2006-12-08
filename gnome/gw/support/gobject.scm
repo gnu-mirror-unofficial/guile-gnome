@@ -63,7 +63,8 @@
             wrap-flags!
             wrap-gobject-class!
             
-            wrap-custom-boxed!))
+            wrap-custom-boxed!
+            wrap-custom-gvalue!))
 
 (define-class <gobject-wrapset-base> (<gw-guile-wrapset>)
   (type-aliases #:init-form (make-hash-table 31))
@@ -679,3 +680,55 @@
        (slot-set! t 'unwrap (,make-custom-unwrapper t ,unwrap))
        (add-type! ws t)
        (add-type-alias! ws ,pname (name t)))))
+
+
+(define-class <gobject-custom-gvalue-type> (<gobject-classed-type>)
+  (wrap-func #:init-keyword #:wrap-func #:getter wrap-func)
+  (unwrap-func #:init-keyword #:unwrap-func #:getter unwrap-func)
+  
+  #:allowed-options '(null-ok))
+
+(define-method (make-typespec (type <gobject-custom-gvalue-type>) (options <list>))
+  (next-method type (cons 'unspecialized options)))
+
+(define-method (initializations-cg (wrapset <gobject-wrapset-base>)
+                                   (type <gobject-custom-gvalue-type>)
+                                   status-var)
+  (list
+   (next-method)
+   "scm_c_register_gvalue_wrappers (" (gtype-id type) ", "
+   (wrap-func type) ", " (unwrap-func type) ");\n"))
+
+(define-method (unwrap-value-cg (type <gobject-custom-gvalue-type>)
+                                (value <gw-value>)
+                                status-var)
+  (let ((c-var (var value))
+        (scm-var (scm-var value)))
+    (unwrap-null-checked
+     value status-var
+     (list
+      c-var " = g_new0 (GValue, 1);\n"
+      (unwrap-func type) " (" scm-var ", " c-var ");\n"
+      "if (!G_IS_VALUE (" c-var ")) {"
+      "  g_free (" c-var ");\n"
+      "  " c-var " = NULL;\n"
+      "}\n"))))
+
+(define-method (wrap-value-cg (type <gobject-custom-gvalue-type>)
+                              (value <gw-value>)
+                              status-var)
+  (let ((c-var (var value))
+        (scm-var (scm-var value)))
+    (list
+     scm-var " = " (wrap-func type) " (" c-var ");\n")))
+
+(define-macro (wrap-custom-gvalue! ctype gtype wrap-func unwrap-func)
+  `(let ((t (make ,<gobject-custom-gvalue-type>
+              #:ctype ,ctype
+              #:gtype-id ,gtype
+              #:c-type-name "GValue*"
+              #:ffspec 'pointer
+              #:wrapped "Custom"
+              #:wrap-func ,wrap-func
+              #:unwrap-func ,unwrap-func)))
+     (add-type! ws t)))

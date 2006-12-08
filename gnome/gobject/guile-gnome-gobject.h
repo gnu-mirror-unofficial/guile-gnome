@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2003,2004,2005,2006 Andy Wingo <wingo at pobox dot com>
  *
  * guile-gnome-gobject.h: Top include for (gnome gobject) headers
  *
@@ -24,7 +24,9 @@
 #ifndef __GUILE_GNOME_GOBJECT_H__
 #define __GUILE_GNOME_GOBJECT_H__
 
-/* pulls in everything */
+#include <guile-gnome-gobject/gc.h>
+
+/* this one pulls in the rest */
 #include <guile-gnome-gobject/gobject.h>
 
 #endif

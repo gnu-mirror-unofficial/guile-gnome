@@ -885,8 +885,6 @@ scm_init_gnome_gobject_values (void)
     scm_c_define_and_export_gtype_x (G_TYPE_ULONG);
     scm_c_define_and_export_gtype_x (G_TYPE_INT64);
     scm_c_define_and_export_gtype_x (G_TYPE_UINT64);
-    scm_c_define_and_export_gtype_x (G_TYPE_ENUM);
-    scm_c_define_and_export_gtype_x (G_TYPE_FLAGS);
     scm_c_define_and_export_gtype_x (G_TYPE_FLOAT);
     scm_c_define_and_export_gtype_x (G_TYPE_DOUBLE);
     scm_c_define_and_export_gtype_x (G_TYPE_STRING);

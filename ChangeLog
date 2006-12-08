@@ -1,3 +1,17 @@
+2006-12-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (wrap-custom-gvalue!): New public
+	macro, allows new fundamental GTypes to be represented as native
+	scheme values. For example, GstIntRange as a pair of ints.
+	
+	* gnome/gobject/guile-gnome-gobject.h: Add gc.h so people using
+	this header get everything.
+
+	* gnome/gobject/gvalue.c (scm_init_gnome_gobject_values): Don't
+	export enum and flags gtypes here, that's already done by gtype.c.
+	I'm not sure if this is the right change though; it seems that all
+	of the gtype:foo exports should be done in the same file. Dunno.
+
 2006-11-05  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/gobject-spec.scm: Use (gnome gw support g-wrap), the
