@@ -645,6 +645,7 @@ SCM_DEFINE (scm_scm_to_gvalue, "scm->gvalue", 2, 0, 0,
                 return svalue;
             } else {
                 g_free (v);
+                scm_wrong_type_arg (FUNC_NAME, 2, scm);
             }
         }
         /* might fall through */

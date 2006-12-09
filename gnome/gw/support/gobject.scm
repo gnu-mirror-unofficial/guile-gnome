@@ -304,7 +304,12 @@
      "  " scm-var " = SCM_BOOL_F;\n"
      "} else {\n"
      "  " scm-var " = scm_c_make_gvalue (" (gtype-id type) ");\n"
-     "  g_value_set_boxed ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n"
+     (if-typespec-option
+      value 'callee-owned
+      (list
+       "  g_value_set_boxed ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n")
+      (list
+       "  g_value_take_boxed ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n"))
      "}\n")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

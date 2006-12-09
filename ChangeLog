@@ -1,3 +1,13 @@
+2006-12-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (wrap-value-cg): If a boxed value
+	is caller-owned, then use g_value_take_boxed instead of
+	g_value_set_boxed.
+
+	* gnome/gobject/gvalue.c (s_scm_scm_to_gvalue): If a custom
+	unwrapper fails to set the gvalue, signal a wrong-type-arg
+	exception.
+
 2006-12-08  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gobject.scm (wrap-custom-gvalue!): New public
