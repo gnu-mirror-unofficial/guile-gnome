@@ -1,5 +1,13 @@
 2006-12-15  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.90 ==
+
+2006-12-15  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.15.90.
+
+2006-12-15  Andy Wingo  <wingo@pobox.com>
+
 	* test-suite/gw-test-gobject-spec.scm (gw-test-gobject-spec): 
 	* test-suite/gw-test-glib-spec.scm (gw-test-glib-spec): Fix up
 	includes.
