@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "guile-support.h"
+#include "gutil.h"
 #include "gtype.h"
 #include "private.h"
 
@@ -42,9 +43,6 @@ SCM scm_gtype_to_class;
 scm_t_bits scm_tc16_gtype;
 scm_t_bits scm_tc16_gtype_class;
 scm_t_bits scm_tc16_gtype_instance;
-
-/* defined in private.h, shared with gobject.c */
-GQuark guile_gobject_quark_instance_wrapper = 0;
 
 
 
@@ -63,8 +61,9 @@ static SCM _gtype_name_to_scheme_name;
 
 static GQuark quark_class = 0;
 static GQuark quark_type = 0;
-static GQuark quark_primitive_instance_wrapper = 0;
 static GQuark quark_guile_gtype_class = 0;
+static GQuark guile_gobject_quark_smob_wrapper;
+static GQuark guile_gobject_quark_goops_wrapper;
 
 
 
@@ -78,11 +77,14 @@ static GQuark quark_guile_gtype_class = 0;
 
 
 
+/* would be nice to assume everything uses InitiallyUnowned, but that's not the
+ * case... */
 typedef struct {
     GType type;
     void (* sinkfunc)(gpointer instance);
 } SinkFunc;
 
+static GSList *gtype_instance_funcs = NULL;
 static GArray *sink_funcs = NULL;
 
 
@@ -445,6 +447,98 @@ SCM_DEFINE (scm_sys_gtype_bind_to_class, "%gtype-bind-to-class", 2, 0, 0,
  * GTypeInstance
  **********************************************************************/
 
+static scm_t_gtype_instance_funcs*
+get_gtype_instance_instance_funcs (gpointer instance)
+{
+    GSList *l;
+    GType fundamental;
+    fundamental = G_TYPE_FUNDAMENTAL (G_TYPE_FROM_INSTANCE (instance));
+    for (l = gtype_instance_funcs; l; l = l->next) {
+        scm_t_gtype_instance_funcs *ret = l->data;
+        if (fundamental == ret->type)
+            return ret;
+    }
+    return NULL;
+}
+
+void
+scm_register_gtype_instance_funcs (const scm_t_gtype_instance_funcs *funcs)
+{
+    gtype_instance_funcs = g_slist_append (gtype_instance_funcs,
+                                           (gpointer)funcs);
+}
+
+gpointer
+scm_c_gtype_instance_ref (gpointer instance)
+{
+    scm_t_gtype_instance_funcs *funcs;
+    funcs = get_gtype_instance_instance_funcs (instance);
+    if (funcs && funcs->ref)
+        funcs->ref (instance);
+    return instance;
+}
+
+void
+scm_c_gtype_instance_unref (gpointer instance)
+{
+    scm_t_gtype_instance_funcs *funcs;
+    funcs = get_gtype_instance_instance_funcs (instance);
+    if (funcs && funcs->unref)
+        funcs->unref (instance);
+    /* else */
+    /*     g_type_free_instance (instance); */
+}
+
+SCM
+scm_c_gtype_instance_get_cached_smob (gpointer instance)
+{
+    scm_t_gtype_instance_funcs *funcs;
+    funcs = get_gtype_instance_instance_funcs (instance);
+    if (funcs && funcs->get_qdata) {
+        gpointer data = funcs->get_qdata ((GObject*)instance,
+                                          guile_gobject_quark_smob_wrapper);
+        if (data)
+            return GPOINTER_TO_SCM (data);
+    }
+    return SCM_BOOL_F;
+}
+
+void
+scm_c_gtype_instance_set_cached_smob (gpointer instance, SCM smob)
+{
+    scm_t_gtype_instance_funcs *funcs;
+    funcs = get_gtype_instance_instance_funcs (instance);
+    if (funcs && funcs->set_qdata)
+        funcs->set_qdata ((GObject*)instance,
+                          guile_gobject_quark_smob_wrapper,
+                          smob == SCM_BOOL_F ? NULL : SCM_TO_GPOINTER (smob));
+}
+
+SCM
+scm_c_gtype_instance_get_cached_goops (gpointer instance)
+{
+    scm_t_gtype_instance_funcs *funcs;
+    funcs = get_gtype_instance_instance_funcs (instance);
+    if (funcs && funcs->get_qdata) {
+        gpointer data = funcs->get_qdata ((GObject*)instance,
+                                          guile_gobject_quark_goops_wrapper);
+        if (data)
+            return GPOINTER_TO_SCM (data);
+    }
+    return SCM_BOOL_F;
+}
+
+void
+scm_c_gtype_instance_set_cached_goops (gpointer instance, SCM goops)
+{
+    scm_t_gtype_instance_funcs *funcs;
+    funcs = get_gtype_instance_instance_funcs (instance);
+    if (funcs && funcs->set_qdata)
+        funcs->set_qdata ((GObject*)instance,
+                          guile_gobject_quark_goops_wrapper,
+                          goops == SCM_BOOL_F ? NULL : SCM_TO_GPOINTER (goops));
+}
+
 /* A GTypeInstance is a SMOB whose first word is the GTypeInstance* pointer, and
    whose second word is nothing. */
 static size_t
@@ -457,28 +551,9 @@ scm_gtype_instance_free (SCM smob)
     if (!instance)
 	return 0;
 
-    switch (G_TYPE_FUNDAMENTAL (G_TYPE_FROM_INSTANCE (instance))) {
-    case G_TYPE_OBJECT:
-        /* unset the cached wrapper data, if there was any */
-        g_object_set_qdata (instance, guile_gobject_quark_instance_wrapper, NULL);
-        g_object_set_qdata (instance, quark_primitive_instance_wrapper, NULL);
-        DEBUG_ALLOC ("g_object_unref (%p) for SMOB %p: %u->%u", instance, smob,
-                     ((GObject*)instance)->ref_count,
-                     ((GObject*)instance)->ref_count - 1);
-	g_object_unref (instance);
-	break;
-
-    case G_TYPE_PARAM:
-        DEBUG_ALLOC ("g_param_spec_unref (%p) %u->%u", instance,
-                     ((GParamSpec*)instance)->ref_count,
-                     ((GParamSpec*)instance)->ref_count - 1);
-	g_param_spec_unref (instance);
-	break;
-
-    default:
-	g_type_free_instance (instance);
-	break;
-    }
+    scm_c_gtype_instance_set_cached_goops (instance, SCM_BOOL_F);
+    scm_c_gtype_instance_set_cached_smob (instance, SCM_BOOL_F);
+    scm_c_gtype_instance_unref (instance);
 
     return 0;
 }
@@ -629,13 +704,9 @@ scm_c_gtype_instance_to_scm (gpointer ginstance)
 
     type = G_TYPE_FROM_INSTANCE (ginstance);
 
-    switch (G_TYPE_FUNDAMENTAL (type)) {
-    case G_TYPE_OBJECT:
-        object = g_object_get_qdata (ginstance,
-                                     guile_gobject_quark_instance_wrapper);
-        if (object) return object;
-        break;
-    }
+    object = scm_c_gtype_instance_get_cached_goops (ginstance);
+    if (!scm_is_false (object))
+        return object;
     
     instance_smob = scm_c_make_gtype_instance (ginstance);
     
@@ -649,14 +720,8 @@ scm_c_gtype_instance_to_scm (gpointer ginstance)
 
     /* Cache the return value, so that if a callback or another function returns
      * this ginstance while the ginstance is visible elsewhere, the same wrapper
-     * will be used. Since this doesn't happen much with params, we don't cache
-     * their wrappers. This qdata is unset in the SMOB's free function. */
-    switch (G_TYPE_FUNDAMENTAL (type)) {
-    case G_TYPE_OBJECT:
-        g_object_set_qdata (ginstance,
-                            guile_gobject_quark_instance_wrapper, object);
-        break;
-    }
+     * will be used. This qdata is unset in the SMOB's free function. */
+    scm_c_gtype_instance_set_cached_goops (ginstance, object);
     
     return object;
 }
@@ -669,43 +734,24 @@ scm_c_make_gtype_instance (gpointer ginstance)
     if (!ginstance)
         return SCM_BOOL_F;
 
-    switch (G_TYPE_FUNDAMENTAL (G_TYPE_FROM_INSTANCE (ginstance))) {
-    case G_TYPE_OBJECT:
-        if ((ret = g_object_get_qdata (ginstance,
-                                       quark_primitive_instance_wrapper)))
-            return ret;
+    ret = scm_c_gtype_instance_get_cached_smob (ginstance);
+    if (!scm_is_false (ret))
+        return ret;
+    
+    /* see REFCOUNTING for the policy */
+    scm_c_gtype_instance_ref (ginstance);
 
-        /* see REFCOUNTING for the policy */
-        g_object_ref (ginstance);
+    DEBUG_ALLOC ("reffed gobject (%p) of type %s, ->%u",
+                 ginstance, g_type_name (G_TYPE_FROM_INSTANCE (ginstance)),
+                 ((GObject*)ginstance)->ref_count);
 
-        DEBUG_ALLOC ("reffed gobject (%p) of type %s, ->%u",
-                     ginstance, g_type_name (G_TYPE_FROM_INSTANCE (ginstance)),
-                     ((GObject*)ginstance)->ref_count);
+    /* sink the floating ref, if any */
+    sink_type_instance (ginstance);
+    SCM_NEWSMOB2 (ret, scm_tc16_gtype_instance, ginstance, NULL);
 
-        /* sink the floating ref, if any */
-        sink_type_instance (ginstance);
-        SCM_NEWSMOB2 (ret, scm_tc16_gtype_instance, ginstance, NULL);
-
-        /* cache the return value */
-        g_object_set_qdata (ginstance, quark_primitive_instance_wrapper, ret);
-        break;
-      
-    case G_TYPE_PARAM:
-        /* ignoring floating status, the creation functions will sink if
-         * necessary */
-        g_param_spec_ref (ginstance);
-
-        DEBUG_ALLOC ("reffed param (%p) of type %s, ->%u", 
-                     ginstance, g_type_name (G_TYPE_FROM_INSTANCE (ginstance)),
-                     ((GParamSpec*)ginstance)->ref_count);
-        SCM_NEWSMOB2 (ret, scm_tc16_gtype_instance, ginstance, NULL);
-        break;
-
-    default:
-        SCM_NEWSMOB2 (ret, scm_tc16_gtype_instance, ginstance, NULL);
-        break;
-    }
-        
+    /* cache the return value */
+    scm_c_gtype_instance_set_cached_smob (ginstance, ret);
+    
     return ret;
 }
 
@@ -934,9 +980,11 @@ scm_init_gnome_gobject_types (void)
 
     quark_type = g_quark_from_static_string ("%scm-gtype->type");
     quark_class = g_quark_from_static_string ("%scm-gtype->class");
-    guile_gobject_quark_instance_wrapper = g_quark_from_static_string ("%scm-instance-wrapper");
-    quark_primitive_instance_wrapper = g_quark_from_static_string ("%scm-primitive-instance-wrapper");
     quark_guile_gtype_class = g_quark_from_static_string ("%scm-guile-gtype-class");
+    guile_gobject_quark_smob_wrapper =
+        g_quark_from_static_string ("%guile-gobject-smob-wrapper");
+    guile_gobject_quark_goops_wrapper = 
+        g_quark_from_static_string ("%guile-gobject-goops-wrapper");
 
     scm_tc16_gtype = scm_make_smob_type ("gtype", 0);
     scm_set_smob_free (scm_tc16_gtype, scm_gtype_free);

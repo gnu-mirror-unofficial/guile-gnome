@@ -40,9 +40,6 @@ struct _GuileGTypeClass {
 };
 
 
-extern GQuark guile_gobject_quark_instance_wrapper;
-
-
 G_END_DECLS
 
 

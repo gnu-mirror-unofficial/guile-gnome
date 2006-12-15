@@ -36,6 +36,14 @@ SCM scm_class_gparam;
 
 static SCM scm_gparam_struct_vtable;
 
+static const scm_t_gtype_instance_funcs gparamspec_funcs = {
+    G_TYPE_PARAM,
+    (scm_t_gtype_instance_ref)g_param_spec_ref,
+    (scm_t_gtype_instance_unref)g_param_spec_unref,
+    (scm_t_gtype_instance_get_qdata)g_param_spec_get_qdata,
+    (scm_t_gtype_instance_set_qdata)g_param_spec_set_qdata
+};
+
 
 
 #define scm_gparam_struct_i_name		(scm_vtable_offset_user)
@@ -628,6 +636,8 @@ scm_init_gnome_gobject_parameters (void)
 #ifndef SCM_MAGIC_SNARFER
 #include "gparameter.x"
 #endif
+
+    scm_register_gtype_instance_funcs (&gparamspec_funcs);
 
     quark_param_struct = g_quark_from_static_string ("%scm-param-struct");
 

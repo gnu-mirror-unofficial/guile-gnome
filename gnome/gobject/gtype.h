@@ -32,6 +32,24 @@
 G_BEGIN_DECLS
 
 
+typedef gpointer (*scm_t_gtype_instance_ref)(gpointer instance);
+typedef void (*scm_t_gtype_instance_unref)(gpointer instance);
+typedef gpointer (*scm_t_gtype_instance_get_qdata)(gpointer instance,
+                                                   GQuark quark);
+typedef void (*scm_t_gtype_instance_set_qdata)(gpointer instance, GQuark quark,
+                                               gpointer data);
+typedef struct {
+    GType type;
+    scm_t_gtype_instance_ref ref;
+    scm_t_gtype_instance_unref unref;
+    scm_t_gtype_instance_get_qdata get_qdata;
+    scm_t_gtype_instance_set_qdata set_qdata;
+} scm_t_gtype_instance_funcs;
+
+
+
+
+
 extern SCM scm_sym_gtype;
 extern SCM scm_sym_gtype_class;
 extern SCM scm_sym_gtype_instance;
@@ -141,18 +159,25 @@ SCM scm_c_register_gtype (GType type);
 SCM scm_c_gtype_lookup_class (GType gtype);
 SCM scm_c_gtype_to_class (GType gtype);
 
-/* GTypeInstance */
+/* GTypeInstance use */
+gpointer scm_c_gtype_instance_ref (gpointer instance);
+void scm_c_gtype_instance_unref (gpointer instance);
 SCM scm_c_make_gtype_instance (gpointer ginstance);
 gboolean scm_c_gtype_instance_is_a_p (SCM instance, GType gtype);
 gpointer scm_c_scm_to_gtype_instance (SCM instance, GType gtype);
 SCM scm_c_gtype_instance_to_scm (gpointer ginstance);
 
-/* Misc */
+/* GTypeInstance implementations */
 void scm_c_define_and_export_gtype_x (GType type);
 void scm_c_gruntime_error (const char *subr, const char *message, SCM args);
 void guile_gobject_log_handler (const gchar *log_domain, GLogLevelFlags log_level,
                                 const gchar *message, gpointer user_data);
+void scm_register_gtype_instance_funcs (const scm_t_gtype_instance_funcs *funcs);
 void scm_register_gtype_instance_sinkfunc (GType type, void (*sinkfunc) (gpointer));
+SCM scm_c_gtype_instance_get_cached_smob (gpointer instance);
+void scm_c_gtype_instance_set_cached_smob (gpointer instance, SCM smob);
+SCM scm_c_gtype_instance_get_cached_goops (gpointer instance);
+void scm_c_gtype_instance_set_cached_goops (gpointer instance, SCM goops);
 
 
 G_END_DECLS

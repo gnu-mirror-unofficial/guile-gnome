@@ -21,14 +21,14 @@
 
 (define-module (gw-test-gobject-spec)
   #:use-module (oop goops)
-  #:use-module (g-wrap guile ws standard)
   #:use-module (gnome gw support g-wrap)
-  #:use-module (gnome gw gobject-spec)
-  #:use-module (gnome gobject gw-spec-utils)
-  #:use-module (gnome gobject defs-support))
+  #:use-module (gnome gw support defs)
+  #:use-module (gnome gw support gobject)
+  #:use-module (gnome gw gobject-spec))
 
 (define-class <test-gobject-wrapset> (<gobject-wrapset-base>)
-  #:id 'test-gobject #:dependencies '(standard gnome-gobject))
+  #:id 'test-gobject
+  #:dependencies '(standard gnome-gobject))
 
 (define-method (global-declarations-cg (ws <test-gobject-wrapset>))
   (list

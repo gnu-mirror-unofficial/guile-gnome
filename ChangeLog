@@ -1,3 +1,46 @@
+2006-12-15  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/gw-test-gobject-spec.scm (gw-test-gobject-spec): 
+	* test-suite/gw-test-glib-spec.scm (gw-test-glib-spec): Fix up
+	includes.
+
+	* test-suite/gobject.test ("basic values"): Fix the check for
+	out-of-range errors, using the "value out of range" variant
+	instead of "argument N out of range".
+
+	* test-suite/Makefile.am (libgw_guile_test_glib_la_LIBADD): Link
+	to GLib.
+
+	* gnome/gw/support/gobject.scm (wrap-value-cg): Use the
+	scm_c_gtype_instance_unref generic function instead of
+	g_object_unref, so that we can support other classed objects.
+
+	* gnome/gobject/gtype.c: 
+	(get_gtype_instance_instance_funcs)
+	(scm_register_gtype_instance_funcs, scm_c_gtype_instance_ref)
+	(scm_c_gtype_instance_unref)
+	(scm_c_gtype_instance_get_cached_smob)
+	(scm_c_gtype_instance_set_cached_smob)
+	(scm_c_gtype_instance_get_cached_goops)
+	(scm_c_gtype_instance_set_cached_goops): Keep a registry of
+	fundamental classed gtypes that we know how to deal with, with
+	function pointers on how to ref, unref, get qdata, and set qdata
+	on them. This gets g_object_* code out of gtype.c, and allows for
+	external modules to define wrappers for new fundamental classed
+	types, like GStreamer's miniobjects.
+	(scm_gtype_instance_free, scm_c_gtype_instance_to_scm)
+	(scm_c_make_gtype_instance): Use the generic functions instead of
+	type-specific switch blocks.
+
+	* gnome/gobject/gparameter.c (scm_init_gnome_gobject_parameters):
+	Register the paramspec ref/sink/qdata functions with gtype.c.
+	
+	* gnome/gobject/gobject.c (scm_init_gnome_gobject): Register the
+	gobject ref/sink/qdata functions with gtype.c.
+	(s_scm_gobject_primitive_create_instance): use
+	scm_c_gtype_instance_set_cached_goops instead of mucking about
+	with qdata ourselves.
+
 2006-12-09  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gobject.scm (wrap-value-cg): If a boxed value

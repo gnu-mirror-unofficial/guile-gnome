@@ -247,7 +247,7 @@
      (if-typespec-option value 'caller-owned
          ;; the _to_scm will ref the object; if the function is a
          ;; constructor, we don't need that ref
-          (list "if (" c-var ") g_object_unref ((GObject*)" c-var ");\n")))))
+          (list "if (" c-var ") scm_c_gtype_instance_unref ((GTypeInstance*)" c-var ");\n")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Wrap boxed types, represented on the scheme side by GValues.

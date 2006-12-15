@@ -54,6 +54,8 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
 (with-test-prefix "basic values"
   (define (test class value)
     (equal? (gvalue->scm (make class #:value value)) value))
+  (define exception:value-out-of-range
+    (cons 'out-of-range "^Value .*out of range"))
   
   (pass-if-exception "#:value arg missing"
                      exception:value-arg-missing
@@ -78,7 +80,7 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
            (test <guint> 511))
 
   (pass-if-exception "creating guint"
-                     exception:out-of-range
+                     exception:value-out-of-range
                      (make <guint> #:value -1))
 
   (pass-if "creating glong"
@@ -88,7 +90,7 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
            (test <gulong> 511))
 
   (pass-if-exception "creating gulong"
-                     exception:out-of-range
+                     exception:value-out-of-range
                      (make <gulong> #:value -1))
 
   (pass-if "creating gfloat"

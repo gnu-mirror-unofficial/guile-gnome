@@ -16,7 +16,7 @@ nodist_libgw_guile_test_glib_la_SOURCES = gw-test-glib.c
 libgw_guile_test_glib_la_CFLAGS = $(std_cflags)
 libgw_guile_test_glib_la_LDFLAGS = -module -rpath $(libdir) 
 libgw_guile_test_glib_la_LIBADD = \
-	$(G_WRAP_LIBS) $(GUILE_LIBS)
+	$(GUILE_GLIB_LIBS) $(G_WRAP_LIBS) $(GUILE_LIBS)
 
 noinst_HEADERS = test-gobject.h test-glib.h
 

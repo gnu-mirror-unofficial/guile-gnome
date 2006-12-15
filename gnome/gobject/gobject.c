@@ -52,6 +52,14 @@ SCM_SYMBOL  (sym_gruntime_error,"gruntime-error");
 
 #define DEBUG_REFCOUNTING
 
+static const scm_t_gtype_instance_funcs gobject_funcs = {
+    G_TYPE_OBJECT,
+    (scm_t_gtype_instance_ref)g_object_ref,
+    (scm_t_gtype_instance_unref)g_object_unref,
+    (scm_t_gtype_instance_get_qdata)g_object_get_qdata,
+    (scm_t_gtype_instance_set_qdata)g_object_set_qdata
+};
+
 
 
 SCM_DEFINE (scm_gobject_set_data_x, "gobject-set-data!", 3, 0, 0,
@@ -535,7 +543,7 @@ SCM_DEFINE (scm_gobject_primitive_create_instance, "gobject-primitive-create-ins
     scm_slot_set_x (object, scm_sym_gtype_instance, smob);
     
     /* cache this wrapper, like in scm_c_gtype_instance_to_scm */
-    g_object_set_qdata (gobject, guile_gobject_quark_instance_wrapper, object);
+    scm_c_gtype_instance_set_cached_goops (gobject, object);
 
     return SCM_UNSPECIFIED;
 }
@@ -577,9 +585,10 @@ scm_init_gnome_gobject (void)
 #ifndef SCM_MAGIC_SNARFER
 #include "gobject.x"
 #endif
-    _gobject_initargs_fluid = scm_make_fluid ();
+    scm_register_gtype_instance_funcs (&gobject_funcs);
 
-    /* there is a case where it won't be set before entering
+    _gobject_initargs_fluid = scm_make_fluid ();
+    /* there is a case where the fluid won't be set before entering
        scm_c_gtype_instance_instance_init: if the class is instantiated from C
        via g_object_new instead of from scheme via `make'. Give the initargs a
        sane value in that case. */
