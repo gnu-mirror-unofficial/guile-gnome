@@ -1,3 +1,7 @@
+2006-12-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.90 ==
+
 2006-11-05  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/atk-spec.scm: Use (gnome gw support g-wrap), the
