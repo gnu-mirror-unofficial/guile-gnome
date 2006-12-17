@@ -1,3 +1,10 @@
+2006-12-17  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gclosure.c ("%scm-gclosure-marshal"): Enter guile
+	via scm_with_guile when invoking a closure; along with a patch I'm
+	mailing to the g-wrap list this makes callbacks from other threads
+	work.
+
 2006-12-15  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.90 ==

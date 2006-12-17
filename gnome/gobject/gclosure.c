@@ -51,21 +51,28 @@ struct _GuileGClosure {
 
 
 
-static void
-scm_gclosure_marshal (GClosure *closure, GValue *return_value,
-		      guint n_param_values, const GValue *param_values,
-		      gpointer invocation_hint, gpointer marshal_data)
+typedef struct {
+    GClosure *closure;
+    GValue *return_value;
+    guint n_param_values;
+    const GValue *param_values;
+    gpointer invocation_hint;
+    gpointer marshal_data;
+} closure_data;
+
+static void*
+scm_gclosure_marshal_with_guile (const closure_data *d)
 #define FUNC_NAME "%scm-gclosure-marshal"
 {
-    GuileGClosure *gclosure = (GuileGClosure *) closure;
+    GuileGClosure *gclosure = (GuileGClosure *) d->closure;
     SCM params = SCM_EOL, retval;
     guint i;
 
     /* Only deals with <gvalue>s. Conversion to and from native scheme values is
      * done at a higher level (see gobject.scm) */
 
-    for (i = 0; i < n_param_values; i++) {
-	const GValue *current = &param_values [i];
+    for (i = 0; i < d->n_param_values; i++) {
+	const GValue *current = &d->param_values [i];
 	SCM this;
 
 	this = scm_c_make_gvalue (G_VALUE_TYPE (current));
@@ -76,15 +83,15 @@ scm_gclosure_marshal (GClosure *closure, GValue *return_value,
 
     retval = scm_apply (gclosure->func, params, SCM_EOL);
 
-    if (return_value
-        && G_VALUE_TYPE (return_value) != G_TYPE_NONE
-        && G_VALUE_TYPE (return_value) != G_TYPE_INVALID) {
+    if (d->return_value
+        && G_VALUE_TYPE (d->return_value) != G_TYPE_NONE
+        && G_VALUE_TYPE (d->return_value) != G_TYPE_INVALID) {
 	GValue *gvalue;
 
 	if (retval == SCM_UNSPECIFIED) {
 	    SCM return_type;
 
-	    return_type = scm_c_register_gtype (G_VALUE_TYPE (return_value));
+	    return_type = scm_c_register_gtype (G_VALUE_TYPE (d->return_value));
 	    scm_c_gruntime_error
                 (FUNC_NAME, "GClosure expects a return value of type ~S, "
                  "but got the unspecified value: ~S",
@@ -92,10 +99,25 @@ scm_gclosure_marshal (GClosure *closure, GValue *return_value,
 	}
 	
 	SCM_VALIDATE_GVALUE_COPY (0, retval, gvalue);
-	g_value_copy (gvalue, return_value);
+	g_value_copy (gvalue, d->return_value);
     }
+    return NULL;
 }
 #undef FUNC_NAME
+
+
+static void
+scm_gclosure_marshal (GClosure *closure, GValue *return_value,
+		      guint n_param_values, const GValue *param_values,
+		      gpointer invocation_hint, gpointer marshal_data)
+{
+    closure_data data = {
+        closure, return_value, n_param_values, param_values,
+        invocation_hint, marshal_data
+    };
+    /* GThreadFunc is void* (*func)(void*), just like we need */
+    scm_with_guile ((GThreadFunc)scm_gclosure_marshal_with_guile, &data);
+}
 
 
 
