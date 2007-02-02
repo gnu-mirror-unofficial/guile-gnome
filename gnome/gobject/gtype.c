@@ -932,16 +932,6 @@ SCM_DEFINE (scm_sys_function_to_method_public,
 }
 #undef FUNC_NAME
 
-void guile_gobject_log_handler (const gchar *log_domain, GLogLevelFlags log_level,
-                                const gchar *message, gpointer user_data)
-{
-    scm_c_gruntime_error (NULL,
-                          "~A: ~A",
-                          SCM_LIST2 (scm_str2string (log_domain ?
-                                                     log_domain : "(application)"),
-                                     scm_str2string (message)));
-}
-
 
 
 /**********************************************************************
@@ -969,14 +959,6 @@ scm_init_gnome_gobject_types (void)
 #ifndef SCM_MAGIC_SNARFER
 #include "gtype.x"
 #endif
-
-    /* handle the application, GLib, and GLib-GObject domains by default */
-    g_log_set_handler (NULL, G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL,
-                       guile_gobject_log_handler, NULL);
-    g_log_set_handler ("GLib", G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL,
-                       guile_gobject_log_handler, NULL);
-    g_log_set_handler ("GLib-GObject", G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL,
-                       guile_gobject_log_handler, NULL);
 
     quark_type = g_quark_from_static_string ("%scm-gtype->type");
     quark_class = g_quark_from_static_string ("%scm-gtype->class");

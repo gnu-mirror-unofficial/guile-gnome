@@ -247,6 +247,11 @@
                (parameters (or (and=> (assq-ref args 'parameters)
                                       (lambda (x) (map cadr x)))
                                '()))
+               (flags (if (if (assq 'leave-guile-mode args)
+                              (car (assq-ref args 'leave-guile-mode))
+                              #t)
+                          "GW_FUNCTION_FLAG_LEAVE_RUNTIME"
+                          "0"))
                (generic-name #f))
 
            (cond
@@ -297,7 +302,9 @@
             #:c-name c-name
             #:arguments (construct-argument-list ws parameters)
             #:generic-name (and is-method?
-                                (get-generic-name (symbol->string scm-name) of-object)))))
+                                (get-generic-name (symbol->string
+                                                   scm-name) of-object))
+            #:flags flags)))
        noop))
     (define (ignored? c-name)
       (any (lambda (matcher) (matcher c-name))

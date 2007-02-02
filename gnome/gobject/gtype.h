@@ -170,8 +170,6 @@ SCM scm_c_gtype_instance_to_scm (gpointer ginstance);
 /* GTypeInstance implementations */
 void scm_c_define_and_export_gtype_x (GType type);
 void scm_c_gruntime_error (const char *subr, const char *message, SCM args);
-void guile_gobject_log_handler (const gchar *log_domain, GLogLevelFlags log_level,
-                                const gchar *message, gpointer user_data);
 void scm_register_gtype_instance_funcs (const scm_t_gtype_instance_funcs *funcs);
 void scm_register_gtype_instance_sinkfunc (GType type, void (*sinkfunc) (gpointer));
 SCM scm_c_gtype_instance_get_cached_smob (gpointer instance);

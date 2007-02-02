@@ -548,6 +548,7 @@
     (slot-set! type 'how-wrapped "GObjectClass")
     (slot-set! type 'define-class? #f)
     (add-type! ws type)
+    (add-type-alias! ws (c-type-name type) (name type))
     type))
 
 (define-method (unwrap-value-cg (type <gobject-class-type>)

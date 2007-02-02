@@ -159,8 +159,8 @@
 ;; Thus the specializer on initialize is <gvalue>, not <gint> or whatever.
 (define-method (initialize (instance <gvalue>) initargs)
   (let* ((type (gvalue->type instance))
-	 (fundamental (gtype->fundamental type))
-	 (is-fundamental (eq? type fundamental)))
+         (fundamental (gtype->fundamental type))
+         (is-fundamental (eq? type fundamental)))
     (cond
      ;; Basic types have only one possible Scheme representation.
      ((gtype-basic? type)
@@ -175,28 +175,28 @@
      ;; GEnum
      ((eq? fundamental gtype:genum)
       (let* ((init-value (get-keyword #:value initargs *unspecified*))
-	     (enum (cond
-		    ((unspecified? init-value)
-		     (gruntime-error "Missing #:value argument"))
-		    ((integer? init-value)
-		     (enum-by-index type init-value))
-		    ((symbol? init-value)
-		     (enum-by-symbol type init-value))
-		    ((string? init-value)
-		     (enum-by-name type init-value))
-		    (else
-		     (gruntime-error "Wrong type argument: ~S" init-value)))))
-	(gvalue-primitive-set instance (caddr enum))))
+             (enum (cond
+                    ((unspecified? init-value)
+                     (gruntime-error "Missing #:value argument"))
+                    ((integer? init-value)
+                     (enum-by-index type init-value))
+                    ((symbol? init-value)
+                     (enum-by-symbol type init-value))
+                    ((string? init-value)
+                     (enum-by-name type init-value))
+                    (else
+                     (gruntime-error "Wrong type argument: ~S" init-value)))))
+        (gvalue-primitive-set instance (caddr enum))))
 
      ;; GFlags
      ((eq? fundamental gtype:gflags)
       (let* ((init-values (get-keyword #:value initargs *unspecified*))
-	     (real-init-values init-values)
-	     (flags-value 0))
-	(if (unspecified? init-values)
-	    (gruntime-error "Missing #:value argument"))
+             (real-init-values init-values)
+             (flags-value 0))
+        (if (unspecified? init-values)
+            (gruntime-error "Missing #:value argument"))
 
-	(cond
+        (cond
          ((list? init-values)
           #t) ;; noop, this is what we want
          ((vector? init-values)
@@ -227,7 +227,7 @@
                                init-values))
         (set! init-values (map (lambda (x) (caddr x)) init-values))
         (set! flags-value (apply logior init-values))
-	(gvalue-primitive-set instance flags-value)))
+        (gvalue-primitive-set instance flags-value)))
 
      (else
       (noop)))))
@@ -249,8 +249,8 @@
   (display #\space file)
   (display-address obj file)
   (let* ((type (gtype-class->type class))
-	 (fundamental (gtype->fundamental type))
-	 (is-fundamental (eq? type fundamental)))
+         (fundamental (gtype->fundamental type))
+         (is-fundamental (eq? type fundamental)))
     (cond
      ;; Basic types, with one possible Scheme representation.
      ((gtype-basic? type)
@@ -260,23 +260,15 @@
      ;; GEnum
      ((eq? fundamental gtype:genum)
       (let* ((enum-values (genum-type-get-values type))
-	     (value (gvalue-primitive-get obj))
-	     (value-text (enum-by-index type value)))
-	(display #\space file)
-	(display value-text file)))
+             (value (gvalue-primitive-get obj))
+             (value-text (enum-by-index type value)))
+        (display #\space file)
+        (display value-text file)))
 
      ;; GFlags
      ((eq? fundamental gtype:gflags)
-      (let* ((flags-values (gflags-type-get-values type))
-	     (value (gvalue-primitive-get obj))
-	     (value-text '()))
-	(for-each (lambda (x)
-		    (let ((f (caddr x)))
-		      (if (positive? (logand value f))
-			  (set! value-text (append! value-text (list x))))))
-		  (vector->list flags-values))
-	(display #\space file)
-	(display value-text file)))))
+      (display #\space file)
+      (display (gflags->symbol-list obj)))))
 
   (display #\> file))
 
@@ -292,11 +284,11 @@
 (define (find-enum vtable func index)
   (let loop ((l (vector->list vtable)))
     (if (null? l)
-	(gruntime-error "No such value in ~A: ~A" vtable index)
-	(begin
-	  (if (equal? (func (car l)) index)
-	      (car l)
-	      (loop (cdr l)))))))
+        (gruntime-error "No such value in ~A: ~A" vtable index)
+        (begin
+          (if (equal? (func (car l)) index)
+              (car l)
+              (loop (cdr l)))))))
 
 (define (enum-by-index type index)
   (find-enum (genum-type-get-values type) (lambda (l) (caddr l)) index))
@@ -318,51 +310,51 @@
 
 (define (genum->symbol obj)
   (let* ((type (gvalue->type obj))
-	 (enum-values (genum-type-get-values type))
-	 (value (gvalue-primitive-get obj))
-	 (the-value (enum-by-index type value)))
+         (enum-values (genum-type-get-values type))
+         (value (gvalue-primitive-get obj))
+         (the-value (enum-by-index type value)))
     (car the-value)))
 
 (define (genum->name obj)
   (let* ((type (gvalue->type obj))
-	 (enum-values (genum-type-get-values type))
-	 (value (gvalue-primitive-get obj))
-	 (the-value (enum-by-index type value)))
+         (enum-values (genum-type-get-values type))
+         (value (gvalue-primitive-get obj))
+         (the-value (enum-by-index type value)))
     (cadr the-value)))
 
 (define (genum->value obj)
   (let* ((type (gvalue->type obj))
-	 (enum-values (genum-type-get-values type))
-	 (value (gvalue-primitive-get obj))
-	 (the-value (enum-by-index type value)))
+         (enum-values (genum-type-get-values type))
+         (value (gvalue-primitive-get obj))
+         (the-value (enum-by-index type value)))
     (caddr the-value)))
 
 (define (gflags->element-list obj)
   (let* ((type (gvalue->type obj))
-	 (flags-values (gflags-type-get-values type))
-	 (value (gvalue-primitive-get obj))
-	 (element-list '()))
+         (flags-values (gflags-type-get-values type))
+         (value (gvalue-primitive-get obj))
+         (element-list '()))
     (for-each (lambda (x)
-		(let ((f (caddr x)))
-		  (if (positive? (logand value f))
-		    (set! element-list (append! element-list (list x))))))
-	      (vector->list flags-values))
+                (let ((f (caddr x)))
+                  (if (= (logand value f) f)
+                      (set! element-list (append! element-list (list x))))))
+              (vector->list flags-values))
     element-list))
 
 (define (gflags->symbol-list obj)
   (let* ((element-list (gflags->element-list obj)))
     (map (lambda (x)
-	   (car x))
-	 element-list)))
+           (car x))
+         element-list)))
 
 (define (gflags->name-list obj)
   (let* ((element-list (gflags->element-list obj)))
     (map (lambda (x)
-	   (cadr x))
-	 element-list)))
+           (cadr x))
+         element-list)))
 
 (define (gflags->value-list obj)
   (let* ((element-list (gflags->element-list obj)))
     (map (lambda (x)
-	   (caddr x))
-	 element-list)))
+           (caddr x))
+         element-list)))
