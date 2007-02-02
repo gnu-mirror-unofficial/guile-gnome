@@ -40,6 +40,7 @@
   (c-name "_wrap_glade_xml_signal_connect")
   (overrides "glade_xml_signal_connect")
   (return-type "none")
+  (leave-guile-mode #f)
   (parameters
     '("const-char*" "handlername")
     '("SCM" "proc")
@@ -51,6 +52,7 @@
   (c-name "_wrap_glade_xml_signal_autoconnect")
   (overrides "glade_xml_signal_autoconnect")
   (return-type "none")
+  (leave-guile-mode #f)
   (parameters '("SCM" "module")))
 
 (ignore-glob "*_get_type"
