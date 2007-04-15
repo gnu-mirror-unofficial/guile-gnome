@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2003,2004, 2007 Andy Wingo <wingo at pobox dot com>
  *		 2004 Jan Nieuwenhuizen <janneke@gnu.org>
  *
  * glib-support.c: Support routines for the GLib wrapper
@@ -50,6 +50,22 @@ handle_signals (gpointer unused)
     return TRUE;
 }
 
+#else
+
+void
+scm_init_glib (void)
+{
+}
+
+static gboolean
+handle_signals (gpointer unused) 
+{
+    SCM_TICK;
+    return TRUE;
+}
+
+#endif
+
 static void
 add_interrupt_handler (guint *timeout)
 {
@@ -82,20 +98,6 @@ _wrap_g_main_loop_run (GMainLoop *loop)
                                loop,
                                &timeout);
 }
-#else /* we're not on Guile 1.6 */
-
-void
-scm_init_glib (void)
-{
-}
-
-void
-_wrap_g_main_loop_run (GMainLoop *loop)
-{
-    g_main_loop_run (loop);
-}
-
-#endif
 
 
 SCM
