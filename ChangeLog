@@ -1,3 +1,8 @@
+2007-05-04  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/glib.defs (g_io_add_watch, string): Don't leave
+	guile mode for functions that deal in SCM.
+
 2007-02-02  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gobject.scm (wrap-gobject-class!): Add a type

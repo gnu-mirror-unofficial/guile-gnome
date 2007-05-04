@@ -36,12 +36,14 @@
 (define-method string
   (of-object "GString")
   (c-name "_wrap_g_string_get_str")
+  (leave-guile-mode #f)
   (return-type "SCM"))
 
 (define-function g_io_add_watch
   (c-name "_wrap_g_io_add_watch")
   (overrides "g_io_add_watch")
   (return-type "gboolean")
+  (leave-guile-mode #f)
   (parameters
     '("GIOChannel*" "channel")
     '("GIOCondition" "condition")
