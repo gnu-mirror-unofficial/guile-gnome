@@ -56,6 +56,7 @@
 (define-function gnome_vfs_open
   (c-name "_wrap_gnome_vfs_open")
   (overrides "gnome_vfs_open")
+  (leave-guile-mode #f)
   (return-type "SCM")
   (parameters
     '("const-gchar*" "text_uri")
@@ -66,6 +67,7 @@
 (define-function gnome_vfs_open_uri
   (c-name "_wrap_gnome_vfs_open_uri")
   (overrides "gnome_vfs_open_uri")
+  (leave-guile-mode #f)
   (return-type "SCM")
   (parameters
     '("GnomeVFSURI*" "uri")
@@ -76,6 +78,7 @@
 (define-function gnome_vfs_create
   (c-name "_wrap_gnome_vfs_create")
   (overrides "gnome_vfs_create")
+  (leave-guile-mode #f)
   (return-type "SCM")
   (parameters
     '("const-gchar*" "text_uri")
@@ -88,6 +91,7 @@
 (define-function gnome_vfs_create_uri
   (c-name "_wrap_gnome_vfs_create_uri")
   (overrides "gnome_vfs_create_uri")
+  (leave-guile-mode #f)
   (return-type "SCM")
   (parameters
     '("GnomeVFSURI*" "uri")
@@ -101,6 +105,7 @@
   (c-name "scm_gnome_vfs_port_to_handle")
   (overrides "port->handle")
   (return-type "GnomeVFSHandle*")
+  (leave-guile-mode #f)
   (parameters
    '("SCM" "port")))
 

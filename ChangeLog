@@ -1,3 +1,10 @@
+2007-05-04  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gnome-vfs.defs (gnome_vfs_open)
+	(gnome_vfs_open_uri, gnome_vfs_create, gnome_vfs_create_uri)
+	(port->handle): Don't leave guile mode for functions that deal in
+	SCM.
+
 2006-12-15  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.90 ==
