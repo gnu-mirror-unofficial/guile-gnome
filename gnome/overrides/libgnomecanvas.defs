@@ -75,6 +75,7 @@
   (is-constructor-of CanvasPoints)
 ;;  (return-type "GnomeCanvasPoints*")
   (return-type "SCM")
+  (leave-guile-mode #f)
   (parameters
    '("SCM" "points")))
 
