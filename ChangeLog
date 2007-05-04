@@ -1,3 +1,17 @@
+2007-05-04  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gtk.defs (add_actions, add_toggle_actions)
+	(add_radio_actions, gtk_list_store_new, set_value)
+	(gtk_message_dialog_new, gtk_stock_add, gtk_stock_lookup)
+	(set_text, insert, insert_at_cursor, insert_interactive)
+	(insert_interactive_at_cursor, insert_with_tags)
+	(insert_with_tags_by_name, get_bounds, get_selection_bounds)
+	(get_value, get_selected, gtk_tree_store_new, set_value)
+	(set_cell_data_func): 
+	* gnome/overrides/gdk.defs (gdk-event->event-struct): 
+	* gnome/overrides/gdk-pixbuf.defs (gdk_pixbuf_save_to_port): Don't
+	leave guile mode for functions that take or return SCM values.
+
 2006-12-15  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.90 ==

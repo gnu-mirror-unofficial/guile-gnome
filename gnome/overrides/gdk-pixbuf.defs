@@ -42,6 +42,7 @@
   (of-object "GdkPixbuf")
   (c-name "gdk_pixbuf_save_to_port")
   (return-type "gboolean")
+  (leave-guile-mode #f)
   (parameters
    '("SCM" "port")
    '("const-char*" "type")

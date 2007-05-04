@@ -43,6 +43,7 @@
   (c-name "_wrap_gtk_action_group_add_actions")
   (overrides "gtk_action_group_add_actions")
   (return-type "none")
+  (leave-guile-mode #f)
   (parameters
     '("SCM" "entries")))
 
@@ -51,6 +52,7 @@
   (c-name "_wrap_gtk_action_group_add_toggle_actions")
   (overrides "gtk_action_group_add_toggle_actions")
   (return-type "none")
+  (leave-guile-mode #f)
   (parameters
     '("SCM" "entries")))
 
@@ -59,6 +61,7 @@
   (c-name "_wrap_gtk_action_group_add_radio_actions")
   (overrides "gtk_action_group_add_radio_actions")
   (return-type "none")
+  (leave-guile-mode #f)
   (parameters
     '("SCM"  "entries")
     '("gint" "value")
@@ -143,6 +146,7 @@
   (overrides "gtk_list_store_new")
   (is-constructor-of GtkListStore)
   (return-type "GtkListStore*")
+  (leave-guile-mode #f)
   (parameters
     '("SCM" "types")))
 (define-method set_value
@@ -150,6 +154,7 @@
   (c-name "_wrap_gtk_list_store_set_value")
   (overrides "gtk_list_store_set_value")
   (return-type "void")
+  (leave-guile-mode #f)
   (parameters
     '("GtkTreeIter*" "iter")
     '("gint" "column")
@@ -200,6 +205,7 @@
   (c-name "_wrap_gtk_message_dialog_new")
   (overrides "%gtk-message-dialog-new") ;; hack
   (is-constructor-of GtkMessageDialog)
+  (leave-guile-mode #f)
   (return-type "SCM")
   (parameters
     '("GtkWindow*" "parent" (null-ok) (default "NULL"))
@@ -345,12 +351,14 @@
   (c-name    "_wrap_gtk_stock_add")
   (overrides "gtk_stock_add")
   (return-type "none")
+  (leave-guile-mode #f)
   (parameters
    '("SCM" "items")))
 
 (define-function gtk_stock_lookup
   (c-name    "_wrap_gtk_stock_lookup")
   (overrides "gtk_stock_lookup")
+  (leave-guile-mode #f)
   (return-type "SCM")
   (parameters
     '("const-gchar*" "stock_id")))
@@ -386,6 +394,7 @@
   (c-name "_wrap_gtk_text_buffer_set_text")
   (overrides "gtk_text_buffer_set_text")
   (return-type "none")
+  (leave-guile-mode #f)
   (parameters
     '("SCM" "stext")))
 (define-method insert
@@ -393,6 +402,7 @@
   (c-name "_wrap_gtk_text_buffer_insert")
   (overrides "gtk_text_buffer_insert")
   (return-type "none")
+  (leave-guile-mode #f)
   (parameters
     '("GtkTextIter*" "iter")
     '("SCM" "stext")))
@@ -401,6 +411,7 @@
   (c-name "_wrap_gtk_text_buffer_insert_at_cursor")
   (overrides "gtk_text_buffer_insert_at_cursor")
   (return-type "none")
+  (leave-guile-mode #f)
   (parameters
     '("SCM" "stext")))
 (define-method insert_interactive
@@ -408,6 +419,7 @@
   (c-name "_wrap_gtk_text_buffer_insert_interactive")
   (overrides "gtk_text_buffer_insert_interactive")
   (return-type "gboolean")
+  (leave-guile-mode #f)
   (parameters
     '("GtkTextIter*" "iter")
     '("SCM" "stext")
@@ -417,6 +429,7 @@
   (c-name "_wrap_gtk_text_buffer_insert_interactive_at_cursor")
   (overrides "gtk_text_buffer_insert_interactive_at_cursor")
   (return-type "gboolean")
+  (leave-guile-mode #f)
   (parameters
     '("SCM" "stext")
     '("gboolean" "default_editable")))
@@ -425,6 +438,7 @@
   (c-name "_wrap_gtk_text_buffer_insert_with_tags")
   (overrides "gtk_text_buffer_insert_with_tags")
   (return-type "none")
+  (leave-guile-mode #f)
   (parameters
     '("GtkTextIter*" "iter")
     '("SCM" "stext")
@@ -434,6 +448,7 @@
   (c-name "_wrap_gtk_text_buffer_insert_with_tags_by_name")
   (overrides "gtk_text_buffer_insert_with_tags_by_name")
   (return-type "none")
+  (leave-guile-mode #f)
   (parameters
     '("GtkTextIter*" "iter")
     '("SCM" "stext")
@@ -477,11 +492,13 @@
   (of-object "GtkTextBuffer")
   (c-name "_wrap_gtk_text_buffer_get_bounds")
   (overrides "gtk_text_buffer_get_bounds")
+  (leave-guile-mode #f)
   (return-type "SCM"))
 (define-method get_selection_bounds
   (of-object "GtkTextBuffer")
   (c-name "_wrap_gtk_text_buffer_get_selection_bounds")
   (overrides "gtk_text_buffer_get_selection_bounds")
+  (leave-guile-mode #f)
   (return-type "SCM"))
 (define-method get_end_iter
   (of-object "GtkTextBuffer")
@@ -521,6 +538,7 @@
   (of-object "GtkTreeModel")
   (c-name "_wrap_gtk_tree_model_get_value")
   (overrides "gtk_tree_model_get_value")
+  (leave-guile-mode #f)
   (return-type "SCM")
   (parameters
     '("GtkTreeIter*" "iter")
@@ -561,6 +579,7 @@
   (of-object "GtkTreeSelection")
   (c-name "_wrap_gtk_tree_selection_get_selected")
   (overrides "gtk_tree_selection_get_selected")
+  (leave-guile-mode #f)
   (return-type "SCM"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -570,6 +589,7 @@
   (overrides "gtk_tree_store_new")
   (is-constructor-of GtkTreeStore)
   (return-type "GtkTreeStore*")
+  (leave-guile-mode #f)
   (parameters
     '("SCM" "types")))
 (define-method set_value
@@ -577,6 +597,7 @@
   (c-name "_wrap_gtk_tree_store_set_value")
   (overrides "gtk_tree_store_set_value")
   (return-type "void")
+  (leave-guile-mode #f)
   (parameters
     '("GtkTreeIter*" "iter")
     '("gint" "column")
@@ -633,6 +654,7 @@
   (of-object "GtkTreeViewColumn")
   (c-name "_wrap_gtk_tree_view_column_set_cell_data_func")
   (overrides "gtk_tree_view_column_set_cell_data_func")
+  (leave-guile-mode #f)
   (parameters
     '("GtkCellRenderer*" "cell")
     '("SCM" "proc")))
