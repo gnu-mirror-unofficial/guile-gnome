@@ -34,6 +34,7 @@
   (c-name "_wrap_gconf_client_notify_add")
   (overrides "gconf_client_notify_add")
   (return-type "guint")
+  (leave-guile-mode #f)
   (parameters
    '("const-gchar*" "namespace_section")
    '("SCM" "proc")
