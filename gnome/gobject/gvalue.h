@@ -82,6 +82,11 @@ void scm_c_register_gvalue_wrappers (GType type,
                                      SCM (*wrap) (const GValue*),
                                      void (*unwrap) (SCM, GValue*));
 
+typedef gpointer (*SCMGValueGetTypeInstanceFunc) (const GValue*);
+typedef void (*SCMGValueSetTypeInstanceFunc) (GValue*, gpointer instance);
+void scm_c_register_gtype_instance_gvalue_wrappers (GType type,
+    SCMGValueGetTypeInstanceFunc getter, SCMGValueSetTypeInstanceFunc setter);
+
 
 
 G_END_DECLS

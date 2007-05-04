@@ -39,6 +39,8 @@ struct _GuileGTypeClass {
     SCM class;
 };
 
+SCM scm_c_gtype_instance_to_scm_typed (gpointer ginstance, GType type);
+
 
 G_END_DECLS
 

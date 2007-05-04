@@ -144,9 +144,13 @@ static void
 scm_c_gtype_instance_instance_init (GTypeInstance *g_instance,
 				    gpointer g_class)
 {
+    GType type;
     SCM class;
 
-    class = scm_c_gtype_lookup_class (G_TYPE_FROM_CLASS (g_class));
+    type = G_TYPE_FROM_CLASS (g_class);
+
+    /* make sure we know about the class */
+    class = scm_c_gtype_lookup_class (type);
     g_assert (SCM_NFALSEP (class));
 
     /* It seems that as an object is initialized, the g_class argument to the
@@ -158,14 +162,15 @@ scm_c_gtype_instance_instance_init (GTypeInstance *g_instance,
      * doubly-specialized on the scheme side), use G_TYPE_FROM_INSTANCE
      * (g_instance). Fucked up! */
 
-    switch (G_TYPE_FUNDAMENTAL (G_TYPE_FROM_CLASS (g_class))) {
+    switch (G_TYPE_FUNDAMENTAL (type)) {
     case G_TYPE_OBJECT: {
 	GuileGTypeClass *guile_class;
 
-	guile_class = g_type_get_qdata (G_TYPE_FROM_CLASS (g_class), quark_guile_gtype_class);
+	guile_class = g_type_get_qdata (type, quark_guile_gtype_class);
 	guile_class->first_instance_created = TRUE;
 
-        scm_call_2 (_initialize, scm_c_gtype_instance_to_scm (g_instance),
+        scm_call_2 (_initialize,
+                    scm_c_gtype_instance_to_scm_typed (g_instance, type),
                     scm_fluid_ref (_gobject_initargs_fluid));
 	break;
     }
@@ -586,6 +591,14 @@ scm_init_gnome_gobject (void)
 #include "gobject.x"
 #endif
     scm_register_gtype_instance_funcs (&gobject_funcs);
+    scm_c_register_gtype_instance_gvalue_wrappers
+        (G_TYPE_OBJECT,
+         (SCMGValueGetTypeInstanceFunc)g_value_get_object,
+         (SCMGValueSetTypeInstanceFunc)g_value_set_object);
+    scm_c_register_gtype_instance_gvalue_wrappers
+        (G_TYPE_INTERFACE,
+         (SCMGValueGetTypeInstanceFunc)g_value_get_object,
+         (SCMGValueSetTypeInstanceFunc)g_value_set_object);
 
     _gobject_initargs_fluid = scm_make_fluid ();
     /* there is a case where the fluid won't be set before entering

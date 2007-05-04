@@ -1,5 +1,29 @@
 2007-05-04  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gobject/gvalue.h: New public function,
+	scm_c_register_gtype_instance_gvalue_wrappers. Long name!
+
+	* gnome/gobject/gvalue.c
+	(scm_c_register_gtype_instance_gvalue_wrappers)
+	(scm_gvalue_to_scm, scm_gvalue_primitive_set, scm_c_gvalue_to_scm)
+	(scm_scm_to_gvalue): Handle GTypeInstances in GValues via a
+	generic wrapper mechanism; allows GStreamer's miniobjects to hook
+	into this system.
+
+	* gnome/gobject/private.h: 
+	* gnome/gobject/gtype.c (scm_c_gtype_instance_to_scm_typed): New
+	function, made to solve the `initialize' bug of gobject.c,
+	described below. Private.
+
+	* gnome/gobject/gparameter.c (scm_init_gnome_gobject_parameters):
+	Register GValue wrappers for GParamSpec.
+
+	* gnome/gobject/gobject.c (scm_c_gtype_instance_instance_init):
+	Fix a longstanding bug (3.5 years) whereby double-derived scheme
+	classes were always had `initialize' called with an instance of
+	the most specific class.
+	(scm_init_gnome_gobject): Register GValue wrappers for GObject.
+
 	* gnome/overrides/glib.defs (g_io_add_watch, string): Don't leave
 	guile mode for functions that deal in SCM.
 

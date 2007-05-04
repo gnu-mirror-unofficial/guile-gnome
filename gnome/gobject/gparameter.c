@@ -28,6 +28,7 @@
 #include <string.h>
 #include "gc.h"
 #include "gparameter.h"
+#include "gvalue.h" /* to register the gvalue getter */
 #include "guile-support.h"
 
 
@@ -638,6 +639,10 @@ scm_init_gnome_gobject_parameters (void)
 #endif
 
     scm_register_gtype_instance_funcs (&gparamspec_funcs);
+    scm_c_register_gtype_instance_gvalue_wrappers
+        (G_TYPE_PARAM,
+         (SCMGValueGetTypeInstanceFunc)g_value_get_param,
+         (SCMGValueSetTypeInstanceFunc)g_value_set_param);
 
     quark_param_struct = g_quark_from_static_string ("%scm-param-struct");
 

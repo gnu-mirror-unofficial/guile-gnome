@@ -692,17 +692,13 @@ scm_register_gtype_instance_sinkfunc (GType type, void (*sinkfunc) (gpointer))
     g_array_append_val (sink_funcs, sf);
 }
 
-/* returns a goops object of class (gtype->class [type of gtypeinstance]) */
+/* returns a goops object of class (gtype->class type). this function exists for
+ * gobject.c:scm_c_gtype_instance_instance_init. all other callers should use
+ * scm_c_gtype_instance_to_scm. */
 SCM
-scm_c_gtype_instance_to_scm (gpointer ginstance)
+scm_c_gtype_instance_to_scm_typed (gpointer ginstance, GType type)
 {
-    GType type;
     SCM instance_smob, class, object;
-
-    if (!ginstance)
-        return SCM_BOOL_F;
-
-    type = G_TYPE_FROM_INSTANCE (ginstance);
 
     object = scm_c_gtype_instance_get_cached_goops (ginstance);
     if (!scm_is_false (object))
@@ -724,6 +720,16 @@ scm_c_gtype_instance_to_scm (gpointer ginstance)
     scm_c_gtype_instance_set_cached_goops (ginstance, object);
     
     return object;
+}
+
+SCM
+scm_c_gtype_instance_to_scm (gpointer ginstance)
+{
+    if (!ginstance)
+        return SCM_BOOL_F;
+
+    return scm_c_gtype_instance_to_scm_typed
+        (ginstance, G_TYPE_FROM_INSTANCE (ginstance));
 }
 
 SCM
