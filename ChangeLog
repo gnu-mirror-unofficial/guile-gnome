@@ -1,3 +1,26 @@
+2007-05-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm: New export, lookup-type-by-alias.
+	(add-type-alias!): Simplify.
+	(lookup-type-by-alias): Renamed from lookup-type, which was a name
+	collision with g-wrap.scm, which confused me for quite some time.
+	(add-type-rule!, find-type-rule): Simplify so that a type rule is
+	simply a string, which maps to a g-wrap typespec as a list of
+	symbols.
+
+	* gnome/gw/support/defs.scm (type-lookup): Always return a list;
+	lists are always valid as typespecs on the g-wrap side.
+	(construct-argument-list): Simplify (?), assuming that type-lookup
+	gives us a list, and for the update in type rules. Removes
+	theoretical ability for multiple C arguments to be given from one
+	Scheme object, but that wasn't used, and if it goes in again some
+	documentation would be good. (This capability still exists via
+	custom wrappers.)
+	(load-defs): lookup-type-by-alias, not lookup-type.
+
+	* gnome/gw/glib-spec.scm (initialize): Add "out" type aliases for
+	all scalar types for which it makes sense.
+
 2007-05-04  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gobject/gvalue.h: New public function,

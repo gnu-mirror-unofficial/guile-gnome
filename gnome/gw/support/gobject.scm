@@ -43,7 +43,7 @@
   #:export (unwrap-null-checked
             
             <gobject-wrapset-base>
-            add-type-alias!
+            add-type-alias! lookup-type-by-alias
             add-type-rule! find-type-rule
             construct-argument-list
             
@@ -79,46 +79,34 @@
 (define-method (add-type-alias! (wrapset <gobject-wrapset-base>)
                                 (alias <string>)
                                 (name <symbol>))
-  (let ((type (lookup-type wrapset name)))
-    (if (not type)
-        (error "tried to alias unknown type" name))
-    (hash-set! (slot-ref wrapset 'type-aliases) alias type)))
+  (hash-set!
+   (slot-ref wrapset 'type-aliases)
+   alias
+   (or (lookup-type wrapset name)
+       (error "tried to alias unknown type" name))))
 
-(define-method (lookup-type (wrapset <gobject-wrapset-base>)
-                            (name <string>))
-  
-  (define (lookup wrapset cont)
-    ;;(format #t "looking for ~S in ~S\n" name wrapset)
-    (let ((ret (hash-ref (slot-ref wrapset 'type-aliases) name)))
-      (cond (ret
-             (cont ret))
-            (else
-             (for-each
-              (lambda (ws)
-                (if (is-a? ws <gobject-wrapset-base>)
-                    (lookup ws cont)))
-              (wrapsets-depended-on wrapset))
-             #f))))
+(define-method (lookup-type-by-alias (wrapset <gobject-wrapset-base>)
+                                     (name <string>))
+  (define (gobject-wrapsets-depended-on wrapset)
+    (filter (lambda (ws) (is-a? ws <gobject-wrapset-base>))
+            (wrapsets-depended-on wrapset)))
+  (define (or-map f l)
+    (if (null? l)
+        #f
+        (or (f (car l)) (or-map f (cdr l)))))
+  (define (lookup wrapset)
+    (or (hash-ref (slot-ref wrapset 'type-aliases) name)
+        (or-map lookup
+                (gobject-wrapsets-depended-on wrapset))))
+  (lookup wrapset))
 
-  (call-with-current-continuation
-   (lambda (exit)
-     (lookup wrapset exit))))
+(define-method (add-type-rule! (self <gobject-wrapset-base>)
+                               (param-type <string>) typespec)
+  (hash-set! (slot-ref self 'type-rules) param-type typespec))
 
-(define-method (add-type-rule! (self <gobject-wrapset-base>) (pattern <list>)
-                               typespec)
-  (if (not (and (not (null? pattern))
-                (every (lambda (elt)
-                           (and (list? elt) (<= 1 (length elt) 2)))
-                       pattern)))
-      (error "invalid type rule pattern"))
-  (hash-set! (slot-ref self 'type-rules) (caar pattern)
-             (cons pattern typespec)))
-
-(define-method (find-type-rule (self <gobject-wrapset-base>) (params <list>))
-  (let ((match (hash-ref (slot-ref self 'type-rules) (caar params))))
-    (if match
-        (values 1 (cdr match))
-        (values 0 #f))))
+(define-method (find-type-rule (self <gobject-wrapset-base>) 
+                               (param-type <string>))
+  (hash-ref (slot-ref self 'type-rules) param-type))
 
 ;; "gtk_accel_group" => gtk-accel-group
 (define (glib-function-name->scheme-name cname)

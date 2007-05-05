@@ -54,6 +54,8 @@
 
 ;; find the gwrap type name for a given type name in a defs file, or
 ;; wrap the type as an opaque gpointer
+;;
+;; return type: g-wrap typespec, as a list of symbols
 (define* (type-lookup ws type return? #:key (ownership #f))
   (define (scan-for-ownership type k)
     (let ((const? (string-prefix? "const-" type)))
@@ -89,13 +91,12 @@
      (else (k type const? options))))
 
   (define (return-type-form type const? options)
-    (let ((type-obj (or (lookup-type ws type)
+    (let ((type-obj (or (lookup-type-by-alias ws type)
                         (wrap-opaque-pointer! ws type))))
-      (cond ((null? options) (name type-obj))
-            ((is-a? type-obj <gw-wct>)
-             ;; gw:wct does not take caller/callee owned type options
-             (if const? (list (name type-obj) 'const) (name type-obj)))
-            (else (cons (name type-obj) options)))))
+      (if (is-a? type-obj <gw-wct>)
+          ;; gw:wct does not take caller/callee owned type options
+          (cons (name type-obj) (if const? '(const) '()))
+          (cons (name type-obj) options))))
 
   (scan-for-ownership
    (regexp-substitute/global #f "\\[\\]" type 'pre "*" 'post)
@@ -107,46 +108,37 @@
 
 (define-method (construct-argument-list (ws <gobject-wrapset-base>)
                                         (parameters <list>))
-  
   (define (parse-restargs restargs)
-    (fold
-     (lambda (restarg options)
-       (case (car restarg)
-         ((null-ok)
-          (cons 'null-ok options))
-         ((callee-owned)
-          (cons 'callee-owned options))
-         ((default)
-          (cons restarg options))
-         (else
-          (warn "unknown rest arg" restarg)
-          options)))
-     '() restargs))
+    (partition!
+     symbol?
+     (fold
+      (lambda (restarg options)
+        (case (car restarg)
+          ((null-ok)
+           (cons 'null-ok options))
+          ((callee-owned)
+           (cons 'callee-owned options))
+          ((default)
+           (cons restarg options))
+          (else
+           (warn "unknown rest arg" restarg)
+           options)))
+      '() restargs)))
   
-  (let loop ((result '()) (params parameters))
-    (if (null? params)
-        (reverse result)
-        (let-values (((count type) (find-type-rule ws params)))
-          (let* ((defs-parameter-spec (car params))
-                 (looked-up
-                  (or type (type-lookup ws (car defs-parameter-spec) #f)))
-                 (parsed (parse-restargs
-                          (cddr defs-parameter-spec)))
-                 (arg-name (string->symbol
-                            (cadr defs-parameter-spec))))
-            (let-values (((options extras) (partition! symbol? parsed)))
-              ;; Ah, hackery...
-              (if (memq 'callee-owned options)
-                  (set! looked-up
-                        (delq! 'callee-owned
-                               (delq! 'caller-owned looked-up))))
-              (loop (cons
-                     (if (list? looked-up)
-                         (append! (list (append looked-up options)
-                                        arg-name) extras)
-                         (append! (list (cons looked-up options) arg-name) extras))
-                     result)
-                    (list-tail params (if (= count 0) 1 count)))))))))
+  (define (parse-argument param)
+    (let ((looked-up (or (find-type-rule ws (car param))
+                         (type-lookup ws (car param) #f)))
+          (arg-name (string->symbol (cadr param))))
+      (let-values (((options extras) (parse-restargs (cddr param))))
+        `((,@(if (memq 'callee-owned options)
+                 ;; why is this here? wcts?
+                 (fold delq '(callee-owned caller-owned) looked-up)
+                 looked-up)
+           ,@options)
+          ,arg-name
+          ,@extras))))
+
+  (map parse-argument parameters))
 
 (define (proc-name-from-cname cname)
   (string->symbol (gtype-name->scheme-name cname)))
@@ -220,7 +212,7 @@
               (substring of-obj-str 1
                          (or (string-index of-obj-str #\*)
                              (1- (string-length of-obj-str)))))
-             (g-wrap-type (lookup-type ws of-object))
+             (g-wrap-type (lookup-type-by-alias ws of-object))
              (hack-module (resolve-module '(gnome gw support gobject))))
         (cond
          ((or (is-a? g-wrap-type <gw-wct>)
