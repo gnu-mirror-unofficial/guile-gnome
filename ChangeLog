@@ -19,7 +19,7 @@
 	(load-defs): lookup-type-by-alias, not lookup-type.
 
 	* gnome/gw/glib-spec.scm (initialize): Add "out" type aliases for
-	all scalar types for which it makes sense.
+	all scalar types for which it makes sense. gunichar is a guint32.
 
 2007-05-04  Andy Wingo  <wingo@pobox.com>
 
