@@ -1,3 +1,8 @@
+2007-05-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gdk-spec.scm (initialize): The glib wrapset declares
+	the type rules we need, remove ours.
+
 2007-05-04  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/overrides/gtk.defs (add_actions, add_toggle_actions)

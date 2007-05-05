@@ -117,9 +117,6 @@
   ;; a hack now -- dunno what to do with this...
   (add-type-alias! ws "GdkNativeWindow" 'unsigned-long)
   
-  (add-type-rule! ws '(("gint*" "*")) '(int out))
-  (add-type-rule! ws '(("guint*" "*")) '(unsigned-int out))
-  
   (wrap-custom-boxed!
    "GdkRectangle" "GDK_TYPE_RECTANGLE"
    ;; wrap
