@@ -1,6 +1,7 @@
+;; -*- scheme -*-
 ;; guile-gnome
-;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
-
+;; Copyright (C) 2007 Andy Wingo <wingo at pobox dot com>
+;;
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
 ;; published by the Free Software Foundation; either version 2 of   
@@ -20,31 +21,11 @@
 
 ;;; Commentary:
 ;;
-;;g-wrap specification for ATK.
+;;Custom wrapper definitions.
 ;;
 ;;; Code:
 
-(define-module (gnome gw atk-spec)
-  #:use-module (oop goops)
-  #:use-module (gnome gw support g-wrap)
-  #:use-module (gnome gw gobject-spec)
-  #:use-module (gnome gw support gobject)
-  #:use-module (gnome gw support defs))
-
-(define-class <atk-wrapset> (<gobject-wrapset-base>)
-  #:id 'gnome-atk
-  #:dependencies '(standard gnome-glib gnome-gobject))
-
-(define-method (global-declarations-cg (self <atk-wrapset>))
-  (list
-   (next-method)
-   "#include <atk/atk.h>\n"
-   "#include <atk/atk-enum-types.h>\n"))
-  
-(define-method (initialize (ws <atk-wrapset>) initargs)
-
-  (next-method ws (append '(#:module (gnome gw atk)) initargs))
-
-  (add-type-alias! ws "AtkState" 'long-long)
-  
-  (load-defs-with-overrides ws "gnome/defs/atk.defs"))
+(ignore "atk_table_get_selected_rows" ; these have gint**
+        "atk_table_get_selected_columns"
+        "atk_add_key_event_listener" ; a function we don't know about
+        )

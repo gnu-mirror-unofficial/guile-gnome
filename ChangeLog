@@ -1,3 +1,10 @@
+2007-05-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/atk-spec.scm (initialize): 
+	* gnome/overrides/Makefile.am: 
+	* gnome/overrides/atk.defs: Add overrides for ATK, ignoring some
+	functions.
+
 2006-12-15  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.90 ==
