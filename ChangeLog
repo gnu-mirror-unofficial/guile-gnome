@@ -1,5 +1,9 @@
 2007-05-06  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gtk/gdk-event.scm: Button accessors work for
+	2button-press, 2button-release, 3button-press, and 3button-release
+	also. Thanks to Greg Troxel for the tip.
+
 	* gnome/overrides/gtk.defs (lookup, get_name): Fix GtkIconSize
 	methods to be functions (longstanding bug).
 	(gtk_cell_renderer_get_size, gtk_tree_view_column_cell_get_size):

@@ -62,17 +62,29 @@
   selection selection 3
   (string->symbol val))
    
-(define-gdk-event-accessor (button-press button-release) button x 4
+(define-gdk-event-accessor (button-press button-release
+                            2button-press 2button-release
+                            3button-press 3button-release) button x 4
   val)
-(define-gdk-event-accessor (button-press button-release) button y 5
+(define-gdk-event-accessor (button-press button-release
+                            2button-press 2button-release
+                            3button-press 3button-release) button y 5
   val)
-(define-gdk-event-accessor (button-press button-release) button modifiers 6
+(define-gdk-event-accessor (button-press button-release
+                            2button-press 2button-release
+                            3button-press 3button-release) button modifiers 6
   (gflags->symbol-list (make <gdk-modifier-type> #:value val)))
-(define-gdk-event-accessor (button-press button-release) button button 7
+(define-gdk-event-accessor (button-press button-release
+                            2button-press 2button-release
+                            3button-press 3button-release) button button 7
   val)
-(define-gdk-event-accessor (button-press button-release) button x-root 9
+(define-gdk-event-accessor (button-press button-release
+                            2button-press 2button-release
+                            3button-press 3button-release) button x-root 9
   val)
-(define-gdk-event-accessor (button-press button-release) button y-root 10
+(define-gdk-event-accessor (button-press button-release
+                            2button-press 2button-release
+                            3button-press 3button-release) button y-root 10
   val)
 
 (define-gdk-event-accessor (motion-notify) motion modifiers 6
