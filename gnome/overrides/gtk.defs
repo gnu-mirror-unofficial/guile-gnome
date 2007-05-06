@@ -140,6 +140,27 @@
    '("GtkFileSelection*" "selection")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkIconSize
+(define-function lookup
+  (c-name "gtk_icon_size_lookup")
+  (overrides "gtk_icon_size_lookup")
+  (return-type "gboolean")
+  (parameters
+    '("GtkIconSize" "size")
+    '("gint*" "width")
+    '("gint*" "height")
+  )
+)
+(define-function get_name
+  (c-name "gtk_icon_size_get_name")
+  (overrides "gtk_icon_size_get_name")
+  (return-type "const-gchar*")
+  (parameters
+    '("GtkIconSize" "size")
+  )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkListStore
 (define-function gtk_list_store_new
   (c-name "_wrap_gtk_list_store_new")
@@ -764,6 +785,11 @@
         "gtk_accel_group_query"
 
         "gtk_calendar_display_options"
+
+        ;; hack around g-wrap 1.9.8 problems with RTI; see 6 May 2007
+        ;; mail to list
+        "gtk_cell_renderer_get_size"
+        "gtk_tree_view_column_cell_get_size"
 
         ;; don't know why i'm ignoring these, but pygtk does
         "gtk_container_add_child_arg_type"
