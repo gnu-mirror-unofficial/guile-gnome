@@ -65,11 +65,11 @@
   ;; automatic "out" aliases, except for "void" and the byte (char)
   ;; types.
   (for-each
-   (lambda (pair)
-     (add-type-alias! ws (car pair) (cadr pair))
-     (if (cddr pair)
-         (add-type-rule! ws (string-append (car pair) "*")
-                         (list (cadr pair) 'out))))
+   (lambda (triple)
+     (add-type-alias! ws (car triple) (cadr triple))
+     (if (cddr triple)
+         (add-type-rule! ws (string-append (car triple) "*")
+                         (list (cadr triple) 'out))))
    '(;; Basic C types
      ("void" void . #f)
      ("int" int)
@@ -102,8 +102,8 @@
      ("gboolean" bool)
      ("gchar" char . #f)
      ("guchar" unsigned-char . #f)
-     ("char*" mchars)
-     ("gchar*" mchars)
+     ("char*" mchars . #f)
+     ("gchar*" mchars . #f)
      ("gdouble" double)
      ("gfloat" float)
      ("gshort" short)

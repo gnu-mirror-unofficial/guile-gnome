@@ -85,8 +85,7 @@
    (or (lookup-type wrapset name)
        (error "tried to alias unknown type" name))))
 
-(define-method (lookup-type-by-alias (wrapset <gobject-wrapset-base>)
-                                     (name <string>))
+(define (gobject-wrapsets-lookup-recursive ws slot key)
   (define (gobject-wrapsets-depended-on wrapset)
     (filter (lambda (ws) (is-a? ws <gobject-wrapset-base>))
             (wrapsets-depended-on wrapset)))
@@ -95,10 +94,14 @@
         #f
         (or (f (car l)) (or-map f (cdr l)))))
   (define (lookup wrapset)
-    (or (hash-ref (slot-ref wrapset 'type-aliases) name)
+    (or (hash-ref (slot-ref wrapset slot) key)
         (or-map lookup
                 (gobject-wrapsets-depended-on wrapset))))
-  (lookup wrapset))
+  (lookup ws))
+
+(define-method (lookup-type-by-alias (wrapset <gobject-wrapset-base>)
+                                     (name <string>))
+  (gobject-wrapsets-lookup-recursive wrapset 'type-aliases name))
 
 (define-method (add-type-rule! (self <gobject-wrapset-base>)
                                (param-type <string>) typespec)
@@ -106,7 +109,7 @@
 
 (define-method (find-type-rule (self <gobject-wrapset-base>) 
                                (param-type <string>))
-  (hash-ref (slot-ref self 'type-rules) param-type))
+  (gobject-wrapsets-lookup-recursive self 'type-rules param-type))
 
 ;; "gtk_accel_group" => gtk-accel-group
 (define (glib-function-name->scheme-name cname)

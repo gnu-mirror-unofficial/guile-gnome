@@ -1,3 +1,13 @@
+2007-05-06  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (find-type-rule): Look up type
+	rules recursively, fixes a very old bug in which out parameters
+	are only recognized automatically within the same wrapset that
+	defines the rule.
+
+	* gnome/gw/glib-spec.scm (initialize): Fix char* being marked for
+	automatic 'out aliasing.
+
 2007-05-05  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gobject.scm: New export, lookup-type-by-alias.
