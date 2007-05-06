@@ -220,6 +220,24 @@
   (return-type "GtkTreeIter*"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkMenu
+;; fixme: need a better wrapper for this one
+(define-method popup
+  (of-object "GtkMenu")
+  (c-name "gtk_menu_popup")
+  (overrides "gtk_menu_popup")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "parent_menu_shell" (null-ok))
+    '("GtkWidget*" "parent_menu_item" (null-ok))
+    '("GtkMenuPositionFunc" "func" (null-ok))
+    '("gpointer" "data" (null-ok))
+    '("guint" "button")
+    '("guint32" "activate_time")
+  )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkMessageDialog
 (ignore "gtk_message_dialog_new")
 (define-function gtk_message_dialog_new

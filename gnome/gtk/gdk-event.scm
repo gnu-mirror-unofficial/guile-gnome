@@ -64,6 +64,10 @@
    
 (define-gdk-event-accessor (button-press button-release
                             2button-press 2button-release
+                            3button-press 3button-release) button time 3
+  val)
+(define-gdk-event-accessor (button-press button-release
+                            2button-press 2button-release
                             3button-press 3button-release) button x 4
   val)
 (define-gdk-event-accessor (button-press button-release
