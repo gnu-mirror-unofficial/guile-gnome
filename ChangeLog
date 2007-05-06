@@ -1,5 +1,8 @@
 2007-05-07  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/overrides/gtk-customs.defs: Remove popup method from here.
+	I had forgotten about this file...
+
 	* gnome/overrides/gtk.defs (gtk-menu-popup): Sprinkle null-ok;
 	thanks to Steve Tell for the tip.
 

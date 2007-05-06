@@ -1413,20 +1413,6 @@
     '("GtkAdjustment*" "adjustment" (null-ok))))
 
 (define-method
-  popup
-  (of-object "GtkMenu")
-  (c-name "gtk_menu_popup")
-  (overrides "gtk_menu_popup")
-  (return-type "none")
-  (parameters
-    '("GtkWidget*" "parent_menu_shell" (null-ok))
-    '("GtkWidget*" "parent_menu_item" (null-ok))
-    '("GtkMenuPositionFunc" "func")
-    '("gpointer" "data")
-    '("guint" "button")
-    '("guint32" "activate_time")))
-
-(define-method
   set_active
   (of-object "GtkMenu")
   (c-name "gtk_menu_set_active")
