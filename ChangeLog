@@ -1,5 +1,12 @@
 2007-05-10  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/glib-support.c (_wrap_g_main_loop_run): Rework signal
+	handling code to use a special gsource. The source is woken when
+	SIGINT is delivered, via writing a byte on an fd, which is what
+	g_main_context_wakeup does; however it also does some locking.
+	Unsure about the safety of all of this, we'll see how it works
+	out.
+
 	* == Released guile-gnome-platform version 2.15.91 ==
 
 2007-05-10  Andy Wingo  <wingo@pobox.com>

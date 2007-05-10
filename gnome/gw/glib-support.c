@@ -22,6 +22,9 @@
  * Boston, MA  02111-1307,  USA       gnu@gnu.org
  */
 
+#include <signal.h>
+#include <string.h>
+
 #include "glib-support.h"
 #include <g-wrap/guile-wct.h>
 
@@ -31,71 +34,131 @@
 
 static SCM iochannel_type = SCM_BOOL_F;
 
-/* The signal code doesn't work with 1.7 */
-#if (SCM_MAJOR_VERSION == 1) && (SCM_MINOR_VERSION == 6)
+static gboolean caught_intr = FALSE;
+static GMainContext *wakeup_context = NULL;
 
-static SCM deliver_signals;
-
-void
-scm_init_glib (void)
+typedef struct
 {
-    deliver_signals = scm_permanent_object
-        (SCM_VARIABLE_REF (scm_c_lookup ("%deliver-signals")));
+    GSource source;
+    GMainLoop *loop;
+    struct sigaction prev_sigaction;
+    int signum;
+} SignalSource;
+
+static gboolean
+signal_source_prepare (GSource * source, gint * timeout)
+{
+    SignalSource *ssrc = (SignalSource *) source;
+
+    *timeout = -1;
+    return ssrc->signum != 0;
 }
 
 static gboolean
-handle_signals (gpointer unused) 
+signal_source_check (GSource * source)
 {
-    scm_call_0 (deliver_signals);
-    return TRUE;
+    SignalSource *ssrc = (SignalSource *) source;
+
+    if (caught_intr)
+        g_main_loop_quit (ssrc->loop);
+
+    return FALSE;
+}
+
+static gboolean
+signal_source_dispatch (GSource * source, GSourceFunc callback,
+                        gpointer user_data)
+{
+    g_assert_not_reached ();
 }
 
 static void
-add_interrupt_handler (guint *timeout)
+signal_source_finalize (GSource * source)
 {
-    /* process interrupts every tenth of a second */
-    *timeout = g_timeout_add (100, handle_signals, NULL);
+    SignalSource *ssrc = (SignalSource *) source;
+
+    sigaction (SIGINT, &ssrc->prev_sigaction, NULL);
+    caught_intr = FALSE;
+
+    g_main_loop_unref (ssrc->loop);
+    ssrc->loop = NULL;
 }
 
-static SCM
-run_loop (GMainLoop *loop)
-{
-    g_main_loop_run (loop);
-    return SCM_UNSPECIFIED;
-}
+static GSourceFuncs signal_source_funcs = {
+    signal_source_prepare,
+    signal_source_check,
+    signal_source_dispatch,
+    signal_source_finalize
+};
 
 static void
-remove_interrupt_handler (guint *timeout)
+sigint_handler (int signum)
 {
-    g_source_remove (*timeout);
-    *timeout = 0;
+    caught_intr = TRUE;
+    g_main_context_wakeup (wakeup_context);
 }
 
-void
-_wrap_g_main_loop_run (GMainLoop *loop)
+static SignalSource*
+signal_source_new (GMainLoop *loop)
 {
-    guint timeout;
+    SignalSource *source;
+    struct sigaction action;
+    GMainContext *ctx, *prev_ctx;
 
-    scm_internal_dynamic_wind ((scm_t_guard)add_interrupt_handler,
-                               (scm_t_inner)run_loop,
-                               (scm_t_guard)remove_interrupt_handler,
-                               loop,
-                               &timeout);
+    g_return_val_if_fail (loop != NULL, NULL);
+
+    source = (SignalSource *) g_source_new (&signal_source_funcs,
+                                            sizeof (SignalSource));
+    g_main_loop_ref (loop);
+    source->loop = loop;
+
+    memset (&action, 0, sizeof (action));
+    memset (&source->prev_sigaction, 0, sizeof (source->prev_sigaction));
+    action.sa_handler = sigint_handler;
+    sigaction (SIGINT, &action, &source->prev_sigaction);
+
+    /* not fully threadsafe :/ */
+    prev_ctx = wakeup_context;
+    ctx = g_main_loop_get_context (loop);
+    g_main_context_ref (ctx);
+    wakeup_context = ctx;
+    if (prev_ctx)
+        g_main_context_unref (prev_ctx);
+
+    /* context acquires a ref on the source */
+    g_source_attach ((GSource *) source, ctx);
+    g_source_unref ((GSource *) source);
+
+    return source;
 }
-#else /* we're not on Guile 1.6 */
 
 void
 scm_init_glib (void)
 {
+    /* noop */
 }
 
 void
 _wrap_g_main_loop_run (GMainLoop *loop)
 {
-    g_main_loop_run (loop);
-}
+    GSource *source = NULL;
 
-#endif
+    scm_dynwind_begin (0);
+
+    caught_intr = FALSE;
+    source = (GSource*)signal_source_new (loop);
+    scm_dynwind_unwind_handler ((void*)(void*)g_source_destroy, source,
+                                SCM_F_WIND_EXPLICITLY);
+
+    g_main_loop_run (loop);
+    
+    if (caught_intr)
+        scm_error (scm_from_locale_symbol ("signal"),
+                   "g-main-loop-run", NULL, SCM_BOOL_F,
+                   scm_list_1 (scm_from_int (SIGINT)));
+    
+    scm_dynwind_end();
+}
 
 
 SCM
