@@ -1,3 +1,11 @@
+2007-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.91 ==
+
+2007-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.15.91.
+
 2007-05-06  Andy Wingo  <wingo@pobox.com>
 
 	* examples/example-1.scm: Put in a modeline.
