@@ -1,5 +1,7 @@
 2007-05-06  Andy Wingo  <wingo@pobox.com>
 
+	* examples/example-1.scm: Put in a modeline.
+
 	* gnome/gw/support/gobject.scm (find-type-rule): Look up type
 	rules recursively, fixes a very old bug in which out parameters
 	are only recognized automatically within the same wrapset that

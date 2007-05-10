@@ -1,4 +1,5 @@
 #! /bin/sh
+# -*- scheme -*-
 exec guile-gnome-0 -s $0
 !#
 ;; guile-gnome
