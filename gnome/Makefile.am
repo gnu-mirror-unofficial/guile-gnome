@@ -10,4 +10,4 @@ SUBDIRS += gw
 endif
 
 EXTRA_DIST = atk.scm
-DIST_SUBDIRS = gw
+DIST_SUBDIRS = gw overrides
