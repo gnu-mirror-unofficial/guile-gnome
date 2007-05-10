@@ -1,3 +1,7 @@
+2007-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.91 ==
+
 2007-05-05  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/canvas-spec.scm (initialize): The glib wrapset declares
