@@ -70,7 +70,7 @@ guile_corba_generic_make_type_name (const gchar *StudlyCaps)
     
     ret = scm_call_1 (de_studly_capsify, scm_makfrom0str (StudlyCaps));
 
-    return strdup (SCM_STRING_CHARS (ret));
+    return scm_to_locale_string (ret);
 }
 
 static gchar *
