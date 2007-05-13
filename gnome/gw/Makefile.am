@@ -14,6 +14,8 @@ guilegnomelib_LTLIBRARIES = libgw-guile-gnome-pango.la
 ########################################################################
 ## pango
 nodist_libgw_guile_gnome_pango_la_SOURCES = guile-gnome-gw-pango.c 
+# uncomment if you add c helpers
+# libgw_guile_gnome_pango_la_SOURCES = pango-support.c pango-support.h
 
 libgw_guile_gnome_pango_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(AM_CFLAGS) $(PANGO_CFLAGS) $(GUILE_CFLAGS) \

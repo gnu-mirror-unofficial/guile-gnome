@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2003,2004,2007 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -45,7 +45,7 @@
 (define-method (initialize (ws <pango-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gw pango) initargs)))
 
-  (add-type-alias! ws "PangoGlyph" 'unsigned-long)
+  (add-type-alias! ws "PangoGlyph" 'unsigned-int32)
 
-  (load-defs ws "gnome/defs/pango.defs"))
+  (load-defs-with-overrides ws "gnome/defs/pango.defs"))
 

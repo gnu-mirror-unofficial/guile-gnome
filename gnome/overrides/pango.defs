@@ -1,0 +1,98 @@
+;; -*- scheme -*-
+;; guile-gnome
+;; Copyright (C) 2007 Andy Wingo <wingo at pobox dot com>
+;;
+;; This program is free software; you can redistribute it and/or    
+;; modify it under the terms of the GNU General Public License as   
+;; published by the Free Software Foundation; either version 2 of   
+;; the License, or (at your option) any later version.              
+;;                                                                  
+;; This program is distributed in the hope that it will be useful,  
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of   
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+;; GNU General Public License for more details.                     
+;;                                                                  
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, contact:
+;;
+;; Free Software Foundation           Voice:  +1-617-542-5942
+;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+;; Boston, MA  02111-1307,  USA       gnu@gnu.org
+
+;;; Commentary:
+;;
+;;Custom wrapper definitions.
+;;
+;;; Code:
+
+(define-method get_attrs
+  (of-object "PangoAttrIterator")
+  (c-name "pango_attr_iterator_get_attrs")
+  (overrides "pango_attr_iterator_get_attrs")
+  (return-type "GSList*-of-PangoAttribute*")
+)
+
+(define-function pango_itemize
+  (c-name "pango_itemize")
+  (overrides "pango_itemize")
+  (return-type "GList*-of-PangoItem*")
+  (parameters
+    '("PangoContext*" "context")
+    '("const-char*" "text")
+    '("int" "start_index")
+    '("int" "length")
+    '("PangoAttrList*" "attrs")
+    '("PangoAttrIterator*" "cached_iter")
+  )
+)
+
+(define-function pango_itemize_with_base_dir
+  (c-name "pango_itemize_with_base_dir")
+  (overrides "pango_itemize_with_base_dir")
+  (return-type "GList*-of-PangoItem*")
+  (parameters
+    '("PangoContext*" "context")
+    '("PangoDirection" "base_dir")
+    '("const-char*" "text")
+    '("int" "start_index")
+    '("int" "length")
+    '("PangoAttrList*" "attrs")
+    '("PangoAttrIterator*" "cached_iter")
+  )
+)
+
+(define-function pango_reorder_items
+  (c-name "pango_reorder_items")
+  (overrides "pango_reorder_items")
+  (return-type "GList*-of-PangoItem*")
+  (parameters
+    '("GList*-of-PangoItem*" "logical_items")
+  )
+)
+
+(define-method apply_attrs
+  (of-object "PangoGlyphItem")
+  (c-name "pango_glyph_item_apply_attrs")
+  (overrides "pango_glyph_item_apply_attrs")
+  (return-type "GSList*-of-PangoGlyphItem*")
+  (parameters
+    '("const-char*" "text")
+    '("PangoAttrList*" "list")
+  )
+)
+
+(define-method get_lines
+  (of-object "PangoLayout")
+  (c-name "pango_layout_get_lines")
+  (overrides "pango_layout_get_lines")
+  (return-type "GSList*-of-PangoLayoutLine*")
+)
+
+(ignore "pango_context_new"
+        "pango_context_set_font_map"
+        "pango_font_metrics_new"
+        "pango_font_map_get_shape_engine_type"
+        "pango_map_get_engines"
+        "pango_default_break")
+(ignore-glob "script_engine_*")
+

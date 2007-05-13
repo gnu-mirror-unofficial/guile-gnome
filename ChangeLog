@@ -1,3 +1,11 @@
+2007-05-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/pango-spec.scm (initialize): 
+	* gnome/Makefile.am: 
+	* gnome/overrides/pango.defs: 
+	* gnome/gw/Makefile.am: Add overrides for pango 1.14. PangoGlyph
+	is a uint32, not an unsigned long.
+
 2007-05-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.91 ==
