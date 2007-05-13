@@ -1,7 +1,7 @@
 ;; -*- scheme -*-
 ;; guile-gnome
 ;; Copyright (C) 2005 Andreas Rottmann <rotty at debian dot org>
-;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2003,2004,2007 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -56,21 +56,147 @@
               "*_setv"
               "*_user_data"
               "*_func"
-              "g_source_set_callback*"
-              "g_timeout_add*"
-              "g_timeout_remove*"
+              "*win32*"
+
+              "g_array_*"
+              "g_ascii_*"
+              "g_async_queue_*"
+              "g_atomic_*"
+
+              "g_base64_*_step"
+              "g_bit_*"
+              "g_build_*"
+              "g_byte_array_*"
+
+              "g_cache_*"
+              "g_child_watch_add*"
+              "g_completion_*"
+              "g_convert*"
+
+              "g_datalist_*"
+              "g_dataset_*"
+              "g_date_*"
+              "g_dir_*"
+
+              "g_error_*"
+
+              "g_hash_table_*"
+              "g_hook_*"
+
+              "g_iconv*"
               "g_idle_add*"
               "g_idle_remove*"
+              "g_int_*"
               "g_io_add_watch_full"
-              "g_error_*"
-              "g_child_watch_add*"
-              "g_parse_debug_string"
-              "g_snprintf"
-              "g_vsnprintf"
-              "g_atexit"
-              "*win32*")
 
-(ignore "g_main_context_wait"
+              "g_key_file_*"
+
+              "g_list_*"
+              "g_log*"
+
+              "g_malloc*"
+              "g_mapped_file_*"
+              "g_markup_*"
+              "g_mem_*"
+              "g_mkdir*"
+
+              "g_node_*"
+
+              "g_on_error_*"
+              "g_option_*"
+
+              "g_parse_debug_string"
+              "g_pattern_*"
+              "g_printf*"
+              "g_ptr_array_*"
+
+              "g_queue_*"
+
+              "g_rand_*"
+              "g_random_*"
+              "g_relation_*"
+
+              "g_scanner_*"
+              "g_slice_*"
+              "g_slist_*"
+              "g_snprintf"
+              "g_source_set_callback*"
+              "g_spawn_*"
+              "g_static_*"
+              "g_str*"
+
+              "g_thread_*"
+              "g_time_*"
+              "g_timeout_add*"
+              "g_timeout_remove*"
+              "g_timer_*"
+              "g_trash_stack_*"
+              "g_tree_*"
+              "g_try_*"
+              "g_tuples_*")
+
+(ignore "alloca"
+        "atexit"
+        "g_access"
+        "g_allocator_free"
+        "g_assert_warning"
+        "g_atexit"
+        "g_base64_encode_close"
+        "g_blow_chunks"
+        "g_chdir"
+        "g_chmod"
+        "g_clear_error"
+        "g_creat"
+        "g_direct_equal"
+        "g_direct_hash"
+        "g_error"
+        "g_file_set_contents"
+        "g_fopen"
+        "g_fprintf"
+        "g_free"
+        "g_freopen"
+        "g_get_charset"
+        "g_get_filename_charsets"
+        "g_get_language_names"
+        "g_get_system_data_dirs"
+        "g_intern_static_string"
+        "g_intern_string"
+        "g_listenv"
+        "g_lstat"
+        "g_main_context_wait"
+        "g_memdup"
+        "g_once_impl"
+        "g_open"
+        "g_printerr"
         "g_propagate_error"
+        "g_qsort_with_data"
+        "g_quark_from_static_string"
+        "g_realloc"
+        "g_remove"
+        "g_rename"
+        "g_return_if_fail_warning"
+        "g_rmdir"
         "g_set_error"
-        "g_clear_error")
+        "g_set_print_handler"
+        "g_set_printerr_handler"
+        "g_shell_error_quark"
+        "g_shell_parse_argv"
+        "g_source_set_funcs"
+        "g_spaced_primes_closest"
+        "g_sprintf"
+        "g_stat"
+        "g_stpcpy"
+        "g_unicode_canonical_decomposition"
+        "g_unicode_canonical_ordering"
+        "g_unlink"
+        "g_uri_list_extract_uris"
+        "g_usleep"
+        "g_vasprintf"
+        "g_vfprintf"
+        "g_vprintf"
+        "g_vsprintf"
+        "g_vsnprintf"
+        "glib_check_version"
+        "glib_dummy_decl"
+        "guint64" ; h2defs bug with GLIB_VAR
+        )

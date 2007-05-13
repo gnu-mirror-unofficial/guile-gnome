@@ -121,6 +121,8 @@
      ("gint64" int64)
      ("guint64" unsigned-int64)
      
+     ("time_t" long)
+
      ("GQuark" unsigned-int) ; need to wrap this one better
      ("GPid" int)
      ("GTime" int32)
