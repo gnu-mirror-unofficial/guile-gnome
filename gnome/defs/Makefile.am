@@ -15,6 +15,13 @@ glib:
 	   --with-header='(include type-ignores) (include "glib-types.defs") (include overrides)' \
 	   $(DEFS_HEADER_DIR)/glib-2.0/glib/*.h > glib.defs
 
+atk:
+	../../../h2def.py --types \
+	   $(DEFS_HEADER_DIR)/atk-1.0/atk/*.h > atk-types.defs
+	../../../h2def.py --procs \
+	   --with-header='(include type-ignores) (include "common-ignores.defs") (include "atk-types.defs") (include overrides)' \
+	   $(DEFS_HEADER_DIR)/atk-1.0/atk/*.h > atk.defs
+
 gdk-pixbuf:
 	../../../h2def.py --types \
 	   $(DEFS_HEADER_DIR)/gtk-2.0/gdk-pixbuf/gdk-pixbuf*.h > gdk-pixbuf-types.defs

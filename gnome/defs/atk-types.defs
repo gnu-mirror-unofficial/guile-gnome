@@ -1,82 +1,14 @@
 ;; -*- scheme -*-
-; object definitions ...
-
-(define-interface Action
-  (in-module "Atk")
-  (c-name "AtkAction")
-  (gtype-id "ATK_TYPE_ACTION"))
-
-(define-object Hyperlink
-  (in-module "Atk")
-  (parent "GObject")
-  (c-name "AtkHyperlink")
-  (gtype-id "ATK_TYPE_HYPERLINK")
-)
-
-(define-object Object
-  (in-module "Atk")
-  (parent "GObject")
-  (c-name "AtkObject")
-  (gtype-id "ATK_TYPE_OBJECT")
-)
-
-(define-object NoOpObject
-  (in-module "Atk")
-  (parent "AtkObject")
-  (c-name "AtkNoOpObject")
-  (gtype-id "ATK_TYPE_NO_OP_OBJECT")
-)
-
-(define-object ObjectFactory
-  (in-module "Atk")
-  (parent "GObject")
-  (c-name "AtkObjectFactory")
-  (gtype-id "ATK_TYPE_OBJECT_FACTORY")
-)
-
-(define-object NoOpObjectFactory
-  (in-module "Atk")
-  (parent "AtkObjectFactory")
-  (c-name "AtkNoOpObjectFactory")
-  (gtype-id "ATK_TYPE_NO_OP_OBJECT_FACTORY")
-)
-
-(define-object Registry
-  (in-module "Atk")
-  (parent "GObject")
-  (c-name "AtkRegistry")
-  (gtype-id "ATK_TYPE_REGISTRY")
-)
-
-(define-object Relation
-  (in-module "Atk")
-  (parent "GObject")
-  (c-name "AtkRelation")
-  (gtype-id "ATK_TYPE_RELATION")
-)
-
-(define-object RelationSet
-  (in-module "Atk")
-  (parent "GObject")
-  (c-name "AtkRelationSet")
-  (gtype-id "ATK_TYPE_RELATION_SET")
-)
-
-(define-object StateSet
-  (in-module "Atk")
-  (parent "GObject")
-  (c-name "AtkStateSet")
-  (gtype-id "ATK_TYPE_STATE_SET")
-)
-
-(define-object Util
-  (in-module "Atk")
-  (parent "GObject")
-  (c-name "AtkUtil")
-  (gtype-id "ATK_TYPE_UTIL")
-)
-
 ;; Enumerations and flags ...
+
+(define-flags HyperlinkStateFlags
+  (in-module "Atk")
+  (c-name "AtkHyperlinkStateFlags")
+  (gtype-id "ATK_TYPE_HYPERLINK_STATE_FLAGS")
+  (values
+    '("e" "ATK_HYPERLINK_IS_INLINE")
+  )
+)
 
 (define-enum Role
   (in-module "Atk")
@@ -152,6 +84,25 @@
     '("unknown" "ATK_ROLE_UNKNOWN")
     '("viewport" "ATK_ROLE_VIEWPORT")
     '("window" "ATK_ROLE_WINDOW")
+    '("header" "ATK_ROLE_HEADER")
+    '("footer" "ATK_ROLE_FOOTER")
+    '("paragraph" "ATK_ROLE_PARAGRAPH")
+    '("ruler" "ATK_ROLE_RULER")
+    '("application" "ATK_ROLE_APPLICATION")
+    '("autocomplete" "ATK_ROLE_AUTOCOMPLETE")
+    '("editbar" "ATK_ROLE_EDITBAR")
+    '("embedded" "ATK_ROLE_EMBEDDED")
+    '("entry" "ATK_ROLE_ENTRY")
+    '("chart" "ATK_ROLE_CHART")
+    '("caption" "ATK_ROLE_CAPTION")
+    '("document-frame" "ATK_ROLE_DOCUMENT_FRAME")
+    '("heading" "ATK_ROLE_HEADING")
+    '("page" "ATK_ROLE_PAGE")
+    '("section" "ATK_ROLE_SECTION")
+    '("redundant-object" "ATK_ROLE_REDUNDANT_OBJECT")
+    '("form" "ATK_ROLE_FORM")
+    '("link" "ATK_ROLE_LINK")
+    '("input-method-window" "ATK_ROLE_INPUT_METHOD_WINDOW")
     '("last-defined" "ATK_ROLE_LAST_DEFINED")
   )
 )
@@ -168,6 +119,7 @@
     '("mdi" "ATK_LAYER_MDI")
     '("popup" "ATK_LAYER_POPUP")
     '("overlay" "ATK_LAYER_OVERLAY")
+    '("window" "ATK_LAYER_WINDOW")
   )
 )
 
@@ -183,6 +135,15 @@
     '("labelled-by" "ATK_RELATION_LABELLED_BY")
     '("member-of" "ATK_RELATION_MEMBER_OF")
     '("node-child-of" "ATK_RELATION_NODE_CHILD_OF")
+    '("flows-to" "ATK_RELATION_FLOWS_TO")
+    '("flows-from" "ATK_RELATION_FLOWS_FROM")
+    '("subwindow-of" "ATK_RELATION_SUBWINDOW_OF")
+    '("embeds" "ATK_RELATION_EMBEDS")
+    '("embedded-by" "ATK_RELATION_EMBEDDED_BY")
+    '("popup-for" "ATK_RELATION_POPUP_FOR")
+    '("parent-window-of" "ATK_RELATION_PARENT_WINDOW_OF")
+    '("described-by" "ATK_RELATION_DESCRIBED_BY")
+    '("description-for" "ATK_RELATION_DESCRIPTION_FOR")
     '("last-defined" "ATK_RELATION_LAST_DEFINED")
   )
 )
@@ -221,6 +182,16 @@
     '("transient" "ATK_STATE_TRANSIENT")
     '("vertical" "ATK_STATE_VERTICAL")
     '("visible" "ATK_STATE_VISIBLE")
+    '("manages-descendants" "ATK_STATE_MANAGES_DESCENDANTS")
+    '("indeterminate" "ATK_STATE_INDETERMINATE")
+    '("truncated" "ATK_STATE_TRUNCATED")
+    '("required" "ATK_STATE_REQUIRED")
+    '("invalid-entry" "ATK_STATE_INVALID_ENTRY")
+    '("supports-autocompletion" "ATK_STATE_SUPPORTS_AUTOCOMPLETION")
+    '("selectable-text" "ATK_STATE_SELECTABLE_TEXT")
+    '("default" "ATK_STATE_DEFAULT")
+    '("animated" "ATK_STATE_ANIMATED")
+    '("visited" "ATK_STATE_VISITED")
     '("last-defined" "ATK_STATE_LAST_DEFINED")
   )
 )
@@ -230,6 +201,7 @@
   (c-name "AtkTextAttribute")
   (gtype-id "ATK_TYPE_TEXT_ATTRIBUTE")
   (values
+    '("invalid" "ATK_TEXT_ATTR_INVALID")
     '("left-margin" "ATK_TEXT_ATTR_LEFT_MARGIN")
     '("right-margin" "ATK_TEXT_ATTR_RIGHT_MARGIN")
     '("indent" "ATK_TEXT_ATTR_INDENT")
@@ -257,6 +229,7 @@
     '("stretch" "ATK_TEXT_ATTR_STRETCH")
     '("variant" "ATK_TEXT_ATTR_VARIANT")
     '("style" "ATK_TEXT_ATTR_STYLE")
+    '("last-defined" "ATK_TEXT_ATTR_LAST_DEFINED")
   )
 )
 
@@ -272,6 +245,18 @@
     '("sentence-end" "ATK_TEXT_BOUNDARY_SENTENCE_END")
     '("line-start" "ATK_TEXT_BOUNDARY_LINE_START")
     '("line-end" "ATK_TEXT_BOUNDARY_LINE_END")
+  )
+)
+
+(define-enum TextClipType
+  (in-module "Atk")
+  (c-name "AtkTextClipType")
+  (gtype-id "ATK_TYPE_TEXT_CLIP_TYPE")
+  (values
+    '("none" "ATK_TEXT_CLIP_NONE")
+    '("min" "ATK_TEXT_CLIP_MIN")
+    '("max" "ATK_TEXT_CLIP_MAX")
+    '("both" "ATK_TEXT_CLIP_BOTH")
   )
 )
 
@@ -295,3 +280,83 @@
     '("window" "ATK_XY_WINDOW")
   )
 )
+
+;; -*- scheme -*-
+; object definitions ...
+(define-object Hyperlink
+  (in-module "Atk")
+  (parent "GObject")
+  (c-name "AtkHyperlink")
+  (gtype-id "ATK_TYPE_HYPERLINK")
+)
+
+(define-object Object
+  (in-module "Atk")
+  (parent "GObject")
+  (c-name "AtkObject")
+  (gtype-id "ATK_TYPE_OBJECT")
+)
+
+(define-object NoOpObject
+  (in-module "Atk")
+  (parent "AtkObject")
+  (c-name "AtkNoOpObject")
+  (gtype-id "ATK_TYPE_NO_OP_OBJECT")
+)
+
+(define-object GObjectAccessible
+  (in-module "Atk")
+  (parent "AtkObject")
+  (c-name "AtkGObjectAccessible")
+  (gtype-id "ATK_TYPE_GOBJECT_ACCESSIBLE")
+)
+
+(define-object ObjectFactory
+  (in-module "Atk")
+  (parent "GObject")
+  (c-name "AtkObjectFactory")
+  (gtype-id "ATK_TYPE_OBJECT_FACTORY")
+)
+
+(define-object NoOpObjectFactory
+  (in-module "Atk")
+  (parent "AtkObjectFactory")
+  (c-name "AtkNoOpObjectFactory")
+  (gtype-id "ATK_TYPE_NO_OP_OBJECT_FACTORY")
+)
+
+(define-object Registry
+  (in-module "Atk")
+  (parent "GObject")
+  (c-name "AtkRegistry")
+  (gtype-id "ATK_TYPE_REGISTRY")
+)
+
+(define-object Relation
+  (in-module "Atk")
+  (parent "GObject")
+  (c-name "AtkRelation")
+  (gtype-id "ATK_TYPE_RELATION")
+)
+
+(define-object RelationSet
+  (in-module "Atk")
+  (parent "GObject")
+  (c-name "AtkRelationSet")
+  (gtype-id "ATK_TYPE_RELATION_SET")
+)
+
+(define-object StateSet
+  (in-module "Atk")
+  (parent "GObject")
+  (c-name "AtkStateSet")
+  (gtype-id "ATK_TYPE_STATE_SET")
+)
+
+(define-object Util
+  (in-module "Atk")
+  (parent "GObject")
+  (c-name "AtkUtil")
+  (gtype-id "ATK_TYPE_UTIL")
+)
+
