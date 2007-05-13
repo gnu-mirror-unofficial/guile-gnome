@@ -1,3 +1,9 @@
+2007-05-13  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Add explicit check for atk >= 1.12; while this
+	module technically works with any version, depending on the defs
+	files, this is the version that the platform defs package has now.
+
 2007-05-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.91 ==
