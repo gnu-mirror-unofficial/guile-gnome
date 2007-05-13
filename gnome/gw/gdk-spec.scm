@@ -86,7 +86,7 @@
 (define-method (initialize (ws <gdk-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gw gdk) initargs)))
   
-  (add-type-alias! ws "GdkWChar" 'unsigned-long)
+  (add-type-alias! ws "GdkWChar" 'unsigned-int32)
   
   (for-each
    (lambda (ctype)

@@ -1,3 +1,8 @@
+2007-05-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gdk-spec.scm (initialize): WChar is unsigned-in32, not
+	unsigned-long.
+
 2007-05-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.91 ==
