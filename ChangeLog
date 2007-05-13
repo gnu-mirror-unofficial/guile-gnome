@@ -1,7 +1,8 @@
 2007-05-13  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/defs/Makefile.am (atk): Add regeneration rules for ATK.
-	
+	(atk): Atk doesn't have type-ignores.
+
 	* gnome/defs/atk.defs:
 	* gnome/defs/atk-types.defs: Generate for ATK 1.12, from Gnome
 	2.16.

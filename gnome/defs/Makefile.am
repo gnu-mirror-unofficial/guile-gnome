@@ -19,7 +19,7 @@ atk:
 	../../../h2def.py --types \
 	   $(DEFS_HEADER_DIR)/atk-1.0/atk/*.h > atk-types.defs
 	../../../h2def.py --procs \
-	   --with-header='(include type-ignores) (include "common-ignores.defs") (include "atk-types.defs") (include overrides)' \
+	   --with-header='(include "common-ignores.defs") (include "atk-types.defs") (include overrides)' \
 	   $(DEFS_HEADER_DIR)/atk-1.0/atk/*.h > atk.defs
 
 gdk-pixbuf:
