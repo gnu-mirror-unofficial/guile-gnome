@@ -1,5 +1,8 @@
 2007-05-13  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/atk-spec.scm (initialize): Make it explicit that
+	AtkState is a uint64.
+
 	* package.ac: Add explicit check for atk >= 1.12; while this
 	module technically works with any version, depending on the defs
 	files, this is the version that the platform defs package has now.

@@ -45,6 +45,6 @@
 
   (next-method ws (append '(#:module (gnome gw atk)) initargs))
 
-  (add-type-alias! ws "AtkState" 'long-long)
+  (add-type-alias! ws "AtkState" 'unsigned-int64)
   
   (load-defs-with-overrides ws "gnome/defs/atk.defs"))
