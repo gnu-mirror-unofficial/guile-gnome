@@ -1,5 +1,12 @@
 2007-05-13  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/defs/pango.defs:
+	* gnome/defs/pango-types.defs: Generate for Pango 1.14.
+
+	* gnome/defs/Makefile.am (pango): Add rule for regenerating pango.
+	A bit verbose because pango has lots of #ifdef ENGINE, BACKEND,
+	etc.
+	
 	* gnome/defs/Makefile.am (atk): Add regeneration rules for ATK.
 	(atk): Atk doesn't have type-ignores.
 
