@@ -48,8 +48,8 @@
   (add-type-alias! ws "GnomeVFSResult" '<gnome-vfs-result>)
 
   ;; these are platform-dependent -- FIXME.
-  (add-type-alias! ws "GnomeVFSFileSize" 'unsigned-long-long)
-  (add-type-alias! ws "GnomeVFSFileOffset" 'long-long)
+  (add-type-alias! ws "GnomeVFSFileSize" 'unsigned-int64)
+  (add-type-alias! ws "GnomeVFSFileOffset" 'int64)
   (load-defs-with-overrides ws "gnome/defs/gnome-vfs.defs"))
 
 (define-method (global-declarations-cg (self <gnome-vfs-wrapset>))
