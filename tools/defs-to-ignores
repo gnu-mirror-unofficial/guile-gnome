@@ -1,0 +1,35 @@
+#!/usr/bin/guile -s
+!#
+;; Copyright (C) 2004,2007 Free Software Foundation, Inc.
+;; GPL version 2 or later.
+
+(use-modules (ice-9 pretty-print))
+
+(define from-port #f)
+
+(define (usage)
+  (display "defs-to-ignores [FILE]\n" (current-error-port))
+  (display "If there is no FILE, defs-diff will read from stdin.\n")
+  (exit 1))
+
+(let ((args (program-arguments)))
+  (case (length args)
+    ((1) (set! from-port (current-input-port)))
+    ((2) (set! from-port (open-input-file (cadr args))))
+    (else (usage))))
+     
+(let lp ((types '()) (functions '()))
+  (let ((form (read from-port)))
+    (cond 
+     ((eof-object? form)
+      (if (not (null? types))
+          (pretty-print (cons 'ignore-types (sort types string<?))))
+      (if (not (null? functions))
+          (pretty-print (cons 'ignore (sort functions string<?)))))
+     ((memq (car form) '(define-object define-enum define-flags
+                         define-interface define-boxed define-pointer))
+      (lp (cons (cadr (assq 'c-name (cddr form))) types) functions))
+     ((memq (car form) '(define-function define-method))
+      (lp types (cons (cadr (assq 'c-name (cddr form))) functions)))
+     (else
+      (lp types functions)))))

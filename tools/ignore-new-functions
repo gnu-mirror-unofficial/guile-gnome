@@ -1,0 +1,70 @@
+#!/usr/bin/guile -s
+!#
+;; Copyright (C) 2004 Free Software Foundation, Inc.
+;; GPL version 2 or later.
+
+;; Assumes that a defs file is composed of lists of symbols, strings,
+;; numbers, #t/#f, and other lists. Each toplevel list is assumed to
+;; have at least two elements.
+
+(use-modules (ice-9 pretty-print)
+             (srfi srfi-11)
+             (gnome gw support slib)
+             ((srfi srfi-1) :select (lset-difference any filter)))
+
+(define from-port #f)
+(define to-port #f)
+(define overrides-port #f)
+
+(define (usage)
+  (display "ignore-new-functions OLD-DEFS NEW-DEFS OVERRIDES\n" (current-error-port))
+  (exit 1))
+
+(let ((args (program-arguments)))
+  (if (not (= (length args) 4))
+      (usage))
+  (set! from-port (open-input-file (cadr args)))
+  (set! to-port (open-input-file (caddr args)))
+  (set! overrides-port (open-input-file (cadddr args))))
+     
+(define (read-functions port)
+  (let lp ((functions '()))
+    (let ((form (read port)))
+      (cond 
+       ((eof-object? form)
+        (sort functions string<?))
+       ((memq (car form) '(define-function define-method))
+        (lp (cons (cadr (assq 'c-name (cddr form))) functions)))
+       (else
+        (lp functions))))))
+
+(define (make-ignore-matcher port)
+  (let lp ((types '()) (globs '()) (functions '()))
+    (let ((form (read port)))
+      (cond 
+       ((eof-object? form)
+        (let ((matchers (map (lambda (g) (glob:make-matcher g char=? char<=?)) globs)))
+          (lambda (function)
+            (or (member function functions)
+                (any (lambda (matcher) (matcher function))
+                     matchers)))))
+       ((pair? form)
+        (case (car form)
+          ((ignore-types)
+           (lp (append (cdr form) types) globs functions))
+          ((ignore-glob)
+           (lp types (append (cdr form) globs) functions))
+          ((ignore)
+           (lp types globs (append (cdr form) functions)))
+          (else
+           (lp types globs functions))))
+       (else
+        (lp types globs functions))))))
+
+(let ((from (read-functions from-port))
+      (to (read-functions to-port))
+      (ignore? (make-ignore-matcher overrides-port)))
+  (pretty-print
+   (cons 'ignore
+         (filter (lambda (f) (not (ignore? f)))
+                 (lset-difference string=? to from)))))

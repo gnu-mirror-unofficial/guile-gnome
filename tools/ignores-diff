@@ -1,0 +1,66 @@
+#!/usr/bin/guile -s
+!#
+;; Copyright (C) 2004 Free Software Foundation, Inc.
+;; GPL version 2 or later.
+
+;; Assumes that a defs file is composed of lists of symbols, strings,
+;; numbers, #t/#f, and other lists. Each toplevel list is assumed to
+;; have at least two elements.
+
+(use-modules (ice-9 pretty-print)
+             (srfi srfi-11)
+             ((srfi srfi-1) :select (lset-difference)))
+
+(define from-port #f)
+(define to-port #f)
+
+(define (usage)
+  (display "ignores-diff FROM-FILE [TO-FILE]\n" (current-error-port))
+  (display "If there is no TO-FILE, defs-diff will read from stdin.\n")
+  (exit 1))
+
+(let ((args (program-arguments)))
+  (case (length args)
+    ((2) (set! to-port (current-input-port)))
+    ((3) (set! to-port (open-input-file (caddr args))))
+    (else (usage)))
+  (set! from-port (open-input-file (cadr args))))
+     
+(define (collect-ignores port)
+  (let lp ((types '()) (globs '()) (functions '()))
+    (let ((form (read port)))
+      (cond 
+       ((eof-object? form)
+        (values (sort types string<?)
+                (sort globs string<?)
+                (sort functions string<?)))
+       ((pair? form)
+        (case (car form)
+          ((ignore-types)
+           (lp (append (cdr form) types) globs functions))
+          ((ignore-glob)
+           (lp types (append (cdr form) globs) functions))
+          ((ignore)
+           (lp types globs (append (cdr form) functions)))
+          (else
+           (lp types globs functions))))
+       (else
+        (lp types globs functions))))))
+
+(define (output-diff tag from to)
+  (let ((minus (lset-difference string=? from to))
+        (plus (lset-difference string=? to from)))
+    (if (not (null? minus))
+        (begin
+          (display "-")
+          (pretty-print (cons tag (sort minus string<?)))))
+    (if (not (null? plus))
+        (begin
+          (display "+")
+          (pretty-print (cons tag (sort plus string<?)))))))
+
+(let-values (((ftypes fglobs ffunctions) (collect-ignores from-port))
+             ((ttypes tglobs tfunctions) (collect-ignores to-port)))
+  (output-diff 'ignore-types ftypes ttypes)
+  (output-diff 'ignore-glob fglobs tglobs)
+  (output-diff 'ignore ffunctions tfunctions))

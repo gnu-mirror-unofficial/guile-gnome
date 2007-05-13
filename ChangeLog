@@ -1,5 +1,9 @@
 2007-05-13  Andy Wingo  <wingo@pobox.com>
 
+	* tools/ignores-diff:
+	* tools/ignore-new-functions: 
+	* tools/defs-to-ignores: New tools, based on each others' code.
+
 	* gnome/defs/Makefile.am (glib): Add target to regen glib defs
 	files.
 	(DEFS_HEADER_DIR): Make it possible to make
