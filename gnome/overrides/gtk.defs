@@ -264,14 +264,14 @@
   (is-constructor-of GtkRadioButton)
   (return-type "GtkWidget*")
   (parameters
-    '("GtkRadioGroup*" "group")))
+    '("GtkRadioGroup*" "group" (null-ok) )))
 (define-function radio_button_new_with_label
   (c-name "gtk_radio_button_new_with_label")
   (overrides "gtk_radio_button_new_with_label")
   (is-constructor-of GtkRadioButton)
   (return-type "GtkWidget*")
   (parameters
-    '("GtkRadioGroup*" "group")
+    '("GtkRadioGroup*" "group" (null-ok) )
     '("const-gchar*" "label")))
 (define-function radio_button_new_with_mnemonic
   (c-name "gtk_radio_button_new_with_mnemonic")
@@ -279,7 +279,7 @@
   (is-constructor-of GtkRadioButton)
   (return-type "GtkWidget*")
   (parameters
-    '("GtkRadioGroup*" "group")
+    '("GtkRadioGroup*" "group" (null-ok) )
     '("const-gchar*" "label")))
 (define-method get_group
   (of-object "GtkRadioButton")
@@ -292,21 +292,21 @@
   (overrides "gtk_radio_button_set_group")
   (return-type "none")
   (parameters
-    '("GtkRadioGroup*" "group")))
+    '("GtkRadioGroup*" "group" (null-ok) )))
 (define-function gtk_radio_menu_item_new
   (c-name "gtk_radio_menu_item_new")
   (overrides "gtk_radio_menu_item_new")
   (is-constructor-of GtkRadioMenuItem)
   (return-type "GtkWidget*")
   (parameters
-    '("GtkRadioGroup*" "group")))
+    '("GtkRadioGroup*" "group" (null-ok) )))
 (define-function gtk_radio_menu_item_new_with_label
   (c-name "gtk_radio_menu_item_new_with_label")
   (overrides "gtk_radio_menu_item_new_with_label")
   (is-constructor-of GtkRadioMenuItem)
   (return-type "GtkWidget*")
   (parameters
-    '("GtkRadioGroup*" "group")
+    '("GtkRadioGroup*" "group" (null-ok) )
     '("const-gchar*" "label")))
 (define-function gtk_radio_menu_item_new_with_mnemonic
   (c-name "gtk_radio_menu_item_new_with_mnemonic")
@@ -314,7 +314,7 @@
   (is-constructor-of GtkRadioMenuItem)
   (return-type "GtkWidget*")
   (parameters
-    '("GtkRadioGroup*" "group")
+    '("GtkRadioGroup*" "group" (null-ok))
     '("const-gchar*" "label")))
 (define-method get_group
   (of-object "GtkRadioMenuItem")
@@ -327,7 +327,7 @@
   (overrides "gtk_radio_menu_item_set_group")
   (return-type "none")
   (parameters
-    '("GtkRadioGroup*" "group")))
+    '("GtkRadioGroup*" "group" (null-ok) )))
 (define-function
   gtk_radio_tool_button_new
   (c-name "gtk_radio_tool_button_new")

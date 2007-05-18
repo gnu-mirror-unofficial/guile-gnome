@@ -1,3 +1,14 @@
+2007-05-19  Andy Wingo  <wingo@pobox.com>
+
+	Patch by: Steve Tell <tell telltronics org>
+
+	* gnome/overrides/gtk.defs (gtk_radio_button_new)
+	(radio_button_new_with_label, radio_button_new_with_mnemonic)
+	(set_group, gtk_radio_menu_item_new)
+	(gtk_radio_menu_item_new_with_label)
+	(gtk_radio_menu_item_new_with_mnemonic, set_group): Allow NULL for
+	the radio group in a number of functions.
+
 2007-05-13  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/gdk-spec.scm (initialize): WChar is unsigned-in32, not
