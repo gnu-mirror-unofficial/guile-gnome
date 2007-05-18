@@ -1,3 +1,9 @@
+2007-05-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-support.h: 
+	* gnome/gobject/guile-support.c (scm_with_guile): Add a guile 1.6
+	shim of dubious correctness.
+
 2007-05-13  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/overrides/glib.defs-type-ignores: 

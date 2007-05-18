@@ -49,6 +49,8 @@ G_BEGIN_DECLS
 #define scm_gc_register_collectable_memory(mem, size, what)
 #define scm_gc_unregister_collectable_memory(mem, size, what)
 
+void *scm_with_guile (void*(*func)(void*), void *data);
+
 SCM scm_str2string (const char *src);
 
 #endif
