@@ -46,6 +46,15 @@ pango:
 	   $(addprefix $(DEFS_HEADER_DIR)/pango-1.0/,$(PANGO_INCLS)) \
 	   > pango.defs
 
+pangocairo:
+	../../../h2def.py --types \
+	   $(addprefix $(DEFS_HEADER_DIR)/pango-1.0/,pango/pangocairo.h) \
+	   > pangocairo-types.defs
+	../../../h2def.py --procs \
+	   --with-header='(include "common-ignores.defs") (include "pangocairo-types.defs") (include overrides)' \
+	   $(addprefix $(DEFS_HEADER_DIR)/pango-1.0/,pango/pangocairo.h) \
+	   > pangocairo.defs
+
 gdk-pixbuf:
 	../../../h2def.py --types \
 	   $(DEFS_HEADER_DIR)/gtk-2.0/gdk-pixbuf/gdk-pixbuf*.h > gdk-pixbuf-types.defs

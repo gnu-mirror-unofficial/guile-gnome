@@ -1,3 +1,10 @@
+2007-05-20  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/defs/Makefile.am (pangocairo): 
+	* gnome/defs/pangocairo.defs: 
+	* gnome/defs/pangocairo-types.defs: Add pangocairo defs and a
+	regeneration rule.
+
 2007-05-13  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/defs/pango.defs:
