@@ -62,6 +62,13 @@ gdk-pixbuf:
 	   --with-header='(include "gdk-pixbuf-types.defs") (include overrides)' \
 	   $(DEFS_HEADER_DIR)/gtk-2.0/gdk-pixbuf/gdk-pixbuf*.h > gdk-pixbuf.defs
 
+gdk:
+	../../../h2def.py --types \
+	   $(shell ls $(DEFS_HEADER_DIR)/gtk-2.0/gdk/gdk*.h | grep -v alias) > gdk-types.defs
+	../../../h2def.py --procs \
+	   --with-header='(include "common-ignores.defs") (include "gdk-types.defs") (include overrides)' \
+	   $(shell ls $(DEFS_HEADER_DIR)/gtk-2.0/gdk/gdk*.h | grep -v alias) > gdk.defs
+
 gtk:
 	../../../h2def.py --types \
 	   $(DEFS_HEADER_DIR)/gtk-2.0/gtk/gtk*.h > gtk-types.defs

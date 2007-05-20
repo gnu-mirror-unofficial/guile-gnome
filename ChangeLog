@@ -1,3 +1,10 @@
+2007-05-21  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/defs/gdk.defs:
+	* gnome/defs/gdk-types.defs:
+	* gnome/defs/Makefile.am:
+	* gnome/defs/gdk.defs: Update gdk defs, and add a regeneration rule.
+
 2007-05-20  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/defs/Makefile.am (pangocairo): 

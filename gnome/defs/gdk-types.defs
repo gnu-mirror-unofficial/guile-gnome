@@ -1,190 +1,5 @@
 ;; -*- scheme -*-
-; object definitions ...
-(define-object Colormap
-  (in-module "Gdk")
-  (parent "GObject")
-  (c-name "GdkColormap")
-  (gtype-id "GDK_TYPE_COLORMAP")
-)
-
-(define-object Device
-  (in-module "Gdk")
-  (parent "GObject")
-  (c-name "GdkDevice")
-  (gtype-id "GDK_TYPE_DEVICE")
-  (fields
-    '("gchar*" "name")
-    '("GdkInputSource" "source")
-    '("GdkInputMode" "mode")
-    '("gboolean" "has_cursor")
-    '("gint" "num_axes")
-    '("GdkDeviceAxis*" "axes")
-    '("gint" "num_keys")
-    '("GdkDeviceKey*" "keys")
-  )
-)
-
-(define-object DragContext
-  (in-module "Gdk")
-  (parent "GObject")
-  (c-name "GdkDragContext")
-  (gtype-id "GDK_TYPE_DRAG_CONTEXT")
-  (fields
-    '("GdkDragProtocol" "protocol")
-    '("gboolean" "is_source")
-    '("GdkWindow*" "source_window")
-    '("GdkWindow*" "dest_window")
-    '("GList*" "targets")
-    '("GdkDragAction" "actions")
-    '("GdkDragAction" "suggested_action")
-    '("GdkDragAction" "action")
-    '("guint32" "start_time")
-  )
-)
-
-(define-object Drawable
-  (in-module "Gdk")
-  (parent "GObject")
-  (c-name "GdkDrawable")
-  (gtype-id "GDK_TYPE_DRAWABLE")
-)
-
-(define-object Window
-  (in-module "Gdk")
-  (parent "GdkDrawable")
-  (c-name "GdkWindow")
-  (gtype-id "GDK_TYPE_WINDOW")
-)
-
-(define-object Pixmap
-  (in-module "Gdk")
-  (parent "GdkDrawable")
-  (c-name "GdkPixmap")
-  (gtype-id "GDK_TYPE_PIXMAP")
-)
-
-(define-object GC
-  (in-module "Gdk")
-  (parent "GObject")
-  (c-name "GdkGC")
-  (gtype-id "GDK_TYPE_GC")
-)
-
-(define-object Image
-  (in-module "Gdk")
-  (parent "GObject")
-  (c-name "GdkImage")
-  (gtype-id "GDK_TYPE_IMAGE")
-)
-
-(define-object Keymap
-  (in-module "Gdk")
-  (parent "GObject")
-  (c-name "GdkKeymap")
-  (gtype-id "GDK_TYPE_KEYMAP")
-)
-
-(define-object Screen
-  (in-module "Gdk")
-  (parent "GObject")
-  (c-name "GdkScreen")
-  (gtype-id "GDK_TYPE_SCREEN"))
-
-(define-object Visual
-  (in-module "Gdk")
-  (parent "GObject")
-  (c-name "GdkVisual")
-  (gtype-id "GDK_TYPE_VISUAL")
-  (fields
-    '("GdkVisualType" "type")
-    '("gint" "depth")
-    '("GdkByteOrder" "byte_order")
-    '("gint" "colormap_size")
-    '("gint" "bits_per_rgb")
-    '("guint32" "red_mask")
-    '("gint" "red_shift")
-    '("gint" "red_prec")
-    '("guint32" "green_mask")
-    '("gint" "green_shift")
-    '("gint" "green_prec")
-    '("guint32" "blue_mask")
-    '("gint" "blue_shift")
-    '("gint" "blue_prec")
-  )
-)
-
-
-;; Boxed types ...
-
-(define-boxed Event
-  (in-module "Gdk")
-  (c-name "GdkEvent")
-  (gtype-id "GDK_TYPE_EVENT")
-  (copy-func "gdk_event_copy")
-  (release-func "gdk_event_free")
-)
-
-(define-boxed Font
-  (in-module "Gdk")
-  (c-name "GdkFont")
-  (gtype-id "GDK_TYPE_FONT")
-  (copy-func "gdk_font_ref")
-  (release-func "gdk_font_unref")
-  (fields
-    '("GdkFontType" "type")
-    '("gint" "ascent")
-    '("gint" "descent")
-  )
-)
-
-(define-boxed Color
-  (in-module "Gdk")
-  (c-name "GdkColor")
-  (gtype-id "GDK_TYPE_COLOR")
-  (copy-func "gdk_color_copy")
-  (release-func "gdk_color_free")
-  (fields
-    '("guint32" "pixel")
-    '("guint16" "red")
-    '("guint16" "green")
-    '("guint16" "blue")
-  )
-)
-
-(define-boxed Cursor
-  (in-module "Gdk")
-  (c-name "GdkCursor")
-  (gtype-id "GDK_TYPE_CURSOR")
-  (copy-func "gdk_cursor_ref")
-  (release-func "gdk_cursor_unref")
-  (fields
-    '("GdkCursorType" "type")
-  )
-)
-
-(define-boxed Rectangle
-  (in-module "Gdk")
-  (c-name "GdkRectangle")
-  (gtype-id "GDK_TYPE_RECTANGLE")
-  (fields
-    '("gint" "x")
-    '("gint" "y")
-    '("gint" "width")
-    '("gint" "height")
-  )
-)
-
 ;; Enumerations and flags ...
-
-(define-enum CursorType
-  (in-module "Gdk")
-  (c-name "GdkCursorType")
-  (gtype-id "GDK_TYPE_CURSOR_TYPE")
-;  (value (name #include) (c-name #include))
-  (values
-    '("gdk-cursor-is-pixmap" "GDK_CURSOR_IS_PIXMAP")
-  )
-)
 
 (define-flags DragAction
   (in-module "Gdk")
@@ -266,6 +81,8 @@
     '("scroll" "GDK_SCROLL")
     '("window-state" "GDK_WINDOW_STATE")
     '("setting" "GDK_SETTING")
+    '("owner-change" "GDK_OWNER_CHANGE")
+    '("grab-broken" "GDK_GRAB_BROKEN")
   )
 )
 
@@ -366,6 +183,9 @@
     '("iconified" "GDK_WINDOW_STATE_ICONIFIED")
     '("maximized" "GDK_WINDOW_STATE_MAXIMIZED")
     '("sticky" "GDK_WINDOW_STATE_STICKY")
+    '("fullscreen" "GDK_WINDOW_STATE_FULLSCREEN")
+    '("above" "GDK_WINDOW_STATE_ABOVE")
+    '("below" "GDK_WINDOW_STATE_BELOW")
   )
 )
 
@@ -380,13 +200,24 @@
   )
 )
 
+(define-enum OwnerChange
+  (in-module "Gdk")
+  (c-name "GdkOwnerChange")
+  (gtype-id "GDK_TYPE_OWNER_CHANGE")
+  (values
+    '("new-owner" "GDK_OWNER_CHANGE_NEW_OWNER")
+    '("destroy" "GDK_OWNER_CHANGE_DESTROY")
+    '("close" "GDK_OWNER_CHANGE_CLOSE")
+  )
+)
+
 (define-enum FontType
   (in-module "Gdk")
   (c-name "GdkFontType")
   (gtype-id "GDK_TYPE_FONT_TYPE")
   (values
-    '("font" "GDK_FONT_FONT")
-    '("fontset" "GDK_FONT_FONTSET")
+    '("t" "GDK_FONT_FONT")
+    '("tset" "GDK_FONT_FONTSET")
   )
 )
 
@@ -628,6 +459,9 @@
     '("button3-mask" "GDK_BUTTON3_MASK")
     '("button4-mask" "GDK_BUTTON4_MASK")
     '("button5-mask" "GDK_BUTTON5_MASK")
+    '("super-mask" "GDK_SUPER_MASK")
+    '("hyper-mask" "GDK_HYPER_MASK")
+    '("meta-mask" "GDK_META_MASK")
     '("release-mask" "GDK_RELEASE_MASK")
     '("modifier-mask" "GDK_MODIFIER_MASK")
   )
@@ -721,6 +555,7 @@
     '("visual" "GDK_WA_VISUAL")
     '("wmclass" "GDK_WA_WMCLASS")
     '("noredir" "GDK_WA_NOREDIR")
+    '("type-hint" "GDK_WA_TYPE_HINT")
   )
 )
 
@@ -736,6 +571,8 @@
     '("aspect" "GDK_HINT_ASPECT")
     '("resize-inc" "GDK_HINT_RESIZE_INC")
     '("win-gravity" "GDK_HINT_WIN_GRAVITY")
+    '("user-pos" "GDK_HINT_USER_POS")
+    '("user-size" "GDK_HINT_USER_SIZE")
   )
 )
 
@@ -748,6 +585,16 @@
     '("dialog" "GDK_WINDOW_TYPE_HINT_DIALOG")
     '("menu" "GDK_WINDOW_TYPE_HINT_MENU")
     '("toolbar" "GDK_WINDOW_TYPE_HINT_TOOLBAR")
+    '("splashscreen" "GDK_WINDOW_TYPE_HINT_SPLASHSCREEN")
+    '("utility" "GDK_WINDOW_TYPE_HINT_UTILITY")
+    '("dock" "GDK_WINDOW_TYPE_HINT_DOCK")
+    '("desktop" "GDK_WINDOW_TYPE_HINT_DESKTOP")
+    '("dropdown-menu" "GDK_WINDOW_TYPE_HINT_DROPDOWN_MENU")
+    '("popup-menu" "GDK_WINDOW_TYPE_HINT_POPUP_MENU")
+    '("tooltip" "GDK_WINDOW_TYPE_HINT_TOOLTIP")
+    '("notification" "GDK_WINDOW_TYPE_HINT_NOTIFICATION")
+    '("combo" "GDK_WINDOW_TYPE_HINT_COMBO")
+    '("dnd" "GDK_WINDOW_TYPE_HINT_DND")
   )
 )
 
@@ -813,3 +660,83 @@
     '("south-east" "GDK_WINDOW_EDGE_SOUTH_EAST")
   )
 )
+
+;; -*- scheme -*-
+; object definitions ...
+(define-object Colormap
+  (in-module "Gdk")
+  (parent "GObject")
+  (c-name "GdkColormap")
+  (gtype-id "GDK_TYPE_COLORMAP")
+)
+
+(define-object Display
+  (in-module "Gdk")
+  (parent "GObject")
+  (c-name "GdkDisplay")
+  (gtype-id "GDK_TYPE_DISPLAY")
+)
+
+(define-object DragContext
+  (in-module "Gdk")
+  (parent "GObject")
+  (c-name "GdkDragContext")
+  (gtype-id "GDK_TYPE_DRAG_CONTEXT")
+)
+
+(define-object Drawable
+  (in-module "Gdk")
+  (parent "GObject")
+  (c-name "GdkDrawable")
+  (gtype-id "GDK_TYPE_DRAWABLE")
+)
+
+(define-object GC
+  (in-module "Gdk")
+  (parent "GObject")
+  (c-name "GdkGC")
+  (gtype-id "GDK_TYPE_GC")
+)
+
+(define-object Image
+  (in-module "Gdk")
+  (parent "GObject")
+  (c-name "GdkImage")
+  (gtype-id "GDK_TYPE_IMAGE")
+)
+
+(define-object Keymap
+  (in-module "Gdk")
+  (parent "GObject")
+  (c-name "GdkKeymap")
+  (gtype-id "GDK_TYPE_KEYMAP")
+)
+
+(define-object PangoRenderer
+  (in-module "Gdk")
+  (parent "PangoRenderer")
+  (c-name "GdkPangoRenderer")
+  (gtype-id "GDK_TYPE_PANGO_RENDERER")
+)
+
+(define-object PixmapObject
+  (in-module "Gdk")
+  (parent "GdkDrawable")
+  (c-name "GdkPixmapObject")
+  (gtype-id "GDK_TYPE_PIXMAP_OBJECT")
+)
+
+(define-object Screen
+  (in-module "Gdk")
+  (parent "GObject")
+  (c-name "GdkScreen")
+  (gtype-id "GDK_TYPE_SCREEN")
+)
+
+(define-object WindowObject
+  (in-module "Gdk")
+  (parent "GdkDrawable")
+  (c-name "GdkWindowObject")
+  (gtype-id "GDK_TYPE_WINDOW_OBJECT")
+)
+
