@@ -1,3 +1,12 @@
+2007-05-20  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am: 
+	* gnome/overrides/pangocairo.defs: 
+	* gnome/gw/pangocairo-spec.scm: Build a pangocairo module if cairo
+	is available.
+
+	* cairo-checks.ac: Check for cairo.
+
 2007-05-13  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/pango-spec.scm (initialize): 

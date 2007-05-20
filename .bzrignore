@@ -5,3 +5,6 @@ Makefile.in
 .libs
 *.log
 gnome/gw/pango.scm
+*.la
+*.lo
+gnome/gw/pangocairo.scm
