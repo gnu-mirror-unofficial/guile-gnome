@@ -1,7 +1,7 @@
-PKG_CHECK_MODULES(CAIRO, guile-cairo, HAVE_CAIRO=true, 
-                                      HAVE_CAIRO=false)
-AC_SUBST(CAIRO_CFLAGS)
-AC_SUBST(CAIRO_LIBS)
+PKG_CHECK_MODULES(GUILE_CAIRO, guile-cairo, HAVE_CAIRO=true, 
+                                             HAVE_CAIRO=false)
+AC_SUBST(GUILE_CAIRO_CFLAGS)
+AC_SUBST(GUILE_CAIRO_LIBS)
 AM_CONDITIONAL(HAVE_CAIRO, $HAVE_CAIRO)
 
 record_check cairo $HAVE_CAIRO

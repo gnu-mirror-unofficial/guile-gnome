@@ -1,5 +1,7 @@
 2007-05-20  Andy Wingo  <wingo@pobox.com>
 
+	* package.ac: Define GUILE_CAIRO_CFLAGS, not CAIRO_CFLAGS.
+
 	* package.ac: Record that the check succeeded.
 
 	* gnome/gw/cairo-spec.scm: Define g-wrap types for cairo_t and
