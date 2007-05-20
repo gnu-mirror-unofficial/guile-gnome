@@ -26,19 +26,25 @@
 
 (define-module (gnome gw cairo-spec)
   #:use-module (oop goops)
-  #:use-module (g-wrap)
-  #:use-module (g-wrap guile)
-  #:use-module (gnome gw gobject-spec)
+  #:use-module (gnome gw support g-wrap)
   #:use-module (gnome gw support defs)
   #:use-module (gnome gw support gobject))
 
-(define-class <cairo-wrapset> (<gobject-wrapset-base>)
-  #:id 'gnome-cairo
-  #:dependencies '(standard))
+;; G-Wrap inelegance
+(define-class <cairo-type> (<gw-type>)
+  (c-type-name #:getter c-type-name #:init-keyword #:c-type-name))
+(define-method (check-typespec-options (type <cairo-type>) (options <list>))
+  ;; accept all options -- hacky but we don't care
+  #t)
+(define-method (c-type-name (type <cairo-type>) (typespec <gw-typespec>))
+  (let ((c-name (slot-ref type 'c-type-name)))
+    (if (memq 'const (options typespec))
+        (string-append "const " c-name)
+        c-name)))
 
 ;; not an RTI type because we want to avoid generating yet another
 ;; microlibrary
-(define-class <cairo-refcounted-type> ()
+(define-class <cairo-refcounted-type> (<cairo-type>)
   (wrap #:init-keyword #:wrap)
   (unwrap #:init-keyword #:unwrap)
   (take #:init-keyword #:take))
@@ -77,8 +83,9 @@
          (list scm-var " = " (slot-ref type 'wrap) " (" c-var ");"))
      "}\n")))
 
-(define-class <cairo-opaque-type> ()
+(define-class <cairo-opaque-type> (<cairo-type>)
   (unwrap #:init-keyword #:unwrap)
+  (copy #:init-keyword #:copy)
   (take #:init-keyword #:take))
 
 (define-method (unwrap-value-cg (type <cairo-opaque-type>)
@@ -99,14 +106,22 @@
     (list
      "if (" c-var " == NULL)\n"
      "  " scm-var " = SCM_BOOL_F;\n"
-     "else\n"
-     "  " scm-var " = " (slot-ref type 'take) " (" c-var ");")))
+     "else { \n"
+     (if-typespec-option value 'callee-owned
+         (list "  " scm-var " = " (slot-ref type 'take) " (" 
+               (slot-ref type 'copy) "(" c-var "));")
+         (list "  " scm-var " = " (slot-ref type 'take) " (" c-var ");"))
+     "}\n")))
 
 (define-class <client-actions> (<gw-item>))
-(define-method (global-declarations-cg (ws <glib-wrapset>) (a <client-actions>))
+(define-method (global-declarations-cg (ws <gw-guile-wrapset>) (a <client-actions>))
   '("#include <guile-cairo.h>\n"))
 (define-method (initializations-cg (wrapset <gw-guile-wrapset>) (a <client-actions>) err)
   (list "scm_init_cairo ();\n"))
+
+(define-class <cairo-wrapset> (<gobject-wrapset-base>)
+  #:id 'gnome-cairo
+  #:dependencies '(standard gnome-glib))
 
 (define-method (initialize (ws <cairo-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gw cairo) initargs)))
@@ -125,6 +140,7 @@
                   #:name 'cairo-font-options-t
                   #:c-type-name "cairo_font_options_t*"
                   #:unwrap "scm_to_cairo_font_options"
+                  #:copy "cairo_font_options_copy"
                   #:take "scm_take_cairo_font_options"))
   (add-type-alias! ws "cairo_font_options_t*" 'cairo-font-options-t))
 
