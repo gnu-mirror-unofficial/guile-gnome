@@ -1,12 +1,12 @@
 include $(top_srcdir)/common.mk
 
-SUBDIRS = overrides
+SUBDIRS = 
 guilemodule_DATA =
 
-if HAVE_TEMPLATE
+if HAVE_CAIRO
 SUBDIRS += gw
-guilemodule_DATA += template.scm
+guilemodule_DATA += cairo.scm
 endif
 
-EXTRA_DIST = template.scm
-DIST_SUBDIRS = gw overrides
+EXTRA_DIST = cairo.scm
+DIST_SUBDIRS = gw

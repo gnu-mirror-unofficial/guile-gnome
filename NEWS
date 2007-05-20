@@ -1,21 +1,24 @@
-guile-gnome-template NEWS --- history of user-visible changes.
-Copyright (C) 2004 Free Software Foundation, Inc.
+guile-gnome-cairo NEWS --- history of user-visible changes.
+Copyright (C) 2007 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 16 September 2004.
+Last updated 20 May 2007.
 
 
-guile-gnome-template is a Guile binding for template. It is part of GNU
-guile-gnome. This file documents the user-visible changes in
-guile-gnome-template only.
+guile-gnome-cairo integrates the Guile-Cairo bindings with G-Wrap,
+providing other guile-gnome wrappers with the ability to automatically
+wrap Cairo types. It is not a cairo wrapper in and of itself.
+
+This file documents the user-visible changes in
+guile-gnome-cairo only.
 
 
-guile-gnome-template 2.6.0 - <Name>, <Date>
-==============================================
+guile-gnome-cairo 2.15.92 - Andy Wingo, 20 May 2007
+===================================================
 
 * Initial release
 
 
-Copyright (C) 2004 Free Software Foundation, Inc.
+Copyright (C) 2007 Free Software Foundation, Inc.
 
 Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice

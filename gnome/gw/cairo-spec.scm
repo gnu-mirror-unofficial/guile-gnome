@@ -1,6 +1,5 @@
-;; -*- scheme -*-
 ;; guile-gnome
-;; Copyright (C) 2004 Free Software Foundation, Inc.
+;; Copyright (C) 2007 Free Software Foundation, Inc.
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -21,18 +20,28 @@
 
 ;;; Commentary:
 ;;
-;;Custom wrapper definitions.
+;;g-wrap specification for cairo.
 ;;
 ;;; Code:
 
-(ignore-glob  "*_get_type"
-              "_*"
-              "*_ref"
-              "*_unref"
-              "*_copy"
-              "*_free"
-              "*_newv"
-              "*_valist"
-              "*_setv"
-              "*_foreach"
-              "*_valist")
+(define-module (gnome gw cairo-spec)
+  #:use-module (oop goops)
+  #:use-module (g-wrap)
+  #:use-module (g-wrap guile)
+  #:use-module (gnome gw gobject-spec)
+  #:use-module (gnome gw support defs)
+  #:use-module (gnome gw support gobject))
+
+(define-class <cairo-wrapset> (<gobject-wrapset-base>)
+  #:id 'gnome-cairo
+  #:dependencies '(standard gnome-glib gnome-gobject))
+
+(define-method (initialize (ws <cairo-wrapset>) initargs)
+  (next-method ws (cons #:module (cons '(gnome gw cairo) initargs)))
+  
+  (load-defs-with-overrides ws "gnome/defs/cairo.defs"))
+
+(define-method (global-declarations-cg (self <cairo-wrapset>))
+  (list (next-method)
+        "#include <cairo/cairo.h>\n"
+        "#include \"cairo-support.h\"\n"))

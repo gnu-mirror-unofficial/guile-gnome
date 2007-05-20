@@ -3,12 +3,8 @@ Maintainers of GNU Software" (maintain.texi), the section called
 "Recording Changes".
 
 
-<Name>:
+Andy Wingo:
 In the directory gnome/gw, wrote:
-    template-spec.scm template-support.c template-support.h
-In the directory gnome/overrides, wrote:
-    template.defs
+    cairo-spec.scm
 In the directory gnome, wrote:
-    template.scm
-In the directory examples/template, wrote:
-    ...
+    cairo.scm
