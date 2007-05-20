@@ -32,7 +32,8 @@ libgw_guile_gnome_gdk_la_SOURCES = gdk-support.c gdk-support.h \
 	gdk-pixbuf-support.c gdk-pixbuf-support.h
 
 libgw_guile_gnome_gdk_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
-	$(AM_CFLAGS) $(GDK_CFLAGS) $(GDK_PIXBUF_CFLAGS) $(GUILE_CFLAGS) \
+	$(AM_CFLAGS) $(GUILE_CAIRO_CFLAGS) $(GDK_CFLAGS) \
+	$(GDK_PIXBUF_CFLAGS) $(GUILE_CFLAGS) \
 	$(G_WRAP_CFLAGS) $(GTK_DEPRECATED_CFLAGS)
 
 libgw_guile_gnome_gdk_la_LIBADD = $(GDK_LIBS) $(GUILE_LIBS) \

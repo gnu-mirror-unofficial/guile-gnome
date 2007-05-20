@@ -29,13 +29,14 @@
   #:use-module (oop goops)
   #:use-module (ice-9 optargs)
   #:use-module (gnome gw support g-wrap)
+  #:use-module (gnome gw cairo-spec)
   #:use-module (gnome gw pango-spec)
   #:use-module (gnome gw support gobject)
   #:use-module (gnome gw support defs))
 
 (define-class <gdk-wrapset> (<gobject-wrapset-base>)
   #:id 'gnome-gdk
-  #:dependencies '(standard gnome-glib gnome-gobject gnome-pango))
+  #:dependencies '(standard gnome-glib gnome-gobject gnome-cairo gnome-pango))
 
 (define-method (global-declarations-cg (self <gdk-wrapset>))
   (list

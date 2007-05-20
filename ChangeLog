@@ -1,3 +1,16 @@
+2007-05-21  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Don't build gdk/gtk if guile-cairo isn't available.
+
+	* gnome/overrides/gdk.defs: Update overrides for GDK 2.10.13. Lots
+	more functions are wrapped now.
+
+	* gnome/gw/gdk-spec.scm (gnome): Pull in the g-wrap cairo
+	integration.
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_gdk_la_CFLAGS): Link to
+	guile-cairo.
+
 2007-05-19  Andy Wingo  <wingo@pobox.com>
 
 	Patch by: Steve Tell <tell telltronics org>
