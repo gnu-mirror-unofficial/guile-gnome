@@ -1,4 +1,14 @@
 2007-05-20  Andy Wingo  <wingo@pobox.com>
 
+	* package.ac: Record that the check succeeded.
+
+	* gnome/gw/cairo-spec.scm: Define g-wrap types for cairo_t and
+	cairo_font_options_t.
+
+	* Makefile.am:
+	* guile-gnome-cairo.pc.in:
+	* guile-gnome-cairo-uninstalled.pc.in:
+	* files.ac: Add pkg-config files.
+
 	* Initial import.
 

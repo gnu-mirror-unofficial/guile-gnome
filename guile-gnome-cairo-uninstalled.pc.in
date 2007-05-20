@@ -1,0 +1,4 @@
+Name: Guile-Gnome Cairo integration, Uninstalled
+Description: Guile-Gnome Cairo integration, Uninstalled
+Version: @VERSION@
+Requires: guile-cairo
