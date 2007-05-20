@@ -28,13 +28,14 @@
   #:use-module (oop goops)
   #:use-module (gnome gw support g-wrap)
   #:use-module (gnome gw pango-spec)
+  #:use-module (gnome gw cairo-spec)
   #:use-module (gnome gw support gobject)
   #:use-module (gnome gw support defs))
 
 (define-class <pangocairo-wrapset> (<gobject-wrapset-base>)
   guile
   #:id 'gnome-pangocairo
-  #:dependencies '(standard gnome-glib gnome-gobject gnome-pango))
+  #:dependencies '(standard gnome-glib gnome-gobject gnome-cairo gnome-pango))
 
 (define-method (global-declarations-cg (self <pangocairo-wrapset>))
   (list
