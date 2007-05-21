@@ -1,6 +1,10 @@
 2007-05-21  Andy Wingo  <wingo@pobox.com>
 
-	* gnome/defs/gdk.defs:
+	* gnome/defs/Makefile.am (gdk): Include type-ignores in gdk regen rule.
+	(gtk): Update the GTK regen rule.
+	* gnome/defs/gtk.defs:
+	* gnome/defs/gtk-types.defs: Update GTK defs to 2.10.
+
 	* gnome/defs/gdk-types.defs:
 	* gnome/defs/Makefile.am:
 	* gnome/defs/gdk.defs: Update gdk defs, and add a regeneration rule.

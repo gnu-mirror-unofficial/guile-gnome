@@ -1,7 +1,7 @@
 ;; -*- scheme -*-
-(include "common-ignores.defs") (include "gdk-types.defs") (include overrides)
+(include type-ignores) (include "common-ignores.defs") (include "gdk-types.defs") (include overrides)
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkcairo.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkcairo.h
 
 (define-function gdk_cairo_create
   (c-name "gdk_cairo_create")
@@ -62,7 +62,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkcolor.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkcolor.h
 
 (define-function gdk_colormap_get_type
   (c-name "gdk_colormap_get_type")
@@ -279,7 +279,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkcursor.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkcursor.h
 
 (define-function gdk_cursor_get_type
   (c-name "gdk_cursor_get_type")
@@ -363,7 +363,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkdisplay.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkdisplay.h
 
 (define-function gdk_display_get_type
   (c-name "gdk_display_get_type")
@@ -648,7 +648,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkdisplaymanager.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkdisplaymanager.h
 
 (define-function gdk_display_manager_get_type
   (c-name "gdk_display_manager_get_type")
@@ -683,7 +683,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkdnd.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkdnd.h
 
 (define-function gdk_drag_context_get_type
   (c-name "gdk_drag_context_get_type")
@@ -844,7 +844,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkdrawable.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkdrawable.h
 
 (define-function gdk_drawable_get_type
   (c-name "gdk_drawable_get_type")
@@ -1254,7 +1254,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkenumtypes.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkenumtypes.h
 
 (define-function gdk_cursor_type_get_type
   (c-name "gdk_cursor_type_get_type")
@@ -1488,7 +1488,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkevents.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkevents.h
 
 (define-function gdk_event_get_type
   (c-name "gdk_event_get_type")
@@ -1649,7 +1649,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkfont.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkfont.h
 
 (define-function gdk_font_get_type
   (c-name "gdk_font_get_type")
@@ -1889,7 +1889,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkgc.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkgc.h
 
 (define-function gdk_gc_get_type
   (c-name "gdk_gc_get_type")
@@ -2157,7 +2157,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdk.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdk.h
 
 (define-function gdk_parse_args
   (c-name "gdk_parse_args")
@@ -2490,11 +2490,11 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdki18n.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdki18n.h
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkimage.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkimage.h
 
 (define-function gdk_image_get_type
   (c-name "gdk_image_get_type")
@@ -2586,7 +2586,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkinput.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkinput.h
 
 (define-function gdk_device_get_type
   (c-name "gdk_device_get_type")
@@ -2698,7 +2698,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkkeys.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkkeys.h
 
 (define-function gdk_keymap_get_type
   (c-name "gdk_keymap_get_type")
@@ -2847,11 +2847,11 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkkeysyms.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkkeysyms.h
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkpango.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkpango.h
 
 (define-function gdk_pango_renderer_get_type
   (c-name "gdk_pango_renderer_get_type")
@@ -2979,7 +2979,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkpixbuf.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkpixbuf.h
 
 (define-method render_threshold_alpha
   (of-object "GdkPixbuf")
@@ -3093,7 +3093,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkpixmap.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkpixmap.h
 
 (define-function gdk_pixmap_get_type
   (c-name "gdk_pixmap_get_type")
@@ -3232,7 +3232,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkprivate.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkprivate.h
 
 (define-method destroy_notify
   (of-object "GdkWindow")
@@ -3252,7 +3252,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkproperty.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkproperty.h
 
 (define-function gdk_atom_intern
   (c-name "gdk_atom_intern")
@@ -3445,7 +3445,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkregion.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkregion.h
 
 (define-function gdk_region_new
   (c-name "gdk_region_new")
@@ -3616,7 +3616,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkrgb.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkrgb.h
 
 (define-function gdk_rgb_init
   (c-name "gdk_rgb_init")
@@ -3824,7 +3824,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkscreen.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkscreen.h
 
 (define-function gdk_screen_get_type
   (c-name "gdk_screen_get_type")
@@ -4051,7 +4051,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkselection.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkselection.h
 
 (define-function gdk_selection_owner_set
   (c-name "gdk_selection_owner_set")
@@ -4142,7 +4142,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkspawn.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkspawn.h
 
 (define-function gdk_spawn_on_screen
   (c-name "gdk_spawn_on_screen")
@@ -4191,11 +4191,11 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdktypes.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdktypes.h
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkvisual.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkvisual.h
 
 (define-function gdk_visual_get_type
   (c-name "gdk_visual_get_type")
@@ -4278,7 +4278,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkwindow.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkwindow.h
 
 (define-function gdk_window_object_get_type
   (c-name "gdk_window_object_get_type")
@@ -5219,7 +5219,7 @@
 
 
 
-;; From /opt/gnome2/include//gtk-2.0/gdk/gdkx.h
+;; From /opt/gnome2/include/gtk-2.0/gdk/gdkx.h
 
 (define-function gdk_x11_drawable_get_xdisplay
   (c-name "gdk_x11_drawable_get_xdisplay")
