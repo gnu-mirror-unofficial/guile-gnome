@@ -1,5 +1,24 @@
 2007-05-21  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/overrides/gtk.defs: Update ignores for gtk 2.10.
+
+	* gnome/overrides/gdk.defs: Update ignores a bit.
+
+	* guile-gnome-gtk.pc.in:
+	* guile-gnome-gtk-uninstalled.pc.in:
+	* gnome/gw/gtk-spec.scm (<gtk-wrapset>): Depend on cairo.
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_gtk_la_CFLAGS)
+	(libgw_guile_gnome_gtk_la_LIBADD): Link to cairo.
+	(libgw_guile_gnome_gdk_la_LIBADD): Link to cairo; dunno why it
+	wasn't being done before.
+
+	* gnome/overrides/gdk.defs-type-ignores: Renamed from
+	type-overrides. Ignore PixmapObject and WindowObject; not sure
+	what they are, even.
+
+	* cairo-checks.ac: Add cairo check.
+
 	* package.ac: Don't build gdk/gtk if guile-cairo isn't available.
 
 	* gnome/overrides/gdk.defs: Update overrides for GDK 2.10.13. Lots

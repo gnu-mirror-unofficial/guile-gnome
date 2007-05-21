@@ -50,11 +50,11 @@ libgw_guile_gnome_gtk_la_SOURCES = \
 	guile-gtk-tree-model.c guile-gtk-tree-model.h gtk-support.c gtk-support.h
 
 libgw_guile_gnome_gtk_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
-	$(AM_CFLAGS) $(GTK_CFLAGS) $(GUILE_CFLAGS) \
+	$(AM_CFLAGS) $(GUILE_CAIRO_CFLAGS) $(GTK_CFLAGS) $(GUILE_CFLAGS) \
 	$(G_WRAP_CFLAGS) $(GTK_DEPRECATED_CFLAGS)
 
 libgw_guile_gnome_gtk_la_LIBADD = $(GTK_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS)
+	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS) $(GUILE_CAIRO_CFLAGS)
 
 libgw_guile_gnome_gtk_la_LDFLAGS = -module
 

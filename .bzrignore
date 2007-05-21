@@ -7,3 +7,5 @@ Makefile.in
 *.pc
 gnome/gw/gtk.scm
 gnome/gw/gdk.scm
+*.lo
+*.la

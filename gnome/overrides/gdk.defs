@@ -28,6 +28,13 @@
 
 ;; stealing most of these from python-gtk2
 
+;; dunno why h2defs doesn't get this one
+(define-enum CursorType
+  (in-module "Gdk")
+  (c-name "GdkCursorType")
+  (gtype-id "GDK_TYPE_CURSOR_TYPE")
+)
+
 (define-function gdk-event->event-struct
   (c-name "gdk_event_to_vector")
   (overrides "gdk-event->vector") ;; hackeroo
@@ -154,6 +161,7 @@
         "gdk_input_add"
         "gdk_input_add_full"
         "gdk_input_remove"
+        "gdk_net_wm_supports"
         "gdk_pango_layout_get_clip_region"
         "gdk_pango_layout_line_get_clip_region"
         "gdk_parse_args"
