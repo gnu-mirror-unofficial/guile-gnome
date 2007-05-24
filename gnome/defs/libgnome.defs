@@ -1,7 +1,7 @@
 ;; -*- scheme -*-
 (include "libgnome-types.defs") (include overrides)
 
-;; From /usr/include/libgnome-2.0/libgnome/gnome-config.h
+;; From /opt/gnome2/include/libgnome-2.0/libgnome/gnome-config.h
 
 (define-function gnome_config_get_string_with_default_
   (c-name "gnome_config_get_string_with_default_")
@@ -268,7 +268,7 @@
 
 
 
-;; From /usr/include/libgnome-2.0/libgnome/gnome-exec.h
+;; From /opt/gnome2/include/libgnome-2.0/libgnome/gnome-exec.h
 
 (define-function gnome_execute_async
   (c-name "gnome_execute_async")
@@ -365,7 +365,7 @@
 
 
 
-;; From /usr/include/libgnome-2.0/libgnome/gnome-gconf.h
+;; From /opt/gnome2/include/libgnome-2.0/libgnome/gnome-gconf.h
 
 (define-function gnome_gconf_get_gnome_libs_settings_relative
   (c-name "gnome_gconf_get_gnome_libs_settings_relative")
@@ -386,7 +386,7 @@
 
 
 
-;; From /usr/include/libgnome-2.0/libgnome/gnome-help.h
+;; From /opt/gnome2/include/libgnome-2.0/libgnome/gnome-help.h
 
 (define-function gnome_help_error_quark
   (c-name "gnome_help_error_quark")
@@ -474,7 +474,7 @@
 
 
 
-;; From /usr/include/libgnome-2.0/libgnome/gnome-i18n.h
+;; From /opt/gnome2/include/libgnome-2.0/libgnome/gnome-i18n.h
 
 (define-function gnome_i18n_get_language_list
   (c-name "gnome_i18n_get_language_list")
@@ -496,7 +496,7 @@
 
 
 
-;; From /usr/include/libgnome-2.0/libgnome/gnome-init.h
+;; From /opt/gnome2/include/libgnome-2.0/libgnome/gnome-init.h
 
 (define-function libgnome_module_info_get
   (c-name "libgnome_module_info_get")
@@ -535,11 +535,11 @@
 
 
 
-;; From /usr/include/libgnome-2.0/libgnome/gnome-macros.h
+;; From /opt/gnome2/include/libgnome-2.0/libgnome/gnome-macros.h
 
 
 
-;; From /usr/include/libgnome-2.0/libgnome/gnome-program.h
+;; From /opt/gnome2/include/libgnome-2.0/libgnome/gnome-program.h
 
 (define-function gnome_program_get_type
   (c-name "gnome_program_get_type")
@@ -691,7 +691,7 @@
 
 
 
-;; From /usr/include/libgnome-2.0/libgnome/gnome-score.h
+;; From /opt/gnome2/include/libgnome-2.0/libgnome/gnome-score.h
 
 (define-function gnome_score_init
   (c-name "gnome_score_init")
@@ -725,7 +725,7 @@
 
 
 
-;; From /usr/include/libgnome-2.0/libgnome/gnome-sound.h
+;; From /opt/gnome2/include/libgnome-2.0/libgnome/gnome-sound.h
 
 (define-function gnome_sound_connection_get
   (c-name "gnome_sound_connection_get")
@@ -764,7 +764,7 @@
 
 
 
-;; From /usr/include/libgnome-2.0/libgnome/gnome-triggers.h
+;; From /opt/gnome2/include/libgnome-2.0/libgnome/gnome-triggers.h
 
 (define-method s_add_trigger
   (of-object "GnomeTrigger")
@@ -806,7 +806,7 @@
 
 
 
-;; From /usr/include/libgnome-2.0/libgnome/gnome-url.h
+;; From /opt/gnome2/include/libgnome-2.0/libgnome/gnome-url.h
 
 (define-function gnome_url_error_quark
   (c-name "gnome_url_error_quark")
@@ -834,7 +834,7 @@
 
 
 
-;; From /usr/include/libgnome-2.0/libgnome/gnome-util.h
+;; From /opt/gnome2/include/libgnome-2.0/libgnome/gnome-util.h
 
 (define-function g_extension_pointer
   (c-name "g_extension_pointer")
@@ -874,11 +874,11 @@
 
 
 
-;; From /usr/include/libgnome-2.0/libgnome/libgnome.h
+;; From /opt/gnome2/include/libgnome-2.0/libgnome/libgnome.h
 
 
 
-;; From /usr/include/libgnome-2.0/libgnome/libgnometypebuiltins.h
+;; From /opt/gnome2/include/libgnome-2.0/libgnome/libgnometypebuiltins.h
 
 (define-function gnome_trigger_type_get_type
   (c-name "gnome_trigger_type_get_type")

@@ -1,7 +1,7 @@
 ;; -*- scheme -*-
 (include "libgnomecanvas-types.defs") (include overrides)
 
-;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-bpath.h
+;; From /opt/gnome2/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-bpath.h
 
 (define-function gnome_canvas_bpath_get_type
   (c-name "gnome_canvas_bpath_get_type")
@@ -10,7 +10,7 @@
 
 
 
-;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-clipgroup.h
+;; From /opt/gnome2/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-clipgroup.h
 
 (define-function gnome_canvas_clipgroup_get_type
   (c-name "gnome_canvas_clipgroup_get_type")
@@ -19,7 +19,7 @@
 
 
 
-;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas.h
+;; From /opt/gnome2/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas.h
 
 (define-function gnome_canvas_item_get_type
   (c-name "gnome_canvas_item_get_type")
@@ -476,7 +476,7 @@
 
 
 
-;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-line.h
+;; From /opt/gnome2/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-line.h
 
 (define-function gnome_canvas_line_get_type
   (c-name "gnome_canvas_line_get_type")
@@ -485,7 +485,7 @@
 
 
 
-;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-path-def.h
+;; From /opt/gnome2/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-path-def.h
 
 (define-function gnome_canvas_path_def_get_type
   (c-name "gnome_canvas_path_def_get_type")
@@ -737,7 +737,7 @@
 
 
 
-;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-pixbuf.h
+;; From /opt/gnome2/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-pixbuf.h
 
 (define-function gnome_canvas_pixbuf_get_type
   (c-name "gnome_canvas_pixbuf_get_type")
@@ -746,7 +746,7 @@
 
 
 
-;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-polygon.h
+;; From /opt/gnome2/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-polygon.h
 
 (define-function gnome_canvas_polygon_get_type
   (c-name "gnome_canvas_polygon_get_type")
@@ -755,7 +755,7 @@
 
 
 
-;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-rect-ellipse.h
+;; From /opt/gnome2/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-rect-ellipse.h
 
 (define-function gnome_canvas_re_get_type
   (c-name "gnome_canvas_re_get_type")
@@ -774,7 +774,7 @@
 
 
 
-;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-rich-text.h
+;; From /opt/gnome2/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-rich-text.h
 
 (define-function gnome_canvas_rich_text_get_type
   (c-name "gnome_canvas_rich_text_get_type")
@@ -837,7 +837,7 @@
 
 
 
-;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-shape.h
+;; From /opt/gnome2/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-shape.h
 
 (define-method set_path_def
   (of-object "GnomeCanvasShape")
@@ -861,7 +861,7 @@
 
 
 
-;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-text.h
+;; From /opt/gnome2/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-text.h
 
 (define-function gnome_canvas_text_get_type
   (c-name "gnome_canvas_text_get_type")
@@ -870,7 +870,7 @@
 
 
 
-;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-util.h
+;; From /opt/gnome2/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-util.h
 
 (define-function gnome_canvas_points_new
   (c-name "gnome_canvas_points_new")
@@ -1042,7 +1042,7 @@
 
 
 
-;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-widget.h
+;; From /opt/gnome2/include/libgnomecanvas-2.0/libgnomecanvas/gnome-canvas-widget.h
 
 (define-function gnome_canvas_widget_get_type
   (c-name "gnome_canvas_widget_get_type")
@@ -1051,7 +1051,7 @@
 
 
 
-;; From /usr/include/libgnomecanvas-2.0/libgnomecanvas/libgnomecanvas.h
+;; From /opt/gnome2/include/libgnomecanvas-2.0/libgnomecanvas/libgnomecanvas.h
 
 (define-function gnome_canvas_points_get_type
   (c-name "gnome_canvas_points_get_type")

@@ -1,7 +1,7 @@
 ;; -*- scheme -*-
 (include type-ignores) (include "libgnomeui-types.defs") (include overrides)
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-about.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-about.h
 
 (define-function gnome_about_get_type
   (c-name "gnome_about_get_type")
@@ -42,7 +42,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-appbar.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-appbar.h
 
 (define-function gnome_appbar_get_type
   (c-name "gnome_appbar_get_type")
@@ -150,7 +150,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-app.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-app.h
 
 (define-function gnome_app_get_type
   (c-name "gnome_app_get_type")
@@ -292,7 +292,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-app-helper.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-app-helper.h
 
 (define-function gnome_app_helper_gettext
   (c-name "gnome_app_helper_gettext")
@@ -581,7 +581,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-app-util.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-app-util.h
 
 (define-method message
   (of-object "GnomeApp")
@@ -728,7 +728,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-authentication-manager.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-authentication-manager.h
 
 (define-function gnome_authentication_manager_init
   (c-name "gnome_authentication_manager_init")
@@ -742,7 +742,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-client.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-client.h
 
 (define-function gnome_client_module_info_get
   (c-name "gnome_client_module_info_get")
@@ -1041,7 +1041,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-color-picker.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-color-picker.h
 
 (define-function gnome_color_picker_get_type
   (c-name "gnome_color_picker_get_type")
@@ -1173,7 +1173,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-dateedit.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-dateedit.h
 
 (define-function gnome_date_edit_get_type
   (c-name "gnome_date_edit_get_type")
@@ -1264,7 +1264,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-dialog.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-dialog.h
 
 (define-function gnome_dialog_get_type
   (c-name "gnome_dialog_get_type")
@@ -1475,7 +1475,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-dialog-util.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-dialog-util.h
 
 (define-function gnome_ok_dialog
   (c-name "gnome_ok_dialog")
@@ -1670,7 +1670,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-druid.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-druid.h
 
 (define-function gnome_druid_get_type
   (c-name "gnome_druid_get_type")
@@ -1775,7 +1775,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-druid-page-edge.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-druid-page-edge.h
 
 (define-function gnome_druid_page_edge_get_type
   (c-name "gnome_druid_page_edge_get_type")
@@ -1920,7 +1920,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-druid-page.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-druid-page.h
 
 (define-function gnome_druid_page_get_type
   (c-name "gnome_druid_page_get_type")
@@ -1965,7 +1965,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-druid-page-standard.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-druid-page-standard.h
 
 (define-function gnome_druid_page_standard_get_type
   (c-name "gnome_druid_page_standard_get_type")
@@ -2064,7 +2064,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-entry.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-entry.h
 
 (define-function gnome_entry_get_type
   (c-name "gnome_entry_get_type")
@@ -2144,7 +2144,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-file-entry.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-file-entry.h
 
 (define-function gnome_file_entry_get_type
   (c-name "gnome_file_entry_get_type")
@@ -2260,7 +2260,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-font-picker.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-font-picker.h
 
 (define-function gnome_font_picker_get_type
   (c-name "gnome_font_picker_get_type")
@@ -2375,7 +2375,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-help.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-help.h
 
 (define-function gnome_help_display_on_screen
   (c-name "gnome_help_display_on_screen")
@@ -2426,7 +2426,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-href.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-href.h
 
 (define-function gnome_href_get_type
   (c-name "gnome_href_get_type")
@@ -2490,7 +2490,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-ice.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-ice.h
 
 (define-function gnome_ice_init
   (c-name "gnome_ice_init")
@@ -2499,7 +2499,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-icon-entry.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-icon-entry.h
 
 (define-function gnome_icon_entry_get_type
   (c-name "gnome_icon_entry_get_type")
@@ -2612,7 +2612,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-icon-item.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-icon-item.h
 
 (define-function gnome_icon_text_item_get_type
   (c-name "gnome_icon_text_item_get_type")
@@ -2691,7 +2691,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-icon-list.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-icon-list.h
 
 (define-function gnome_icon_list_get_type
   (c-name "gnome_icon_list_get_type")
@@ -3041,7 +3041,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-icon-lookup.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-icon-lookup.h
 
 (define-function gnome_icon_lookup
   (c-name "gnome_icon_lookup")
@@ -3073,7 +3073,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-icon-sel.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-icon-sel.h
 
 (define-function gnome_icon_selection_get_type
   (c-name "gnome_icon_selection_get_type")
@@ -3154,7 +3154,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-icon-theme.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-icon-theme.h
 
 (define-function gnome_icon_theme_get_type
   (c-name "gnome_icon_theme_get_type")
@@ -3291,7 +3291,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-mdi-child.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-mdi-child.h
 
 (define-function gnome_mdi_child_get_type
   (c-name "gnome_mdi_child_get_type")
@@ -3333,7 +3333,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-mdi-generic-child.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-mdi-generic-child.h
 
 (define-function gnome_mdi_generic_child_get_type
   (c-name "gnome_mdi_generic_child_get_type")
@@ -3439,7 +3439,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-mdi.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-mdi.h
 
 (define-function gnome_mdi_get_type
   (c-name "gnome_mdi_get_type")
@@ -3677,7 +3677,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-mdi-session.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-mdi-session.h
 
 (define-method restore_state
   (of-object "GnomeMDI")
@@ -3700,7 +3700,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-messagebox.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-messagebox.h
 
 (define-function gnome_message_box_get_type
   (c-name "gnome_message_box_get_type")
@@ -3741,7 +3741,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-password-dialog.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-password-dialog.h
 
 (define-function gnome_password_dialog_get_type
   (c-name "gnome_password_dialog_get_type")
@@ -3794,24 +3794,6 @@
   )
 )
 
-(define-method set_show_new_password
-  (of-object "GnomePasswordDialog")
-  (c-name "gnome_password_dialog_set_show_new_password")
-  (return-type "none")
-  (parameters
-    '("gboolean" "show")
-  )
-)
-
-(define-method set_show_new_password_quality
-  (of-object "GnomePasswordDialog")
-  (c-name "gnome_password_dialog_set_show_new_password_quality")
-  (return-type "none")
-  (parameters
-    '("gboolean" "show")
-  )
-)
-
 (define-method set_username
   (of-object "GnomePasswordDialog")
   (c-name "gnome_password_dialog_set_username")
@@ -3836,26 +3818,6 @@
   (return-type "none")
   (parameters
     '("const-char*" "password")
-  )
-)
-
-(define-method set_new_password
-  (of-object "GnomePasswordDialog")
-  (c-name "gnome_password_dialog_set_new_password")
-  (return-type "none")
-  (parameters
-    '("const-char*" "password")
-  )
-)
-
-(define-method set_password_quality_func
-  (of-object "GnomePasswordDialog")
-  (c-name "gnome_password_dialog_set_password_quality_func")
-  (return-type "none")
-  (parameters
-    '("GnomePasswordDialogQualityFunc" "func")
-    '("gpointer" "data")
-    '("GDestroyNotify" "dnotify")
   )
 )
 
@@ -3928,12 +3890,6 @@
   (return-type "char*")
 )
 
-(define-method get_new_password
-  (of-object "GnomePasswordDialog")
-  (c-name "gnome_password_dialog_get_new_password")
-  (return-type "char*")
-)
-
 (define-method anon_selected
   (of-object "GnomePasswordDialog")
   (c-name "gnome_password_dialog_anon_selected")
@@ -3942,7 +3898,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-pixmap-entry.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-pixmap-entry.h
 
 (define-function gnome_pixmap_entry_get_type
   (c-name "gnome_pixmap_entry_get_type")
@@ -4037,7 +3993,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-pixmap.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-pixmap.h
 
 (define-function gnome_pixmap_get_type
   (c-name "gnome_pixmap_get_type")
@@ -4128,7 +4084,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-popup-menu.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-popup-menu.h
 
 (define-function gnome_popup_menu_new
   (c-name "gnome_popup_menu_new")
@@ -4213,7 +4169,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-propertybox.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-propertybox.h
 
 (define-function gnome_property_box_get_type
   (c-name "gnome_property_box_get_type")
@@ -4262,7 +4218,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-scores.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-scores.h
 
 (define-function gnome_scores_get_type
   (c-name "gnome_scores_get_type")
@@ -4394,11 +4350,11 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-stock-icons.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-stock-icons.h
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-theme-parser.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-theme-parser.h
 
 (define-function gnome_theme_file_parse_error_quark
   (c-name "gnome_theme_file_parse_error_quark")
@@ -4495,7 +4451,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-thumbnail.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-thumbnail.h
 
 (define-function gnome_thumbnail_factory_get_type
   (c-name "gnome_thumbnail_factory_get_type")
@@ -4621,7 +4577,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnometypebuiltins.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnometypebuiltins.h
 
 (define-function gnome_ui_info_type_get_type
   (c-name "gnome_ui_info_type_get_type")
@@ -4720,15 +4676,15 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-types.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-types.h
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-uidefs.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-uidefs.h
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-ui-init.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-ui-init.h
 
 (define-function libgnomeui_module_info_get
   (c-name "libgnomeui_module_info_get")
@@ -4756,7 +4712,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-url.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-url.h
 
 (define-function gnome_url_show_on_screen
   (c-name "gnome_url_show_on_screen")
@@ -4770,7 +4726,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-vfs-util.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-vfs-util.h
 
 (define-function gnome_gdk_pixbuf_new_from_uri
   (c-name "gnome_gdk_pixbuf_new_from_uri")
@@ -4812,7 +4768,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-window.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-window.h
 
 (define-function gnome_window_toplevel_set_title
   (c-name "gnome_window_toplevel_set_title")
@@ -4827,7 +4783,7 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-window-icon.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/gnome-window-icon.h
 
 (define-function gnome_window_icon_set_from_default
   (c-name "gnome_window_icon_set_from_default")
@@ -4878,6 +4834,6 @@
 
 
 
-;; From /usr/include/libgnomeui-2.0/libgnomeui/libgnomeui.h
+;; From /opt/gnome2/include/libgnomeui-2.0/libgnomeui/libgnomeui.h
 
 
