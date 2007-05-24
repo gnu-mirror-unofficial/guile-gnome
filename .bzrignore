@@ -5,3 +5,5 @@ Makefile.in
 .libs
 *.log
 gnome/gw/canvas.scm
+*.lo
+*.la

@@ -79,6 +79,40 @@
   (parameters
    '("SCM" "points")))
 
+(define-function
+  gnome_canvas_new_aa
+  (is-constructor-of GnomeCanvas)
+  (c-name "gnome_canvas_new_aa")
+  (overrides "gnome_canvas_new_aa")
+  (return-type "GtkWidget*"))
+
+(define-function
+  gnome_canvas_path_def_concat
+  (c-name "gnome_canvas_path_def_concat")
+  (overrides "gnome_canvas_path_def_concat")
+  (return-type "GnomeCanvasPathDef*")
+  (parameters
+    '("const-GSList*-of-GnomeCanvasPathDef*" "list")))
+
+(define-method
+  get_scroll_region
+  (of-object "GnomeCanvas")
+  (c-name "gnome_canvas_get_scroll_region")
+  (overrides "gnome_canvas_get_scroll_region")
+  (return-type "none")
+  (parameters
+    '("double*" "x1")
+    '("double*" "y1")
+    '("double*" "x2")
+    '("double*" "y2")))
+
+(define-method
+  split
+  (of-object "GnomeCanvasPathDef")
+  (c-name "gnome_canvas_path_def_split")
+  (overrides "gnome_canvas_path_def_split")
+  (return-type "GSList*-of-GnomeCanvasPathDef*"))
+
 (ignore-glob
  ;; if you need these, use gtype-from-name or gtype-class->type
  "*_get_type"
@@ -103,4 +137,8 @@
  "gnome_canvas_join_gdk_to_art"
  "gnome_canvas_request_redraw_svp"
  "gnome_canvas_request_redraw_uta"
+
+ "gnome_canvas_item_i2c_affine"
+ "gnome_canvas_item_i2w_affine"
+ "gnome_canvas_item_w2c_affine"
  )
