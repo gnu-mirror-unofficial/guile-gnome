@@ -118,6 +118,7 @@
 (ignore "gconf_engine_get_for_addresses"
         "gconf_engine_get_local_for_addresses"
         "gconf_engine_change_set_from_currentv"
+        "gconf_engine_notify_add"
         "gconf_client_change_set_from_currentv"
         "gconf_engine_get_local"
         "gconf_clear_cache"
