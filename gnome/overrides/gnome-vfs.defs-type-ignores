@@ -1,6 +1,59 @@
 ;; -*- scheme -*-
 
+;; this one is a terrible name
+(define-enum
+  VFSDNSSDServiceStatus
+  (in-module "Gnome")
+  (c-name "GnomeVFSDNSSDServiceStatus")
+  (gtype-id
+    "GNOME_VFS_TYPE_VFS_DNS_SD_SERVICE_STATUS")
+  (values
+    '("added" "GNOME_VFS_DNS_SD_SERVICE_ADDED")
+    '("removed" "GNOME_VFS_DNS_SD_SERVICE_REMOVED")))
+
+;; these do not follow the gnome-vfs type macro conventions
+(define-object
+  VFSACE
+  (in-module "Gnome")
+  (parent "GObject")
+  (c-name "GnomeVFSACE")
+  (gtype-id "GNOME_VFS_TYPE_ACE"))
+(define-object
+  VFSACL
+  (in-module "Gnome")
+  (parent "GObject")
+  (c-name "GnomeVFSACL")
+  (gtype-id "GNOME_VFS_TYPE_ACL"))
+(define-object
+  VFSDrive
+  (in-module "Gnome")
+  (parent "GObject")
+  (c-name "GnomeVFSDrive")
+  (gtype-id "GNOME_VFS_TYPE_DRIVE"))
+(define-object
+  VFSVolume
+  (in-module "Gnome")
+  (parent "GObject")
+  (c-name "GnomeVFSVolume")
+  (gtype-id "GNOME_VFS_TYPE_VOLUME"))
+(define-object
+  VFSVolumeMonitor
+  (in-module "Gnome")
+  (parent "GObject")
+  (c-name "GnomeVFSVolumeMonitor")
+  (gtype-id "GNOME_VFS_TYPE_VOLUME_MONITOR"))
+
+
 (ignore-types "GnomeVFSResult" ;; has a custom wrapping
               "GnomeVFSMimeApplicationArgumentType"
               "GnomeVFSMimeAction"
-              "GnomeVFSMimeActionType")
+              "GnomeVFSMimeActionType"
+
+              "GnomeVFSDNSSDServiceStatus"
+
+              "GnomeVFSACE"
+              "GnomeVFSACL"
+              "GnomeVFSDrive"
+              "GnomeVFSVolume"
+              "GnomeVFSVolumeMonitor"
+              )

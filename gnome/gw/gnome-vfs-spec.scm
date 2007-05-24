@@ -56,6 +56,7 @@
   (list (next-method)
         "#include <libgnomevfs/gnome-vfs.h>\n"
         "#include <libgnomevfs/gnome-vfs-enum-types.h>\n"
+        "#include <libgnomevfs/gnome-vfs-mime.h>\n"
         "#include <libgnomevfs/gnome-vfs-mime-handlers.h>\n"
         "#include <libgnomevfs/gnome-vfs-application-registry.h>\n"
         "#include \"gnome-vfs-port.h\"\n"

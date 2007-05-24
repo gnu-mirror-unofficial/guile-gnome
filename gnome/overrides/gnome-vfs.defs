@@ -111,6 +111,25 @@
 
 ;; from here on out, just list-of specializations
 
+(define-method
+  get_ace_list
+  (of-object "GnomeVFSACL")
+  (c-name "gnome_vfs_acl_get_ace_list")
+  (overrides "gnome_vfs_acl_get_ace_list")
+  (caller-owns-return #t)
+  (return-type "GList*-of-GnomeVFSACE*"))
+
+(define-function
+  gnome_vfs_mime_get_all_applications_for_uri
+  (c-name
+    "gnome_vfs_mime_get_all_applications_for_uri")
+  (overrides
+    "gnome_vfs_mime_get_all_applications_for_uri")
+  (return-type "GList*-of-GnomeVFSMimeApplication*")
+  (parameters
+    '("const-char*" "uri")
+    '("const-char*" "mime_type")))
+
 (define-function gnome_vfs_async_get_file_info
   (c-name "gnome_vfs_async_get_file_info")
   (overrides "gnome_vfs_async_get_file_info")
@@ -212,6 +231,28 @@
 ;     '("GList**" "domains")
 ;   )
 ; )
+
+;; ghetto!
+(define-function gnome_vfs_get_file_mime_type_fast
+  (c-name "gnome_vfs_get_file_mime_type_fast")
+  (overrides "gnome_vfs_get_file_mime_type_fast")
+  (return-type "const-char*")
+  (parameters
+    '("const-char*" "path")
+    '("gpointer" "optional_stat_info" (null-ok) (default "NULL"))
+  )
+)
+
+(define-function gnome_vfs_get_file_mime_type
+  (c-name "gnome_vfs_get_file_mime_type")
+  (overrides "gnome_vfs_get_file_mime_type")
+  (return-type "const-char*")
+  (parameters
+    '("const-char*" "path")
+    '("gpointer" "optional_stat_info" (null-ok))
+    '("gboolean" "suffix_only")
+  )
+)
 
 (define-function gnome_vfs_get_default_browse_domains
   (c-name "gnome_vfs_get_default_browse_domains")
@@ -378,6 +419,86 @@
               "gnome_vfs_application_registry_*"
               "*_sockaddr")
 
+;; need to wrap GnomeVFSAclKind, or file a bug..
+(define-function gnome_vfs_ace_new
+  (c-name "gnome_vfs_ace_new")
+  (overrides "gnome_vfs_ace_new")
+  (is-constructor-of "GnomeVfsAce")
+  (return-type "GnomeVFSACE*")
+  (parameters
+    '("gint" "kind")
+    '("const-char*" "id")
+    '("gpointer" "perms" (null-ok) (default "NULL"))
+  )
+)
+
+(ignore "gnome_vfs_ace_get_perms"
+        "gnome_vfs_ace_set_perms")
+
+(define-method get_kind
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_get_kind")
+  (overrides "gnome_vfs_ace_get_kind")
+  (return-type "gint")
+)
+
+(define-method set_kind
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_set_kind")
+  (overrides "gnome_vfs_ace_set_kind")
+  (return-type "none")
+  (parameters
+    '("gint" "kind")
+  )
+)
+
+(define-function gnome_vfs_acl_kind_to_string
+  (c-name "gnome_vfs_acl_kind_to_string")
+  (overrides "gnome_vfs_acl_kind_to_string")
+  (return-type "const-char*")
+  (parameters
+    '("gint" "kind")
+  )
+)
+
+(define-method add_perm
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_add_perm")
+  (overrides "gnome_vfs_ace_add_perm")
+  (return-type "none")
+  (parameters
+    '("int" "perm")
+  )
+)
+
+(define-method del_perm
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_del_perm")
+  (overrides "gnome_vfs_ace_del_perm")
+  (return-type "none")
+  (parameters
+    '("int" "perm")
+  )
+)
+
+(define-method check_perm
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_check_perm")
+  (overrides "gnome_vfs_ace_check_perm")
+  (return-type "gboolean")
+  (parameters
+    '("int" "perm")
+  )
+)
+(define-function gnome_vfs_acl_perm_to_string
+  (c-name "gnome_vfs_acl_perm_to_string")
+  (overrides "gnome_vfs_acl_perm_to_string")
+  (return-type "const-char*")
+  (parameters
+    '("int" "perm")
+  )
+)
+
 ;; Deprecated
 (ignore "gnome_vfs_mime_add_extension"
         "gnome_vfs_mime_remove_extension"
@@ -418,4 +539,6 @@
         "gnome_vfs_mime_get_default_desktop_entry"
 
         ;; Bonobo
-        "gnome_vfs_mime_get_default_component")
+        "gnome_vfs_mime_get_default_component"
+
+        "gnome_vfs_acl_free_ace_list")

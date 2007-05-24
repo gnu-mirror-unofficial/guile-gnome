@@ -1,3 +1,14 @@
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gnome-vfs.defs-type-ignores: Update for names
+	that don't follow standard conventions.
+
+	* gnome/overrides/gnome-vfs.defs: Update ignores for gnome-vfs
+	2.16.
+
+	* gnome/gw/gnome-vfs-spec.scm (global-declarations-cg): Include
+	gnome-vfs-mime.h also.
+
 2007-05-13  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/gnome-vfs-spec.scm (initialize): Use uint64/int64
