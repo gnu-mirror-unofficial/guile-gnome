@@ -94,6 +94,13 @@ libgnome:
 	   --with-header='(include "libgnome-types.defs") (include overrides)' \
 	   $(DEFS_HEADER_DIR)/libgnome-2.0/libgnome/*.h > libgnome.defs
 
+libgnomeui:
+	../../../h2def.py --types \
+	   $(DEFS_HEADER_DIR)/libgnomeui-2.0/libgnomeui/*.h > libgnomeui-types.defs
+	../../../h2def.py --procs \
+	   --with-header='(include type-ignores) (include "libgnomeui-types.defs") (include overrides)' \
+	   $(DEFS_HEADER_DIR)/libgnomeui-2.0/libgnomeui/*.h > libgnomeui.defs
+
 gnome-vfs:
 	../../../h2def.py --types \
 	   $(DEFS_HEADER_DIR)/gnome-vfs-2.0/libgnomevfs/*.h > gnome-vfs-types.defs
@@ -108,9 +115,3 @@ gconf:
 	   --with-header='(include type-ignores) (include "gconf-types.defs") (include overrides)' \
 	   $(DEFS_HEADER_DIR)/gconf/2/gconf/*.h > gconf.defs
 
-gnome-ui:
-	../../../h2def.py --types \
-	   $(DEFS_HEADER_DIR)/libgnomeui-2.0/libgnomeui/*.h > ui-types.defs
-	../../../h2def.py --procs \
-	   --with-header='(include type-ignores) (include "ui-types.defs") (include overrides)' \
-	   $(DEFS_HEADER_DIR)/libgnomeui-2.0/libgnomeui/*.h > ui.defs

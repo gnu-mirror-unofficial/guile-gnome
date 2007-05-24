@@ -428,6 +428,13 @@
   (gtype-id "GNOME_TYPE_MESSAGE_BOX")
 )
 
+(define-object PasswordDialog
+  (in-module "Gnome")
+  (parent "GtkDialog")
+  (c-name "GnomePasswordDialog")
+  (gtype-id "GNOME_TYPE_PASSWORD_DIALOG")
+)
+
 (define-object Pixmap
   (in-module "Gnome")
   (parent "GtkImage")

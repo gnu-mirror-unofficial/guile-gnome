@@ -1,5 +1,5 @@
 ;; -*- scheme -*-
-(include type-ignores) (include "ui-types.defs") (include overrides)
+(include type-ignores) (include "libgnomeui-types.defs") (include overrides)
 
 ;; From /usr/include/libgnomeui-2.0/libgnomeui/gnome-about.h
 
@@ -2080,15 +2080,6 @@
   )
 )
 
-(define-method construct
-  (of-object "GnomeEntry")
-  (c-name "gnome_entry_construct")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "history_id")
-  )
-)
-
 (define-method gtk_entry
   (of-object "GnomeEntry")
   (c-name "gnome_entry_gtk_entry")
@@ -2446,16 +2437,6 @@
   (c-name "gnome_href_new")
   (is-constructor-of "GnomeHref")
   (return-type "GtkWidget*")
-  (parameters
-    '("const-gchar*" "url")
-    '("const-gchar*" "text")
-  )
-)
-
-(define-method construct
-  (of-object "GnomeHRef")
-  (c-name "gnome_href_construct")
-  (return-type "none")
   (parameters
     '("const-gchar*" "url")
     '("const-gchar*" "text")
@@ -3813,6 +3794,24 @@
   )
 )
 
+(define-method set_show_new_password
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_set_show_new_password")
+  (return-type "none")
+  (parameters
+    '("gboolean" "show")
+  )
+)
+
+(define-method set_show_new_password_quality
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_set_show_new_password_quality")
+  (return-type "none")
+  (parameters
+    '("gboolean" "show")
+  )
+)
+
 (define-method set_username
   (of-object "GnomePasswordDialog")
   (c-name "gnome_password_dialog_set_username")
@@ -3837,6 +3836,26 @@
   (return-type "none")
   (parameters
     '("const-char*" "password")
+  )
+)
+
+(define-method set_new_password
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_set_new_password")
+  (return-type "none")
+  (parameters
+    '("const-char*" "password")
+  )
+)
+
+(define-method set_password_quality_func
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_set_password_quality_func")
+  (return-type "none")
+  (parameters
+    '("GnomePasswordDialogQualityFunc" "func")
+    '("gpointer" "data")
+    '("GDestroyNotify" "dnotify")
   )
 )
 
@@ -3906,6 +3925,12 @@
 (define-method get_password
   (of-object "GnomePasswordDialog")
   (c-name "gnome_password_dialog_get_password")
+  (return-type "char*")
+)
+
+(define-method get_new_password
+  (of-object "GnomePasswordDialog")
+  (c-name "gnome_password_dialog_get_new_password")
   (return-type "char*")
 )
 
@@ -4752,6 +4777,17 @@
   (return-type "GdkPixbuf*")
   (parameters
     '("const-char*" "uri")
+  )
+)
+
+(define-function gnome_gdk_pixbuf_new_from_uri_at_scale
+  (c-name "gnome_gdk_pixbuf_new_from_uri_at_scale")
+  (return-type "GdkPixbuf*")
+  (parameters
+    '("const-char*" "uri")
+    '("gint" "width")
+    '("gint" "height")
+    '("gboolean" "preserve_aspect_ratio")
   )
 )
 

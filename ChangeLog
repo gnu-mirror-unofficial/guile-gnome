@@ -1,5 +1,10 @@
 2007-05-24  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/defs/Makefile.am (libgnomeui): 
+	* gnome/defs/libgnomeui.defs: 
+	* gnome/defs/libgnomeui-types.defs: Rename from ui.defs, and regen
+	for libgnomeui 2.16.
+
 	* gnome/defs/Makefile.am (libgnome): Add libgnome regen rule.
 
 	* gnome/defs/libgnome.defs: 
