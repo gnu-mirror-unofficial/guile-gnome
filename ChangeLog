@@ -1,3 +1,7 @@
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.92 ==
+
 2007-05-21  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/pangocairo-spec.scm (gnome): Actually import the cairo
