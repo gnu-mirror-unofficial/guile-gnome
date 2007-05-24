@@ -101,6 +101,13 @@ libgnomeui:
 	   --with-header='(include type-ignores) (include "libgnomeui-types.defs") (include overrides)' \
 	   $(DEFS_HEADER_DIR)/libgnomeui-2.0/libgnomeui/*.h > libgnomeui.defs
 
+libgnomecanvas:
+	../../../h2def.py --types \
+	   $(DEFS_HEADER_DIR)/libgnomecanvas-2.0/libgnomecanvas/*.h > libgnomecanvas-types.defs
+	../../../h2def.py --procs \
+	   --with-header='(include "libgnomecanvas-types.defs") (include overrides)' \
+	   $(DEFS_HEADER_DIR)/libgnomecanvas-2.0/libgnomecanvas/*.h > libgnomecanvas.defs
+
 gnome-vfs:
 	../../../h2def.py --types \
 	   $(DEFS_HEADER_DIR)/gnome-vfs-2.0/libgnomevfs/*.h > gnome-vfs-types.defs

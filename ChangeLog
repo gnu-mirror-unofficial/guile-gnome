@@ -1,5 +1,10 @@
 2007-05-24  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/defs/libgnomecanvas.defs: 
+	* gnome/defs/libgnomecanvas-types.defs:
+	* gnome/defs/Makefile.am (libgnomecanvas): Add rule for regenning
+	libgnomecanvas, and regen for libgnomecanvas 2.14.1.
+
 	* gnome/defs/Makefile.am (libgnomeui): 
 	* gnome/defs/libgnomeui.defs: 
 	* gnome/defs/libgnomeui-types.defs: Rename from ui.defs, and regen
