@@ -1,9 +1,6 @@
 ;; -*- scheme -*-
 ;; Enumerations and flags ...
 
-;; Note: the gtype-ids need to be hand-tuned. Better fix h2defs to do
-;; the right thing.
-
 (define-flags VFSDirectoryVisitOptions
   (in-module "Gnome")
   (c-name "GnomeVFSDirectoryVisitOptions")
@@ -18,7 +15,7 @@
 (define-enum VFSDNSSDServiceStatus
   (in-module "Gnome")
   (c-name "GnomeVFSDNSSDServiceStatus")
-  (gtype-id "GNOME_VFS_TYPE_VFS_DNS_SD_SERVICE_STATUS")
+  (gtype-id "GNOME_VFS_TYPE_VFS_DNSSD_SERVICE_STATUS")
   (values
     '("added" "GNOME_VFS_DNS_SD_SERVICE_ADDED")
     '("removed" "GNOME_VFS_DNS_SD_SERVICE_REMOVED")
@@ -73,6 +70,9 @@
     '("symlink-name" "GNOME_VFS_FILE_INFO_FIELDS_SYMLINK_NAME")
     '("mime-type" "GNOME_VFS_FILE_INFO_FIELDS_MIME_TYPE")
     '("access" "GNOME_VFS_FILE_INFO_FIELDS_ACCESS")
+    '("ids" "GNOME_VFS_FILE_INFO_FIELDS_IDS")
+    '("acl" "GNOME_VFS_FILE_INFO_FIELDS_ACL")
+    '("selinux-context" "GNOME_VFS_FILE_INFO_FIELDS_SELINUX_CONTEXT")
   )
 )
 
@@ -113,6 +113,9 @@
     '("force-slow-mime-type" "GNOME_VFS_FILE_INFO_FORCE_SLOW_MIME_TYPE")
     '("follow-links" "GNOME_VFS_FILE_INFO_FOLLOW_LINKS")
     '("get-access-rights" "GNOME_VFS_FILE_INFO_GET_ACCESS_RIGHTS")
+    '("name-only" "GNOME_VFS_FILE_INFO_NAME_ONLY")
+    '("get-acl" "GNOME_VFS_FILE_INFO_GET_ACL")
+    '("get-selinux-context" "GNOME_VFS_FILE_INFO_GET_SELINUX_CONTEXT")
   )
 )
 
@@ -126,6 +129,9 @@
     '("permissions" "GNOME_VFS_SET_FILE_INFO_PERMISSIONS")
     '("owner" "GNOME_VFS_SET_FILE_INFO_OWNER")
     '("time" "GNOME_VFS_SET_FILE_INFO_TIME")
+    '("acl" "GNOME_VFS_SET_FILE_INFO_ACL")
+    '("selinux-context" "GNOME_VFS_SET_FILE_INFO_SELINUX_CONTEXT")
+    '("symlink-name" "GNOME_VFS_SET_FILE_INFO_SYMLINK_NAME")
   )
 )
 
@@ -148,6 +154,7 @@
     '("read" "GNOME_VFS_OPEN_READ")
     '("write" "GNOME_VFS_OPEN_WRITE")
     '("random" "GNOME_VFS_OPEN_RANDOM")
+    '("truncate" "GNOME_VFS_OPEN_TRUNCATE")
   )
 )
 
@@ -274,6 +281,8 @@
     '("error-nameserver" "GNOME_VFS_ERROR_NAMESERVER")
     '("error-locked" "GNOME_VFS_ERROR_LOCKED")
     '("error-deprecated-function" "GNOME_VFS_ERROR_DEPRECATED_FUNCTION")
+    '("error-invalid-filename" "GNOME_VFS_ERROR_INVALID_FILENAME")
+    '("error-not-a-symbolic-link" "GNOME_VFS_ERROR_NOT_A_SYMBOLIC_LINK")
     '("num-errors" "GNOME_VFS_NUM_ERRORS")
   )
 )
@@ -298,6 +307,16 @@
   (gtype-id "GNOME_VFS_TYPE_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_OUT_FLAGS")
   (values
     '("d" "GNOME_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_OUT_ANON_SELECTED")
+  )
+)
+
+(define-enum VFSModuleCallbackAuthenticationAuthType
+  (in-module "Gnome")
+  (c-name "GnomeVFSModuleCallbackAuthenticationAuthType")
+  (gtype-id "GNOME_VFS_TYPE_VFS_MODULE_CALLBACK_AUTHENTICATION_AUTH_TYPE")
+  (values
+    '("basic" "AuthTypeBasic")
+    '("digest" "AuthTypeDigest")
   )
 )
 
@@ -382,6 +401,7 @@
     '("use-unique-names" "GNOME_VFS_XFER_USE_UNIQUE_NAMES")
     '("link-items" "GNOME_VFS_XFER_LINK_ITEMS")
     '("follow-links-recursive" "GNOME_VFS_XFER_FOLLOW_LINKS_RECURSIVE")
+    '("target-default-perms" "GNOME_VFS_XFER_TARGET_DEFAULT_PERMS")
   )
 )
 
@@ -471,24 +491,38 @@
 
 ;; -*- scheme -*-
 ; object definitions ...
+(define-object VFSACE
+  (in-module "Gnome")
+  (parent "GObject")
+  (c-name "GnomeVFSACE")
+  (gtype-id "GNOME_VFS_TYPE_VFS_ACE")
+)
+
+(define-object VFSACL
+  (in-module "Gnome")
+  (parent "GObject")
+  (c-name "GnomeVFSACL")
+  (gtype-id "GNOME_VFS_TYPE_VFS_ACL")
+)
+
 (define-object VFSDrive
   (in-module "Gnome")
   (parent "GObject")
   (c-name "GnomeVFSDrive")
-  (gtype-id "GNOME_VFS_TYPE_DRIVE")
+  (gtype-id "GNOME_VFS_TYPE_VFS_DRIVE")
 )
 
 (define-object VFSVolume
   (in-module "Gnome")
   (parent "GObject")
   (c-name "GnomeVFSVolume")
-  (gtype-id "GNOME_VFS_TYPE_VOLUME")
+  (gtype-id "GNOME_VFS_TYPE_VFS_VOLUME")
 )
 
 (define-object VFSVolumeMonitor
   (in-module "Gnome")
   (parent "GObject")
   (c-name "GnomeVFSVolumeMonitor")
-  (gtype-id "GNOME_VFS_TYPE_VOLUME_MONITOR")
+  (gtype-id "GNOME_VFS_TYPE_VFS_VOLUME_MONITOR")
 )
 

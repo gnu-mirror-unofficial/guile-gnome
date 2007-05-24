@@ -1,7 +1,7 @@
 ;; -*- scheme -*-
 (include "libglade-types.defs") (include overrides)
 
-;; From /usr/include/libglade-2.0/glade/glade-xml.h
+;; From /opt/gnome2/include/libglade-2.0/glade/glade-xml.h
 
 (define-function glade_xml_get_type
   (c-name "glade_xml_get_type")

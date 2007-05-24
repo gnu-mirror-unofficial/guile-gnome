@@ -1,7 +1,216 @@
 ;; -*- scheme -*-
 (include type-ignores) (include "gnome-vfs-types.defs") (include overrides)
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-address.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-ace.h
+
+(define-function gnome_vfs_ace_get_type
+  (c-name "gnome_vfs_ace_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_vfs_ace_new
+  (c-name "gnome_vfs_ace_new")
+  (is-constructor-of "GnomeVfsAce")
+  (return-type "GnomeVFSACE*")
+  (parameters
+    '("GnomeVFSACLKind" "kind")
+    '("const-char*" "id")
+    '("GnomeVFSACLPerm*" "perms")
+  )
+)
+
+(define-method get_kind
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_get_kind")
+  (return-type "GnomeVFSACLKind")
+)
+
+(define-method set_kind
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_set_kind")
+  (return-type "none")
+  (parameters
+    '("GnomeVFSACLKind" "kind")
+  )
+)
+
+(define-method get_id
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_get_id")
+  (return-type "const-char*")
+)
+
+(define-method set_id
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_set_id")
+  (return-type "none")
+  (parameters
+    '("const-char*" "id")
+  )
+)
+
+(define-method get_inherit
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_get_inherit")
+  (return-type "gboolean")
+)
+
+(define-method set_inherit
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_set_inherit")
+  (return-type "none")
+  (parameters
+    '("gboolean" "inherit")
+  )
+)
+
+(define-method get_negative
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_get_negative")
+  (return-type "gboolean")
+)
+
+(define-method set_negative
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_set_negative")
+  (return-type "none")
+  (parameters
+    '("gboolean" "negative")
+  )
+)
+
+(define-method get_perms
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_get_perms")
+  (return-type "const-GnomeVFSACLPerm*")
+)
+
+(define-method set_perms
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_set_perms")
+  (return-type "none")
+  (parameters
+    '("GnomeVFSACLPerm*" "perms")
+  )
+)
+
+(define-method add_perm
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_add_perm")
+  (return-type "none")
+  (parameters
+    '("GnomeVFSACLPerm" "perm")
+  )
+)
+
+(define-method del_perm
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_del_perm")
+  (return-type "none")
+  (parameters
+    '("GnomeVFSACLPerm" "perm")
+  )
+)
+
+(define-method check_perm
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_check_perm")
+  (return-type "gboolean")
+  (parameters
+    '("GnomeVFSACLPerm" "perm")
+  )
+)
+
+(define-method copy_perms
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_copy_perms")
+  (return-type "none")
+  (parameters
+    '("GnomeVFSACE*" "dest")
+  )
+)
+
+(define-method equal
+  (of-object "GnomeVFSACE")
+  (c-name "gnome_vfs_ace_equal")
+  (return-type "gboolean")
+  (parameters
+    '("GnomeVFSACE*" "entry_b")
+  )
+)
+
+
+
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-acl.h
+
+(define-function gnome_vfs_acl_kind_to_string
+  (c-name "gnome_vfs_acl_kind_to_string")
+  (return-type "const-char*")
+  (parameters
+    '("GnomeVFSACLKind" "kind")
+  )
+)
+
+(define-function gnome_vfs_acl_perm_to_string
+  (c-name "gnome_vfs_acl_perm_to_string")
+  (return-type "const-char*")
+  (parameters
+    '("GnomeVFSACLPerm" "perm")
+  )
+)
+
+(define-function gnome_vfs_acl_get_type
+  (c-name "gnome_vfs_acl_get_type")
+  (return-type "GType")
+)
+
+(define-function gnome_vfs_acl_new
+  (c-name "gnome_vfs_acl_new")
+  (is-constructor-of "GnomeVfsAcl")
+  (return-type "GnomeVFSACL*")
+)
+
+(define-method clear
+  (of-object "GnomeVFSACL")
+  (c-name "gnome_vfs_acl_clear")
+  (return-type "none")
+)
+
+(define-method set
+  (of-object "GnomeVFSACL")
+  (c-name "gnome_vfs_acl_set")
+  (return-type "none")
+  (parameters
+    '("GnomeVFSACE*" "ace")
+  )
+)
+
+(define-method unset
+  (of-object "GnomeVFSACL")
+  (c-name "gnome_vfs_acl_unset")
+  (return-type "none")
+  (parameters
+    '("GnomeVFSACE*" "ace")
+  )
+)
+
+(define-method get_ace_list
+  (of-object "GnomeVFSACL")
+  (c-name "gnome_vfs_acl_get_ace_list")
+  (return-type "GList*")
+)
+
+(define-function gnome_vfs_acl_free_ace_list
+  (c-name "gnome_vfs_acl_free_ace_list")
+  (return-type "none")
+  (parameters
+    '("GList*" "ace_list")
+  )
+)
+
+
+
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-address.h
 
 (define-function gnome_vfs_address_get_type
   (c-name "gnome_vfs_address_get_type")
@@ -51,6 +260,25 @@
   (return-type "guint32")
 )
 
+(define-method equal
+  (of-object "GnomeVFSAddress")
+  (c-name "gnome_vfs_address_equal")
+  (return-type "gboolean")
+  (parameters
+    '("const-GnomeVFSAddress*" "b")
+  )
+)
+
+(define-method match
+  (of-object "GnomeVFSAddress")
+  (c-name "gnome_vfs_address_match")
+  (return-type "gboolean")
+  (parameters
+    '("const-GnomeVFSAddress*" "b")
+    '("guint" "prefix")
+  )
+)
+
 (define-method dup
   (of-object "GnomeVFSAddress")
   (c-name "gnome_vfs_address_dup")
@@ -65,7 +293,7 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-application-registry.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-application-registry.h
 
 (define-function gnome_vfs_application_registry_exists
   (c-name "gnome_vfs_application_registry_exists")
@@ -240,7 +468,24 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-async-ops.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-async-ops.h
+
+(define-function gnome_vfs_find_directory_result_get_type
+  (c-name "gnome_vfs_find_directory_result_get_type")
+  (return-type "GType")
+)
+
+(define-method dup
+  (of-object "GnomeVFSFindDirectoryResult")
+  (c-name "gnome_vfs_find_directory_result_dup")
+  (return-type "GnomeVFSFindDirectoryResult*")
+)
+
+(define-method free
+  (of-object "GnomeVFSFindDirectoryResult")
+  (c-name "gnome_vfs_find_directory_result_free")
+  (return-type "none")
+)
 
 (define-function gnome_vfs_async_cancel
   (c-name "gnome_vfs_async_cancel")
@@ -528,7 +773,7 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-cancellation.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-cancellation.h
 
 (define-function gnome_vfs_cancellation_new
   (c-name "gnome_vfs_cancellation_new")
@@ -568,7 +813,7 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-context.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-context.h
 
 (define-function gnome_vfs_context_new
   (c-name "gnome_vfs_context_new")
@@ -600,7 +845,7 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-directory.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-directory.h
 
 (define-function gnome_vfs_directory_open
   (c-name "gnome_vfs_directory_open")
@@ -643,7 +888,7 @@
   (c-name "gnome_vfs_directory_visit")
   (return-type "GnomeVFSResult")
   (parameters
-    '("const-gchar*" "uri")
+    '("const-gchar*" "text_uri")
     '("GnomeVFSFileInfoOptions" "info_options")
     '("GnomeVFSDirectoryVisitOptions" "visit_options")
     '("GnomeVFSDirectoryVisitFunc" "callback")
@@ -701,7 +946,7 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-dns-sd.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-dns-sd.h
 
 (define-function gnome_vfs_dns_sd_service_status_get_type
   (c-name "gnome_vfs_dns_sd_service_status_get_type")
@@ -775,8 +1020,8 @@
     '("char**" "host")
     '("int*" "port")
     '("GHashTable**" "text")
-    '("int*" "text_raw_len")
-    '("char**" "text_raw")
+    '("int*" "text_raw_len_out")
+    '("char**" "text_raw_out")
   )
 )
 
@@ -806,7 +1051,7 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-drive.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-drive.h
 
 (define-function gnome_vfs_drive_get_type
   (c-name "gnome_vfs_drive_get_type")
@@ -905,6 +1150,12 @@
   (return-type "gboolean")
 )
 
+(define-method needs_eject
+  (of-object "GnomeVFSDrive")
+  (c-name "gnome_vfs_drive_needs_eject")
+  (return-type "gboolean")
+)
+
 (define-method compare
   (of-object "GnomeVFSDrive")
   (c-name "gnome_vfs_drive_compare")
@@ -946,7 +1197,7 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-enum-types.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-enum-types.h
 
 (define-function gnome_vfs_directory_visit_options_get_type
   (c-name "gnome_vfs_directory_visit_options_get_type")
@@ -1038,6 +1289,11 @@
   (return-type "GType")
 )
 
+(define-function gnome_vfs_module_callback_authentication_auth_type_get_type
+  (c-name "gnome_vfs_module_callback_authentication_auth_type_get_type")
+  (return-type "GType")
+)
+
 (define-function gnome_vfs_make_uri_dirs_get_type
   (c-name "gnome_vfs_make_uri_dirs_get_type")
   (return-type "GType")
@@ -1090,11 +1346,23 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-info.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-info.h
 
-(define-function gnome_vfs_file_info_get_type
-  (c-name "gnome_vfs_file_info_get_type")
+(define-function gnome_vfs_get_file_info_result_get_type
+  (c-name "gnome_vfs_get_file_info_result_get_type")
   (return-type "GType")
+)
+
+(define-method dup
+  (of-object "GnomeVFSGetFileInfoResult")
+  (c-name "gnome_vfs_get_file_info_result_dup")
+  (return-type "GnomeVFSGetFileInfoResult*")
+)
+
+(define-method free
+  (of-object "GnomeVFSGetFileInfoResult")
+  (c-name "gnome_vfs_get_file_info_result_free")
+  (return-type "none")
 )
 
 (define-function gnome_vfs_file_info_new
@@ -1185,11 +1453,11 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-size.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-size.h
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-find-directory.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-find-directory.h
 
 (define-function gnome_vfs_find_directory
   (c-name "gnome_vfs_find_directory")
@@ -1206,15 +1474,15 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs.h
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-handle.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-handle.h
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-init.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-init.h
 
 (define-function gnome_vfs_init
   (c-name "gnome_vfs_init")
@@ -1260,7 +1528,7 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-job-limit.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-job-limit.h
 
 (define-function gnome_vfs_async_set_job_limit
   (c-name "gnome_vfs_async_set_job_limit")
@@ -1277,13 +1545,7 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-mime-handlers.h
-
-(define-method copy
-  (of-object "GnomeVFSMimeApplication")
-  (c-name "gnome_vfs_mime_application_copy")
-  (return-type "GnomeVFSMimeApplication*")
-)
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-mime-deprecated.h
 
 (define-function gnome_vfs_mime_get_default_action_type
   (c-name "gnome_vfs_mime_get_default_action_type")
@@ -1301,62 +1563,6 @@
   )
 )
 
-(define-function gnome_vfs_mime_get_default_application
-  (c-name "gnome_vfs_mime_get_default_application")
-  (return-type "GnomeVFSMimeApplication*")
-  (parameters
-    '("const-char*" "mime_type")
-  )
-)
-
-(define-function gnome_vfs_mime_get_default_component
-  (c-name "gnome_vfs_mime_get_default_component")
-  (return-type "Bonobo_ServerInfo*")
-  (parameters
-    '("const-char*" "mime_type")
-  )
-)
-
-(define-function gnome_vfs_mime_get_all_applications
-  (c-name "gnome_vfs_mime_get_all_applications")
-  (return-type "GList*")
-  (parameters
-    '("const-char*" "mime_type")
-  )
-)
-
-(define-function gnome_vfs_mime_get_all_components
-  (c-name "gnome_vfs_mime_get_all_components")
-  (return-type "GList*")
-  (parameters
-    '("const-char*" "mime_type")
-  )
-)
-
-(define-function gnome_vfs_mime_get_icon
-  (c-name "gnome_vfs_mime_get_icon")
-  (return-type "const-char*")
-  (parameters
-    '("const-char*" "mime_type")
-  )
-)
-
-(define-function gnome_vfs_mime_get_description
-  (c-name "gnome_vfs_mime_get_description")
-  (return-type "const-char*")
-  (parameters
-    '("const-char*" "mime_type")
-  )
-)
-
-(define-function gnome_vfs_mime_can_be_executable
-  (c-name "gnome_vfs_mime_can_be_executable")
-  (return-type "gboolean")
-  (parameters
-    '("const-char*" "mime_type")
-  )
-)
-
 (define-function gnome_vfs_mime_application_new_from_id
   (c-name "gnome_vfs_mime_application_new_from_id")
   (return-type "GnomeVFSMimeApplication*")
@@ -1366,85 +1572,9 @@
 )
 
 (define-method free
-  (of-object "GnomeVFSMimeApplication")
-  (c-name "gnome_vfs_mime_application_free")
-  (return-type "none")
-)
-
-(define-method free
   (of-object "GnomeVFSMimeAction")
   (c-name "gnome_vfs_mime_action_free")
   (return-type "none")
-)
-
-(define-function gnome_vfs_mime_application_list_free
-  (c-name "gnome_vfs_mime_application_list_free")
-  (return-type "none")
-  (parameters
-    '("GList*" "list")
-  )
-)
-
-(define-function gnome_vfs_mime_component_list_free
-  (c-name "gnome_vfs_mime_component_list_free")
-  (return-type "none")
-  (parameters
-    '("GList*" "list")
-  )
-)
-
-(define-function gnome_vfs_mime_id_in_application_list
-  (c-name "gnome_vfs_mime_id_in_application_list")
-  (return-type "gboolean")
-  (parameters
-    '("const-char*" "id")
-    '("GList*" "applications")
-  )
-)
-
-(define-function gnome_vfs_mime_id_in_component_list
-  (c-name "gnome_vfs_mime_id_in_component_list")
-  (return-type "gboolean")
-  (parameters
-    '("const-char*" "iid")
-    '("GList*" "components")
-  )
-)
-
-(define-function gnome_vfs_mime_remove_application_from_list
-  (c-name "gnome_vfs_mime_remove_application_from_list")
-  (return-type "GList*")
-  (parameters
-    '("GList*" "applications")
-    '("const-char*" "application_id")
-    '("gboolean*" "did_remove")
-  )
-)
-
-(define-function gnome_vfs_mime_remove_component_from_list
-  (c-name "gnome_vfs_mime_remove_component_from_list")
-  (return-type "GList*")
-  (parameters
-    '("GList*" "components")
-    '("const-char*" "iid")
-    '("gboolean*" "did_remove")
-  )
-)
-
-(define-function gnome_vfs_mime_id_list_from_component_list
-  (c-name "gnome_vfs_mime_id_list_from_component_list")
-  (return-type "GList*")
-  (parameters
-    '("GList*" "components")
-  )
-)
-
-(define-function gnome_vfs_mime_id_list_from_application_list
-  (c-name "gnome_vfs_mime_id_list_from_application_list")
-  (return-type "GList*")
-  (parameters
-    '("GList*" "applications")
-  )
 )
 
 (define-method launch
@@ -1466,22 +1596,38 @@
   )
 )
 
-(define-method launch
-  (of-object "GnomeVFSMimeApplication")
-  (c-name "gnome_vfs_mime_application_launch")
-  (return-type "GnomeVFSResult")
+(define-function gnome_vfs_mime_get_icon
+  (c-name "gnome_vfs_mime_get_icon")
+  (return-type "const-char*")
   (parameters
-    '("GList*" "uris")
+    '("const-char*" "mime_type")
   )
 )
 
-(define-method launch_with_env
-  (of-object "GnomeVFSMimeApplication")
-  (c-name "gnome_vfs_mime_application_launch_with_env")
-  (return-type "GnomeVFSResult")
+(define-function gnome_vfs_mime_id_in_application_list
+  (c-name "gnome_vfs_mime_id_in_application_list")
+  (return-type "gboolean")
   (parameters
-    '("GList*" "uris")
-    '("char**" "envp")
+    '("const-char*" "id")
+    '("GList*" "applications")
+  )
+)
+
+(define-function gnome_vfs_mime_remove_application_from_list
+  (c-name "gnome_vfs_mime_remove_application_from_list")
+  (return-type "GList*")
+  (parameters
+    '("GList*" "applications")
+    '("const-char*" "application_id")
+    '("gboolean*" "did_remove")
+  )
+)
+
+(define-function gnome_vfs_mime_id_list_from_application_list
+  (c-name "gnome_vfs_mime_id_list_from_application_list")
+  (return-type "GList*")
+  (parameters
+    '("GList*" "applications")
   )
 )
 
@@ -1583,14 +1729,6 @@
   )
 )
 
-(define-function gnome_vfs_mime_get_short_list_components
-  (c-name "gnome_vfs_mime_get_short_list_components")
-  (return-type "GList*")
-  (parameters
-    '("const-char*" "mime_type")
-  )
-)
-
 (define-function gnome_vfs_mime_set_short_list_applications
   (c-name "gnome_vfs_mime_set_short_list_applications")
   (return-type "GnomeVFSResult")
@@ -1645,9 +1783,350 @@
   )
 )
 
+(define-function gnome_vfs_mime_get_default_component
+  (c-name "gnome_vfs_mime_get_default_component")
+  (return-type "Bonobo_ServerInfo*")
+  (parameters
+    '("const-char*" "mime_type")
+  )
+)
+
+(define-function gnome_vfs_mime_get_default_component
+  (c-name "gnome_vfs_mime_get_default_component")
+  (return-type "void*")
+  (parameters
+    '("const-char*" "mime_type")
+  )
+)
+
+(define-function gnome_vfs_mime_get_all_components
+  (c-name "gnome_vfs_mime_get_all_components")
+  (return-type "GList*")
+  (parameters
+    '("const-char*" "mime_type")
+  )
+)
+
+(define-function gnome_vfs_mime_component_list_free
+  (c-name "gnome_vfs_mime_component_list_free")
+  (return-type "none")
+  (parameters
+    '("GList*" "list")
+  )
+)
+
+(define-function gnome_vfs_mime_remove_component_from_list
+  (c-name "gnome_vfs_mime_remove_component_from_list")
+  (return-type "GList*")
+  (parameters
+    '("GList*" "components")
+    '("const-char*" "iid")
+    '("gboolean*" "did_remove")
+  )
+)
+
+(define-function gnome_vfs_mime_id_list_from_component_list
+  (c-name "gnome_vfs_mime_id_list_from_component_list")
+  (return-type "GList*")
+  (parameters
+    '("GList*" "components")
+  )
+)
+
+(define-function gnome_vfs_mime_id_in_component_list
+  (c-name "gnome_vfs_mime_id_in_component_list")
+  (return-type "gboolean")
+  (parameters
+    '("const-char*" "iid")
+    '("GList*" "components")
+  )
+)
+
+(define-function gnome_vfs_mime_get_short_list_components
+  (c-name "gnome_vfs_mime_get_short_list_components")
+  (return-type "GList*")
+  (parameters
+    '("const-char*" "mime_type")
+  )
+)
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-mime-info-cache.h
+
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-mime.h
+
+(define-function gnome_vfs_mime_shutdown
+  (c-name "gnome_vfs_mime_shutdown")
+  (return-type "none")
+)
+
+(define-function gnome_vfs_mime_type_from_name
+  (c-name "gnome_vfs_mime_type_from_name")
+  (return-type "const-char*")
+  (parameters
+    '("const-char*" "filename")
+  )
+)
+
+(define-function gnome_vfs_mime_type_from_name_or_default
+  (c-name "gnome_vfs_mime_type_from_name_or_default")
+  (return-type "const-char*")
+  (parameters
+    '("const-char*" "filename")
+    '("const-char*" "defaultv")
+  )
+)
+
+(define-function gnome_vfs_get_mime_type_common
+  (c-name "gnome_vfs_get_mime_type_common")
+  (return-type "const-char*")
+  (parameters
+    '("GnomeVFSURI*" "uri")
+  )
+)
+
+(define-function gnome_vfs_get_mime_type_from_uri
+  (c-name "gnome_vfs_get_mime_type_from_uri")
+  (return-type "const-char*")
+  (parameters
+    '("GnomeVFSURI*" "uri")
+  )
+)
+
+(define-function gnome_vfs_get_mime_type_from_file_data
+  (c-name "gnome_vfs_get_mime_type_from_file_data")
+  (return-type "const-char*")
+  (parameters
+    '("GnomeVFSURI*" "uri")
+  )
+)
+
+(define-function gnome_vfs_get_file_mime_type_fast
+  (c-name "gnome_vfs_get_file_mime_type_fast")
+  (return-type "const-char*")
+  (parameters
+    '("const-char*" "path")
+    '("const-struct-stat*" "optional_stat_info")
+  )
+)
+
+(define-function gnome_vfs_get_file_mime_type
+  (c-name "gnome_vfs_get_file_mime_type")
+  (return-type "const-char*")
+  (parameters
+    '("const-char*" "path")
+    '("const-struct-stat*" "optional_stat_info")
+    '("gboolean" "suffix_only")
+  )
+)
+
+(define-function gnome_vfs_mime_type_is_supertype
+  (c-name "gnome_vfs_mime_type_is_supertype")
+  (return-type "gboolean")
+  (parameters
+    '("const-char*" "mime_type")
+  )
+)
+
+(define-function gnome_vfs_get_supertype_from_mime_type
+  (c-name "gnome_vfs_get_supertype_from_mime_type")
+  (return-type "char*")
+  (parameters
+    '("const-char*" "mime_type")
+  )
+)
+
+(define-function gnome_vfs_mime_info_cache_reload
+  (c-name "gnome_vfs_mime_info_cache_reload")
+  (return-type "none")
+  (parameters
+    '("const-char*" "dir")
+  )
+)
+
+(define-function gnome_vfs_mime_reload
+  (c-name "gnome_vfs_mime_reload")
+  (return-type "none")
+)
+
+
+
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-mime-handlers.h
+
+(define-function gnome_vfs_mime_get_default_application
+  (c-name "gnome_vfs_mime_get_default_application")
+  (return-type "GnomeVFSMimeApplication*")
+  (parameters
+    '("const-char*" "mime_type")
+  )
+)
+
+(define-function gnome_vfs_mime_get_default_application_for_uri
+  (c-name "gnome_vfs_mime_get_default_application_for_uri")
+  (return-type "GnomeVFSMimeApplication*")
+  (parameters
+    '("const-char*" "uri")
+    '("const-char*" "mime_type")
+  )
+)
+
+(define-function gnome_vfs_mime_get_all_applications
+  (c-name "gnome_vfs_mime_get_all_applications")
+  (return-type "GList*")
+  (parameters
+    '("const-char*" "mime_type")
+  )
+)
+
+(define-function gnome_vfs_mime_get_all_applications_for_uri
+  (c-name "gnome_vfs_mime_get_all_applications_for_uri")
+  (return-type "GList*")
+  (parameters
+    '("const-char*" "uri")
+    '("const-char*" "mime_type")
+  )
+)
+
+(define-function gnome_vfs_mime_get_description
+  (c-name "gnome_vfs_mime_get_description")
+  (return-type "const-char*")
+  (parameters
+    '("const-char*" "mime_type")
+  )
+)
+
+(define-function gnome_vfs_mime_can_be_executable
+  (c-name "gnome_vfs_mime_can_be_executable")
+  (return-type "gboolean")
+  (parameters
+    '("const-char*" "mime_type")
+  )
+)
+
+(define-function gnome_vfs_mime_application_new_from_desktop_id
+  (c-name "gnome_vfs_mime_application_new_from_desktop_id")
+  (return-type "GnomeVFSMimeApplication*")
+  (parameters
+    '("const-char*" "id")
+  )
+)
+
+(define-method launch
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_launch")
+  (return-type "GnomeVFSResult")
+  (parameters
+    '("GList*" "uris")
+  )
+)
+
+(define-method launch_with_env
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_launch_with_env")
+  (return-type "GnomeVFSResult")
+  (parameters
+    '("GList*" "uris")
+    '("char**" "envp")
+  )
+)
+
+(define-method get_desktop_id
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_get_desktop_id")
+  (return-type "const-char*")
+)
+
+(define-method get_desktop_file_path
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_get_desktop_file_path")
+  (return-type "const-char*")
+)
+
+(define-method get_name
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_get_name")
+  (return-type "const-char*")
+)
+
+(define-method get_generic_name
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_get_generic_name")
+  (return-type "const-char*")
+)
+
+(define-method get_icon
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_get_icon")
+  (return-type "const-char*")
+)
+
+(define-method get_exec
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_get_exec")
+  (return-type "const-char*")
+)
+
+(define-method get_binary_name
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_get_binary_name")
+  (return-type "const-char*")
+)
+
+(define-method supports_uris
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_supports_uris")
+  (return-type "gboolean")
+)
+
+(define-method requires_terminal
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_requires_terminal")
+  (return-type "gboolean")
+)
+
+(define-method supports_startup_notification
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_supports_startup_notification")
+  (return-type "gboolean")
+)
+
+(define-method get_startup_wm_class
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_get_startup_wm_class")
+  (return-type "const-char*")
+)
+
+(define-method copy
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_copy")
+  (return-type "GnomeVFSMimeApplication*")
+)
+
+(define-method equal
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_equal")
+  (return-type "gboolean")
+  (parameters
+    '("GnomeVFSMimeApplication*" "app_b")
+  )
+)
+
+(define-method free
+  (of-object "GnomeVFSMimeApplication")
+  (c-name "gnome_vfs_mime_application_free")
+  (return-type "none")
+)
+
+(define-function gnome_vfs_mime_application_list_free
+  (c-name "gnome_vfs_mime_application_list_free")
+  (return-type "none")
+  (parameters
+    '("GList*" "list")
+  )
+)
+
+
+
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-mime-info-cache.h
 
 (define-function gnome_vfs_mime_get_all_desktop_entries
   (c-name "gnome_vfs_mime_get_all_desktop_entries")
@@ -1667,7 +2146,7 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-mime-monitor.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-mime-monitor.h
 
 (define-function gnome_vfs_mime_monitor_get_type
   (c-name "gnome_vfs_mime_monitor_get_type")
@@ -1681,7 +2160,7 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-mime-utils.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-mime-utils.h
 
 (define-function gnome_vfs_mime_type_get_equivalence
   (c-name "gnome_vfs_mime_type_get_equivalence")
@@ -1701,12 +2180,30 @@
   )
 )
 
+(define-function gnome_vfs_get_mime_type_for_name
+  (c-name "gnome_vfs_get_mime_type_for_name")
+  (return-type "const-char*")
+  (parameters
+    '("const-char*" "filename")
+  )
+)
+
 (define-function gnome_vfs_get_mime_type_for_data
   (c-name "gnome_vfs_get_mime_type_for_data")
   (return-type "const-char*")
   (parameters
     '("gconstpointer" "data")
     '("int" "data_size")
+  )
+)
+
+(define-function gnome_vfs_get_mime_type_for_name_and_data
+  (c-name "gnome_vfs_get_mime_type_for_name_and_data")
+  (return-type "const-char*")
+  (parameters
+    '("const-char*" "filename")
+    '("gconstpointer" "data")
+    '("gssize" "data_size")
   )
 )
 
@@ -1718,9 +2215,17 @@
   )
 )
 
+(define-function gnome_vfs_get_slow_mime_type
+  (c-name "gnome_vfs_get_slow_mime_type")
+  (return-type "char*")
+  (parameters
+    '("const-char*" "text_uri")
+  )
+)
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-module-callback.h
+
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-module-callback.h
 
 (define-function gnome_vfs_module_callback_set_default
   (c-name "gnome_vfs_module_callback_set_default")
@@ -1784,11 +2289,11 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-monitor.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-monitor.h
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-ops.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-ops.h
 
 (define-function gnome_vfs_open
   (c-name "gnome_vfs_open")
@@ -2095,9 +2600,19 @@
   )
 )
 
+(define-function gnome_vfs_forget_cache
+  (c-name "gnome_vfs_forget_cache")
+  (return-type "GnomeVFSResult")
+  (parameters
+    '("GnomeVFSHandle*" "handle")
+    '("GnomeVFSFileOffset" "offset")
+    '("GnomeVFSFileSize" "size")
+  )
+)
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-resolve.h
+
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-resolve.h
 
 (define-function gnome_vfs_resolve
   (c-name "gnome_vfs_resolve")
@@ -2135,12 +2650,14 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-result.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-result.h
 
-(define-method to_string
-  (of-object "GnomeVFSResult")
+(define-function gnome_vfs_result_to_string
   (c-name "gnome_vfs_result_to_string")
   (return-type "const-char*")
+  (parameters
+    '("GnomeVFSResult" "result")
+  )
 )
 
 (define-function gnome_vfs_result_from_errno_code
@@ -2171,15 +2688,15 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-standard-callbacks.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-standard-callbacks.h
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-types.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-types.h
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-uri.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-uri.h
 
 (define-function gnome_vfs_uri_hide_options_get_type
   (c-name "gnome_vfs_uri_hide_options_get_type")
@@ -2198,6 +2715,15 @@
 (define-method resolve_relative
   (of-object "GnomeVFSURI")
   (c-name "gnome_vfs_uri_resolve_relative")
+  (return-type "GnomeVFSURI*")
+  (parameters
+    '("const-gchar*" "relative_reference")
+  )
+)
+
+(define-method resolve_symbolic_link
+  (of-object "GnomeVFSURI")
+  (c-name "gnome_vfs_uri_resolve_symbolic_link")
   (return-type "GnomeVFSURI*")
   (parameters
     '("const-gchar*" "relative_reference")
@@ -2465,7 +2991,7 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-utils.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-utils.h
 
 (define-function gnome_vfs_format_file_size_for_display
   (c-name "gnome_vfs_format_file_size_for_display")
@@ -2642,7 +3168,15 @@
   (c-name "gnome_vfs_make_uri_from_input")
   (return-type "char*")
   (parameters
-    '("const-char*" "uri")
+    '("const-char*" "location")
+  )
+)
+
+(define-function gnome_vfs_make_uri_from_input_with_trailing_ws
+  (c-name "gnome_vfs_make_uri_from_input_with_trailing_ws")
+  (return-type "char*")
+  (parameters
+    '("const-char*" "location")
   )
 )
 
@@ -2650,7 +3184,7 @@
   (c-name "gnome_vfs_make_uri_from_input_with_dirs")
   (return-type "char*")
   (parameters
-    '("const-char*" "uri")
+    '("const-char*" "location")
     '("GnomeVFSMakeURIDirs" "dirs")
   )
 )
@@ -2716,7 +3250,11 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-volume.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-version.h
+
+
+
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-volume.h
 
 (define-function gnome_vfs_volume_get_type
   (c-name "gnome_vfs_volume_get_type")
@@ -2852,15 +3390,15 @@
   (c-name "gnome_vfs_connect_to_server")
   (return-type "none")
   (parameters
-    '("char*" "uri")
-    '("char*" "display_name")
-    '("char*" "icon")
+    '("const-char*" "uri")
+    '("const-char*" "display_name")
+    '("const-char*" "icon")
   )
 )
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-volume-monitor.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-volume-monitor.h
 
 (define-function gnome_vfs_volume_monitor_get_type
   (c-name "gnome_vfs_volume_monitor_get_type")
@@ -2925,7 +3463,7 @@
 
 
 
-;; From /usr/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-xfer.h
+;; From /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-xfer.h
 
 (define-function gnome_vfs_xfer_uri_list
   (c-name "gnome_vfs_xfer_uri_list")

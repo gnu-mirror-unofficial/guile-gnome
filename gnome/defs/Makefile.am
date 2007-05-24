@@ -109,7 +109,7 @@ libgnomecanvas:
 	   $(DEFS_HEADER_DIR)/libgnomecanvas-2.0/libgnomecanvas/*.h > libgnomecanvas.defs
 
 gnome-vfs:
-	../../../h2def.py --types \
+	../../../h2def.py --types --type-re='s/^GNOME_VFS_?/GNOME_VFS_TYPE_VFS_/' \
 	   $(DEFS_HEADER_DIR)/gnome-vfs-2.0/libgnomevfs/*.h > gnome-vfs-types.defs
 	../../../h2def.py --procs \
 	   --with-header='(include type-ignores) (include "gnome-vfs-types.defs") (include overrides)' \

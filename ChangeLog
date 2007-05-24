@@ -1,5 +1,10 @@
 2007-05-24  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/defs/Makefile.am (gnome-vfs): Use h2def.py's new --type-re
+	for making the GType ID.
+	* gnome/defs/gnome-vfs.defs: Regenerate for gnome-vfs 2.16.
+	* gnome/defs/gnome-vfs-types.defs: Regenerate for gnome-vfs 2.16.
+
 	* gnome/defs/libgnomecanvas.defs: 
 	* gnome/defs/libgnomecanvas-types.defs:
 	* gnome/defs/Makefile.am (libgnomecanvas): Add rule for regenning
