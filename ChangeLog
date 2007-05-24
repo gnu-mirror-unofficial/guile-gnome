@@ -1,5 +1,8 @@
 2007-05-24  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/defs/gconf.defs:
+	* gnome/defs/gconf-types.defs: Regen for GConf 2.18.
+
 	* gnome/defs/libgnomeui.defs: Fix mistaken defs regen against 2.20
 	libs.
 

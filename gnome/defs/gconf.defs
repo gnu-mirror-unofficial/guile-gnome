@@ -1,7 +1,18 @@
 ;; -*- scheme -*-
 (include type-ignores) (include "gconf-types.defs") (include overrides)
 
-;; From /usr/include/gconf/2/gconf/gconf-changeset.h
+;; From /opt/gnome2/include/gconf/2/gconf/gconf-changeset.h
+
+(define-method commit_change_set
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_commit_change_set")
+  (return-type "gboolean")
+  (parameters
+    '("GConfChangeSet*" "cs")
+    '("gboolean" "remove_committed")
+    '("GError**" "err")
+  )
+)
 
 (define-method reverse_change_set
   (of-object "GConfEngine")
@@ -219,7 +230,7 @@
 
 
 
-;; From /usr/include/gconf/2/gconf/gconf-client.h
+;; From /opt/gnome2/include/gconf/2/gconf/gconf-client.h
 
 (define-function gconf_client_get_type
   (c-name "gconf_client_get_type")
@@ -676,7 +687,12 @@
 
 
 
-;; From /usr/include/gconf/2/gconf/gconf-engine.h
+;; From /opt/gnome2/include/gconf/2/gconf/gconf-engine.h
+
+(define-function gconf_engine_get_default
+  (c-name "gconf_engine_get_default")
+  (return-type "GConfEngine*")
+)
 
 (define-function gconf_engine_get_for_address
   (c-name "gconf_engine_get_for_address")
@@ -744,10 +760,15 @@
 
 
 
-;; From /usr/include/gconf/2/gconf/gconf-enum-types.h
+;; From /opt/gnome2/include/gconf/2/gconf/gconf-enum-types.h
 
 (define-function gconf_value_type_get_type
   (c-name "gconf_value_type_get_type")
+  (return-type "GType")
+)
+
+(define-function gconf_unset_flags_get_type
+  (c-name "gconf_unset_flags_get_type")
   (return-type "GType")
 )
 
@@ -768,11 +789,28 @@
 
 
 
-;; From /usr/include/gconf/2/gconf/gconf-error.h
+;; From /opt/gnome2/include/gconf/2/gconf/gconf-error.h
+
+(define-function gconf_error_quark
+  (c-name "gconf_error_quark")
+  (return-type "GQuark")
+)
 
 
 
-;; From /usr/include/gconf/2/gconf/gconf.h
+;; From /opt/gnome2/include/gconf/2/gconf/gconf.h
+
+(define-method notify_add
+  (of-object "GConfEngine")
+  (c-name "gconf_engine_notify_add")
+  (return-type "guint")
+  (parameters
+    '("const-gchar*" "namespace_section")
+    '("GConfNotifyFunc" "func")
+    '("gpointer" "user_data")
+    '("GError**" "err")
+  )
+)
 
 (define-method notify_remove
   (of-object "GConfEngine")
@@ -1224,7 +1262,13 @@
 
 
 
-;; From /usr/include/gconf/2/gconf/gconf-listeners.h
+;; From /opt/gnome2/include/gconf/2/gconf/gconf-listeners.h
+
+(define-function gconf_listeners_new
+  (c-name "gconf_listeners_new")
+  (is-constructor-of "GconfListeners")
+  (return-type "GConfListeners*")
+)
 
 (define-method free
   (of-object "GConfListeners")
@@ -1302,7 +1346,13 @@
 
 
 
-;; From /usr/include/gconf/2/gconf/gconf-schema.h
+;; From /opt/gnome2/include/gconf/2/gconf/gconf-schema.h
+
+(define-function gconf_schema_new
+  (c-name "gconf_schema_new")
+  (is-constructor-of "GconfSchema")
+  (return-type "GConfSchema*")
+)
 
 (define-method free
   (of-object "GConfSchema")
@@ -1462,7 +1512,7 @@
 
 
 
-;; From /usr/include/gconf/2/gconf/gconf-value.h
+;; From /opt/gnome2/include/gconf/2/gconf/gconf-value.h
 
 (define-method get_string
   (of-object "GConfValue")
@@ -1672,6 +1722,15 @@
   (return-type "gchar*")
 )
 
+(define-method compare
+  (of-object "GConfValue")
+  (c-name "gconf_value_compare")
+  (return-type "int")
+  (parameters
+    '("const-GConfValue*" "value_b")
+  )
+)
+
 (define-method get_schema
   (of-object "GConfMetaInfo")
   (c-name "gconf_meta_info_get_schema")
@@ -1850,6 +1909,15 @@
   (return-type "none")
   (parameters
     '("gboolean" "is_writable")
+  )
+)
+
+(define-method equal
+  (of-object "GConfEntry")
+  (c-name "gconf_entry_equal")
+  (return-type "gboolean")
+  (parameters
+    '("const-GConfEntry*" "b")
   )
 )
 
