@@ -25,6 +25,28 @@
 ;;
 ;;; Code:
 
+(define-function
+  glade_xml_new
+  (c-name "glade_xml_new")
+  (overrides "glade_xml_new")
+  (is-constructor-of "GladeXML")
+  (return-type "GladeXML*")
+  (parameters
+    '("const-char*" "fname")
+    '("const-char*" "root" (null-ok) (default "NULL"))
+    '("const-char*"
+      "domain"
+      (null-ok)
+      (default "NULL"))))
+
+(define-method
+  get_widget_prefix
+  (of-object "GladeXML")
+  (c-name "glade_xml_get_widget_prefix")
+  (overrides "glade_xml_get_widget_prefix")
+  (return-type "GList*-of-GtkWidget*")
+  (parameters (quote ("const-char*" "name"))))
+
 (define-function glade-xml-new-from-buffer
   (c-name "_wrap_glade_xml_new_from_buffer")
   (overrides "glade_xml_new_from_buffer")
