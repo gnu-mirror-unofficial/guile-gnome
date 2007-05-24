@@ -57,10 +57,10 @@ pangocairo:
 
 gdk-pixbuf:
 	../../../h2def.py --types \
-	   $(DEFS_HEADER_DIR)/gtk-2.0/gdk-pixbuf/gdk-pixbuf*.h > gdk-pixbuf-types.defs
+	   $(shell ls $(DEFS_HEADER_DIR)/gtk-2.0/gdk-pixbuf/gdk-pixbuf*.h | grep -v io.h) > gdk-pixbuf-types.defs
 	../../../h2def.py --procs \
 	   --with-header='(include "gdk-pixbuf-types.defs") (include overrides)' \
-	   $(DEFS_HEADER_DIR)/gtk-2.0/gdk-pixbuf/gdk-pixbuf*.h > gdk-pixbuf.defs
+	   $(shell ls $(DEFS_HEADER_DIR)/gtk-2.0/gdk-pixbuf/gdk-pixbuf*.h | grep -v io.h) > gdk-pixbuf.defs
 
 gdk:
 	../../../h2def.py --types \
@@ -75,6 +75,17 @@ gtk:
 	../../../h2def.py --procs \
 	   --with-header='(include type-ignores) (include "gtk-types.defs") (include overrides)' \
 	   $(shell ls $(DEFS_HEADER_DIR)/gtk-2.0/gtk/gtk*.h | grep -v filesystem) > gtk.defs
+
+LIBGLADE_INCLS = glade/glade-xml.h
+
+libglade:
+	../../../h2def.py --types \
+	   $(addprefix $(DEFS_HEADER_DIR)/libglade-2.0/,$(LIBGLADE_INCLS)) \
+	   > libglade-types.defs
+	../../../h2def.py --procs \
+	   --with-header='(include "libglade-types.defs") (include overrides)' \
+	   $(addprefix $(DEFS_HEADER_DIR)/libglade-2.0/,$(LIBGLADE_INCLS)) \
+	   > libglade.defs
 
 gnome-vfs:
 	../../../h2def.py --types \
