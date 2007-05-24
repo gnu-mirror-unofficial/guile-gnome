@@ -87,6 +87,13 @@ libglade:
 	   $(addprefix $(DEFS_HEADER_DIR)/libglade-2.0/,$(LIBGLADE_INCLS)) \
 	   > libglade.defs
 
+libgnome:
+	../../../h2def.py --types \
+	   $(DEFS_HEADER_DIR)/libgnome-2.0/libgnome/*.h > libgnome-types.defs
+	../../../h2def.py --procs \
+	   --with-header='(include "libgnome-types.defs") (include overrides)' \
+	   $(DEFS_HEADER_DIR)/libgnome-2.0/libgnome/*.h > libgnome.defs
+
 gnome-vfs:
 	../../../h2def.py --types \
 	   $(DEFS_HEADER_DIR)/gnome-vfs-2.0/libgnomevfs/*.h > gnome-vfs-types.defs

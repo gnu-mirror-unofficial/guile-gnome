@@ -1,5 +1,11 @@
 2007-05-24  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/defs/Makefile.am (libgnome): Add libgnome regen rule.
+
+	* gnome/defs/libgnome.defs: 
+	* gnome/defs/libgnome-types.defs: Move here from gnome.defs.
+	Regenerate for libgnome 2.16, although without much change.
+
 	* gnome/defs/libglade.defs:
 	* gnome/defs/libglade-types.defs: Regen for libglade 2.6, but I
 	don't think there are any API changes.

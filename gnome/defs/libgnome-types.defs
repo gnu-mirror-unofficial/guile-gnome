@@ -1,0 +1,70 @@
+;; -*- scheme -*-
+;; Enumerations and flags ...
+
+(define-enum HelpError
+  (in-module "Gnome")
+  (c-name "GnomeHelpError")
+  (gtype-id "GNOME_TYPE_HELP_ERROR")
+  (values
+    '("internal" "GNOME_HELP_ERROR_INTERNAL")
+    '("not-found" "GNOME_HELP_ERROR_NOT_FOUND")
+  )
+)
+
+(define-enum FileDomain
+  (in-module "Gnome")
+  (c-name "GnomeFileDomain")
+  (gtype-id "GNOME_TYPE_FILE_DOMAIN")
+  (values
+    '("unknown" "GNOME_FILE_DOMAIN_UNKNOWN")
+    '("libdir" "GNOME_FILE_DOMAIN_LIBDIR")
+    '("datadir" "GNOME_FILE_DOMAIN_DATADIR")
+    '("sound" "GNOME_FILE_DOMAIN_SOUND")
+    '("pixmap" "GNOME_FILE_DOMAIN_PIXMAP")
+    '("config" "GNOME_FILE_DOMAIN_CONFIG")
+    '("help" "GNOME_FILE_DOMAIN_HELP")
+    '("app-libdir" "GNOME_FILE_DOMAIN_APP_LIBDIR")
+    '("app-datadir" "GNOME_FILE_DOMAIN_APP_DATADIR")
+    '("app-sound" "GNOME_FILE_DOMAIN_APP_SOUND")
+    '("app-pixmap" "GNOME_FILE_DOMAIN_APP_PIXMAP")
+    '("app-config" "GNOME_FILE_DOMAIN_APP_CONFIG")
+    '("app-help" "GNOME_FILE_DOMAIN_APP_HELP")
+  )
+)
+
+(define-enum TriggerType
+  (in-module "Gnome")
+  (c-name "GnomeTriggerType")
+  (gtype-id "GNOME_TYPE_TRIGGER_TYPE")
+  (values
+    '("none" "GTRIG_NONE")
+    '("function" "GTRIG_FUNCTION")
+    '("command" "GTRIG_COMMAND")
+    '("mediaplay" "GTRIG_MEDIAPLAY")
+  )
+)
+
+(define-enum URLError
+  (in-module "Gnome")
+  (c-name "GnomeURLError")
+  (gtype-id "GNOME_TYPE_URL_ERROR")
+  (values
+    '("parse" "GNOME_URL_ERROR_PARSE")
+    '("launch" "GNOME_URL_ERROR_LAUNCH")
+    '("url" "GNOME_URL_ERROR_URL")
+    '("no-default" "GNOME_URL_ERROR_NO_DEFAULT")
+    '("not-supported" "GNOME_URL_ERROR_NOT_SUPPORTED")
+    '("vfs" "GNOME_URL_ERROR_VFS")
+    '("cancelled" "GNOME_URL_ERROR_CANCELLED")
+  )
+)
+
+;; -*- scheme -*-
+; object definitions ...
+(define-object Program
+  (in-module "Gnome")
+  (parent "GObject")
+  (c-name "GnomeProgram")
+  (gtype-id "GNOME_TYPE_PROGRAM")
+)
+
