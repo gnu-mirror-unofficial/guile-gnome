@@ -1,5 +1,9 @@
 2007-05-24  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.92 ==
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
 	* gnome/overrides/gconf.defs ("gconf_engine_get_for_addresses"):
 	Ignore gconf-engine-notify-add.
 

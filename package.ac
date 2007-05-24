@@ -1,4 +1,4 @@
-PKG_CHECK_MODULES(GCONF, gconf-2.0, HAVE_GCONF=true, 
+PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.18, HAVE_GCONF=true, 
                                     HAVE_GCONF=false)
 AC_SUBST(GCONF_CFLAGS)
 AC_SUBST(GCONF_LIBS)
