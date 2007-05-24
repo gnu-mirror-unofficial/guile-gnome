@@ -1,5 +1,9 @@
 2007-05-24  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.92 ==
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
 	* gnome/gw/libgnome-spec.scm (initialize): Load libgnome.defs.
 
 	* gnome/overrides/Makefile.am (module_DATA): 
