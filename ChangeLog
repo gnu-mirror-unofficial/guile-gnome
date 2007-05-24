@@ -1,5 +1,17 @@
 2007-05-24  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.92 ==
+
+2007-05-24  Andy Wingo,,,  <Please set CHANGE_LOG_EMAIL_ADDRESS or EMAIL_ADDRESS environment variable>
+
+	reviewed by: <delete if not using a buddy>
+	patch by: <delete if not someone else's patch>
+
+	* NEWS:
+	* package.ac:
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
 	* gnome/gw/Makefile.am (libgw_guile_gnome_gdk_la_LIBADD): Link
 	against cairo, really.
 

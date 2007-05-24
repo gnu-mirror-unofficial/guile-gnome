@@ -1,12 +1,22 @@
 guile-gnome-gtk NEWS --- history of user-visible changes.
 Copyright (C) 2004,2005,2006,2007 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 10 May 2007.
+Last updated 24 May 2007.
 
 
 guile-gnome-gtk is a Guile binding for GTK+ and GDK. It is part of GNU
 guile-gnome. This file documents the user-visible changes in
 guile-gnome-gtk only.
+
+
+guile-gnome-gtk 2.15.92 - Andy Wingo, 2007-05-24
+================================================
+
+* Update to wrap GTK+ 2.10, part of GNOME 2.16.
+
+* Require guile-cairo.
+
+* Bugfixes.
 
 
 guile-gnome-gtk 2.15.91 - Andy Wingo, 2007-05-10
