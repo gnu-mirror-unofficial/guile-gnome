@@ -43,12 +43,11 @@
   (for-each
    (lambda (elt) (add-type-alias! ws (car elt) (cadr elt)))
    '(("pid_t" int)
-     ("time_t" int)
      ;; Until we wrap bonobo, hack in these definitions
      ("BonoboDockItemBehavior" int)
      ("BonoboDockPlacement" int)))
   
-  (load-defs-with-overrides ws "gnome/defs/ui.defs"))
+  (load-defs-with-overrides ws "gnome/defs/libgnomeui.defs"))
 
 (define-method (global-declarations-cg (self <gnome-ui-wrapset>))
   (list (next-method)
