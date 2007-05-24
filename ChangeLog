@@ -1,5 +1,9 @@
 2007-05-24  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.92 ==
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
 	* gnome/overrides/Makefile.am: Rename ui.defs to libgnomeui.defs.
 
 	* gnome/gw/libgnomeui-spec.scm (initialize): Update for
