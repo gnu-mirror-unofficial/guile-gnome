@@ -1,0 +1,12 @@
+;; -*- scheme -*-
+;; Enumerations and flags ...
+
+;; -*- scheme -*-
+; object definitions ...
+(define-object XML
+  (in-module "Glade")
+  (parent "GObject")
+  (c-name "GladeXML")
+  (gtype-id "GLADE_TYPE_XML")
+)
+

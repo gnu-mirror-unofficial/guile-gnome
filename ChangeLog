@@ -1,5 +1,9 @@
 2007-05-24  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/defs/libglade.defs:
+	* gnome/defs/libglade-types.defs: Regen for libglade 2.6, but I
+	don't think there are any API changes.
+
 	* gnome/defs/gdk-pixbuf.defs:
 	* gnome/defs/gdk-pixbuf-types.defs: Regenerate for GTK+ 2.10.
 	
