@@ -37,7 +37,7 @@ libgw_guile_gnome_gdk_la_CFLAGS = $(GUILE_GLIB_CFLAGS) \
 	$(G_WRAP_CFLAGS) $(GTK_DEPRECATED_CFLAGS)
 
 libgw_guile_gnome_gdk_la_LIBADD = $(GDK_LIBS) $(GUILE_LIBS) \
-	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS) $(GDK_PIXBUF_LIBS)
+	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS) $(GUILE_CAIRO_LIBS) $(GDK_PIXBUF_LIBS)
 
 libgw_guile_gnome_gdk_la_LDFLAGS = -module
 

@@ -1,3 +1,8 @@
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_gdk_la_LIBADD): Link
+	against cairo, really.
+
 2007-05-21  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/overrides/gtk.defs: Update ignores for gtk 2.10.
