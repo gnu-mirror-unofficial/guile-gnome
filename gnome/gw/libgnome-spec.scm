@@ -38,7 +38,7 @@
 (define-method (initialize (ws <libgnome-wrapset>) initargs)
   (next-method ws (append '(#:module (gnome gw libgnome)) initargs))
 
-  (load-defs-with-overrides ws "gnome/defs/gnome.defs"))
+  (load-defs-with-overrides ws "gnome/defs/libgnome.defs"))
 
 (define-method (global-declarations-cg (self <libgnome-wrapset>))
   (list (next-method)

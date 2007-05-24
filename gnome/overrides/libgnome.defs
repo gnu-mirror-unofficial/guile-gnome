@@ -53,3 +53,18 @@
               "gnome_triggers_v*" ;; can't handle the argv[]
               "gnome_program_init*" ;; taken care of already
               )
+
+(ignore "g_extension_pointer"
+        "gnome_bonobo_module_info_get"
+        "gnome_help_display_desktop_with_env"
+        "gnome_help_display_uri_with_env"
+        "gnome_help_display_with_doc_id_and_env"
+        "gnome_help_error_quark"
+        "gnome_i18n_get_language_list"
+        "gnome_program_module_load"
+        "gnome_score_init"
+        "gnome_sound_connection_get"
+        "gnome_url_error_quark"
+        "gnome_url_show_with_env"
+        "gnome_win32_get_prefixes"
+        "libgnome_module_info_get")
