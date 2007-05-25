@@ -27,7 +27,7 @@
 (define-module (gnome gw cairo-spec)
   #:use-module (oop goops)
   #:use-module (gnome gw support g-wrap)
-  #:use-module (gnome gw support defs)
+  #:use-module (gnome gw gobject-spec)
   #:use-module (gnome gw support gobject))
 
 ;; G-Wrap inelegance
@@ -116,8 +116,6 @@
 (define-class <client-actions> (<gw-item>))
 (define-method (global-declarations-cg (ws <gw-guile-wrapset>) (a <client-actions>))
   '("#include <guile-cairo.h>\n"))
-(define-method (initializations-cg (wrapset <gw-guile-wrapset>) (a <client-actions>) err)
-  (list "scm_init_cairo ();\n"))
 
 (define-class <cairo-wrapset> (<gobject-wrapset-base>)
   #:id 'gnome-cairo
@@ -143,6 +141,14 @@
                   #:copy "cairo_font_options_copy"
                   #:take "scm_take_cairo_font_options"))
   (add-type-alias! ws "cairo_font_options_t*" 'cairo-font-options-t))
+
+(define-method (global-declarations-cg (ws <cairo-wrapset>))
+  (list (next-method)
+        "#include <guile-cairo.h>\n"))
+
+(define-method (initializations-cg (wrapset <cairo-wrapset>) err)
+  (list (next-method)
+        "scm_init_cairo ();\n"))
 
 ;; pango-cairo
 ;; cairo_t, cairo_font_options_t

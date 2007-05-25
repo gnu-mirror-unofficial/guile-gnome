@@ -1,3 +1,16 @@
+2007-05-25  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/cairo-spec.scm: Now that we are actually making a
+	shlib, init guile-cairo in the shlib instead of in every dependant
+	wrapset.
+
+	* gnome/gw/Makefile.am: I tried really hard to avoid making a
+	shared library for this g-wrap wrapset, since it is not necessary
+	at all, but I have failed for the moment: other wrapsets depending
+	on this one will check to see that something has registered the
+	"guile-cairo" wrapset with the C g-wrap runtime, which will fail
+	unless we actually have a shlib that registers the wrapset. Suck.
+
 2007-05-24  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.92 ==
