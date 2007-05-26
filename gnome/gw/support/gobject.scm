@@ -739,6 +739,33 @@
 (define-method (generate-wrapset (lang <symbol>)
                                  (wrapset <gobject-wrapset-base>)
                                  (basename <string>))
+  (define (register-generics-without-rti)
+    (fold-functions
+     (lambda (func rest)
+       (cond
+        ((and (not (uses-rti-for-function? wrapset func))
+              (generic-name func)
+              (> (argument-count func) 0)
+              (class-name (first (argument-types func))))
+         (cons `(%gw:procedure->method-public
+                 ,(name func)
+                 ;; Specializers
+                 ',(map (lambda (arg)
+                          (let ((typespec (typespec arg)))
+                            (and (not (memq 'unspecialized
+                                            (options typespec)))
+                                 (class-name (type typespec)))))
+                        (filter visible? (arguments func)))
+                 ',(generic-name func)
+                 ;; Required argument count
+                 ,(- (input-argument-count func)
+                     (optional-argument-count func))
+                 ;; Optional arguments?
+                 ,(not (zero? (optional-argument-count func))))
+               rest))
+        (else rest)))
+     '() wrapset))
+
   ;; The next method is in (g-wrap guile), which will generate the scm
   ;; file. We overwrite it afterwards.
   (next-method)
@@ -759,6 +786,7 @@
           (list
            `(define-module ,(module wrapset)
               #:use-module (oop goops)
+              #:use-module (gnome gw support modules)
               ,@(if (slot-ref wrapset 'shlib-abs?)
                     '(#:use-module (g-wrap config))
                     '()))
@@ -774,10 +802,10 @@
                                   (slot-ref wrapset 'shlib-path)))))
            
            ;; This is what we avoid:
-           ;;   `(export ,@(module-exports wrapset))
+           ;;   `(export ',@(module-exports wrapset))
            ;; Instead we do this lovely hack:
-           `(module-use! (module-public-interface (current-module))
-                         (current-module))
+           `(export-all-lazy! ',(module-exports wrapset))
+           `(begin ,@(register-generics-without-rti))
            `(if (defined? '%generics)
                 (module-use! (module-public-interface (current-module))
                              %generics))))))))

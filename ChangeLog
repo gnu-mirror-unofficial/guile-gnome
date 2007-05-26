@@ -1,5 +1,24 @@
 2007-05-26  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/overrides/glib.defs (g_string_get_str): Fix generated
+	wrapper name.
+
+	* gnome/gw/support/modules.scm: New function. If we have a fixed
+	guile, exports everything to the public interface, with the effect
+	that the module binder proc will be active on the public
+	interface. However, this causes huge slowdowns on most guile 1.8
+	versions; if we detect an old version, export all symbols
+	explicitly, forcing the lazy bindings to be constructed. Otherwise
+	it takes much more time than the baseline 16 seconds.
+
+	* gnome/gw/support/gobject.scm (generate-wrapset): Fix bug in our
+	SCM generator: wrap generic functions that are not backed by RTI.
+	(generate-wrapset): Instead of unconditionally exporting
+	everything, go export-all-lazy!.
+
+	* gnome/overrides/glib.defs: Recover some default values lost when
+	glib.defs was regenerated.
+
 	* gnome/gw/support/gobject.scm (generate-wrapset): Override
 	g-wrap's creation of the SCM module, so that we just export
 	"everything" instead of enumerating the exports. Allows lazy

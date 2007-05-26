@@ -26,7 +26,8 @@
 ;;; Code:
 
 (define-module (gnome gw support modules)
-  #:export-syntax (re-export-modules))
+  #:export-syntax (re-export-modules)
+  #:export (export-all-lazy!))
 
 (define-macro (re-export-modules . args)
   (if (not (null? args))
@@ -40,3 +41,26 @@
 (set-object-property! re-export-modules 'documentation
   "Re-export the public interface of a module; used like
 @code{use-modules}.")
+
+(define (export-all-lazy! symbols)
+  (define (symbol-in? s exp)
+    (if (pair? exp)
+        (let lp ((exp exp))
+          (if (null? exp)
+              #f
+              (or (symbol-in? s (car exp))
+                  (lp (cdr exp)))))
+        (eq? s exp)))
+
+  (let ((mod (current-module)))
+    (cond
+     ((and=> (procedure-source module-make-local-var!)
+             (lambda (exp) (symbol-in? 'module-variable exp)))
+      ;; We have a broken module-make-local-var!; allowing lazy bindings
+      ;; by making the public interface use the module will make things
+      ;; really really slow. Settle on merely slow, forcing creation of
+      ;; all classes
+      (module-export! mod symbols))
+     (else
+      ;; We have a sensible module-make-local-var!; allow lazy bindings.
+      (module-use! (module-public-interface mod) mod)))))

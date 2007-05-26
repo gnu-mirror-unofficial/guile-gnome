@@ -26,6 +26,76 @@
 ;;
 ;;; Code:
 
+(define-method iteration
+  (of-object "GMainContext")
+  (c-name "g_main_context_iteration")
+  (overrides "g_main_context_iteration")
+  (return-type "gboolean")
+  (parameters
+    '("gboolean" "may_block" (default "TRUE"))
+  )
+)
+(define-method add_poll
+  (of-object "GMainContext")
+  (c-name "g_main_context_add_poll")
+  (overrides "g_main_context_add_poll")
+  (return-type "none")
+  (parameters
+    '("GPollFD*" "fd")
+    '("gint" "priority" (default "G_PRIORITY_DEFAULT"))
+  )
+)
+(define-function g_main_loop_new
+  (c-name "g_main_loop_new")
+  (overrides "g_main_loop_new")
+  (is-constructor-of "GMainLoop")
+  (return-type "GMainLoop*")
+  (parameters
+    '("GMainContext*" "context" (null-ok) (default "NULL"))
+    '("gboolean" "is_running" (default "TRUE"))
+  )
+)
+(define-method attach
+  (of-object "GSource")
+  (c-name "g_source_attach")
+  (overrides "g_source_attach")
+  (return-type "guint")
+  (parameters
+    '("GMainContext*" "context" (null-ok) (default "NULL"))
+  )
+)
+(define-method seek_position
+  (of-object "GIOChannel")
+  (c-name "g_io_channel_seek_position")
+  (overrides "g_io_channel_seek_position")
+  (return-type "GIOStatus")
+  (parameters
+    '("gint64" "offset")
+    '("GSeekType" "type" (default "G_SEEK_SET"))
+    '("GError**" "error")
+  )
+)
+
+(define-function g_io_channel_new_file
+  (c-name "g_io_channel_new_file")
+  (overrides "g_io_channel_new_file")
+  (return-type "GIOChannel*")
+  (parameters
+    '("const-gchar*" "filename")
+    '("const-gchar*" "mode" (default "\"r\""))
+    '("GError**" "error")
+  )
+)
+(define-function g_string_new
+  (c-name "g_string_new")
+  (overrides "g_string_new")
+  (is-constructor-of "GString")
+  (return-type "GString*")
+  (parameters
+    '("const-gchar*" "init" (default "\"\""))
+  )
+)
+
 ;; use our version that processes interrupts
 (define-method run
   (of-object "GMainLoop")
@@ -36,6 +106,7 @@
 (define-method string
   (of-object "GString")
   (c-name "_wrap_g_string_get_str")
+  (overrides "g_string_get_str")
   (leave-guile-mode #f)
   (return-type "SCM"))
 
