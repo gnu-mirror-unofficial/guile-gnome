@@ -28,6 +28,12 @@
 
 ;; stealing most of these from python-gtk2
 
+(define-boxed Event
+  (in-module "Gdk")
+  (c-name "GdkEvent")
+  (gtype-id "GDK_TYPE_EVENT")
+)
+
 ;; dunno why h2defs doesn't get this one
 (define-enum CursorType
   (in-module "Gdk")
