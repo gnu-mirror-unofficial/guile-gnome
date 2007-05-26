@@ -1,3 +1,11 @@
+2007-05-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (generate-wrapset): Override
+	g-wrap's creation of the SCM module, so that we just export
+	"everything" instead of enumerating the exports. Allows lazy
+	binding to work, dropping (gnome gtk) load time down to a
+	manageable 2 seconds.
+
 2007-05-24  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.92 ==
