@@ -1,5 +1,7 @@
 2007-06-15  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.93 ==
+
 	* gnome/defs/Makefile.am (PANGO_INCLS): Include pango-tabs.h, as
 	we did before.
 
