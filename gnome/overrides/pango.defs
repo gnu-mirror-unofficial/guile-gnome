@@ -25,6 +25,71 @@
 ;;
 ;;; Code:
 
+;; boxed types
+(define-boxed AttrList
+  (in-module "Pango")
+  (c-name "PangoAttrList")
+  (gtype-id "PANGO_TYPE_ATTR_LIST")
+  (copy-func "pango_attr_list_ref")
+  (release-func "pango_attr_list_unref")
+)
+
+(define-boxed Color
+  (in-module "Pango")
+  (c-name "PangoColor")
+  (gtype-id "PANGO_TYPE_COLOR")
+  (copy-func "pango_color_copy")
+  (release-func "pango_color_free")
+  (fields
+    '("guint16" "red")
+    '("guint16" "green")
+    '("guint16" "blue")
+  )
+)
+
+(define-boxed FontDescription
+  (in-module "Pango")
+  (c-name "PangoFontDescription")
+  (gtype-id "PANGO_TYPE_FONT_DESCRIPTION")
+  (copy-func "pango_font_description_copy")
+  (release-func "pango_font_description_free")
+)
+
+(define-boxed FontMetrics
+  (in-module "Pango")
+  (c-name "PangoFontMetrics")
+  (gtype-id "PANGO_TYPE_FONT_METRICS")
+  (copy-func "pango_font_metrics_ref")
+  (release-func "pango_font_metrics_unref")
+)  
+
+(define-boxed GlyphString
+  (in-module "Pango")
+  (c-name "PangoGlyphString")
+  (gtype-id "PANGO_TYPE_GLYPH_STRING")
+  (copy-func "pango_glyph_string_copy")
+  (release-func "pango_glyph_string_free")
+  (fields
+    '("gint" "num_glyphs")
+    '("PangoGlyphInfo*" "glyphs")
+    '("gint*" "log_clusters")
+  )
+)
+
+(define-boxed Language
+  (in-module "Pango")
+  (c-name "PangoLanguage")
+  (gtype-id "PANGO_TYPE_LANGUAGE")
+)
+
+(define-boxed TabArray
+  (in-module "Pango")
+  (c-name "PangoTabArray")
+  (gtype-id "PANGO_TYPE_TAB_ARRAY")
+  (copy-func "pango_tab_array_copy")
+  (release-func "pango_tab_array_free")
+)
+
 (define-method get_attrs
   (of-object "PangoAttrIterator")
   (c-name "pango_attr_iterator_get_attrs")
