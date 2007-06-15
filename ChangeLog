@@ -1,3 +1,8 @@
+2007-06-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (construct-argument-list): Fix parsing
+	of argument options like (callee-owned), broken on 2007-05-05.
+
 2007-05-26  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/overrides/glib.defs (g_string_get_str): Fix generated

@@ -132,7 +132,7 @@
       (let-values (((options extras) (parse-restargs (cddr param))))
         `((,@(if (memq 'callee-owned options)
                  ;; why is this here? wcts?
-                 (fold delq '(callee-owned caller-owned) looked-up)
+                 (fold delq looked-up '(callee-owned caller-owned))
                  looked-up)
            ,@options)
           ,arg-name
