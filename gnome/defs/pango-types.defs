@@ -244,6 +244,15 @@
   )
 )
 
+(define-enum TabAlign
+  (in-module "Pango")
+  (c-name "PangoTabAlign")
+  (gtype-id "PANGO_TYPE_TAB_ALIGN")
+  (values
+    '("t" "PANGO_TAB_LEFT")
+  )
+)
+
 (define-enum Direction
   (in-module "Pango")
   (c-name "PangoDirection")

@@ -35,6 +35,7 @@ PANGO_INCLS = pango/pango.h \
 	   pango/pango-layout.h \
 	   pango/pango-renderer.h \
 	   pango/pango-script.h \
+	   pango/pango-tabs.h \
 	   pango/pango-types.h
 
 pango:
