@@ -1,5 +1,7 @@
 2007-06-15  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.93 ==
+
 	* gnome/overrides/pango.defs: Re-add boxed types lost when
 	pango.defs was generated.
 
