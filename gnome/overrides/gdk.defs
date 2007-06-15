@@ -34,6 +34,19 @@
   (gtype-id "GDK_TYPE_EVENT")
 )
 
+(define-boxed Cursor
+  (in-module "Gdk")
+  (c-name "GdkCursor")
+  (gtype-id "GDK_TYPE_CURSOR")
+)
+
+(define-boxed Font
+  (in-module "Gdk")
+  (c-name "GdkFont")
+  (gtype-id "GDK_TYPE_FONT")
+)
+
+
 ;; dunno why h2defs doesn't get this one
 (define-enum CursorType
   (in-module "Gdk")
