@@ -1,3 +1,8 @@
+2007-06-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/Makefile.am (guilemodule_DATA): Fix the conditional to be
+	HAVE_ATK, and recurse into overrides.
+
 2007-05-24  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.92 ==

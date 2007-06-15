@@ -4,9 +4,9 @@ SUBDIRS =
 
 guilemodule_DATA = 
 
-if HAVE_PANGO
+if HAVE_ATK
 guilemodule_DATA += atk.scm
-SUBDIRS += gw
+SUBDIRS += gw overrides
 endif
 
 EXTRA_DIST = atk.scm
