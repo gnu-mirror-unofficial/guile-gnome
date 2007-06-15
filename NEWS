@@ -1,12 +1,18 @@
 guile-gnome-libglade NEWS --- history of user-visible changes.
 Copyright (C) 2004,2005,2006,2007 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 24 May 2007.
+Last updated 15 Jun 2007.
 
 
 guile-gnome-libglade is a Guile binding for libglade. It is part of GNU
 guile-gnome. This file documents the user-visible changes in
 guile-gnome-libglade only.
+
+
+guile-gnome-libglade 2.15.93 - Andy Wingo, 2007-06-15
+=====================================================
+
+* New platform release, no change.
 
 
 guile-gnome-libglade 2.15.92 - Andy Wingo, 2007-05-24
