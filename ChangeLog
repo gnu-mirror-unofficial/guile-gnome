@@ -1,3 +1,10 @@
+2007-07-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/Makefile.am: 
+	* gnome/gw/support/gtk-doc.scm: New module, useful for generating
+	docs from gtk-doc-generated docbook. Currently used in
+	guile-cairo.
+
 2007-06-15  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.93 ==
