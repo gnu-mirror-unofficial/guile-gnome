@@ -1,3 +1,7 @@
+2007-07-17  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gtk-doc.scm: Checkpoint some new developments.
+
 2007-07-01  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/Makefile.am: 
