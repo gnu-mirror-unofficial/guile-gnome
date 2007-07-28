@@ -1,3 +1,9 @@
+2007-07-28  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gtk-doc.scm: Expand and document, depending on
+	the latest in guile-lib. I believe the interface is sufficient
+	now, at least for guile-cairo's purposes.
+
 2007-07-17  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gtk-doc.scm: Checkpoint some new developments.

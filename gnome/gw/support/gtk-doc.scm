@@ -32,6 +32,9 @@
   #:use-module ((srfi srfi-1) #:select (append-map))
   #:use-module (srfi srfi-13)
 
+  #:use-module (texinfo docbook)
+  #:use-module (match-bind)
+
   #:use-module (gnome gobject utils)
 
   #:export (docbook->sdocbook
@@ -52,10 +55,16 @@
                   'nbsp " "))
 
 (define (docbook->sdocbook docbook-fragment)
+  "Parse a docbook file @var{docbook-fragment} into SXML. Simply calls
+SSAX's @code{xml->sxml}, but having made sure that @samp{&nbsp;} 
+elements are interpreted correctly. Does not deal with XInclude."
   (call-with-input-file docbook-fragment
     (lambda (port) (ssax:xml->sxml port '()))))
 
 (define (sdocbook-fold-defuns proc seed sdocbook-fragment)
+  "Fold over the defuns in the gtk-doc-generated docbook fragment
+@var{sdocbook-fragment}. Very dependent on the form of docbook that
+gtk-doc emits."
   (let lp ((in ((sxpath '(refentry
                           refsect1
                           (refsect2 (title
@@ -68,18 +77,6 @@
     (if (null? in)
         seed
         (lp (cdr in) (proc (car in) seed)))))
-
-(define-macro (match-bind regex str vars consequent . alternate)
-  (or (string? regex) (error "regex needs to be a string so we can compile it"))
-  (let ((re (gensym)) (match (gensym)))
-    `(let ((,re ,(make-regexp regex)))
-       ((lambda (,match)
-          (if ,match
-              (apply (lambda ,vars ,consequent)
-                     (map (lambda (x) (match:substring ,match x))
-                          (iota (match:count ,match))))
-              ,@alternate))
-        (regexp-exec ,re ,str)))))
 
 (define (string-value xml)
   ;; inefficient, but hey!
@@ -167,32 +164,10 @@
                       
 (define (identity . args) args)
 
-(define *sdocbook->stexi-rules*
-  `((@
-     *preorder*
-     . ,identity)
-    (%
-     *preorder*
-     . ,identity)
-    (para
-     . ,(lambda (tag . body)
-          `(para ,@(if (and (pair? body) (pair? (car body))
-                            (eq? (caar body) '@))
-                       (cdr body)
-                       body))))
-    (parameter
-     . ,(lambda (tag body)
-          `(var ,body)))
-    (type
-     . ,(lambda (tag body)
-          `(code ,body)))
-    (function
-     . ,(lambda (tag body)
-          `(code ,body)))
-    (literal
-     . ,(lambda (tag . body)
-          `(samp ,@body)))
-    (variablelist
+(define strip-final-parens (s/// " *\\(\\)$" ""))
+
+(define *gtk-doc-sdocbook->stexi-rules*
+  `((variablelist
      ((varlistentry
        . ,(lambda (tag term . body)
             `(entry (% (heading ,@(cdr term))) ,@body)))
@@ -201,120 +176,10 @@
             simpara)))
      . ,(lambda (tag attrs . body)
           `(table (% (formatter (var))) ,@body)))
-    (orderedlist
-     ((listitem
-       . ,(lambda (tag . body)
-            `(item ,@body))))
-     . ,(lambda (tag . body)
-          `(enumerate ,@body)))
-    (emphasis
-     . ,(lambda (tag . body)
-          `(em ,@body)))
     (term
      . ,(lambda (tag param . rest)
           param))
-    (simpara
-     . ,(lambda (tag . body)
-          `(para ,@body)))
-    (informalexample
-     . ,(lambda (tag programlisting)
-          programlisting))
-    (programlisting
-     . ,(lambda (tag . contents)
-          `(example ,@contents)))
-    (firstterm
-     . ,(lambda (tag . contents)
-          `(dfn ,@contents)))
-    (section . ,identity)
-    (subsection . ,identity)
-    (subsubsection . ,identity)
-    (*text*
-     . ,(lambda (tag text)
-          text))))
-
-(define-macro (make-state-parser states initial)
-  `(lambda (port)
-     (let lp ((state ',initial)
-              (c (read-char port))
-              (out '())
-              (accum '()))
-       (case state
-         ((*eof*) (reverse out))
-         ,@(map
-            (lambda (desc)
-              (let ((name (car desc))
-                    (cont (cadr desc))
-                    (cases (map
-                            (lambda (kase)
-                              (let ((condition (car kase))
-                                    (new-state (cdr kase)))
-                                (cond
-                                 ((not (symbol? new-state))
-                                  (error "invalid new-state in spec" new-state))
-                                 ((number? condition)
-                                  `((= (length accum) ,condition) ',new-state))
-                                 ((list? condition)
-                                  `((memv c ',condition) ',new-state))
-                                 (else
-                                  `(,condition ',new-state)))))
-                            (cddr desc))))
-                `((,name)
-                  (let ((new-state (cond ((eof-object? c) '*eof*) ,@cases))
-                        (cont ,cont))
-                    (if (eq? state new-state)
-                        (lp state (read-char port) out (cons c accum))
-                        (lp new-state c
-                            (if cont
-                                (cons (cont (reverse accum)) out)
-                                out)
-                            '()))))))
-            states)
-         (else (error "invalid state" state (reverse out) (reverse accum)))))))
-
-(define (s/// pat subst)
-  (define (make-item-list subst)
-    (call-with-input-string
-     subst
-     (make-state-parser
-      ((string
-        list->string
-        ((#\\) . quote-head)
-        ((#\$) . variable-head)
-        (else . string))
-       (quote-head
-        #f
-        (0 . quote-head)
-        (else . quote))
-       (quote
-        list->string
-        (0 . quote)
-        ((#\\) . quote-head)
-        ((#\$) . variable-head)
-        (else . string))
-       (variable-head
-        #f
-        (0 . variable-head)
-        ((#\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 #\8 #\9) . variable)
-        (else . error))
-       (variable
-        (lambda (l) (string->number (list->string l)))
-        ((#\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 #\8 #\9) . variable)
-        ((#\\) . quote-head)
-        ((#\$) . variable-head)
-        (else . string)))
-      string)))
-  (let ((re (make-regexp pat))
-        (items `(pre ,@(make-item-list subst) post)))
-    (lambda (string)
-      (let ((match (regexp-exec re string)))
-        (if match
-            (apply regexp-substitute #f match items)
-            string)))))
-
-(define strip-final-parens (s/// " *\\(\\)$" ""))
-
-(define *gtk-doc-sdocbook->stexi-rules*
-  `((parameter
+    (parameter
      . ,(lambda (tag body)
           `(var ,(gtype-name->scheme-name body))))
     (type
@@ -329,7 +194,7 @@
           (let ((entry (string-join
                         (apply append (map cdr body)) ", ")))
             (if (string-null? entry)
-                '(*fragment*)
+                #f
                 `(cindex (% (entry ,entry)))))))
     (*text*
      . ,(lambda (tag text)
@@ -352,11 +217,10 @@
             (let ((elt (car body)))
               (if (and (pair? elt) (eq? (car elt) 'programlisting))
                   `(deffn ,(make-deffn-args elt)
-                     ,@(cdr
-                        (filter-empty
-                         (fold-titles
-                          (docbook-flatten
-                           (cons '*fragment* (cdr body))))))
+                     ,@(filter-empty-elements
+                        (replace-titles
+                         (sdocbook-flatten
+                          (cons '*fragment* (cdr body)))))
                      (para "This documentation was automatically generated."))
                   (lp (cdr body)))))))
     (deffn
@@ -366,118 +230,26 @@
           body))
     ,@*gtk-doc-sdocbook->stexi-rules*))
 
-(define (atom? x)
-  (not (pair? x)))
-
-(define (fold-values proc list . seeds)
-  "A variant of @ref{present fold fold,,fold} that
-allows multi-valued seeds. Note that the order of the arguments differs
-from that of @code{fold}."
-  (if (null? list)
-      (apply values seeds)
-      (call-with-values
-          (lambda () (apply proc (car list) seeds))
-        (lambda seeds
-          (apply fold-values proc (cdr list) seeds)))))
-
-(define (foldts*-values fdown fup fhere tree . seeds)
-  "A variant of @ref{present fold foldts*,,foldts*} that allows multi-valued seeds.
-Originally defined in Andy Wingo's 2007 paper, @emph{Applications of
-fold to XML transformation}."
-  (if (atom? tree)
-      (apply fhere tree seeds)
-      (call-with-values
-          (lambda () (apply fdown tree seeds))
-        (lambda (tree . kseeds)
-          (call-with-values
-              (lambda ()
-                (apply fold-values
-                       (lambda (tree . seeds)
-                         (apply foldts*-values
-                                fdown fup fhere tree seeds))
-                       tree kseeds))
-            (lambda kseeds
-              (apply fup tree (append seeds kseeds))))))))
-
-(define (inline-command? command)
-  (not (memq command '(para programlisting informalexample
-                       variablelist orderedlist refsect1
-                       refsect2 refsect3 refsect4 title))))
-
-(define (docbook-flatten sdocbook)
-  (define (fhere str accum block cont)
-    (values (cons str accum)
-            block
-            cont))
-  (define (fdown node accum block cont)
-    (let ((command (car node))
-          (attrs (and (pair? (cdr node)) (pair? (cadr node))
-                      (eq? (caadr node) '%)
-                      (cadr node))))
-      (values (if attrs (cddr node) (cdr node))
-              '()
-              '()
-              (lambda (accum block)
-                (values
-                 `(,command ,@(if attrs (list attrs) '())
-                            ,@(reverse accum))
-                 block)))))
-  (define (fup node paccum pblock pcont kaccum kblock kcont)
-    (call-with-values (lambda () (kcont kaccum kblock))
-      (lambda (ret block)
-        (if (inline-command? (car ret))
-            (values (cons ret paccum) (append kblock pblock) pcont)
-            (values paccum (append kblock (cons ret pblock)) pcont)))))
-  (call-with-values
-      (lambda () (foldts*-values fdown fup fhere sdocbook '() '() #f))
-    (lambda (accum block cont)
-      (reverse block))))
-    
-(define (filter-empty sdocbook)
-  (reverse
-   (fold
-    (lambda (x rest)
-      (if (and (pair? x) (null? (cdr x)))
-          rest
-          (cons x rest)))
-    '()
-    sdocbook)))
-
 (define (gtk-doc-sdocbook-title sdocbook)
+  "Extract the title from a fragment of docbook, as produced by gtk-doc.
+May return @code{#f} if the title is not found."
   (let ((l ((sxpath '(refentry refnamediv refname)) sdocbook)))
     (if (null? l)
         #f
         (cdar l))))
 
 (define (gtk-doc-sdocbook-subtitle sdocbook)
+  "Extract the subtitle from a fragment of docbook, as produced by gtk-doc.
+May return @code{#f} if the subtitle is not found."
   (let ((l ((sxpath '(refentry refnamediv refpurpose)) sdocbook)))
     (if (null? l)
         #f
         (cdar l))))
 
-;(define doc (docbook->sdocbook "/home/wingo/src/gnome2/cairo/doc/public/xml/cairo-version.xml"))
-;(sdocbook-description doc)
-;(gtk-doc-sdocbook-title doc)
-
-(define (fold-titles sdocbook-fragment)
-  (define sections '((refsect1 . chapter)
-                     (refsect2 . section)
-                     (refsect3 . subsection)
-                     (refsect4 . subsubsection)))
-  (let lp ((in sdocbook-fragment) (out '()))
-    (cond
-     ((null? in)
-      (reverse out))
-     ((and (pair? (car in)) (assq (caar in) sections))
-      => (lambda (pair)
-           (lp (cddr in) (cons `(,(cdr pair) ,@(cdadr in)) out))))
-     (else
-      (lp (cdr in) (cons (car in) out))))))
-
 (define (sdocbook-description sdocbook)
-  (filter-empty
-   (fold-titles
-    (docbook-flatten
+  (filter-empty-elements
+   (replace-titles
+    (sdocbook-flatten
      ;; cdr past title... ugh.
      (cons '*fragment*
            (cdr ((sxpath '(refentry
@@ -486,19 +258,38 @@ fold to XML transformation}."
                  sdocbook)))))))
    
 (define (gtk-doc-sdocbook->description-fragment sdocbook)
+  "Extract the \"description\" of a module from a fragment of docbook,
+as produced by gtk-doc, translated into texinfo."
   (cons '*fragment*
         (map
          (lambda (x)
            (pre-post-order x *gtk-doc-sdocbook->stexi-desc-rules*))
          (sdocbook-description sdocbook))))
 
-;(gtk-doc-sdocbook->description-fragment doc)
+(define (gtk-doc-sdocbook->def-list sdocbook process-def)
+  "Extract documentation for all functions defined in the docbook
+nodeset @var{sdocbook}.
 
-(define (gtk-doc-sdocbook->def-list sdocbook)
-  (sdocbook-fold-defuns
-   (lambda (fragment seed)
-     (cons
-      (pre-post-order fragment *gtk-doc-sdocbook->stexi-def-rules*)
-      seed))
-   '()
-   sdocbook))
+When a function is found and translated into texinfo, @var{process-def}
+will be called with two arguments, the name of the procedure as a
+symbol, and the documentation as a @code{deffn}. @var{process-def} may
+return @code{#f} to indicate that the function should not be included in
+the documentation; otherwise, the return value of @var{process-def} will
+be used as the documentation.
+
+This mechanism allows the caller of @code{gtk-doc-sdocbook->def-list} to
+perform further processing on the documentation, including the
+possiblity of replacing it completely with documenation from another
+source, for example a file of hand-written documentation overrides."
+  (reverse
+   (sdocbook-fold-defuns
+    (lambda (fragment seed)
+      (let* ((parsed (pre-post-order
+                      fragment *gtk-doc-sdocbook->stexi-def-rules*))
+             (name (string->symbol (attr-ref (cadr parsed) 'name)))
+             (def (process-def name parsed)))
+        (if def
+            (cons def seed)
+            seed)))
+    '()
+    sdocbook)))
