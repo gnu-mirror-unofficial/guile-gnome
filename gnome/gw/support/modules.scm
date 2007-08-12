@@ -63,4 +63,9 @@
       (module-export! mod symbols))
      (else
       ;; We have a sensible module-make-local-var!; allow lazy bindings.
-      (module-use! (module-public-interface mod) mod)))))
+      (set-module-binder!
+       (module-public-interface mod)
+       (lambda (interface sym define?)
+         (let ((var (module-local-variable mod sym)))
+           (if var (module-add! interface sym var))
+           var)))))))

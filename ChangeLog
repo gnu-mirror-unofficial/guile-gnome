@@ -1,3 +1,17 @@
+2007-08-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (generate-wrapset): Make generated
+	SCM wrappers use the (gnome gobject) library, which in the change
+	to generics.scm is no longer unintentionally exported. Use the
+	generics' public interface, not its private interface.
+
+	* gnome/gw/support/modules.scm (export-all-lazy!): 
+	* gnome/gw/generics.scm: Instead of making the public interface
+	use the module, which unintentionally re-exports imported
+	bindings in addition to the local bindings, install a module
+	binder proc on the public interface to export only local
+	variables.
+
 2007-07-28  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gtk-doc.scm: Expand and document, depending on

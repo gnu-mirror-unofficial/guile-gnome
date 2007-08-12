@@ -786,6 +786,7 @@
           (list
            `(define-module ,(module wrapset)
               #:use-module (oop goops)
+              #:use-module (gnome gobject)
               #:use-module (gnome gw support modules)
               ,@(if (slot-ref wrapset 'shlib-abs?)
                     '(#:use-module (g-wrap config))
@@ -808,4 +809,4 @@
            `(begin ,@(register-generics-without-rti))
            `(if (defined? '%generics)
                 (module-use! (module-public-interface (current-module))
-                             %generics))))))))
+                             (module-public-interface %generics)))))))))

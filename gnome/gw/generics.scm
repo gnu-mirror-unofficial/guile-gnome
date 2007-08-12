@@ -29,5 +29,10 @@
 (define-module (gnome gw generics)
   #:use-module (gnome gobject))
 
-(module-use! (module-public-interface (current-module))
-             (current-module))
+(let ((mod (current-module)))
+  (set-module-binder!
+   (module-public-interface mod)
+   (lambda (interface sym define?)
+     (let ((var (module-local-variable mod sym)))
+       (if var (module-add! interface sym var))
+       var))))
