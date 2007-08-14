@@ -61,17 +61,23 @@
   
   (add-client-item! ws (make <client-actions>))
   
+  ;; Add string aliases for standard C and GLib types. Also add
+  ;; automatic "out" aliases, except for "void" and the byte (char)
+  ;; types.
   (for-each
-   (lambda (pair) (add-type-alias! ws (car pair) (cadr pair)))
-   '(
-     ;; Basic C types
-     ("void" void)
+   (lambda (triple)
+     (add-type-alias! ws (car triple) (cadr triple))
+     (if (cddr triple)
+         (add-type-rule! ws (string-append (car triple) "*")
+                         (list (cadr triple) 'out))))
+   '(;; Basic C types
+     ("void" void . #f)
      ("int" int)
-     ("char" char)
+     ("char" char . #f)
      ("float" float)
      ("double" double)
      ("short" short)
-     ("unsigned-char" unsigned-char)
+     ("unsigned-char" unsigned-char . #f)
      ("unsigned-short" unsigned-short)
      ("unsigned" unsigned-int)
      ("unsigned-int" unsigned-int)
@@ -81,11 +87,11 @@
      ("unsigned-long-long" unsigned-long-long)
 
      ;; <inttypes.h>
-     ("uint8_t" unsigned-int8)
+     ("uint8_t" unsigned-int8 . #f)
      ("uint16_t" unsigned-int16)
      ("uint32_t" unsigned-int32)
      ("uint64_t" unsigned-int64)
-     ("int8_t" int8)
+     ("int8_t" int8 . #f)
      ("int16_t" int16)
      ("int32_t" int32)
      ("int64_t" int64)
@@ -94,10 +100,10 @@
 
      ;; GLib type aliases
      ("gboolean" bool)
-     ("gchar" char)
-     ("guchar" unsigned-char)
-     ("char*" mchars)
-     ("gchar*" mchars)
+     ("gchar" char . #f)
+     ("guchar" unsigned-char . #f)
+     ("char*" mchars . #f)
+     ("gchar*" mchars . #f)
      ("gdouble" double)
      ("gfloat" float)
      ("gshort" short)
@@ -115,15 +121,19 @@
      ("gint64" int64)
      ("guint64" unsigned-int64)
      
+     ("time_t" long)
+
      ("GQuark" unsigned-int) ; need to wrap this one better
      ("GPid" int)
      ("GTime" int32)
      
      ("gssize" ssize_t)
      ("gsize" size_t)
-     ("gunichar" unsigned-long)
+     ("gunichar" unsigned-int32)
      
-     ("none" void)))
+     ("none" void . #f)))
+
+  (add-type-rule! ws "gchar**" '(mchars caller-owned out))
 
   (add-type! ws (make <glist-of-type> #:name 'glist-of
                       #:type-cname "GList*" #:func-prefix "g_list"))
@@ -135,10 +145,6 @@
 
   (add-type! ws (make <gerror-type> #:name '<GError>))
   (add-type-alias! ws "GError**" '<GError>)
-
-  (add-type-rule! ws '(("gint*" "*")) '(int out))
-  (add-type-rule! ws '(("gsize*" "*")) '(size_t out))
-  (add-type-rule! ws '(("gchar**" "*")) '(mchars caller-owned out))
 
   (load-defs-with-overrides ws "gnome/defs/glib.defs"))
 

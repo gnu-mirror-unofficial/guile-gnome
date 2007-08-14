@@ -33,4 +33,10 @@ scm_str2string (const char *src)
   return scm_mem2string (src, strlen (src));
 }
 
+void *
+scm_with_guile (void*(*func)(void*), void *data)
+{
+    return func(data);
+}
+
 #endif

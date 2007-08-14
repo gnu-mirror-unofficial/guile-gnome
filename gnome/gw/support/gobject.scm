@@ -31,19 +31,22 @@
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-11)
   #:use-module (srfi srfi-13)
-  
+  #:use-module (ice-9 pretty-print)
+
   #:use-module (gnome gw support g-wrap)
   #:use-module (g-wrap enumeration)
   #:use-module (g-wrap rti)
   #:use-module (g-wrap c-types)
   
+  #:use-module ((g-wrap util) #:select (call-with-output-file/cleanup
+                                        any-str->c-sym-str))
   #:use-module (gnome gobject utils)
   #:use-module (gnome gw support slib)
   
   #:export (unwrap-null-checked
             
             <gobject-wrapset-base>
-            add-type-alias!
+            add-type-alias! lookup-type-by-alias
             add-type-rule! find-type-rule
             construct-argument-list
             
@@ -79,46 +82,37 @@
 (define-method (add-type-alias! (wrapset <gobject-wrapset-base>)
                                 (alias <string>)
                                 (name <symbol>))
-  (let ((type (lookup-type wrapset name)))
-    (if (not type)
-        (error "tried to alias unknown type" name))
-    (hash-set! (slot-ref wrapset 'type-aliases) alias type)))
+  (hash-set!
+   (slot-ref wrapset 'type-aliases)
+   alias
+   (or (lookup-type wrapset name)
+       (error "tried to alias unknown type" name))))
 
-(define-method (lookup-type (wrapset <gobject-wrapset-base>)
-                            (name <string>))
-  
-  (define (lookup wrapset cont)
-    ;;(format #t "looking for ~S in ~S\n" name wrapset)
-    (let ((ret (hash-ref (slot-ref wrapset 'type-aliases) name)))
-      (cond (ret
-             (cont ret))
-            (else
-             (for-each
-              (lambda (ws)
-                (if (is-a? ws <gobject-wrapset-base>)
-                    (lookup ws cont)))
-              (wrapsets-depended-on wrapset))
-             #f))))
+(define (gobject-wrapsets-lookup-recursive ws slot key)
+  (define (gobject-wrapsets-depended-on wrapset)
+    (filter (lambda (ws) (is-a? ws <gobject-wrapset-base>))
+            (wrapsets-depended-on wrapset)))
+  (define (or-map f l)
+    (if (null? l)
+        #f
+        (or (f (car l)) (or-map f (cdr l)))))
+  (define (lookup wrapset)
+    (or (hash-ref (slot-ref wrapset slot) key)
+        (or-map lookup
+                (gobject-wrapsets-depended-on wrapset))))
+  (lookup ws))
 
-  (call-with-current-continuation
-   (lambda (exit)
-     (lookup wrapset exit))))
+(define-method (lookup-type-by-alias (wrapset <gobject-wrapset-base>)
+                                     (name <string>))
+  (gobject-wrapsets-lookup-recursive wrapset 'type-aliases name))
 
-(define-method (add-type-rule! (self <gobject-wrapset-base>) (pattern <list>)
-                               typespec)
-  (if (not (and (not (null? pattern))
-                (every (lambda (elt)
-                           (and (list? elt) (<= 1 (length elt) 2)))
-                       pattern)))
-      (error "invalid type rule pattern"))
-  (hash-set! (slot-ref self 'type-rules) (caar pattern)
-             (cons pattern typespec)))
+(define-method (add-type-rule! (self <gobject-wrapset-base>)
+                               (param-type <string>) typespec)
+  (hash-set! (slot-ref self 'type-rules) param-type typespec))
 
-(define-method (find-type-rule (self <gobject-wrapset-base>) (params <list>))
-  (let ((match (hash-ref (slot-ref self 'type-rules) (caar params))))
-    (if match
-        (values 1 (cdr match))
-        (values 0 #f))))
+(define-method (find-type-rule (self <gobject-wrapset-base>) 
+                               (param-type <string>))
+  (gobject-wrapsets-lookup-recursive self 'type-rules param-type))
 
 ;; "gtk_accel_group" => gtk-accel-group
 (define (glib-function-name->scheme-name cname)
@@ -738,3 +732,81 @@
               #:wrap-func ,wrap-func
               #:unwrap-func ,unwrap-func)))
      (add-type! ws t)))
+
+;;; We override the generation of the scheme wrapper, because we want to
+;;; avoid listing all exports of the module. See the lengthy comment in
+;;; guile/g-wrap/guile-runtime.c in g-wrap for a rationale.
+(define-method (generate-wrapset (lang <symbol>)
+                                 (wrapset <gobject-wrapset-base>)
+                                 (basename <string>))
+  (define (register-generics-without-rti)
+    (fold-functions
+     (lambda (func rest)
+       (cond
+        ((and (not (uses-rti-for-function? wrapset func))
+              (generic-name func)
+              (> (argument-count func) 0)
+              (class-name (first (argument-types func))))
+         (cons `(%gw:procedure->method-public
+                 ,(name func)
+                 ;; Specializers
+                 ',(map (lambda (arg)
+                          (let ((typespec (typespec arg)))
+                            (and (not (memq 'unspecialized
+                                            (options typespec)))
+                                 (class-name (type typespec)))))
+                        (filter visible? (arguments func)))
+                 ',(generic-name func)
+                 ;; Required argument count
+                 ,(- (input-argument-count func)
+                     (optional-argument-count func))
+                 ;; Optional arguments?
+                 ,(not (zero? (optional-argument-count func))))
+               rest))
+        (else rest)))
+     '() wrapset))
+
+  ;; The next method is in (g-wrap guile), which will generate the scm
+  ;; file. We overwrite it afterwards.
+  (next-method)
+
+  (if (module wrapset)
+      (call-with-output-file/cleanup
+       (string-append basename ".scm")
+       (lambda (port)
+         (define (++ . args)
+           (apply string-append args))
+
+         (for-each
+          (lambda (x) (display x port) (newline port))
+          '(";; Generated by G-Wrap: an experimental Guile C API-wrapper engine."
+            ";; Customized by guile-gnome; see (gnome gw support g-wrap) for details."))
+         (for-each
+          (lambda (x) (pretty-print x port))
+          (list
+           `(define-module ,(module wrapset)
+              #:use-module (oop goops)
+              #:use-module (gnome gobject)
+              #:use-module (gnome gw support modules)
+              ,@(if (slot-ref wrapset 'shlib-abs?)
+                    '(#:use-module (g-wrap config))
+                    '()))
+
+           (let ((wrapset-name-c-sym (any-str->c-sym-str
+                                      (symbol->string (name wrapset)))))
+             `(dynamic-call ,(++ "gw_init_wrapset_" wrapset-name-c-sym)
+                            (dynamic-link
+                             ,(if (slot-ref wrapset 'shlib-abs?)
+                                  `(string-append
+                                    *g-wrap-shlib-dir*
+                                    ,(slot-ref wrapset 'shlib-path))
+                                  (slot-ref wrapset 'shlib-path)))))
+           
+           ;; This is what we avoid:
+           ;;   `(export ',@(module-exports wrapset))
+           ;; Instead we do this lovely hack:
+           `(export-all-lazy! ',(module-exports wrapset))
+           `(begin ,@(register-generics-without-rti))
+           `(if (defined? '%generics)
+                (module-use! (module-public-interface (current-module))
+                             (module-public-interface %generics)))))))))
