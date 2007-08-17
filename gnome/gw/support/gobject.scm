@@ -1,6 +1,6 @@
 ;; guile-gnome
 ;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
-;; Copyright (C) 2004 Andreas Rottmann <rotty at debian dot org>
+;; Copyright (C) 2004,2007 Andreas Rottmann <rotty at debian dot org>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -194,7 +194,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Wrap objects.
 
-(define-class <gobject-object-type> (<gobject-classed-pointer-type>))
+(define-class <gobject-object-type> (<gobject-classed-pointer-type>)
+  #:allowed-options '(null-ok))
 
 (define-method (unwrap-null-checked (value <gw-value>)
                                     status-var
@@ -246,7 +247,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Wrap boxed types, represented on the scheme side by GValues.
 
-(define-class <gobject-boxed-type> (<gobject-classed-pointer-type>))
+(define-class <gobject-boxed-type> (<gobject-classed-pointer-type>)
+  #:allowed-options '(null-ok))
 
 (define-method (make-typespec (type <gobject-boxed-type>) (options <list>))
   (next-method type (cons 'unspecialized options)))
@@ -350,7 +352,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Wrap interfaces. We only understand interfaces implemented by objects.
 
-(define-class <gobject-interface-type> (<gobject-classed-pointer-type>))
+(define-class <gobject-interface-type> (<gobject-classed-pointer-type>)
+  #:allowed-options '(null-ok))
 
 (define-method (wrap-interface! (ws <gobject-wrapset-base>) . args)
   (let ((type (apply make <gobject-interface-type> args)))
@@ -516,11 +519,6 @@
                #:c-const-type-name (string-append "const " ctype))))
     (add-type-alias! ws ctype (name type))))
 
-(for-each (lambda (null-ok-class)
-            (class-slot-set! null-ok-class 'allowed-options '(null-ok)))
-          (list <gobject-object-type> <gobject-boxed-type>
-                <gobject-interface-type>))
-            
 ;; Used for functions that operate on classes, e.g.
 ;; gtk_widget_class_install_style_property,
 ;; gst_element_class_get_pad_template
