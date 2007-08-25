@@ -18,4 +18,7 @@ TODO for (gnome glib)
 TODO for (gnome gtk)
 ====================
 
+
+FIX the bit where (gnome gobject generics) molests the root module
+
 $Id: TODO,v 1.2 2003/07/03 15:16:02 wingo Exp $

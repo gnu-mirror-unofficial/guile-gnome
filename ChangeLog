@@ -1,5 +1,22 @@
 2007-08-25  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gobject/Makefile.am: Add .doc files to the makefile, so
+	they get built
+
+	* TODO: Add something of a TODO
+
+	* Makefile.am: Recurse into doc/.
+
+	* doc/guile-gnome-gobject.texi: Add this file so that automake is
+	happy.
+	
+	* doc/make-texinfo.scm: 
+	* doc/guile-gnome-gobject.scm: 
+	* doc/docs.mk:
+	* doc/Makefile.am: Added doc infrastructure. make-texinfo.scm has
+	been augmented with Ludovic's code to parse out docs snarfed from
+	C files.
+
 	* gnome/gw/support/modules.scm (export-all-lazy!): Export all
 	non-lazy variables explicitly so that things like module frisking
 	and tab completion work.

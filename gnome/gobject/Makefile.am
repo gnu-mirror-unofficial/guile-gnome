@@ -37,7 +37,8 @@ module_DATA = defs-support.scm event-repl.scm generics.scm \
 GUILE_SNARF_CFLAGS += $(GOBJECT_CFLAGS)
 
 DOT_X_FILES = $(C_FILES:.c=.x)
-DOT_DOC_FILES = $(C_FILES:.c=.doc)
+DOT_DOC_FILES = gobject.doc gsignal.doc gclosure.doc gvalue.doc	\
+	gparameter.doc gtype.doc
 
 guile-gnome-gobject.texi: $(DOT_DOC_FILES)
 	cat $(DOT_DOC_FILES) | guile-snarf-docs-texi > $@ \
@@ -47,9 +48,9 @@ guile-gnome-gobject-procedures.txt: guile-gnome-gobject.texi
 	rm -f $@
 	makeinfo --force -o $@ $< || test -f $@
 
-BUILT_SOURCES = $(DOT_X_FILES)
+BUILT_SOURCES = $(DOT_X_FILES) $(DOT_DOC_FILES)
 
-CLEANFILES = $(DOT_X_FILES)
+CLEANFILES = $(DOT_X_FILES) $(DOT_DOC_FILES)
 
 real_builddir=`cd . && pwd`
 

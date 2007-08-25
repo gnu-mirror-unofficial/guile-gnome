@@ -1,0 +1,1371 @@
+WARNING: (srfi srfi-35): `any' imported from both (oop goops util) and (srfi srfi-1)
+WARNING: (srfi srfi-35): `every' imported from both (oop goops util) and (srfi srfi-1)
+WARNING: (g-wrap util): imported module (srfi srfi-34) overrides core binding `raise'
+WARNING: (g-wrap): imported module (srfi srfi-34) overrides core binding `raise'
+WARNING: (g-wrap rti): imported module (srfi srfi-34) overrides core binding `raise'
+WARNING: (g-wrap c-types): imported module (srfi srfi-34) overrides core binding `raise'
+WARNING: (gnome gw support g-wrap): `declarations-cg' imported from both (g-wrap c-codegen) and (g-wrap scm-codegen)
+WARNING: (gnome gw support defs): imported module (srfi srfi-34) overrides core binding `raise'
+WARNING: (gnome gw support gtk-doc): imported module (sxml xpath) overrides core binding `filter'
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename guile-gnome-gobject.info
+@settitle Guile-GNOME: GObject
+@c %**end of header
+
+@copying 
+This manual is for Guile-GNOME: GObject (version 2.15.93, updated 25 August
+2007)
+
+Copyright 2003,2004,2005,2006,2007 Free Software Foundation
+
+@quotation 
+Permission is granted to copy, distribute and/or modify this document under the
+terms of the GNU General Public License, Version 2 or any later version
+published by the Free Software Foundation.
+
+@end quotation
+
+@end copying
+
+@dircategory The Algorithmic Language Scheme
+@direntry 
+* Guile-GNOME: GObject: (guile-gnome-gobject.info).  The GLib object system in Scheme.
+@end direntry
+
+@titlepage 
+@title Guile-GNOME: GObject
+@subtitle version 2.15.93, updated 25 August 2007
+@author Andy Wingo (@email{wingo at pobox.com})
+@author Martin Baulig (@email{baulig at suse.de})
+@page 
+@vskip 0pt plus 1filll
+@insertcopying 
+@end titlepage
+
+@ifnottex 
+@node Top
+@top Guile-GNOME: GObject
+@insertcopying 
+@menu 
+* gnome gobject gtype::  The base of the GObject type system
+* gnome gobject gparameter::  Parameters with constraints and default values
+* gnome gobject gvalue::  Generic boxed values
+* gnome gobject gclosure::  Language-portable closures
+* gnome gobject gsignal::  Using closures as extension points
+* gnome gobject gobject::  GLib's main object implementation
+* gnome gobject generics::  Shorthand for many common GObject operations
+* gnome gobject utils::  Miscellaneous useful functions
+* gnome gw support gobject::  Integration between G-Wrap and GObject types
+* gnome gw support defs::  Create G-Wrap wrapsets from ``defs'' files
+* gnome gw support gtk-doc::  Parse C documentation from gtk-doc into texinfo
+* gnome gw support modules::  Fondling Guile's module system
+
+* Concept Index::        
+* Function Index::       
+@end menu
+
+@end ifnottex
+
+@iftex 
+@shortcontents 
+@end iftex
+
+@node gnome gobject gtype
+@chapter (gnome gobject gtype)
+@section Overview
+@verbatim 
+ Base support for the GLib type system.
+@end verbatim
+
+@section Usage
+@anchor{gnome gobject gtype gtype-instance:write}@defop Generic object gtype-instance:write
+Hacky function so we can write smob types in scheme.
+
+@end defop
+
+@anchor{gnome gobject gtype %function->method-public}@defvar %function->method-public
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype %gtype-bind-to-class}@defvar %gtype-bind-to-class
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype %gtype-instance-primitive-destroy!}@defvar %gtype-instance-primitive-destroy!
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype %gtype-lookup-class}@defvar %gtype-lookup-class
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype <gtype-class>}@defvar <gtype-class>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype <gtype-instance-class>}@defvar <gtype-instance-class>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype <gtype-instance>}@defvar <gtype-instance>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype class-name->gtype-name}@defvar class-name->gtype-name
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype especify-metaclass!}@defvar especify-metaclass!
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gruntime-error}@defvar gruntime-error
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype->fundamental}@defvar gtype->fundamental
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype-basic?}@defvar gtype-basic?
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype-children}@defvar gtype-children
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype-classed?}@defvar gtype-classed?
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype-from-instance}@defvar gtype-from-instance
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype-from-name}@defvar gtype-from-name
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype-fundamental?}@defvar gtype-fundamental?
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype-instance-primitive->type}@defvar gtype-instance-primitive->type
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype-instantiatable?}@defvar gtype-instantiatable?
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype-interfaces}@defvar gtype-interfaces
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype-is-a?}@defvar gtype-is-a?
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype-name}@defvar gtype-name
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype-parent}@defvar gtype-parent
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype:genum}@defvar gtype:genum
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype:gflags}@defvar gtype:gflags
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype:ginterface}@defvar gtype:ginterface
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype:gobject}@defvar gtype:gobject
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype:gparam}@defvar gtype:gparam
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype:void}@defvar gtype:void
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype?}@defvar gtype?
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gtype gtype->class}@defun gtype->class type
+If there is already a GOOPS class associated with the GType `type', return this
+class.
+
+Otherwise, create a new GOOPS class and bind it to this type. The created class
+is an immortal, persistent object which is bound in some magic way to its GType.
+
+@end defun
+
+@anchor{gnome gobject gtype gtype-class->type}@defun gtype-class->type class
+Returns the <gtype> associated with a <gtype-class>.
+
+@end defun
+
+@node gnome gobject gparameter
+@chapter (gnome gobject gparameter)
+@section Overview
+@verbatim 
+ This is the GObject wrapper for Guile.
+
+ See the guile-gnome tutorial for more details.
+@end verbatim
+
+@section Usage
+@anchor{gnome gobject gparameter <gparam-boolean>}@defvar <gparam-boolean>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-boxed>}@defvar <gparam-boxed>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-char>}@defvar <gparam-char>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-double>}@defvar <gparam-double>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-enum>}@defvar <gparam-enum>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-flags>}@defvar <gparam-flags>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-float>}@defvar <gparam-float>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-int64>}@defvar <gparam-int64>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-int>}@defvar <gparam-int>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-long>}@defvar <gparam-long>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-object>}@defvar <gparam-object>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-pointer>}@defvar <gparam-pointer>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-spec-flags>}@defvar <gparam-spec-flags>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-string>}@defvar <gparam-string>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-uchar>}@defvar <gparam-uchar>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-uint64>}@defvar <gparam-uint64>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-uint>}@defvar <gparam-uint>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam-ulong>}@defvar <gparam-ulong>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter <gparam>}@defvar <gparam>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparam->param-struct}@defvar gparam->param-struct
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparam->value-type}@defvar gparam->value-type
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparam-struct-arg-info}@defvar gparam-struct-arg-info
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparam-struct:args}@defvar gparam-struct:args
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparam-struct:blurb}@defvar gparam-struct:blurb
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparam-struct:flags}@defvar gparam-struct:flags
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparam-struct:name}@defvar gparam-struct:name
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparam-struct:nick}@defvar gparam-struct:nick
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparam-struct:owner-type}@defvar gparam-struct:owner-type
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparam-struct:param-type}@defvar gparam-struct:param-type
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparam-struct:value-type}@defvar gparam-struct:value-type
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:byte-order}@defvar gparameter:byte-order
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:double-max}@defvar gparameter:double-max
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:double-min}@defvar gparameter:double-min
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:float-max}@defvar gparameter:float-max
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:float-min}@defvar gparameter:float-min
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:int-max}@defvar gparameter:int-max
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:int-min}@defvar gparameter:int-min
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:int64-max}@defvar gparameter:int64-max
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:int64-min}@defvar gparameter:int64-min
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:long-max}@defvar gparameter:long-max
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:long-min}@defvar gparameter:long-min
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:uint-max}@defvar gparameter:uint-max
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:uint64-max}@defvar gparameter:uint64-max
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:ulong-max}@defvar gparameter:ulong-max
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-boolean}@defvar gtype:gparam-boolean
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-boxed}@defvar gtype:gparam-boxed
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-char}@defvar gtype:gparam-char
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-double}@defvar gtype:gparam-double
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-enum}@defvar gtype:gparam-enum
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-flags}@defvar gtype:gparam-flags
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-float}@defvar gtype:gparam-float
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-int}@defvar gtype:gparam-int
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-int64}@defvar gtype:gparam-int64
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-long}@defvar gtype:gparam-long
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-object}@defvar gtype:gparam-object
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-pointer}@defvar gtype:gparam-pointer
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-string}@defvar gtype:gparam-string
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-uchar}@defvar gtype:gparam-uchar
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-uint}@defvar gtype:gparam-uint
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-uint64}@defvar gtype:gparam-uint64
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-ulong}@defvar gtype:gparam-ulong
+[undocumented]
+
+@end defvar
+
+@node gnome gobject gvalue
+@chapter (gnome gobject gvalue)
+@section Overview
+@verbatim 
+ Support for GValue-based types.
+@end verbatim
+
+@section Usage
+@anchor{gnome gobject gvalue <gboolean>}@defvar <gboolean>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <gboxed-scm>}@defvar <gboxed-scm>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <gboxed>}@defvar <gboxed>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <gchar>}@defvar <gchar>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <gchararray>}@defvar <gchararray>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <gdouble>}@defvar <gdouble>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <genum>}@defvar <genum>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <gflags>}@defvar <gflags>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <gfloat>}@defvar <gfloat>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <gint64>}@defvar <gint64>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <gint>}@defvar <gint>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <glong>}@defvar <glong>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <guchar>}@defvar <guchar>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <guint64>}@defvar <guint64>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <guint>}@defvar <guint>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <gulong>}@defvar <gulong>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue <gvalue-array>}@defvar <gvalue-array>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue genum->name}@defvar genum->name
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue genum->symbol}@defvar genum->symbol
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue genum->value}@defvar genum->value
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue genum-class->value-table}@defvar genum-class->value-table
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue genum-register-static}@defvar genum-register-static
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue genum-type-get-values}@defvar genum-type-get-values
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gflags->name-list}@defvar gflags->name-list
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gflags->symbol-list}@defvar gflags->symbol-list
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gflags->value-list}@defvar gflags->value-list
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gflags-class->value-table}@defvar gflags-class->value-table
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gflags-register-static}@defvar gflags-register-static
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gflags-type-get-values}@defvar gflags-type-get-values
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gboolean}@defvar gtype:gboolean
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gboxed}@defvar gtype:gboxed
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gboxed-scm}@defvar gtype:gboxed-scm
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gchar}@defvar gtype:gchar
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gchararray}@defvar gtype:gchararray
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gdouble}@defvar gtype:gdouble
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gfloat}@defvar gtype:gfloat
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gint}@defvar gtype:gint
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gint64}@defvar gtype:gint64
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:glong}@defvar gtype:glong
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gpointer}@defvar gtype:gpointer
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:guchar}@defvar gtype:guchar
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:guint}@defvar gtype:guint
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:guint64}@defvar gtype:guint64
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gulong}@defvar gtype:gulong
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gvalue-array}@defvar gtype:gvalue-array
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gvalue->scm}@defvar gvalue->scm
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gvalue->type}@defvar gvalue->type
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue gvalue?}@defvar gvalue?
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gvalue scm->gvalue}@defvar scm->gvalue
+[undocumented]
+
+@end defvar
+
+@node gnome gobject gclosure
+@chapter (gnome gobject gclosure)
+@section Overview
+@verbatim 
+ GClosure support.
+
+ See the guile-gnome tutorial for more details.
+@end verbatim
+
+@section Usage
+@anchor{gnome gobject gclosure <gclosure>}@defvar <gclosure>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gclosure gclosure-invoke}@defvar gclosure-invoke
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gclosure gtype:gclosure}@defvar gtype:gclosure
+[undocumented]
+
+@end defvar
+
+@node gnome gobject gsignal
+@chapter (gnome gobject gsignal)
+@section Overview
+@verbatim 
+ Support for GSignal.
+
+ See the guile-gnome tutorial for more details.
+@end verbatim
+
+@section Usage
+@anchor{gnome gobject gsignal <gsignal>}@defvar <gsignal>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gsignal gsignal-handler-block}@defvar gsignal-handler-block
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gsignal gsignal-handler-connected?}@defvar gsignal-handler-connected?
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gsignal gsignal-handler-disconnect}@defvar gsignal-handler-disconnect
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gsignal gsignal-handler-unblock}@defvar gsignal-handler-unblock
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gsignal gsignal:id}@defvar gsignal:id
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gsignal gsignal:interface-type}@defvar gsignal:interface-type
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gsignal gsignal:name}@defvar gsignal:name
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gsignal gsignal:param-types}@defvar gsignal:param-types
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gsignal gsignal:return-type}@defvar gsignal:return-type
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gsignal gtype-class-create-signal}@defvar gtype-class-create-signal
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gsignal gtype-get-signals}@defvar gtype-get-signals
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gsignal gtype-class-define-signal}@defspec gtype-class-define-signal
+@verbatim 
+(gtype-class-define-signal class name return-type . param-types)
+
+Creates and adds a new signal `name' to the GTypeClass `class':
+
+  class         - this must be a <gtype-class>.
+
+  name          - this is a symbol which identifies the signal. There must be
+                  no signal with this name in the `class'es class ancestry.
+
+  return-type   - is either a <gtype> specifying the signal's return type or #f
+                  if the return type is void (#f is the same than gtype:void).
+
+  param-types   - a list of <gtype>s specifying the signal's arguments.
+
+This is implemented as a macro which must be called at the top-level.
+If it does not already exist, it'll define a new generic function for the signal.
+
+The name of this GF is the concatenation of the type name, a colon and the signal
+name - it's calculated by `(gtype->method-name (gtype-class->type class) name)'.
+
+NOTE: Even if this is not strictly a bug, it is highly recommended not to add any
+      signals to existing classes which you did not create.
+
+      Create a subclass using gtype-register-object-static and then add your signals
+      to this subclass.
+
+Examples:
+
+  (gtype-class-define-signal <foo> 'roswell #f)
+  (define-method (foo:roswell (obj <foo>))
+     *unspecified*)
+
+  (gtype-class-define-signal <foo> 'berlin  gtype:glong gtype:int)
+  (define-method (foo:berlin (obj <foo>) (x (<number>)))
+     85)
+
+@end verbatim
+
+@end defspec
+
+@anchor{gnome gobject gsignal gtype-class-get-signal-names}@defun gtype-class-get-signal-names class
+(gtype-class-get-signal-names class)
+
+Returns a vector of signal names belonging to CLASS and all parent classes.
+
+@end defun
+
+@anchor{gnome gobject gsignal gtype-class-get-signals}@defun gtype-class-get-signals class
+(gtype-class-get-signals class)
+
+Returns a vector of signals belonging to CLASS and all parent classes.
+
+@end defun
+
+@anchor{gnome gobject gsignal gtype-instance-signal-connect}@defun gtype-instance-signal-connect object   name   func
+Convenience function for `(gtype-instance-signal-connect-data object name func
+#f)'.
+
+@end defun
+
+@anchor{gnome gobject gsignal gtype-instance-signal-connect-after}@defun gtype-instance-signal-connect-after object   name   func
+Convenience function for `(gtype-instance-signal-connect-data object name func
+#t)'.
+
+@end defun
+
+@anchor{gnome gobject gsignal gtype-instance-signal-connect-data}@defun gtype-instance-signal-connect-data object   name   func   after
+@verbatim 
+(gtype-instance-signal-connect-data object name func after)
+
+Connects `func' as handler for the GTypeInstance `object's signal `name':
+
+   object            - instance of <gtype-instance> or a subclass.
+
+   name              - symbol identifying the signal
+
+   func              - procedure which is installed as signal handler.
+
+   after             - boolean specifying whether the handler is run before (#f)
+                       or after (#t) the signal's default handler.
+
+Returns an integer number which can be used as arugment of gsignal-handler-block,
+gsignal-handler-unblock, gsignal-handler-disconnect and gsignal-handler-connected?.
+
+@end verbatim
+
+@end defun
+
+@anchor{gnome gobject gsignal gtype-instance-signal-emit}@defun gtype-instance-signal-emit object   name  .  args
+@verbatim 
+(gtype-instance-signal-emit object name . args)
+
+Emits signal `name' with arguments `args' on the GTypeInstance `object':
+
+   object            - instance of <gtype-instance> or a subclass of it.
+
+   name              - symbol identifying the signal
+
+@end verbatim
+
+@end defun
+
+@node gnome gobject gobject
+@chapter (gnome gobject gobject)
+@section Overview
+@verbatim 
+ This is the GObject wrapper for Guile.
+
+ See the guile-gnome tutorial for more details.
+@end verbatim
+
+@section Usage
+@anchor{gnome gobject gobject gobject:get-property}@defop Generic object gobject:get-property
+(gobject:get-property obj name)
+
+Called to get a gobject property. Only properties belonging to (class-of obj)
+will come through this function.
+
+Call (next-method) in your methods to invoke the default handler, which calls
+(slot-ref obj name).
+
+@end defop
+
+@anchor{gnome gobject gobject gobject:set-property}@defop Generic object gobject:set-property
+(gobject:set-property obj name value)
+
+Called to set a gobject property. Only properties belonging to (class-of obj)
+will come through this function.
+
+Call (next-method) in your methods to invoke the default handler, which sets
+slots on the object.
+
+@end defop
+
+@anchor{gnome gobject gobject <ginterface>}@defvar <ginterface>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gobject <gobject>}@defvar <gobject>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gobject gobject-get-property}@defvar gobject-get-property
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gobject gobject-set-property}@defvar gobject-set-property
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gobject gtype-register-static}@defvar gtype-register-static
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gobject make-gobject-instance}@defvar make-gobject-instance
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject gobject gobject-class-find-property}@defun gobject-class-find-property class   name
+(gobject-class-find-property class name)
+
+Returns a property named NAME (a symbol), belonging to CLASS or one of its
+parent classes, or #f if not found.
+
+@end defun
+
+@anchor{gnome gobject gobject gobject-class-get-properties}@defun gobject-class-get-properties class
+(gobject-class-get-properties class)
+
+Returns a vector of properties belonging to CLASS and all parent classes.
+
+@end defun
+
+@anchor{gnome gobject gobject gobject-class-get-property-names}@defun gobject-class-get-property-names class
+(gobject-class-get-property-names class)
+
+Returns a vector of property names belonging to CLASS and all parent classes.
+
+@end defun
+
+@anchor{gnome gobject gobject gobject-interface-find-property}@defun gobject-interface-find-property class   name
+(ginterface-class-find-property class name)
+
+Returns a property named NAME (a symbol), belonging to CLASS or one of its
+parent classes, or #f if not found.
+
+@end defun
+
+@anchor{gnome gobject gobject gobject-interface-get-properties}@defun gobject-interface-get-properties class
+(ginterface-class-get-properties class)
+
+Returns a vector of properties belonging to CLASS and all parent classes.
+
+@end defun
+
+@anchor{gnome gobject gobject gobject-interface-get-property-names}@defun gobject-interface-get-property-names class
+(ginterface-class-get-property-names class)
+
+Returns a vector of property names belonging to CLASS and all parent classes.
+
+@end defun
+
+@node gnome gobject generics
+@chapter (gnome gobject generics)
+@section Overview
+Generic functions for procedures in the (gnome gobject) module.
+
+@section Usage
+@node gnome gobject utils
+@chapter (gnome gobject utils)
+@section Overview
+@verbatim 
+ Common utility routines.
+@end verbatim
+
+@section Usage
+@anchor{gnome gobject utils GStudlyCapsExpand}@defvar GStudlyCapsExpand
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject utils define-generic-with-docs}@defvar define-generic-with-docs
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject utils define-with-docs}@defvar define-with-docs
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject utils gtype-name->class-name}@defvar gtype-name->class-name
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject utils gtype-name->method-name}@defvar gtype-name->method-name
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject utils gtype-name->scheme-name}@defvar gtype-name->scheme-name
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject utils gtype-name->scheme-name-alist}@defvar gtype-name->scheme-name-alist
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gobject utils re-export-modules}@defspec re-export-modules  .  args
+Re-export the public interface of a module; used like @code{use-modules}.
+
+@end defspec
+
+@node gnome gw support gobject
+@chapter (gnome gw support gobject)
+@section Overview
+Routines useful to *-spec.scm g-wrap files.
+
+@section Usage
+@anchor{gnome gw support gobject unwrap-null-checked}@defvar unwrap-null-checked
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject <gobject-wrapset-base>}@defvar <gobject-wrapset-base>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject add-type-alias!}@defvar add-type-alias!
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject lookup-type-by-alias}@defvar lookup-type-by-alias
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject add-type-rule!}@defvar add-type-rule!
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject find-type-rule}@defvar find-type-rule
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject construct-argument-list}@defvar construct-argument-list
+[unbound!]
+@end defvar
+
+@anchor{gnome gw support gobject <gobject-type-base>}@defvar <gobject-type-base>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject <gobject-classed-type>}@defvar <gobject-classed-type>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject gtype-id}@defvar gtype-id
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject <gobject-classed-pointer-type>}@defvar <gobject-classed-pointer-type>
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject wrap-object!}@defvar wrap-object!
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject wrap-boxed!}@defvar wrap-boxed!
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject wrap-pointer!}@defvar wrap-pointer!
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject wrap-opaque-pointer!}@defvar wrap-opaque-pointer!
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject wrap-interface!}@defvar wrap-interface!
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject wrap-flags!}@defvar wrap-flags!
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject wrap-gobject-class!}@defvar wrap-gobject-class!
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject wrap-custom-boxed!}@defvar wrap-custom-boxed!
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support gobject wrap-custom-gvalue!}@defvar wrap-custom-gvalue!
+[undocumented]
+
+@end defvar
+
+@node gnome gw support defs
+@chapter (gnome gw support defs)
+@section Overview
+Support for reading in Gtk .defs files as g-wrap instructions
+
+@section Usage
+@anchor{gnome gw support defs load-defs}@defvar load-defs
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support defs load-defs-with-overrides}@defvar load-defs-with-overrides
+[undocumented]
+
+@end defvar
+
+@node gnome gw support gtk-doc
+@chapter (gnome gw support gtk-doc)
+@section Overview
+Parsing a subset of the docbook emitted by gtk-doc into @code{stexi}.
+
+@section Usage
+@anchor{gnome gw support gtk-doc docbook->sdocbook}@defun docbook->sdocbook docbook-fragment
+Parse a docbook file @var{docbook-fragment} into SXML. Simply calls SSAX's
+@code{xml->sxml}, but having made sure that @samp{&nbsp;} elements are
+interpreted correctly. Does not deal with XInclude.
+
+@end defun
+
+@anchor{gnome gw support gtk-doc gtk-doc-sdocbook-title}@defun gtk-doc-sdocbook-title sdocbook
+Extract the title from a fragment of docbook, as produced by gtk-doc. May return
+@code{#f} if the title is not found.
+
+@end defun
+
+@anchor{gnome gw support gtk-doc gtk-doc-sdocbook-subtitle}@defun gtk-doc-sdocbook-subtitle sdocbook
+Extract the subtitle from a fragment of docbook, as produced by gtk-doc. May
+return @code{#f} if the subtitle is not found.
+
+@end defun
+
+@anchor{gnome gw support gtk-doc gtk-doc-sdocbook->description-fragment}@defun gtk-doc-sdocbook->description-fragment sdocbook
+Extract the "description" of a module from a fragment of docbook, as produced by
+gtk-doc, translated into texinfo.
+
+@end defun
+
+@anchor{gnome gw support gtk-doc gtk-doc-sdocbook->def-list}@defun gtk-doc-sdocbook->def-list sdocbook   process-def
+Extract documentation for all functions defined in the docbook nodeset
+@var{sdocbook}.
+
+When a function is found and translated into texinfo, @var{process-def} will be
+called with two arguments, the name of the procedure as a symbol, and the
+documentation as a @code{deffn}. @var{process-def} may return @code{#f} to
+indicate that the function should not be included in the documentation;
+otherwise, the return value of @var{process-def} will be used as the
+documentation.
+
+This mechanism allows the caller of @code{gtk-doc-sdocbook->def-list} to perform
+further processing on the documentation, including the possiblity of replacing
+it completely with documenation from another source, for example a file of
+hand-written documentation overrides.
+
+@end defun
+
+@node gnome gw support modules
+@chapter (gnome gw support modules)
+@section Overview
+This module implements some procedures useful to modules that use g-wrapped
+libraries.
+
+@section Usage
+@anchor{gnome gw support modules export-all-lazy!}@defvar export-all-lazy!
+[undocumented]
+
+@end defvar
+
+@anchor{gnome gw support modules re-export-modules}@defspec re-export-modules  .  args
+Re-export the public interface of a module; used like @code{use-modules}.
+
+@end defspec
+
+@node Concept Index
+@unnumbered Concept Index
+@printindex cp
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+@bye

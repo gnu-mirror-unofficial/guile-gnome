@@ -1,6 +1,6 @@
 include $(top_srcdir)/common.mk
 
-SUBDIRS = . gnome test-suite examples bin
+SUBDIRS = . gnome test-suite doc examples bin
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pcifiles)
