@@ -35,6 +35,13 @@
 	<gsignal> as the struct vtable. It was always exported but never
 	defined.
 
+2007-08-15  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/support/gobject.scm (<gobject-object-type>)
+	(<gobject-boxed-type>, <gobject-interface-type>): Properly set
+	allowed-options via class declaration keyword instead of explicit
+	slot access.
+
 2007-08-13  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gobject.scm (generate-wrapset): Make generated

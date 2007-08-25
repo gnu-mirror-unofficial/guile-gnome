@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2003,2004,2007 Andy Wingo <wingo at pobox dot com>
  *		 2004 Jan Nieuwenhuizen <janneke@gnu.org>
  *
  * glib-support.c: Support routines for the GLib wrapper
