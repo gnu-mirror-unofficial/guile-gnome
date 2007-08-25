@@ -62,7 +62,15 @@
       ;; all classes
       (module-export! mod symbols))
      (else
-      ;; We have a sensible module-make-local-var!; allow lazy bindings.
+      ;; We have a sensible module-make-local-var!; export the
+      ;; already-bound variables, and install a module binder in the
+      ;; interface to lazily bind the rest.
+      (let ((obarray (module-obarray mod)))
+        (module-export! mod
+                        (filter
+                         (lambda (s)
+                           (hashq-ref obarray s))
+                         symbols)))
       (set-module-binder!
        (module-public-interface mod)
        (lambda (interface sym define?)

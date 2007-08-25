@@ -1,3 +1,13 @@
+2007-08-25  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/modules.scm (export-all-lazy!): Export all
+	non-lazy variables explicitly so that things like module frisking
+	and tab completion work.
+
+	* gnome/gobject/gsignal.c (scm_init_gnome_gobject_signals): Define
+	<gsignal> as the struct vtable. It was always exported but never
+	defined.
+
 2007-08-13  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gobject.scm (generate-wrapset): Make generated

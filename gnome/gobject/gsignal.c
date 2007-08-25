@@ -362,6 +362,8 @@ scm_init_gnome_gobject_signals (void)
 	(scm_make_vtable_vtable (scm_makfrom0str ("pwpwpwpwpwpw"),
 				 SCM_INUM0, SCM_LIST1 (gsubr)));
 
+    scm_c_define ("<gsignal>", scm_gsignal_vtable);
+
     scm_c_define ("gsignal-id", SCM_MAKINUM (scm_si_gsignal_id));
     scm_c_define ("gsignal-name", SCM_MAKINUM (scm_si_gsignal_name));
     scm_c_define ("gsignal-interface_type", SCM_MAKINUM (scm_si_gsignal_interface_type));
