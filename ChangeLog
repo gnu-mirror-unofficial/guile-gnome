@@ -1,5 +1,15 @@
 2007-08-25  Andy Wingo  <wingo@pobox.com>
 
+	* doc/make-texinfo.scm (main): Don't search the load path for the
+	file, we know where it is.
+
+	* doc/docs.mk ($(doc).texi): Use the right environments.
+
+	* doc/Makefile.am (nodist_info_TEXINFOS): Make automake happy.
+
+	* doc/guile-gnome-gobject.texi: Remove, I found the trick to make
+	automake happy.
+	
 	* gnome/gobject/Makefile.am: Add .doc files to the makefile, so
 	they get built
 

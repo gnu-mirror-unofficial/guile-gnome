@@ -2,4 +2,4 @@ doc=guile-gnome-gobject
 
 include docs.mk
 
-info_TEXINFOS=guile-gnome-gobject.texi
+nodist_info_TEXINFOS=guile-gnome-gobject.texi

@@ -17,7 +17,8 @@ $(doc)scmfiles: $(doc).scm
 depfiles=$(addprefix $(srcdir)/../,$(shell test ! -f $(doc)scmfiles || cat $(doc)scmfiles))
 
 $(doc).texi: $(srcdir)/$(doc).scm $(doc)scmfiles $(depfiles)
-	$(top_srcdir)/dev-environ $(srcdir)/make-texinfo.scm $(srcdir)/$(doc).scm $(DOT_DOC_FILES) >$@
+	$(top_builddir)/dev-environ $(srcdir)/make-texinfo.scm $(srcdir)/$(doc).scm $(DOT_DOC_FILES) >$@.tmp
+	mv $@.tmp $@
 
 html: html-stamp $(srcdir)/$(doc).scm $(depfiles)
 html-stamp: $(scm-module-files)

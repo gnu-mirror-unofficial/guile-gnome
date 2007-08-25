@@ -182,7 +182,7 @@ preprocessor output."
       (lambda (name def)
         (or (and=> (assq name defs-alist) cdr)
             def))))
-  (load config-scm)
+  (primitive-load config-scm)
   (display
    (stexi->texi
     (package-stexi-documentation
