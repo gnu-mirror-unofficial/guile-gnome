@@ -22,37 +22,60 @@
 ;;
 ;; Base support for the GLib type system.
 ;;
+;; The GLib runtime type system is broken into a number of modules, of
+;; which GType is the base. A @code{<gtype>} is a named type that has a
+;; number of properties. Some types are fundamental and cannot be
+;; subclassed, such as integers. Others can form the root of complicated
+;; object hierarchies, such as @code{<gobject>}.
+;;
+;; One can obtain the @code{<gtype>} object for a type if you know its
+;; name. For example,
+;;
+;; @lisp
+;;  (gtype-from-name "guint64") @result{} #<gtype guint64>
+;; @end lisp
+;;
+;; @code{<gtype>} objects are low-level constructs. In Scheme, it is
+;; more usual to work with GOOPS type objects. Each @code{<gtype>}
+;; corresponds to one GOOPS object, which may be obtained
+;; programmatically using @code{gtype->class}.
+;;
+;; A more detailed reference on the GLib type system may be had at
+;; @uref{http://library.gnome.org/foo/bar}.
+;;
 ;;; Code:
 
 (define-module (gnome gobject gtype)
-  :use-module (oop goops)
-  :use-module (gnome gobject utils)
-  :use-module (gnome gobject config)
-  :export     (;; From C:
+  #:use-module (oop goops)
+  #:use-module (gnome gobject utils)
+  #:use-module (gnome gobject config)
+  #:export     ( ;; From C:
 
-               ;; GType
-               gtype? gtype-is-a? gtype-basic? gtype-classed?
-               gtype-instantiatable? gtype-fundamental?
-               gtype->fundamental gtype-parent gtype-children
-               gtype-interfaces
-               gtype-name gtype-from-name gtype-from-instance
-               ;; GTypeInstance
-               %gtype-instance-primitive-destroy!
-               gtype-instance-primitive->type
-               ;; Misc
-               %function->method-public especify-metaclass!
+                ;; GType
+                gtype? gtype-is-a? gtype-basic? gtype-classed?
+                gtype-instantiatable? gtype-fundamental?
+                gtype->fundamental gtype-parent gtype-children
+                gtype-interfaces
+                gtype-name gtype-from-name gtype-from-instance
+                ;; GTypeInstance
+                %gtype-instance-primitive-destroy!
+                gtype-instance-primitive->type
+                ;; Misc
+                especify-metaclass!
 
-               ;; From Scheme:
+                ;; From Scheme:
 
-               ;; Base Classes
-               <gtype-class> <gtype-instance-class> <gtype-instance>
-               ;; GType <-> GTypeClass
-               gtype->class gtype-class->type
-               %gtype-lookup-class %gtype-bind-to-class
-               ;; Misc
-               gtype-instance:write gruntime-error class-name->gtype-name))
+                ;; Base Classes
+                <gtype-class> <gtype-instance-class> <gtype-instance>
+                ;; GType <-> GTypeClass
+                gtype->class gtype-class->type
+                %gtype-lookup-class %gtype-bind-to-class
+                ;; Misc
+                gtype-instance:write gruntime-error class-name->gtype-name))
 
 (define (gruntime-error format-string . args)
+  "Signal a runtime error. The error will be thrown to the key
+@code{gruntime-error}."
   (save-stack)
   (scm-error 'gruntime-error #f format-string args '()))
 
@@ -89,13 +112,23 @@
 ;; We have to inherit from class because we're a metaclass. We do that
 ;; via <set-once-class>. We have #:set-once slots, so we also need to
 ;; have <set-once-class> as our metaclass.
-(define-class <gtype-class> (<set-once-class>)
+(define-class-with-docs <gtype-class> (<set-once-class>)
+  "The metaclass of all GType classes. Ensures that GType classes have
+@code{gtype} and @code{gtype-class} slots, which point to the primitive
+@code{<gtype>} and @code{<%gtype-class>} objects that wrap the C
+values."
   (gtype #:allocation #:set-once)
   (gtype-class #:allocation #:set-once)
   #:metaclass <set-once-class>)
 
-(define-class <gtype-instance-class> (<gtype-class>))
-(define-class <gtype-instance> ()
+;; FIXME: not sure if this is necessary; why not just make
+;; <gtype-instance>'s metaclass be <gtype-class>?
+(define-class-with-docs <gtype-instance-class> (<gtype-class>)
+  "The metaclass of all instantiatable GType classes.")
+(define-class-with-docs <gtype-instance> ()
+  "The root class of all instantiatable GType classes. Adds a slot,
+@code{gtype-instance}, to instances. This slot will point to the
+primitive @code{<%gtype-instance>} object that wraps the C value."
   (gtype-instance #:allocation #:set-once)
   #:metaclass <gtype-instance-class>)
 
@@ -109,6 +142,12 @@
 ;;;
 
 (define (class-name->gtype-name class-name)
+  "Convert the name of a class into a suitable name for a GType. For
+example:
+
+@lisp
+ (class-name->gtype-name '<foo-bar>) @result{} \"FooBar\"
+@end lisp"
   ;; By convention, GTypes are named with StudlyCaps.
   (list->string
    (reverse!
@@ -157,7 +196,7 @@
                (cdr interfaces)))))))
 
 (define (gtype->class type)
-  "If there is already a GOOPS class associated with the GType `type',
+  "If there is already a GOOPS class associated with the GType @var{type},
 return this class.
 
 Otherwise, create a new GOOPS class and bind it to this type. The
@@ -178,7 +217,7 @@ magic way to its GType.
                         #:name class-name)))))
 
 (define (gtype-class->type class)
-  "Returns the <gtype> associated with a <gtype-class>."
+  "Returns the @code{<gtype>} associated with a @code{<gtype-class>}."
   (if (slot-bound? class 'gtype)
       (slot-ref class 'gtype)
       (gruntime-error "Can't get type of unknown class: ~S" class)))
@@ -188,7 +227,8 @@ magic way to its GType.
 ;;;
 
 (define-generic-with-docs gtype-instance:write
-  "Hacky function so we can write smob types in scheme.")
+  "Generic function, defined so we can define @code{write} functions for
+instances of @code{<gtype-class>} in Scheme. A bit of a hack.")
 
 (define (display-address o file)
   (display (number->string (object-address o) 16) file))

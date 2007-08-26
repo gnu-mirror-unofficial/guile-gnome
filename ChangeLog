@@ -1,3 +1,19 @@
+2007-08-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/utils.scm (define-class-with-docs): New exported
+	macro.
+
+	* gnome/gobject/gtype.scm: Add a commentary, lots of doc fixups.
+
+	* gnome/gobject/gtype.c: Lots of doc fixups.
+
+	* doc/Makefile.am (doc): Define DOT_DOC_FILES so that we actually
+	pick up the .doc files.
+
+	* gnome/gobject/gtype.scm:
+	* gnome/gobject/gtype.c (%function->method-public): Removed, this
+	hack is no longer necessary (or used).
+
 2007-08-25  Andy Wingo  <wingo@pobox.com>
 
 	* doc/make-texinfo.scm (main): Don't search the load path for the

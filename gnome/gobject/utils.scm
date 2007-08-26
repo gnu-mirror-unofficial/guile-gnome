@@ -30,7 +30,8 @@
   :export     (gtype-name->scheme-name-alist gtype-name->scheme-name
                gtype-name->class-name gtype-name->method-name
                re-export-modules GStudlyCapsExpand
-               define-with-docs define-generic-with-docs))
+               define-with-docs define-generic-with-docs
+               define-class-with-docs))
 
 ;;;
 ;;; {Name Transformations}
@@ -164,3 +165,8 @@
 (define-macro (define-generic-with-docs name documentation)
   `(define-with-docs ,name ,documentation
      (make-generic ',name)))
+
+(define-macro (define-class-with-docs name supers docs . rest)
+  `(begin
+     (define-class ,name ,supers ,@rest)
+     (set-object-property! ,name 'documentation ,docs)))
