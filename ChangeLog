@@ -1,5 +1,11 @@
 2007-08-26  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gobject/gvalue.scm: 
+	* gnome/gobject/gvalue.c: Document.
+
+	* gnome/gobject/gclosure.scm: Document. Change gclosure-invoke to
+	be a procedure rather than a method/generic.
+
 	* gnome/gobject/gparameter.scm: 
 	* gnome/gobject/gparameter.c: Document. Remove
 	gparam-struct-arg-info from the exports list.

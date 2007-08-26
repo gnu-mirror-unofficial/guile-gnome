@@ -124,7 +124,8 @@ scm_gvalue_free (SCM smob)
 
 SCM_DEFINE (scm_gvalue_p, "gvalue?", 1, 0, 0,
 	    (SCM value),
-	    "")
+	    "Returns @code{#t} if @var{value} is a @code{<gvalue>}, "
+            "@code{#f} otherwise.")
 #define FUNC_NAME s_scm_gvalue_p
 {
     return SCM_TYP16_PREDICATE (scm_tc16_gvalue, value) ? SCM_BOOL_T : SCM_BOOL_F;
@@ -135,7 +136,7 @@ SCM_DEFINE (scm_gvalue_p, "gvalue?", 1, 0, 0,
 
 SCM_DEFINE (scm_gvalue_to_type, "gvalue->type", 1, 0, 0,
 	    (SCM value),
-	    "")
+	    "Returns the @code{<gtype>} of the value held by @var{value}.")
 #define FUNC_NAME s_scm_gvalue_to_type
 {
     GValue *gvalue;
@@ -547,7 +548,10 @@ scm_c_register_gtype_instance_gvalue_wrappers (GType type,
 
 SCM_DEFINE (scm_gvalue_to_scm, "gvalue->scm", 1, 0, 0,
 	    (SCM value),
-	    "")
+	    "Convert a @code{<gvalue>} into it normal scheme representation, "
+            "for example unboxing characters into Scheme characters. Note "
+            "that the Scheme form for some values is the @code{<gvalue>} "
+            "form, for example with boxed or enumerated values.")
 #define FUNC_NAME s_scm_gvalue_to_scm
 {
     GValue *gvalue;
@@ -615,7 +619,9 @@ SCM scm_c_gvalue_to_scm (const GValue *gvalue)
 
 SCM_DEFINE (scm_scm_to_gvalue, "scm->gvalue", 2, 0, 0,
 	    (SCM type, SCM scm),
-	    "")
+	    "Convert a Scheme value into a @code{<gvalue>} of type "
+            "@var{type}. If the conversion is not possible, raise a "
+            "@code{gruntime-error}.")
 #define FUNC_NAME s_scm_scm_to_gvalue
 {
     GType gtype, fundamental;
@@ -704,13 +710,13 @@ GValue* scm_c_scm_to_gvalue (GType gtype, SCM scm)
 
 SCM_DEFINE (scm_genum_register_static, "genum-register-static", 2, 0, 0,
 	    (SCM name, SCM vtable),
-	    "Creates and registers a new enum GType with name @var{name} with the C runtime. "
+	    "Creates and registers a new enumerated type with name @var{name} with the C runtime. "
 	    "There must be no type with name @var{name} when this function is called.\n\n"
 	    "The new type can be accessed from C either by passing the returned @code{<gtype>} "
-	    "object back to a C function or by using the C function @code{g_type_from_name()}.\n\n"
-	    "@var{vtable} is a vector describing the new enum type, each vector element describes "
-	    "one enum element and must be a list of 3 elements - the element's nick name (SYMBOL), "
-	    "its name (STRING) and its integer value (INUMP).\n\n"
+	    "object back to a C function or by using @code{g-type-from-name}.\n\n"
+	    "@var{vtable} is a vector describing the new enum type. Each vector element describes "
+	    "one enum element and must be a list of 3 elements: the element's nick name as a symbol, "
+	    "its name as a string, and its integer value.\n\n"
 	    "@lisp\n"
 	    "(genum-register-static \"Test\"\n"
 	    "  #((foo \"Foo\" 1) (bar \"Bar\" 2) (baz \"Long name of baz\" 4)))\n"
@@ -760,7 +766,8 @@ SCM_DEFINE (scm_genum_register_static, "genum-register-static", 2, 0, 0,
 
 SCM_DEFINE (scm_gflags_register_static, "gflags-register-static", 2, 0, 0,
 	    (SCM name, SCM vtable),
-	    "Creates and registers a new flags GType with name @var{name} with the C runtime.\n\n"
+	    "Creates and registers a new flags @code{<gtype>} with name "
+            "var{name} with the C runtime.\n\n"
 	    "See @code{genum-register-static} for details.")
 #define FUNC_NAME s_scm_gflags_register_static
 {
@@ -813,7 +820,9 @@ SCM_DEFINE (scm_gflags_register_static, "gflags-register-static", 2, 0, 0,
 
 SCM_DEFINE (scm_genum_type_get_values, "genum-type-get-values", 1, 0, 0,
 	    (SCM type),
-	    "")
+	    "Return a vtable of the values supported by the enumerated "
+            "@code{<gtype>} @var{type}. The return value will be in the "
+            "format described in @code{genum-register-static}.")
 #define FUNC_NAME s_scm_genum_type_get_values
 {
     GType gtype;
@@ -847,7 +856,9 @@ SCM_DEFINE (scm_genum_type_get_values, "genum-type-get-values", 1, 0, 0,
 
 SCM_DEFINE (scm_gflags_type_get_values, "gflags-type-get-values", 1, 0, 0,
 	    (SCM type),
-	    "")
+	    "Return a vtable of the values supported by the flag "
+            "@code{<gtype>} @var{type}. The return value will be in the "
+            "format described in @code{gflags-register-static}.")
 #define FUNC_NAME s_scm_gflags_type_get_values
 {
     GType gtype;

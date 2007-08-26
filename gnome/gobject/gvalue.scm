@@ -20,33 +20,59 @@
 
 ;;; Commentary:
 ;;
-;; Support for GValue-based types.
+;; GLib supports generic typed values via its GValue module. These
+;; values are wrapped in Scheme as instances of @code{<gvalue-class>}
+;; classes, such as @code{<gint>}, @code{<gfloat>}, etc.
+;;
+;; In most cases, use of @code{<gvalue>} are transparent to the Scheme
+;; user. Values which can be represented directly as Scheme values are
+;; normally given to the user in their Scheme form, e.g. @code{#\a}
+;; instead of @code{#<gvalue <gchar> 3020c708 a>}. However, when dealing
+;; with low-level routines it is sometimes necessary to have values in
+;; @code{<gvalue>} form. The conversion between the two is performed via
+;; the @code{scm->gvalue} and @code{gvalue->scm} functions.
+;;
+;; The other set of useful procedures exported by this module are those
+;; dealing with enumerated values and flags. These objects are normally
+;; represented on the C side with integers, but they have symbolic
+;; representations registered in the GLib type system.
+;;
+;; On the Scheme side, enumerated and flags values are canonically
+;; expressed as @code{<gvalue>} objects. They can be converted to
+;; integers or symbols using the conversion procedures exported by this
+;; module. It is conventional for Scheme procedures that take enumerated
+;; values to accept any form for the values, which can be canonicalized
+;; using @code{(make <your-enum-type> #:value @var{value})}, where
+;; @var{value} can be an integer, a symbol (or symbol list in the case
+;; of flags), or the string ``nickname'' (or string list) of the
+;; enumerated/flags value.
 ;;
 ;;; Code:
 
 (define-module (gnome gobject gvalue)
-  :use-module (oop goops)
-  :use-module (gnome gobject utils)
-  :use-module (gnome gobject config)
-  :use-module (gnome gobject gtype)
+  #:use-module (oop goops)
+  #:use-module (gnome gobject utils)
+  #:use-module (gnome gobject config)
+  #:use-module (gnome gobject gtype)
 
-  :export     (;; Primitive GValue support
-               ;; <gvalue> is exported from (oop goops) by the smob system
-               gvalue? gvalue->type
-               ;; Simple classes
-               <gboolean> <gchar> <guchar> <gint> <guint> <glong>
-               <gulong> <gint64> <guint64> <gfloat> <gdouble>
-               <gchararray> <gboxed> <gboxed-scm> <gvalue-array>
-               ;; Enums and Flags Classes
-               <genum> <gflags>
-               genum-register-static gflags-register-static
-               genum-class->value-table gflags-class->value-table
-               genum-type-get-values gflags-type-get-values
-               ;; Conversion (from C)
-               scm->gvalue gvalue->scm
-               ;; Enums and Flags
-               genum->symbol genum->name genum->value
-               gflags->symbol-list gflags->name-list gflags->value-list))
+  ;; FIXME: the c code exports a bunch of gtypes behind our back
+  #:export     (;; Primitive GValue support
+                ;; <gvalue> is exported from (oop goops) by the smob system
+                gvalue? gvalue->type
+                ;; Simple classes
+                <gboolean> <gchar> <guchar> <gint> <guint> <glong>
+                <gulong> <gint64> <guint64> <gfloat> <gdouble>
+                <gchararray> <gboxed> <gboxed-scm> <gvalue-array>
+                ;; Enums and Flags Classes
+                <genum> <gflags>
+                genum-register-static gflags-register-static
+                genum-class->value-table gflags-class->value-table
+                genum-type-get-values gflags-type-get-values
+                ;; Conversion (from C)
+                scm->gvalue gvalue->scm
+                ;; Enums and Flags
+                genum->symbol genum->name genum->value
+                gflags->symbol-list gflags->name-list gflags->value-list))
 
 (dynamic-call "scm_init_gnome_gobject_values"
               (dynamic-link *guile-gnome-gobject-lib-path*))
@@ -63,21 +89,55 @@
               #:name (gtype-name->class-name (gtype-name type))
               #:metaclass <gvalue-class>))
 
-(define <gchar>        (gvalued-type->class gtype:gchar))
-(define <guchar>       (gvalued-type->class gtype:guchar))
-(define <gboolean>     (gvalued-type->class gtype:gboolean))
-(define <gint>         (gvalued-type->class gtype:gint))
-(define <guint>        (gvalued-type->class gtype:guint))
-(define <glong>        (gvalued-type->class gtype:glong))
-(define <gulong>       (gvalued-type->class gtype:gulong))
-(define <gint64>       (gvalued-type->class gtype:gint64))
-(define <guint64>      (gvalued-type->class gtype:guint64))
-(define <gfloat>       (gvalued-type->class gtype:gfloat))
-(define <gdouble>      (gvalued-type->class gtype:gdouble))
-(define <gchararray>   (gvalued-type->class gtype:gchararray))
-(define <gboxed>       (gvalued-type->class gtype:gboxed))
-(define <gvalue-array> (gvalued-type->class gtype:gvalue-array))
-(define <gboxed-scm>   (gvalued-type->class gtype:gboxed-scm))
+(define-with-docs <gchar>
+  "A @code{<gvalue>} class for signed 8-bit values."
+  (gvalued-type->class gtype:gchar))
+(define-with-docs <guchar>
+  "A @code{<gvalue>} class for unsigned 8-bit values."
+  (gvalued-type->class gtype:guchar))
+(define-with-docs <gboolean>
+  "A @code{<gvalue>} class for boolean values."
+  (gvalued-type->class gtype:gboolean))
+(define-with-docs <gint>
+  "A @code{<gvalue>} class for signed 32-bit values."
+  (gvalued-type->class gtype:gint))
+(define-with-docs <guint>
+  "A @code{<gvalue>} class for unsigned 32-bit values."
+  (gvalued-type->class gtype:guint))
+(define-with-docs <glong>
+  "A @code{<gvalue>} class for signed ``long'' (32- or 64-bit)
+values."
+  (gvalued-type->class gtype:glong))
+(define-with-docs <gulong>
+  "A @code{<gvalue>} class for unsigned ``long'' (32- or 64-bit)
+values."
+  (gvalued-type->class gtype:gulong))
+(define-with-docs <gint64>
+  "A @code{<gvalue>} class for signed 64-bit values."
+  (gvalued-type->class gtype:gint64))
+(define-with-docs <guint64>
+  "A @code{<gvalue>} class for unsigned 64-bit values."
+  (gvalued-type->class gtype:guint64))
+(define-with-docs <gfloat>
+  "A @code{<gvalue>} class for 32-bit floating-point values."
+  (gvalued-type->class gtype:gfloat))
+(define-with-docs <gdouble>
+  "A @code{<gvalue>} class for 64-bit floating-point values."
+  (gvalued-type->class gtype:gdouble))
+(define-with-docs <gchararray>
+  "A @code{<gvalue>} class for arrays of 8-bit values (C strings)."
+  (gvalued-type->class gtype:gchararray))
+(define-with-docs <gboxed>
+  "A @code{<gvalue>} class for ``boxed'' types, a way of wrapping
+generic C structures. Use @code{gvalue->type} on an instance of this
+class to determine what type it holds."
+  (gvalued-type->class gtype:gboxed))
+(define-with-docs <gvalue-array>
+  "A @code{<gvalue>} class for arrays of @code{<gvalue>}."
+  (gvalued-type->class gtype:gvalue-array))
+(define-with-docs <gboxed-scm>
+  "A @code{<gboxed>} class for holding arbitrary Scheme objects."
+  (gvalued-type->class gtype:gboxed-scm))
 
 ;;;
 ;;; {Enums and Flags Classes}
@@ -133,18 +193,30 @@
 
 ;; Enums and flags have special slots, so we define the classes
 ;; manually.
-(define-class <genum> ()
+(define-class-with-docs <genum> ()
+  "A @code{<gvalue>} base class for enumerated values. Users may define
+new enumerated value types via subclssing from @code{<genum>}, passing
+@code{#:vtable @var{table}} as an initarg, where @var{table} should be
+in a format suitable for passing to @code{genum-register-static}."
   (genum-values #:allocation #:each-subclass)
   #:gtype gtype:genum
   #:metaclass <genum-class>)
 (define (genum-class->value-table class)
+  "Return the vtable of possible values for @var{class}. The same as
+@code{genum-type-get-values}, but operates on classes."
   (class-slot-ref class 'genum-values))
 
-(define-class <gflags> ()
+(define-class-with-docs <gflags> ()
+  "A @code{<gvalue>} base class for flag values. Users may define new
+flag value types via subclssing from @code{<gflags>}, passing
+@code{#:vtable @var{table}} as an initarg, where @var{table} should be
+in a format suitable for passing to @code{gflags-register-static}."
   (genum-values #:allocation #:each-subclass) ;; FIXME
   #:gtype gtype:gflags
   #:metaclass <gflags-class>)
 (define (gflags-class->value-table class)
+  "Return the vtable of possible values for @var{class}. The same as
+@code{gflags-type-get-values}, but operates on classes."
   (class-slot-ref class 'genum-values))
 
 ;;;
@@ -309,6 +381,8 @@
   (find-enum (gflags-type-get-values type) (lambda (l) (car l)) symbol))
 
 (define (genum->symbol obj)
+  "Convert the enumerated value @var{obj} from a @code{<gvalue>} to its
+symbol representation (its ``nickname'')."
   (let* ((type (gvalue->type obj))
          (enum-values (genum-type-get-values type))
          (value (gvalue-primitive-get obj))
@@ -316,6 +390,8 @@
     (car the-value)))
 
 (define (genum->name obj)
+  "Convert the enumerated value @var{obj} from a @code{<gvalue>} to its
+representation as a string (its ``name'')."
   (let* ((type (gvalue->type obj))
          (enum-values (genum-type-get-values type))
          (value (gvalue-primitive-get obj))
@@ -323,6 +399,8 @@
     (cadr the-value)))
 
 (define (genum->value obj)
+  "Convert the enumerated value @var{obj} from a @code{<gvalue>} to its
+representation as an integer."
   (let* ((type (gvalue->type obj))
          (enum-values (genum-type-get-values type))
          (value (gvalue-primitive-get obj))
@@ -342,18 +420,24 @@
     element-list))
 
 (define (gflags->symbol-list obj)
+  "Convert the flags value @var{obj} from a @code{<gvalue>} to a list of
+the symbols that it represents."
   (let* ((element-list (gflags->element-list obj)))
     (map (lambda (x)
            (car x))
          element-list)))
 
 (define (gflags->name-list obj)
+  "Convert the flags value @var{obj} from a @code{<gvalue>} to a list of
+strings, the names of the values it represents."
   (let* ((element-list (gflags->element-list obj)))
     (map (lambda (x)
            (cadr x))
          element-list)))
 
 (define (gflags->value-list obj)
+  "Convert the flags value @var{obj} from a @code{<gvalue>} to a list of
+integers, which when @code{logand}'d together yield the flags' value."
   (let* ((element-list (gflags->element-list obj)))
     (map (lambda (x)
            (caddr x))

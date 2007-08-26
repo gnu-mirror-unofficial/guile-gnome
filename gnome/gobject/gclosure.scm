@@ -20,26 +20,44 @@
 ;; Boston, MA  02111-1307,  USA       gnu@gnu.org
 
 ;;; Commentary:
-;;
-;; GClosure support.
-;;
-;; See the guile-gnome tutorial for more details.
-;;
+;; 
+;; The GLib type system supports the creation and invocation of
+;; ``closures'', objects which can be invoked like procedures. Its
+;; infrastructure allows one to pass a Scheme function to C, and have C
+;; call into Scheme, and vice versa.
+;; 
+;; This module exports a GOOPS class wrapping closures on the Scheme
+;; level, @code{<gclosure>}. @code{<gclosure>} holds a Scheme procedure,
+;; the @code{<gtype>} of its return value, and a list of the
+;; @code{<gtype>}'s of its arguments. Closures can be invoked with
+;; @code{gclosure-invoke}. For example:
+;; 
+;; @lisp
+;; (gclosure-invoke (make <gclosure>
+;;                   #:return-type <gint>
+;;                   #:param-types (list <gulong>)
+;;                   #:func (lambda (x) (* x x)))
+;;                  10)
+;; @result{} 100
+;; @end lisp
 ;;; Code:
 
 (define-module (gnome gobject gclosure)
-  :use-module (gnome gobject config)
-  :use-module (gnome gobject gtype)
-  :use-module (gnome gobject gvalue)
-  :use-module (oop goops)
+  #:use-module (gnome gobject config)
+  #:use-module (gnome gobject utils)
+  #:use-module (gnome gobject gtype)
+  #:use-module (gnome gobject gvalue)
+  #:use-module (oop goops)
 
-  :export     (<gclosure> gclosure-invoke))
+  #:export     (<gclosure> gclosure-invoke))
 
 (dynamic-call "scm_init_gnome_gobject_closures"
               (dynamic-link *guile-gnome-gobject-lib-path*))
 
 (define-class <gclosure-class> (<gtype-class>))
-(define-class <gclosure> ()
+(define-class-with-docs <gclosure> ()
+  "The Scheme representation of a GLib closure: a typed procedure
+object that can be passed to other languages."
   closure
   return-type
   param-types
@@ -111,7 +129,11 @@
 ;;; {Miscellaneous}
 ;;;
 
-(define-method (gclosure-invoke (closure <gclosure>) . args)
+(define (gclosure-invoke closure . args)
+  "Invoke a closure. The arguments @var{args} will be converted to
+@code{<gvalue>} objects of the appropriate type, and the return value
+will be run through @code{gvalue->scm}. For all practical purposes, this
+function is like @code{apply}."
   (let* ((primitive-closure (slot-ref closure 'closure))
 	 (return-type (slot-ref closure 'return-type))
 	 (param-types (slot-ref closure 'param-types))
