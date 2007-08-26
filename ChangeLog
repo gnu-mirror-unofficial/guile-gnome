@@ -1,5 +1,7 @@
 2007-08-26  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gobject/gtype.scm: Fix a URL.
+
 	* gnome/gobject/gsignal.c: 
 	* gnome/gobject/gsignal.scm: 
 	* gnome/gobject/gobject.c:

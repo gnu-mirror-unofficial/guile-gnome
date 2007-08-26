@@ -41,7 +41,7 @@
 ;; programmatically using @code{gtype->class}.
 ;;
 ;; A more detailed reference on the GLib type system may be had at
-;; @uref{http://library.gnome.org/foo/bar}.
+;; @uref{http://library.gnome.org/devel/gobject/stable/}.
 ;;
 ;;; Code:
 
