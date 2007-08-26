@@ -1,5 +1,10 @@
 2007-08-26  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gobject/gsignal.c: 
+	* gnome/gobject/gsignal.scm: 
+	* gnome/gobject/gobject.c:
+	* gnome/gobject/gobject.scm: Document.
+
 	* gnome/gobject/gvalue.scm: 
 	* gnome/gobject/gvalue.c: Document.
 

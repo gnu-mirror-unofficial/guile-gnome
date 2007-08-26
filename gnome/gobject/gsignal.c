@@ -63,7 +63,8 @@ print_gsignal_struct (SCM gsignal, SCM port)
 
 SCM_DEFINE (scm_gtype_get_signals, "gtype-get-signals", 1, 0, 0,
 	    (SCM type),
-	    "")
+            "Returns a vector of signal names belonging to @var{type} and all "
+            "parent types.")
 #define FUNC_NAME s_scm_gtype_get_signals
 {
     guint *ids, n_ids, i;

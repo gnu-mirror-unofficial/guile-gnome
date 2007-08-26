@@ -21,35 +21,71 @@
 
 ;;; Commentary:
 ;;
-;; This is the GObject wrapper for Guile.
+;; GObject is what is commonly understood as @emph{the} object system
+;; for GLib. This is not strictly true. GObject is @emph{one}
+;; implementation of an object system, built on the other modules:
+;; GType, GValue, GParameter, GClosure, and GSignal.
 ;;
-;; See the guile-gnome tutorial for more details.
+;; Similarly, this Guile module provides integration with the GObject
+;; object system, built on the Guile modules that support GType, GValue,
+;; GParameter, GClosure, and GSignal.
+;;
+;; The main class exported by this module is @code{<gobject>}.
+;; @code{<gobject>} classes can be subclassed by the user, which will
+;; register new subtypes with the GType runtime type system.
+;; @code{<gobject>} classes are are also created as needed when wrapping
+;; GObjects that come from C, for example from a function's return
+;; value.
+;;
+;; Besides supporting derivation, and signals like other
+;; @code{<gtype-instance>} implementations, @code{<gobject>} has the
+;; concept of @dfn{properties}, which are @code{<gvalue>}'s associated
+;; with the object. The values are constrained by @code{<gparam>}'s,
+;; which are associated with the object's class. This module exports the
+;; necessary routines to query, get, and set @code{<gobject>}
+;; properties.
+;;
+;; In addition, this module defines the @code{<ginterface>} base class,
+;; whose subclasses may be present as mixins of @code{<gobject>}
+;; classes. For example:
+;;
+;; @lisp
+;; (use-modules (gnome gtk) (oop goops))
+;; (class-direct-supers <gtk-widget>) @result{}
+;;    (#<<gobject-class> <atk-implementor-iface> 3033bad0>
+;;     #<<gobject-class> <gtk-object> 3034bc90>)
+;; @end lisp
+;;
+;; In this example, we see that @code{<gtk-widget>} has two
+;; superclasses, @code{<gtk-object>} and @code{<atk-implementor-iface>}.
+;; The second is an interface implemented by the @code{<gtk-widget>}
+;; class. See @code{gtype-interfaces} for more details.
 ;;
 ;;; Code:
 
 (define-module (gnome gobject gobject)
-  :use-module (oop goops)
-  :use-module (gnome gobject utils)
-  :use-module (gnome gobject config)
-  :use-module (gnome gobject gtype)
-  :use-module (gnome gobject gvalue)
-  :use-module (gnome gobject gparameter)
-  :use-module (gnome gobject gsignal)
+  #:use-module (oop goops)
+  #:use-module (gnome gobject utils)
+  #:use-module (gnome gobject config)
+  #:use-module (gnome gobject gtype)
+  #:use-module (gnome gobject gvalue)
+  #:use-module (gnome gobject gparameter)
+  #:use-module (gnome gobject gsignal)
 
-  :export     (;; Classes
-               <gobject> <ginterface>
-               ;; Low-level subclassing
-               gtype-register-static
-               ;; Methods to override
-               gobject:get-property gobject:set-property
-               make-gobject-instance
-               ;; Properties
-               gobject-class-get-properties gobject-class-find-property
-               gobject-class-get-property-names
-               gobject-interface-get-properties
-               gobject-interface-find-property
-               gobject-interface-get-property-names
-               gobject-get-property gobject-set-property))
+  #:export     (;; Classes
+                <gobject> <ginterface>
+                ;; Low-level subclassing
+                gtype-register-static
+                ;; Methods to override
+                gobject:get-property gobject:set-property
+                make-gobject-instance
+                ;; Properties
+                gobject-class-get-properties gobject-class-find-property
+                gobject-class-get-property-names
+                gobject-interface-get-properties
+                gobject-interface-find-property
+                gobject-interface-get-property-names
+                gobject-get-property gobject-set-property))
 
 (dynamic-call "scm_init_gnome_gobject"
               (dynamic-link *guile-gnome-gobject-lib-path*))
@@ -168,13 +204,52 @@
     (else
      (next-method))))
 
-(define-class <gobject> (<gtype-instance>)
+(define-class-with-docs <gobject> (<gtype-instance>)
+  "The base class for GLib's default object system.
+
+@code{<gobject>}'s metaclass understands a new slot option,
+@code{#:gparam}, which will export a slot as a @code{<gobject>}
+property. The default implementation will set and access the value from
+the slot, but you can customize this by writing your own methods for
+@code{gobject:set-property} and @code{gobject:get-property}.
+
+In addition, the metaclass also understands @code{#:gsignal} arguments,
+which define signals on the class, and define the generics for the
+default signal handler. See @code{gtype-class-define-signal} for more
+information.
+
+For example:
+@lisp
+ ;; deriving from <gobject>
+ (define-class <test> (<gobject>)
+  ;; a normal object slot
+  my-data
+
+  ;; an object slot exported as a gobject property
+  (pub-data #:gparam (list <gparam-long> #:name 'test))
+
+  ;; likewise, using non-default parameter settings
+  (foo-data #:gparam (list <gparam-long> #:name 'foo
+                           #:minimum -3 #:maximum 1000
+                           #:default-value 42))
+
+  ;; a signal with no arguments and no return value
+  #:gsignal '(frobate #f)
+
+  ;; a signal with arguments and a return value
+  #:gsignal (list 'frobate <gboolean> <gint> <glong>))
+
+ ;; deriving from <test> -- also inherits properties and signals
+ (define-class <hungry> (<test>))
+@end lisp
+"
   (gsignals #:allocation #:each-subclass)
   (gobject-properties #:allocation #:each-subclass)
   #:metaclass <gobject-class>
   #:gtype gtype:gobject)
 
-(define-class <ginterface> (<gtype-instance>)
+(define-class-with-docs <ginterface> (<gtype-instance>)
+  "The base class for GLib's interface types. Not derivable in Scheme."
   (gsignals #:allocation #:each-subclass)
   (gobject-properties #:allocation #:each-subclass)
   #:metaclass <gobject-class>
@@ -184,10 +259,15 @@
 ;;; {Instance Allocation and Initialization}
 ;;;
 
-;; This is a method so that it can be extended by subclasses, e.g. so
-;; that <gtk-object> can implement explicit destruction.
-;;
 ;; By the time this function exits, the object should be initialized.
+(define-generic-with-docs make-gobject-instance
+  "A generic defined to initialize a newly created @code{<gobject>}
+instance. @code{make-gobject-instance} takes four arguments: the class
+of the object, its @code{<gtype>}, the object itself, and the options,
+which is a list of keyword arguments.
+
+This operation is a generic function so that subclasses can override it,
+e.g. so that @code{<gtk-object>} can implement explicit destruction.")
 (define-method (make-gobject-instance class type object options)
   (define (last l)
     (if (null? (cdr l))
@@ -286,58 +366,47 @@
 	  (loop (cdr l)))))))
 
 (define (gobject-class-get-properties class)
-  "(gobject-class-get-properties class)
-
-Returns a vector of properties belonging to CLASS and all parent
-classes."
+  "Returns a vector of properties belonging to @var{class} and all
+parent classes."
   (or (memq <gobject> (class-precedence-list class))
       (gruntime-error "Not a subclass of <gobject>: ~S" class))
   (gtype-class-get-vector-slot class 'gobject-properties <gobject>))
 
 (define (gobject-class-get-property-names class)
-  "(gobject-class-get-property-names class)
-
-Returns a vector of property names belonging to CLASS and all
+  "Returns a vector of property names belonging to @var{class} and all
 parent classes."
   (let* ((properties (gobject-class-get-properties class)))
     (vector-map (lambda (x) (gparam-struct:name (gparam->param-struct x)))
 		properties)))
 
 (define (gobject-class-find-property class name)
-  "(gobject-class-find-property class name)
-
-Returns a property named NAME (a symbol), belonging to CLASS or one of
-its parent classes, or #f if not found."
+  "Returns a property named @var{name} (a symbol), belonging to
+@var{class} or one of its parent classes, or @code{#f} if not found."
   (let* ((properties (gobject-class-get-properties class)))
     (find-property properties name)))
 
 (define (gobject-interface-get-properties class)
-  "(ginterface-class-get-properties class)
-
-Returns a vector of properties belonging to CLASS and all parent
-classes."
+  "Returns a vector of properties belonging to @var{class} and all
+parent classes."
   (or (memq <ginterface> (class-precedence-list class))
       (gruntime-error "Not a subclass of <ginterface>: ~S" class))
   (gtype-class-get-vector-slot class 'gobject-properties <ginterface>))
 
 (define (gobject-interface-get-property-names class)
-  "(ginterface-class-get-property-names class)
-
-Returns a vector of property names belonging to CLASS and all
+  "Returns a vector of property names belonging to @var{class} and all
 parent classes."
   (let* ((properties (gobject-interface-get-properties class)))
     (vector-map (lambda (x) (gparam-struct:name (gparam->param-struct x)))
 		properties)))
 
 (define (gobject-interface-find-property class name)
-  "(ginterface-class-find-property class name)
-
-Returns a property named NAME (a symbol), belonging to CLASS or one of
-its parent classes, or #f if not found."
+  "Returns a property named @var{name} (a symbol), belonging to
+@var{class} or one of its parent classes, or @code{#f} if not found."
   (let* ((properties (gobject-interface-get-properties class)))
     (find-property properties name)))
 
 (define (gobject-get-property object name)
+  "Gets a the property named @var{name} (a symbol) from @var{object}."
   (if (not (is-a? object <gobject>))
       (gruntime-error "Not a <gobject>: ~A" object))
   (if (not (symbol? name))
@@ -351,6 +420,8 @@ its parent classes, or #f if not found."
     (gvalue->scm retval)))
 
 (define (gobject-set-property object name init-value)
+  "Sets the property named @var{name} (a symbol) on @var{object} to
+@var{init-value}."
   (if (not (is-a? object <gobject>))
       (gruntime-error "Not a <gobject>: ~A" object))
   (if (not (symbol? name))
@@ -366,13 +437,14 @@ its parent classes, or #f if not found."
     (gobject-primitive-set-property instance name value)))
 
 (define-generic-with-docs gobject:set-property
-  "(gobject:set-property obj name value)
+  "Called to set a gobject property. Only properties directly belonging
+to the object's class will come through this function; superclasses
+handle their own properties.
 
-Called to set a gobject property. Only properties belonging to (class-of
-obj) will come through this function.
+Takes three arguments: the object, the property name, and the value.
 
-Call (next-method) in your methods to invoke the default handler, which
-sets slots on the object.")
+Call @code{(next-method)} in your methods to invoke the default handler,
+which sets slots on the object.")
 
 (define-method (gobject:set-property (object <gobject>) (name <symbol>) value)
   (if (class-slot-definition (class-of object) name)
@@ -380,14 +452,14 @@ sets slots on the object.")
       (gruntime-error "Properties added after object definition must be accessed via custom property methods: ~A" name)))
 
 (define-generic-with-docs gobject:get-property
-  "(gobject:get-property obj name)
+  "Called to get a gobject property. Only properties directly belonging
+to the object's class will come through this function; superclasses
+handle their own properties.
 
-Called to get a gobject property. Only properties belonging to (class-of
-obj) will come through this function.
+Takes two arguments: the object and the property name.
 
-Call (next-method) in your methods to invoke the default handler, which
-calls (slot-ref obj name).
-")
+Call @code{(next-method)} in your methods to invoke the default handler,
+calls @code{(slot-ref obj name)}.")
 
 (define-method (gobject:get-property (object <gobject>) (name <symbol>))
   (if (class-slot-definition (class-of object) name)

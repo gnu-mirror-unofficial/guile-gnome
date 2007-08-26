@@ -230,7 +230,10 @@ SCM_DEFINE (scm_scheme_gclass_p, "scheme-gclass?", 1, 0, 0,
 
 SCM_DEFINE (scm_gtype_register_static, "gtype-register-static", 2, 0, 0,
 	    (SCM name, SCM parent_type),
-	    "")
+	    "Derive a new type named @var{name} from @var{parent_type}. "
+            "Returns the new @code{<gtype>}. This function is called "
+            "when deriving from @code{<gobject>}; users do not normally "
+            "call this function directly.")
 #define FUNC_NAME s_scm_gtype_register_static
 {
     GType gtype_parent, gtype;

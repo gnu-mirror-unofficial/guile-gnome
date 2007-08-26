@@ -21,59 +21,80 @@
 
 ;;; Commentary:
 ;;
-;; Support for GSignal.
+;; GSignal is a mechanism by which code, normally written in C, may
+;; expose extension points to which closures can be connected, much like
+;; Guile's hooks. Instantiatable types can have signals associated with
+;; them; for example, @code{<gtk-widget>} has an @code{expose} signal
+;; that will be ``fired'' at certain well-documented points.
 ;;
-;; See the guile-gnome tutorial for more details.
+;; Signals are typed. They specify the types of their return value, and
+;; the types of their arguments.
+;;
+;; This module defines routines for instrospecting, emitting, connecting
+;; to, disconnecting from, blocking, and unblocking signals.
+;; Additionally it defines routines to define new signal types on
+;; instantiatable types.
 ;;
 ;;; Code:
 
 (define-module (gnome gobject gsignal)
-  :use-module (oop goops)
-  :use-module (gnome gobject utils)
-  :use-module (gnome gobject config)
-  :use-module (gnome gobject gtype)
-  :use-module (gnome gobject gclosure)
-  :use-module (gnome gobject gvalue)
+  #:use-module (oop goops)
+  #:use-module (gnome gobject utils)
+  #:use-module (gnome gobject config)
+  #:use-module (gnome gobject gtype)
+  #:use-module (gnome gobject gclosure)
+  #:use-module (gnome gobject gvalue)
 
-  :export     (;; The signal struct class and its accessors
-               <gsignal>
-               gsignal:id gsignal:name gsignal:interface-type
-               gsignal:return-type gsignal:param-types
-               ;; Introspection
-               gtype-get-signals
-               gtype-class-get-signals gtype-class-get-signal-names
-               ;; Emission
-               gtype-instance-signal-emit
-               ;; Connection, Disconnection, Blocking, Unblocking
-               gtype-instance-signal-connect-data
-               gtype-instance-signal-connect
-               gtype-instance-signal-connect-after
-               gsignal-handler-block gsignal-handler-unblock
-               gsignal-handler-disconnect gsignal-handler-connected?
-               ;; Creation and Definition
-               gtype-class-create-signal gtype-class-define-signal))
+  #:export     ( ;; The signal struct class and its accessors
+                <gsignal>
+                gsignal:id gsignal:name gsignal:interface-type
+                gsignal:return-type gsignal:param-types
+                ;; Introspection
+                gtype-get-signals
+                gtype-class-get-signals gtype-class-get-signal-names
+                ;; Emission
+                gtype-instance-signal-emit
+                ;; Connection, Disconnection, Blocking, Unblocking
+                gtype-instance-signal-connect-data
+                gtype-instance-signal-connect
+                gtype-instance-signal-connect-after
+                gsignal-handler-block gsignal-handler-unblock
+                gsignal-handler-disconnect gsignal-handler-connected?
+                ;; Creation and Definition
+                gtype-class-create-signal gtype-class-define-signal))
 
 
 (dynamic-call "scm_init_gnome_gobject_signals"
               (dynamic-link *guile-gnome-gobject-lib-path*))
+
+(set-object-property! <gsignal> 'documentation
+                      "The structure vtable for @code{<gsignal>} instances.")
 
 ;;;
 ;;; {Signal Field Accessors}
 ;;;
 
 (define (gsignal:id signal)
+  "Access the ``id'' of a @code{<gsignal>} structure, an integer."
   (struct-ref signal gsignal-id))
 
 (define (gsignal:name signal)
+  "Access the name of a @code{<gsignal>} structure, a string."
   (struct-ref signal gsignal-name))
 
 (define (gsignal:interface-type signal)
+  "Access the type to which a @code{<gsignal>} structure is associated,
+a @code{<gtype>}."
   (struct-ref signal gsignal-interface-type))
 
 (define (gsignal:return-type signal)
+  "Access the return type from a a @code{<gsignal>} structure,
+a @code{<gtype>}."
   (struct-ref signal gsignal-return-type))
 
 (define (gsignal:param-types signal)
+  "Access the parameter types from a a @code{<gsignal>} structure,
+a list of @code{<gtype>}."
   (struct-ref signal gsignal-param-types))
 
 ;;;
@@ -93,9 +114,7 @@
                (append ret (vector->list (class-slot-ref-default (car ancestry) name #()))))))))
 
 (define (gtype-class-get-signals class)
-  "(gtype-class-get-signals class)
-
-Returns a vector of signals belonging to CLASS and all parent classes."
+  "Returns a vector of signals belonging to @var{class} and all parent classes."
   (if (not (is-a? class <gtype-class>))
       (gruntime-error "Not a <gtype-class>: ~S" class))
   (gtype-class-get-vector-slot class 'gsignals <gtype-instance>))
@@ -108,10 +127,8 @@ Returns a vector of signals belonging to CLASS and all parent classes."
       (vector-set! result-vector index (proc (vector-ref vector index))))))
 
 (define (gtype-class-get-signal-names class)
-  "(gtype-class-get-signal-names class)
-
-Returns a vector of signal names belonging to CLASS and all parent
-classes."
+  "Returns a vector of signal names belonging to @var{class} and all
+parent classes."
   (vector-map gsignal:name (gtype-class-get-signals class)))
 
 (define (signal-by-name signals symbol)
@@ -128,15 +145,8 @@ classes."
 ;;;
 
 (define (gtype-instance-signal-emit object name . args)
-  "(gtype-instance-signal-emit object name . args)
-
-Emits signal `name' with arguments `args' on the GTypeInstance `object':
-
-   object            - instance of <gtype-instance> or a subclass of it.
-
-   name              - symbol identifying the signal
-
-"
+  "Emits signal @var{name} with arguments @var{args} on the
+@code{<gtype-instance>} @var{object}. @var{name} should be a symbol."
   (or (is-a? object <gtype-instance>)
       (gruntime-error "Not a <gtype-instance>: ~S" object))
   (or (symbol? name)
@@ -171,23 +181,17 @@ Emits signal `name' with arguments `args' on the GTypeInstance `object':
 ;;;
 
 (define (gtype-instance-signal-connect-data object name func after)
-  "(gtype-instance-signal-connect-data object name func after)
+  "Connects @var{func} as handler for the @code{<gtype-instance>}
+@var{object}'s signal @var{name}.
 
-Connects `func' as handler for the GTypeInstance `object's signal `name':
+@var{name} should be a symbol. @var{after} is boolean specifying whether
+the handler is run before (@code{#f}) or after (@code{#t}) the signal's
+default handler.
 
-   object            - instance of <gtype-instance> or a subclass.
-
-   name              - symbol identifying the signal
-
-   func              - procedure which is installed as signal handler.
-
-   after             - boolean specifying whether the handler is run before (#f)
-                       or after (#t) the signal's default handler.
-
-Returns an integer number which can be used as arugment of gsignal-handler-block,
-gsignal-handler-unblock, gsignal-handler-disconnect and gsignal-handler-connected?.
-
-"
+Returns an integer number which can be used as arugment of
+@code{gsignal-handler-block}, @code{gsignal-handler-unblock},
+@code{gsignal-handler-disconnect} and
+@code{gsignal-handler-connected?}."
   (or (is-a? object <gtype-instance>)
       (gruntime-error "Not a <gtype-instance>: ~S" object))
   (or (symbol? name)
@@ -210,11 +214,13 @@ gsignal-handler-unblock, gsignal-handler-disconnect and gsignal-handler-connecte
     (gtype-instance-primitive-signal-connect instance id pclosure after)))
 
 (define (gtype-instance-signal-connect object name func)
-  "Convenience function for `(gtype-instance-signal-connect-data object name func #f)'."
+  "Convenience function for calling
+@code{gtype-instance-signal-connect-data} with @var{after} = @code{#f}."
   (gtype-instance-signal-connect-data object name func #f))
 
 (define (gtype-instance-signal-connect-after object name func)
-  "Convenience function for `(gtype-instance-signal-connect-data object name func #t)'."
+  "Convenience function for calling
+@code{gtype-instance-signal-connect-data} with @var{after} = @code{#t}."
   (gtype-instance-signal-connect-data object name func #t))
 
 ;; FIXME: just make the C functions take gtype-instance GOOPS objects.
@@ -222,15 +228,24 @@ gsignal-handler-unblock, gsignal-handler-disconnect and gsignal-handler-connecte
   (slot-ref obj 'gtype-instance))
 
 (define (gsignal-handler-block obj id)
+  "Block invocation of the signal handler identified by @var{id} from
+high-level GOOPS object @var{object}."
   (gsignal-primitive-handler-block (gtype-instance-primitive obj) id))
 	
 (define (gsignal-handler-unblock obj id)
+  "Unblock invocation of the signal handler identified by @var{id} from
+high-level GOOPS object @var{object}."
   (gsignal-primitive-handler-unblock (gtype-instance-primitive obj) id))
 	
 (define (gsignal-handler-disconnect obj id)
+  "Disconnect the signal handler identified by @var{id} from high-level
+GOOPS object @var{object}."
   (gsignal-primitive-handler-disconnect (gtype-instance-primitive obj) id))
 	
 (define (gsignal-handler-connected? obj id)
+  "Returns @code{#t} if the signal handler identified by @var{id} is
+connected on the high-level GOOPS object @var{object}, or @code{#f}
+otherwise."
   (gsignal-primitive-handler-connected? (gtype-instance-primitive obj) id))
 
 ;;;
@@ -238,6 +253,19 @@ gsignal-handler-unblock, gsignal-handler-disconnect and gsignal-handler-connecte
 ;;;
 
 (define (gtype-class-create-signal class name return-type param-types)
+  "Create a new signal associated with the @code{<gtype-class>}
+@var{class}.
+
+@var{name} should be a symbol, the name of the signal. @var{return-type}
+should be either a @code{<gtype>} or a @code{<gtype-class>} object.
+Similarly, @var{param-types} should be a list of either @code{<gtype>}
+or @code{<gtype-class>} objects.
+
+In a bit of an odd interface, this function will return a new generic
+function, which will be run as the signal's default handler, whose
+default method will silently return an unspecified value. The user may
+define new methods on this generic to provide alternative default
+handler implementations."
   (let* ((type (gtype-class->type class))
 	 (signal-vector (gtype-class-get-signals class))
 	 (signal (make-struct gsignal-struct-vtable 0 #f #f
@@ -277,42 +305,31 @@ gsignal-handler-unblock, gsignal-handler-disconnect and gsignal-handler-connecte
 	   x) (list ,@args))))
 
 (define-with-docs gtype-class-define-signal
-  "(gtype-class-define-signal class name return-type . param-types)
+  "A macro invoked as:
+@lisp
+ (gtype-class-define-signal @var{class} @var{name} @var{return-type}
+                            . @var{param-types})
+@end lisp
 
-Creates and adds a new signal `name' to the GTypeClass `class':
+All arguments will be passed to @code{gtype-class-create-signal}.
 
-  class         - this must be a <gtype-class>.
+This form is a macro because it will actually take the generic returned
+from @code{gtype-class-create-signal} and bind it to a name in the
+toplevel environment.
 
-  name          - this is a symbol which identifies the signal. There must be
-                  no signal with this name in the `class'es class ancestry.
+The name of the new generic function is the concatenation of the type
+name, a colon, and the signal name.
 
-  return-type   - is either a <gtype> specifying the signal's return type or #f
-                  if the return type is void (#f is the same than gtype:void).
+For example:
+@lisp
+ (gtype-class-define-signal <foo> 'roswell #f)
+ (define-method (foo:roswell (obj <foo>))
+   *unspecified*)
 
-  param-types   - a list of <gtype>s specifying the signal's arguments.
-
-This is implemented as a macro which must be called at the top-level.
-If it does not already exist, it'll define a new generic function for the signal.
-
-The name of this GF is the concatenation of the type name, a colon and the signal
-name - it's calculated by `(gtype->method-name (gtype-class->type class) name)'.
-
-NOTE: Even if this is not strictly a bug, it is highly recommended not to add any
-      signals to existing classes which you did not create.
-
-      Create a subclass using gtype-register-object-static and then add your signals
-      to this subclass.
-
-Examples:
-
-  (gtype-class-define-signal <foo> 'roswell #f)
-  (define-method (foo:roswell (obj <foo>))
-     *unspecified*)
-
-  (gtype-class-define-signal <foo> 'berlin  gtype:glong gtype:int)
-  (define-method (foo:berlin (obj <foo>) (x (<number>)))
-     85)
-
+ (gtype-class-define-signal <foo> 'berlin <glong> <gint>)
+ (define-method (foo:berlin (obj <foo>) (x <number>))
+   85)
+@end lisp
 "
   (procedure->memoizing-macro
    (lambda (exp env)
