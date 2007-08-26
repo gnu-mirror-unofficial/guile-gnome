@@ -21,58 +21,66 @@
 
 ;;; Commentary:
 ;;
-;; This is the GObject wrapper for Guile.
+;; Parameters are constraints for values, both in type and in range.
+;; This module wraps the parameters code of the GLib type system,
+;; defining C classes such that parameters may be manipulated and
+;; created from Scheme.
 ;;
-;; See the guile-gnome tutorial for more details.
+;; As a technical detail, the C structure @code{GParamSpec} is wrapped
+;; at two levels. One is a mapping of the C structure to a Guile
+;; structure. The other is a GOOPS representation. The low level is
+;; called @code{gparam-struct}, and the high level is called
+;; @code{<gparam>}. @code{gparam-struct} is a generic container of any
+;; type. @code{<gparam>} has subclasses for the various kinds of
+;; parameter types: @code{<gparam-int>}, @code{<gparam-object>}, etc.
+
 ;;
 ;;; Code:
 
 (define-module (gnome gobject gparameter)
-  :use-module (oop goops)
-  :use-module (gnome gobject config)
-  :use-module (gnome gobject gtype)
-  :use-module (gnome gobject gvalue)
+  #:use-module (oop goops)
+  #:use-module (gnome gobject config)
+  #:use-module (gnome gobject utils)
+  #:use-module (gnome gobject gtype)
+  #:use-module (gnome gobject gvalue)
 
-  :export     (;; GOOPS parameter base class
-               <gparam>
-               ;; Parameter classes
-               <gparam-char> <gparam-uchar> <gparam-boolean> <gparam-int>
-               <gparam-uint> <gparam-long> <gparam-ulong> <gparam-int64>
-               <gparam-uint64> <gparam-float> <gparam-double>
-               <gparam-pointer> <gparam-string> <gparam-object>
-               <gparam-boxed> <gparam-enum> <gparam-flags>
-               ;; Helper class
-               <gparam-spec-flags>
-               ;; Param structs
-               gparam-struct:name gparam-struct:nick gparam-struct:blurb
-               gparam-struct:flags gparam-struct:param-type
-               gparam-struct:value-type gparam-struct:owner-type
-               gparam-struct:args gparam-struct-arg-info
-               ;; Limits
-               gparameter:uint-max gparameter:int-min gparameter:int-max
-               gparameter:ulong-max gparameter:long-min
-               gparameter:long-max gparameter:uint64-max
-               gparameter:int64-min gparameter:int64-max
-               gparameter:float-max gparameter:float-min
-               gparameter:double-max gparameter:double-min
-               gparameter:byte-order
+  #:export     ( ;; GOOPS parameter base class
+                <gparam>
+                ;; Parameter classes
+                <gparam-char> <gparam-uchar> <gparam-boolean> <gparam-int>
+                <gparam-uint> <gparam-long> <gparam-ulong> <gparam-int64>
+                <gparam-uint64> <gparam-float> <gparam-double>
+                <gparam-pointer> <gparam-string> <gparam-object>
+                <gparam-boxed> <gparam-enum> <gparam-flags>
+                ;; Helper class
+                <gparam-spec-flags>
+                ;; Param structs
+                gparam-struct:name gparam-struct:nick gparam-struct:blurb
+                gparam-struct:flags gparam-struct:param-type
+                gparam-struct:value-type gparam-struct:owner-type
+                gparam-struct:args
+                ;; From C:
+                gparam->param-struct gparam->value-type
+                ;; Limits
+                gparameter:uint-max gparameter:int-min gparameter:int-max
+                gparameter:ulong-max gparameter:long-min
+                gparameter:long-max gparameter:uint64-max
+                gparameter:int64-min gparameter:int64-max
+                gparameter:float-max gparameter:float-min
+                gparameter:double-max gparameter:double-min
+                gparameter:byte-order
 
-               ;; From C:
-               gparam->param-struct gparam->value-type))
+                ;; FIXME: there are also gtypes being exported by the C
+                ;; code.
+                ))
 
 (use-modules ((srfi srfi-1) #:select (zip)))
-
-;; GParamSpec is wrapped at two levels. One is a mapping of the C
-;; structure to a guile structure. The other is a GOOPS representation.
-;; The low level is called gparam-struct, and the high level is called
-;; <gparam>. gparam-struct is a generic container of any type. <gparam>
-;; has subclasses for the various kinds of parameter types:
-;; <gparam-int>, <gparam-object>, etc.
 
 ;; The C code needs to reference <gparam> for use in its predicates.
 ;; Define it now before loading the library.
 (define-class <gparam-class> (<gtype-instance-class>))
-(define-class <gparam> (<gtype-instance>)
+(define-class-with-docs <gparam> (<gtype-instance>)
+  "The base class for GLib parameter objects."
   #:gtype gtype:gparam
   #:metaclass <gparam-class>)
 
@@ -142,27 +150,40 @@
     ))
 
 (define (gparam-struct:name param-struct)
+  "Retrieve the name from a @code{gparam-struct}."
   (struct-ref param-struct gparam-struct-name))
 
 (define (gparam-struct:nick param-struct)
+  "Retrieve the `nickname' from a @code{gparam-struct}."
   (struct-ref param-struct gparam-struct-nick))
 
 (define (gparam-struct:blurb param-struct)
+  "Retrieve the `blurb', a short descriptive string, from a
+@code{gparam-struct}."
   (struct-ref param-struct gparam-struct-blurb))
 
 (define (gparam-struct:flags param-struct)
+  "Retrieve the flags from a @code{gparam-struct}."
   (struct-ref param-struct gparam-struct-flags))
 
 (define (gparam-struct:param-type param-struct)
+  "Retrieve the GParam type from a @code{gparam-struct}, for example
+@code{gtype:gparam-uint64}."
   (struct-ref param-struct gparam-struct-param-type))
 
 (define (gparam-struct:value-type param-struct)
+  "Retrieve the value type from a @code{gparam-struct}, for example
+@code{gtype:guint64}."
   (struct-ref param-struct gparam-struct-value-type))
 
 (define (gparam-struct:owner-type param-struct)
+  "Retrieve the `owner type' from a @code{gparam-struct}. Appears to be
+stored into GLib param specs, but never used."
   (struct-ref param-struct gparam-struct-owner-type))
 
 (define (gparam-struct:args param-struct)
+  "Retrieve the arguments from a @code{gparam-struct}, as a list. The
+length and composition of the arguments depends on the parameter type."
   (let ((n-args (struct-ref param-struct gparam-struct-n-args))
         (offset gparam-struct-args)
         (param-type (gparam-struct:param-type param-struct)))
@@ -173,23 +194,72 @@
            (loop (1- arg) (cons (struct-ref param-struct arg) ret))
            ret)))))
 
-(define <gparam-char>    (gtype->class gtype:gparam-char))
-(define <gparam-uchar>   (gtype->class gtype:gparam-uchar))
-(define <gparam-boolean> (gtype->class gtype:gparam-boolean))
-(define <gparam-int>     (gtype->class gtype:gparam-int))
-(define <gparam-uint>    (gtype->class gtype:gparam-uint))
-(define <gparam-long>    (gtype->class gtype:gparam-long))
-(define <gparam-ulong>   (gtype->class gtype:gparam-ulong))
-(define <gparam-int64>   (gtype->class gtype:gparam-int64))
-(define <gparam-uint64>  (gtype->class gtype:gparam-uint64))
-(define <gparam-float>   (gtype->class gtype:gparam-float))
-(define <gparam-double>  (gtype->class gtype:gparam-double))
-(define <gparam-pointer> (gtype->class gtype:gparam-pointer))
-(define <gparam-string>  (gtype->class gtype:gparam-string))
-(define <gparam-object>  (gtype->class gtype:gparam-object))
-(define <gparam-boxed>   (gtype->class gtype:gparam-boxed))
-(define <gparam-enum>    (gtype->class gtype:gparam-enum))
-(define <gparam-flags>   (gtype->class gtype:gparam-flags))
+(define-with-docs <gparam-char>
+  "Parameter for @code{<gchar>} values. 3 arguments: minimum, maximum,
+and default values."
+  (gtype->class gtype:gparam-char))
+(define-with-docs <gparam-uchar>
+  "Parameter for @code{<guchar>} values. 3 arguments: minimum, maximum,
+and default values."
+  (gtype->class gtype:gparam-uchar))
+(define-with-docs <gparam-boolean>
+  "Parameter for @code{<gboolean>} values. 1 argument: default value."
+  (gtype->class gtype:gparam-boolean))
+(define-with-docs <gparam-int>
+  "Parameter for @code{<gint>} values. 3 arguments: minimum, maximum,
+and default values."
+  (gtype->class gtype:gparam-int))
+(define-with-docs <gparam-uint>
+  "Parameter for @code{<guint>} values. 3 arguments: minimum, maximum,
+and default values."
+  (gtype->class gtype:gparam-uint))
+(define-with-docs <gparam-long>
+  "Parameter for @code{<glong>} values. 3 arguments: minimum, maximum,
+and default values."
+  (gtype->class gtype:gparam-long))
+(define-with-docs <gparam-ulong>
+  "Parameter for @code{<gulong>} values. 3 arguments: minimum, maximum,
+and default values."
+  (gtype->class gtype:gparam-ulong))
+(define-with-docs <gparam-int64>
+  "Parameter for @code{<gint64>} values. 3 arguments: minimum, maximum,
+and default values."
+  (gtype->class gtype:gparam-int64))
+(define-with-docs <gparam-uint64>
+  "Parameter for @code{<guint64>} values. 3 arguments: minimum, maximum,
+and default values."
+  (gtype->class gtype:gparam-uint64))
+(define-with-docs <gparam-float>
+  "Parameter for @code{<gfloat>} values. 3 arguments: minimum, maximum,
+and default values."
+  (gtype->class gtype:gparam-float))
+(define-with-docs <gparam-double>
+  "Parameter for @code{<gdouble>} values. 3 arguments: minimum, maximum,
+and default values."
+  (gtype->class gtype:gparam-double))
+(define-with-docs <gparam-pointer>
+  "Parameter for @code{<gpointer>} values. No arguments."
+  (gtype->class gtype:gparam-pointer))
+(define-with-docs <gparam-string>
+  "Parameter for @code{<gchararray>} values. 1 argument: the default
+value, which may be @code{#f}."
+  (gtype->class gtype:gparam-string))
+(define-with-docs <gparam-object>
+  "Parameter for @code{<gobject>} values. 1 argument: the @code{<gtype>}
+of the value."
+  (gtype->class gtype:gparam-object))
+(define-with-docs <gparam-boxed>
+  "Parameter for @code{<gboxed>} values. 1 argument: the @code{<gtype>}
+of the value."
+  (gtype->class gtype:gparam-boxed))
+(define-with-docs <gparam-enum>
+  "Parameter for @code{<genum>} values. 2 arguments: the @code{<gtype>}
+of the value, and the default value."
+  (gtype->class gtype:gparam-enum))
+(define-with-docs <gparam-flags>
+  "Parameter for @code{<gflags>} values. 2 arguments: the @code{<gtype>}
+of the value, and the default value."
+  (gtype->class gtype:gparam-flags))
 
 ;;;
 ;;; {Instance Initialization}
@@ -212,7 +282,10 @@
 	     value))
 	 (cdr args))))
 
-(define-class <gparam-spec-flags> (<gflags>)
+(define-class-with-docs <gparam-spec-flags> (<gflags>)
+  "A @code{<gflags>} type for the flags allowable on a @code{<gparam>}:
+@code{read}, @code{write}, @code{construct}, @code{construct-only}, and
+@code{lax-validation}."
   #:vtable
   #((read "Readable" 1)
     (write "Writable" 2)

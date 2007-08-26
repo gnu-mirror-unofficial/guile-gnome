@@ -315,7 +315,8 @@ static SCM scm_c_pspec_to_param_struct (GParamSpec *pspec)
 
 SCM_DEFINE (scm_gparam_to_param_struct, "gparam->param-struct", 1, 0, 0,
 	    (SCM param),
-	    "")
+	    "Retrieve the primitive @code{gparam-struct} for the GOOPS "
+            "parameter object, @var{param}.")
 #define FUNC_NAME s_scm_gparam_to_param_struct
 {
     GParamSpec *pspec;
@@ -344,7 +345,9 @@ SCM_DEFINE (scm_gparam_to_param_struct, "gparam->param-struct", 1, 0, 0,
 
 SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 	    (SCM class, SCM type, SCM object, SCM pspec_struct),
-	    "")
+	    "Create a primitive @code{<%gtype-instance>} for a parameter "
+            "described by @var{pspec_struct}, attaching it to the GOOPS "
+            "parameter object @var{obj}.")
 #define FUNC_NAME s_scm_gparam_primitive_create
 {
     GParamSpec *pspec = NULL;
@@ -618,7 +621,8 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
 
 SCM_DEFINE (scm_gparam_to_value_type, "gparam->value-type", 1, 0, 0,
 	    (SCM param),
-	    "")
+	    "Retrieve the value type of the @code{<gparam>} object "
+            "@var{param}.")
 #define FUNC_NAME s_scm_gparam_to_value_type
 {
     GParamSpec *gparam;

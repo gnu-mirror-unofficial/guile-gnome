@@ -1,5 +1,12 @@
 2007-08-26  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gobject/gparameter.scm: 
+	* gnome/gobject/gparameter.c: Document. Remove
+	gparam-struct-arg-info from the exports list.
+
+	* doc/guile-gnome-gobject.scm (*modules*): Reorder the modules so
+	gvalue is before gparameter.
+
 	* gnome/gobject/utils.scm (define-class-with-docs): New exported
 	macro.
 
