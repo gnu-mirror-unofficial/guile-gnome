@@ -1,3 +1,8 @@
+2007-08-28  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/generics.scm: Rewrite to export the generics
+	normally instead of molesting the root module.
+
 2007-08-26  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gobject/gtype.scm: Fix a URL.
