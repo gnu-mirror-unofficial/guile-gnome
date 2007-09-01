@@ -21,7 +21,11 @@
 
 ;;; Commentary:
 ;;
-;;Routines useful to *-spec.scm g-wrap files.
+;; @c
+;;
+;; G-Wrap support for @code{(gnome gobject)} types. Code in this module
+;; is only loaded when generating wrapsets; as such, it is not for end
+;; users.
 ;;
 ;;; Code:
 
@@ -43,33 +47,32 @@
   #:use-module (gnome gobject utils)
   #:use-module (gnome gw support slib)
   
-  #:export (unwrap-null-checked
-            
-            <gobject-wrapset-base>
+  #:export (<gobject-wrapset-base>
             add-type-alias! lookup-type-by-alias
             add-type-rule! find-type-rule
-            construct-argument-list
             
             <gobject-type-base>
-            
             
             <gobject-classed-type>
             gtype-id
             
             <gobject-classed-pointer-type>
+            unwrap-null-checked
             
             wrap-object!
             wrap-boxed!
             wrap-pointer!
             wrap-opaque-pointer!
             wrap-interface!
+            wrap-enum!
             wrap-flags!
             wrap-gobject-class!
             
             wrap-custom-boxed!
             wrap-custom-gvalue!))
 
-(define-class <gobject-wrapset-base> (<gw-guile-wrapset>)
+(define-class-with-docs <gobject-wrapset-base> (<gw-guile-wrapset>)
+  "The base class for G-Wrap wrapsets that use @code{<gobject>} types."
   (type-aliases #:init-form (make-hash-table 31))
   (type-rules #:init-form (make-hash-table 7)))
 
@@ -82,6 +85,10 @@
 (define-method (add-type-alias! (wrapset <gobject-wrapset-base>)
                                 (alias <string>)
                                 (name <symbol>))
+  "Add a type alias to @var{wrapset}, that the string @var{alias} is
+associated with the type named @var{symbol}. For example,
+@code{\"GtkWindow*\"} might be associated with a type named
+@code{<gtk-window>}. See @code{lookup-type-by-alias}."
   (hash-set!
    (slot-ref wrapset 'type-aliases)
    alias
@@ -104,14 +111,26 @@
 
 (define-method (lookup-type-by-alias (wrapset <gobject-wrapset-base>)
                                      (name <string>))
+  "Lookup a type aliased @var{name} in @var{wrapset}, and all wrapsets
+on which @var{wrapset} depends. This interface is used by
+@code{load-defs} to associate G-Wrap types with the strings parsed out
+of the C header files."
   (gobject-wrapsets-lookup-recursive wrapset 'type-aliases name))
 
 (define-method (add-type-rule! (self <gobject-wrapset-base>)
                                (param-type <string>) typespec)
+  "Add a type rule to @var{wrapset}, that the string @var{param-type}
+maps directly to the g-wrap typespec @var{typespec}. For example,
+@code{\"int*\"} might map to the typespec @code{(int out)}. See
+@code{find-type-rule}."
   (hash-set! (slot-ref self 'type-rules) param-type typespec))
 
 (define-method (find-type-rule (self <gobject-wrapset-base>) 
                                (param-type <string>))
+  "See if the parameter type @var{param-type} has a type rule present in
+@var{wrapset} or in any wrapset on which @var{wrapset} depends. This
+interface is used by @code{load-defs} to associate G-Wrap typespecs with
+the strings parsed out of the C header files."
   (gobject-wrapsets-lookup-recursive self 'type-rules param-type))
 
 ;; "gtk_accel_group" => gtk-accel-group
@@ -123,7 +142,8 @@
   (printf "%-8.8s|%-18.18s|%-25.25s|%-25.25s\n"
           how-wrapped c-name scm-name (name ws)))
 
-(define-class <gobject-type-base> (<gw-guile-rti-type>)
+(define-class-with-docs <gobject-type-base> (<gw-guile-rti-type>)
+  "A base G-Wrap type class for GLib types."
   (ctype #:init-keyword #:ctype)
   (how-wrapped #:init-keyword #:wrapped #:init-value #f))
 
@@ -145,7 +165,9 @@
     (if how-wrapped
         (print-info how-wrapped (slot-ref type 'ctype) (name type) ws))))
 
-(define-class <gobject-classed-type> (<gobject-type-base>)
+(define-class-with-docs <gobject-classed-type> (<gobject-type-base>)
+  "A base G-Wrap type class for classed GLib types (see
+@code{gtype-classed?})."
   (gtype-id #:init-keyword #:gtype-id #:getter gtype-id)
   (define-class? #:init-keyword #:define-class? #:init-value #t))
 
@@ -180,7 +202,9 @@
   (if (slot-ref type 'define-class?)
       (add-module-export! ws (class-name type))))
 
-(define-class <gobject-classed-pointer-type> (<gobject-classed-type>))
+(define-class-with-docs <gobject-classed-pointer-type> (<gobject-classed-type>)
+  "A base G-Wrap type class for for classed GLib types whose values are
+pointers.")
 
 (define-method (initialize (type <gobject-classed-pointer-type>) initargs)
   (let-keywords
@@ -191,15 +215,18 @@
                        #:ffspec 'pointer)
                  initargs))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Wrap objects.
-
-(define-class <gobject-object-type> (<gobject-classed-pointer-type>)
-  #:allowed-options '(null-ok))
-
 (define-method (unwrap-null-checked (value <gw-value>)
                                     status-var
                                     code)
+  "Unwrap a value into a C pointer, optionally unwrapping @code{#f} as
+@code{NULL}.
+
+This function checks the typespec options on @var{value}, which should
+be a @code{<gw-value>}. If the @code{null-ok} option is set (which is
+only the case for value classes with @code{null-ok} in its
+@code{#:allowed-options}), this function generates code that unwraps
+@code{#f} as @code{NULL}. If @code{null-ok} is unset, or the value is
+not @code{#f}, @var{code} is run instead."
   (if-typespec-option
    value 'null-ok
    (list "if (SCM_FALSEP (" (scm-var value) "))\n"
@@ -209,7 +236,23 @@
          "}\n")
    code))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Wrap objects.
+
+(define-class <gobject-object-type> (<gobject-classed-pointer-type>)
+  #:allowed-options '(null-ok))
+
 (define-method (wrap-object! (ws <gobject-wrapset-base>) . args)
+  "Define a wrapper for a specific @code{<gobject>}-derived type in
+@var{ws}. Required keyword arguments are @code{#:ctype} and
+@code{#:gtype-id}. For example,
+
+@lisp
+ (wrap-object! ws #:ctype \"GtkWidget\"
+               #:gtype-id \"GTK_TYPE_WIDGET\")
+@end lisp
+
+Normally only called from @code{load-defs}."
   (let ((type (apply make <gobject-object-type> args)))
     (set! (class-name type) (name type))
     (slot-set! type 'how-wrapped "GObject")
@@ -261,6 +304,9 @@
     (append! (list #:c-type-name (string-append ctype "*")) initargs))))
 
 (define-method (wrap-boxed! (ws <gobject-wrapset-base>) . args)
+  "Define a wrapper for a specific boxed type in @var{ws}. Required
+keyword arguments are @code{#:ctype} and @code{#:gtype-id}, as in
+@code{wrap-object!}."
   (let ((type (apply make <gobject-boxed-type> args)))
     (slot-set! type 'how-wrapped "GBoxed")
     (add-type! ws type)
@@ -314,6 +360,9 @@
 (define-class <gobject-pointer-type> (<gobject-classed-pointer-type>))
 
 (define-method (wrap-pointer! (ws <gobject-wrapset-base>) . args)
+  "Define a wrapper for a specific pointer type in @var{ws}. Required
+keyword arguments are @code{#:ctype} and @code{#:gtype-id}, as in
+@code{wrap-object!}."
   (let ((type (apply make <gobject-pointer-type> args)))
     (slot-set! type 'how-wrapped "GPointer")
     (add-type! ws type)
@@ -356,6 +405,9 @@
   #:allowed-options '(null-ok))
 
 (define-method (wrap-interface! (ws <gobject-wrapset-base>) . args)
+  "Define a wrapper for an interface type in @var{ws}. Required keyword
+arguments are @code{#:ctype} and @code{#:gtype-id}, as in
+@code{wrap-object!}."
   (let ((type (apply make <gobject-interface-type> args)))
     (slot-set! type 'how-wrapped "GInterface")
     (add-type! ws type)
@@ -409,6 +461,13 @@
   (next-method type (append '(caller-owned unspecialized) options)))
 
 (define-method (wrap-enum! (ws <gobject-wrapset-base>) . args)
+  "Define a wrapper for an enumerated type in @var{ws}. The
+@code{#:ctype} keyword argument is required.
+
+If @code{#:gtype-id} is also given, the type will be queried at runtime
+for its possible values; otherwise a @code{#:values} argument is
+necessary, which is a list of symbol-integer pairs specifying all
+possible values."
   (let-keywords
    args #t (gtype-id ctype)
    (cond
@@ -466,6 +525,9 @@
 ;; (wrap-flags! wrapset #:gtype-id foo [#:values '((a 1) ...)])
 ;; (wrap-flags! wrapset #:values '((a 1) ...))
 (define-method (wrap-flags! (ws <gobject-wrapset-base>) . args)
+  "Define a wrapper for a flags type in @var{ws}. Required keyword
+arguments are @code{#:ctype} and @code{#:gtype-id} or @code{#:values},
+as in @code{wrap-enum!}."
   (let-keywords
    args #t (gtype-id ctype)
    (cond
@@ -486,7 +548,7 @@
   (let ((c-var (var value))
         (scm-var (scm-var value))
         (gtype-id (gtype-id type)))
-    (list
+p    (list
      "if (SCM_FALSEP (" scm-var "))\n"
      "  " c-var " = 0;\n"
      "else if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
@@ -511,6 +573,10 @@
 
 
 (define (wrap-opaque-pointer! ws ctype)
+  "Define a wrapper for an opaque pointer with the C type @var{ctype}.
+It will not be possible to create these types from Scheme, but they can
+be received from a library, and passed as arguments to other calls into
+the library."
   ;;(print-info "Opaque" ctype ctype ws) ; FIXME: Write to log file
   (let ((type (wrap-as-wct!
                ws
@@ -536,6 +602,14 @@
 
 ;; (wrap-gobject-class! ws #:ctype "GstElementClass" #:gtype-id "GST_TYPE_ELEMENT")
 (define-method (wrap-gobject-class! (ws <gobject-wrapset-base>) . args)
+  "Define a wrapper for GObject class values @var{ws}. Required keyword
+arguments are @code{#:ctype} and @code{#:gtype-id}, as in
+@code{wrap-object!}.
+
+@code{#:ctype} should refer to the type of the class and not the
+instance; e.g. @code{\"GtkWidgetClass\"} and not @code{\"GtkWidget\"}.
+This function will not be called by @code{load-defs}, and should be
+invoked manually in a wrapset as needed."
   (let ((type (apply make <gobject-class-type> args)))
     (slot-set! type 'how-wrapped "GObjectClass")
     (slot-set! type 'define-class? #f)
@@ -661,7 +735,24 @@
      "g_value_set_static_boxed (&rvalue, " c-var ");\n"
      scm-var " = " (wrap-func type) " (&rvalue);\n")))
 
-(define-macro (wrap-custom-boxed! ctype gtype wrap unwrap)
+(define-macro-with-docs (wrap-custom-boxed! ctype gtype wrap unwrap)
+  "Wrap a boxed type using custom wrappers and unwrappers.
+
+FIXME: missing a wrapset argument!
+
+@var{ctype} and @var{gtype} are as @code{#:ctype} and @code{#:gtype-id}
+in @code{wrap-object!}. @var{wrap} and @var{unwrap} are G-Wrap forms in
+which @code{scm-var} and @code{c-var} will be bound to the names of the
+SCM and C values, respectively. For example:
+
+@lisp
+  (wrap-custom-boxed!
+   \"GdkRectangle\" \"GDK_TYPE_RECTANGLE\"
+   (list scm-var \" = \"
+         c-var \" ?  scm_gdk_rectangle_to_scm (\" c-var \")\"
+         \" : SCM_BOOL_F;\")
+   (list c-var \" = scm_scm_to_gdk_rectangle (\" scm-var \");\"))
+@end lisp"
   (let* ((pname (string-append ctype "*"))
          (func-infix (string-map (lambda (c) (case c ((#\-) #\_) (else c)))
                                  (GStudlyCapsExpand ctype)))
@@ -721,6 +812,20 @@
      scm-var " = " (wrap-func type) " (" c-var ");\n")))
 
 (define-macro (wrap-custom-gvalue! ctype gtype wrap-func unwrap-func)
+  "Wrap a GValue type using custom wrap and unwrap functions.
+
+FIXME: missing a wrapset argument!
+
+@var{ctype} and @var{gtype} are as @code{#:ctype} and @code{#:gtype-id}
+in @code{wrap-object!}. @var{wrap-func } and @var{unwrap-func} are names
+of functions to convert to and from Scheme values, respectively. For
+example:
+
+@lisp
+ (wrap-custom-gvalue! \"GstFraction\" \"GST_TYPE_FRACTION\"
+                      \"scm_from_gst_fraction\"
+                      \"scm_to_gst_fraction\")
+@end lisp"
   `(let ((t (make ,<gobject-custom-gvalue-type>
               #:ctype ,ctype
               #:gtype-id ,gtype

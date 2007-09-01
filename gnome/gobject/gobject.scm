@@ -269,6 +269,7 @@ which is a list of keyword arguments.
 This operation is a generic function so that subclasses can override it,
 e.g. so that @code{<gtk-object>} can implement explicit destruction.")
 (define-method (make-gobject-instance class type object options)
+  "The default implementation of @code{make-gobject-instance}."
   (define (last l)
     (if (null? (cdr l))
         (car l)
@@ -443,10 +444,11 @@ handle their own properties.
 
 Takes three arguments: the object, the property name, and the value.
 
-Call @code{(next-method)} in your methods to invoke the default handler,
-which sets slots on the object.")
+Call @code{(next-method)} in your methods to invoke the default handler.")
 
 (define-method (gobject:set-property (object <gobject>) (name <symbol>) value)
+  "The default implementation of @code{gobject:set-property}, which sets
+slots on the object."
   (if (class-slot-definition (class-of object) name)
       (slot-set! object name value)
       (gruntime-error "Properties added after object definition must be accessed via custom property methods: ~A" name)))
@@ -458,10 +460,11 @@ handle their own properties.
 
 Takes two arguments: the object and the property name.
 
-Call @code{(next-method)} in your methods to invoke the default handler,
-calls @code{(slot-ref obj name)}.")
+Call @code{(next-method)} in your methods to invoke the default handler")
 
 (define-method (gobject:get-property (object <gobject>) (name <symbol>))
+  "The default implementation of @code{gobject:get-property}, which
+calls @code{(slot-ref obj name)}."
   (if (class-slot-definition (class-of object) name)
       (slot-ref object name)
       (gruntime-error "Properties added after object definition must be accessed via custom property methods: ~A" name)))

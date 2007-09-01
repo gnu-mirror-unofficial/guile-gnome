@@ -21,7 +21,12 @@
 
 ;;; Commentary:
 ;;
-;;Support for reading in Gtk .defs files as g-wrap instructions
+;; Support for populating G-Wrap wrapsets using information parsed out
+;; of @code{.defs} files. See the API scanner script, @code{h2defs.py},
+;; included in the Guile-GNOME source distribution.
+;;
+;; Code in this module is only loaded when generating wrapsets; as such,
+;; it is not for end users.
 ;;
 ;;; Code:
 
@@ -144,6 +149,22 @@
   (string->symbol (gtype-name->scheme-name cname)))
 
 (define* (load-defs ws file #:optional (overrides #f))
+  "Load G-Wrap type and function information from @var{file} into the
+G-Wrap wrapset @var{ws}.
+
+@var{file} should be a relative path, which will be searched in the
+vicinity of Guile's @code{%load-path}. @code{include} directives in the
+file will be searched relative to the absolute path of the file.
+
+The following forms are understood: @code{define-enum},
+@code{define-flags}, @code{define-object}, @code{define-interface},
+@code{define-pointer}, @code{define-boxed}, @code{define-function},
+@code{define-method}, @code{ignore}, @code{ignore-glob}, and
+@code{ignore-types}.
+
+The optional argument, @var{overrides}, specifies the location of an
+overrides file that will be spliced into the @code{.defs} file at the
+point of an @code{(include overrides)} form."
   (let* ((log-file-name (string-append (symbol->string (name ws)) ".log"))
          (log-file (open-output-file log-file-name))
          (abs-path (or (search-path %load-path file)
@@ -400,5 +421,11 @@
         (lambda () (pop %load-path)))))
 
 (define (load-defs-with-overrides ws defs)
+  "Equivalent to:
+@lisp
+  (load-defs ws defs
+             (string-append \"gnome/overrides/\"
+                            (basename defs)))
+@end lisp"
   (load-defs ws defs
              (string-append "gnome/overrides/" (basename defs))))

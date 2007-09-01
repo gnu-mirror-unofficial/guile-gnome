@@ -19,13 +19,9 @@ later version published by the Free Software Foundation.")
 (define *texinfo-basename* "guile-gnome-gobject")
 (define *texinfo-category* "The Algorithmic Language Scheme")
 (define *extra-texinfo-menu-entries*
-  '(("Concept Index")
-    ("Function Index")))
+  '(("Function Index")))
 (define *texinfo-epilogue*
-  `((node (% (name "Concept Index")))
-    (unnumbered "Concept Index")
-    (printindex (% (type "cp")))
-    (node (% (name "Function Index")))
+  `((node (% (name "Function Index")))
     (unnumbered "Function Index")
     (printindex (% (type "fn")))))
 

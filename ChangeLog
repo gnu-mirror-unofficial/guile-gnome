@@ -1,3 +1,23 @@
+2007-09-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/modules.scm: 
+	* gnome/gw/support/defs.scm: Document.
+
+	* doc/guile-gnome-gobject.scm: Remove the concept index; we
+	defined no concepts.
+
+	* gnome/gw/support/gobject.scm: Document. Removed the undefined
+	construct-argument-list.
+
+	* gnome/gobject/utils.scm: Document.
+
+	* gnome/gobject/gobject.scm: Move around some docs, looks better
+	with newer guile-lib.
+
+	* gnome/gobject/generics.scm: Write a bunch about the place of
+	generics in guile-gnome. Redefine docs as being on methods; needs
+	latest guile-lib to understand, thouh.
+
 2007-08-28  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gobject/generics.scm: Rewrite to export the generics

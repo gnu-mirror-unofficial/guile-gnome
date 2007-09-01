@@ -20,18 +20,49 @@
 
 ;;; Commentary:
 ;;
+;; @c
 ;; Common utility routines.
 ;;
 ;;; Code:
 
 (define-module (gnome gobject utils)
-  :use-module (srfi srfi-13)
-  :use-module (ice-9 documentation)
-  :export     (gtype-name->scheme-name-alist gtype-name->scheme-name
-               gtype-name->class-name gtype-name->method-name
-               re-export-modules GStudlyCapsExpand
-               define-with-docs define-generic-with-docs
-               define-class-with-docs))
+  #:use-module (srfi srfi-13)
+  #:use-module (ice-9 documentation)
+  #:export     (GStudlyCapsExpand
+                gtype-name->scheme-name-alist gtype-name->scheme-name
+                gtype-name->class-name gtype-name->method-name
+                re-export-modules
+                define-macro-with-docs define-with-docs
+                define-generic-with-docs define-class-with-docs))
+
+;;;
+;;; {Miscellaneous}
+;;;
+
+(define-macro (define-macro-with-docs form docs . body)
+  `(begin
+     (define-macro ,form ,@body)
+     (set-object-property! ,(car form) 'documentation ,docs)))
+
+(define-macro-with-docs (define-with-docs name docs val)
+  "Define @var{name} as @var{val}, documenting the value with
+@var{docs}."
+  `(begin
+     (define ,name ,val)
+     (set-object-property! ,name 'documentation ,docs)))
+
+(define-macro-with-docs (define-generic-with-docs name documentation)
+  "Define a generic named @var{name}, with documentation
+@var{documentation}."
+  `(define-with-docs ,name ,documentation
+     (make-generic ',name)))
+
+(define-macro-with-docs (define-class-with-docs name supers docs . rest)
+  "Define a class named @var{name}, with superclasses @var{supers}, with
+documentation @var{docs}."
+  `(begin
+     (define-class ,name ,supers ,@rest)
+     (set-object-property! ,name 'documentation ,docs)))
 
 ;;;
 ;;; {Name Transformations}
@@ -39,10 +70,14 @@
 
 ;; Based on code from slib's strcase.scm, written 1992 by Dirk
 ;; Lutzebaeck (lutzeb@cs.tu-berlin.de). Public domain.
-;;
-;; GSource => g-source, GtkIMContext => gtk-im-context,
-;; GtkHBox => gtk-hbox.
 (define (GStudlyCapsExpand nstr)
+  "Expand the StudlyCaps @var{nstr} to a more schemey-form, according to
+the conventions of GLib libraries. For example:
+@lisp
+ (GStudlyCapsExpand \"GSource\") @result{} g-source
+ (GStudlyCapsExpand \"GtkIMContext\") @result{} gtk-im-context
+ (GStudlyCapsExpand \"GtkHBox\") @result{} gtk-hbox
+@end lisp"
   (do ((idx (+ -1 (string-length nstr)) (+ -1 idx)))
       ((> 1 idx) (string-downcase nstr))
     (cond ((and (> idx 2)
@@ -73,7 +108,9 @@
                                            (string-length nstr))))))))
 
 ;; Default name transformations can be overridden
-(define gtype-name->scheme-name-alist
+(define-with-docs gtype-name->scheme-name-alist
+  "An alist of exceptions to the name transformation algorithm
+implemented in @code{GStudlyCapsExpand}."
   '(("GObject" . "gobject")
     ("GValue" . "gvalue")
     ("GClosure" . "gclosure")
@@ -105,6 +142,10 @@
     ("GParamPointer" . "gparam-pointer")))
 
 (define (gtype-name->scheme-name type-name)
+  "Transform a name of a @code{<gtype>}, such as \"GtkWindow\", to a
+scheme form, such as @code{gtk-window}, taking into account the
+exceptions in @code{gtype-name->scheme-name-alist}, and trimming
+trailing dashes if any."
   (or (assoc-ref gtype-name->scheme-name-alist type-name)
       (string-trim-right
        (GStudlyCapsExpand
@@ -115,14 +156,25 @@
 ;; "GtkAccelGroup" => <gtk-accel-group>
 ;; "GSource*" => <g-source*>
 (define (gtype-name->class-name type-name)
+  "Transform a name of a @code{<gtype>}, such as \"GtkWindow\", to a
+suitable name of a Scheme class, such as @code{<gtk-window>}. Uses
+@code{gtype-name->scheme-name}."
   (string->symbol
    (string-append "<" (gtype-name->scheme-name type-name) ">")))
 
 (define (gtype-name->method-name type-name name)
+  "Generate the name of a method given the name of a @code{<gtype>} and
+the name of the operation. For example:
+@lisp
+ (gtype-name->method-name \"GtkFoo\" \"bar\") @result{} gtk-foo:bar
+@end lisp
+Uses @code{gtype-name->scheme-name}."
   (string->symbol
    (string-append type-name ":" (symbol->string name))))
 
-(define-macro (re-export-modules . args)
+(define-macro-with-docs (re-export-modules . args)
+  "Re-export the public interface of a module or modules. Invoked as
+@code{(re-export-modules (mod1) (mod2)...)}."
   (if (not (null? args))
       (begin
         (or (list? (car args))
@@ -131,42 +183,3 @@
            (module-use! (module-public-interface (current-module))
                         (resolve-interface ',(car args)))
            (re-export-modules ,@(cdr args))))))
-(set-object-property! re-export-modules 'documentation
-  "Re-export the public interface of a module; used like
-@code{use-modules}.")
-
-;;;
-;;; {Miscellaneous}
-;;;
-
-(defmacro define-with-docs args
-  (define (syntax)
-    (error "bad syntax" (list 'define-public args)))
-  (define (get-name n)
-    (cond
-      ((symbol? n) n)
-      ((pair? n) (get-name (car n)))
-      (else (syntax))))
-  (define (get-documentation n)
-    (cond
-      ((and (pair? n) (string? (car n))) (car n))
-      (else (syntax))))
-  (cond
-    ((null? args)
-     (syntax))
-    (#t
-     (let ((name (get-name (car args)))
-	   (object-documentation (get-documentation (cdr args))))
-       `(begin
-	  (define ,(car args) ,@(cddr args))
-	  (set-object-property! ,name 'documentation ,object-documentation)
-          *unspecified*)))))
-
-(define-macro (define-generic-with-docs name documentation)
-  `(define-with-docs ,name ,documentation
-     (make-generic ',name)))
-
-(define-macro (define-class-with-docs name supers docs . rest)
-  `(begin
-     (define-class ,name ,supers ,@rest)
-     (set-object-property! ,name 'documentation ,docs)))

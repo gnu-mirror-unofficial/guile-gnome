@@ -20,8 +20,9 @@
 
 ;;; Commentary:
 ;;
-;;This module implements some procedures useful to modules that use
-;;g-wrapped libraries.
+;; @c
+;;
+;; Support routines for automatically-generated scheme G-Wrap modules.
 ;;
 ;;; Code:
 
@@ -43,6 +44,17 @@
 @code{use-modules}.")
 
 (define (export-all-lazy! symbols)
+  "Export the @var{symbols} from the current module.
+
+Most generic functions and classes that G-Wrap defines are bound lazily,
+as needed in evaluation. This is done by placing module binder
+procedures on the generated modules. However, if we export all symbols
+by name, this will force the binding eagerly for all values, which is
+slow.
+
+This procedure exports all bindings named in @var{symbols} that are
+already bound in the current module, and then installs a module binder
+procedure on the public interface, which allows lazy binding to work."
   (define (symbol-in? s exp)
     (if (pair? exp)
         (let lp ((exp exp))
