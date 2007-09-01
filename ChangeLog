@@ -1,5 +1,11 @@
 2007-09-01  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/generics.scm: Document, and re-export (gnome gobject
+	generics).
+
+	* doc/guile-gnome-gobject.scm (*modules*): Add the (gnome gw
+	generics) module to the list.
+
 	* gnome/gw/support/modules.scm: 
 	* gnome/gw/support/defs.scm: Document.
 

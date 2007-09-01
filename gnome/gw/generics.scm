@@ -20,14 +20,25 @@
 
 ;;; Commentary:
 ;;
-;; This module exists so that all (gnome gw) modules have a common place
-;; to put their generic functions. Whenever a wrapset is loaded, it adds
-;; method definitions to generics defined in this module.
+;; This module exists so that all @code{(gnome gw)} modules have a
+;; common place to put their generic functions. Whenever a wrapset is
+;; loaded, it adds method definitions to generics defined in this
+;; module.
+;;
+;; See the documentation for @code{(gnome gobject generics)} for more
+;; notes about generic functions in Guile-GNOME. This module re-exports
+;; bindings from @code{(gnome gobject generics)}, so there is no need to
+;; import them both.
 ;;
 ;;; Code:
 
 (define-module (gnome gw generics)
-  #:use-module (gnome gobject))
+  #:use-module (gnome gobject)
+  #:use-module (gnome gobject generics))
+
+;; Re-export (gnome gobject generics)
+(module-use! (module-public-interface (current-module))
+             (resolve-interface '(gnome gobject generics)))
 
 (let ((mod (current-module)))
   (set-module-binder!
