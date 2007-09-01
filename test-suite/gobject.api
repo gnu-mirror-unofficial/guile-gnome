@@ -1,0 +1,381 @@
+(module-api
+  (version 1 0)
+  ((gnome gobject gclosure)
+   (uses-interfaces)
+   (typed-exports
+     (<gclosure> class)
+     (gclosure-invoke procedure (arity 1 0 #t))
+     (gtype:gclosure <gtype>)))
+  ((gnome gobject generics)
+   (uses-interfaces)
+   (typed-exports
+     (block generic (<gtype-instance> <top>))
+     (connect
+       generic
+       <top>
+       (<gtype-instance> <symbol> <procedure>))
+     (connect-after
+       generic
+       (<gtype-instance> <symbol> <procedure>))
+     (connected? generic (<gtype-instance> <top>))
+     (create-signal
+       generic
+       (<gtype-class> <symbol> <top> <top>))
+     (disconnect generic (<gtype-instance> <top>))
+     (emit generic
+           (<gtype-instance> <symbol> . <top>))
+     (find-property generic (<gtype-class> <symbol>))
+     (get generic (<gobject> <symbol>))
+     (get-properties generic (<gtype-class>))
+     (get-property-names generic (<gtype-class>))
+     (get-signals generic (<gtype-class>))
+     (invoke generic (<gclosure> . <top>))
+     (set generic (<gobject> <symbol> <top>))
+     (unblock generic (<gtype-instance> <top>))))
+  ((gnome gobject gobject)
+   (uses-interfaces)
+   (typed-exports
+     (<ginterface> class)
+     (<gobject> class)
+     (gobject-class-find-property
+       procedure
+       (arity 2 0 #f))
+     (gobject-class-get-properties
+       procedure
+       (arity 1 0 #f))
+     (gobject-class-get-property-names
+       procedure
+       (arity 1 0 #f))
+     (gobject-get-property procedure (arity 2 0 #f))
+     (gobject-interface-find-property
+       procedure
+       (arity 2 0 #f))
+     (gobject-interface-get-properties
+       procedure
+       (arity 1 0 #f))
+     (gobject-interface-get-property-names
+       procedure
+       (arity 1 0 #f))
+     (gobject-set-property procedure (arity 3 0 #f))
+     (gobject:get-property
+       generic
+       (<gobject> <symbol>))
+     (gobject:set-property
+       generic
+       (<gobject> <symbol> <top>))
+     (gtype-register-static procedure (arity 2 0 #f))
+     (make-gobject-instance
+       generic
+       (<top> <top> <top> <top>))))
+  ((gnome gobject gparameter)
+   (uses-interfaces)
+   (typed-exports
+     (<gparam-boolean> class)
+     (<gparam-boxed> class)
+     (<gparam-char> class)
+     (<gparam-double> class)
+     (<gparam-enum> class)
+     (<gparam-flags> class)
+     (<gparam-float> class)
+     (<gparam-int64> class)
+     (<gparam-int> class)
+     (<gparam-long> class)
+     (<gparam-object> class)
+     (<gparam-pointer> class)
+     (<gparam-spec-flags> class)
+     (<gparam-string> class)
+     (<gparam-uchar> class)
+     (<gparam-uint64> class)
+     (<gparam-uint> class)
+     (<gparam-ulong> class)
+     (<gparam> class)
+     (gparam->param-struct procedure (arity 1 0 #f))
+     (gparam->value-type procedure (arity 1 0 #f))
+     (gparam-struct:args procedure (arity 1 0 #f))
+     (gparam-struct:blurb procedure (arity 1 0 #f))
+     (gparam-struct:flags procedure (arity 1 0 #f))
+     (gparam-struct:name procedure (arity 1 0 #f))
+     (gparam-struct:nick procedure (arity 1 0 #f))
+     (gparam-struct:owner-type
+       procedure
+       (arity 1 0 #f))
+     (gparam-struct:param-type
+       procedure
+       (arity 1 0 #f))
+     (gparam-struct:value-type
+       procedure
+       (arity 1 0 #f))
+     (gparameter:byte-order <integer>)
+     (gparameter:double-max <real>)
+     (gparameter:double-min <real>)
+     (gparameter:float-max <real>)
+     (gparameter:float-min <real>)
+     (gparameter:int-max <integer>)
+     (gparameter:int-min <integer>)
+     (gparameter:int64-max <integer>)
+     (gparameter:int64-min <integer>)
+     (gparameter:long-max <integer>)
+     (gparameter:long-min <integer>)
+     (gparameter:uint-max <integer>)
+     (gparameter:uint64-max <integer>)
+     (gparameter:ulong-max <integer>)
+     (gtype:gparam-boolean <gtype>)
+     (gtype:gparam-boxed <gtype>)
+     (gtype:gparam-char <gtype>)
+     (gtype:gparam-double <gtype>)
+     (gtype:gparam-enum <gtype>)
+     (gtype:gparam-flags <gtype>)
+     (gtype:gparam-float <gtype>)
+     (gtype:gparam-int <gtype>)
+     (gtype:gparam-int64 <gtype>)
+     (gtype:gparam-long <gtype>)
+     (gtype:gparam-object <gtype>)
+     (gtype:gparam-pointer <gtype>)
+     (gtype:gparam-string <gtype>)
+     (gtype:gparam-uchar <gtype>)
+     (gtype:gparam-uint <gtype>)
+     (gtype:gparam-uint64 <gtype>)
+     (gtype:gparam-ulong <gtype>)))
+  ((gnome gobject gsignal)
+   (uses-interfaces)
+   (typed-exports
+     (<gsignal> struct-vtable)
+     (gsignal-handler-block procedure (arity 2 0 #f))
+     (gsignal-handler-connected?
+       procedure
+       (arity 2 0 #f))
+     (gsignal-handler-disconnect
+       procedure
+       (arity 2 0 #f))
+     (gsignal-handler-unblock
+       procedure
+       (arity 2 0 #f))
+     (gsignal:id procedure (arity 1 0 #f))
+     (gsignal:interface-type procedure (arity 1 0 #f))
+     (gsignal:name procedure (arity 1 0 #f))
+     (gsignal:param-types procedure (arity 1 0 #f))
+     (gsignal:return-type procedure (arity 1 0 #f))
+     (gtype-class-create-signal
+       procedure
+       (arity 4 0 #f))
+     (gtype-class-define-signal macro)
+     (gtype-class-get-signal-names
+       procedure
+       (arity 1 0 #f))
+     (gtype-class-get-signals
+       procedure
+       (arity 1 0 #f))
+     (gtype-get-signals procedure (arity 1 0 #f))
+     (gtype-instance-signal-connect
+       procedure
+       (arity 3 0 #f))
+     (gtype-instance-signal-connect-after
+       procedure
+       (arity 3 0 #f))
+     (gtype-instance-signal-connect-data
+       procedure
+       (arity 4 0 #f))
+     (gtype-instance-signal-emit
+       procedure
+       (arity 2 0 #t))))
+  ((gnome gobject gtype)
+   (uses-interfaces)
+   (typed-exports
+     (%gtype-bind-to-class procedure (arity 2 0 #f))
+     (%gtype-instance-primitive-destroy!
+       procedure
+       (arity 1 0 #f))
+     (%gtype-lookup-class procedure (arity 1 0 #f))
+     (<gtype-class> class)
+     (<gtype-instance-class> class)
+     (<gtype-instance> class)
+     (class-name->gtype-name procedure (arity 1 0 #f))
+     (especify-metaclass! procedure (arity 2 0 #f))
+     (gruntime-error procedure (arity 1 0 #t))
+     (gtype->class procedure (arity 1 0 #f))
+     (gtype->fundamental procedure (arity 1 0 #f))
+     (gtype-basic? procedure (arity 1 0 #f))
+     (gtype-children procedure (arity 1 0 #f))
+     (gtype-class->type procedure (arity 1 0 #f))
+     (gtype-classed? procedure (arity 1 0 #f))
+     (gtype-from-instance procedure (arity 1 0 #f))
+     (gtype-from-name procedure (arity 1 0 #f))
+     (gtype-fundamental? procedure (arity 1 0 #f))
+     (gtype-instance-primitive->type
+       procedure
+       (arity 1 0 #f))
+     (gtype-instance:write
+       generic
+       (<gtype-class> <%gtype-instance> <top>)
+       (<gtype-class> <gvalue> <top>)
+       (<gtype> <gvalue> <top>))
+     (gtype-instantiatable? procedure (arity 1 0 #f))
+     (gtype-interfaces procedure (arity 1 0 #f))
+     (gtype-is-a? procedure (arity 2 0 #f))
+     (gtype-name procedure (arity 1 0 #f))
+     (gtype-parent procedure (arity 1 0 #f))
+     (gtype:genum <gtype>)
+     (gtype:gflags <gtype>)
+     (gtype:ginterface <gtype>)
+     (gtype:gobject <gtype>)
+     (gtype:gparam <gtype>)
+     (gtype:void <gtype>)
+     (gtype? procedure (arity 1 0 #f))))
+  ((gnome gobject gvalue)
+   (uses-interfaces)
+   (typed-exports
+     (<gboolean> class)
+     (<gboxed-scm> class)
+     (<gboxed> class)
+     (<gchar> class)
+     (<gchararray> class)
+     (<gdouble> class)
+     (<genum> class)
+     (<gflags> class)
+     (<gfloat> class)
+     (<gint64> class)
+     (<gint> class)
+     (<glong> class)
+     (<guchar> class)
+     (<guint64> class)
+     (<guint> class)
+     (<gulong> class)
+     (<gvalue-array> class)
+     (genum->name procedure (arity 1 0 #f))
+     (genum->symbol procedure (arity 1 0 #f))
+     (genum->value procedure (arity 1 0 #f))
+     (genum-class->value-table
+       procedure
+       (arity 1 0 #f))
+     (genum-register-static procedure (arity 2 0 #f))
+     (genum-type-get-values procedure (arity 1 0 #f))
+     (gflags->name-list procedure (arity 1 0 #f))
+     (gflags->symbol-list procedure (arity 1 0 #f))
+     (gflags->value-list procedure (arity 1 0 #f))
+     (gflags-class->value-table
+       procedure
+       (arity 1 0 #f))
+     (gflags-register-static procedure (arity 2 0 #f))
+     (gflags-type-get-values procedure (arity 1 0 #f))
+     (gtype:gboolean <gtype>)
+     (gtype:gboxed <gtype>)
+     (gtype:gboxed-scm <gtype>)
+     (gtype:gchar <gtype>)
+     (gtype:gchararray <gtype>)
+     (gtype:gdouble <gtype>)
+     (gtype:gfloat <gtype>)
+     (gtype:gint <gtype>)
+     (gtype:gint64 <gtype>)
+     (gtype:glong <gtype>)
+     (gtype:gpointer <gtype>)
+     (gtype:guchar <gtype>)
+     (gtype:guint <gtype>)
+     (gtype:guint64 <gtype>)
+     (gtype:gulong <gtype>)
+     (gtype:gvalue-array <gtype>)
+     (gvalue->scm procedure (arity 1 0 #f))
+     (gvalue->type procedure (arity 1 0 #f))
+     (gvalue? procedure (arity 1 0 #f))
+     (scm->gvalue procedure (arity 2 0 #f))))
+  ((gnome gobject utils)
+   (uses-interfaces)
+   (typed-exports
+     (GStudlyCapsExpand procedure (arity 1 0 #f))
+     (define-class-with-docs macro)
+     (define-generic-with-docs macro)
+     (define-macro-with-docs macro)
+     (define-with-docs macro)
+     (gtype-name->class-name procedure (arity 1 0 #f))
+     (gtype-name->method-name
+       procedure
+       (arity 2 0 #f))
+     (gtype-name->scheme-name
+       procedure
+       (arity 1 0 #f))
+     (gtype-name->scheme-name-alist <pair>)
+     (re-export-modules macro)))
+  ((gnome gw generics)
+   (uses-interfaces (gnome gobject generics))
+   (typed-exports))
+  ((gnome gw support defs)
+   (uses-interfaces)
+   (typed-exports
+     (load-defs procedure (arity 2 0 #t))
+     (load-defs-with-overrides
+       procedure
+       (arity 2 0 #f))))
+  ((gnome gw support gobject)
+   (uses-interfaces)
+   (typed-exports
+     (<gobject-classed-pointer-type> class)
+     (<gobject-classed-type> class)
+     (<gobject-type-base> class)
+     (<gobject-wrapset-base> class)
+     (add-type-alias!
+       generic
+       (<gobject-wrapset-base> <string> <symbol>))
+     (add-type-rule!
+       generic
+       (<gobject-wrapset-base> <string> <top>))
+     (find-type-rule
+       generic
+       (<gobject-wrapset-base> <string>))
+     (gtype-id
+       generic
+       (<gobject-boxed-type>)
+       (<gobject-class-type>)
+       (<gobject-classed-pointer-type>)
+       (<gobject-classed-type>)
+       (<gobject-custom-boxed-type>)
+       (<gobject-custom-gvalue-type>)
+       (<gobject-enum-type>)
+       (<gobject-flags-type>)
+       (<gobject-interface-type>)
+       (<gobject-object-type>)
+       (<gobject-pointer-type>))
+     (lookup-type-by-alias
+       generic
+       (<gobject-wrapset-base> <string>))
+     (unwrap-null-checked
+       generic
+       (<gw-value> <top> <top>))
+     (wrap-boxed!
+       generic
+       (<gobject-wrapset-base> . <top>))
+     (wrap-custom-boxed! macro)
+     (wrap-custom-gvalue! macro)
+     (wrap-flags!
+       generic
+       (<gobject-wrapset-base> . <top>))
+     (wrap-gobject-class!
+       generic
+       (<gobject-wrapset-base> . <top>))
+     (wrap-interface!
+       generic
+       (<gobject-wrapset-base> . <top>))
+     (wrap-object!
+       generic
+       (<gobject-wrapset-base> . <top>))
+     (wrap-opaque-pointer! procedure (arity 2 0 #f))
+     (wrap-pointer!
+       generic
+       (<gobject-wrapset-base> . <top>))))
+  ((gnome gw support gtk-doc)
+   (uses-interfaces)
+   (typed-exports
+     (docbook->sdocbook procedure (arity 1 0 #f))
+     (gtk-doc-sdocbook->def-list
+       procedure
+       (arity 2 0 #f))
+     (gtk-doc-sdocbook->description-fragment
+       procedure
+       (arity 1 0 #f))
+     (gtk-doc-sdocbook-subtitle
+       procedure
+       (arity 1 0 #f))
+     (gtk-doc-sdocbook-title procedure (arity 1 0 #f))))
+  ((gnome gw support modules)
+   (uses-interfaces)
+   (typed-exports
+     (export-all-lazy! procedure (arity 1 0 #f))
+     (re-export-modules macro))))

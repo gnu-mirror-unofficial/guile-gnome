@@ -30,7 +30,29 @@ CLEANFILES = $(wildcard gnome-*.log test-*.log) 		\
              $(wildcard gw-test-gobject.* gw-test-glib.*) 	\
 	     guile-gobject.log
 
-TESTS = guile-gobject-test
+TESTS_ENVIRONMENT=\
+	API_FILE=$(srcdir)/gobject.api \
+	DOC_SCM=$(srcdir)/../doc/guile-gnome-gobject.scm \
+	$(top_builddir)/dev-environ guile --debug -e main -s
+
+script := '(load (getenv "DOC_SCM"))\
+(for-each \
+(lambda (mod) \
+(display " \"") (write (car mod)) (display "\" ")) \
+ *modules*)'
+
+gobject.api.update:
+	$(top_builddir)/dev-environ guile --debug -e update-api -s $(srcdir)/api.scm \
+	  $(shell DOC_SCM=$(srcdir)/../doc/guile-gnome-gobject.scm \
+	     guile -c $(script)) > $(srcdir)/gobject.api
+
+%.check: %
+	$(TESTS_ENVIRONMENT) $(srcdir)/$*
+
+EXTRA_DIST+=gobject.api api.scm
+
+TESTS = guile-gobject-test \
+	api.scm
 
 gw-test-%.scm gw-test-%.c: gw-test-%-spec.scm
 	echo GLP=$(GUILE_LOAD_PATH)

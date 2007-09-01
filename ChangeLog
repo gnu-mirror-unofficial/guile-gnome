@@ -1,5 +1,20 @@
 2007-09-01  Andy Wingo  <wingo@pobox.com>
 
+	* test-suite/Makefile.am: Add some hairyness for the api check
+	test.
+
+	* gnome/gw/support/gobject.scm: Don't export wrap-enum!; we just
+	add a method on the wrap-enum! from (g-wrap enumeration).
+
+	* test-suite/gobject.api: An apicheck description of the gobject
+	api.
+
+	* test-suite/api.scm: New test, tests that our API has not
+	regressed.
+
+	* gnome/gobject/gobject.scm (make-gobject-instance): Fix bug
+	introduced by doc (define placement).
+
 	* gnome/gw/generics.scm: Document, and re-export (gnome gobject
 	generics).
 

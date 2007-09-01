@@ -270,14 +270,14 @@ This operation is a generic function so that subclasses can override it,
 e.g. so that @code{<gtk-object>} can implement explicit destruction.")
 (define-method (make-gobject-instance class type object options)
   "The default implementation of @code{make-gobject-instance}."
-  (define (last l)
-    (if (null? (cdr l))
-        (car l)
-        (last (cdr l))))
   (let* ((class-properties (gobject-class-get-properties class))
 	 (init-properties '())
          (init-keywords (map slot-definition-init-keyword (class-slots class)))
          (kwargs '()))
+    (define (last l)
+      (if (null? (cdr l))
+          (car l)
+          (last (cdr l))))
     (let loop ((options options) (res '()))
       (cond ((null? options)
              ;; We want to set the keyword args using the <object>

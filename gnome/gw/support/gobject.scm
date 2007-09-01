@@ -64,7 +64,10 @@
             wrap-pointer!
             wrap-opaque-pointer!
             wrap-interface!
-            wrap-enum!
+
+            ;; we extend the one from (g-wrap enumeration)
+            ;; wrap-enum!
+
             wrap-flags!
             wrap-gobject-class!
             
