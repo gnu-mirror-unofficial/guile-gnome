@@ -500,7 +500,7 @@ case CORBA_tk_ ## k:								\
 	GType gtype;
 
 	gtype = guile_corba_generic_typecode_to_type (tc);
-	g_message (G_STRLOC ": %ld", gtype);
+	g_message (G_STRLOC ": %ld", (unsigned long)gtype);
 
 	retval = scm_c_make_gvalue (gtype);
         scm_gvalue_primitive_set (retval, SCM_MAKINUM(*(CORBA_unsigned_long*)any->_value));
