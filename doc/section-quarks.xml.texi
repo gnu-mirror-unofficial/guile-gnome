@@ -1,0 +1,31 @@
+
+@c %start of fragment
+
+@node Quarks
+@chapter Quarks: a 2-way association between a string and a unique integer identifier.
+@section Overview
+Quarks are associations between strings and integer identifiers. Given either
+the string or the @code{<g-quark>} identifier it is possible to retrieve the
+other.
+
+Quarks are used for both Datasets and Keyed Data Lists.
+
+To create a new quark from a string, use @code{g-quark-from-string} or
+@code{g-quark-from-static-string}.
+
+To find the string corresponding to a given @code{<g-quark>}, use
+@code{g-quark-to-string}.
+
+To find the @code{<g-quark>} corresponding to a given string, use
+@code{g-quark-try-string}.
+
+Another use for the string pool maintained for the quark functions is string
+interning, using @code{g-intern-string} or @code{g-intern-static-string}. An
+interned string is a canonical representation for a string. One important
+advantage of interned strings is that they can be compared for equality by a
+simple pointer comparision, rather than using @code{strcmp}.
+
+@section Usage
+@include defuns-quarks.xml.texi
+
+@c %end of fragment

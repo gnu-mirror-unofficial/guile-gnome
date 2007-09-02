@@ -1,0 +1,1118 @@
+
+@c %start of fragment
+
+@deffn Function g-unichar-validate  ( @var{ch}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Checks whether @var{ch} is a valid Unicode character. Some possible integer
+values of @var{ch} will not be valid. 0 is considered a valid character, though
+it's normally a string terminator.
+
+@table @var
+@item ch
+a Unicode character
+
+@item ret
+@samp{TRUE} if @var{ch} is a valid Unicode character
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-isalnum  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Determines whether a character is alphanumeric. Given some UTF-8 text, obtain a
+character value with @code{g-utf8-get-char}.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+@samp{TRUE} if @var{c} is an alphanumeric character
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-isalpha  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Determines whether a character is alphabetic (i.e. a letter). Given some UTF-8
+text, obtain a character value with @code{g-utf8-get-char}.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+@samp{TRUE} if @var{c} is an alphabetic character
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-iscntrl  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Determines whether a character is a control character. Given some UTF-8 text,
+obtain a character value with @code{g-utf8-get-char}.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+@samp{TRUE} if @var{c} is a control character
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-isdigit  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Determines whether a character is numeric (i.e. a digit). This covers ASCII 0-9
+and also digits in other languages/scripts. Given some UTF-8 text, obtain a
+character value with @code{g-utf8-get-char}.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+@samp{TRUE} if @var{c} is a digit
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-isgraph  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Determines whether a character is printable and not a space (returns
+@samp{FALSE} for control characters, format characters, and spaces).
+@code{g-unichar-isprint} is similar, but returns @samp{TRUE} for spaces. Given
+some UTF-8 text, obtain a character value with @code{g-utf8-get-char}.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+@samp{TRUE} if @var{c} is printable unless it's a space
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-islower  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Determines whether a character is a lowercase letter. Given some UTF-8 text,
+obtain a character value with @code{g-utf8-get-char}.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+@samp{TRUE} if @var{c} is a lowercase letter
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-isprint  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Determines whether a character is printable. Unlike @code{g-unichar-isgraph},
+returns @samp{TRUE} for spaces. Given some UTF-8 text, obtain a character value
+with @code{g-utf8-get-char}.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+@samp{TRUE} if @var{c} is printable
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-ispunct  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Determines whether a character is punctuation or a symbol. Given some UTF-8
+text, obtain a character value with @code{g-utf8-get-char}.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+@samp{TRUE} if @var{c} is a punctuation or symbol character
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-isspace  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Determines whether a character is a space, tab, or line separator (newline,
+carriage return, etc.). Given some UTF-8 text, obtain a character value with
+@code{g-utf8-get-char}.
+
+(Note: don't use this to do word breaking; you have to use Pango or equivalent
+to get word breaking right, the algorithm is fairly complex.)
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+@samp{TRUE} if @var{c} is a space character
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-isupper  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Determines if a character is uppercase.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+@samp{TRUE} if @var{c} is an uppercase character
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-isxdigit  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Determines if a character is a hexidecimal digit.
+
+@table @var
+@item c
+a Unicode character.
+
+@item ret
+@samp{TRUE} if the character is a hexadecimal digit
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-istitle  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Determines if a character is titlecase. Some characters in Unicode which are
+composites, such as the DZ digraph have three case variants instead of just two.
+The titlecase form is used at the beginning of a word where only the first
+letter is capitalized. The titlecase form of the DZ digraph is U+01F2 LATIN
+CAPITAL LETTTER D WITH SMALL LETTER Z.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+@samp{TRUE} if the character is titlecase
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-isdefined  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Determines if a given character is assigned in the Unicode standard.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+@samp{TRUE} if the character has an assigned value
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-iswide  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Determines if a character is typically rendered in a double-width cell.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+@samp{TRUE} if the character is wide
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-iswide-cjk  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+Determines if a character is typically rendered in a double-width cell under
+legacy East Asian locales. If a character is wide according to
+@code{g-unichar-iswide}, then it is also reported wide with this function, but
+the converse is not necessarily true. See the
+@uref{http://www.unicode.org/reports/tr11/,Unicode Standard Annex } for details.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+@samp{TRUE} if the character is wide in legacy East Asian locales
+
+@end table
+
+Since 2.12
+
+@end deffn
+
+@deffn Function g-unichar-toupper  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{unsigned-int32} )
+Converts a character to uppercase.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+the result of converting @var{c} to uppercase. If @var{c} is not an lowercase or
+titlecase character, or has no upper case equivalent @var{c} is returned
+unchanged.
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-tolower  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{unsigned-int32} )
+Converts a character to lower case.
+
+@table @var
+@item c
+a Unicode character.
+
+@item ret
+the result of converting @var{c} to lower case. If @var{c} is not an upperlower
+or titlecase character, or has no lowercase equivalent @var{c} is returned
+unchanged.
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-totitle  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{unsigned-int32} )
+Converts a character to the titlecase.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+the result of converting @var{c} to titlecase. If @var{c} is not an uppercase or
+lowercase character, @var{c} is returned unchanged.
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-digit-value  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{int} )
+Determines the numeric value of a character as a decimal digit.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+If @var{c} is a decimal digit (according to @code{g-unichar-isdigit}), its
+numeric value. Otherwise, -1.
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-xdigit-value  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{int} )
+Determines the numeric value of a character as a hexidecimal digit.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+If @var{c} is a hex digit (according to @code{g-unichar-isxdigit}), its numeric
+value. Otherwise, -1.
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-type  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{<g-unicode-type>} )
+Classifies a Unicode character by type.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+the type of the character.
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-break-type  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{<g-unicode-break-type>} )
+Determines the break type of @var{c}. @var{c} should be a Unicode character (to
+derive a character from UTF-8 encoded text, use @code{g-utf8-get-char}). The
+break type is used to find word and line breaks ("text boundaries"), Pango
+implements the Unicode boundary resolution algorithms and normally you would use
+a function such as @code{pango-break} instead of caring about break types
+yourself.
+
+@table @var
+@item c
+a Unicode character
+
+@item ret
+the break type of @var{c}
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-get-mirror-char  ( @var{ch}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )  ( @var{mirrored_ch}   @code{unsigned-int32} )
+In Unicode, some characters are @dfn{mirrored}. This means that their images are
+mirrored horizontally in text that is laid out from right to left. For instance,
+"(" would become its mirror image, ")", in right-to-left text.
+
+If @var{ch} has the Unicode mirrored property and there is another unicode
+character that typically has a glyph that is the mirror image of @var{ch}'s
+glyph and @var{mirrored-ch} is set, it puts that character in the address
+pointed to by @var{mirrored-ch}. Otherwise the original character is put.
+
+@table @var
+@item ch
+a Unicode character
+
+@item mirrored-ch
+location to store the mirrored character
+
+@item ret
+@samp{TRUE} if @var{ch} has a mirrored character, @samp{FALSE} otherwise
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function g-utf8-get-char  ( @var{p}   @code{mchars} )   @result{}  ( @var{ret}   @code{unsigned-int32} )
+Converts a sequence of bytes encoded as UTF-8 to a Unicode character. If @var{p}
+does not point to a valid UTF-8 encoded character, results are undefined. If you
+are not sure that the bytes are complete valid Unicode characters, you should
+use @code{g-utf8-get-char-validated} instead.
+
+@table @var
+@item p
+a pointer to Unicode character encoded as UTF-8
+
+@item ret
+the resulting character
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-get-char-validated  ( @var{p}   @code{mchars} )  ( @var{max_len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{unsigned-int32} )
+Convert a sequence of bytes encoded as UTF-8 to a Unicode character. This
+function checks for incomplete characters, for invalid characters such as
+characters that are out of the range of Unicode, and for overlong encodings of
+valid characters.
+
+@table @var
+@item p
+a pointer to Unicode character encoded as UTF-8
+
+@item max-len
+the maximum number of bytes to read, or -1, for no maximum.
+
+@item ret
+the resulting character. If @var{p} points to a partial sequence at the end of a
+string that could begin a valid character (or if @var{max-len} is zero), returns
+(gunichar)-2; otherwise, if @var{p} does not point to a valid UTF-8 encoded
+Unicode character, returns (gunichar)-1.
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-offset-to-pointer  ( @var{str}   @code{mchars} )  ( @var{offset}   @code{long} )   @result{}  ( @var{ret}   @code{mchars} )
+Converts from an integer character offset to a pointer to a position within the
+string.
+
+Since 2.10, this function allows to pass a negative @var{offset} to step
+backwards. It is usually worth stepping backwards from the end instead of
+forwards if @var{offset} is in the last fourth of the string, since moving
+forward is about 3 times faster than moving backward.
+
+@table @var
+@item str
+a UTF-8 encoded string
+
+@item offset
+a character offset within @var{str}
+
+@item ret
+the resulting pointer
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-pointer-to-offset  ( @var{str}   @code{mchars} )  ( @var{pos}   @code{mchars} )   @result{}  ( @var{ret}   @code{long} )
+Converts from a pointer to position within a string to a integer character
+offset.
+
+Since 2.10, this function allows @var{pos} to be before @var{str}, and returns a
+negative offset in this case.
+
+@table @var
+@item str
+a UTF-8 encoded string
+
+@item pos
+a pointer to a position within @var{str}
+
+@item ret
+the resulting character offset
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-prev-char  ( @var{p}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+Finds the previous UTF-8 character in the string before @var{p}.
+
+@var{p} does not have to be at the beginning of a UTF-8 character. No check is
+made to see if the character found is actually valid other than it starts with
+an appropriate byte. If @var{p} might be the first character of the string, you
+must use @code{g-utf8-find-prev-char} instead.
+
+@table @var
+@item p
+a pointer to a position within a UTF-8 encoded string
+
+@item ret
+a pointer to the found character.
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-find-next-char  ( @var{p}   @code{mchars} )  ( @var{end}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+Finds the start of the next UTF-8 character in the string after @var{p}.
+
+@var{p} does not have to be at the beginning of a UTF-8 character. No check is
+made to see if the character found is actually valid other than it starts with
+an appropriate byte.
+
+@table @var
+@item p
+a pointer to a position within a UTF-8 encoded string
+
+@item end
+a pointer to the end of the string, or @samp{@code{#f}} to indicate that the
+string is nul-terminated, in which case the returned value will be
+
+@item ret
+a pointer to the found character or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-find-prev-char  ( @var{str}   @code{mchars} )  ( @var{p}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+Given a position @var{p} with a UTF-8 encoded string @var{str}, find the start
+of the previous UTF-8 character starting before @var{p}. Returns
+@samp{@code{#f}} if no UTF-8 characters are present in @var{str} before @var{p}.
+
+@var{p} does not have to be at the beginning of a UTF-8 character. No check is
+made to see if the character found is actually valid other than it starts with
+an appropriate byte.
+
+@table @var
+@item str
+pointer to the beginning of a UTF-8 encoded string
+
+@item p
+pointer to some position within @var{str}
+
+@item ret
+a pointer to the found character or @samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-strlen  ( @var{p}   @code{mchars} )  ( @var{max}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{long} )
+Returns the length of the string in characters.
+
+@table @var
+@item p
+pointer to the start of a UTF-8 encoded string.
+
+@item max
+the maximum number of bytes to examine. If @var{max} is less than 0, then the
+string is assumed to be nul-terminated. If @var{max} is 0, @var{p} will not be
+examined and may be @samp{@code{#f}}.
+
+@item ret
+the length of the string in characters
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-strncpy  ( @var{dest}   @code{mchars} )  ( @var{src}   @code{mchars} )  ( @var{n}   @code{size_t} )   @result{}  ( @var{ret}   @code{mchars} )
+Like the standard C @code{strncpy} function, but copies a given number of
+characters instead of a given number of bytes. The @var{src} string must be
+valid UTF-8 encoded text. (Use @code{g-utf8-validate} on all text before trying
+to use UTF-8 utility functions with it.)
+
+@table @var
+@item dest
+buffer to fill with characters from @var{src}
+
+@item src
+UTF-8 encoded string
+
+@item n
+character count
+
+@item ret
+@var{dest}
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-strchr  ( @var{p}   @code{mchars} )  ( @var{len}   @code{ssize_t} )  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{mchars} )
+Finds the leftmost occurrence of the given Unicode character in a UTF-8 encoded
+string, while limiting the search to @var{len} bytes. If @var{len} is -1, allow
+unbounded search.
+
+@table @var
+@item p
+a nul-terminated UTF-8 encoded string
+
+@item len
+the maximum length of @var{p}
+
+@item c
+a Unicode character
+
+@item ret
+@samp{@code{#f}} if the string does not contain the character, otherwise, a
+pointer to the start of the leftmost occurrence of the character in the string.
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-strrchr  ( @var{p}   @code{mchars} )  ( @var{len}   @code{ssize_t} )  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{mchars} )
+Find the rightmost occurrence of the given Unicode character in a UTF-8 encoded
+string, while limiting the search to @var{len} bytes. If @var{len} is -1, allow
+unbounded search.
+
+@table @var
+@item p
+a nul-terminated UTF-8 encoded string
+
+@item len
+the maximum length of @var{p}
+
+@item c
+a Unicode character
+
+@item ret
+@samp{@code{#f}} if the string does not contain the character, otherwise, a
+pointer to the start of the rightmost occurrence of the character in the string.
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-strreverse  ( @var{str}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )
+Reverses a UTF-8 string. @var{str} must be valid UTF-8 encoded text. (Use
+@code{g-utf8-validate} on all text before trying to use UTF-8 utility functions
+with it.)
+
+Note that unlike @code{g-strreverse}, this function returns newly-allocated
+memory, which should be freed with @code{g-free} when no longer needed.
+
+@table @var
+@item str
+a UTF-8 encoded string
+
+@item len
+the maximum length of @var{str} to use. If @var{len} < 0, then the string is
+nul-terminated.
+
+@item ret
+a newly-allocated string which is the reverse of @var{str}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function g-utf8-validate  ( @var{str}   @code{mchars} )  ( @var{max_len}   @code{ssize_t} )  ( @var{end}   @code{<gchar**>} )   @result{}  ( @var{ret}   @code{bool} )
+Validates UTF-8 encoded text. @var{str} is the text to validate; if @var{str} is
+nul-terminated, then @var{max-len} can be -1, otherwise @var{max-len} should be
+the number of bytes to validate. If @var{end} is non-@samp{@code{#f}}, then the
+end of the valid range will be stored there (i.e. the start of the first invalid
+character if some bytes were invalid, or the end of the text being validated
+otherwise).
+
+Note that @code{g-utf8-validate} returns @samp{FALSE} if @var{max-len} is
+positive and NUL is met before @var{max-len} bytes have been read.
+
+Returns @samp{TRUE} if all of @var{str} was valid. Many GLib and GTK+ routines
+@emph{require} valid UTF-8 as input; so data read from a file or the network
+should be checked with @code{g-utf8-validate} before doing anything else with
+it.
+
+@table @var
+@item str
+a pointer to character data
+
+@item max-len
+max bytes to validate, or -1 to go until NUL
+
+@item end
+return location for end of valid data
+
+@item ret
+@samp{TRUE} if the text was valid UTF-8
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-strup  ( @var{str}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )
+Converts all Unicode characters in the string that have a case to uppercase. The
+exact manner that this is done depends on the current locale, and may result in
+the number of characters in the string increasing. (For instance, the German
+ess-zet will be changed to SS.)
+
+@table @var
+@item str
+a UTF-8 encoded string
+
+@item len
+length of @var{str}, in bytes, or -1 if @var{str} is nul-terminated.
+
+@item ret
+a newly allocated string, with all characters converted to uppercase.
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-strdown  ( @var{str}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )
+Converts all Unicode characters in the string that have a case to lowercase. The
+exact manner that this is done depends on the current locale, and may result in
+the number of characters in the string changing.
+
+@table @var
+@item str
+a UTF-8 encoded string
+
+@item len
+length of @var{str}, in bytes, or -1 if @var{str} is nul-terminated.
+
+@item ret
+a newly allocated string, with all characters converted to lowercase.
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-casefold  ( @var{str}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )
+Converts a string into a form that is independent of case. The result will not
+correspond to any particular case, but can be compared for equality or ordered
+with the results of calling @code{g-utf8-casefold} on other strings.
+
+Note that calling @code{g-utf8-casefold} followed by @code{g-utf8-collate} is
+only an approximation to the correct linguistic case insensitive ordering,
+though it is a fairly good one. Getting this exactly right would require a more
+sophisticated collation function that takes case sensitivity into account. GLib
+does not currently provide such a function.
+
+@table @var
+@item str
+a UTF-8 encoded string
+
+@item len
+length of @var{str}, in bytes, or -1 if @var{str} is nul-terminated.
+
+@item ret
+a newly allocated string, that is a case independent form of @var{str}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-normalize  ( @var{str}   @code{mchars} )  ( @var{len}   @code{ssize_t} )  ( @var{mode}   @code{<g-normalize-mode>} )   @result{}  ( @var{ret}   @code{mchars} )
+Converts a string into canonical form, standardizing such issues as whether a
+character with an accent is represented as a base character and combining accent
+or as a single precomposed character. You should generally call
+@code{g-utf8-normalize} before comparing two Unicode strings.
+
+The normalization mode @samp{G_NORMALIZE_DEFAULT} only standardizes differences
+that do not affect the text content, such as the above-mentioned accent
+representation. @samp{G_NORMALIZE_ALL} also standardizes the "compatibility"
+characters in Unicode, such as SUPERSCRIPT THREE to the standard forms (in this
+case DIGIT THREE). Formatting information may be lost but for most text
+operations such characters should be considered the same. For example,
+@code{g-utf8-collate} normalizes with @samp{G_NORMALIZE_ALL} as its first step.
+
+@samp{G_NORMALIZE_DEFAULT_COMPOSE} and @samp{G_NORMALIZE_ALL_COMPOSE} are like
+@samp{G_NORMALIZE_DEFAULT} and @samp{G_NORMALIZE_ALL}, but returned a result
+with composed forms rather than a maximally decomposed form. This is often
+useful if you intend to convert the string to a legacy encoding or pass it to a
+system with less capable Unicode handling.
+
+@table @var
+@item str
+a UTF-8 encoded string.
+
+@item len
+length of @var{str}, in bytes, or -1 if @var{str} is nul-terminated.
+
+@item mode
+the type of normalization to perform.
+
+@item ret
+a newly allocated string, that is the normalized form of @var{str}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-collate  ( @var{str1}   @code{mchars} )  ( @var{str2}   @code{mchars} )   @result{}  ( @var{ret}   @code{int} )
+Compares two strings for ordering using the linguistically correct rules for the
+current locale. When sorting a large number of strings, it will be significantly
+faster to obtain collation keys with @code{g-utf8-collate-key} and compare the
+keys with @code{strcmp} when sorting instead of sorting the original strings.
+
+@table @var
+@item str1
+a UTF-8 encoded string
+
+@item str2
+a UTF-8 encoded string
+
+@item ret
+< 0 if @var{str1} compares before @var{str2}, 0 if they compare equal, > 0 if
+@var{str1} compares after @var{str2}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-collate-key  ( @var{str}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )
+Converts a string into a collation key that can be compared with other collation
+keys produced by the same function using @code{strcmp}. The results of comparing
+the collation keys of two strings with @code{strcmp} will always be the same as
+comparing the two original keys with @code{g-utf8-collate}.
+
+@table @var
+@item str
+a UTF-8 encoded string.
+
+@item len
+length of @var{str}, in bytes, or -1 if @var{str} is nul-terminated.
+
+@item ret
+a newly allocated string. This string should be freed with @code{g-free} when
+you are done with it.
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-collate-key-for-filename  ( @var{str}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )
+Converts a string into a collation key that can be compared with other collation
+keys produced by the same function using @code{strcmp}.
+
+In order to sort filenames correctly, this function treats the dot '.' as a
+special case. Most dictionary orderings seem to consider it insignificant, thus
+producing the ordering "event.c" "eventgenerator.c" "event.h" instead of
+"event.c" "event.h" "eventgenerator.c". Also, we would like to treat numbers
+intelligently so that "file1" "file10" "file5" is sorted as "file1" "file5"
+"file10".
+
+@table @var
+@item str
+a UTF-8 encoded string.
+
+@item len
+length of @var{str}, in bytes, or -1 if @var{str} is nul-terminated.
+
+@item ret
+a newly allocated string. This string should be freed with @code{g-free} when
+you are done with it.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function g-utf8-to-utf16  ( @var{str}   @code{mchars} )  ( @var{len}   @code{long} )   @result{}  ( @var{ret}   @code{<gunichar2*>} )  ( @var{items_read}   @code{long} )  ( @var{items_written}   @code{long} )
+Convert a string from UTF-8 to UTF-16. A 0 character will be added to the result
+after the converted text.
+
+@table @var
+@item str
+a UTF-8 encoded string
+
+@item len
+the maximum length (number of characters) of @var{str} to use. If @var{len} < 0,
+then the string is nul-terminated.
+
+@item items-read
+location to store number of bytes read, or @samp{@code{#f}}. If
+@samp{@code{#f}}, then @samp{G_CONVERT_ERROR_PARTIAL_INPUT} will be returned in
+case @var{str} contains a trailing partial character. If an error occurs then
+the index of the invalid input is stored here.
+
+@item items-written
+location to store number of @code{<gunichar2>} written, or @samp{@code{#f}}. The
+value stored here does not include the trailing 0.
+
+@item error
+location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
+of the errors in @code{<g-convert-error>} other than
+@samp{G_CONVERT_ERROR_NO_CONVERSION} may occur.
+
+@item ret
+a pointer to a newly allocated UTF-16 string. This value must be freed with
+@code{g-free}. If an error occurs, @samp{@code{#f}} will be returned and
+@var{error} set.
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-to-ucs4  ( @var{str}   @code{mchars} )  ( @var{len}   @code{long} )   @result{}  ( @var{ret}   @code{<gunichar*>} )  ( @var{items_read}   @code{long} )  ( @var{items_written}   @code{long} )
+Convert a string from UTF-8 to a 32-bit fixed width representation as UCS-4. A
+trailing 0 will be added to the string after the converted text.
+
+@table @var
+@item str
+a UTF-8 encoded string
+
+@item len
+the maximum length of @var{str} to use. If @var{len} < 0, then the string is
+nul-terminated.
+
+@item items-read
+location to store number of bytes read, or @samp{@code{#f}}. If
+@samp{@code{#f}}, then @samp{G_CONVERT_ERROR_PARTIAL_INPUT} will be returned in
+case @var{str} contains a trailing partial character. If an error occurs then
+the index of the invalid input is stored here.
+
+@item items-written
+location to store number of characters written or @samp{@code{#f}}. The value
+here stored does not include the trailing 0 character.
+
+@item error
+location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
+of the errors in @code{<g-convert-error>} other than
+@samp{G_CONVERT_ERROR_NO_CONVERSION} may occur.
+
+@item ret
+a pointer to a newly allocated UCS-4 string. This value must be freed with
+@code{g-free}. If an error occurs, @samp{@code{#f}} will be returned and
+@var{error} set.
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf8-to-ucs4-fast  ( @var{str}   @code{mchars} )  ( @var{len}   @code{long} )   @result{}  ( @var{ret}   @code{<gunichar*>} )  ( @var{items_written}   @code{long} )
+Convert a string from UTF-8 to a 32-bit fixed width representation as UCS-4,
+assuming valid UTF-8 input. This function is roughly twice as fast as
+@code{g-utf8-to-ucs4} but does no error checking on the input.
+
+@table @var
+@item str
+a UTF-8 encoded string
+
+@item len
+the maximum length of @var{str} to use. If @var{len} < 0, then the string is
+nul-terminated.
+
+@item items-written
+location to store the number of characters in the result, or @samp{@code{#f}}.
+
+@item ret
+a pointer to a newly allocated UCS-4 string. This value must be freed with
+@code{g-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf16-to-ucs4  ( @var{str}   @code{<gunichar2*>} )  ( @var{len}   @code{long} )   @result{}  ( @var{ret}   @code{<gunichar*>} )  ( @var{items_read}   @code{long} )  ( @var{items_written}   @code{long} )
+Convert a string from UTF-16 to UCS-4. The result will be terminated with a 0
+character.
+
+@table @var
+@item str
+a UTF-16 encoded string
+
+@item len
+the maximum length (number of @code{<gunichar2>}) of @var{str} to use. If
+@var{len} < 0, then the string is terminated with a 0 character.
+
+@item items-read
+location to store number of words read, or @samp{@code{#f}}. If
+@samp{@code{#f}}, then @samp{G_CONVERT_ERROR_PARTIAL_INPUT} will be returned in
+case @var{str} contains a trailing partial character. If an error occurs then
+the index of the invalid input is stored here.
+
+@item items-written
+location to store number of characters written, or @samp{@code{#f}}. The value
+stored here does not include the trailing 0 character.
+
+@item error
+location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
+of the errors in @code{<g-convert-error>} other than
+@samp{G_CONVERT_ERROR_NO_CONVERSION} may occur.
+
+@item ret
+a pointer to a newly allocated UCS-4 string. This value must be freed with
+@code{g-free}. If an error occurs, @samp{@code{#f}} will be returned and
+@var{error} set.
+
+@end table
+
+@end deffn
+
+@deffn Function g-utf16-to-utf8  ( @var{str}   @code{<gunichar2*>} )  ( @var{len}   @code{long} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{items_read}   @code{long} )  ( @var{items_written}   @code{long} )
+Convert a string from UTF-16 to UTF-8. The result will be terminated with a 0
+byte.
+
+Note that the input is expected to be already in native endianness, an initial
+byte-order-mark character is not handled specially. @code{g-convert} can be used
+to convert a byte buffer of UTF-16 data of ambiguous endianess.
+
+@table @var
+@item str
+a UTF-16 encoded string
+
+@item len
+the maximum length (number of @code{<gunichar2>}) of @var{str} to use. If
+@var{len} < 0, then the string is terminated with a 0 character.
+
+@item items-read
+location to store number of words read, or @samp{@code{#f}}. If
+@samp{@code{#f}}, then @samp{G_CONVERT_ERROR_PARTIAL_INPUT} will be returned in
+case @var{str} contains a trailing partial character. If an error occurs then
+the index of the invalid input is stored here.
+
+@item items-written
+location to store number of bytes written, or @samp{@code{#f}}. The value stored
+here does not include the trailing 0 byte.
+
+@item error
+location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
+of the errors in @code{<g-convert-error>} other than
+@samp{G_CONVERT_ERROR_NO_CONVERSION} may occur.
+
+@item ret
+a pointer to a newly allocated UTF-8 string. This value must be freed with
+@code{g-free}. If an error occurs, @samp{@code{#f}} will be returned and
+@var{error} set.
+
+@end table
+
+@end deffn
+
+@deffn Function g-ucs4-to-utf16  ( @var{str}   @code{<gunichar*>} )  ( @var{len}   @code{long} )   @result{}  ( @var{ret}   @code{<gunichar2*>} )  ( @var{items_read}   @code{long} )  ( @var{items_written}   @code{long} )
+Convert a string from UCS-4 to UTF-16. A 0 character will be added to the result
+after the converted text.
+
+@table @var
+@item str
+a UCS-4 encoded string
+
+@item len
+the maximum length (number of characters) of @var{str} to use. If @var{len} < 0,
+then the string is terminated with a 0 character.
+
+@item items-read
+location to store number of bytes read, or @samp{@code{#f}}. If an error occurs
+then the index of the invalid input is stored here.
+
+@item items-written
+location to store number of @code{<gunichar2>} written, or @samp{@code{#f}}. The
+value stored here does not include the trailing 0.
+
+@item error
+location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
+of the errors in @code{<g-convert-error>} other than
+@samp{G_CONVERT_ERROR_NO_CONVERSION} may occur.
+
+@item ret
+a pointer to a newly allocated UTF-16 string. This value must be freed with
+@code{g-free}. If an error occurs, @samp{@code{#f}} will be returned and
+@var{error} set.
+
+@end table
+
+@end deffn
+
+@deffn Function g-ucs4-to-utf8  ( @var{str}   @code{<gunichar*>} )  ( @var{len}   @code{long} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{items_read}   @code{long} )  ( @var{items_written}   @code{long} )
+Convert a string from a 32-bit fixed width representation as UCS-4. to UTF-8.
+The result will be terminated with a 0 byte.
+
+@table @var
+@item str
+a UCS-4 encoded string
+
+@item len
+the maximum length (number of characters) of @var{str} to use. If @var{len} < 0,
+then the string is terminated with a 0 character.
+
+@item items-read
+location to store number of characters read, or @samp{@code{#f}}.
+
+@item items-written
+location to store number of bytes written or @samp{@code{#f}}. The value here
+stored does not include the trailing 0 byte.
+
+@item error
+location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
+of the errors in @code{<g-convert-error>} other than
+@samp{G_CONVERT_ERROR_NO_CONVERSION} may occur.
+
+@item ret
+a pointer to a newly allocated UTF-8 string. This value must be freed with
+@code{g-free}. If an error occurs, @samp{@code{#f}} will be returned and
+@var{error} set. In that case, @var{items-read} will be set to the position of
+the first invalid input character.
+
+@end table
+
+@end deffn
+
+@deffn Function g-unichar-to-utf8  ( @var{c}   @code{unsigned-int32} )  ( @var{outbuf}   @code{mchars} )   @result{}  ( @var{ret}   @code{int} )
+Converts a single character to UTF-8.
+
+@table @var
+@item c
+a Unicode character code
+
+@item outbuf
+output buffer, must have at least 6 bytes of space. If @samp{@code{#f}}, the
+length will be computed and returned and nothing will be written to
+@var{outbuf}.
+
+@item ret
+number of bytes written
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

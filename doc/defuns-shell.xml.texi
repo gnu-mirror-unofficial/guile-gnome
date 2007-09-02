@@ -1,0 +1,57 @@
+
+@c %start of fragment
+
+@deffn Function g-shell-quote  ( @var{unquoted_string}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+Quotes a string so that the shell (/bin/sh) will interpret the quoted string to
+mean @var{unquoted-string}. If you pass a filename to the shell, for example,
+you should first quote it with this function. The return value must be freed
+with @code{g-free}. The quoting style used is undefined (single or double quotes
+may be used).
+
+@table @var
+@item unquoted-string
+a literal string
+
+@item ret
+quoted string
+
+@end table
+
+@end deffn
+
+@deffn Function g-shell-unquote  ( @var{quoted_string}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+Unquotes a string as the shell (/bin/sh) would. Only handles quotes; if a string
+contains file globs, arithmetic operators, variables, backticks, redirections,
+or other special-to-the-shell features, the result will be different from the
+result a real shell would produce (the variables, backticks, etc. will be passed
+through literally instead of being expanded). This function is guaranteed to
+succeed if applied to the result of @code{g-shell-quote}. If it fails, it
+returns @samp{@code{#f}} and sets the error. The @var{quoted-string} need not
+actually contain quoted or escaped text; @code{g-shell-unquote} simply goes
+through the string and unquotes/unescapes anything that the shell would. Both
+single and double quotes are handled, as are escapes including escaped newlines.
+The return value must be freed with @code{g-free}. Possible errors are in the
+@code{<g-shell-error>} domain.
+
+Shell quoting rules are a bit strange. Single quotes preserve the literal string
+exactly. escape sequences are not allowed; not even \' - if you want a ' in the
+quoted text, you have to do something like 'foo'\''bar'. Double quotes allow $,
+`, ", \, and newline to be escaped with backslash. Otherwise double quotes
+preserve things literally.
+
+@table @var
+@item quoted-string
+shell-quoted string
+
+@item error
+error return location or NULL
+
+@item ret
+an unquoted string
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,406 @@
+
+@c %start of fragment
+
+@deffn Function g-get-application-name   @result{}  ( @var{ret}   @code{mchars} )
+Gets a human-readable name for the application, as set by
+@code{g-set-application-name}. This name should be localized if possible, and is
+intended for display to the user. Contrast with @code{g-get-prgname}, which gets
+a non-localized name. If @code{g-set-application-name} has not been called,
+returns the result of @code{g-get-prgname} (which may be @samp{@code{#f}} if
+@code{g-set-prgname} has also not been called).
+
+@table @var
+@item ret
+human-readable application name. may return @samp{@code{#f}}
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function g-set-application-name  ( @var{application_name}   @code{mchars} )
+Sets a human-readable name for the application. This name should be localized if
+possible, and is intended for display to the user. Contrast with
+@code{g-set-prgname}, which sets a non-localized name. @code{g-set-prgname} will
+be called automatically by @code{gtk-init}, but @code{g-set-application-name}
+will not.
+
+Note that for thread safety reasons, this function can only be called once.
+
+The application name will be used in contexts such as error messages, or when
+displaying an application's name in the task list.
+
+@table @var
+@item application-name
+localized name of the application
+
+@end table
+
+@end deffn
+
+@deffn Function g-get-prgname   @result{}  ( @var{ret}   @code{mchars} )
+Gets the name of the program. This name should @emph{not} be localized, contrast
+with @code{g-get-application-name}. (If you are using GDK or GTK+ the program
+name is set in @code{gdk-init}, which is called by @code{gtk-init}. The program
+name is found by taking the last component of @samp{argv[0]}.)
+
+@table @var
+@item ret
+the name of the program. The returned string belongs to GLib and must not be
+modified or freed.
+
+@end table
+
+@end deffn
+
+@deffn Function g-set-prgname  ( @var{prgname}   @code{mchars} )
+Sets the name of the program. This name should @emph{not} be localized, contrast
+with @code{g-set-application-name}. Note that for thread-safety reasons this
+function can only be called once.
+
+@table @var
+@item prgname
+the name of the program.
+
+@end table
+
+@end deffn
+
+@deffn Function g-getenv  ( @var{variable}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+Returns the value of an environment variable. The name and value are in the GLib
+file name encoding. On UNIX, this means the actual bytes which might or might
+not be in some consistent character set and encoding. On Windows, it is in
+UTF-8. On Windows, in case the environment variable's value contains references
+to other environment variables, they are expanded.
+
+@table @var
+@item variable
+the environment variable to get, in the GLib file name encoding.
+
+@item ret
+the value of the environment variable, or @samp{@code{#f}} if the environment
+variable is not found. The returned string may be overwritten by the next call
+to @code{g-getenv}, @code{g-setenv} or @code{g-unsetenv}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-setenv  ( @var{variable}   @code{mchars} )  ( @var{value}   @code{mchars} )  ( @var{overwrite}   @code{bool} )   @result{}  ( @var{ret}   @code{bool} )
+Sets an environment variable. Both the variable's name and value should be in
+the GLib file name encoding. On UNIX, this means that they can be any sequence
+of bytes. On Windows, they should be in UTF-8.
+
+Note that on some systems, when variables are overwritten, the memory used for
+the previous variables and its value isn't reclaimed.
+
+@table @var
+@item variable
+the environment variable to set, must not contain '='.
+
+@item value
+the value for to set the variable to.
+
+@item overwrite
+whether to change the variable if it already exists.
+
+@item ret
+@samp{FALSE} if the environment variable couldn't be set.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function g-unsetenv  ( @var{variable}   @code{mchars} )
+Removes an environment variable from the environment.
+
+Note that on some systems, when variables are overwritten, the memory used for
+the previous variables and its value isn't reclaimed. Furthermore, this function
+can't be guaranteed to operate in a threadsafe way.
+
+@table @var
+@item variable
+the environment variable to remove, must not contain '='.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function g-get-user-name   @result{}  ( @var{ret}   @code{mchars} )
+Gets the user name of the current user. The encoding of the returned string is
+system-defined. On UNIX, it might be the preferred file name encoding, or
+something else, and there is no guarantee that it is even consistent on a
+machine. On Windows, it is always UTF-8.
+
+@table @var
+@item ret
+the user name of the current user.
+
+@end table
+
+@end deffn
+
+@deffn Function g-get-real-name   @result{}  ( @var{ret}   @code{mchars} )
+Gets the real name of the user. This usually comes from the user's entry in the
+@file{passwd} file. The encoding of the returned string is system-defined. (On
+Windows, it is, however, always UTF-8.) If the real user name cannot be
+determined, the string "Unknown" is returned.
+
+@table @var
+@item ret
+the user's real name.
+
+@end table
+
+@end deffn
+
+@deffn Function g-get-user-cache-dir   @result{}  ( @var{ret}   @code{mchars} )
+Returns a base directory in which to store non-essential, cached data specific
+to particular user.
+
+On UNIX platforms this is determined using the mechanisms described in the
+@uref{http://www.freedesktop.org/Standards/basedir-spec, XDG Base Directory
+Specification}
+
+@table @var
+@item ret
+a string owned by GLib that must not be modified or freed.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function g-get-user-data-dir   @result{}  ( @var{ret}   @code{mchars} )
+Returns a base directory in which to access application data such as icons that
+is customized for a particular user.
+
+On UNIX platforms this is determined using the mechanisms described in the
+@uref{http://www.freedesktop.org/Standards/basedir-spec, XDG Base Directory
+Specification}
+
+@table @var
+@item ret
+a string owned by GLib that must not be modified or freed.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function g-get-user-config-dir   @result{}  ( @var{ret}   @code{mchars} )
+Returns a base directory in which to store user-specific application
+configuration information such as user preferences and settings.
+
+On UNIX platforms this is determined using the mechanisms described in the
+@uref{http://www.freedesktop.org/Standards/basedir-spec, XDG Base Directory
+Specification}
+
+@table @var
+@item ret
+a string owned by GLib that must not be modified or freed.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function g-get-host-name   @result{}  ( @var{ret}   @code{mchars} )
+Return a name for the machine.
+
+The returned name is not necessarily a fully-qualified domain name, or even
+present in DNS or some other name service at all. It need not even be unique on
+your local network or site, but usually it is. Callers should not rely on the
+return value having any specific properties like uniqueness for security
+purposes. Even if the name of the machine is changed while an application is
+running, the return value from this function does not change. The returned
+string is owned by GLib and should not be modified or freed. If no name can be
+determined, a default fixed string "localhost" is returned.
+
+@table @var
+@item ret
+the host name of the machine.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function g-get-home-dir   @result{}  ( @var{ret}   @code{mchars} )
+Gets the current user's home directory.
+
+Note that in contrast to traditional UNIX tools, this function prefers
+@file{passwd} entries over the @env{HOME} environment variable.
+
+@table @var
+@item ret
+the current user's home directory.
+
+@end table
+
+@end deffn
+
+@deffn Function g-get-tmp-dir   @result{}  ( @var{ret}   @code{mchars} )
+Gets the directory to use for temporary files. This is found from inspecting the
+environment variables @env{TMPDIR}, @env{TMP}, and @env{TEMP} in that order. If
+none of those are defined "/tmp" is returned on UNIX and "C:\" on Windows. The
+encoding of the returned string is system-defined. On Windows, it is always
+UTF-8. The return value is never @samp{@code{#f}}.
+
+@table @var
+@item ret
+the directory to use for temporary files.
+
+@end table
+
+@end deffn
+
+@deffn Function g-get-current-dir   @result{}  ( @var{ret}   @code{mchars} )
+Gets the current directory. The returned string should be freed when no longer
+needed. The encoding of the returned string is system defined. On Windows, it is
+always UTF-8.
+
+@table @var
+@item ret
+the current directory.
+
+@end table
+
+@end deffn
+
+@deffn Function g-basename  ( @var{file_name}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@samp{g_basename} has been deprecated since version 2.2 and should not be used
+in newly-written code. Use @code{g-path-get-basename} instead, but notice that
+@code{g-path-get-basename} allocates new memory for the returned string, unlike
+this function which returns a pointer into the argument.
+
+Gets the name of the file without any leading directory components. It returns a
+pointer into the given file name string.
+
+@table @var
+@item file-name
+the name of the file.
+
+@item ret
+the name of the file without any leading directory components.
+
+@end table
+
+@end deffn
+
+@deffn Function g-path-is-absolute  ( @var{file_name}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )
+Returns @samp{TRUE} if the given @var{file-name} is an absolute file name, i.e.
+it contains a full path from the root directory such as "/usr/local" on UNIX or
+"C:\windows" on Windows systems.
+
+@table @var
+@item file-name
+a file name.
+
+@item ret
+@samp{TRUE} if @var{file-name} is an absolute path.
+
+@end table
+
+@end deffn
+
+@deffn Function g-path-skip-root  ( @var{file_name}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+Returns a pointer into @var{file-name} after the root component, i.e. after the
+"/" in UNIX or "C:\" under Windows. If @var{file-name} is not an absolute path
+it returns @samp{@code{#f}}.
+
+@table @var
+@item file-name
+a file name.
+
+@item ret
+a pointer into @var{file-name} after the root component.
+
+@end table
+
+@end deffn
+
+@deffn Function g-path-get-basename  ( @var{file_name}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+Gets the last component of the filename. If @var{file-name} ends with a
+directory separator it gets the component before the last slash. If
+@var{file-name} consists only of directory separators (and on Windows, possibly
+a drive letter), a single separator is returned. If @var{file-name} is empty, it
+gets ".".
+
+@table @var
+@item file-name
+the name of the file.
+
+@item ret
+a newly allocated string containing the last component of the filename.
+
+@end table
+
+@end deffn
+
+@deffn Function g-path-get-dirname  ( @var{file_name}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+Gets the directory components of a file name. If the file name has no directory
+components "." is returned. The returned string should be freed when no longer
+needed.
+
+@table @var
+@item file-name
+the name of the file.
+
+@item ret
+the directory components of the file.
+
+@end table
+
+@end deffn
+
+@deffn Function g-find-program-in-path  ( @var{program}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+Locates the first executable named @var{program} in the user's path, in the same
+way that @code{execvp} would locate it. Returns an allocated string with the
+absolute path name, or @samp{@code{#f}} if the program is not found in the path.
+If @var{program} is already an absolute path, returns a copy of @var{program} if
+@var{program} exists and is executable, and @samp{@code{#f}} otherwise. On
+Windows, if @var{program} does not have a file type suffix, tries with the
+suffixes .exe, .cmd, .bat and .com, and the suffixes in the @env{PATHEXT}
+environment variable.
+
+On Windows, it looks for the file in the same way as @code{create-process}
+would. This means first in the directory where the executing program was loaded
+from, then in the current directory, then in the Windows 32-bit system
+directory, then in the Windows directory, and finally in the directories in the
+@env{PATH} environment variable. If the program is found, the return value
+contains the full name including the type suffix.
+
+@table @var
+@item program
+a program name in the GLib file name encoding
+
+@item ret
+absolute path, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function g-nullify-pointer  ( @var{nullify_location}   @code{<gpointer*>} )
+Set the pointer at the specified location to @samp{@code{#f}}.
+
+@table @var
+@item nullify-location
+the memory address of the pointer.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

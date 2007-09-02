@@ -1,3 +1,17 @@
+2007-09-02  Andy Wingo  <wingo@pobox.com>
+
+	* doc/guile-gnome-glib.texi: New file, includes all the rest to
+	make glib docs.
+
+	* doc/Makefile.am: Add rules to regenerate guile-gnome-glib.texi's
+	dependencies. Add guile-gnome-glib manual.
+
+	* gnome/gw/support/gtk-doc.scm: Add a couple of public methods and
+	hacks to get GLib docbook to work. Will document more later.
+
+	* doc/defuns-*.texi:
+	* doc/section-*.texi: Add generated documentation.
+
 2007-09-01  Andy Wingo  <wingo@pobox.com>
 
 	* test-suite/Makefile.am: Add some hairyness for the api check

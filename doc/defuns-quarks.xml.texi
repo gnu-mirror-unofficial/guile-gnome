@@ -1,0 +1,54 @@
+
+@c %start of fragment
+
+@deffn Function g-quark-from-string  ( @var{string}   @code{mchars} )   @result{}  ( @var{ret}   @code{unsigned-int} )
+Gets the @code{<g-quark>} identifying the given string. If the string does not
+currently have an associated @code{<g-quark>}, a new @code{<g-quark>} is
+created, using a copy of the string.
+
+@table @var
+@item string
+a string.
+
+@item ret
+the @code{<g-quark>} identifying the string.
+
+@end table
+
+@end deffn
+
+@deffn Function g-quark-to-string  ( @var{quark}   @code{unsigned-int} )   @result{}  ( @var{ret}   @code{mchars} )
+Gets the string associated with the given @code{<g-quark>}.
+
+@table @var
+@item quark
+a @code{<g-quark>}.
+
+@item ret
+the string associated with the @code{<g-quark>}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-quark-try-string  ( @var{string}   @code{mchars} )   @result{}  ( @var{ret}   @code{unsigned-int} )
+Gets the @code{<g-quark>} associated with the given string, or 0 if the string
+has no associated @code{<g-quark>}.
+
+If you want the GQuark to be created if it doesn't already exist, use
+@code{g-quark-from-string} or @code{g-quark-from-static-string}.
+
+@table @var
+@item string
+a string.
+
+@item ret
+the @code{<g-quark>} associated with the string, or 0 if there is no
+@code{<g-quark>} associated with the string.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

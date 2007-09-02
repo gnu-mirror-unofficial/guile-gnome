@@ -1,0 +1,44 @@
+
+@c %start of fragment
+
+@deffn Function g-base64-encode  ( @var{data}   @code{<guchar*>} )  ( @var{len}   @code{size_t} )   @result{}  ( @var{ret}   @code{mchars} )
+Encode a sequence of binary data into its Base-64 stringified representation.
+
+@table @var
+@item data
+the binary data to encode
+
+@item len
+the length of @var{data}
+
+@item ret
+a newly allocated, zero-terminated Base-64 encoded string representing
+@var{data}.
+
+@end table
+
+Since 2.12
+
+@end deffn
+
+@deffn Function g-base64-decode  ( @var{text}   @code{mchars} )   @result{}  ( @var{ret}   @code{<guchar*>} )  ( @var{out_len}   @code{size_t} )
+Decode a sequence of Base-64 encoded text into binary data
+
+@table @var
+@item text
+zero-terminated string with base64 text to decode
+
+@item out-len
+The length of the decoded data is written here
+
+@item ret
+a newly allocated buffer containing the binary data that @var{text} represents
+
+@end table
+
+Since 2.12
+
+@end deffn
+
+
+@c %end of fragment

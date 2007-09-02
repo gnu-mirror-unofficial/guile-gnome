@@ -1,0 +1,249 @@
+
+@c %start of fragment
+
+@deffn Function g-locale-to-utf8  ( @var{opsysstring}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{bytes_read}   @code{size_t} )  ( @var{bytes_written}   @code{size_t} )
+Converts a string which is in the encoding used for strings by the C runtime
+(usually the same as that used by the operating system) in the current locale
+into a UTF-8 string.
+
+@table @var
+@item opsysstring
+a string in the encoding of the current locale. On Windows this means the system
+codepage.
+
+@item len
+the length of the string, or -1 if the string is nul-terminated.
+
+@item bytes-read
+location to store the number of bytes in the input string that were successfully
+converted, or @samp{@code{#f}}. Even if the conversion was successful, this may
+be less than @var{len} if there were partial characters at the end of the input.
+If the error @code{<g-convert-error-illegal-sequence>} occurs, the value stored
+will the byte offset after the last valid input sequence.
+
+@item bytes-written
+the number of bytes stored in the output buffer (not including the terminating
+nul).
+
+@item error
+location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
+of the errors in @code{<g-convert-error>} may occur.
+
+@item ret
+The converted string, or @samp{@code{#f}} on an error.
+
+@end table
+
+@end deffn
+
+@deffn Function g-filename-to-utf8  ( @var{opsysstring}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{bytes_read}   @code{size_t} )  ( @var{bytes_written}   @code{size_t} )
+Converts a string which is in the encoding used by GLib for filenames into a
+UTF-8 string. Note that on Windows GLib uses UTF-8 for filenames.
+
+@table @var
+@item opsysstring
+a string in the encoding for filenames
+
+@item len
+the length of the string, or -1 if the string is nul-terminated.
+
+@item bytes-read
+location to store the number of bytes in the input string that were successfully
+converted, or @samp{@code{#f}}. Even if the conversion was successful, this may
+be less than @var{len} if there were partial characters at the end of the input.
+If the error @code{<g-convert-error-illegal-sequence>} occurs, the value stored
+will the byte offset after the last valid input sequence.
+
+@item bytes-written
+the number of bytes stored in the output buffer (not including the terminating
+nul).
+
+@item error
+location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
+of the errors in @code{<g-convert-error>} may occur.
+
+@item ret
+The converted string, or @samp{@code{#f}} on an error.
+
+@end table
+
+@end deffn
+
+@deffn Function g-filename-from-utf8  ( @var{utf8string}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{bytes_read}   @code{size_t} )  ( @var{bytes_written}   @code{size_t} )
+Converts a string from UTF-8 to the encoding GLib uses for filenames. Note that
+on Windows GLib uses UTF-8 for filenames.
+
+@table @var
+@item utf8string
+a UTF-8 encoded string.
+
+@item len
+the length of the string, or -1 if the string is nul-terminated.
+
+@item bytes-read
+location to store the number of bytes in the input string that were successfully
+converted, or @samp{@code{#f}}. Even if the conversion was successful, this may
+be less than @var{len} if there were partial characters at the end of the input.
+If the error @code{<g-convert-error-illegal-sequence>} occurs, the value stored
+will the byte offset after the last valid input sequence.
+
+@item bytes-written
+the number of bytes stored in the output buffer (not including the terminating
+nul).
+
+@item error
+location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
+of the errors in @code{<g-convert-error>} may occur.
+
+@item ret
+The converted string, or @samp{@code{#f}} on an error.
+
+@end table
+
+@end deffn
+
+@deffn Function g-filename-from-uri  ( @var{uri}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{hostname}   @code{mchars} )
+Converts an escaped ASCII-encoded URI to a local filename in the encoding used
+for filenames.
+
+@table @var
+@item uri
+a uri describing a filename (escaped, encoded in ASCII).
+
+@item hostname
+Location to store hostname for the URI, or @samp{@code{#f}}. If there is no
+hostname in the URI, @samp{@code{#f}} will be stored in this location.
+
+@item error
+location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
+of the errors in @code{<g-convert-error>} may occur.
+
+@item ret
+a newly-allocated string holding the resulting filename, or @samp{@code{#f}} on
+an error.
+
+@end table
+
+@end deffn
+
+@deffn Function g-filename-to-uri  ( @var{filename}   @code{mchars} )  ( @var{hostname}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+Converts an absolute filename to an escaped ASCII-encoded URI, with the path
+component following Section 3.3. of RFC 2396.
+
+@table @var
+@item filename
+an absolute filename specified in the GLib file name encoding, which is the
+on-disk file name bytes on Unix, and UTF-8 on Windows
+
+@item hostname
+A UTF-8 encoded hostname, or @samp{@code{#f}} for none.
+
+@item error
+location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
+of the errors in @code{<g-convert-error>} may occur.
+
+@item ret
+a newly-allocated string holding the resulting URI, or @samp{@code{#f}} on an
+error.
+
+@end table
+
+@end deffn
+
+@deffn Function g-filename-display-name  ( @var{filename}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+Converts a filename into a valid UTF-8 string. The conversion is not necessarily
+reversible, so you should keep the original around and use the return value of
+this function only for display purposes. Unlike @code{g-filename-to-utf8}, the
+result is guaranteed to be non-@samp{@code{#f}} even if the filename actually
+isn't in the GLib file name encoding.
+
+If GLib can not make sense of the encoding of @var{filename}, as a last resort
+it replaces unknown characters with U+FFFD, the Unicode replacement character.
+You can search the result for the UTF-8 encoding of this character (which is
+"\357\277\275" in octal notation) to find out if @var{filename} was in an
+invalid encoding.
+
+If you know the whole pathname of the file you should use
+@code{g-filename-display-basename}, since that allows location-based translation
+of filenames.
+
+@table @var
+@item filename
+a pathname hopefully in the GLib file name encoding
+
+@item ret
+a newly allocated string containing a rendition of the filename in valid UTF-8
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function g-filename-display-basename  ( @var{filename}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+Returns the display basename for the particular filename, guaranteed to be valid
+UTF-8. The display name might not be identical to the filename, for instance
+there might be problems converting it to UTF-8, and some files can be translated
+in the display.
+
+If GLib can not make sense of the encoding of @var{filename}, as a last resort
+it replaces unknown characters with U+FFFD, the Unicode replacement character.
+You can search the result for the UTF-8 encoding of this character (which is
+"\357\277\275" in octal notation) to find out if @var{filename} was in an
+invalid encoding.
+
+You must pass the whole absolute pathname to this functions so that translation
+of well known locations can be done.
+
+This function is preferred over @code{g-filename-display-name} if you know the
+whole path, as it allows translation.
+
+@table @var
+@item filename
+an absolute pathname in the GLib file name encoding
+
+@item ret
+a newly allocated string containing a rendition of the basename of the filename
+in valid UTF-8
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function g-locale-from-utf8  ( @var{utf8string}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{bytes_read}   @code{size_t} )  ( @var{bytes_written}   @code{size_t} )
+Converts a string from UTF-8 to the encoding used for strings by the C runtime
+(usually the same as that used by the operating system) in the current locale.
+
+@table @var
+@item utf8string
+a UTF-8 encoded string
+
+@item len
+the length of the string, or -1 if the string is nul-terminated.
+
+@item bytes-read
+location to store the number of bytes in the input string that were successfully
+converted, or @samp{@code{#f}}. Even if the conversion was successful, this may
+be less than @var{len} if there were partial characters at the end of the input.
+If the error @code{<g-convert-error-illegal-sequence>} occurs, the value stored
+will the byte offset after the last valid input sequence.
+
+@item bytes-written
+the number of bytes stored in the output buffer (not including the terminating
+nul).
+
+@item error
+location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
+of the errors in @code{<g-convert-error>} may occur.
+
+@item ret
+The converted string, or @samp{@code{#f}} on an error.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

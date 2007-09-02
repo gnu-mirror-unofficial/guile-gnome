@@ -32,8 +32,12 @@
   #:use-module ((srfi srfi-1) #:select (append-map))
   #:use-module (srfi srfi-13)
 
+  #:use-module (texinfo)
   #:use-module (texinfo docbook)
+  #:use-module (texinfo serialize)
   #:use-module (match-bind)
+
+  #:use-module (g-wrap)
 
   #:use-module (gnome gobject utils)
 
@@ -41,7 +45,10 @@
             gtk-doc-sdocbook-title
             gtk-doc-sdocbook-subtitle
             gtk-doc-sdocbook->description-fragment
-            gtk-doc-sdocbook->def-list))
+            gtk-doc-sdocbook->def-list
+            gtk-doc-sdocbook->def-list/g-wrap
+            gtk-doc->texi-stubs
+            gtk-doc->texi-defuns))
 
 (define (attr-ref attrs name . default)
   (or (and=> (assq name (cdr attrs)) cadr)
@@ -49,10 +56,19 @@
           (car default)
           (error "missing attribute" name))))
 
-;; Make SSAX understand &nbsp; -- nasty, but that's how it is
-(set! ssax:predefined-parsed-entities
-      (assoc-set! ssax:predefined-parsed-entities
-                  'nbsp " "))
+;; Make SSAX understand &nbsp; and &percnt; -- nasty, but that's how it
+;; is
+(for-each
+ (lambda (pair)
+   (set! ssax:predefined-parsed-entities
+         (assoc-set! ssax:predefined-parsed-entities
+                     (car pair) (cdr pair))))
+ '((nbsp . " ")
+   (percnt . "%")
+   (oacute . "ó")
+   (mdash . "&#x2014;")
+   (ast . "&#x002A;")
+   (num . "&#x0023;")))
 
 (define (docbook->sdocbook docbook-fragment)
   "Parse a docbook file @var{docbook-fragment} into SXML. Simply calls
@@ -99,9 +115,9 @@ gtk-doc emits."
                                       stars)
                        name
                        args)
-                (if (string=? "void" arg)
-                    args
-                    (error "could not parse" arg))))
+                (cond ((string=? "void" arg) args)
+                      ((string=? "void" arg) args)
+                      (else (error "could not parse" arg)))))
   (let ((flat (string-value elt)))
     (match-bind "^(.*?) ([^ ]+) +\\((.*)\\);" flat (_ ret-type name args)
                 `((data-type
@@ -186,8 +202,16 @@ gtk-doc emits."
      . ,(lambda (tag body)
           `(code ,(symbol->string (gtype-name->class-name body)))))
     (function
-     . ,(lambda (tag body)
-          `(code ,(gtype-name->scheme-name (strip-final-parens body)))))
+     . ,(lambda (tag body . ignored)
+          (or (null? ignored) (warn "ignored function tail" ignored))
+          `(code ,(if (pair? body) body
+                      (gtype-name->scheme-name (strip-final-parens body))))))
+    (xref . ,(lambda (tag attrs)
+               `(emph "(the missing figure, " ,(cadr (assq 'linkend (cdr attrs))))))
+    (figure
+     *preorder*
+     . ,(lambda (tag attrs . body)
+          `(para "(The missing figure, "  ,(cadr (assq 'id (cdr attrs))))))
     (indexterm
      *preorder*
      . ,(lambda (tag . body)
@@ -266,6 +290,24 @@ as produced by gtk-doc, translated into texinfo."
            (pre-post-order x *gtk-doc-sdocbook->stexi-desc-rules*))
          (sdocbook-description sdocbook))))
 
+(define (gtk-doc->texi-stubs files)
+  (for-each
+   (lambda (file)
+     (let* ((sdocbook (docbook->sdocbook file))
+            (basename (basename file))
+            (docs `(*fragment*
+                    (node (% (name ,@(gtk-doc-sdocbook-title sdocbook))))
+                    (chapter ,@(gtk-doc-sdocbook-title sdocbook)
+                             ": " ,@(gtk-doc-sdocbook-subtitle sdocbook))
+                    (section "Overview")
+                    ,@(cdr (gtk-doc-sdocbook->description-fragment sdocbook))
+                    (section "Usage")
+                    (include ,(string-append "defuns-" basename ".texi")))))
+       (with-output-to-file (string-append "section-" basename ".texi")
+         (lambda ()
+           (display (stexi->texi docs))))))
+   files))
+
 (define (gtk-doc-sdocbook->def-list sdocbook process-def)
   "Extract documentation for all functions defined in the docbook
 nodeset @var{sdocbook}.
@@ -293,3 +335,128 @@ source, for example a file of hand-written documentation overrides."
             seed)))
     '()
     sdocbook)))
+
+(define (input-arg-names func)
+  (map name (input-arguments func)))
+(define (input-arg-type-names func)
+  (map name (map type (map typespec (input-arguments func)))))
+(define (output-arg-names func)
+  (map name (output-arguments func)))
+(define (output-arg-type-names func)
+  (map name (map type (map typespec (output-arguments func)))))
+(define (return-type-name func)
+  (name (return-type func)))
+
+(define (make-function-hash wrapset)
+  (let ((ret (make-hash-table)))
+    (fold-functions
+     (lambda (f nil)
+       (let ((in (input-arguments f))
+             (out (output-arguments f)))
+         (hashq-set! ret (name f) f)))
+     #f
+     wrapset)
+    ret))
+
+(define (parse-func-name elt)
+  (string->symbol
+   (gtype-name->scheme-name
+    (let ((flat (string-value elt)))
+      (match-bind "^(.*?) ([^ ]+) +\\((.*)\\);"
+                  flat (_ ret-type name args)
+                  name
+                  (error "could not parse" flat))))))
+
+(define (function-stexi-arguments f)
+  (define (arg-texinfo name type)
+    `(" (" (var ,(symbol->string name)) " "
+      (code ,(symbol->string type)) ")"))
+  (let ((inputs (append-map arg-texinfo (input-arg-names f)
+                            (input-arg-type-names f)))
+        (outputs (apply append-map arg-texinfo
+                        (if (eq? (return-type-name f) 'void)
+                            (list (output-arg-names f)
+                                  (output-arg-type-names f))
+                            (list (cons 'ret
+                                        (output-arg-names f))
+                                  (cons (return-type-name f)
+                                        (output-arg-type-names f)))))))
+    (if (null? outputs)
+        inputs
+        (append inputs '(" " (result)) outputs))))
+
+(define (make-defs/g-wrap elt funcs body process-def)
+  (or
+   (and=>
+    (hashq-ref funcs (parse-func-name elt))
+    (lambda (f)
+      (let ((deffn (process-def
+                    (name f)
+                    `(deffn (% (name ,(symbol->string (name f)))
+                               (category "Function")
+                               (arguments
+                                ,@(function-stexi-arguments f)))
+                       ,@(map
+                          (lambda (fragment)
+                            (pre-post-order
+                             fragment
+                             *gtk-doc-sdocbook->stexi-def-rules*))
+                          (filter-empty-elements
+                           (replace-titles
+                            (sdocbook-flatten
+                             (cons '*fragment* body))))))))
+            (generic (generic-name f)))
+        `(,@(if generic
+                `((deffn (% (name ,(symbol->string name))
+                            (category "Method"))
+                    (para)))
+                '())
+          ,deffn))))
+   '()))
+
+(define (gtk-doc-sdocbook->def-list/g-wrap sdocbook process-def wrapset)
+  "Extract documentation for all functions defined in the docbook
+nodeset @var{sdocbook}.
+
+This procedure is similar to @code{gtk-doc-sdocbook->def-list}, except
+that instead using heuristics to guess at what the input and output
+function arguments are, we can read them directly from the G-Wrap
+wrapset @var{wrapset}. Only those procedures present in @var{wrapset}
+are output."
+  (let ((funcs (make-function-hash wrapset)))
+    (reverse
+     (sdocbook-fold-defuns
+      (lambda (fragment seed)
+        (append
+         (let lp ((body fragment))
+           (let ((elt (car body)))
+             (if (and (pair? elt) (eq? (car elt) 'programlisting))
+                 (reverse
+                  (make-defs/g-wrap elt funcs (cdr body) process-def))
+                 (lp (cdr body)))))
+         seed))
+      '()
+      sdocbook))))
+
+(define (def-name def)
+  (string->symbol (cadr (assq 'name (cdadr def)))))
+
+(define (gtk-doc->texi-defuns overrides module wrapset-name . files)
+  (let* ((defs ((sxpath '(deffn))
+                (call-with-input-file overrides texi-fragment->stexi)))
+         (defs-alist (map cons (map def-name defs) defs)))
+    (for-each
+     (lambda (file)
+       (let* ((sdocbook (docbook->sdocbook file))
+              (basename (basename file))
+              (wrapset (begin
+                         (resolve-interface (call-with-input-string module read))
+                         (get-wrapset 'guile (string->symbol wrapset-name))))
+              (docs (stexi->texi
+                     `(*fragment*
+                       ,@(gtk-doc-sdocbook->def-list/g-wrap
+                          sdocbook (lambda (name def) def) wrapset)))))
+         (with-output-to-file (string-append "defuns-" basename ".texi")
+           (lambda ()
+             (display docs)))))
+     files)))

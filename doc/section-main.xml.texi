@@ -1,0 +1,75 @@
+
+@c %start of fragment
+
+@node The Main Event Loop
+@chapter The Main Event Loop: manages all available sources of events.
+@section Overview
+The main event loop manages all the available sources of events for GLib and
+GTK+ applications. These events can come from any number of different types of
+sources such as file descriptors (plain files, pipes or sockets) and timeouts.
+New types of event sources can also be added using @code{g-source-attach}.
+
+To allow multiple independent sets of sources to be handled in different
+threads, each source is associated with a @code{<g-main-context>}. A
+@code{<g-main-context>} can only be running in a single thread, but sources can
+be added to it and removed from it from other threads.
+
+Each event source is assigned a priority. The default priority,
+@code{<g-priority-default>}, is 0. Values less than 0 denote higher priorities.
+Values greater than 0 denote lower priorities. Events from high priority sources
+are always processed before events from lower priority sources.
+
+Idle functions can also be added, and assigned a priority. These will be run
+whenever no events with a higher priority are ready to be processed.
+
+The @code{<g-main-loop>} data type represents a main event loop. A
+@code{<g-main-loop>} is created with @code{g-main-loop-new}. After adding the
+initial event sources, @code{g-main-loop-run} is called. This continuously
+checks for new events from each of the event sources and dispatches them.
+Finally, the processing of an event from one of the sources leads to a call to
+@code{g-main-loop-quit} to exit the main loop, and @code{g-main-loop-run}
+returns.
+
+It is possible to create new instances of @code{<g-main-loop>} recursively. This
+is often used in GTK+ applications when showing modal dialog boxes. Note that
+event sources are associated with a particular @code{<g-main-context>}, and will
+be checked and dispatched for all main loops associated with that
+@code{<g-main-context>}.
+
+GTK+ contains wrappers of some of these functions, e.g. @code{gtk-main},
+@code{gtk-main-quit} and @code{gtk-events-pending}.
+
+@section Creating new sources types
+One of the unusual features of the GTK+ main loop functionality is that new
+types of event source can be created and used in addition to the builtin type of
+event source. A new event source type is used for handling GDK events. A new
+source type is created by @dfn{deriving} from the @code{<g-source>} structure.
+The derived type of source is represented by a structure that has the
+@code{<g-source>} structure as a first element, and other elements specific to
+the new source type. To create an instance of the new source type, call
+@code{g-source-new} passing in the size of the derived structure and a table of
+functions. These @code{<g-source-funcs>} determine the behavior of the new
+source types.
+
+New source types basically interact with with the main context in two ways.
+Their prepare function in @code{<g-source-funcs>} can set a timeout to determine
+the maximum amount of time that the main loop will sleep before checking the
+source again. In addition, or as well, the source can add file descriptors to
+the set that the main context checks using @code{g-source-add-poll}.
+
+@section Customizing the main loop iteration
+Single iterations of a @code{<g-main-context>} can be run with
+@code{g-main-context-iteration}. In some cases, more detailed control of exactly
+how the details of the main loop work is desired, for instance, when integrating
+the @code{<g-main-loop>} with an external main loop. In such cases, you can call
+the component functions of @code{g-main-context-iteration} directly. These
+functions are @code{g-main-context-prepare}, @code{g-main-context-query},
+@code{g-main-context-check} and @code{g-main-context-dispatch}.
+
+The operation of these functions can best be seen in terms of a state diagram,
+as shown in @emph{(the missing section, mainloop-states}.
+
+@section Usage
+@include defuns-main.xml.texi
+
+@c %end of fragment

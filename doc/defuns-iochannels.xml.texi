@@ -1,0 +1,807 @@
+
+@c %start of fragment
+
+@deffn Function g-io-channel-unix-new  ( @var{fd}   @code{int} )   @result{}  ( @var{ret}   @code{<gio-channel*>} )
+Creates a new @code{<gio-channel>} given a file descriptor. On UNIX systems this
+works for plain files, pipes, and sockets.
+
+The returned @code{<gio-channel>} has a reference count of 1.
+
+The default encoding for @code{<gio-channel>} is UTF-8. If your application is
+reading output from a command using via pipe, you may need to set the encoding
+to the encoding of the current locale (see @code{g-get-charset}) with the
+@code{g-io-channel-set-encoding} function.
+
+If you want to read raw binary data without interpretation, then call the
+@code{g-io-channel-set-encoding} function with @samp{@code{#f}} for the encoding
+argument.
+
+This function is available in GLib on Windows, too, but you should avoid using
+it on Windows. The domain of file descriptors and sockets overlap. There is no
+way for GLib to know which one you mean in case the argument you pass to this
+function happens to be both a valid file descriptor and socket. If that happens
+a warning is issued, and GLib assumes that it is the file descriptor you mean.
+
+@table @var
+@item fd
+a file descriptor.
+
+@item ret
+a new @code{<gio-channel>}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-unix-get-fd  ( @var{channel}   @code{<gio-channel*>} )   @result{}  ( @var{ret}   @code{int} )
+Returns the file descriptor of the @code{<gio-channel>}.
+
+On Windows this function returns the file descriptor or socket of the
+@code{<gio-channel>}.
+
+@table @var
+@item channel
+a @code{<gio-channel>}, created with @code{g-io-channel-unix-new}.
+
+@item ret
+the file descriptor of the @code{<gio-channel>}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-init  ( @var{channel}   @code{<gio-channel*>} )
+Initializes a @code{<gio-channel>} struct. This is called by each of the above
+functions when creating a @code{<gio-channel>}, and so is not often needed by
+the application programmer (unless you are creating a new type of
+@code{<gio-channel>}).
+
+@table @var
+@item channel
+a @code{<gio-channel>}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-new-file  ( @var{filename}   @code{mchars} )  ( @var{mode}   @code{mchars} )   @result{}  ( @var{ret}   @code{<gio-channel*>} )
+Open a file @var{filename} as a @code{<gio-channel>} using mode @var{mode}. This
+channel will be closed when the last reference to it is dropped, so there is no
+need to call @code{g-io-channel-close} (though doing so will not cause problems,
+as long as no attempt is made to access the channel after it is closed).
+
+@table @var
+@item filename
+A string containing the name of a file.
+
+@item mode
+One of "r", "w", "a", "r+", "w+", "a+". These have the same meaning as in
+@code{fopen}.
+
+@item error
+A location to return an error of type @samp{G_FILE_ERROR}.
+
+@item ret
+A @code{<gio-channel>} on success, @samp{@code{#f}} on failure.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-read-chars  ( @var{channel}   @code{<gio-channel*>} )  ( @var{buf}   @code{mchars} )  ( @var{count}   @code{size_t} )   @result{}  ( @var{ret}   @code{<gio-status>} )  ( @var{bytes_read}   @code{size_t} )
+Replacement for @code{g-io-channel-read} with the new API.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item buf
+a buffer to read data into
+
+@item count
+the size of the buffer. Note that the buffer may not be complelely filled even
+if there is data in the buffer if the remaining data is not a complete
+character.
+
+@item bytes-read
+The number of bytes read. This may be zero even on success if count < 6 and the
+channel's encoding is non-@samp{@code{#f}}. This indicates that the next UTF-8
+character is too wide for the buffer.
+
+@item error
+A location to return an error of type @code{<g-convert-error>} or
+@code{<gio-channel-error>}.
+
+@item ret
+the status of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-read-unichar  ( @var{channel}   @code{<gio-channel*>} )   @result{}  ( @var{ret}   @code{<gio-status>} )  ( @var{thechar}   @code{unsigned-int32} )
+This function cannot be called on a channel with @samp{@code{#f}} encoding.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item thechar
+a location to return a character
+
+@item error
+A location to return an error of type @code{<g-convert-error>} or
+@code{<gio-channel-error>}
+
+@item ret
+a @code{<gio-status>}
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-read-line  ( @var{channel}   @code{<gio-channel*>} )   @result{}  ( @var{ret}   @code{<gio-status>} )  ( @var{str_return}   @code{mchars} )  ( @var{length}   @code{size_t} )  ( @var{terminator_pos}   @code{size_t} )
+Reads a line, including the terminating character(s), from a
+@code{<gio-channel>} into a newly-allocated string. @var{str-return} will
+contain allocated memory if the return is @samp{G_IO_STATUS_NORMAL}.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item str-return
+The line read from the @code{<gio-channel>}, including the line terminator. This
+data should be freed with @code{g-free} when no longer needed. This is a
+nul-terminated string. If a @var{length} of zero is returned, this will be
+@samp{@code{#f}} instead.
+
+@item length
+location to store length of the read data, or @samp{@code{#f}}
+
+@item terminator-pos
+location to store position of line terminator, or @samp{@code{#f}}
+
+@item error
+A location to return an error of type @code{<g-convert-error>} or
+@code{<gio-channel-error>}
+
+@item ret
+the status of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-read-line-string  ( @var{channel}   @code{<gio-channel*>} )  ( @var{buffer}   @code{<g-string*>} )   @result{}  ( @var{ret}   @code{<gio-status>} )  ( @var{terminator_pos}   @code{size_t} )
+Reads a line from a @code{<gio-channel>}, using a @code{<g-string>} as a buffer.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item buffer
+a @code{<g-string>} into which the line will be written. If @var{buffer} already
+contains data, the old data will be overwritten.
+
+@item terminator-pos
+location to store position of line terminator, or @samp{@code{#f}}
+
+@item error
+a location to store an error of type @code{<g-convert-error>} or
+@code{<gio-channel-error>}
+
+@item ret
+the status of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-read-to-end  ( @var{channel}   @code{<gio-channel*>} )   @result{}  ( @var{ret}   @code{<gio-status>} )  ( @var{str_return}   @code{mchars} )  ( @var{length}   @code{size_t} )
+Reads all the remaining data from the file.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item str-return
+Location to store a pointer to a string holding the remaining data in the
+@code{<gio-channel>}. This data should be freed with @code{g-free} when no
+longer needed. This data is terminated by an extra nul character, but there may
+be other nuls in the intervening data.
+
+@item length
+Location to store length of the data
+
+@item error
+A location to return an error of type @code{<g-convert-error>} or
+@code{<gio-channel-error>}
+
+@item ret
+@samp{G_IO_STATUS_NORMAL} on success. This function never returns
+@samp{G_IO_STATUS_EOF}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-write-chars  ( @var{channel}   @code{<gio-channel*>} )  ( @var{buf}   @code{mchars} )  ( @var{count}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{<gio-status>} )  ( @var{bytes_written}   @code{size_t} )
+Replacement for @code{g-io-channel-write} with the new API.
+
+On seekable channels with encodings other than @samp{@code{#f}} or UTF-8,
+generic mixing of reading and writing is not allowed. A call to
+@code{g-io-channel-write-chars} may only be made on a channel from which data
+has been read in the cases described in the documentation for
+@code{g-io-channel-set-encoding}.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item buf
+a buffer to write data from
+
+@item count
+the size of the buffer. If -1, the buffer is taken to be a nul-terminated
+string.
+
+@item bytes-written
+The number of bytes written. This can be nonzero even if the return value is not
+@samp{G_IO_STATUS_NORMAL}. If the return value is @samp{G_IO_STATUS_NORMAL} and
+the channel is blocking, this will always be equal to @var{count} if @var{count}
+>= 0.
+
+@item error
+A location to return an error of type @code{<g-convert-error>} or
+@code{<gio-channel-error>}
+
+@item ret
+the status of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-write-unichar  ( @var{channel}   @code{<gio-channel*>} )  ( @var{thechar}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{<gio-status>} )
+This function cannot be called on a channel with @samp{@code{#f}} encoding.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item thechar
+a character
+
+@item error
+A location to return an error of type @code{<g-convert-error>} or
+@code{<gio-channel-error>}
+
+@item ret
+a @code{<gio-status>}
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-flush  ( @var{channel}   @code{<gio-channel*>} )   @result{}  ( @var{ret}   @code{<gio-status>} )
+Flushes the write buffer for the GIOChannel.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item error
+location to store an error of type @code{<gio-channel-error>}
+
+@item ret
+the status of the operation: One of @code{<g-io-channel-normal>},
+@code{<g-io-channel-again>}, or @code{<g-io-channel-error>}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-seek-position  ( @var{self}   @code{<gio-channel*>} )  ( @var{offset}   @code{int64} )  ( @var{type}   @code{<g-seek-type>} )   @result{}  ( @var{ret}   @code{<gio-status>} )
+Replacement for @code{g-io-channel-seek} with the new API.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item offset
+The offset in bytes from the position specified by @var{type}
+
+@item type
+a @code{<g-seek-type>}. The type @samp{G_SEEK_CUR} is only allowed in those
+cases where a call to @code{g-io-channel-set-encoding} is allowed. See the
+documentation for @code{g-io-channel-set-encoding} for details.
+
+@item error
+A location to return an error of type @code{<gio-channel-error>}
+
+@item ret
+the status of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-shutdown  ( @var{channel}   @code{<gio-channel*>} )  ( @var{flush}   @code{bool} )   @result{}  ( @var{ret}   @code{<gio-status>} )
+Close an IO channel. Any pending data to be written will be flushed if
+@var{flush} is @samp{TRUE}. The channel will not be freed until the last
+reference is dropped using @code{g-io-channel-unref}.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item flush
+if @samp{TRUE}, flush pending
+
+@item err
+location to store a @code{<gio-channel-error>}
+
+@item ret
+the status of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-error-from-errno  ( @var{en}   @code{int} )   @result{}  ( @var{ret}   @code{<gio-channel-error>} )
+Converts an @samp{errno} error number to a @code{<gio-channel-error>}.
+
+@table @var
+@item en
+an @samp{errno} error number, e.g. @samp{EINVAL}.
+
+@item ret
+a @code{<gio-channel-error>} error number, e.g. @samp{G_IO_CHANNEL_ERROR_INVAL}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-ref  ( @var{channel}   @code{<gio-channel*>} )   @result{}  ( @var{ret}   @code{<gio-channel*>} )
+Increments the reference count of a @code{<gio-channel>}.
+
+@table @var
+@item channel
+a @code{<gio-channel>}.
+
+@item ret
+the @var{channel} that was passed in (since 2.6)
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-unref  ( @var{channel}   @code{<gio-channel*>} )
+Decrements the reference count of a @code{<gio-channel>}.
+
+@table @var
+@item channel
+a @code{<gio-channel>}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-create-watch  ( @var{channel}   @code{<gio-channel*>} )  ( @var{condition}   @code{<gio-condition>} )   @result{}  ( @var{ret}   @code{<g-source*>} )
+Creates a @code{<g-source>} that's dispatched when @var{condition} is met for
+the given @var{channel}. For example, if condition is @code{<g-io-in>}, the
+source will be dispatched when there's data available for reading.
+@code{g-io-add-watch} is a simpler interface to this same functionality, for the
+case where you want to add the source to the default main loop at the default
+priority.
+
+On Windows, polling a @code{<g-source>} created to watch a channel for a socket
+puts the socket in non-blocking mode. This is a side-effect of the
+implementation and unavoidable.
+
+@table @var
+@item channel
+a @code{<gio-channel>} to watch
+
+@item condition
+conditions to watch for
+
+@item ret
+a new @code{<g-source>}
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-add-watch  ( @var{channel}   @code{<gio-channel*>} )  ( @var{condition}   @code{<gio-condition>} )  ( @var{func}   @code{scm} )   @result{}  ( @var{ret}   @code{bool} )
+Adds the @code{<gio-channel>} into the main event loop with the default
+priority.
+
+@table @var
+@item channel
+a @code{<gio-channel>}.
+
+@item condition
+the condition to watch for.
+
+@item func
+the function to call when the condition is satisfied.
+
+@item user-data
+user data to pass to @var{func}.
+
+@item ret
+the event source id.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-get-buffer-size  ( @var{channel}   @code{<gio-channel*>} )   @result{}  ( @var{ret}   @code{size_t} )
+Gets the buffer size.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item ret
+the size of the buffer.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-set-buffer-size  ( @var{channel}   @code{<gio-channel*>} )  ( @var{size}   @code{size_t} )
+Sets the buffer size.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item size
+the size of the buffer. 0 == pick a good size
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-get-buffer-condition  ( @var{channel}   @code{<gio-channel*>} )   @result{}  ( @var{ret}   @code{<gio-condition>} )
+This function returns a @code{<gio-condition>} depending on whether there is
+data to be read/space to write data in the internal buffers in the
+@code{<gio-channel>}. Only the flags @samp{G_IO_IN} and @samp{G_IO_OUT} may be
+set.
+
+@table @var
+@item channel
+A @code{<gio-channel>}
+
+@item ret
+A @code{<gio-condition>}
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-get-flags  ( @var{channel}   @code{<gio-channel*>} )   @result{}  ( @var{ret}   @code{<gio-flags>} )
+Gets the current flags for a @code{<gio-channel>}, including read-only flags
+such as @samp{G_IO_FLAG_IS_READABLE}.
+
+The values of the flags @samp{G_IO_FLAG_IS_READABLE} and
+@samp{G_IO_FLAG_IS_WRITEABLE} are cached for internal use by the channel when it
+is created. If they should change at some later point (e.g. partial shutdown of
+a socket with the UNIX @code{shutdown} function), the user should immediately
+call @code{g-io-channel-get-flags} to update the internal values of these flags.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item ret
+the flags which are set on the channel
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-set-flags  ( @var{channel}   @code{<gio-channel*>} )  ( @var{flags}   @code{<gio-flags>} )   @result{}  ( @var{ret}   @code{<gio-status>} )
+Sets the (writeable) flags in @var{channel} to (@var{flags} &
+@samp{G_IO_CHANNEL_SET_MASK}).
+
+@table @var
+@item channel
+a @code{<gio-channel>}.
+
+@item flags
+the flags to set on the IO channel.
+
+@item error
+A location to return an error of type @code{<gio-channel-error>}.
+
+@item ret
+the status of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-get-line-term  ( @var{channel}   @code{<gio-channel*>} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{length}   @code{int} )
+This returns the string that @code{<gio-channel>} uses to determine where in the
+file a line break occurs. A value of @samp{@code{#f}} indicates auto detection.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item length
+a location to return the length of the line terminator
+
+@item ret
+The line termination string. This value is owned by GLib and must not be freed.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-set-line-term  ( @var{channel}   @code{<gio-channel*>} )  ( @var{line_term}   @code{mchars} )  ( @var{length}   @code{int} )
+This sets the string that @code{<gio-channel>} uses to determine where in the
+file a line break occurs.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item line-term
+The line termination string. Use @samp{@code{#f}} for auto detect. Auto
+detection breaks on "\n", "\r\n", "\r", "\0", and the Unicode paragraph
+separator. Auto detection should not be used for anything other than file-based
+channels.
+
+@item length
+The length of the termination string. If -1 is passed, the string is assumed to
+be nul-terminated. This option allows termination strings with embeded nuls.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-get-buffered  ( @var{channel}   @code{<gio-channel*>} )   @result{}  ( @var{ret}   @code{bool} )
+Returns whether @var{channel} is buffered.
+
+@table @var
+@item channel
+a @code{<gio-channel>}.
+
+@item ret
+@samp{TRUE} if the @var{channel} is buffered.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-set-buffered  ( @var{channel}   @code{<gio-channel*>} )  ( @var{buffered}   @code{bool} )
+The buffering state can only be set if the channel's encoding is
+@samp{@code{#f}}. For any other encoding, the channel must be buffered.
+
+A buffered channel can only be set unbuffered if the channel's internal buffers
+have been flushed. Newly created channels or channels which have returned
+@samp{G_IO_STATUS_EOF} not require such a flush. For write-only channels, a call
+to @code{g-io-channel-flush} is sufficient. For all other channels, the buffers
+may be flushed by a call to @code{g-io-channel-seek-position}. This includes the
+possibility of seeking with seek type @samp{G_SEEK_CUR} and an offset of zero.
+Note that this means that socket-based channels cannot be set unbuffered once
+they have had data read from them.
+
+On unbuffered channels, it is safe to mix read and write calls from the new and
+old APIs, if this is necessary for maintaining old code.
+
+The default state of the channel is buffered.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item buffered
+whether to set the channel buffered or unbuffered
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-get-encoding  ( @var{channel}   @code{<gio-channel*>} )   @result{}  ( @var{ret}   @code{mchars} )
+Gets the encoding for the input/output of the channel. The internal encoding is
+always UTF-8. The encoding @samp{@code{#f}} makes the channel safe for binary
+data.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item ret
+A string containing the encoding, this string is owned by GLib and must not be
+freed.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-set-encoding  ( @var{channel}   @code{<gio-channel*>} )  ( @var{encoding}   @code{mchars} )   @result{}  ( @var{ret}   @code{<gio-status>} )
+Sets the encoding for the input/output of the channel. The internal encoding is
+always UTF-8. The default encoding for the external file is UTF-8.
+
+The encoding @samp{@code{#f}} is safe to use with binary data.
+
+The encoding can only be set if one of the following conditions is true:
+
+1. The channel was just created, and has not been written to or read from yet.
+
+2. The channel is write-only.
+
+3. The channel is a file, and the file pointer was just repositioned by a call
+to @code{g-io-channel-seek-position}. (This flushes all the internal buffers.)
+
+4. The current encoding is @samp{@code{#f}} or UTF-8.
+
+5. One of the (new API) read functions has just returned @samp{G_IO_STATUS_EOF}
+(or, in the case of @code{g-io-channel-read-to-end}, @samp{G_IO_STATUS_NORMAL}).
+
+6. One of the functions @code{g-io-channel-read-chars} or
+@code{g-io-channel-read-unichar} has returned @samp{G_IO_STATUS_AGAIN} or
+@samp{G_IO_STATUS_ERROR}. This may be useful in the case of
+@samp{G_CONVERT_ERROR_ILLEGAL_SEQUENCE}. Returning one of these statuses from
+@code{g-io-channel-read-line}, @code{g-io-channel-read-line-string}, or
+@code{g-io-channel-read-to-end} does @emph{not} guarantee that the encoding can
+be changed.
+
+Channels which do not meet one of the above conditions cannot call
+@code{g-io-channel-seek-position} with an offset of @samp{G_SEEK_CUR}, and, if
+they are "seekable", cannot call @code{g-io-channel-write-chars} after calling
+one of the API "read" functions.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item encoding
+the encoding type
+
+@item error
+location to store an error of type @code{<g-convert-error>}.
+
+@item ret
+@samp{G_IO_STATUS_NORMAL} if the encoding was successfully set.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-get-close-on-unref  ( @var{channel}   @code{<gio-channel*>} )   @result{}  ( @var{ret}   @code{bool} )
+Returns whether the file/socket/whatever associated with @var{channel} will be
+closed when @var{channel} receives its final unref and is destroyed. The default
+value of this is @samp{TRUE} for channels created by
+@code{g-io-channel-new-file}, and @samp{FALSE} for all other channels.
+
+@table @var
+@item channel
+a @code{<gio-channel>}.
+
+@item ret
+Whether the channel will be closed on the final unref of the GIOChannel data
+structure.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-set-close-on-unref  ( @var{channel}   @code{<gio-channel*>} )  ( @var{do_close}   @code{bool} )
+Setting this flag to @samp{TRUE} for a channel you have already closed can cause
+problems.
+
+@table @var
+@item channel
+a @code{<gio-channel>}
+
+@item do-close
+Whether to close the channel on the final unref of the GIOChannel data
+structure. The default value of this is @samp{TRUE} for channels created by
+@code{g-io-channel-new-file}, and @samp{FALSE} for all other channels.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-read  ( @var{channel}   @code{<gio-channel*>} )  ( @var{buf}   @code{mchars} )  ( @var{count}   @code{size_t} )   @result{}  ( @var{ret}   @code{<gio-error>} )  ( @var{bytes_read}   @code{size_t} )
+@samp{g_io_channel_read} has been deprecated since version 2.2 and should not be
+used in newly-written code. Use @code{g-io-channel-read-chars} instead.
+
+Reads data from a @code{<gio-channel>}.
+
+@table @var
+@item channel
+a @code{<gio-channel>}.
+
+@item buf
+a buffer to read the data into (which should be at least count bytes long).
+
+@item count
+the number of bytes to read from the @code{<gio-channel>}.
+
+@item bytes-read
+returns the number of bytes actually read.
+
+@item ret
+@samp{G_IO_ERROR_NONE} if the operation was successful.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-write  ( @var{channel}   @code{<gio-channel*>} )  ( @var{buf}   @code{mchars} )  ( @var{count}   @code{size_t} )   @result{}  ( @var{ret}   @code{<gio-error>} )  ( @var{bytes_written}   @code{size_t} )
+@samp{g_io_channel_write} has been deprecated since version 2.2 and should not
+be used in newly-written code. Use @code{g-io-channel-write-chars} instead.
+
+Writes data to a @code{<gio-channel>}.
+
+@table @var
+@item channel
+a @code{<gio-channel>}.
+
+@item buf
+the buffer containing the data to write.
+
+@item count
+the number of bytes to write.
+
+@item bytes-written
+the number of bytes actually written.
+
+@item ret
+@samp{G_IO_ERROR_NONE} if the operation was successful.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-seek  ( @var{channel}   @code{<gio-channel*>} )  ( @var{offset}   @code{int64} )  ( @var{type}   @code{<g-seek-type>} )   @result{}  ( @var{ret}   @code{<gio-error>} )
+@samp{g_io_channel_seek} has been deprecated since version 2.2 and should not be
+used in newly-written code. Use @code{g-io-channel-seek-position} instead.
+
+Sets the current position in the @code{<gio-channel>}, similar to the standard
+library function @code{fseek}.
+
+@table @var
+@item channel
+a @code{<gio-channel>}.
+
+@item offset
+an offset, in bytes, which is added to the position specified by @var{type}
+
+@item type
+the position in the file, which can be @samp{G_SEEK_CUR} (the current position),
+@samp{G_SEEK_SET} (the start of the file), or @samp{G_SEEK_END} (the end of the
+file).
+
+@item ret
+@samp{G_IO_ERROR_NONE} if the operation was successful.
+
+@end table
+
+@end deffn
+
+@deffn Function g-io-channel-close  ( @var{channel}   @code{<gio-channel*>} )
+@samp{g_io_channel_close} has been deprecated since version 2.2 and should not
+be used in newly-written code. Use @code{g-io-channel-shutdown} instead.
+
+Close an IO channel. Any pending data to be written will be flushed, ignoring
+errors. The channel will not be freed until the last reference is dropped using
+@code{g-io-channel-unref}.
+
+@table @var
+@item channel
+A @code{<gio-channel>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment
