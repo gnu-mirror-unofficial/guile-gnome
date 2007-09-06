@@ -1,7 +1,7 @@
 
 @c %start of fragment
 
-@deffn Function g-file-error-from-errno  ( @var{err_no}   @code{int} )   @result{}  ( @var{ret}   @code{<g-file-error>} )
+@deffn Function g-file-error-from-errno  (err_no@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<g-file-error>})
 Gets a @code{<g-file-error>} constant based on the passed-in @var{errno}. For
 example, if you pass in @samp{EEXIST} this function returns
 @code{<g-file-error-exist>}. Unlike @var{errno} values, you can portably assume
@@ -22,15 +22,15 @@ an "errno" value
 
 @end deffn
 
-@deffn Function g-file-get-contents  ( @var{filename}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )  ( @var{contents}   @code{mchars} )  ( @var{length}   @code{size_t} )
+@deffn Function g-file-get-contents  (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool}) (contents@tie{}@code{mchars}) (length@tie{}@code{size_t})
 Reads an entire file into allocated memory, with good error checking.
 
-If the call was successful, it returns @samp{TRUE} and sets @var{contents} to
-the file contents and @var{length} to the length of the file contents in bytes.
-The string stored in @var{contents} will be nul-terminated, so for text files
-you can pass @samp{@code{#f}} for the @var{length} argument. If the call was not
-successful, it returns @samp{FALSE} and sets @var{error}. The error domain is
-@code{<g-file-error>}. Possible error codes are those in the
+If the call was successful, it returns @samp{@code{#t}} and sets @var{contents}
+to the file contents and @var{length} to the length of the file contents in
+bytes. The string stored in @var{contents} will be nul-terminated, so for text
+files you can pass @samp{@code{#f}} for the @var{length} argument. If the call
+was not successful, it returns @samp{@code{#f}} and sets @var{error}. The error
+domain is @code{<g-file-error>}. Possible error codes are those in the
 @code{<g-file-error>} enumeration. In the error case, @var{contents} is set to
 @samp{@code{#f}} and @var{length} is set to zero.
 
@@ -48,26 +48,28 @@ location to store length in bytes of the contents, or @samp{@code{#f}}
 return location for a @code{<g-error>}, or @samp{@code{#f}}
 
 @item ret
-@samp{TRUE} on success, @samp{FALSE} if an error occurred
+@samp{@code{#t}} on success, @samp{@code{#f}} if an error occurred
 
 @end table
 
 @end deffn
 
-@deffn Function g-file-test  ( @var{filename}   @code{mchars} )  ( @var{test}   @code{<g-file-test>} )   @result{}  ( @var{ret}   @code{bool} )
-Returns @samp{TRUE} if any of the tests in the bitfield @var{test} are
-@samp{TRUE}. For example, @samp{(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)} will
-return @samp{TRUE} if the file exists; the check whether it's a directory
-doesn't matter since the existence test is @samp{TRUE}. With the current set of
-available tests, there's no point passing in more than one test at a time.
+@deffn Function g-file-test  (filename@tie{}@code{mchars}) (test@tie{}@code{<g-file-test>}) @result{}@tie{} (ret@tie{}@code{bool})
+Returns @samp{@code{#t}} if any of the tests in the bitfield @var{test} are
+@samp{@code{#t}}. For example, @samp{(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)}
+will return @samp{@code{#t}} if the file exists; the check whether it's a
+directory doesn't matter since the existence test is @samp{@code{#t}}. With the
+current set of available tests, there's no point passing in more than one test
+at a time.
 
 Apart from @samp{G_FILE_TEST_IS_SYMLINK} all tests follow symbolic links, so for
-a symbolic link to a regular file @code{g-file-test} will return @samp{TRUE} for
-both @samp{G_FILE_TEST_IS_SYMLINK} and @samp{G_FILE_TEST_IS_REGULAR}.
+a symbolic link to a regular file @code{g-file-test} will return
+@samp{@code{#t}} for both @samp{G_FILE_TEST_IS_SYMLINK} and
+@samp{G_FILE_TEST_IS_REGULAR}.
 
 Note, that for a dangling symbolic link @code{g-file-test} will return
-@samp{TRUE} for @samp{G_FILE_TEST_IS_SYMLINK} and @samp{FALSE} for all other
-flags.
+@samp{@code{#t}} for @samp{G_FILE_TEST_IS_SYMLINK} and @samp{@code{#f}} for all
+other flags.
 
 You should never use @code{g-file-test} to test whether it is safe to perform an
 operation, because there is always the possibility of the condition changing
@@ -92,10 +94,10 @@ means that these tests will give you the answer for the real user ID and group
 ID, rather than the effective user ID and group ID.
 
 On Windows, there are no symlinks, so testing for @samp{G_FILE_TEST_IS_SYMLINK}
-will always return @samp{FALSE}. Testing for @samp{G_FILE_TEST_IS_EXECUTABLE}
-will just check that the file exists and its name indicates that it is
-executable, checking for well-known extensions and those listed in the
-@samp{PATHEXT} environment variable.
+will always return @samp{@code{#f}}. Testing for
+@samp{G_FILE_TEST_IS_EXECUTABLE} will just check that the file exists and its
+name indicates that it is executable, checking for well-known extensions and
+those listed in the @samp{PATHEXT} environment variable.
 
 @table @var
 @item filename
@@ -105,13 +107,13 @@ a filename to test in the GLib file name encoding
 bitfield of @code{<g-file-test>} flags
 
 @item ret
-whether a test was @samp{TRUE}
+whether a test was @samp{@code{#t}}
 
 @end table
 
 @end deffn
 
-@deffn Function g-mkstemp  ( @var{tmpl}   @code{mchars} )   @result{}  ( @var{ret}   @code{int} )
+@deffn Function g-mkstemp  (tmpl@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{int})
 Opens a temporary file. See the @code{mkstemp} documentation on most UNIX-like
 systems.
 
@@ -136,7 +138,7 @@ returned.
 
 @end deffn
 
-@deffn Function g-file-open-tmp  ( @var{tmpl}   @code{mchars} )   @result{}  ( @var{ret}   @code{int} )  ( @var{name_used}   @code{mchars} )
+@deffn Function g-file-open-tmp  (tmpl@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{int}) (name_used@tie{}@code{mchars})
 Opens a file for writing in the preferred directory for temporary files (as
 returned by @code{g-get-tmp-dir}).
 
@@ -174,7 +176,7 @@ returned and @var{error} will be set.
 
 @end deffn
 
-@deffn Function g-file-read-link  ( @var{filename}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-file-read-link  (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Reads the contents of the symbolic link @var{filename} like the POSIX
 @code{readlink} function. The returned string is in the encoding used for
 filenames. Use @code{g-filename-to-utf8} to convert it to UTF-8.

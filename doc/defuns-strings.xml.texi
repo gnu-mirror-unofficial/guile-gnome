@@ -1,7 +1,7 @@
 
 @c %start of fragment
 
-@deffn Function g-string-new  ( @var{init}   @code{mchars} )   @result{}  ( @var{ret}   @code{<g-string*>} )
+@deffn Function g-string-new  (init@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<g-string*>})
 Creates a new @code{<g-string>}, initialized with the given string.
 
 @table @var

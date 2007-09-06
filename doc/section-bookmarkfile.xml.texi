@@ -2,7 +2,9 @@
 @c %start of fragment
 
 @node Bookmark file parser
-@chapter Bookmark file parser: parses files containing bookmarks
+@chapter Bookmark file parser
+parses files containing bookmarks
+
 @section Overview
 @code{<g-bookmark-file>} lets you parse, edit or create files containing
 bookmarks to URI, along with some meta-data about the resource pointed by the

@@ -1,9 +1,19 @@
-doc=guile-gnome-gobject
-DOT_DOC_FILES=$(wildcard $(top_builddir)/glib/gnome/gobject/*.doc)
+################################################################################
+## guile-gnome-gobject.info
 
 include docs.mk
 
+doc=guile-gnome-gobject
+DOT_DOC_FILES=$(wildcard $(top_builddir)/glib/gnome/gobject/*.doc)
 nodist_info_TEXINFOS=guile-gnome-gobject.texi
+
+################################################################################
+## guile-gnome-glib.info
+
+include $(top_srcdir)/generate-docs.mk
+
+# docbook_xml_wildcard = ~/src/gnome2/glib/docs/reference/glib/xml/*.xml
+# docbook_xml_files = $(wildcard ~/src/gnome2/glib/docs/reference/glib/xml/*.xml)
 
 # A hand-culled list of modules that we wrap.
 docbook_xml = base64.xml \
@@ -19,15 +29,10 @@ docbook_xml = base64.xml \
 	unicode.xml
 
 docbook_xml_base = ~/src/gnome2/glib/docs/reference/glib/xml/
-# docbook_xml_wildcard = ~/src/gnome2/glib/docs/reference/glib/xml/*.xml
+docbook_xml_files = $(addprefix $(docbook_xml_base),$(docbook_xml))
+wrapset_stem = glib
 
-generate-stubs:
-	$(top_builddir)/dev-environ guile -c '((@ (gnome gw support gtk-doc) gtk-doc->texi-stubs) (cdr (program-arguments)))' $(addprefix $(docbook_xml_base),$(docbook_xml))
-
-generate-defuns:
-	$(top_builddir)/dev-environ guile -c '(apply (@ (gnome gw support gtk-doc) gtk-doc->texi-defuns) (cdr (program-arguments)))' ./overrides.texi '(gnome gw glib-spec)' gnome-glib $(addprefix $(docbook_xml_base),$(docbook_xml))
-
-EXTRA_DIST = README generate-doc-stubs generate-doc-defuns overrides.texi
+EXTRA_DIST += overrides.texi
 
 info_TEXINFOS=guile-gnome-glib.texi
 guile_gnome_glib_TEXINFOS=$(wildcard section-*.texi) $(wildcard defuns-*.texi)

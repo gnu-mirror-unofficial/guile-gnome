@@ -2,7 +2,9 @@
 @c %start of fragment
 
 @node The Main Event Loop
-@chapter The Main Event Loop: manages all available sources of events.
+@chapter The Main Event Loop
+manages all available sources of events.
+
 @section Overview
 The main event loop manages all the available sources of events for GLib and
 GTK+ applications. These events can come from any number of different types of
@@ -67,7 +69,7 @@ functions are @code{g-main-context-prepare}, @code{g-main-context-query},
 @code{g-main-context-check} and @code{g-main-context-dispatch}.
 
 The operation of these functions can best be seen in terms of a state diagram,
-as shown in @emph{(the missing section, mainloop-states}.
+as shown in @emph{(the missing figure, mainloop-states}.
 
 @section Usage
 @include defuns-main.xml.texi

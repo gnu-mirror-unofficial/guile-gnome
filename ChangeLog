@@ -1,3 +1,21 @@
+2007-09-07  Andy Wingo  <wingo@pobox.com>
+
+	* doc/section-*.texi: 
+	* doc/defuns-*.texi: Regenerated.
+
+	* gnome/gw/support/gtk-doc.scm (c-arguments->scheme-arguments)
+	(function-stexi-arguments): Use @tie{} instead of a space where
+	appropriate.
+	(*gtk-doc-sdocbook->stexi-rules*): Translate FALSE and TRUE.
+	(gtk-doc->texi-stubs): Put the subtitle in a subparagraph, not the
+	title.
+	(function-stexi-arguments): Don't wrap the var in @var, that makes
+	it to be @tt font, which we don't want or need.
+	(make-defs/g-wrap): Doc generics using @deffnx, not @deffn.
+
+	* doc/Makefile.am: Factor out automatic g-wrap docs stuff into
+	common makefile routines.
+
 2007-09-02  Andy Wingo  <wingo@pobox.com>
 
 	* doc/guile-gnome-glib.texi: New file, includes all the rest to

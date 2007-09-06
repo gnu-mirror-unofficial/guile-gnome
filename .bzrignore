@@ -35,3 +35,4 @@ test-suite/libgw_guile_test_glib_la-gw-test-glib.lo
 test-suite/libgw_guile_test_glib_la-test-glib.lo
 test-suite/libgw_guile_test_gobject_la-gw-test-gobject.lo
 test-suite/libgw_guile_test_gobject_la-test-gobject.lo
+gnome/gobject/*.doc

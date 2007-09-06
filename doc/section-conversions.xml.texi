@@ -2,7 +2,9 @@
 @c %start of fragment
 
 @node Character Set Conversion
-@chapter Character Set Conversion: convert strings between different character sets using .
+@chapter Character Set Conversion
+convert strings between different character sets using .
+
 @section Overview
 @section File Name Encodings
 Historically, Unix has not had a defined encoding for file names: a file name is
@@ -59,7 +61,7 @@ export G_FILENAME_ENCODING=ISO-8859-1
 Glib provides the functions @code{@code{g-filename-to-utf8}} and
 @code{@code{g-filename-from-utf8}} to perform the necessary conversions. These
 functions convert file names from the encoding specified in
-@env{G_FILENAME_ENCODING} to UTF-8 and vice-versa. @emph{(the missing section,
+@env{G_FILENAME_ENCODING} to UTF-8 and vice-versa. @emph{(the missing figure,
 file-name-encodings-diagram} illustrates how these functions are used to convert
 between UTF-8 and the encoding for file names in the file system.
 

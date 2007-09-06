@@ -1,7 +1,7 @@
 
 @c %start of fragment
 
-@deffn Function g-shell-quote  ( @var{unquoted_string}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-shell-quote  (unquoted_string@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Quotes a string so that the shell (/bin/sh) will interpret the quoted string to
 mean @var{unquoted-string}. If you pass a filename to the shell, for example,
 you should first quote it with this function. The return value must be freed
@@ -19,7 +19,7 @@ quoted string
 
 @end deffn
 
-@deffn Function g-shell-unquote  ( @var{quoted_string}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-shell-unquote  (quoted_string@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Unquotes a string as the shell (/bin/sh) would. Only handles quotes; if a string
 contains file globs, arithmetic operators, variables, backticks, redirections,
 or other special-to-the-shell features, the result will be different from the

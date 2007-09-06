@@ -1,7 +1,7 @@
 
 @c %start of fragment
 
-@deffn Function g-bookmark-file-new   @result{}  ( @var{ret}   @code{<g-bookmark-file*>} )
+@deffn Function g-bookmark-file-new  @result{}@tie{} (ret@tie{}@code{<g-bookmark-file*>})
 Creates a new empty @code{<g-bookmark-file>} object.
 
 Use @code{g-bookmark-file-load-from-file}, @code{g-bookmark-file-load-from-data}
@@ -17,7 +17,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-free  ( @var{bookmark}   @code{<g-bookmark-file*>} )
+@deffn Function g-bookmark-file-free  (bookmark@tie{}@code{<g-bookmark-file*>})
 Frees a @code{<g-bookmark-file>}.
 
 @table @var
@@ -30,7 +30,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-load-from-file  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{filename}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-bookmark-file-load-from-file  (bookmark@tie{}@code{<g-bookmark-file*>}) (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Loads a desktop bookmark file into an empty @code{<g-bookmark-file>} structure.
 If the file could not be loaded then @var{error} is set to either a
 @code{<g-file-error>} or @code{<g-bookmark-file-error>}.
@@ -46,7 +46,7 @@ the path of a filename to load, in the GLib file name encoding
 return location for a @code{<g-error>}, or @samp{@code{#f}}
 
 @item ret
-@samp{TRUE} if a desktop bookmark file could be loaded
+@samp{@code{#t}} if a desktop bookmark file could be loaded
 
 @end table
 
@@ -54,7 +54,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-load-from-data  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{data}   @code{mchars} )  ( @var{length}   @code{size_t} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-bookmark-file-load-from-data  (bookmark@tie{}@code{<g-bookmark-file*>}) (data@tie{}@code{mchars}) (length@tie{}@code{size_t}) @result{}@tie{} (ret@tie{}@code{bool})
 Loads a bookmark file from memory into an empty @code{<g-bookmark-file>}
 structure. If the object cannot be created then @var{error} is set to a
 @code{<g-bookmark-file-error>}.
@@ -73,7 +73,7 @@ the length of @var{data} in bytes
 return location for a @code{<g-error>}, or @samp{@code{#f}}
 
 @item ret
-@samp{TRUE} if a desktop bookmark could be loaded.
+@samp{@code{#t}} if a desktop bookmark could be loaded.
 
 @end table
 
@@ -81,7 +81,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-load-from-data-dirs  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{file}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )  ( @var{full_path}   @code{mchars} )
+@deffn Function g-bookmark-file-load-from-data-dirs  (bookmark@tie{}@code{<g-bookmark-file*>}) (file@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool}) (full_path@tie{}@code{mchars})
 This function looks for a desktop bookmark file named @var{file} in the paths
 returned from @code{g-get-user-data-dir} and @code{g-get-system-data-dirs},
 loads the file into @var{bookmark} and returns the file's full path in
@@ -103,7 +103,7 @@ return location for a string containing the full path of the file, or
 return location for a @code{<g-error>}, or @samp{@code{#f}}
 
 @item ret
-@samp{TRUE} if a key file could be loaded, @samp{FALSE} othewise
+@samp{@code{#t}} if a key file could be loaded, @samp{@code{#f}} othewise
 
 @end table
 
@@ -111,7 +111,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-to-data  ( @var{bookmark}   @code{<g-bookmark-file*>} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{length}   @code{size_t} )
+@deffn Function g-bookmark-file-to-data  (bookmark@tie{}@code{<g-bookmark-file*>}) @result{}@tie{} (ret@tie{}@code{mchars}) (length@tie{}@code{size_t})
 This function outputs @var{bookmark} as a string.
 
 @table @var
@@ -133,7 +133,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-to-file  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{filename}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-bookmark-file-to-file  (bookmark@tie{}@code{<g-bookmark-file*>}) (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 This function outputs @var{bookmark} into a file. The write process is
 guaranteed to be atomic by using @code{g-file-set-contents} internally.
 
@@ -148,7 +148,7 @@ path of the output file
 return location for a @code{<g-error>}, or @samp{@code{#f}}
 
 @item ret
-@samp{TRUE} if the file was successfully written.
+@samp{@code{#t}} if the file was successfully written.
 
 @end table
 
@@ -156,7 +156,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-has-item  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-bookmark-file-has-item  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Looks whether the desktop bookmark has an item with its URI set to @var{uri}.
 
 @table @var
@@ -167,7 +167,8 @@ a @code{<g-bookmark-file>}
 a valid URI
 
 @item ret
-@samp{TRUE} if @var{uri} is inside @var{bookmark}, @samp{FALSE} otherwise
+@samp{@code{#t}} if @var{uri} is inside @var{bookmark}, @samp{@code{#f}}
+otherwise
 
 @end table
 
@@ -175,12 +176,12 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-has-group  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{group}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-bookmark-file-has-group  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (group@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Checks whether @var{group} appears in the list of groups to which the bookmark
 for @var{uri} belongs to.
 
-In the event the URI cannot be found, @samp{FALSE} is returned and @var{error}
-is set to @code{<g-bookmark-file-error-uri-not-found>}.
+In the event the URI cannot be found, @samp{@code{#f}} is returned and
+@var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}.
 
 @table @var
 @item bookmark
@@ -196,7 +197,7 @@ the group name to be searched
 return location for a @code{<g-error>}, or @samp{@code{#f}}
 
 @item ret
-@samp{TRUE} if @var{group} was found.
+@samp{@code{#t}} if @var{group} was found.
 
 @end table
 
@@ -204,12 +205,12 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-has-application  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{name}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-bookmark-file-has-application  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Checks whether the bookmark for @var{uri} inside @var{bookmark} has been
 registered by application @var{name}.
 
-In the event the URI cannot be found, @samp{FALSE} is returned and @var{error}
-is set to @code{<g-bookmark-file-error-uri-not-found>}.
+In the event the URI cannot be found, @samp{@code{#f}} is returned and
+@var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}.
 
 @table @var
 @item bookmark
@@ -225,7 +226,7 @@ the name of the application
 return location for a @code{<g-error>} or @samp{@code{#f}}
 
 @item ret
-@samp{TRUE} if the application @var{name} was found
+@samp{@code{#t}} if the application @var{name} was found
 
 @end table
 
@@ -233,7 +234,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-size  ( @var{bookmark}   @code{<g-bookmark-file*>} )   @result{}  ( @var{ret}   @code{int} )
+@deffn Function g-bookmark-file-get-size  (bookmark@tie{}@code{<g-bookmark-file*>}) @result{}@tie{} (ret@tie{}@code{int})
 Gets the number of bookmarks inside @var{bookmark}.
 
 @table @var
@@ -249,7 +250,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-uris  ( @var{bookmark}   @code{<g-bookmark-file*>} )   @result{}  ( @var{ret}   @code{<gchar**>} )  ( @var{length}   @code{size_t} )
+@deffn Function g-bookmark-file-get-uris  (bookmark@tie{}@code{<g-bookmark-file*>}) @result{}@tie{} (ret@tie{}@code{<gchar**>}) (length@tie{}@code{size_t})
 Returns all URIs of the bookmarks in the bookmark file @var{bookmark}. The array
 of returned URIs will be @samp{@code{#f}}-terminated, so @var{length} may
 optionally be @samp{@code{#f}}.
@@ -271,7 +272,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-title  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-bookmark-file-get-title  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Returns the title of the bookmark for @var{uri}.
 
 If @var{uri} is @samp{@code{#f}}, the title of @var{bookmark} is returned.
@@ -299,7 +300,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-description  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-bookmark-file-get-description  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Retrieves the description of the bookmark for @var{uri}.
 
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
@@ -325,7 +326,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-mime-type  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-bookmark-file-get-mime-type  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Retrieves the MIME type of the resource pointed by @var{uri}.
 
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
@@ -353,13 +354,13 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-is-private  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-bookmark-file-get-is-private  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Gets whether the private flag of the bookmark for @var{uri} is set.
 
-In the event the URI cannot be found, @samp{FALSE} is returned and @var{error}
-is set to @code{<g-bookmark-file-error-uri-not-found>}. In the event that the
-private flag cannot be found, @samp{FALSE} is returned and @var{error} is set to
-@code{<g-bookmark-file-error-invalid-value>}.
+In the event the URI cannot be found, @samp{@code{#f}} is returned and
+@var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}. In the event
+that the private flag cannot be found, @samp{@code{#f}} is returned and
+@var{error} is set to @code{<g-bookmark-file-error-invalid-value>}.
 
 @table @var
 @item bookmark
@@ -372,7 +373,7 @@ a valid URI
 return location for a @code{<g-error>}, or @samp{@code{#f}}
 
 @item ret
-@samp{TRUE} if the private flag is set, @samp{FALSE} otherwise.
+@samp{@code{#t}} if the private flag is set, @samp{@code{#f}} otherwise.
 
 @end table
 
@@ -380,11 +381,11 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-icon  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )  ( @var{href}   @code{mchars} )  ( @var{mime_type}   @code{mchars} )
+@deffn Function g-bookmark-file-get-icon  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool}) (href@tie{}@code{mchars}) (mime_type@tie{}@code{mchars})
 Gets the icon of the bookmark for @var{uri}.
 
-In the event the URI cannot be found, @samp{FALSE} is returned and @var{error}
-is set to @code{<g-bookmark-file-error-uri-not-found>}.
+In the event the URI cannot be found, @samp{@code{#f}} is returned and
+@var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}.
 
 @table @var
 @item bookmark
@@ -403,8 +404,8 @@ return location for the icon's MIME type or @samp{@code{#f}}
 return location for a @code{<g-error>} or @samp{@code{#f}}
 
 @item ret
-@samp{TRUE} if the icon for the bookmark for the URI was found. You should free
-the returned strings.
+@samp{@code{#t}} if the icon for the bookmark for the URI was found. You should
+free the returned strings.
 
 @end table
 
@@ -412,7 +413,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-added  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )   @result{}  ( @var{ret}   @code{long} )
+@deffn Function g-bookmark-file-get-added  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{long})
 Gets the time the bookmark for @var{uri} was added to @var{bookmark}
 
 In the event the URI cannot be found, -1 is returned and @var{error} is set to
@@ -437,7 +438,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-modified  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )   @result{}  ( @var{ret}   @code{long} )
+@deffn Function g-bookmark-file-get-modified  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{long})
 Gets the time when the bookmark for @var{uri} was last modified.
 
 In the event the URI cannot be found, -1 is returned and @var{error} is set to
@@ -462,7 +463,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-visited  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )   @result{}  ( @var{ret}   @code{long} )
+@deffn Function g-bookmark-file-get-visited  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{long})
 Gets the time the bookmark for @var{uri} was last visited.
 
 In the event the URI cannot be found, -1 is returned and @var{error} is set to
@@ -487,7 +488,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-groups  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )   @result{}  ( @var{ret}   @code{<gchar**>} )  ( @var{length}   @code{size_t} )
+@deffn Function g-bookmark-file-get-groups  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gchar**>}) (length@tie{}@code{size_t})
 Retrieves the list of group names of the bookmark for @var{uri}.
 
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
@@ -519,7 +520,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-applications  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )   @result{}  ( @var{ret}   @code{<gchar**>} )  ( @var{length}   @code{size_t} )
+@deffn Function g-bookmark-file-get-applications  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gchar**>}) (length@tie{}@code{size_t})
 Retrieves the names of the applications that have registered the bookmark for
 @var{uri}.
 
@@ -549,17 +550,17 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-app-info  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{name}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )  ( @var{exec}   @code{mchars} )  ( @var{count}   @code{unsigned-int} )  ( @var{stamp}   @code{long} )
+@deffn Function g-bookmark-file-get-app-info  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool}) (exec@tie{}@code{mchars}) (count@tie{}@code{unsigned-int}) (stamp@tie{}@code{long})
 Gets the registration informations of @var{app-name} for the bookmark for
 @var{uri}. See @code{g-bookmark-file-set-app-info} for more informations about
 the returned data.
 
 The string returned in @var{app-exec} must be freed.
 
-In the event the URI cannot be found, @samp{FALSE} is returned and @var{error}
-is set to @code{<g-bookmark-file-error-uri-not-found>}. In the event that no
-application with name @var{app-name} has registered a bookmark for @var{uri},
-@samp{FALSE} is returned and error is set to
+In the event the URI cannot be found, @samp{@code{#f}} is returned and
+@var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}. In the event
+that no application with name @var{app-name} has registered a bookmark for
+@var{uri}, @samp{@code{#f}} is returned and error is set to
 @code{<g-bookmark-file-error-app-not-registered>}.
 
 @table @var
@@ -585,7 +586,7 @@ return location for the last registration time, or @samp{@code{#f}}
 return location for a @code{<g-error>}, or @samp{@code{#f}}
 
 @item ret
-@samp{TRUE} on success.
+@samp{@code{#t}} on success.
 
 @end table
 
@@ -593,7 +594,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-title  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{title}   @code{mchars} )
+@deffn Function g-bookmark-file-set-title  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (title@tie{}@code{mchars})
 Sets @var{title} as the title of the bookmark for @var{uri} inside the bookmark
 file @var{bookmark}.
 
@@ -617,7 +618,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-description  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{description}   @code{mchars} )
+@deffn Function g-bookmark-file-set-description  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (description@tie{}@code{mchars})
 Sets @var{description} as the description of the bookmark for @var{uri}.
 
 If @var{uri} is @samp{@code{#f}}, the description of @var{bookmark} is set.
@@ -640,7 +641,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-mime-type  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{mime_type}   @code{mchars} )
+@deffn Function g-bookmark-file-set-mime-type  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (mime_type@tie{}@code{mchars})
 Sets @var{mime-type} as the MIME type of the bookmark for @var{uri}.
 
 If a bookmark for @var{uri} cannot be found then it is created.
@@ -661,7 +662,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-is-private  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{is_private}   @code{bool} )
+@deffn Function g-bookmark-file-set-is-private  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (is_private@tie{}@code{bool})
 Sets the private flag of the bookmark for @var{uri}.
 
 If a bookmark for @var{uri} cannot be found then it is created.
@@ -674,7 +675,7 @@ a @code{<g-bookmark-file>}
 a valid URI
 
 @item is-private
-@samp{TRUE} if the bookmark should be marked as private
+@samp{@code{#t}} if the bookmark should be marked as private
 
 @end table
 
@@ -682,7 +683,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-icon  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{href}   @code{mchars} )  ( @var{mime_type}   @code{mchars} )
+@deffn Function g-bookmark-file-set-icon  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (href@tie{}@code{mchars}) (mime_type@tie{}@code{mchars})
 Sets the icon for the bookmark for @var{uri}. If @var{href} is @samp{@code{#f}},
 unsets the currently set icon.
 
@@ -707,7 +708,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-added  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{added}   @code{long} )
+@deffn Function g-bookmark-file-set-added  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (added@tie{}@code{long})
 Sets the time the bookmark for @var{uri} was added into @var{bookmark}.
 
 If no bookmark for @var{uri} is found then it is created.
@@ -728,7 +729,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-groups  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{groups}   @code{<gchar**>} )  ( @var{length}   @code{size_t} )
+@deffn Function g-bookmark-file-set-groups  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (groups@tie{}@code{<gchar**>}) (length@tie{}@code{size_t})
 Sets a list of group names for the item with URI @var{uri}. Each previously set
 group name list is removed.
 
@@ -753,7 +754,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-modified  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{modified}   @code{long} )
+@deffn Function g-bookmark-file-set-modified  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (modified@tie{}@code{long})
 Sets the last time the bookmark for @var{uri} was last modified.
 
 If no bookmark for @var{uri} is found then it is created.
@@ -779,7 +780,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-visited  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{visited}   @code{long} )
+@deffn Function g-bookmark-file-set-visited  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (visited@tie{}@code{long})
 Sets the time the bookmark for @var{uri} was last visited.
 
 If no bookmark for @var{uri} is found then it is created.
@@ -806,7 +807,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-app-info  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{name}   @code{mchars} )  ( @var{exec}   @code{mchars} )  ( @var{count}   @code{int} )  ( @var{stamp}   @code{long} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-bookmark-file-set-app-info  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (name@tie{}@code{mchars}) (exec@tie{}@code{mchars}) (count@tie{}@code{int}) (stamp@tie{}@code{long}) @result{}@tie{} (ret@tie{}@code{bool})
 Sets the meta-data of application @var{name} inside the list of applications
 that have registered a bookmark for @var{uri} inside @var{bookmark}.
 
@@ -825,10 +826,10 @@ removed from the list of registered applications. @var{stamp} is the Unix time
 of the last registration; if it is -1, the current time will be used.
 
 If you try to remove an application by setting its registration count to zero,
-and no bookmark for @var{uri} is found, @samp{FALSE} is returned and @var{error}
-is set to @code{<g-bookmark-file-error-uri-not-found>}; similarly, in the event
-that no application @var{name} has registered a bookmark for @var{uri},
-@samp{FALSE} is returned and error is set to
+and no bookmark for @var{uri} is found, @samp{@code{#f}} is returned and
+@var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}; similarly,
+in the event that no application @var{name} has registered a bookmark for
+@var{uri}, @samp{@code{#f}} is returned and error is set to
 @code{<g-bookmark-file-error-app-not-registered>}. Otherwise, if no bookmark for
 @var{uri} is found, one is created.
 
@@ -855,7 +856,7 @@ the time of the last registration for this application
 return location for a @code{<g-error>} or @samp{@code{#f}}
 
 @item ret
-@samp{TRUE} if the application's meta-data was successfully changed.
+@samp{@code{#t}} if the application's meta-data was successfully changed.
 
 @end table
 
@@ -863,7 +864,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-add-group  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{group}   @code{mchars} )
+@deffn Function g-bookmark-file-add-group  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (group@tie{}@code{mchars})
 Adds @var{group} to the list of groups to which the bookmark for @var{uri}
 belongs to.
 
@@ -885,7 +886,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-add-application  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{name}   @code{mchars} )  ( @var{exec}   @code{mchars} )
+@deffn Function g-bookmark-file-add-application  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (name@tie{}@code{mchars}) (exec@tie{}@code{mchars})
 Adds the application with @var{name} and @var{exec} to the list of applications
 that have registered a bookmark for @var{uri} into @var{bookmark}.
 
@@ -926,13 +927,13 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-remove-group  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{group}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-bookmark-file-remove-group  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (group@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Removes @var{group} from the list of groups to which the bookmark for @var{uri}
 belongs to.
 
-In the event the URI cannot be found, @samp{FALSE} is returned and @var{error}
-is set to @code{<g-bookmark-file-error-uri-not-found>}. In the event no group
-was defined, @samp{FALSE} is returned and @var{error} is set to
+In the event the URI cannot be found, @samp{@code{#f}} is returned and
+@var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}. In the event
+no group was defined, @samp{@code{#f}} is returned and @var{error} is set to
 @code{<g-bookmark-file-error-invalid-value>}.
 
 @table @var
@@ -949,7 +950,7 @@ the group name to be removed
 return location for a @code{<g-error>}, or @samp{@code{#f}}
 
 @item ret
-@samp{TRUE} if @var{group} was successfully removed.
+@samp{@code{#t}} if @var{group} was successfully removed.
 
 @end table
 
@@ -957,14 +958,14 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-remove-application  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )  ( @var{name}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-bookmark-file-remove-application  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Removes application registered with @var{name} from the list of applications
 that have registered a bookmark for @var{uri} inside @var{bookmark}.
 
-In the event the URI cannot be found, @samp{FALSE} is returned and @var{error}
-is set to @code{<g-bookmark-file-error-uri-not-found>}. In the event that no
-application with name @var{app-name} has registered a bookmark for @var{uri},
-@samp{FALSE} is returned and error is set to
+In the event the URI cannot be found, @samp{@code{#f}} is returned and
+@var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}. In the event
+that no application with name @var{app-name} has registered a bookmark for
+@var{uri}, @samp{@code{#f}} is returned and error is set to
 @code{<g-bookmark-file-error-app-not-registered>}.
 
 @table @var
@@ -981,7 +982,7 @@ the name of the application
 return location for a @code{<g-error>} or @samp{@code{#f}}
 
 @item ret
-@samp{TRUE} if the application was successfully removed.
+@samp{@code{#t}} if the application was successfully removed.
 
 @end table
 
@@ -989,7 +990,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-remove-item  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{uri}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-bookmark-file-remove-item  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Removes the bookmark for @var{uri} from the bookmark file @var{bookmark}.
 
 @table @var
@@ -1003,7 +1004,7 @@ a valid URI
 return location for a @code{<g-error>}, or @samp{@code{#f}}
 
 @item ret
-@samp{TRUE} if the bookmark was removed successfully.
+@samp{@code{#t}} if the bookmark was removed successfully.
 
 @end table
 
@@ -1011,13 +1012,13 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-move-item  ( @var{bookmark}   @code{<g-bookmark-file*>} )  ( @var{old_uri}   @code{mchars} )  ( @var{new_uri}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-bookmark-file-move-item  (bookmark@tie{}@code{<g-bookmark-file*>}) (old_uri@tie{}@code{mchars}) (new_uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Changes the URI of a bookmark item from @var{old-uri} to @var{new-uri}. Any
 existing bookmark for @var{new-uri} will be overwritten. If @var{new-uri} is
 @samp{@code{#f}}, then the bookmark is removed.
 
-In the event the URI cannot be found, @samp{FALSE} is returned and @var{error}
-is set to @code{<g-bookmark-file-error-uri-not-found>}.
+In the event the URI cannot be found, @samp{@code{#f}} is returned and
+@var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}.
 
 @table @var
 @item bookmark
@@ -1033,7 +1034,7 @@ a valid URI, or @samp{@code{#f}}
 return location for a @code{<g-error>} or @samp{@code{#f}}
 
 @item ret
-@samp{TRUE} if the URI was successfully changed
+@samp{@code{#t}} if the URI was successfully changed
 
 @end table
 

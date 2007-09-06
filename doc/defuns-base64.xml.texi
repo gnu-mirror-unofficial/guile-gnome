@@ -1,7 +1,7 @@
 
 @c %start of fragment
 
-@deffn Function g-base64-encode  ( @var{data}   @code{<guchar*>} )  ( @var{len}   @code{size_t} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-base64-encode  (data@tie{}@code{<guchar*>}) (len@tie{}@code{size_t}) @result{}@tie{} (ret@tie{}@code{mchars})
 Encode a sequence of binary data into its Base-64 stringified representation.
 
 @table @var
@@ -21,7 +21,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-base64-decode  ( @var{text}   @code{mchars} )   @result{}  ( @var{ret}   @code{<guchar*>} )  ( @var{out_len}   @code{size_t} )
+@deffn Function g-base64-decode  (text@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<guchar*>}) (out_len@tie{}@code{size_t})
 Decode a sequence of Base-64 encoded text into binary data
 
 @table @var

@@ -1,7 +1,7 @@
 
 @c %start of fragment
 
-@deffn Function g-get-application-name   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-get-application-name  @result{}@tie{} (ret@tie{}@code{mchars})
 Gets a human-readable name for the application, as set by
 @code{g-set-application-name}. This name should be localized if possible, and is
 intended for display to the user. Contrast with @code{g-get-prgname}, which gets
@@ -19,7 +19,7 @@ Since 2.2
 
 @end deffn
 
-@deffn Function g-set-application-name  ( @var{application_name}   @code{mchars} )
+@deffn Function g-set-application-name  (application_name@tie{}@code{mchars})
 Sets a human-readable name for the application. This name should be localized if
 possible, and is intended for display to the user. Contrast with
 @code{g-set-prgname}, which sets a non-localized name. @code{g-set-prgname} will
@@ -39,7 +39,7 @@ localized name of the application
 
 @end deffn
 
-@deffn Function g-get-prgname   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-get-prgname  @result{}@tie{} (ret@tie{}@code{mchars})
 Gets the name of the program. This name should @emph{not} be localized, contrast
 with @code{g-get-application-name}. (If you are using GDK or GTK+ the program
 name is set in @code{gdk-init}, which is called by @code{gtk-init}. The program
@@ -54,7 +54,7 @@ modified or freed.
 
 @end deffn
 
-@deffn Function g-set-prgname  ( @var{prgname}   @code{mchars} )
+@deffn Function g-set-prgname  (prgname@tie{}@code{mchars})
 Sets the name of the program. This name should @emph{not} be localized, contrast
 with @code{g-set-application-name}. Note that for thread-safety reasons this
 function can only be called once.
@@ -67,7 +67,7 @@ the name of the program.
 
 @end deffn
 
-@deffn Function g-getenv  ( @var{variable}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-getenv  (variable@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Returns the value of an environment variable. The name and value are in the GLib
 file name encoding. On UNIX, this means the actual bytes which might or might
 not be in some consistent character set and encoding. On Windows, it is in
@@ -87,7 +87,7 @@ to @code{g-getenv}, @code{g-setenv} or @code{g-unsetenv}.
 
 @end deffn
 
-@deffn Function g-setenv  ( @var{variable}   @code{mchars} )  ( @var{value}   @code{mchars} )  ( @var{overwrite}   @code{bool} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-setenv  (variable@tie{}@code{mchars}) (value@tie{}@code{mchars}) (overwrite@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
 Sets an environment variable. Both the variable's name and value should be in
 the GLib file name encoding. On UNIX, this means that they can be any sequence
 of bytes. On Windows, they should be in UTF-8.
@@ -106,7 +106,7 @@ the value for to set the variable to.
 whether to change the variable if it already exists.
 
 @item ret
-@samp{FALSE} if the environment variable couldn't be set.
+@samp{@code{#f}} if the environment variable couldn't be set.
 
 @end table
 
@@ -114,7 +114,7 @@ Since 2.4
 
 @end deffn
 
-@deffn Function g-unsetenv  ( @var{variable}   @code{mchars} )
+@deffn Function g-unsetenv  (variable@tie{}@code{mchars})
 Removes an environment variable from the environment.
 
 Note that on some systems, when variables are overwritten, the memory used for
@@ -131,7 +131,7 @@ Since 2.4
 
 @end deffn
 
-@deffn Function g-get-user-name   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-get-user-name  @result{}@tie{} (ret@tie{}@code{mchars})
 Gets the user name of the current user. The encoding of the returned string is
 system-defined. On UNIX, it might be the preferred file name encoding, or
 something else, and there is no guarantee that it is even consistent on a
@@ -145,7 +145,7 @@ the user name of the current user.
 
 @end deffn
 
-@deffn Function g-get-real-name   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-get-real-name  @result{}@tie{} (ret@tie{}@code{mchars})
 Gets the real name of the user. This usually comes from the user's entry in the
 @file{passwd} file. The encoding of the returned string is system-defined. (On
 Windows, it is, however, always UTF-8.) If the real user name cannot be
@@ -159,7 +159,7 @@ the user's real name.
 
 @end deffn
 
-@deffn Function g-get-user-cache-dir   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-get-user-cache-dir  @result{}@tie{} (ret@tie{}@code{mchars})
 Returns a base directory in which to store non-essential, cached data specific
 to particular user.
 
@@ -177,7 +177,7 @@ Since 2.6
 
 @end deffn
 
-@deffn Function g-get-user-data-dir   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-get-user-data-dir  @result{}@tie{} (ret@tie{}@code{mchars})
 Returns a base directory in which to access application data such as icons that
 is customized for a particular user.
 
@@ -195,7 +195,7 @@ Since 2.6
 
 @end deffn
 
-@deffn Function g-get-user-config-dir   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-get-user-config-dir  @result{}@tie{} (ret@tie{}@code{mchars})
 Returns a base directory in which to store user-specific application
 configuration information such as user preferences and settings.
 
@@ -213,7 +213,7 @@ Since 2.6
 
 @end deffn
 
-@deffn Function g-get-host-name   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-get-host-name  @result{}@tie{} (ret@tie{}@code{mchars})
 Return a name for the machine.
 
 The returned name is not necessarily a fully-qualified domain name, or even
@@ -235,7 +235,7 @@ Since 2.8
 
 @end deffn
 
-@deffn Function g-get-home-dir   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-get-home-dir  @result{}@tie{} (ret@tie{}@code{mchars})
 Gets the current user's home directory.
 
 Note that in contrast to traditional UNIX tools, this function prefers
@@ -249,7 +249,7 @@ the current user's home directory.
 
 @end deffn
 
-@deffn Function g-get-tmp-dir   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-get-tmp-dir  @result{}@tie{} (ret@tie{}@code{mchars})
 Gets the directory to use for temporary files. This is found from inspecting the
 environment variables @env{TMPDIR}, @env{TMP}, and @env{TEMP} in that order. If
 none of those are defined "/tmp" is returned on UNIX and "C:\" on Windows. The
@@ -264,7 +264,7 @@ the directory to use for temporary files.
 
 @end deffn
 
-@deffn Function g-get-current-dir   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-get-current-dir  @result{}@tie{} (ret@tie{}@code{mchars})
 Gets the current directory. The returned string should be freed when no longer
 needed. The encoding of the returned string is system defined. On Windows, it is
 always UTF-8.
@@ -277,7 +277,7 @@ the current directory.
 
 @end deffn
 
-@deffn Function g-basename  ( @var{file_name}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-basename  (file_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 @samp{g_basename} has been deprecated since version 2.2 and should not be used
 in newly-written code. Use @code{g-path-get-basename} instead, but notice that
 @code{g-path-get-basename} allocates new memory for the returned string, unlike
@@ -297,23 +297,23 @@ the name of the file without any leading directory components.
 
 @end deffn
 
-@deffn Function g-path-is-absolute  ( @var{file_name}   @code{mchars} )   @result{}  ( @var{ret}   @code{bool} )
-Returns @samp{TRUE} if the given @var{file-name} is an absolute file name, i.e.
-it contains a full path from the root directory such as "/usr/local" on UNIX or
-"C:\windows" on Windows systems.
+@deffn Function g-path-is-absolute  (file_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Returns @samp{@code{#t}} if the given @var{file-name} is an absolute file name,
+i.e. it contains a full path from the root directory such as "/usr/local" on
+UNIX or "C:\windows" on Windows systems.
 
 @table @var
 @item file-name
 a file name.
 
 @item ret
-@samp{TRUE} if @var{file-name} is an absolute path.
+@samp{@code{#t}} if @var{file-name} is an absolute path.
 
 @end table
 
 @end deffn
 
-@deffn Function g-path-skip-root  ( @var{file_name}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-path-skip-root  (file_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Returns a pointer into @var{file-name} after the root component, i.e. after the
 "/" in UNIX or "C:\" under Windows. If @var{file-name} is not an absolute path
 it returns @samp{@code{#f}}.
@@ -329,7 +329,7 @@ a pointer into @var{file-name} after the root component.
 
 @end deffn
 
-@deffn Function g-path-get-basename  ( @var{file_name}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-path-get-basename  (file_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Gets the last component of the filename. If @var{file-name} ends with a
 directory separator it gets the component before the last slash. If
 @var{file-name} consists only of directory separators (and on Windows, possibly
@@ -347,7 +347,7 @@ a newly allocated string containing the last component of the filename.
 
 @end deffn
 
-@deffn Function g-path-get-dirname  ( @var{file_name}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-path-get-dirname  (file_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Gets the directory components of a file name. If the file name has no directory
 components "." is returned. The returned string should be freed when no longer
 needed.
@@ -363,7 +363,7 @@ the directory components of the file.
 
 @end deffn
 
-@deffn Function g-find-program-in-path  ( @var{program}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-find-program-in-path  (program@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Locates the first executable named @var{program} in the user's path, in the same
 way that @code{execvp} would locate it. Returns an allocated string with the
 absolute path name, or @samp{@code{#f}} if the program is not found in the path.
@@ -391,7 +391,7 @@ absolute path, or @samp{@code{#f}}
 
 @end deffn
 
-@deffn Function g-nullify-pointer  ( @var{nullify_location}   @code{<gpointer*>} )
+@deffn Function g-nullify-pointer  (nullify_location@tie{}@code{<gpointer*>})
 Set the pointer at the specified location to @samp{@code{#f}}.
 
 @table @var

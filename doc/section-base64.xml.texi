@@ -2,7 +2,9 @@
 @c %start of fragment
 
 @node Base64 Encoding
-@chapter Base64 Encoding: encodes and decodes data in Base64 format
+@chapter Base64 Encoding
+encodes and decodes data in Base64 format
+
 @section Overview
 Base64 is an encoding that allows to encode a sequence of arbitrary bytes as a
 sequence of printable ASCII characters. For the definition of Base64, see

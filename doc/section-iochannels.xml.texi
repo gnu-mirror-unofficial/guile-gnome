@@ -2,7 +2,9 @@
 @c %start of fragment
 
 @node IO Channels
-@chapter IO Channels: portable support for using files, pipes and sockets.
+@chapter IO Channels
+portable support for using files, pipes and sockets.
+
 @section Overview
 The @code{<gio-channel>} data type aims to provide a portable method for using
 file descriptors, pipes, and sockets, and integrating them into the main event

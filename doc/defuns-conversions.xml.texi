@@ -1,7 +1,7 @@
 
 @c %start of fragment
 
-@deffn Function g-locale-to-utf8  ( @var{opsysstring}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{bytes_read}   @code{size_t} )  ( @var{bytes_written}   @code{size_t} )
+@deffn Function g-locale-to-utf8  (opsysstring@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) @result{}@tie{} (ret@tie{}@code{mchars}) (bytes_read@tie{}@code{size_t}) (bytes_written@tie{}@code{size_t})
 Converts a string which is in the encoding used for strings by the C runtime
 (usually the same as that used by the operating system) in the current locale
 into a UTF-8 string.
@@ -36,7 +36,7 @@ The converted string, or @samp{@code{#f}} on an error.
 
 @end deffn
 
-@deffn Function g-filename-to-utf8  ( @var{opsysstring}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{bytes_read}   @code{size_t} )  ( @var{bytes_written}   @code{size_t} )
+@deffn Function g-filename-to-utf8  (opsysstring@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) @result{}@tie{} (ret@tie{}@code{mchars}) (bytes_read@tie{}@code{size_t}) (bytes_written@tie{}@code{size_t})
 Converts a string which is in the encoding used by GLib for filenames into a
 UTF-8 string. Note that on Windows GLib uses UTF-8 for filenames.
 
@@ -69,7 +69,7 @@ The converted string, or @samp{@code{#f}} on an error.
 
 @end deffn
 
-@deffn Function g-filename-from-utf8  ( @var{utf8string}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{bytes_read}   @code{size_t} )  ( @var{bytes_written}   @code{size_t} )
+@deffn Function g-filename-from-utf8  (utf8string@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) @result{}@tie{} (ret@tie{}@code{mchars}) (bytes_read@tie{}@code{size_t}) (bytes_written@tie{}@code{size_t})
 Converts a string from UTF-8 to the encoding GLib uses for filenames. Note that
 on Windows GLib uses UTF-8 for filenames.
 
@@ -102,7 +102,7 @@ The converted string, or @samp{@code{#f}} on an error.
 
 @end deffn
 
-@deffn Function g-filename-from-uri  ( @var{uri}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{hostname}   @code{mchars} )
+@deffn Function g-filename-from-uri  (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars}) (hostname@tie{}@code{mchars})
 Converts an escaped ASCII-encoded URI to a local filename in the encoding used
 for filenames.
 
@@ -126,7 +126,7 @@ an error.
 
 @end deffn
 
-@deffn Function g-filename-to-uri  ( @var{filename}   @code{mchars} )  ( @var{hostname}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-filename-to-uri  (filename@tie{}@code{mchars}) (hostname@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Converts an absolute filename to an escaped ASCII-encoded URI, with the path
 component following Section 3.3. of RFC 2396.
 
@@ -150,7 +150,7 @@ error.
 
 @end deffn
 
-@deffn Function g-filename-display-name  ( @var{filename}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-filename-display-name  (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Converts a filename into a valid UTF-8 string. The conversion is not necessarily
 reversible, so you should keep the original around and use the return value of
 this function only for display purposes. Unlike @code{g-filename-to-utf8}, the
@@ -180,7 +180,7 @@ Since 2.6
 
 @end deffn
 
-@deffn Function g-filename-display-basename  ( @var{filename}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-filename-display-basename  (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Returns the display basename for the particular filename, guaranteed to be valid
 UTF-8. The display name might not be identical to the filename, for instance
 there might be problems converting it to UTF-8, and some files can be translated
@@ -212,7 +212,7 @@ Since 2.6
 
 @end deffn
 
-@deffn Function g-locale-from-utf8  ( @var{utf8string}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{bytes_read}   @code{size_t} )  ( @var{bytes_written}   @code{size_t} )
+@deffn Function g-locale-from-utf8  (utf8string@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) @result{}@tie{} (ret@tie{}@code{mchars}) (bytes_read@tie{}@code{size_t}) (bytes_written@tie{}@code{size_t})
 Converts a string from UTF-8 to the encoding used for strings by the C runtime
 (usually the same as that used by the operating system) in the current locale.
 

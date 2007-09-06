@@ -2,7 +2,9 @@
 @c %start of fragment
 
 @node Miscellaneous Utility Functions
-@chapter Miscellaneous Utility Functions: a selection of portable utility functions.
+@chapter Miscellaneous Utility Functions
+a selection of portable utility functions.
+
 @section Overview
 These are portable utility functions.
 

@@ -2,7 +2,9 @@
 @c %start of fragment
 
 @node Shell-related Utilities
-@chapter Shell-related Utilities: shell-like commandline handling.
+@chapter Shell-related Utilities
+shell-like commandline handling.
+
 @section Overview
 @section Usage
 @include defuns-shell.xml.texi

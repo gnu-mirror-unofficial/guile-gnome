@@ -149,7 +149,7 @@ gtk-doc emits."
 
 (define (c-arguments->scheme-arguments args return-type)
   (define (arg-texinfo arg)
-    `("(" (var ,(gtype-name->scheme-name (cdr arg))) " "
+    `("(" (var ,(gtype-name->scheme-name (cdr arg))) (tie)
       (code ,(symbol->string
               (gtype-name->class-name (strip-star (car arg))))) ")"))
   (define (finish input-args output-args)
@@ -160,7 +160,7 @@ gtk-doc emits."
                                    (acons return-type "ret" output-args)))))
       (if (null? outputs)
           inputs
-          (append inputs '(" " (result)) outputs))))
+          (append inputs '(" " (result) (tie)) outputs))))
   (let lp ((args args) (out '()))
     (cond
      ((null? args)
@@ -223,6 +223,8 @@ gtk-doc emits."
     (*text*
      . ,(lambda (tag text)
           (or (assoc-ref '(("NULL" . (code "#f"))
+                           ("FALSE" . (code "#f"))
+                           ("TRUE" . (code "#t"))
                            ("Returns" . "ret")) text)
               text)))
     ,@*sdocbook->stexi-rules*))
@@ -297,8 +299,8 @@ as produced by gtk-doc, translated into texinfo."
             (basename (basename file))
             (docs `(*fragment*
                     (node (% (name ,@(gtk-doc-sdocbook-title sdocbook))))
-                    (chapter ,@(gtk-doc-sdocbook-title sdocbook)
-                             ": " ,@(gtk-doc-sdocbook-subtitle sdocbook))
+                    (chapter ,@(gtk-doc-sdocbook-title sdocbook))
+                    (para ,@(gtk-doc-sdocbook-subtitle sdocbook))
                     (section "Overview")
                     ,@(cdr (gtk-doc-sdocbook->description-fragment sdocbook))
                     (section "Usage")
@@ -369,7 +371,7 @@ source, for example a file of hand-written documentation overrides."
 
 (define (function-stexi-arguments f)
   (define (arg-texinfo name type)
-    `(" (" (var ,(symbol->string name)) " "
+    `(" (" ,(symbol->string name) (tie)
       (code ,(symbol->string type)) ")"))
   (let ((inputs (append-map arg-texinfo (input-arg-names f)
                             (input-arg-type-names f)))
@@ -383,7 +385,7 @@ source, for example a file of hand-written documentation overrides."
                                         (output-arg-type-names f)))))))
     (if (null? outputs)
         inputs
-        (append inputs '(" " (result)) outputs))))
+        (append inputs '(" " (result) (tie)) outputs))))
 
 (define (make-defs/g-wrap elt funcs body process-def)
   (or
@@ -406,12 +408,13 @@ source, for example a file of hand-written documentation overrides."
                             (sdocbook-flatten
                              (cons '*fragment* body))))))))
             (generic (generic-name f)))
-        `(,@(if generic
-                `((deffn (% (name ,(symbol->string name))
-                            (category "Method"))
-                    (para)))
-                '())
-          ,deffn))))
+        (if generic
+            `((,(car deffn)
+               ,(cadr deffn)
+               (deffnx (% (name ,(symbol->string generic))
+                          (category "Method")))
+               ,@(cddr deffn)))
+            (list deffn)))))
    '()))
 
 (define (gtk-doc-sdocbook->def-list/g-wrap sdocbook process-def wrapset)

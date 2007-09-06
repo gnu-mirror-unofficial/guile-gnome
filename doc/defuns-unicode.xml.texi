@@ -1,7 +1,7 @@
 
 @c %start of fragment
 
-@deffn Function g-unichar-validate  ( @var{ch}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-validate  (ch@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Checks whether @var{ch} is a valid Unicode character. Some possible integer
 values of @var{ch} will not be valid. 0 is considered a valid character, though
 it's normally a string terminator.
@@ -11,13 +11,13 @@ it's normally a string terminator.
 a Unicode character
 
 @item ret
-@samp{TRUE} if @var{ch} is a valid Unicode character
+@samp{@code{#t}} if @var{ch} is a valid Unicode character
 
 @end table
 
 @end deffn
 
-@deffn Function g-unichar-isalnum  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-isalnum  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines whether a character is alphanumeric. Given some UTF-8 text, obtain a
 character value with @code{g-utf8-get-char}.
 
@@ -26,13 +26,13 @@ character value with @code{g-utf8-get-char}.
 a Unicode character
 
 @item ret
-@samp{TRUE} if @var{c} is an alphanumeric character
+@samp{@code{#t}} if @var{c} is an alphanumeric character
 
 @end table
 
 @end deffn
 
-@deffn Function g-unichar-isalpha  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-isalpha  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines whether a character is alphabetic (i.e. a letter). Given some UTF-8
 text, obtain a character value with @code{g-utf8-get-char}.
 
@@ -41,13 +41,13 @@ text, obtain a character value with @code{g-utf8-get-char}.
 a Unicode character
 
 @item ret
-@samp{TRUE} if @var{c} is an alphabetic character
+@samp{@code{#t}} if @var{c} is an alphabetic character
 
 @end table
 
 @end deffn
 
-@deffn Function g-unichar-iscntrl  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-iscntrl  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines whether a character is a control character. Given some UTF-8 text,
 obtain a character value with @code{g-utf8-get-char}.
 
@@ -56,13 +56,13 @@ obtain a character value with @code{g-utf8-get-char}.
 a Unicode character
 
 @item ret
-@samp{TRUE} if @var{c} is a control character
+@samp{@code{#t}} if @var{c} is a control character
 
 @end table
 
 @end deffn
 
-@deffn Function g-unichar-isdigit  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-isdigit  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines whether a character is numeric (i.e. a digit). This covers ASCII 0-9
 and also digits in other languages/scripts. Given some UTF-8 text, obtain a
 character value with @code{g-utf8-get-char}.
@@ -72,30 +72,30 @@ character value with @code{g-utf8-get-char}.
 a Unicode character
 
 @item ret
-@samp{TRUE} if @var{c} is a digit
+@samp{@code{#t}} if @var{c} is a digit
 
 @end table
 
 @end deffn
 
-@deffn Function g-unichar-isgraph  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-isgraph  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines whether a character is printable and not a space (returns
-@samp{FALSE} for control characters, format characters, and spaces).
-@code{g-unichar-isprint} is similar, but returns @samp{TRUE} for spaces. Given
-some UTF-8 text, obtain a character value with @code{g-utf8-get-char}.
+@samp{@code{#f}} for control characters, format characters, and spaces).
+@code{g-unichar-isprint} is similar, but returns @samp{@code{#t}} for spaces.
+Given some UTF-8 text, obtain a character value with @code{g-utf8-get-char}.
 
 @table @var
 @item c
 a Unicode character
 
 @item ret
-@samp{TRUE} if @var{c} is printable unless it's a space
+@samp{@code{#t}} if @var{c} is printable unless it's a space
 
 @end table
 
 @end deffn
 
-@deffn Function g-unichar-islower  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-islower  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines whether a character is a lowercase letter. Given some UTF-8 text,
 obtain a character value with @code{g-utf8-get-char}.
 
@@ -104,29 +104,29 @@ obtain a character value with @code{g-utf8-get-char}.
 a Unicode character
 
 @item ret
-@samp{TRUE} if @var{c} is a lowercase letter
+@samp{@code{#t}} if @var{c} is a lowercase letter
 
 @end table
 
 @end deffn
 
-@deffn Function g-unichar-isprint  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-isprint  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines whether a character is printable. Unlike @code{g-unichar-isgraph},
-returns @samp{TRUE} for spaces. Given some UTF-8 text, obtain a character value
-with @code{g-utf8-get-char}.
+returns @samp{@code{#t}} for spaces. Given some UTF-8 text, obtain a character
+value with @code{g-utf8-get-char}.
 
 @table @var
 @item c
 a Unicode character
 
 @item ret
-@samp{TRUE} if @var{c} is printable
+@samp{@code{#t}} if @var{c} is printable
 
 @end table
 
 @end deffn
 
-@deffn Function g-unichar-ispunct  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-ispunct  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines whether a character is punctuation or a symbol. Given some UTF-8
 text, obtain a character value with @code{g-utf8-get-char}.
 
@@ -135,13 +135,13 @@ text, obtain a character value with @code{g-utf8-get-char}.
 a Unicode character
 
 @item ret
-@samp{TRUE} if @var{c} is a punctuation or symbol character
+@samp{@code{#t}} if @var{c} is a punctuation or symbol character
 
 @end table
 
 @end deffn
 
-@deffn Function g-unichar-isspace  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-isspace  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines whether a character is a space, tab, or line separator (newline,
 carriage return, etc.). Given some UTF-8 text, obtain a character value with
 @code{g-utf8-get-char}.
@@ -154,13 +154,13 @@ to get word breaking right, the algorithm is fairly complex.)
 a Unicode character
 
 @item ret
-@samp{TRUE} if @var{c} is a space character
+@samp{@code{#t}} if @var{c} is a space character
 
 @end table
 
 @end deffn
 
-@deffn Function g-unichar-isupper  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-isupper  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines if a character is uppercase.
 
 @table @var
@@ -168,13 +168,13 @@ Determines if a character is uppercase.
 a Unicode character
 
 @item ret
-@samp{TRUE} if @var{c} is an uppercase character
+@samp{@code{#t}} if @var{c} is an uppercase character
 
 @end table
 
 @end deffn
 
-@deffn Function g-unichar-isxdigit  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-isxdigit  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines if a character is a hexidecimal digit.
 
 @table @var
@@ -182,13 +182,13 @@ Determines if a character is a hexidecimal digit.
 a Unicode character.
 
 @item ret
-@samp{TRUE} if the character is a hexadecimal digit
+@samp{@code{#t}} if the character is a hexadecimal digit
 
 @end table
 
 @end deffn
 
-@deffn Function g-unichar-istitle  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-istitle  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines if a character is titlecase. Some characters in Unicode which are
 composites, such as the DZ digraph have three case variants instead of just two.
 The titlecase form is used at the beginning of a word where only the first
@@ -200,13 +200,13 @@ CAPITAL LETTTER D WITH SMALL LETTER Z.
 a Unicode character
 
 @item ret
-@samp{TRUE} if the character is titlecase
+@samp{@code{#t}} if the character is titlecase
 
 @end table
 
 @end deffn
 
-@deffn Function g-unichar-isdefined  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-isdefined  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines if a given character is assigned in the Unicode standard.
 
 @table @var
@@ -214,13 +214,13 @@ Determines if a given character is assigned in the Unicode standard.
 a Unicode character
 
 @item ret
-@samp{TRUE} if the character has an assigned value
+@samp{@code{#t}} if the character has an assigned value
 
 @end table
 
 @end deffn
 
-@deffn Function g-unichar-iswide  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-iswide  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines if a character is typically rendered in a double-width cell.
 
 @table @var
@@ -228,13 +228,13 @@ Determines if a character is typically rendered in a double-width cell.
 a Unicode character
 
 @item ret
-@samp{TRUE} if the character is wide
+@samp{@code{#t}} if the character is wide
 
 @end table
 
 @end deffn
 
-@deffn Function g-unichar-iswide-cjk  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-unichar-iswide-cjk  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines if a character is typically rendered in a double-width cell under
 legacy East Asian locales. If a character is wide according to
 @code{g-unichar-iswide}, then it is also reported wide with this function, but
@@ -246,7 +246,7 @@ the converse is not necessarily true. See the
 a Unicode character
 
 @item ret
-@samp{TRUE} if the character is wide in legacy East Asian locales
+@samp{@code{#t}} if the character is wide in legacy East Asian locales
 
 @end table
 
@@ -254,7 +254,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-unichar-toupper  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{unsigned-int32} )
+@deffn Function g-unichar-toupper  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
 Converts a character to uppercase.
 
 @table @var
@@ -270,7 +270,7 @@ unchanged.
 
 @end deffn
 
-@deffn Function g-unichar-tolower  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{unsigned-int32} )
+@deffn Function g-unichar-tolower  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
 Converts a character to lower case.
 
 @table @var
@@ -286,7 +286,7 @@ unchanged.
 
 @end deffn
 
-@deffn Function g-unichar-totitle  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{unsigned-int32} )
+@deffn Function g-unichar-totitle  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
 Converts a character to the titlecase.
 
 @table @var
@@ -301,7 +301,7 @@ lowercase character, @var{c} is returned unchanged.
 
 @end deffn
 
-@deffn Function g-unichar-digit-value  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{int} )
+@deffn Function g-unichar-digit-value  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{int})
 Determines the numeric value of a character as a decimal digit.
 
 @table @var
@@ -316,7 +316,7 @@ numeric value. Otherwise, -1.
 
 @end deffn
 
-@deffn Function g-unichar-xdigit-value  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{int} )
+@deffn Function g-unichar-xdigit-value  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{int})
 Determines the numeric value of a character as a hexidecimal digit.
 
 @table @var
@@ -331,7 +331,7 @@ value. Otherwise, -1.
 
 @end deffn
 
-@deffn Function g-unichar-type  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{<g-unicode-type>} )
+@deffn Function g-unichar-type  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{<g-unicode-type>})
 Classifies a Unicode character by type.
 
 @table @var
@@ -345,7 +345,7 @@ the type of the character.
 
 @end deffn
 
-@deffn Function g-unichar-break-type  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{<g-unicode-break-type>} )
+@deffn Function g-unichar-break-type  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{<g-unicode-break-type>})
 Determines the break type of @var{c}. @var{c} should be a Unicode character (to
 derive a character from UTF-8 encoded text, use @code{g-utf8-get-char}). The
 break type is used to find word and line breaks ("text boundaries"), Pango
@@ -364,7 +364,7 @@ the break type of @var{c}
 
 @end deffn
 
-@deffn Function g-unichar-get-mirror-char  ( @var{ch}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{bool} )  ( @var{mirrored_ch}   @code{unsigned-int32} )
+@deffn Function g-unichar-get-mirror-char  (ch@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool}) (mirrored_ch@tie{}@code{unsigned-int32})
 In Unicode, some characters are @dfn{mirrored}. This means that their images are
 mirrored horizontally in text that is laid out from right to left. For instance,
 "(" would become its mirror image, ")", in right-to-left text.
@@ -382,7 +382,8 @@ a Unicode character
 location to store the mirrored character
 
 @item ret
-@samp{TRUE} if @var{ch} has a mirrored character, @samp{FALSE} otherwise
+@samp{@code{#t}} if @var{ch} has a mirrored character, @samp{@code{#f}}
+otherwise
 
 @end table
 
@@ -390,7 +391,7 @@ Since 2.4
 
 @end deffn
 
-@deffn Function g-utf8-get-char  ( @var{p}   @code{mchars} )   @result{}  ( @var{ret}   @code{unsigned-int32} )
+@deffn Function g-utf8-get-char  (p@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
 Converts a sequence of bytes encoded as UTF-8 to a Unicode character. If @var{p}
 does not point to a valid UTF-8 encoded character, results are undefined. If you
 are not sure that the bytes are complete valid Unicode characters, you should
@@ -407,7 +408,7 @@ the resulting character
 
 @end deffn
 
-@deffn Function g-utf8-get-char-validated  ( @var{p}   @code{mchars} )  ( @var{max_len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{unsigned-int32} )
+@deffn Function g-utf8-get-char-validated  (p@tie{}@code{mchars}) (max_len@tie{}@code{ssize_t}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
 Convert a sequence of bytes encoded as UTF-8 to a Unicode character. This
 function checks for incomplete characters, for invalid characters such as
 characters that are out of the range of Unicode, and for overlong encodings of
@@ -430,7 +431,7 @@ Unicode character, returns (gunichar)-1.
 
 @end deffn
 
-@deffn Function g-utf8-offset-to-pointer  ( @var{str}   @code{mchars} )  ( @var{offset}   @code{long} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-utf8-offset-to-pointer  (str@tie{}@code{mchars}) (offset@tie{}@code{long}) @result{}@tie{} (ret@tie{}@code{mchars})
 Converts from an integer character offset to a pointer to a position within the
 string.
 
@@ -453,7 +454,7 @@ the resulting pointer
 
 @end deffn
 
-@deffn Function g-utf8-pointer-to-offset  ( @var{str}   @code{mchars} )  ( @var{pos}   @code{mchars} )   @result{}  ( @var{ret}   @code{long} )
+@deffn Function g-utf8-pointer-to-offset  (str@tie{}@code{mchars}) (pos@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{long})
 Converts from a pointer to position within a string to a integer character
 offset.
 
@@ -474,7 +475,7 @@ the resulting character offset
 
 @end deffn
 
-@deffn Function g-utf8-prev-char  ( @var{p}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-utf8-prev-char  (p@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Finds the previous UTF-8 character in the string before @var{p}.
 
 @var{p} does not have to be at the beginning of a UTF-8 character. No check is
@@ -493,7 +494,7 @@ a pointer to the found character.
 
 @end deffn
 
-@deffn Function g-utf8-find-next-char  ( @var{p}   @code{mchars} )  ( @var{end}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-utf8-find-next-char  (p@tie{}@code{mchars}) (end@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Finds the start of the next UTF-8 character in the string after @var{p}.
 
 @var{p} does not have to be at the beginning of a UTF-8 character. No check is
@@ -515,7 +516,7 @@ a pointer to the found character or @samp{@code{#f}}
 
 @end deffn
 
-@deffn Function g-utf8-find-prev-char  ( @var{str}   @code{mchars} )  ( @var{p}   @code{mchars} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-utf8-find-prev-char  (str@tie{}@code{mchars}) (p@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Given a position @var{p} with a UTF-8 encoded string @var{str}, find the start
 of the previous UTF-8 character starting before @var{p}. Returns
 @samp{@code{#f}} if no UTF-8 characters are present in @var{str} before @var{p}.
@@ -538,7 +539,7 @@ a pointer to the found character or @samp{@code{#f}}.
 
 @end deffn
 
-@deffn Function g-utf8-strlen  ( @var{p}   @code{mchars} )  ( @var{max}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{long} )
+@deffn Function g-utf8-strlen  (p@tie{}@code{mchars}) (max@tie{}@code{ssize_t}) @result{}@tie{} (ret@tie{}@code{long})
 Returns the length of the string in characters.
 
 @table @var
@@ -557,7 +558,7 @@ the length of the string in characters
 
 @end deffn
 
-@deffn Function g-utf8-strncpy  ( @var{dest}   @code{mchars} )  ( @var{src}   @code{mchars} )  ( @var{n}   @code{size_t} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-utf8-strncpy  (dest@tie{}@code{mchars}) (src@tie{}@code{mchars}) (n@tie{}@code{size_t}) @result{}@tie{} (ret@tie{}@code{mchars})
 Like the standard C @code{strncpy} function, but copies a given number of
 characters instead of a given number of bytes. The @var{src} string must be
 valid UTF-8 encoded text. (Use @code{g-utf8-validate} on all text before trying
@@ -580,7 +581,7 @@ character count
 
 @end deffn
 
-@deffn Function g-utf8-strchr  ( @var{p}   @code{mchars} )  ( @var{len}   @code{ssize_t} )  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-utf8-strchr  (p@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{mchars})
 Finds the leftmost occurrence of the given Unicode character in a UTF-8 encoded
 string, while limiting the search to @var{len} bytes. If @var{len} is -1, allow
 unbounded search.
@@ -603,7 +604,7 @@ pointer to the start of the leftmost occurrence of the character in the string.
 
 @end deffn
 
-@deffn Function g-utf8-strrchr  ( @var{p}   @code{mchars} )  ( @var{len}   @code{ssize_t} )  ( @var{c}   @code{unsigned-int32} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-utf8-strrchr  (p@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{mchars})
 Find the rightmost occurrence of the given Unicode character in a UTF-8 encoded
 string, while limiting the search to @var{len} bytes. If @var{len} is -1, allow
 unbounded search.
@@ -626,7 +627,7 @@ pointer to the start of the rightmost occurrence of the character in the string.
 
 @end deffn
 
-@deffn Function g-utf8-strreverse  ( @var{str}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-utf8-strreverse  (str@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) @result{}@tie{} (ret@tie{}@code{mchars})
 Reverses a UTF-8 string. @var{str} must be valid UTF-8 encoded text. (Use
 @code{g-utf8-validate} on all text before trying to use UTF-8 utility functions
 with it.)
@@ -651,7 +652,7 @@ Since 2.2
 
 @end deffn
 
-@deffn Function g-utf8-validate  ( @var{str}   @code{mchars} )  ( @var{max_len}   @code{ssize_t} )  ( @var{end}   @code{<gchar**>} )   @result{}  ( @var{ret}   @code{bool} )
+@deffn Function g-utf8-validate  (str@tie{}@code{mchars}) (max_len@tie{}@code{ssize_t}) (end@tie{}@code{<gchar**>}) @result{}@tie{} (ret@tie{}@code{bool})
 Validates UTF-8 encoded text. @var{str} is the text to validate; if @var{str} is
 nul-terminated, then @var{max-len} can be -1, otherwise @var{max-len} should be
 the number of bytes to validate. If @var{end} is non-@samp{@code{#f}}, then the
@@ -659,13 +660,13 @@ end of the valid range will be stored there (i.e. the start of the first invalid
 character if some bytes were invalid, or the end of the text being validated
 otherwise).
 
-Note that @code{g-utf8-validate} returns @samp{FALSE} if @var{max-len} is
+Note that @code{g-utf8-validate} returns @samp{@code{#f}} if @var{max-len} is
 positive and NUL is met before @var{max-len} bytes have been read.
 
-Returns @samp{TRUE} if all of @var{str} was valid. Many GLib and GTK+ routines
-@emph{require} valid UTF-8 as input; so data read from a file or the network
-should be checked with @code{g-utf8-validate} before doing anything else with
-it.
+Returns @samp{@code{#t}} if all of @var{str} was valid. Many GLib and GTK+
+routines @emph{require} valid UTF-8 as input; so data read from a file or the
+network should be checked with @code{g-utf8-validate} before doing anything else
+with it.
 
 @table @var
 @item str
@@ -678,13 +679,13 @@ max bytes to validate, or -1 to go until NUL
 return location for end of valid data
 
 @item ret
-@samp{TRUE} if the text was valid UTF-8
+@samp{@code{#t}} if the text was valid UTF-8
 
 @end table
 
 @end deffn
 
-@deffn Function g-utf8-strup  ( @var{str}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-utf8-strup  (str@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) @result{}@tie{} (ret@tie{}@code{mchars})
 Converts all Unicode characters in the string that have a case to uppercase. The
 exact manner that this is done depends on the current locale, and may result in
 the number of characters in the string increasing. (For instance, the German
@@ -704,7 +705,7 @@ a newly allocated string, with all characters converted to uppercase.
 
 @end deffn
 
-@deffn Function g-utf8-strdown  ( @var{str}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-utf8-strdown  (str@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) @result{}@tie{} (ret@tie{}@code{mchars})
 Converts all Unicode characters in the string that have a case to lowercase. The
 exact manner that this is done depends on the current locale, and may result in
 the number of characters in the string changing.
@@ -723,7 +724,7 @@ a newly allocated string, with all characters converted to lowercase.
 
 @end deffn
 
-@deffn Function g-utf8-casefold  ( @var{str}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-utf8-casefold  (str@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) @result{}@tie{} (ret@tie{}@code{mchars})
 Converts a string into a form that is independent of case. The result will not
 correspond to any particular case, but can be compared for equality or ordered
 with the results of calling @code{g-utf8-casefold} on other strings.
@@ -748,7 +749,7 @@ a newly allocated string, that is a case independent form of @var{str}.
 
 @end deffn
 
-@deffn Function g-utf8-normalize  ( @var{str}   @code{mchars} )  ( @var{len}   @code{ssize_t} )  ( @var{mode}   @code{<g-normalize-mode>} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-utf8-normalize  (str@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) (mode@tie{}@code{<g-normalize-mode>}) @result{}@tie{} (ret@tie{}@code{mchars})
 Converts a string into canonical form, standardizing such issues as whether a
 character with an accent is represented as a base character and combining accent
 or as a single precomposed character. You should generally call
@@ -785,7 +786,7 @@ a newly allocated string, that is the normalized form of @var{str}.
 
 @end deffn
 
-@deffn Function g-utf8-collate  ( @var{str1}   @code{mchars} )  ( @var{str2}   @code{mchars} )   @result{}  ( @var{ret}   @code{int} )
+@deffn Function g-utf8-collate  (str1@tie{}@code{mchars}) (str2@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{int})
 Compares two strings for ordering using the linguistically correct rules for the
 current locale. When sorting a large number of strings, it will be significantly
 faster to obtain collation keys with @code{g-utf8-collate-key} and compare the
@@ -806,7 +807,7 @@ a UTF-8 encoded string
 
 @end deffn
 
-@deffn Function g-utf8-collate-key  ( @var{str}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-utf8-collate-key  (str@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) @result{}@tie{} (ret@tie{}@code{mchars})
 Converts a string into a collation key that can be compared with other collation
 keys produced by the same function using @code{strcmp}. The results of comparing
 the collation keys of two strings with @code{strcmp} will always be the same as
@@ -827,7 +828,7 @@ you are done with it.
 
 @end deffn
 
-@deffn Function g-utf8-collate-key-for-filename  ( @var{str}   @code{mchars} )  ( @var{len}   @code{ssize_t} )   @result{}  ( @var{ret}   @code{mchars} )
+@deffn Function g-utf8-collate-key-for-filename  (str@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) @result{}@tie{} (ret@tie{}@code{mchars})
 Converts a string into a collation key that can be compared with other collation
 keys produced by the same function using @code{strcmp}.
 
@@ -855,7 +856,7 @@ Since 2.8
 
 @end deffn
 
-@deffn Function g-utf8-to-utf16  ( @var{str}   @code{mchars} )  ( @var{len}   @code{long} )   @result{}  ( @var{ret}   @code{<gunichar2*>} )  ( @var{items_read}   @code{long} )  ( @var{items_written}   @code{long} )
+@deffn Function g-utf8-to-utf16  (str@tie{}@code{mchars}) (len@tie{}@code{long}) @result{}@tie{} (ret@tie{}@code{<gunichar2*>}) (items_read@tie{}@code{long}) (items_written@tie{}@code{long})
 Convert a string from UTF-8 to UTF-16. A 0 character will be added to the result
 after the converted text.
 
@@ -891,7 +892,7 @@ a pointer to a newly allocated UTF-16 string. This value must be freed with
 
 @end deffn
 
-@deffn Function g-utf8-to-ucs4  ( @var{str}   @code{mchars} )  ( @var{len}   @code{long} )   @result{}  ( @var{ret}   @code{<gunichar*>} )  ( @var{items_read}   @code{long} )  ( @var{items_written}   @code{long} )
+@deffn Function g-utf8-to-ucs4  (str@tie{}@code{mchars}) (len@tie{}@code{long}) @result{}@tie{} (ret@tie{}@code{<gunichar*>}) (items_read@tie{}@code{long}) (items_written@tie{}@code{long})
 Convert a string from UTF-8 to a 32-bit fixed width representation as UCS-4. A
 trailing 0 will be added to the string after the converted text.
 
@@ -927,7 +928,7 @@ a pointer to a newly allocated UCS-4 string. This value must be freed with
 
 @end deffn
 
-@deffn Function g-utf8-to-ucs4-fast  ( @var{str}   @code{mchars} )  ( @var{len}   @code{long} )   @result{}  ( @var{ret}   @code{<gunichar*>} )  ( @var{items_written}   @code{long} )
+@deffn Function g-utf8-to-ucs4-fast  (str@tie{}@code{mchars}) (len@tie{}@code{long}) @result{}@tie{} (ret@tie{}@code{<gunichar*>}) (items_written@tie{}@code{long})
 Convert a string from UTF-8 to a 32-bit fixed width representation as UCS-4,
 assuming valid UTF-8 input. This function is roughly twice as fast as
 @code{g-utf8-to-ucs4} but does no error checking on the input.
@@ -951,7 +952,7 @@ a pointer to a newly allocated UCS-4 string. This value must be freed with
 
 @end deffn
 
-@deffn Function g-utf16-to-ucs4  ( @var{str}   @code{<gunichar2*>} )  ( @var{len}   @code{long} )   @result{}  ( @var{ret}   @code{<gunichar*>} )  ( @var{items_read}   @code{long} )  ( @var{items_written}   @code{long} )
+@deffn Function g-utf16-to-ucs4  (str@tie{}@code{<gunichar2*>}) (len@tie{}@code{long}) @result{}@tie{} (ret@tie{}@code{<gunichar*>}) (items_read@tie{}@code{long}) (items_written@tie{}@code{long})
 Convert a string from UTF-16 to UCS-4. The result will be terminated with a 0
 character.
 
@@ -987,7 +988,7 @@ a pointer to a newly allocated UCS-4 string. This value must be freed with
 
 @end deffn
 
-@deffn Function g-utf16-to-utf8  ( @var{str}   @code{<gunichar2*>} )  ( @var{len}   @code{long} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{items_read}   @code{long} )  ( @var{items_written}   @code{long} )
+@deffn Function g-utf16-to-utf8  (str@tie{}@code{<gunichar2*>}) (len@tie{}@code{long}) @result{}@tie{} (ret@tie{}@code{mchars}) (items_read@tie{}@code{long}) (items_written@tie{}@code{long})
 Convert a string from UTF-16 to UTF-8. The result will be terminated with a 0
 byte.
 
@@ -1027,7 +1028,7 @@ a pointer to a newly allocated UTF-8 string. This value must be freed with
 
 @end deffn
 
-@deffn Function g-ucs4-to-utf16  ( @var{str}   @code{<gunichar*>} )  ( @var{len}   @code{long} )   @result{}  ( @var{ret}   @code{<gunichar2*>} )  ( @var{items_read}   @code{long} )  ( @var{items_written}   @code{long} )
+@deffn Function g-ucs4-to-utf16  (str@tie{}@code{<gunichar*>}) (len@tie{}@code{long}) @result{}@tie{} (ret@tie{}@code{<gunichar2*>}) (items_read@tie{}@code{long}) (items_written@tie{}@code{long})
 Convert a string from UCS-4 to UTF-16. A 0 character will be added to the result
 after the converted text.
 
@@ -1061,7 +1062,7 @@ a pointer to a newly allocated UTF-16 string. This value must be freed with
 
 @end deffn
 
-@deffn Function g-ucs4-to-utf8  ( @var{str}   @code{<gunichar*>} )  ( @var{len}   @code{long} )   @result{}  ( @var{ret}   @code{mchars} )  ( @var{items_read}   @code{long} )  ( @var{items_written}   @code{long} )
+@deffn Function g-ucs4-to-utf8  (str@tie{}@code{<gunichar*>}) (len@tie{}@code{long}) @result{}@tie{} (ret@tie{}@code{mchars}) (items_read@tie{}@code{long}) (items_written@tie{}@code{long})
 Convert a string from a 32-bit fixed width representation as UCS-4. to UTF-8.
 The result will be terminated with a 0 byte.
 
@@ -1095,7 +1096,7 @@ the first invalid input character.
 
 @end deffn
 
-@deffn Function g-unichar-to-utf8  ( @var{c}   @code{unsigned-int32} )  ( @var{outbuf}   @code{mchars} )   @result{}  ( @var{ret}   @code{int} )
+@deffn Function g-unichar-to-utf8  (c@tie{}@code{unsigned-int32}) (outbuf@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{int})
 Converts a single character to UTF-8.
 
 @table @var

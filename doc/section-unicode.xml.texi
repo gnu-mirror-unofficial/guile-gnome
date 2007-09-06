@@ -2,7 +2,9 @@
 @c %start of fragment
 
 @node Unicode Manipulation
-@chapter Unicode Manipulation: functions operating on Unicode characters and UTF-8 strings.
+@chapter Unicode Manipulation
+functions operating on Unicode characters and UTF-8 strings.
+
 @section Overview
 This section describes a number of functions for dealing with Unicode characters
 and strings. There are analogues of the traditional @file{ctype.h} character
