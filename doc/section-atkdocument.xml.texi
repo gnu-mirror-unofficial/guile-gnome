@@ -1,0 +1,19 @@
+
+@c %start of fragment
+
+@node AtkDocument
+@chapter AtkDocument
+The ATK interface which represents the toplevel container for document content.
+
+@section Overview
+The AtkDocument interface should be supported by any object whose content is a
+representation or view of a document. The AtkDocument interface should appear on
+the toplevel container for the document content; however AtkDocument instances
+may be nested (i.e. an AtkDocument may be a descendant of another AtkDocument)
+in those cases where one document contains "embedded content" which can
+reasonably be considered a document in its own right.
+
+@section Usage
+@include defuns-atkdocument.xml.texi
+
+@c %end of fragment

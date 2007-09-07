@@ -1,0 +1,34 @@
+
+@c %start of fragment
+
+@deffn Function atk-state-type-get-name  (type@tie{}@code{<atk-state-type>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the description string describing the @code{<atk-state-type>}@var{type}.
+
+@table @var
+@item type
+The @code{<atk-state-type>} whose name is required
+
+@item ret
+the string describing the AtkStateType
+
+@end table
+
+@end deffn
+
+@deffn Function atk-state-type-for-name  (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<atk-state-type>})
+Gets the @code{<atk-state-type>} corresponding to the description string
+@var{name}.
+
+@table @var
+@item name
+a character string state name
+
+@item ret
+an @code{<atk-state-type>} corresponding to @var{name}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

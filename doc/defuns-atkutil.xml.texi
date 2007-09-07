@@ -1,0 +1,152 @@
+
+@c %start of fragment
+
+@deftp Class <atk-util>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function atk-add-focus-tracker  (focus_tracker@tie{}@code{<atk-event-listener>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Adds the specified function to the list of functions to be called when an object
+receives focus.
+
+@table @var
+@item focus-tracker
+Function to be added to the list of functions to be called when an object
+receives focus.
+
+@item ret
+added focus tracker id, or 0 on failure.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-remove-focus-tracker  (tracker_id@tie{}@code{unsigned-int})
+Removes the specified focus tracker from the list of functions to be called when
+any object receives focus.
+
+@table @var
+@item tracker-id
+the id of the focus tracker to remove
+
+@end table
+
+@end deffn
+
+@deffn Function atk-focus-tracker-init  (init@tie{}@code{<atk-event-listener-init>})
+Specifies the function to be called for focus tracker initialization. This
+function should be called by an implementation of the ATK interface if any
+specific work needs to be done to enable focus tracking.
+
+@table @var
+@item init
+Function to be called for focus tracker initialization
+
+@end table
+
+@end deffn
+
+@deffn Function atk-focus-tracker-notify  (object@tie{}@code{<atk-object>})
+Cause the focus tracker functions which have been specified to be executed for
+the object.
+
+@table @var
+@item object
+an @code{<atk-object>}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-add-global-event-listener  (listener@tie{}@code{<g-signal-emission-hook>}) (event_type@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Adds the specified function to the list of functions to be called when an event
+of type event_type occurs.
+
+@table @var
+@item listener
+the listener to notify
+
+@item event-type
+the type of event for which notification is requested
+
+@item ret
+added event listener id, or 0 on failure.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-remove-global-event-listener  (listener_id@tie{}@code{unsigned-int})
+Removes the specified event listener
+
+@table @var
+@item listener-id
+the id of the event listener to remove
+
+@end table
+
+@end deffn
+
+@deffn Function atk-remove-key-event-listener  (listener_id@tie{}@code{unsigned-int})
+Removes the specified event listener
+
+@table @var
+@item listener-id
+the id of the event listener to remove
+
+@end table
+
+@end deffn
+
+@deffn Function atk-get-root  @result{}@tie{} (ret@tie{}@code{<atk-object>})
+Gets the root accessible container for the current application.
+
+@table @var
+@item ret
+the root accessible container for the current application
+
+@end table
+
+@end deffn
+
+@deffn Function atk-get-focus-object  @result{}@tie{} (ret@tie{}@code{<atk-object>})
+Gets the currently focused object.
+
+Returns:
+
+@table @var
+@item ret
+the currently focused object for the current application
+
+@end table
+
+Since ATK 1.6
+
+@end deffn
+
+@deffn Function atk-get-toolkit-name  @result{}@tie{} (ret@tie{}@code{mchars})
+Gets name string for the GUI toolkit implementing ATK for this application.
+
+@table @var
+@item ret
+name string for the GUI toolkit implementing ATK for this application
+
+@end table
+
+@end deffn
+
+@deffn Function atk-get-toolkit-version  @result{}@tie{} (ret@tie{}@code{mchars})
+Gets version string for the GUI toolkit implementing ATK for this application.
+
+@table @var
+@item ret
+version string for the GUI toolkit implementing ATK for this application
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

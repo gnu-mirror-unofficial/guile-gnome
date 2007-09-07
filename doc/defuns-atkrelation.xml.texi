@@ -1,0 +1,126 @@
+
+@c %start of fragment
+
+@deftp Class <atk-relation>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item relation-type
+The type of the relation@item target
+An array of the targets for the relation@end table
+
+@end deftp
+
+@deffn Function atk-relation-type-register  (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<atk-relation-type>})
+Associate @var{name} with a new @code{<atk-relation-type>}
+
+@table @var
+@item name
+a name string
+
+@item ret
+an @code{<atk-relation-type>} associated with @var{name}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-relation-type-get-name  (type@tie{}@code{<atk-relation-type>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the description string describing the @code{<atk-relation-type>}@var{type}.
+
+@table @var
+@item type
+The @code{<atk-relation-type>} whose name is required
+
+@item ret
+the string describing the AtkRelationType
+
+@end table
+
+@end deffn
+
+@deffn Function atk-relation-type-for-name  (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<atk-relation-type>})
+Get the @code{<atk-relation-type>} type corresponding to a relation name.
+
+@table @var
+@item name
+a string which is the (non-localized) name of an ATK relation type.
+
+@item ret
+the @code{<atk-relation-type>} enumerated type corresponding to the specified
+name, or @code{<atk-relation-null>} if no matching relation type is found.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-relation-new  (targets@tie{}@code{<atk-object**>}) (n_targets@tie{}@code{int}) (relationship@tie{}@code{<atk-relation-type>}) @result{}@tie{} (ret@tie{}@code{<atk-relation>})
+Create a new relation for the specified key and the specified list of targets.
+
+@table @var
+@item targets
+an array of pointers to @code{<atk-objects>}
+
+@item n-targets
+number of @code{<atk-objects>} pointed to by @var{targets}
+
+@item relationship
+an @code{<atk-relation-type>} with which to create the new @code{<atk-relation>}
+
+@item ret
+a pointer to a new @code{<atk-relation>}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-relation-get-relation-type  (self@tie{}@code{<atk-relation>}) @result{}@tie{} (ret@tie{}@code{<atk-relation-type>})
+@deffnx Method get-relation-type
+Gets the type of @var{relation}
+
+@table @var
+@item relation
+an @code{<atk-relation>}
+
+@item ret
+the type of @var{relation}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-relation-get-target  (self@tie{}@code{<atk-relation>}) @result{}@tie{} (ret@tie{}@code{<g-ptr-array*>})
+@deffnx Method get-target
+Gets the target list of @var{relation}
+
+@table @var
+@item relation
+an @code{<atk-relation>}
+
+@item ret
+the target list of @var{relation}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-relation-add-target  (self@tie{}@code{<atk-relation>}) (target@tie{}@code{<atk-object>})
+@deffnx Method add-target
+Adds the specified AtkObject to the target for the relation, if it is not
+already present.
+
+@table @var
+@item relation
+an @code{<atk-relation>}
+
+@item target
+an @code{<atk-object>}
+
+@end table
+
+Since ATK 1.9
+
+@end deffn
+
+
+@c %end of fragment

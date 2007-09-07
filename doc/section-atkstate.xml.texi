@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@node AtkState
+@chapter AtkState
+An AtkState describes a component's particular state.
+
+@section Overview
+An AtkState describes a component's particular state. The actual state of an
+component is described by its AtkStateSet, which is a set of AtkStates.
+
+@section Usage
+@include defuns-atkstate.xml.texi
+
+@c %end of fragment

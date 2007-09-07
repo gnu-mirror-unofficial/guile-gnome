@@ -1,0 +1,132 @@
+
+@c %start of fragment
+
+@deffn Function atk-selection-add-selection  (self@tie{}@code{<atk-selection*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Adds the specified accessible child of the object to the object's selection.
+
+@table @var
+@item selection
+a @code{<gobject>} instance that implements AtkSelectionIface
+
+@item i
+a @code{<gint>} specifying the child index.
+
+@item ret
+TRUE if success, FALSE otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-selection-clear-selection  (self@tie{}@code{<atk-selection*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Clears the selection in the object so that no children in the object are
+selected.
+
+@table @var
+@item selection
+a @code{<gobject>} instance that implements AtkSelectionIface
+
+@item ret
+TRUE if success, FALSE otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-selection-ref-selection  (self@tie{}@code{<atk-selection*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+Gets a reference to the accessible object representing the specified selected
+child of the object. Note: callers should not rely on @samp{@code{#f}} or on a
+zero value for indication of whether AtkSelectionIface is implemented, they
+should use type checking/interface checking macros or the
+@code{atk-get-accessible-value} convenience method.
+
+@table @var
+@item selection
+a @code{<gobject>} instance that implements AtkSelectionIface
+
+@item i
+a @code{<gint>} specifying the index in the selection set. (e.g. the ith
+selection as opposed to the ith child).
+
+@item ret
+an @code{<atk-object>} representing the selected accessible , or
+@samp{@code{#f}} if @var{selection} does not implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-selection-get-selection-count  (self@tie{}@code{<atk-selection*>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the number of accessible children currently selected. Note: callers should
+not rely on @samp{@code{#f}} or on a zero value for indication of whether
+AtkSelectionIface is implemented, they should use type checking/interface
+checking macros or the @code{atk-get-accessible-value} convenience method.
+
+@table @var
+@item selection
+a @code{<gobject>} instance that implements AtkSelectionIface
+
+@item ret
+a gint representing the number of items selected, or 0 if @var{selection} does
+not implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-selection-is-child-selected  (self@tie{}@code{<atk-selection*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Determines if the current child of this object is selected Note: callers should
+not rely on @samp{@code{#f}} or on a zero value for indication of whether
+AtkSelectionIface is implemented, they should use type checking/interface
+checking macros or the @code{atk-get-accessible-value} convenience method.
+
+@table @var
+@item selection
+a @code{<gobject>} instance that implements AtkSelectionIface
+
+@item i
+a @code{<gint>} specifying the child index.
+
+@item ret
+a gboolean representing the specified child is selected, or 0 if @var{selection}
+does not implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-selection-remove-selection  (self@tie{}@code{<atk-selection*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Removes the specified child of the object from the object's selection.
+
+@table @var
+@item selection
+a @code{<gobject>} instance that implements AtkSelectionIface
+
+@item i
+a @code{<gint>} specifying the index in the selection set. (e.g. the ith
+selection as opposed to the ith child).
+
+@item ret
+TRUE if success, FALSE otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-selection-select-all-selection  (self@tie{}@code{<atk-selection*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Causes every child of the object to be selected if the object supports multiple
+selections.
+
+@table @var
+@item selection
+a @code{<gobject>} instance that implements AtkSelectionIface
+
+@item ret
+TRUE if success, FALSE otherwise.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

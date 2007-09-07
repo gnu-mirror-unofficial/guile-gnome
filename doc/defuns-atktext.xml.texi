@@ -1,0 +1,614 @@
+
+@c %start of fragment
+
+@deffn Function atk-text-get-text  (self@tie{}@code{<atk-text*>}) (start_offset@tie{}@code{int}) (end_offset@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the specified text.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item start-offset
+start position
+
+@item end-offset
+end position
+
+@item ret
+the text from @var{start-offset} up to, but not including @var{end-offset}.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-get-character-at-offset  (self@tie{}@code{<atk-text*>}) (offset@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
+Gets the specified text.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item offset
+position
+
+@item ret
+the character at @var{offset}.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-get-text-after-offset  (self@tie{}@code{<atk-text*>}) (offset@tie{}@code{int}) (boundary_type@tie{}@code{<atk-text-boundary>}) @result{}@tie{} (ret@tie{}@code{mchars}) (start_offset@tie{}@code{int}) (end_offset@tie{}@code{int})
+Gets the specified text.
+
+If the boundary_type if ATK_TEXT_BOUNDARY_CHAR the character after the offset is
+returned.
+
+If the boundary_type is ATK_TEXT_BOUNDARY_WORD_START the returned string is from
+the word start after the offset to the next word start.
+
+The returned string will contain the word after the offset if the offset is
+inside a word or if the offset is not inside a word.
+
+If the boundary_type is ATK_TEXT_BOUNDARY_WORD_END the returned string is from
+the word end at or after the offset to the next work end.
+
+The returned string will contain the word after the offset if the offset is
+inside a word and will contain the word after the word after the offset if the
+offset is not inside a word.
+
+If the boundary type is ATK_TEXT_BOUNDARY_SENTENCE_START the returned string is
+from the sentence start after the offset to the next sentence start.
+
+The returned string will contain the sentence after the offset if the offset is
+inside a sentence or if the offset is not inside a sentence.
+
+If the boundary_type is ATK_TEXT_BOUNDARY_SENTENCE_END the returned string is
+from the sentence end at or after the offset to the next sentence end.
+
+The returned string will contain the sentence after the offset if the offset is
+inside a sentence and will contain the sentence after the sentence after the
+offset if the offset is not inside a sentence.
+
+If the boundary type is ATK_TEXT_BOUNDARY_LINE_START the returned string is from
+the line start after the offset to the next line start.
+
+If the boundary_type is ATK_TEXT_BOUNDARY_LINE_END the returned string is from
+the line end at or after the offset to the next line start.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item offset
+position
+
+@item boundary-type
+An @code{<atk-text-boundary>}
+
+@item start-offset
+the start offset of the returned string
+
+@item end-offset
+the offset of the first character after the returned substring
+
+@item ret
+the text after @var{offset} bounded by the specified @var{boundary-type}.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-get-text-at-offset  (self@tie{}@code{<atk-text*>}) (offset@tie{}@code{int}) (boundary_type@tie{}@code{<atk-text-boundary>}) @result{}@tie{} (ret@tie{}@code{mchars}) (start_offset@tie{}@code{int}) (end_offset@tie{}@code{int})
+Gets the specified text.
+
+If the boundary_type if ATK_TEXT_BOUNDARY_CHAR the character at the offset is
+returned.
+
+If the boundary_type is ATK_TEXT_BOUNDARY_WORD_START the returned string is from
+the word start at or before the offset to the word start after the offset.
+
+The returned string will contain the word at the offset if the offset is inside
+a word and will contain the word before the offset if the offset is not inside a
+word.
+
+If the boundary_type is ATK_TEXT_BOUNDARY_WORD_END the returned string is from
+the word end before the offset to the word end at or after the offset.
+
+The returned string will contain the word at the offset if the offset is inside
+a word and will contain the word after to the offset if the offset is not inside
+a word.
+
+If the boundary type is ATK_TEXT_BOUNDARY_SENTENCE_START the returned string is
+from the sentence start at or before the offset to the sentence start after the
+offset.
+
+The returned string will contain the sentence at the offset if the offset is
+inside a sentence and will contain the sentence before the offset if the offset
+is not inside a sentence.
+
+If the boundary_type is ATK_TEXT_BOUNDARY_SENTENCE_END the returned string is
+from the sentence end before the offset to the sentence end at or after the
+offset.
+
+The returned string will contain the sentence at the offset if the offset is
+inside a sentence and will contain the sentence after the offset if the offset
+is not inside a sentence.
+
+If the boundary type is ATK_TEXT_BOUNDARY_LINE_START the returned string is from
+the line start at or before the offset to the line start after the offset.
+
+If the boundary_type is ATK_TEXT_BOUNDARY_LINE_END the returned string is from
+the line end before the offset to the line end at or after the offset.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item offset
+position
+
+@item boundary-type
+An @code{<atk-text-boundary>}
+
+@item start-offset
+the start offset of the returned string
+
+@item end-offset
+the offset of the first character after the returned substring
+
+@item ret
+the text at @var{offset} bounded by the specified @var{boundary-type}.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-get-text-before-offset  (self@tie{}@code{<atk-text*>}) (offset@tie{}@code{int}) (boundary_type@tie{}@code{<atk-text-boundary>}) @result{}@tie{} (ret@tie{}@code{mchars}) (start_offset@tie{}@code{int}) (end_offset@tie{}@code{int})
+Gets the specified text.
+
+If the boundary_type if ATK_TEXT_BOUNDARY_CHAR the character before the offset
+is returned.
+
+If the boundary_type is ATK_TEXT_BOUNDARY_WORD_START the returned string is from
+the word start before the word start before the offset to the word start before
+the offset.
+
+The returned string will contain the word before the offset if the offset is
+inside a word and will contain the word before the word before the offset if the
+offset is not inside a word.
+
+If the boundary_type is ATK_TEXT_BOUNDARY_WORD_END the returned string is from
+the word end before the word end at or before the offset to the word end at or
+before the offset.
+
+The returned string will contain the word before the offset if the offset is
+inside a word or if the offset is not inside a word.
+
+If the boundary type is ATK_TEXT_BOUNDARY_SENTENCE_START the returned string is
+from the sentence start before the sentence start before the offset to the
+sentence start before the offset.
+
+The returned string will contain the sentence before the offset if the offset is
+inside a sentence and will contain the sentence before the sentence before the
+offset if the offset is not inside a sentence.
+
+If the boundary_type is ATK_TEXT_BOUNDARY_SENTENCE_END the returned string is
+from the sentence end before the sentence end at or before the offset to the
+sentence end at or before the offset.
+
+The returned string will contain the sentence before the offset if the offset is
+inside a sentence or if the offset is not inside a sentence.
+
+If the boundary type is ATK_TEXT_BOUNDARY_LINE_START the returned string is from
+the line start before the line start ar or before the offset to the line start
+ar or before the offset.
+
+If the boundary_type is ATK_TEXT_BOUNDARY_LINE_END the returned string is from
+the line end before the line end before the offset to the line end before the
+offset.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item offset
+position
+
+@item boundary-type
+An @code{<atk-text-boundary>}
+
+@item start-offset
+the start offset of the returned string
+
+@item end-offset
+the offset of the first character after the returned substring
+
+@item ret
+the text before @var{offset} bounded by the specified @var{boundary-type}.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-get-caret-offset  (self@tie{}@code{<atk-text*>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the offset position of the caret (cursor).
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item ret
+the offset position of the caret (cursor).
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-get-character-extents  (self@tie{}@code{<atk-text*>}) (offset@tie{}@code{int}) (coords@tie{}@code{<atk-coord-type>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+Get the bounding box containing the glyph representing the character at a
+particular text offset.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item offset
+The offset of the text character for which bounding information is required.
+
+@item x
+Pointer for the x cordinate of the bounding box
+
+@item y
+Pointer for the y cordinate of the bounding box
+
+@item width
+Pointer for the width of the bounding box
+
+@item height
+Pointer for the height of the bounding box
+
+@item coords
+specify whether coordinates are relative to the screen or widget window
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-get-run-attributes  (self@tie{}@code{<atk-text*>}) (offset@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-attribute-set*>}) (start_offset@tie{}@code{int}) (end_offset@tie{}@code{int})
+Creates an @code{<atk-attribute-set>} which consists of the attributes
+explicitly set at the position @var{offset} in the text. @var{start-offset} and
+@var{end-offset} are set to the start and end of the range around @var{offset}
+where the attributes are invariant. Note that @var{end-offset} is the offset of
+the first character after the range. See the enum AtkTextAttribute for types of
+text attributes that can be returned. Note that other attributes may also be
+returned.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item offset
+the offset at which to get the attributes
+
+@item start-offset
+the address to put the start offset of the range
+
+@item end-offset
+the address to put the end offset of the range
+
+@item ret
+an @code{<atk-attribute-set>} which contains the attributes explicitly set at
+@var{offset}. This @code{<atk-attribute-set>} should be freed by a call to
+@code{atk-attribute-set-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-get-default-attributes  (self@tie{}@code{<atk-text*>}) @result{}@tie{} (ret@tie{}@code{<atk-attribute-set*>})
+Creates an @code{<atk-attribute-set>} which consists of the default values of
+attributes for the text. See the enum AtkTextAttribute for types of text
+attributes that can be returned. Note that other attributes may also be
+returned.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item ret
+an @code{<atk-attribute-set>} which contains the default values of attributes.
+at @var{offset}. This @code{<atk-attribute-set>} should be freed by a call to
+@code{atk-attribute-set-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-get-character-count  (self@tie{}@code{<atk-text*>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the character count.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item ret
+the number of characters.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-get-offset-at-point  (self@tie{}@code{<atk-text*>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (coords@tie{}@code{<atk-coord-type>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the offset of the character located at coordinates @var{x} and @var{y}.
+@var{x} and @var{y} are interpreted as being relative to the screen or this
+widget's window depending on @var{coords}.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item x
+screen x-position of character
+
+@item y
+screen y-position of character
+
+@item coords
+specify whether coordinates are relative to the screen or widget window
+
+@item ret
+the offset to the character which is located at the specified @var{x} and
+@var{y} coordinates.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-get-bounded-ranges  (self@tie{}@code{<atk-text*>}) (rect@tie{}@code{<atk-text-rectangle*>}) (coord_type@tie{}@code{<atk-coord-type>}) (x_clip_type@tie{}@code{<atk-text-clip-type>}) (y_clip_type@tie{}@code{<atk-text-clip-type>}) @result{}@tie{} (ret@tie{}@code{<atk-text-range**>})
+Get the ranges of text in the specified bounding box.
+
+Returns:
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item rect
+An AtkTextRectagle giving the dimensions of the bounding box.
+
+@item coord-type
+Specify whether coordinates are relative to the screen or widget window.
+
+@item x-clip-type
+Specify the horizontal clip type.
+
+@item y-clip-type
+Specify the vertical clip type.
+
+@item ret
+Array of AtkTextRange. The last element of the array returned by this function
+will be NULL.
+
+@end table
+
+Since ATK 1.3
+
+@end deffn
+
+@deffn Function atk-text-get-range-extents  (self@tie{}@code{<atk-text*>}) (start_offset@tie{}@code{int}) (end_offset@tie{}@code{int}) (coord_type@tie{}@code{<atk-coord-type>}) (rect@tie{}@code{<atk-text-rectangle*>})
+Get the bounding box for text within the specified range.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item start-offset
+The offset of the first text character for which boundary information is
+required.
+
+@item end-offset
+The offset of the text character after the last character for which boundary
+information is required.
+
+@item coord-type
+Specify whether coordinates are relative to the screen or widget window.
+
+@item rect
+A pointer to a AtkTextRectangle which is filled in by this function.
+
+@end table
+
+Since ATK 1.3
+
+@end deffn
+
+@deffn Function atk-text-free-ranges  (ranges@tie{}@code{<atk-text-range**>})
+Frees the memory associated with an array of AtkTextRange. It is assumed that
+the array was returned by the function atk_text_get_bounded_ranges and is NULL
+terminated.
+
+@table @var
+@item ranges
+A pointer to an array of @code{<atk-text-range>} which is to be freed.
+
+@end table
+
+Since ATK 1.3
+
+@end deffn
+
+@deffn Function atk-text-get-n-selections  (self@tie{}@code{<atk-text*>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the number of selected regions.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item ret
+The number of selected regions, or -1 if a failure occurred.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-get-selection  (self@tie{}@code{<atk-text*>}) (selection_num@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars}) (start_offset@tie{}@code{int}) (end_offset@tie{}@code{int})
+Gets the text from the specified selection.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item selection-num
+The selection number. The selected regions are assigned numbers that correspond
+to how far the region is from the start of the text. The selected region closest
+to the beginning of the text region is assigned the number 0, etc. Note that
+adding, moving or deleting a selected region can change the numbering.
+
+@item start-offset
+passes back the start position of the selected region
+
+@item end-offset
+passes back the end position of (e.g. offset immediately past) the selected
+region
+
+@item ret
+the selected text.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-add-selection  (self@tie{}@code{<atk-text*>}) (start_offset@tie{}@code{int}) (end_offset@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Adds a selection bounded by the specified offsets.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item start-offset
+the start position of the selected region
+
+@item end-offset
+the offset of the first character after the selected region.
+
+@item ret
+@samp{@code{#t}} if success, @samp{@code{#f}} otherwise
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-remove-selection  (self@tie{}@code{<atk-text*>}) (selection_num@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Removes the specified selection.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item selection-num
+The selection number. The selected regions are assigned numbers that correspond
+to how far the region is from the start of the text. The selected region closest
+to the beginning of the text region is assigned the number 0, etc. Note that
+adding, moving or deleting a selected region can change the numbering.
+
+@item ret
+@samp{@code{#t}} if success, @samp{@code{#f}} otherwise
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-set-selection  (self@tie{}@code{<atk-text*>}) (selection_num@tie{}@code{int}) (start_offset@tie{}@code{int}) (end_offset@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Changes the start and end offset of the specified selection.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item selection-num
+The selection number. The selected regions are assigned numbers that correspond
+to how far the region is from the start of the text. The selected region closest
+to the beginning of the text region is assigned the number 0, etc. Note that
+adding, moving or deleting a selected region can change the numbering.
+
+@item start-offset
+the new start position of the selection
+
+@item end-offset
+the new end position of (e.g. offset immediately past) the selection
+
+@item ret
+@samp{@code{#t}} if success, @samp{@code{#f}} otherwise
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-set-caret-offset  (self@tie{}@code{<atk-text*>}) (offset@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Sets the caret (cursor) position to the specified @var{offset}.
+
+@table @var
+@item text
+an @code{<atk-text>}
+
+@item offset
+position
+
+@item ret
+@samp{@code{#t}} if success, @samp{@code{#f}} otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-attribute-get-name  (attr@tie{}@code{<atk-text-attribute>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the name corresponding to the @code{<atk-text-attribute>}
+
+@table @var
+@item attr
+The @code{<atk-text-attribute>} whose name is required
+
+@item ret
+a string containing the name; this string should not be freed
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-attribute-for-name  (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<atk-text-attribute>})
+Get the @code{<atk-text-attribute>} type corresponding to a text attribute name.
+
+@table @var
+@item name
+a string which is the (non-localized) name of an ATK text attribute.
+
+@item ret
+the @code{<atk-text-attribute>} enumerated type corresponding to the specified
+name, or @code{<atk-text-attribute-invalid>} if no matching text attribute is
+found.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-text-attribute-get-value  (attr@tie{}@code{<atk-text-attribute>}) (index_@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the value for the index of the @code{<atk-text-attribute>}
+
+@table @var
+@item attr
+The @code{<atk-text-attribute>} for which a value is required
+
+@item index
+The index of the required value
+
+@item ret
+a string containing the value; this string should not be freed; NULL is returned
+if there are no values maintained for the attr value.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

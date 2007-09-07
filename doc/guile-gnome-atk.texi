@@ -1,0 +1,149 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename guile-gnome-atk.info
+@settitle Guile-Atk
+@c %**end of header
+
+@set VERSION 2.15.93
+@set UPDATED 2 September 2007
+
+@copying 
+This manual is for @code{(gnome atk)} (version @value{VERSION}, updated
+@value{UPDATED})
+
+Copyright 2001-2007 Bill Haneman, Marc Mulcahy, Padraig O'Briain
+
+@c ATK is LGPL, ergo GPL distribution is possible
+@quotation 
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU General Public License, Version 2 or any
+later version published by the Free Software Foundation.
+@end quotation
+
+@end copying
+
+@dircategory The Algorithmic Language Scheme
+@direntry 
+* Guile-Atk: (guile-gnome-atk.info).  The Accessibility ToolKit.
+@end direntry
+
+@titlepage 
+@title Guile-GNOME: Atk
+@subtitle version @value{VERSION}, updated @value{UPDATED}
+@author Bill Haneman
+@author Marc Mulcahy
+@author Padraig O'Briain
+@page 
+@vskip 0pt plus 1filll
+@insertcopying 
+@end titlepage
+
+@ifnottex 
+@node Top
+@top Guile-Atk
+
+@insertcopying 
+@menu
+* Overview::               About ATK and its Guile bindings.
+
+* AtkAction::              The ATK interface provided by UI components
+                           which the user can activate / interact with.
+* AtkComponent::           The ATK interface provided by UI components
+                           which occupy a physical area on the screen.
+* AtkDocument::            The ATK interface which represents the
+                           toplevel container for document content. 
+* AtkEditableText::        The ATK interface implemented by components
+                           containing user-editable text content.
+* AtkGObjectAccessible::   This object class is derived from AtkObject
+                           and can be used as a basis implementing
+                           accessible objects.
+* AtkHyperlinkImpl::       An interface from which the AtkHyperlink
+                           associated with an AtkObject may be
+                           obtained.
+* AtkHyperlink::           An ATK object which encapsulates a link or
+                           set of links in a hypertext document.
+* AtkHypertext::           The ATK interface which provides standard
+                           mechanism for manipulating hyperlinks.
+* AtkImage::               The ATK Interface implemented by components
+                           which expose image or pixmap content
+                           on-screen.
+* AtkNoOpObject::          An AtkObject which purports to implement
+                           all ATK interfaces.
+* AtkNoOpObjectFactory::   The AtkObjectFactory which creates an
+                           AtkNoOpObject.
+* AtkObject::              The base object class for the Accessibility
+                           Toolkit API.
+* AtkObjectFactory::       The base object class for a factory used to
+                           create accessible objects for objects of a
+                           specific GType.
+* AtkRegistry::            An object used to store the GType of the
+                           factories used to create an accessible
+                           object for an object of a particular GType.
+* AtkRelation::            An object used to describe a relation
+                           between a object and one or more other
+                           objects.
+* AtkRelationSet::         A set of AtkRelations, normally the set of
+                           AtkRelations which an AtkObject has.
+* AtkSelection::           The ATK interface implemented by container
+                           objects whose AtkObject children can be
+                           selected.
+* AtkStateSet::            An AtkStateSet determines a component's state set.
+* AtkState::               An AtkState describes a component's
+                           particular state.
+* AtkStreamableContent::   The ATK interface which provides access to
+                           streamable content.
+* AtkTable::               The ATK interface implemented for UI
+                           components which contain tabular or
+                           row/column information.
+* AtkText::                The ATK interface implemented by components
+                           with text content.
+* AtkUtil::                A set of ATK utility functions for event
+                           and toolkit support.
+* AtkValue::               The ATK interface implemented by valuators
+                           and components which display or select a
+                           value from a bounded range of values.
+
+* Concept Index::
+* Function Index::
+@end menu
+
+@end ifnottex
+
+@iftex 
+@shortcontents 
+@end iftex
+
+@include overview.texi
+@include section-atkaction.xml.texi
+@include section-atkcomponent.xml.texi
+@include section-atkdocument.xml.texi
+@include section-atkeditabletext.xml.texi
+@include section-atkgobjectaccessible.xml.texi
+@include section-atkhyperlinkimpl.xml.texi
+@include section-atkhyperlink.xml.texi
+@include section-atkhypertext.xml.texi
+@include section-atkimage.xml.texi
+@include section-atknoopobjectfactory.xml.texi
+@include section-atknoopobject.xml.texi
+@include section-atkobjectfactory.xml.texi
+@include section-atkobject.xml.texi
+@include section-atkregistry.xml.texi
+@include section-atkrelationset.xml.texi
+@include section-atkrelation.xml.texi
+@include section-atkselection.xml.texi
+@include section-atkstateset.xml.texi
+@include section-atkstate.xml.texi
+@include section-atkstreamablecontent.xml.texi
+@include section-atktable.xml.texi
+@include section-atktext.xml.texi
+@include section-atkutil.xml.texi
+@include section-atkvalue.xml.texi
+
+
+@node Concept Index
+@unnumbered Concept Index
+@printindex cp
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+@bye

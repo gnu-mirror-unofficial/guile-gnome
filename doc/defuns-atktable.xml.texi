@@ -1,0 +1,489 @@
+
+@c %start of fragment
+
+@deffn Function atk-table-ref-at  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+Get a reference to the table cell at @var{row}, @var{column}.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item row
+a @code{<gint>} representing a row in @var{table}
+
+@item column
+a @code{<gint>} representing a column in @var{table}
+
+@item ret
+a AtkObject* representing the referred to accessible
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-get-index-at  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+Gets a @code{<gint>} representing the index at the specified @var{row} and
+@var{column}.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item row
+a @code{<gint>} representing a row in @var{table}
+
+@item column
+a @code{<gint>} representing a column in @var{table}
+
+@item ret
+a @code{<gint>} representing the index at specified position. The value -1 is
+returned if the object at row,column is not a child of table or table does not
+implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-get-column-at-index  (self@tie{}@code{<atk-table*>}) (index_@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+Gets a @code{<gint>} representing the column at the specified @var{index}.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableInterface
+
+@item index
+a @code{<gint>} representing an index in @var{table}
+
+@item ret
+a gint representing the column at the specified index, or -1 if the table does
+not implement this interface
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-get-row-at-index  (self@tie{}@code{<atk-table*>}) (index_@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+Gets a @code{<gint>} representing the row at the specified @var{index}.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableInterface
+
+@item index
+a @code{<gint>} representing an index in @var{table}
+
+@item ret
+a gint representing the row at the specified index, or -1 if the table does not
+implement this interface
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-get-n-columns  (self@tie{}@code{<atk-table*>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the number of columns in the table.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item ret
+a gint representing the number of columns, or 0 if value does not implement this
+interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-get-n-rows  (self@tie{}@code{<atk-table*>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the number of rows in the table.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item ret
+a gint representing the number of rows, or 0 if value does not implement this
+interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-get-column-extent-at  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the number of columns occupied by the accessible object at the specified
+@var{row} and @var{column} in the @var{table}.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item row
+a @code{<gint>} representing a row in @var{table}
+
+@item column
+a @code{<gint>} representing a column in @var{table}
+
+@item ret
+a gint representing the column extent at specified position, or 0 if value does
+not implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-get-row-extent-at  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the number of rows occupied by the accessible object at a specified
+@var{row} and @var{column} in the @var{table}.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item row
+a @code{<gint>} representing a row in @var{table}
+
+@item column
+a @code{<gint>} representing a column in @var{table}
+
+@item ret
+a gint representing the row extent at specified position, or 0 if value does not
+implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-get-caption  (self@tie{}@code{<atk-table*>}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+Gets the caption for the @var{table}.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableInterface
+
+@item ret
+a AtkObject* representing the table caption, or @samp{@code{#f}} if value does
+not implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-get-column-description  (self@tie{}@code{<atk-table*>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the description text of the specified @var{column} in the table
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item column
+a @code{<gint>} representing a column in @var{table}
+
+@item ret
+a gchar* representing the column description, or @samp{@code{#f}} if value does
+not implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-get-row-description  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the description text of the specified row in the table
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item row
+a @code{<gint>} representing a row in @var{table}
+
+@item ret
+a gchar* representing the row description, or @samp{@code{#f}} if value does not
+implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-get-column-header  (self@tie{}@code{<atk-table*>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+Gets the column header of a specified column in an accessible table.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item column
+a @code{<gint>} representing a column in the table
+
+@item ret
+a AtkObject* representing the specified column header, or @samp{@code{#f}} if
+value does not implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-get-row-header  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+Gets the row header of a specified row in an accessible table.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item row
+a @code{<gint>} representing a row in the table
+
+@item ret
+a AtkObject* representing the specified row header, or @samp{@code{#f}} if value
+does not implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-get-summary  (self@tie{}@code{<atk-table*>}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+Gets the summary description of the table.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item ret
+a AtkObject* representing a summary description of the table, or zero if value
+does not implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-set-caption  (self@tie{}@code{<atk-table*>}) (caption@tie{}@code{<atk-object>})
+Sets the caption for the table.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item caption
+a @code{<atk-object>} representing the caption to set for @var{table}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-set-row-description  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) (description@tie{}@code{mchars})
+Sets the description text for the specified @var{row} of @var{table}.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item row
+a @code{<gint>} representing a row in @var{table}
+
+@item description
+a @code{<gchar>} representing the description text to set for the specified
+@var{row} of @var{table}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-set-column-description  (self@tie{}@code{<atk-table*>}) (column@tie{}@code{int}) (description@tie{}@code{mchars})
+Sets the description text for the specified @var{column} of the @var{table}.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item column
+a @code{<gint>} representing a column in @var{table}
+
+@item description
+a @code{<gchar>} representing the description text to set for the specified
+@var{column} of the @var{table}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-set-row-header  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) (header@tie{}@code{<atk-object>})
+Sets the specified row header to @var{header}.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item row
+a @code{<gint>} representing a row in @var{table}
+
+@item header
+an @code{<atk-table>}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-set-column-header  (self@tie{}@code{<atk-table*>}) (column@tie{}@code{int}) (header@tie{}@code{<atk-object>})
+Sets the specified column header to @var{header}.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item column
+a @code{<gint>} representing a column in @var{table}
+
+@item header
+an @code{<atk-table>}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-set-summary  (self@tie{}@code{<atk-table*>}) (accessible@tie{}@code{<atk-object>})
+Sets the summary description of the table.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item accessible
+an @code{<atk-object>} representing the summary description to set for
+@var{table}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-is-column-selected  (self@tie{}@code{<atk-table*>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Gets a boolean value indicating whether the specified @var{column} is selected
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item column
+a @code{<gint>} representing a column in @var{table}
+
+@item ret
+a gboolean representing if the column is selected, or 0 if value does not
+implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-is-row-selected  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Gets a boolean value indicating whether the specified @var{row} is selected
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item row
+a @code{<gint>} representing a row in @var{table}
+
+@item ret
+a gboolean representing if the row is selected, or 0 if value does not implement
+this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-is-selected  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Gets a boolean value indicating whether the accessible object at the specified
+@var{row} and @var{column} is selected
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item row
+a @code{<gint>} representing a row in @var{table}
+
+@item column
+a @code{<gint>} representing a column in @var{table}
+
+@item ret
+a gboolean representing if the cell is selected, or 0 if value does not
+implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-add-column-selection  (self@tie{}@code{<atk-table*>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Adds the specified @var{column} to the selection.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item column
+a @code{<gint>} representing a column in @var{table}
+
+@item ret
+a gboolean representing if the column was successfully added to the selection,
+or 0 if value does not implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-add-row-selection  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Adds the specified @var{row} to the selection.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item row
+a @code{<gint>} representing a row in @var{table}
+
+@item ret
+a gboolean representing if row was successfully added to selection, or 0 if
+value does not implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-remove-column-selection  (self@tie{}@code{<atk-table*>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Adds the specified @var{column} to the selection.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item column
+a @code{<gint>} representing a column in @var{table}
+
+@item ret
+a gboolean representing if the column was successfully removed from the
+selection, or 0 if value does not implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-table-remove-row-selection  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Removes the specified @var{row} from the selection.
+
+@table @var
+@item table
+a GObject instance that implements AtkTableIface
+
+@item row
+a @code{<gint>} representing a row in @var{table}
+
+@item ret
+a gboolean representing if the row was successfully removed from the selection,
+or 0 if value does not implement this interface.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

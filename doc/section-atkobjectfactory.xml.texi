@@ -1,0 +1,18 @@
+
+@c %start of fragment
+
+@node AtkObjectFactory
+@chapter AtkObjectFactory
+The base object class for a factory used to create accessible objects for
+objects of a specific GType.
+
+@section Overview
+This class is the base object class for a factory used to create an accessible
+object for a specific GType. The function @code{atk-registry-set-factory-type}
+is normally called to store in the registry the factory type to be used to
+create an accessible of a particular GType.
+
+@section Usage
+@include defuns-atkobjectfactory.xml.texi
+
+@c %end of fragment

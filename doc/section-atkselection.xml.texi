@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@node AtkSelection
+@chapter AtkSelection
+The ATK interface implemented by container objects whose children can be
+selected.
+
+@section Overview
+@code{<atk-selection>} should be implemented by UI components with children
+which are exposed by @code{<atk-object-ref-child>} and
+@code{<atk-object-get-n-children>}, if the use of the parent UI component
+ordinarily involves selection of one or more of the objects corresponding to
+those @code{<atk-object>} children - for example, selectable lists.
+
+Note that other types of "selection" (for instance text selection) are
+accomplished a other ATK interfaces - @code{<atk-selection>} is limited to the
+selection/deselection of children.
+
+@section Usage
+@include defuns-atkselection.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,41 @@
+
+@c %start of fragment
+
+@deftp Class <atk-gobject-accessible>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function atk-gobject-accessible-for-object  (obj@tie{}@code{<gobject>}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+Gets the accessible object for the specified @var{obj}.
+
+@table @var
+@item obj
+a @code{<gobject>}
+
+@item ret
+a @code{<atk-object>} which is the accessible object for the @var{obj}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-gobject-accessible-get-object  (self@tie{}@code{<atk-gobject-accessible>}) @result{}@tie{} (ret@tie{}@code{<gobject>})
+@deffnx Method get-object
+Gets the GObject for which @var{obj} is the accessible object.
+
+@table @var
+@item obj
+a @code{<atk-object>}
+
+@item ret
+a @code{<gobject>} which is the object for which @var{obj} is the accessible
+objedct
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

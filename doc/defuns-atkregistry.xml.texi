@@ -1,0 +1,90 @@
+
+@c %start of fragment
+
+@deftp Class <atk-registry>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function atk-registry-set-factory-type  (self@tie{}@code{<atk-registry>}) (type@tie{}@code{<gtype>}) (factory_type@tie{}@code{<gtype>})
+@deffnx Method set-factory-type
+Associate an @code{<atk-object-factory>} subclass with a @code{<g-type>}. Note:
+The associated @var{factory-type} will thereafter be responsible for the
+creation of new @code{<atk-object>} implementations for instances appropriate
+for @var{type}.
+
+@table @var
+@item registry
+the @code{<atk-registry>} in which to register the type association
+
+@item type
+an @code{<atk-object>} type
+
+@item factory-type
+an @code{<atk-object-factory>} type to associate with @var{type}. Must implement
+AtkObject appropriate for @var{type}.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-registry-get-factory-type  (self@tie{}@code{<atk-registry>}) (type@tie{}@code{<gtype>}) @result{}@tie{} (ret@tie{}@code{<gtype>})
+@deffnx Method get-factory-type
+Provides a @code{<g-type>} indicating the @code{<atk-object-factory>} subclass
+associated with @var{type}.
+
+@table @var
+@item registry
+an @code{<atk-registry>}
+
+@item type
+a @code{<g-type>} with which to look up the associated
+@code{<atk-object-factory>} subclass
+
+@item ret
+a @code{<g-type>} associated with type @var{type}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-registry-get-factory  (self@tie{}@code{<atk-registry>}) (type@tie{}@code{<gtype>}) @result{}@tie{} (ret@tie{}@code{<atk-object-factory>})
+@deffnx Method get-factory
+Gets an @code{<atk-object-factory>} appropriate for creating
+@code{<atk-objects>} appropriate for @var{type}.
+
+@table @var
+@item registry
+an @code{<atk-registry>}
+
+@item type
+a @code{<g-type>} with which to look up the associated
+@code{<atk-object-factory>}
+
+@item ret
+an @code{<atk-object-factory>} appropriate for creating @code{<atk-objects>}
+appropriate for @var{type}.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-get-default-registry  @result{}@tie{} (ret@tie{}@code{<atk-registry>})
+Gets a default implementation of the @code{<atk-object-factory>}/type registry.
+Note: For most toolkit maintainers, this will be the correct registry for
+registering new @code{<atk-object>} factories. Following a call to this
+function, maintainers may call @code{atk-registry-set-factory-type} to associate
+an @code{<atk-object-factory>} subclass with the GType of objects for whom
+accessibility information will be provided.
+
+@table @var
+@item ret
+a default implementation of the @code{<atk-object-factory>}/type registry
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

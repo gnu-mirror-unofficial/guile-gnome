@@ -1,0 +1,109 @@
+
+@c %start of fragment
+
+@deftp Class <atk-relation-set>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function atk-relation-set-new  @result{}@tie{} (ret@tie{}@code{<atk-relation-set>})
+Creates a new empty relation set.
+
+@table @var
+@item ret
+a new @code{<atk-relation-set>}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-relation-set-contains  (self@tie{}@code{<atk-relation-set>}) (relationship@tie{}@code{<atk-relation-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method contains
+Determines whether the relation set contains a relation that matches the
+specified type.
+
+@table @var
+@item set
+an @code{<atk-relation-set>}
+
+@item relationship
+an @code{<atk-relation-type>}
+
+@item ret
+@samp{@code{#t}} if @var{relationship} is the relationship type of a relation in
+@var{set}, @samp{@code{#f}} otherwise
+
+@end table
+
+@end deffn
+
+@deffn Function atk-relation-set-remove  (self@tie{}@code{<atk-relation-set>}) (relation@tie{}@code{<atk-relation>})
+@deffnx Method remove
+Removes a relation from the relation set. This function unref's the
+@code{<atk-relation>} so it will be deleted unless there is another reference to
+it.
+
+@table @var
+@item set
+an @code{<atk-relation-set>}
+
+@item relation
+an @code{<atk-relation>}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-relation-set-add  (self@tie{}@code{<atk-relation-set>}) (relation@tie{}@code{<atk-relation>})
+@deffnx Method add
+Add a new relation to the current relation set if it is not already present.
+This function ref's the AtkRelation so the caller of this function should unref
+it to ensure that it will be destroyed when the AtkRelationSet is destroyed.
+
+@table @var
+@item set
+an @code{<atk-relation-set>}
+
+@item relation
+an @code{<atk-relation>}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-relation-set-get-n-relations  (self@tie{}@code{<atk-relation-set>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-n-relations
+Determines the number of relations in a relation set.
+
+@table @var
+@item set
+an @code{<atk-relation-set>}
+
+@item ret
+an integer representing the number of relations in the set.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-relation-set-get-relation  (self@tie{}@code{<atk-relation-set>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-relation>})
+@deffnx Method get-relation
+Determines the relation at the specified position in the relation set.
+
+@table @var
+@item set
+an @code{<atk-relation-set>}
+
+@item i
+a gint representing a position in the set, starting from 0.
+
+@item ret
+a @code{<atk-relation>}, which is the relation at position i in the set.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

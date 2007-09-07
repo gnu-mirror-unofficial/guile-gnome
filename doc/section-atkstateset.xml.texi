@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@node AtkStateSet
+@chapter AtkStateSet
+An AtkStateSet determines a component's state set.
+
+@section Overview
+An AtkStateSet determines a component's state set. It is composed of a set of
+AtkStates.
+
+@section Usage
+@include defuns-atkstateset.xml.texi
+
+@c %end of fragment

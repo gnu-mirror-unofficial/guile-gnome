@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node AtkUtil
+@chapter AtkUtil
+A set of ATK utility functions for event and toolkit support.
+
+@section Overview
+A set of ATK utility functions which are used to support event registration of
+various types, and obtaining the 'root' accessible of a process and information
+about the current ATK implementation and toolkit version.
+
+@section Usage
+@include defuns-atkutil.xml.texi
+
+@c %end of fragment

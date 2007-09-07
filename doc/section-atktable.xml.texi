@@ -1,0 +1,32 @@
+
+@c %start of fragment
+
+@node AtkTable
+@chapter AtkTable
+The ATK interface implemented for UI components which contain tabular or
+row/column information.
+
+@section Overview
+@code{<atk-table>} should be implemented by components which present elements
+ordered via rows and columns. It may also be used to present tree-structured
+information if the nodes of the trees can be said to contain multiple "columns".
+Individual elements of an @code{<atk-table>} are typically referred to as
+"cells", and these cells are exposed by @code{<atk-table>} as child
+@code{<atk-objects>} of the @code{<atk-table>}. Both row/column and
+child-index-based access to these children is provided.
+
+Children of @code{<atk-table>} are frequently "lightweight" objects, that is,
+they may not have backing widgets in the host UI toolkit. They are therefore
+often transient.
+
+Since tables are often very complex, @code{<atk-table>} includes provision for
+offering simplified summary information, as well as row and column headers and
+captions. Headers and captions are @code{<atk-objects>} which may implement
+other interfaces (@code{<atk-text>}, @code{<atk-image>}, etc.) as appropriate.
+@code{<atk-table>} summaries may themselves be (simplified) @code{<atk-tables>},
+etc.
+
+@section Usage
+@include defuns-atktable.xml.texi
+
+@c %end of fragment

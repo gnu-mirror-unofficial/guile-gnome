@@ -1,0 +1,26 @@
+
+@c %start of fragment
+
+@deftp Class <atk-object-factory>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function atk-object-factory-invalidate  (self@tie{}@code{<atk-object-factory>})
+@deffnx Method invalidate
+Inform @var{factory} that it is no longer being used to create accessibles. When
+called, @var{factory} may need to inform @code{<atk-objects>} which it has
+created that they need to be re-instantiated. Note: primarily used for runtime
+replacement of @code{<atk-object-factorys>} in object registries.
+
+@table @var
+@item factory
+an @code{<atk-object-factory>} to invalidate
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

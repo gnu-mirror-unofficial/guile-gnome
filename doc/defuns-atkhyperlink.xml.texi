@@ -1,0 +1,164 @@
+
+@c %start of fragment
+
+@deftp Class <atk-hyperlink>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item selected-link
+Specifies whether the AtkHyperlink object is selected@item number-of-anchors
+The number of anchors associated with the AtkHyperlink object@item end-index
+The end index of the AtkHyperlink object@item start-index
+The start index of the AtkHyperlink object@end table
+
+@end deftp
+
+@defop Signal <atk-hyperlink> link-activated 
+The signal link-activated is emitted when a link is activated.
+
+@end defop
+
+@deffn Function atk-hyperlink-get-uri  (self@tie{}@code{<atk-hyperlink>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-uri
+Get a the URI associated with the anchor specified by @var{i} of @var{link}.
+
+Multiple anchors are primarily used by client-side image maps.
+
+@table @var
+@item link
+an @code{<atk-hyperlink>}
+
+@item i
+a (zero-index) integer specifying the desired anchor
+
+@item ret
+a string specifying the URI
+
+@end table
+
+@end deffn
+
+@deffn Function atk-hyperlink-get-object  (self@tie{}@code{<atk-hyperlink>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deffnx Method get-object
+Returns the item associated with this hyperlinks nth anchor. For instance, the
+returned @code{<atk-object>} will implement @code{<atk-text>} if @var{link} is a
+text hyperlink, @code{<atk-image>} if @var{link} is an image hyperlink etc.
+
+Multiple anchors are primarily used by client-side image maps.
+
+@table @var
+@item link
+an @code{<atk-hyperlink>}
+
+@item i
+a (zero-index) integer specifying the desired anchor
+
+@item ret
+an @code{<atk-object>} associated with this hyperlinks i-th anchor
+
+@end table
+
+@end deffn
+
+@deffn Function atk-hyperlink-get-end-index  (self@tie{}@code{<atk-hyperlink>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-end-index
+Gets the index with the hypertext document at which this link ends.
+
+@table @var
+@item link
+an @code{<atk-hyperlink>}
+
+@item ret
+the index with the hypertext document at which this link ends
+
+@end table
+
+@end deffn
+
+@deffn Function atk-hyperlink-get-start-index  (self@tie{}@code{<atk-hyperlink>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-start-index
+Gets the index with the hypertext document at which this link begins.
+
+@table @var
+@item link
+an @code{<atk-hyperlink>}
+
+@item ret
+the index with the hypertext document at which this link begins
+
+@end table
+
+@end deffn
+
+@deffn Function atk-hyperlink-is-valid  (self@tie{}@code{<atk-hyperlink>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-valid
+Since the document that a link is associated with may have changed this method
+returns @samp{@code{#t}} if the link is still valid (with respect to the
+document it references) and @samp{@code{#f}} otherwise.
+
+@table @var
+@item link
+an @code{<atk-hyperlink>}
+
+@item ret
+whether or not this link is still valid
+
+@end table
+
+@end deffn
+
+@deffn Function atk-hyperlink-is-inline  (self@tie{}@code{<atk-hyperlink>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-inline
+Indicates whether the link currently displays some or all of its content inline.
+Ordinary HTML links will usually return @samp{@code{#f}}, but an inline
+&lt;src&gt; HTML element will return @samp{@code{#t}}. a *
+
+@table @var
+@item link
+an @code{<atk-hyperlink>}
+
+@item ret
+whether or not this link displays its content inline.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-hyperlink-get-n-anchors  (self@tie{}@code{<atk-hyperlink>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-n-anchors
+Gets the number of anchors associated with this hyperlink.
+
+@table @var
+@item link
+an @code{<atk-hyperlink>}
+
+@item ret
+the number of anchors associated with this hyperlink
+
+@end table
+
+@end deffn
+
+@deffn Function atk-hyperlink-is-selected-link  (self@tie{}@code{<atk-hyperlink>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-selected-link
+Determines whether this AtkHyperlink is selected
+
+Returns:
+
+@table @var
+@item link
+an @code{<atk-hyperlink>}
+
+@item ret
+True is the AtkHyperlink is selected, False otherwise
+
+@end table
+
+Since ATK 1.4 @@Deprecated: This method is deprecated since ATK version 1.8.
+Please use ATK_STATE_SELECTED to indicate when a hyperlink within a Hypertext
+container is selected.
+
+@end deffn
+
+
+@c %end of fragment

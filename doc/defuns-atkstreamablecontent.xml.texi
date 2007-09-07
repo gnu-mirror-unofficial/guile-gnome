@@ -1,0 +1,49 @@
+
+@c %start of fragment
+
+@deffn Function atk-streamable-content-get-stream  (self@tie{}@code{<atk-streamable-content*>}) (mime_type@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gio-channel*>})
+Gets the content in the specified mime type.
+
+@table @var
+@item streamable
+a GObject instance that implements AtkStreamableContentIface
+
+@item mime-type
+a gchar* representing the mime type
+
+@item ret
+A @code{<gio-channel>} which contains the content in the specified mime type.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-streamable-content-get-uri  (self@tie{}@code{<atk-streamable-content*>}) (mime_type@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Get a string representing a URI in IETF standard format (see
+http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may be
+streamed in the specified mime-type, if one is available. If mime_type is NULL,
+the URI for the default (and possibly only) mime-type is returned.
+
+Note that it is possible for get_uri to return NULL but for get_stream to work
+nonetheless, since not all GIOChannels connect to URIs.
+
+@table @var
+@item streamable
+a GObject instance that implements AtkStreamableContentIface
+
+@item mime-type
+a gchar* representing the mime type, or NULL to request a URI for the default
+mime type.
+
+@item ret
+Returns a string representing a URI, or NULL if no corresponding URI can be
+constructed.
+
+@end table
+
+Since ATK 1.12
+
+@end deffn
+
+
+@c %end of fragment

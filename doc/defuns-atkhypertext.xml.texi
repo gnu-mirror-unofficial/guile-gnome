@@ -1,0 +1,55 @@
+
+@c %start of fragment
+
+@deffn Function atk-hypertext-get-link  (self@tie{}@code{<atk-hypertext*>}) (link_index@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-hyperlink>})
+Gets the link in this hypertext document at index @var{link-index}
+
+@table @var
+@item hypertext
+an @code{<atk-hypertext>}
+
+@item link-index
+an integer specifying the desired link
+
+@item ret
+the link in this hypertext document at index @var{link-index}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-hypertext-get-n-links  (self@tie{}@code{<atk-hypertext*>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the number of links within this hypertext document.
+
+@table @var
+@item hypertext
+an @code{<atk-hypertext>}
+
+@item ret
+the number of links within this hypertext document
+
+@end table
+
+@end deffn
+
+@deffn Function atk-hypertext-get-link-index  (self@tie{}@code{<atk-hypertext*>}) (char_index@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the index into the array of hyperlinks that is associated with the
+character specified by @var{char-index}.
+
+@table @var
+@item hypertext
+an @code{<atk-hypertext>}
+
+@item char-index
+a character index
+
+@item ret
+an index into the array of hyperlinks in @var{hypertext}, or -1 if there is no
+hyperlink associated with this character.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

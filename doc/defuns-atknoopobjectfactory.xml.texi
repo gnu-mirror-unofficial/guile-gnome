@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@deftp Class <atk-no-op-object-factory>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function atk-no-op-object-factory-new  @result{}@tie{} (ret@tie{}@code{<atk-object-factory>})
+Creates an instance of an @code{<atk-object-factory>} which generates primitive
+(non-functioning) @code{<atk-objects>}.
+
+@table @var
+@item ret
+an instance of an @code{<atk-object-factory>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

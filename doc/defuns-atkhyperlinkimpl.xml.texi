@@ -1,0 +1,21 @@
+
+@c %start of fragment
+
+@deffn Function atk-hyperlink-impl-get-hyperlink  (self@tie{}@code{<atk-hyperlink-impl*>}) @result{}@tie{} (ret@tie{}@code{<atk-hyperlink>})
+Gets the hyperlink associated with this object.
+
+@table @var
+@item obj
+a GObject instance that implements AtkHyperlinkImplIface
+
+@item ret
+an AtkHyperlink object which points to this implementing AtkObject.
+
+@end table
+
+Since ATK 1.12
+
+@end deffn
+
+
+@c %end of fragment

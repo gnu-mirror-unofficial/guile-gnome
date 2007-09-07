@@ -1,0 +1,107 @@
+
+@c %start of fragment
+
+@deffn Function atk-editable-text-set-text-contents  (self@tie{}@code{<atk-editable-text*>}) (string@tie{}@code{mchars})
+Set text contents of @var{text}.
+
+@table @var
+@item text
+an @code{<atk-editable-text>}
+
+@item string
+string to set for text contents of @var{text}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-editable-text-insert-text  (self@tie{}@code{<atk-editable-text*>}) (string@tie{}@code{mchars}) (length@tie{}@code{int}) @result{}@tie{} (position@tie{}@code{int})
+Insert text at a given position.
+
+@table @var
+@item text
+an @code{<atk-editable-text>}
+
+@item string
+the text to insert
+
+@item length
+the length of text to insert, in bytes
+
+@item position
+The caller initializes this to the position at which to insert the text. After
+the call it points at the position after the newly inserted text.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-editable-text-copy-text  (self@tie{}@code{<atk-editable-text*>}) (start_pos@tie{}@code{int}) (end_pos@tie{}@code{int})
+Copy text from @var{start-pos} up to, but not including @var{end-pos} to the
+clipboard.
+
+@table @var
+@item text
+an @code{<atk-editable-text>}
+
+@item start-pos
+start position
+
+@item end-pos
+end position
+
+@end table
+
+@end deffn
+
+@deffn Function atk-editable-text-cut-text  (self@tie{}@code{<atk-editable-text*>}) (start_pos@tie{}@code{int}) (end_pos@tie{}@code{int})
+Copy text from @var{start-pos} up to, but not including @var{end-pos} to the
+clipboard and then delete from the widget.
+
+@table @var
+@item text
+an @code{<atk-editable-text>}
+
+@item start-pos
+start position
+
+@item end-pos
+end position
+
+@end table
+
+@end deffn
+
+@deffn Function atk-editable-text-delete-text  (self@tie{}@code{<atk-editable-text*>}) (start_pos@tie{}@code{int}) (end_pos@tie{}@code{int})
+Delete text @var{start-pos} up to, but not including @var{end-pos}.
+
+@table @var
+@item text
+an @code{<atk-editable-text>}
+
+@item start-pos
+start position
+
+@item end-pos
+end position
+
+@end table
+
+@end deffn
+
+@deffn Function atk-editable-text-paste-text  (self@tie{}@code{<atk-editable-text*>}) (position@tie{}@code{int})
+Paste text from clipboard to specified @var{position}.
+
+@table @var
+@item text
+an @code{<atk-editable-text>}
+
+@item position
+position to paste
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,94 @@
+
+@c %start of fragment
+
+@deffn Function atk-image-get-image-position  (self@tie{}@code{<atk-image*>}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int})
+Gets the position of the image in the form of a point specifying the images
+top-left corner.
+
+@table @var
+@item image
+a @code{<gobject>} instance that implements AtkImageIface
+
+@item x
+address of @code{<gint>} to put x coordinate position; otherwise, -1 if value
+cannot be obtained.
+
+@item y
+address of @code{<gint>} to put y coordinate position; otherwise, -1 if value
+cannot be obtained.
+
+@item coord-type
+specifies whether the coordinates are relative to the screen or to the
+components top level window
+
+@end table
+
+@end deffn
+
+@deffn Function atk-image-get-image-description  (self@tie{}@code{<atk-image*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Get a textual description of this image.
+
+@table @var
+@item image
+a @code{<gobject>} instance that implements AtkImageIface
+
+@item ret
+a string representing the image description
+
+@end table
+
+@end deffn
+
+@deffn Function atk-image-set-image-description  (self@tie{}@code{<atk-image*>}) (description@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Sets the textual description for this image.
+
+@table @var
+@item image
+a @code{<gobject>} instance that implements AtkImageIface
+
+@item description
+a string description to set for @var{image}
+
+@item ret
+boolean TRUE, or FALSE if operation could not be completed.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-image-get-image-size  (self@tie{}@code{<atk-image*>}) @result{}@tie{} (width@tie{}@code{int}) (height@tie{}@code{int})
+Get the width and height in pixels for the specified image. The values of
+@var{width} and @var{height} are returned as -1 if the values cannot be obtained
+(for instance, if the object is not onscreen).
+
+@table @var
+@item image
+a @code{<gobject>} instance that implements AtkImageIface
+
+@item width
+filled with the image width, or -1 if the value cannot be obtained.
+
+@item height
+filled with the image height, or -1 if the value cannot be obtained.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-image-get-image-locale  (self@tie{}@code{<atk-image*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Since ATK 1.12
+
+@table @var
+@item image
+An @code{<atk-image>}
+
+@item ret
+a string corresponding to the POSIX LC_MESSAGES locale used by the image
+description, or NULL if the image does not specify a locale.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

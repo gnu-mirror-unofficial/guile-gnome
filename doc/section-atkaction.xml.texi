@@ -1,0 +1,35 @@
+
+@c %start of fragment
+
+@node AtkAction
+@chapter AtkAction
+The ATK interface provided by UI components which the user can activate/interact
+with,
+
+@section Overview
+@code{<atk-action>} should be implemented by instances of @code{<atk-object>}
+classes with which the user can interact directly, i.e. buttons, checkboxes,
+scrollbars, e.g. components which are not "passive" providers of UI information.
+
+Exceptions: when the user interaction is already covered by another appropriate
+interface such as @code{<atk-editable-text>} (insert/delete test, etc.) or
+@code{<atk-value>} (set value) then these actions should not be exposed by
+@code{<atk-action>} as well.
+
+Also note that the @code{<atk-action>} API is limited in that parameters may not
+be passed to the object being activated; thus the action must be self-contained
+and specifiable via only a single "verb". Concrete examples include "press",
+"release", "click" for buttons, "drag" (meaning initiate drag) and "drop" for
+drag sources and drop targets, etc.
+
+Though most UI interactions on components should be invocable via keyboard as
+well as mouse, there will generally be a close mapping between "mouse actions"
+that are possible on a component and the AtkActions. Where mouse and keyboard
+actions are redundant in effect, @code{<atk-action>} should expose only one
+action rather than exposing redundant actions if possible. By convention we have
+been using "mouse centric" terminology for @code{<atk-action>} names.
+
+@section Usage
+@include defuns-atkaction.xml.texi
+
+@c %end of fragment

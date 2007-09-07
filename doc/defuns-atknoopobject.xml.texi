@@ -1,0 +1,26 @@
+
+@c %start of fragment
+
+@deftp Class <atk-no-op-object>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function atk-no-op-object-new  (obj@tie{}@code{<gobject>}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+Provides a default (non-functioning stub) @code{<atk-object>}. Application
+maintainers should not use this method.
+
+@table @var
+@item obj
+a @code{<gobject>}
+
+@item ret
+a default (non-functioning stub) @code{<atk-object>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

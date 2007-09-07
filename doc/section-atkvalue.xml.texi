@@ -1,0 +1,21 @@
+
+@c %start of fragment
+
+@node AtkValue
+@chapter AtkValue
+The ATK interface implemented by valuators and components which display or
+select a value from a bounded range of values.
+
+@section Overview
+@code{<atk-value>} should be implemented for components which either display a
+value from a bounded range, or which allow the user to specify a value from a
+bounded range, or both. For instance, most sliders and range controls, as well
+as dials, should have @code{<atk-object>} representations which implement
+@code{<atk-value>} on the component's behalf. @code{<at-kvalues>} may be
+read-only, in which case attempts to alter the value return FALSE to indicate
+failure.
+
+@section Usage
+@include defuns-atkvalue.xml.texi
+
+@c %end of fragment

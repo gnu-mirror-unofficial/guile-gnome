@@ -1,0 +1,21 @@
+
+@c %start of fragment
+
+@node AtkEditableText
+@chapter AtkEditableText
+The ATK interface implemented by components containing user-editable text
+content.
+
+@section Overview
+@code{<atk-editable-text>} should be implemented by UI components which contain
+text which the user can edit, via the @code{<atk-object>} corresponding to that
+component (see @code{<atk-object>}).
+
+@code{<atk-editable-text>} is a subclass of @code{<atk-text>}, and as such, an
+object which implements @code{<atk-editable-text>} is by definition an
+@code{<atk-text>} implementor as well.
+
+@section Usage
+@include defuns-atkeditabletext.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,129 @@
+
+@c %start of fragment
+
+@deffn Function atk-action-do-action  (self@tie{}@code{<atk-action*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Perform the specified action on the object.
+
+@table @var
+@item action
+a @code{<gobject>} instance that implements AtkActionIface
+
+@item i
+the action index corresponding to the action to be performed
+
+@item ret
+@samp{@code{#t}} if success, @samp{@code{#f}} otherwise
+
+@end table
+
+@end deffn
+
+@deffn Function atk-action-get-n-actions  (self@tie{}@code{<atk-action*>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the number of accessible actions available on the object. If there are more
+than one, the first one is considered the "default" action of the object.
+
+@table @var
+@item action
+a @code{<gobject>} instance that implements AtkActionIface
+
+@item ret
+a the number of actions, or 0 if @var{action} does not implement this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-action-get-description  (self@tie{}@code{<atk-action*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+Returns a description of the specified action of the object.
+
+@table @var
+@item action
+a @code{<gobject>} instance that implements AtkActionIface
+
+@item i
+the action index corresponding to the action to be performed
+
+@item ret
+a description string, or @samp{@code{#f}} if @var{action} does not implement
+this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-action-get-name  (self@tie{}@code{<atk-action*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+Returns the name of the specified action of the object.
+
+@table @var
+@item action
+a @code{<gobject>} instance that implements AtkActionIface
+
+@item i
+the action index corresponding to the action to be performed
+
+@item ret
+a name string, or @samp{@code{#f}} if @var{action} does not implement this
+interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-action-get-localized-name  (self@tie{}@code{<atk-action*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+Returns the localized name of the specified action of the object.
+
+@table @var
+@item action
+a @code{<gobject>} instance that implements AtkActionIface
+
+@item i
+the action index corresponding to the action to be performed
+
+@item ret
+a name string, or @samp{@code{#f}} if @var{action} does not implement this
+interface.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-action-get-keybinding  (self@tie{}@code{<atk-action*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+Returns a keybinding associated with this action, if one exists.
+
+@table @var
+@item action
+a @code{<gobject>} instance that implements AtkActionIface
+
+@item i
+the action index corresponding to the action to be performed
+
+@item ret
+a string representing the keybinding, or @samp{@code{#f}} if there is no
+keybinding for this action.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-action-set-description  (self@tie{}@code{<atk-action*>}) (i@tie{}@code{int}) (desc@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Sets a description of the specified action of the object.
+
+@table @var
+@item action
+a @code{<gobject>} instance that implements AtkActionIface
+
+@item i
+the action index corresponding to the action to be performed
+
+@item desc
+the description to be assigned to this action
+
+@item ret
+a gboolean representing if the description was successfully set;
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

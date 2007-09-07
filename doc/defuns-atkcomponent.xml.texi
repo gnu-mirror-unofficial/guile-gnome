@@ -1,0 +1,266 @@
+
+@c %start of fragment
+
+@deffn Function atk-component-add-focus-handler  (self@tie{}@code{<atk-component*>}) (handler@tie{}@code{<atk-focus-handler>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Add the specified handler to the set of functions to be called when this object
+receives focus events (in or out). If the handler is already added it is not
+added again
+
+@table @var
+@item component
+The @code{<atk-component>} to attach the @var{handler} to
+
+@item handler
+The @code{<atk-focus-handler>} to be attached to @var{component}
+
+@item ret
+a handler id which can be used in atk_component_remove_focus_handler or zero if
+the handler was already added.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-component-contains  (self@tie{}@code{<atk-component*>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+Checks whether the specified point is within the extent of the @var{component}.
+
+@table @var
+@item component
+the @code{<atk-component>}
+
+@item x
+x coordinate
+
+@item y
+y coordinate
+
+@item coord-type
+specifies whether the coordinates are relative to the screen or to the
+components top level window
+
+@item ret
+@samp{@code{#t}} or @samp{@code{#f}} indicating whether the specified point is
+within the extent of the @var{component} or not
+
+@end table
+
+@end deffn
+
+@deffn Function atk-component-get-extents  (self@tie{}@code{<atk-component*>}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+Gets the rectangle which gives the extent of the @var{component}.
+
+@table @var
+@item component
+an @code{<atk-component>}
+
+@item x
+address of @code{<gint>} to put x coordinate
+
+@item y
+address of @code{<gint>} to put y coordinate
+
+@item width
+address of @code{<gint>} to put width
+
+@item height
+address of @code{<gint>} to put height
+
+@item coord-type
+specifies whether the coordinates are relative to the screen or to the
+components top level window
+
+@end table
+
+@end deffn
+
+@deffn Function atk-component-get-layer  (self@tie{}@code{<atk-component*>}) @result{}@tie{} (ret@tie{}@code{<atk-layer>})
+Gets the layer of the component.
+
+@table @var
+@item component
+an @code{<atk-component>}
+
+@item ret
+an @code{<atk-layer>} which is the layer of the component
+
+@end table
+
+@end deffn
+
+@deffn Function atk-component-get-mdi-zorder  (self@tie{}@code{<atk-component*>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the zorder of the component. The value G_MININT will be returned if the
+layer of the component is not ATK_LAYER_MDI or ATK_LAYER_WINDOW.
+
+@table @var
+@item component
+an @code{<atk-component>}
+
+@item ret
+a gint which is the zorder of the component, i.e. the depth at which the
+component is shown in relation to other components in the same container.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-component-get-position  (self@tie{}@code{<atk-component*>}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int})
+Gets the position of @var{component} in the form of a point specifying
+@var{component}'s top-left corner.
+
+@table @var
+@item component
+an @code{<atk-component>}
+
+@item x
+address of @code{<gint>} to put x coordinate position
+
+@item y
+address of @code{<gint>} to put y coordinate position
+
+@item coord-type
+specifies whether the coordinates are relative to the screen or to the
+components top level window
+
+@end table
+
+@end deffn
+
+@deffn Function atk-component-get-size  (self@tie{}@code{<atk-component*>}) @result{}@tie{} (width@tie{}@code{int}) (height@tie{}@code{int})
+Gets the size of the @var{component} in terms of width and height.
+
+@table @var
+@item component
+an @code{<atk-component>}
+
+@item width
+address of @code{<gint>} to put width of @var{component}
+
+@item height
+address of @code{<gint>} to put height of @var{component}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-component-grab-focus  (self@tie{}@code{<atk-component*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Grabs focus for this @var{component}.
+
+@table @var
+@item component
+an @code{<atk-component>}
+
+@item ret
+@samp{@code{#t}} if successful, @samp{@code{#f}} otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function atk-component-remove-focus-handler  (self@tie{}@code{<atk-component*>}) (handler_id@tie{}@code{unsigned-int})
+Remove the handler specified by @var{handler-id} from the list of functions to
+be executed when this object receives focus events (in or out).
+
+@table @var
+@item component
+the @code{<atk-component>} to remove the focus handler from
+
+@item handler-id
+the handler id of the focus handler to be removed from @var{component}
+
+@end table
+
+@end deffn
+
+@deffn Function atk-component-set-extents  (self@tie{}@code{<atk-component*>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+Sets the extents of @var{component}.
+
+@table @var
+@item component
+an @code{<atk-component>}
+
+@item x
+x coordinate
+
+@item y
+y coordinate
+
+@item width
+width to set for @var{component}
+
+@item height
+height to set for @var{component}
+
+@item coord-type
+specifies whether the coordinates are relative to the screen or to the
+components top level window
+
+@item ret
+@samp{@code{#t}} or @samp{@code{#f}} whether the extents were set or not
+
+@end table
+
+@end deffn
+
+@deffn Function atk-component-set-position  (self@tie{}@code{<atk-component*>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+Sets the postition of @var{component}.
+
+@table @var
+@item component
+an @code{<atk-component>}
+
+@item x
+x coordinate
+
+@item y
+y coordinate
+
+@item coord-type
+specifies whether the coordinates are relative to the screen or to the
+components top level window
+
+@item ret
+@samp{@code{#t}} or @samp{@code{#f}} whether or not the position was set or not
+
+@end table
+
+@end deffn
+
+@deffn Function atk-component-set-size  (self@tie{}@code{<atk-component*>}) (width@tie{}@code{int}) (height@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Set the size of the @var{component} in terms of width and height.
+
+@table @var
+@item component
+an @code{<atk-component>}
+
+@item width
+width to set for @var{component}
+
+@item height
+height to set for @var{component}
+
+@item ret
+@samp{@code{#t}} or @samp{@code{#f}} whether the size was set or not
+
+@end table
+
+@end deffn
+
+@deffn Function atk-component-get-alpha  (self@tie{}@code{<atk-component*>}) @result{}@tie{} (ret@tie{}@code{double})
+Returns the alpha value (i.e. the opacity) for this @var{component}, on a scale
+from 0 (fully transparent) to 1.0 (fully opaque).
+
+@table @var
+@item component
+an @code{<atk-component>}
+
+@item ret
+An alpha value from 0 to 1.0, inclusive.
+
+@end table
+
+Since ATK 1.12
+
+@end deffn
+
+
+@c %end of fragment

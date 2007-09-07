@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node AtkNoOpObjectFactory
+@chapter AtkNoOpObjectFactory
+The AtkObjectFactory which creates an AtkNoOpObject.
+
+@section Overview
+The AtkObjectFactory which creates an AtkNoOpObject. An instance of this is
+created by an AtkRegistry if no factory type has not been specified to create an
+accessible object of a particular type.
+
+@section Usage
+@include defuns-atknoopobjectfactory.xml.texi
+
+@c %end of fragment
