@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@node Scripts
+@chapter Scripts
+Identifying writing systems
+
+@section Overview
+The functions in this section are used to identify the writing system, or
+@dfn{script} of individual characters and of ranges within a larger text string.
+
+@section Usage
+@include defuns-scripts.xml.texi
+
+@c %end of fragment

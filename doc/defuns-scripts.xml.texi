@@ -1,0 +1,142 @@
+
+@c %start of fragment
+
+@deffn Function pango-script-for-unichar  (ch@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{<pango-script>})
+Looks up the @code{<pango-script>} for a particular character (as defined by
+Unicode Standard Annex @code{<24>}). No check is made for @var{ch} being a valid
+Unicode character; if you pass in invalid character, the result is undefined.
+
+@table @var
+@item ch
+a Unicode character
+
+@item ret
+the @code{<pango-script>} for the character.
+
+@end table
+
+Since 1.4
+
+@end deffn
+
+@deffn Function pango-script-get-sample-language  (script@tie{}@code{<pango-script>}) @result{}@tie{} (ret@tie{}@code{<pango-language>})
+Given a script, finds a language tag that is reasonably representative of that
+script. This will usually be the most widely spoken or used language written in
+that script: for instance, the sample language for @samp{PANGO_SCRIPT_CYRILLIC}
+is @samp{ru} (Russian), the sample language for @samp{PANGO_SCRIPT_ARABIC} is
+@samp{ar}.
+
+For some scripts, no sample language will be returned because there is no
+language that is sufficiently representative. The best example of this is
+@samp{PANGO_SCRIPT_HAN}, where various different variants of written Chinese,
+Japanese, and Korean all use significantly different sets of Han characters and
+forms of shared characters. No sample language can be provided for many
+historical scripts as well.
+
+@table @var
+@item script
+a @code{<pango-script>}
+
+@item ret
+a @code{<pango-language>} that is representative of the script, or
+@samp{@code{#f}} if no such language exists.
+
+@end table
+
+Since 1.4
+
+@end deffn
+
+@deffn Function pango-language-includes-script  (self@tie{}@code{<pango-language>}) (script@tie{}@code{<pango-script>}) @result{}@tie{} (ret@tie{}@code{bool})
+Determines if @var{script} is one of the scripts used to write @var{language}.
+The returned value is conservative; if nothing is known about the language tag
+@var{language}, @samp{@code{#t}} will be returned, since, as far as Pango knows,
+@var{script} might be used to write @var{language}.
+
+This routine is used in Pango's itemization process when determining if a
+supplied language tag is relevant to a particular section of text. It probably
+is not useful for applications in most circumstances.
+
+@table @var
+@item language
+a @code{<pango-language>}
+
+@item script
+a @code{<pango-script>}
+
+@item ret
+@samp{@code{#t}} if @var{script} is one of the scripts used to write
+@var{language}, or if nothing is known about @var{language}.
+
+@end table
+
+Since 1.4
+
+@end deffn
+
+@deffn Function pango-script-iter-new  (text@tie{}@code{mchars}) (length@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<pango-script-iter*>})
+Create a new @code{<pango-script-iter>}, used to break a string of Unicode into
+runs by text. No copy is made of @var{text}, so the caller needs to make sure it
+remains valid until the iterator is freed with @code{pango-script-iter-free}.x
+
+@table @var
+@item text
+a UTF-8 string
+
+@item length
+length of @var{text}, or -1 if @var{text} is nul-terminated.
+
+@item ret
+the new script iterator, initialized to point at the first range in the text,
+which should be freed with @code{pango-script-iter-free}. If the string is
+empty, it will point at an empty range.
+
+@end table
+
+Since 1.4
+
+@end deffn
+
+@deffn Function pango-script-iter-get-range  (self@tie{}@code{<pango-script-iter*>}) (start@tie{}@code{<char**>}) (end@tie{}@code{<char**>}) (script@tie{}@code{<pango-script*>})
+Gets information about the range to which @var{iter} currently points. The range
+is the set of locations p where *start <= p < *end. (That is, it doesn't include
+the character stored at *end)
+
+@table @var
+@item iter
+a @code{<pango-script-iter>}
+
+@item start
+location to store start position of the range, or @samp{@code{#f}}
+
+@item end
+location to store end position of the range, or @samp{@code{#f}}
+
+@item script
+location to store script for range, or @samp{@code{#f}}
+
+@end table
+
+Since 1.4
+
+@end deffn
+
+@deffn Function pango-script-iter-next  (self@tie{}@code{<pango-script-iter*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Advances a @code{<pango-script-iter>} to the next range. If @var{iter} is
+already at the end, it is left unchanged and @samp{@code{#f}} is returned.
+
+@table @var
+@item iter
+a @code{<pango-script-iter>}
+
+@item ret
+@samp{@code{#t}} if @var{iter} was successfully advanced.
+
+@end table
+
+Since 1.4
+
+@end deffn
+
+
+@c %end of fragment

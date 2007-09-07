@@ -1,0 +1,793 @@
+
+@c %start of fragment
+
+@deftp Class <pango-color>
+@end deftp
+
+@deftp Class <pango-language>
+@end deftp
+
+@deftp Class <pango-attr-list>
+@end deftp
+
+@deffn Function pango-parse-markup  (markup_text@tie{}@code{mchars}) (length@tie{}@code{int}) (accel_marker@tie{}@code{unsigned-int32}) (attr_list@tie{}@code{<pango-attr-list**>}) (text@tie{}@code{<char**>}) @result{}@tie{} (ret@tie{}@code{bool}) (accel_char@tie{}@code{unsigned-int32})
+Parses marked-up text (see markup format) to create a plain-text string and an
+attribute list.
+
+If @var{accel-marker} is nonzero, the given character will mark the character
+following it as an accelerator. For example, @var{accel-marker} might be an
+ampersand or underscore. All characters marked as an accelerator will receive a
+@samp{PANGO_UNDERLINE_LOW} attribute, and the first character so marked will be
+returned in @var{accel-char}. Two @var{accel-marker} characters following each
+other produce a single literal @var{accel-marker} character.
+
+@table @var
+@item markup-text
+markup to parse (see markup format)
+
+@item length
+length of @var{markup-text}, or -1 if nul-terminated
+
+@item accel-marker
+character that precedes an accelerator, or 0 for none
+
+@item attr-list
+address of return location for a @code{<pango-attr-list>}, or @samp{@code{#f}}
+
+@item text
+address of return location for text with tags stripped, or @samp{@code{#f}}
+
+@item accel-char
+address of return location for accelerator char, or @samp{@code{#f}}
+
+@item error
+address of return location for errors, or @samp{@code{#f}}
+
+@item ret
+@samp{@code{#f}} if @var{error} is set, otherwise @samp{@code{#t}}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-type-register  (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<pango-attr-type>})
+Allocate a new attribute type ID.
+
+@table @var
+@item name
+an identifier for the type (currently unused.)
+
+@item ret
+the new type ID.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attribute-equal  (self@tie{}@code{<pango-attribute*>}) (attr2@tie{}@code{<pango-attribute*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Compare two attributes for equality. This compares only the actual value of the
+two attributes and not the ranges that the attributes apply to.
+
+@table @var
+@item attr1
+a @code{<pango-attribute>}
+
+@item attr2
+another @code{<pango-attribute>}
+
+@item ret
+@samp{@code{#t}} if the two attributes have the same value.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attribute-destroy  (self@tie{}@code{<pango-attribute*>})
+Destroy a @code{<pango-attribute>} and free all associated memory.
+
+@table @var
+@item attr
+a @code{<pango-attribute>}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-language-new  (language@tie{}@code{<pango-language>}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new language tag attribute.
+
+@table @var
+@item language
+language tag
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-family-new  (family@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new font family attribute.
+
+@table @var
+@item family
+the family or comma separated list of families
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-style-new  (style@tie{}@code{<pango-style>}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new font slant style attribute.
+
+@table @var
+@item style
+the slant style
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-variant-new  (variant@tie{}@code{<pango-variant>}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new font variant attribute (normal or small caps)
+
+@table @var
+@item variant
+the variant
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-stretch-new  (stretch@tie{}@code{<pango-stretch>}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new font stretch attribute
+
+@table @var
+@item stretch
+the stretch
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-weight-new  (weight@tie{}@code{<pango-weight>}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new font weight attribute.
+
+@table @var
+@item weight
+the weight
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-size-new  (size@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new font-size attribute in fractional points.
+
+@table @var
+@item size
+the font size, in @samp{PANGO_SCALE}ths of a point.
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-size-new-absolute  (size@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new font-size attribute in device units.
+
+@table @var
+@item size
+the font size, in @samp{PANGO_SCALE}ths of a device unit.
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-attr-font-desc-new  (desc@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new font description attribute. This attribute allows setting family,
+style, weight, variant, stretch, and size simultaneously.
+
+@table @var
+@item desc
+the font description
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-foreground-new  (red@tie{}@code{unsigned-int16}) (green@tie{}@code{unsigned-int16}) (blue@tie{}@code{unsigned-int16}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new foreground color attribute.
+
+@table @var
+@item red
+the red value (ranging from 0 to 65535)
+
+@item green
+the green value
+
+@item blue
+the blue value
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-background-new  (red@tie{}@code{unsigned-int16}) (green@tie{}@code{unsigned-int16}) (blue@tie{}@code{unsigned-int16}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new background color attribute.
+
+@table @var
+@item red
+the red value (ranging from 0 to 65535)
+
+@item green
+the green value
+
+@item blue
+the blue value
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-strikethrough-new  (strikethrough@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new strike-through attribute.
+
+@table @var
+@item strikethrough
+@samp{@code{#t}} if the text should be struck-through.
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-strikethrough-color-new  (red@tie{}@code{unsigned-int16}) (green@tie{}@code{unsigned-int16}) (blue@tie{}@code{unsigned-int16}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new strikethrough color attribute. This attribute modifies the color of
+strikethrough lines. If not set, strikethrough lines will use the foreground
+color.
+
+@table @var
+@item red
+the red value (ranging from 0 to 65535)
+
+@item green
+the green value
+
+@item blue
+the blue value
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-attr-underline-new  (underline@tie{}@code{<pango-underline>}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new underline-style attribute.
+
+@table @var
+@item underline
+the underline style.
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-underline-color-new  (red@tie{}@code{unsigned-int16}) (green@tie{}@code{unsigned-int16}) (blue@tie{}@code{unsigned-int16}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new underline color attribute. This attribute modifies the color of
+underlines. If not set, underlines will use the foreground color.
+
+@table @var
+@item red
+the red value (ranging from 0 to 65535)
+
+@item green
+the green value
+
+@item blue
+the blue value
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-attr-shape-new  (ink_rect@tie{}@code{<pango-rectangle*>}) (logical_rect@tie{}@code{<pango-rectangle*>}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new shape attribute. A shape is used to impose a particular ink and
+logical rectangle on the result of shaping a particular glyph. This might be
+used, for instance, for embedding a picture or a widget inside a
+@code{<pango-layout>}.
+
+@table @var
+@item ink-rect
+ink rectangle to assign to each character
+
+@item logical-rect
+logical rectangle to assign to each character
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-shape-new-with-data  (ink_rect@tie{}@code{<pango-rectangle*>}) (logical_rect@tie{}@code{<pango-rectangle*>}) (data@tie{}@code{<gpointer>}) (copy_func@tie{}@code{<pango-attr-data-copy-func>}) (destroy_func@tie{}@code{<g-destroy-notify>}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Like @code{pango-attr-shape-new}, but a user data pointer is also provided; this
+pointer can be accessed when later rendering the glyph.
+
+@table @var
+@item ink-rect
+ink rectangle to assign to each character
+
+@item logical-rect
+logical rectangle to assign to each character
+
+@item data
+user data pointer
+
+@item copy-func
+function to copy @var{data} when the attribute is copied. If @samp{@code{#f}},
+@var{data} is simply copied as a pointer.
+
+@item destroy-func
+function to free @var{data} when the attribute is freed, or @samp{@code{#f}}
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-attr-scale-new  (scale_factor@tie{}@code{double}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new font size scale attribute. The base font for the affected text will
+have its size multiplied by @var{scale-factor}.
+
+@table @var
+@item scale-factor
+factor to scale the font
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-fallback-new  (enable_fallback@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new font fallback attribute.
+
+If fallback is disabled, characters will only be used from the closest matching
+font on the system. No fallback will be done to other fonts on the system that
+might contain the characters in the text.
+
+@table @var
+@item enable-fallback
+@samp{@code{#t}} if we should fall back on other fonts for characters the active
+font is missing.
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+Since 1.4
+
+@end deffn
+
+@deffn Function pango-attr-rise-new  (rise@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new baseline displacement attribute.
+
+@table @var
+@item rise
+the amount that the text should be displaced vertically, in Pango units.
+Positive values displace the text upwards.
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-letter-spacing-new  (letter_spacing@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Create a new letter-spacing attribute.
+
+@table @var
+@item letter-spacing
+amount of extra space to add between graphemes of the text, in Pango units.
+
+@item ret
+the newly allocated @code{<pango-attribute>}, which should be freed with
+@code{pango-attribute-destroy}.
+
+@end table
+
+Since 1.6
+
+@end deffn
+
+@deffn Function pango-color-parse  (self@tie{}@code{<pango-color>}) (spec@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Fill in the fields of a color from a string specification. The string can either
+one of a large set of standard names. (Taken from the X11 @file{rgb.txt} file),
+or it can be a hex value in the form '&#x0023;rgb' '&#x0023;rrggbb'
+'&#x0023;rrrgggbbb' or '&#x0023;rrrrggggbbbb' where 'r', 'g' and 'b' are hex
+digits of the red, green, and blue components of the color, respectively. (White
+in the four forms is '&#x0023;fff' '&#x0023;ffffff' '&#x0023;fffffffff' and
+'&#x0023;ffffffffffff')
+
+@table @var
+@item color
+a @code{<pango-color>} structure in which to store the result
+
+@item spec
+a string specifying the new color
+
+@item ret
+@samp{@code{#t}} if parsing of the specifier succeeded, otherwise false.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-language-from-string  (language@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<pango-language>})
+Take a RFC-3066 format language tag as a string and convert it to a
+@code{<pango-language>} pointer that can be efficiently copied (copy the
+pointer) and compared with other language tags (compare the pointer.)
+
+This function first canonicalizes the string by converting it to lowercase,
+mapping '_' to '-', and stripping all characters other than letters and '-'.
+
+@table @var
+@item language
+a string representing a language tag
+
+@item ret
+an opaque pointer to a @code{<pango-language>} structure. this will be valid
+forever after.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-language-matches  (self@tie{}@code{<pango-language>}) (range_list@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Checks if a language tag matches one of the elements in a list of language
+ranges. A language tag is considered to match a range in the list if the range
+is '*', the range is exactly the tag, or the range is a prefix of the tag, and
+the character after it in the tag is '-'.
+
+@table @var
+@item language
+a language tag (see @code{pango-language-from-string}), @samp{@code{#f}} is
+allowed and matches nothing but '*'
+
+@item range-list
+a list of language ranges, separated by ';', ':', ',', or space characters. Each
+element must either be '*', or a RFC 3066 language range canonicalized as by
+@code{pango-language-from-string}
+
+@item ret
+@samp{@code{#t}} if a match was found.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-list-new  @result{}@tie{} (ret@tie{}@code{<pango-attr-list>})
+Create a new empty attribute list with a reference count of one.
+
+@table @var
+@item ret
+the newly allocated @code{<pango-attr-list>}, which should be freed with
+@code{pango-attr-list-unref}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-list-insert  (self@tie{}@code{<pango-attr-list>}) (attr@tie{}@code{<pango-attribute*>})
+Insert the given attribute into the @code{<pango-attr-list>}. It will be
+inserted after all other attributes with a matching @var{start-index}.
+
+@table @var
+@item list
+a @code{<pango-attr-list>}
+
+@item attr
+the attribute to insert. Ownership of this value is assumed by the list.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-list-insert-before  (self@tie{}@code{<pango-attr-list>}) (attr@tie{}@code{<pango-attribute*>})
+Insert the given attribute into the @code{<pango-attr-list>}. It will be
+inserted before all other attributes with a matching @var{start-index}.
+
+@table @var
+@item list
+a @code{<pango-attr-list>}
+
+@item attr
+the attribute to insert. Ownership of this value is assumed by the list.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-list-change  (self@tie{}@code{<pango-attr-list>}) (attr@tie{}@code{<pango-attribute*>})
+Insert the given attribute into the @code{<pango-attr-list>}. It will replace
+any attributes of the same type on that segment and be merged with any adjoining
+attributes that are identical.
+
+This function is slower than @code{pango-attr-list-insert} for creating a
+attribute list in order (potentially much slower for large lists). However,
+@code{pango-attr-list-insert} is not suitable for continually changing a set of
+attributes since it never removes or combines existing attributes.
+
+@table @var
+@item list
+a @code{<pango-attr-list>}
+
+@item attr
+the attribute to insert. Ownership of this value is assumed by the list.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-list-splice  (self@tie{}@code{<pango-attr-list>}) (other@tie{}@code{<pango-attr-list>}) (pos@tie{}@code{int}) (len@tie{}@code{int})
+This function opens up a hole in @var{list}, fills it in with attributes from
+the left, and then merges @var{other} on top of the hole.
+
+This operation is equivalent to stretching every attribute that applies at
+position @var{pos} in @var{list} by an amount @var{len}, and then calling
+@code{pango-attr-list-change} with a copy of each attribute in @var{other} in
+sequence (offset in position by @var{pos}).
+
+This operation proves useful for, for instance, inserting a pre-edit string in
+the middle of an edit buffer.
+
+@table @var
+@item list
+a @code{<pango-attr-list>}
+
+@item other
+another @code{<pango-attr-list>}
+
+@item pos
+the position in @var{list} at which to insert @var{other}
+
+@item len
+the length of the spliced segment. (Note that this must be specified since the
+attributes in @var{other} may only be present at some subsection of this range)
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-list-filter  (self@tie{}@code{<pango-attr-list>}) (func@tie{}@code{<pango-attr-filter-func>}) (data@tie{}@code{<gpointer>}) @result{}@tie{} (ret@tie{}@code{<pango-attr-list>})
+Given a @code{<pango-attr-list>} and callback function, removes any elements of
+@var{list} for which @var{func} returns @samp{@code{#t}} and inserts them into a
+new list.
+
+@table @var
+@item list
+a @code{<pango-attr-list>}
+
+@item func
+callback function; returns @samp{@code{#t}} if an attribute should be filtered
+out.
+
+@item data
+Data to be passed to @var{func}
+
+@item ret
+the new @code{<pango-attr-list>} or @samp{@code{#f}} if no attributes of the
+given types were found.
+
+@end table
+
+Since 1.2
+
+@end deffn
+
+@deffn Function pango-attr-list-get-iterator  (self@tie{}@code{<pango-attr-list>}) @result{}@tie{} (ret@tie{}@code{<pango-attr-iterator*>})
+Create a iterator initialized to the beginning of the list. @var{list} must not
+be modified until this iterator is freed.
+
+@table @var
+@item list
+a @code{<pango-attr-list>}
+
+@item ret
+the newly allocated @code{<pango-attr-iterator>}, which should be freed with
+@code{pango-attr-iterator-destroy}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-iterator-next  (self@tie{}@code{<pango-attr-iterator*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Advance the iterator until the next change of style.
+
+@table @var
+@item iterator
+a @code{<pango-attr-iterator>}
+
+@item ret
+@samp{@code{#f}} if the iterator is at the end of the list, otherwise
+@samp{@code{#t}}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-iterator-range  (self@tie{}@code{<pango-attr-iterator*>}) @result{}@tie{} (start@tie{}@code{int}) (end@tie{}@code{int})
+Get the range of the current segment. Note that the stored return values are
+signed, not unsigned like the values in @code{<pango-attribute>}. To deal with
+this API oversight, stored return values that wouldn't fit into a signed integer
+are clamped to @samp{G_MAXINT}.
+
+@table @var
+@item iterator
+a @code{<pango-attr-iterator>}
+
+@item start
+location to store the start of the range
+
+@item end
+location to store the end of the range
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-iterator-get  (self@tie{}@code{<pango-attr-iterator*>}) (type@tie{}@code{<pango-attr-type>}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Find the current attribute of a particular type at the iterator location. When
+multiple attributes of the same type overlap, the attribute whose range starts
+closest to the current location is used.
+
+@table @var
+@item iterator
+a @code{<pango-attr-iterator>}
+
+@item type
+the type of attribute to find.
+
+@item ret
+the current attribute of the given type, or @samp{@code{#f}} if no attribute of
+that type applies to the current location.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-iterator-get-font  (self@tie{}@code{<pango-attr-iterator*>}) (desc@tie{}@code{<pango-font-description>}) (language@tie{}@code{<pango-language**>}) (extra_attrs@tie{}@code{<gs-list**>})
+Get the font and other attributes at the current iterator position.
+
+@table @var
+@item iterator
+a @code{<pango-attr-iterator>}
+
+@item desc
+a @code{<pango-font-description>} to fill in with the current values. The family
+name in this structure will be set using
+@code{pango-font-description-set-family-static} using values from an attribute
+in the @code{<pango-attr-list>} associated with the iterator, so if you plan to
+keep it around, you must call: @samp{pango_font_description_set_family (desc,
+pango_font_description_get_family (desc))}.
+
+@item language
+if non-@samp{@code{#f}}, location to store language tag for item, or
+@samp{@code{#f}} if none is found.
+
+@item extra-attrs
+if non-@samp{@code{#f}}, location in which to store a list of non-font
+attributes at the the current position; only the highest priority value of each
+attribute will be added to this list. In order to free this value, you must call
+@code{pango-attribute-destroy} on each member.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-attr-iterator-get-attrs  (self@tie{}@code{<pango-attr-iterator*>}) @result{}@tie{} (ret@tie{}@code{gslist-of})
+Gets a list of all attributes at the current position of the iterator.
+
+@table @var
+@item iterator
+a @code{<pango-attr-iterator>}
+
+@item ret
+a list of all attributes for the current range. To free this value, call
+@code{pango-attribute-destroy} on each value and @code{g-slist-free} on the
+list.
+
+@end table
+
+Since 1.2
+
+@end deffn
+
+@deffn Function pango-attr-iterator-destroy  (self@tie{}@code{<pango-attr-iterator*>})
+Destroy a @code{<pango-attr-iterator>} and free all associated memory.
+
+@table @var
+@item iterator
+a @code{<pango-attr-iterator>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

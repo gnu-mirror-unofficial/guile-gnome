@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@node Glyph Storage
+@chapter Glyph Storage
+Structures for storing information about glyphs
+
+@section Overview
+@code{pango-shape} produces a string of glyphs which can be measured or drawn to
+the screen. The following structures are used to store information about glyphs.
+
+@section Usage
+@include defuns-glyphs.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@node Tab Stops
+@chapter Tab Stops
+Structures for storing tab stops
+
+@section Overview
+Functions in this section are used to deal with @code{<pango-tab-array>} objects
+that can be used to set tab stop positions in a @code{<pango-layout>}.
+
+@section Usage
+@include defuns-tab-stops.xml.texi
+
+@c %end of fragment

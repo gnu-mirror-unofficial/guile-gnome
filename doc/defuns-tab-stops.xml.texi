@@ -1,0 +1,117 @@
+
+@c %start of fragment
+
+@deftp Class <pango-tab-array>
+@end deftp
+
+@deffn Function pango-tab-array-new  (initial_size@tie{}@code{int}) (positions_in_pixels@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<pango-tab-array>})
+Creates an array of @var{initial-size} tab stops. Tab stops are specified in
+pixel units if @var{positions-in-pixels} is @samp{@code{#t}}, otherwise in Pango
+units. All stops are initially at position 0.
+
+@table @var
+@item initial-size
+Initial number of tab stops to allocate, can be 0
+
+@item positions-in-pixels
+whether positions are in pixel units
+
+@item ret
+the newly allocated @code{<pango-tab-array>}, which should be freed with
+@code{pango-tab-array-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-tab-array-get-size  (self@tie{}@code{<pango-tab-array>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the number of tab stops in @var{tab-array}.
+
+@table @var
+@item tab-array
+a @code{<pango-tab-array>}
+
+@item ret
+the number of tab stops in the array.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-tab-array-resize  (self@tie{}@code{<pango-tab-array>}) (new_size@tie{}@code{int})
+Resizes a tab array. You must subsequently initialize any tabs that were added
+as a result of growing the array.
+
+@table @var
+@item tab-array
+a @code{<pango-tab-array>}
+
+@item new-size
+new size of the array
+
+@end table
+
+@end deffn
+
+@deffn Function pango-tab-array-set-tab  (self@tie{}@code{<pango-tab-array>}) (tab_index@tie{}@code{int}) (alignment@tie{}@code{<pango-tab-align>}) (location@tie{}@code{int})
+Sets the alignment and location of a tab stop. @var{alignment} must always be
+@code{<pango-tab-left>} in the current implementation.
+
+@table @var
+@item tab-array
+a @code{<pango-tab-array>}
+
+@item tab-index
+the index of a tab stop
+
+@item alignment
+tab alignment
+
+@item location
+tab location in Pango units
+
+@end table
+
+@end deffn
+
+@deffn Function pango-tab-array-get-tab  (self@tie{}@code{<pango-tab-array>}) (tab_index@tie{}@code{int}) (alignment@tie{}@code{<pango-tab-align*>}) @result{}@tie{} (location@tie{}@code{int})
+Gets the alignment and position of a tab stop.
+
+@table @var
+@item tab-array
+a @code{<pango-tab-array>}
+
+@item tab-index
+tab stop index
+
+@item alignment
+location to store alignment, or @samp{@code{#f}}
+
+@item location
+location to store tab position, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-tab-array-get-tabs  (self@tie{}@code{<pango-tab-array>}) (alignments@tie{}@code{<pango-tab-align**>}) (locations@tie{}@code{<gint**>})
+If non-@samp{@code{#f}}, @var{alignments} and @var{locations} are filled with
+allocated arrays of length @code{pango-tab-array-get-size}. You must free the
+returned array.
+
+@table @var
+@item tab-array
+a @code{<pango-tab-array>}
+
+@item alignments
+location to store an array of tab stop alignments, or @samp{@code{#f}}
+
+@item locations
+location to store an array of tab positions, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

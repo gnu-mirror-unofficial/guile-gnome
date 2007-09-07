@@ -1,0 +1,307 @@
+
+@c %start of fragment
+
+@deftp Class <pango-glyph-string>
+@end deftp
+
+@deffn Function pango-matrix-translate  (self@tie{}@code{<pango-matrix*>}) (tx@tie{}@code{double}) (ty@tie{}@code{double})
+Changes the transformation represented by @var{matrix} to be the transformation
+given by first translating by (@var{tx}, @var{ty}) then applying the original
+transformation.
+
+@table @var
+@item matrix
+a @code{<pango-matrix>}
+
+@item tx
+amount to translate in the X direction
+
+@item ty
+amount to translate in the Y direction
+
+@end table
+
+Since 1.6
+
+@end deffn
+
+@deffn Function pango-matrix-scale  (self@tie{}@code{<pango-matrix*>}) (scale_x@tie{}@code{double}) (scale_y@tie{}@code{double})
+Changes the transformation represented by @var{matrix} to be the transformation
+given by first scaling by @var{sx} in the X direction and @var{sy} in the Y
+direction then applying the original transformation.
+
+@table @var
+@item matrix
+a @code{<pango-matrix>}
+
+@item scale-x
+amount to scale by in X direction
+
+@item scale-y
+amount to scale by in Y direction
+
+@end table
+
+Since 1.6
+
+@end deffn
+
+@deffn Function pango-matrix-rotate  (self@tie{}@code{<pango-matrix*>}) (degrees@tie{}@code{double})
+Changes the transformation represented by @var{matrix} to be the transformation
+given by first rotating by @var{degrees} degrees counter-clockwise then applying
+the original transformation.
+
+@table @var
+@item matrix
+a @code{<pango-matrix>}
+
+@item degrees
+degrees to rotate counter-clockwise
+
+@end table
+
+Since 1.6
+
+@end deffn
+
+@deffn Function pango-matrix-concat  (self@tie{}@code{<pango-matrix*>}) (new_matrix@tie{}@code{<pango-matrix*>})
+Changes the transformation represented by @var{matrix} to be the transformation
+given by first applying transformation given by @var{new-matrix} then applying
+the original transformation.
+
+@table @var
+@item matrix
+a @code{<pango-matrix>}
+
+@item new-matrix
+a @code{<pango-matrix>}
+
+@end table
+
+Since 1.6
+
+@end deffn
+
+@deffn Function pango-matrix-get-font-scale-factor  (self@tie{}@code{<pango-matrix*>}) @result{}@tie{} (ret@tie{}@code{double})
+Returns the scale factor of a matrix on the height of the font. That is, the
+scale factor in the direction perpendicular to the vector that the X coordinate
+is mapped to.
+
+@table @var
+@item matrix
+a @code{<pango-matrix>}, may be @samp{@code{#f}}
+
+@item ret
+the scale factor of @var{matrix} on the height of the font, or 1.0 if
+@var{matrix} is @samp{@code{#f}}.
+
+@end table
+
+Since 1.12
+
+@end deffn
+
+@deffn Function pango-glyph-string-new  @result{}@tie{} (ret@tie{}@code{<pango-glyph-string>})
+Create a new @code{<pango-glyph-string>}.
+
+@table @var
+@item ret
+the newly allocated @code{<pango-glyph-string>}, which should be freed with
+@code{pango-glyph-string-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-glyph-string-set-size  (self@tie{}@code{<pango-glyph-string>}) (new_len@tie{}@code{int})
+Resize a glyph string to the given length.
+
+@table @var
+@item string
+a @code{<pango-glyph-string>}.
+
+@item new-len
+the new length of the string.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-glyph-string-extents  (self@tie{}@code{<pango-glyph-string>}) (font@tie{}@code{<pango-font>}) (ink_rect@tie{}@code{<pango-rectangle*>}) (logical_rect@tie{}@code{<pango-rectangle*>})
+Compute the logical and ink extents of a glyph string. See the documentation for
+@code{pango-font-get-glyph-extents} for details about the interpretation of the
+rectangles.
+
+@table @var
+@item glyphs
+a @code{<pango-glyph-string>}
+
+@item font
+a @code{<pango-font>}
+
+@item ink-rect
+rectangle used to store the extents of the glyph string as drawn or
+@samp{@code{#f}} to indicate that the result is not needed.
+
+@item logical-rect
+rectangle used to store the logical extents of the glyph string or
+@samp{@code{#f}} to indicate that the result is not needed.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-glyph-string-extents-range  (self@tie{}@code{<pango-glyph-string>}) (start@tie{}@code{int}) (end@tie{}@code{int}) (font@tie{}@code{<pango-font>}) (ink_rect@tie{}@code{<pango-rectangle*>}) (logical_rect@tie{}@code{<pango-rectangle*>})
+Computes the extents of a sub-portion of a glyph string. The extents are
+relative to the start of the glyph string range (the origin of their coordinate
+system is at the start of the range, not at the start of the entire glyph
+string).
+
+@table @var
+@item glyphs
+a @code{<pango-glyph-string>}
+
+@item start
+start index
+
+@item end
+end index (the range is the set of bytes with indices such that start <= index <
+end)
+
+@item font
+a @code{<pango-font>}
+
+@item ink-rect
+rectangle used to store the extents of the glyph string range as drawn or
+@samp{@code{#f}} to indicate that the result is not needed.
+
+@item logical-rect
+rectangle used to store the logical extents of the glyph string range or
+@samp{@code{#f}} to indicate that the result is not needed.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-glyph-string-get-width  (self@tie{}@code{<pango-glyph-string>}) @result{}@tie{} (ret@tie{}@code{int})
+Computes the logical width of the glyph string as can also be computed using
+@code{pango-glyph-string-extents}. However, since this only computes the width,
+it's much faster. This is in fact only a convenience function that computes the
+sum of geometry.width for each glyph in the @var{glyphs}.
+
+@table @var
+@item glyphs
+a @code{<pango-glyph-string>}
+
+@item ret
+the logical width of the glyph string.
+
+@end table
+
+Since 1.14
+
+@end deffn
+
+@deffn Function pango-glyph-string-index-to-x  (self@tie{}@code{<pango-glyph-string>}) (text@tie{}@code{mchars}) (length@tie{}@code{int}) (analysis@tie{}@code{<pango-analysis*>}) (index_@tie{}@code{int}) (trailing@tie{}@code{bool}) @result{}@tie{} (x_pos@tie{}@code{int})
+Converts from character position to x position. (X position is measured from the
+left edge of the run). Character positions are computed by dividing up each
+cluster into equal portions.
+
+@table @var
+@item glyphs
+the glyphs return from @code{pango-shape}
+
+@item text
+the text for the run
+
+@item length
+the number of bytes (not characters) in @var{text}.
+
+@item analysis
+the analysis information return from @code{pango-itemize}
+
+@item index
+the byte index within @var{text}
+
+@item trailing
+whether we should compute the result for the beginning or end of the character.
+
+@item x-pos
+location to store result
+
+@end table
+
+@end deffn
+
+@deffn Function pango-glyph-string-x-to-index  (self@tie{}@code{<pango-glyph-string>}) (text@tie{}@code{mchars}) (length@tie{}@code{int}) (analysis@tie{}@code{<pango-analysis*>}) (x_pos@tie{}@code{int}) @result{}@tie{} (index_@tie{}@code{int}) (trailing@tie{}@code{int})
+Convert from x offset to character position. Character positions are computed by
+dividing up each cluster into equal portions. In scripts where positioning
+within a cluster is not allowed (such as Thai), the returned value may not be a
+valid cursor position; the caller must combine the result with the logical
+attributes for the text to compute the valid cursor position.
+
+@table @var
+@item glyphs
+the glyphs return from @code{pango-shape}
+
+@item text
+the text for the run
+
+@item length
+the number of bytes (not characters) in text.
+
+@item analysis
+the analysis information return from @code{pango-itemize}
+
+@item x-pos
+the x offset (in @code{<pango-glyph-unit>})
+
+@item index
+location to store calculated byte index within @var{text}
+
+@item trailing
+location to store a integer indicating where whether the user clicked on the
+leading or trailing edge of the character.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-glyph-item-apply-attrs  (self@tie{}@code{<pango-glyph-item*>}) (text@tie{}@code{mchars}) (list@tie{}@code{<pango-attr-list>}) @result{}@tie{} (ret@tie{}@code{gslist-of})
+Splits a shaped item (PangoGlyphItem) into multiple items based on an attribute
+list. The idea is that if you have attributes that don't affect shaping, such as
+color or underline, to avoid affecting shaping, you filter them out
+(@code{pango-attr-list-filter}), apply the shaping process and then reapply them
+to the result using this function.
+
+All attributes that start or end inside a cluster are applied to that cluster;
+for instance, if half of a cluster is underlined and the other-half
+strikethrough, then the cluster will end up with both underline and
+strikethrough attributes. In these cases, it may happen that item->extra_attrs
+for some of the result items can have multiple attributes of the same type.
+
+This function takes ownership of @var{glyph-item}; it will be reused as one of
+the elements in the list.
+
+@table @var
+@item glyph-item
+a shaped item
+
+@item text
+text that @var{list} applies to
+
+@item list
+a @code{<pango-attr-list>}
+
+@item ret
+a list of glyph items resulting from splitting @var{glyph-item}. Free the
+elements using @code{pango-glyph-item-free}, the list using @code{g-slist-free}.
+
+@end table
+
+Since 1.2
+
+@end deffn
+
+
+@c %end of fragment

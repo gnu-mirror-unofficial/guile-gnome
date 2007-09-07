@@ -1,0 +1,104 @@
+
+@c %start of fragment
+
+@deffn Function pango-coverage-new  @result{}@tie{} (ret@tie{}@code{<pango-coverage*>})
+Create a new @code{<pango-coverage>}
+
+@table @var
+@item ret
+the newly allocated @code{<pango-coverage>}, initialized to
+@samp{PANGO_COVERAGE_NONE} with a reference count of one, which should be freed
+with @code{pango-coverage-unref}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-coverage-get  (self@tie{}@code{<pango-coverage*>}) (index_@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<pango-coverage-level>})
+Determine whether a particular index is covered by @var{coverage}
+
+@table @var
+@item coverage
+a @code{<pango-coverage>}
+
+@item index
+the index to check
+
+@item ret
+the coverage level of @var{coverage} for character @var{index}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-coverage-max  (self@tie{}@code{<pango-coverage*>}) (other@tie{}@code{<pango-coverage*>})
+Set the coverage for each index in @var{coverage} to be the max (better) value
+of the current coverage for the index and the coverage for the corresponding
+index in @var{other}.
+
+@table @var
+@item coverage
+a @code{<pango-coverage>}
+
+@item other
+another @code{<pango-coverage>}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-coverage-set  (self@tie{}@code{<pango-coverage*>}) (index_@tie{}@code{int}) (level@tie{}@code{<pango-coverage-level>})
+Modify a particular index within @var{coverage}
+
+@table @var
+@item coverage
+a @code{<pango-coverage>}
+
+@item index
+the index to modify
+
+@item level
+the new level for @var{index}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-coverage-to-bytes  (self@tie{}@code{<pango-coverage*>}) (bytes@tie{}@code{<guchar**>}) @result{}@tie{} (n_bytes@tie{}@code{int})
+Convert a @code{<pango-coverage>} structure into a flat binary format
+
+@table @var
+@item coverage
+a @code{<pango-coverage>}
+
+@item bytes
+location to store result (must be freed with @code{g-free})
+
+@item n-bytes
+location to store size of result
+
+@end table
+
+@end deffn
+
+@deffn Function pango-coverage-from-bytes  (bytes@tie{}@code{<guchar*>}) (n_bytes@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<pango-coverage*>})
+Convert data generated from @code{pango-converage-to-bytes} back to a
+@code{<pango-coverage>}
+
+@table @var
+@item bytes
+binary data representing a @code{<pango-coverage>}
+
+@item n-bytes
+the size of @var{bytes} in bytes
+
+@item ret
+a newly allocated @code{<pango-coverage>}, or @samp{@code{#f}} if the data was
+invalid.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

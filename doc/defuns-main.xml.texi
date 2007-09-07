@@ -1,0 +1,535 @@
+
+@c %start of fragment
+
+@deffn Function pango-itemize  (context@tie{}@code{<pango-context*>}) (text@tie{}@code{mchars}) (start_index@tie{}@code{int}) (length@tie{}@code{int}) (attrs@tie{}@code{<pango-attr-list>}) (cached_iter@tie{}@code{<pango-attr-iterator*>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+Breaks a piece of text into segments with consistent directional level and
+shaping engine. Each byte of @var{text} will be contained in exactly one of the
+items in the returned list; the generated list of items will be in logical order
+(the start offsets of the items are ascending).
+
+@var{cached-iter} should be an iterator over @var{attrs} currently positioned at
+a range before or containing @var{start-index}; @var{cached-iter} will be
+advanced to the range covering the position just after @var{start-index} +
+@var{length}. (i.e. if itemizing in a loop, just keep passing in the same
+@var{cached-iter}).
+
+@table @var
+@item context
+a structure holding information that affects the itemization process.
+
+@item text
+the text to itemize.
+
+@item start-index
+first byte in @var{text} to process
+
+@item length
+the number of bytes (not characters) to process after @var{start-index}. This
+must be >= 0.
+
+@item attrs
+the set of attributes that apply to @var{text}.
+
+@item cached-iter
+Cached attribute iterator, or @samp{@code{#f}}
+
+@item ret
+a @code{<g-list>} of @code{<pango-item>} structures.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-itemize-with-base-dir  (context@tie{}@code{<pango-context*>}) (base_dir@tie{}@code{<pango-direction>}) (text@tie{}@code{mchars}) (start_index@tie{}@code{int}) (length@tie{}@code{int}) (attrs@tie{}@code{<pango-attr-list>}) (cached_iter@tie{}@code{<pango-attr-iterator*>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+Like @code{pango-itemize}, but the base direction to use when computing
+bidirectional levels (see @code{pango-context-set-base-dir}), is specified
+explicitly rather than gotten from the @code{<pango-context>}.
+
+@table @var
+@item context
+a structure holding information that affects the itemization process.
+
+@item base-dir
+base direction to use for bidirectional processing
+
+@item text
+the text to itemize.
+
+@item start-index
+first byte in @var{text} to process
+
+@item length
+the number of bytes (not characters) to process after @var{start-index}. This
+must be >= 0.
+
+@item attrs
+the set of attributes that apply to @var{text}.
+
+@item cached-iter
+Cached attribute iterator, or @samp{@code{#f}}
+
+@item ret
+a @code{<g-list>} of @code{<pango-item>} structures.
+
+@end table
+
+Since 1.4
+
+@end deffn
+
+@deffn Function pango-item-new  @result{}@tie{} (ret@tie{}@code{<pango-item*>})
+Creates a new @code{<pango-item>} structure initialized to default values.
+
+@table @var
+@item ret
+the newly allocated @code{<pango-item>}, which should be freed with
+@code{pango-item-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-item-split  (self@tie{}@code{<pango-item*>}) (split_index@tie{}@code{int}) (split_offset@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<pango-item*>})
+Modifies @var{orig} to cover only the text after @var{split-index}, and returns
+a new item that covers the text before @var{split-index} that used to be in
+@var{orig}. You can think of @var{split-index} as the length of the returned
+item. @var{split-index} may not be 0, and it may not be greater than or equal to
+the length of @var{orig} (that is, there must be at least one byte assigned to
+each item, you can't create a zero-length item). @var{split-offset} is the
+length of the first item in chars, and must be provided because the text used to
+generate the item isn't available, so @code{pango-item-split} can't count the
+char length of the split items itself.
+
+@table @var
+@item orig
+a @code{<pango-item>}
+
+@item split-index
+byte index of position to split item, relative to the start of the item
+
+@item split-offset
+number of chars between start of @var{orig} and @var{split-index}
+
+@item ret
+new item representing text before @var{split-index}, which should be freed with
+@code{pango-item-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-reorder-items  (logical_items@tie{}@code{glist-of}) @result{}@tie{} (ret@tie{}@code{glist-of})
+From a list of items in logical order and the associated directional levels,
+produce a list in visual order. The original list is unmodified.
+
+@table @var
+@item logical-items
+a @code{<g-list>} of @code{<pango-item>} in logical order.
+
+@item ret
+a @code{<g-list>} of @code{<pango-item>} structures in visual order. (Please
+open a bug if you use this function. It is not a particularly convenient
+interface, and the code is duplicated elsewhere in Pango for that reason.)
+
+@end table
+
+@end deffn
+
+@deffn Function pango-context-get-font-map  (self@tie{}@code{<pango-context*>}) @result{}@tie{} (ret@tie{}@code{<pango-font-map>})
+Gets the @code{<pango-fontmap>} used to look up fonts for this context.
+
+@table @var
+@item context
+a @code{<pango-context>}
+
+@item ret
+the font map for the @code{<pango-context>}. This value is owned by Pango and
+should not be unreferenced.
+
+@end table
+
+Since 1.6
+
+@end deffn
+
+@deffn Function pango-context-set-font-description  (self@tie{}@code{<pango-context*>}) (desc@tie{}@code{<pango-font-description>})
+Set the default font description for the context
+
+@table @var
+@item context
+a @code{<pango-context>}
+
+@item desc
+the new pango font description
+
+@end table
+
+@end deffn
+
+@deffn Function pango-context-get-language  (self@tie{}@code{<pango-context*>}) @result{}@tie{} (ret@tie{}@code{<pango-language>})
+Retrieves the global language tag for the context.
+
+@table @var
+@item context
+a @code{<pango-context>}
+
+@item ret
+the global language tag.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-context-set-language  (self@tie{}@code{<pango-context*>}) (language@tie{}@code{<pango-language>})
+Sets the global language tag for the context.
+
+@table @var
+@item context
+a @code{<pango-context>}
+
+@item language
+the new language tag.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-context-get-base-dir  (self@tie{}@code{<pango-context*>}) @result{}@tie{} (ret@tie{}@code{<pango-direction>})
+Retrieves the base direction for the context. See
+@code{pango-context-set-base-dir}.
+
+@table @var
+@item context
+a @code{<pango-context>}
+
+@item ret
+the base direction for the context.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-context-set-base-dir  (self@tie{}@code{<pango-context*>}) (direction@tie{}@code{<pango-direction>})
+Sets the base direction for the context.
+
+The base direction is used in applying the Unicode bidirectional algorithm; if
+the @var{direction} is @samp{PANGO_DIRECTION_LTR} or @samp{PANGO_DIRECTION_RTL},
+then the value will be used as the paragraph direction in the Unicode
+bidirectional algorithm. A value of @samp{PANGO_DIRECTION_WEAK_LTR} or
+@samp{PANGO_DIRECTION_WEAK_RTL} is used only for paragraphs that do not contain
+any strong characters themselves.
+
+@table @var
+@item context
+a @code{<pango-context>}
+
+@item direction
+the new base direction
+
+@end table
+
+@end deffn
+
+@deffn Function pango-context-get-matrix  (self@tie{}@code{<pango-context*>}) @result{}@tie{} (ret@tie{}@code{<pango-matrix*>})
+Gets the transformation matrix that will be applied when rendering with this
+context. See @code{pango-context-set-matrix}.
+
+@table @var
+@item context
+a @code{<pango-context>}
+
+@item ret
+the matrix, or @samp{@code{#f}} if no matrix has been set (which is the same as
+the identity matrix). The returned matrix is owned by Pango and must not be
+modified or freed.
+
+@end table
+
+Since 1.6
+
+@end deffn
+
+@deffn Function pango-context-set-matrix  (self@tie{}@code{<pango-context*>}) (matrix@tie{}@code{<pango-matrix*>})
+Sets the transformation matrix that will be applied when rendering with this
+context. Note that reported metrics are in the user space coordinates before the
+application of the matrix, not device-space coordinates after the application of
+the matrix. So, they don't scale with the matrix, though they may change
+slightly for different matrices, depending on how the text is fit to the pixel
+grid.
+
+@table @var
+@item context
+a @code{<pango-context>}
+
+@item matrix
+a @code{<pango-matrix>}, or @samp{@code{#f}} to unset any existing matrix. (No
+matrix set is the same as setting the identity matrix.)
+
+@end table
+
+Since 1.6
+
+@end deffn
+
+@deffn Function pango-context-load-font  (self@tie{}@code{<pango-context*>}) (desc@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{<pango-font>})
+Loads the font in one of the fontmaps in the context that is the closest match
+for @var{desc}.
+
+@table @var
+@item context
+a @code{<pango-context>}
+
+@item desc
+a @code{<pango-font-description>} describing the font to load
+
+@item ret
+the font loaded, or @samp{@code{#f}} if no font matched.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-context-load-fontset  (self@tie{}@code{<pango-context*>}) (desc@tie{}@code{<pango-font-description>}) (language@tie{}@code{<pango-language>}) @result{}@tie{} (ret@tie{}@code{<pango-fontset*>})
+Load a set of fonts in the context that can be used to render a font matching
+@var{desc}.
+
+@table @var
+@item context
+a @code{<pango-context>}
+
+@item desc
+a @code{<pango-font-description>} describing the fonts to load
+
+@item language
+a @code{<pango-language>} the fonts will be used for
+
+@item ret
+the fontset, or @samp{@code{#f}} if no font matched.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-context-get-metrics  (self@tie{}@code{<pango-context*>}) (desc@tie{}@code{<pango-font-description>}) (language@tie{}@code{<pango-language>}) @result{}@tie{} (ret@tie{}@code{<pango-font-metrics>})
+Get overall metric information for a particular font description. Since the
+metrics may be substantially different for different scripts, a language tag can
+be provided to indicate that the metrics should be retrieved that correspond to
+the script(s) used by that language.
+
+The @code{<pango-font-description>} is interpreted in the same way as by
+@code{pango-itemize}, and the family name may be a comma separated list of
+figures. If characters from multiple of these families would be used to render
+the string, then the returned fonts would be a composite of the metrics for the
+fonts loaded for the individual families.
+
+@table @var
+@item context
+a @code{<pango-context>}
+
+@item desc
+a @code{<pango-font-description>} structure
+
+@item language
+language tag used to determine which script to get the metrics for.
+@samp{@code{#f}} means that the language tag from the context will be used. If
+no language tag is set on the context, metrics large enough to cover a range of
+languages will be returned. The process of determining such metrics is slow, so
+it is best to always make sure some real language tag will be used.
+
+@item ret
+a @code{<pango-font-metrics>} object. The caller must call
+@code{pango-font-metrics-unref} when finished using the object.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-context-list-families  (self@tie{}@code{<pango-context*>}) (families@tie{}@code{<pango-font-family***>}) @result{}@tie{} (n_families@tie{}@code{int})
+List all families for a context.
+
+@table @var
+@item context
+a @code{<pango-context>}
+
+@item families
+location to store a pointer to an array of @code{<pango-font-family>} *. This
+array should be freed with @code{g-free}.
+
+@item n-families
+location to store the number of elements in @var{descs}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-get-mirror-char  (ch@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool}) (mirrored_ch@tie{}@code{unsigned-int32})
+@samp{pango_get_mirror_char} is deprecated and should not be used in
+newly-written code.
+
+If @var{ch} has the Unicode mirrored property and there is another Unicode
+character that typically has a glyph that is the mirror image of @var{ch}'s
+glyph, puts that character in the address pointed to by @var{mirrored-ch}.
+
+Use @code{g-unichar-get-mirror-char} instead; the docs for that function provide
+full details.
+
+@table @var
+@item ch
+a Unicode character
+
+@item mirrored-ch
+location to store the mirrored character
+
+@item ret
+@samp{@code{#t}} if @var{ch} has a mirrored character and @var{mirrored-ch} is
+filled in, @samp{@code{#f}} otherwise
+
+@end table
+
+@end deffn
+
+@deffn Function pango-unichar-direction  (ch@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{<pango-direction>})
+Determines the direction of a character; either @samp{PANGO_DIRECTION_LTR},
+@samp{PANGO_DIRECTION_RTL}, or @samp{PANGO_DIRECTION_NEUTRAL}.
+
+@table @var
+@item ch
+a Unicode character
+
+@item ret
+the direction of the character, as used in the Unicode bidirectional algorithm.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-find-base-dir  (text@tie{}@code{mchars}) (length@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<pango-direction>})
+Searches a string the first character that has a strong direction, according to
+the Unicode bidirectional algorithm.
+
+@table @var
+@item text
+the text to process
+
+@item length
+length of @var{text} in bytes (may be -1 if @var{text} is nul-terminated)
+
+@item ret
+The direction corresponding to the first strong character. If no such character
+is found, then @samp{PANGO_DIRECTION_NEUTRAL} is returned.
+
+@end table
+
+Since 1.4
+
+@end deffn
+
+@deffn Function pango-break  (text@tie{}@code{mchars}) (length@tie{}@code{int}) (analysis@tie{}@code{<pango-analysis*>}) (attrs@tie{}@code{<pango-log-attr*>}) (attrs_len@tie{}@code{int})
+Determines possible line, word, and character breaks for a string of Unicode
+text with a single analysis. For most purposes you may want to use
+@code{pango-get-log-attrs}.
+
+@table @var
+@item text
+the text to process
+
+@item length
+length of @var{text} in bytes (may be -1 if @var{text} is nul-terminated)
+
+@item analysis
+@code{<pango-analysis>} structure from @code{pango-itemize}
+
+@item attrs
+an array to store character information in
+
+@item attrs-len
+size of the array passed as @var{attrs}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-get-log-attrs  (text@tie{}@code{mchars}) (length@tie{}@code{int}) (level@tie{}@code{int}) (language@tie{}@code{<pango-language>}) (log_attrs@tie{}@code{<pango-log-attr*>}) (attrs_len@tie{}@code{int})
+Computes a @code{<pango-log-attr>} for each character in @var{text}. The
+@var{log-attrs} array must have one @code{<pango-log-attr>} for each position in
+@var{text}; if @var{text} contains N characters, it has N+1 positions, including
+the last position at the end of the text. @var{text} should be an entire
+paragraph; logical attributes can't be computed without context (for example you
+need to see spaces on either side of a word to know the word is a word).
+
+@table @var
+@item text
+text to process
+
+@item length
+length in bytes of @var{text}
+
+@item level
+embedding level, or -1 if unknown
+
+@item language
+language tag
+
+@item log-attrs
+array with one @code{<pango-log-attr>} per character in @var{text}, plus one
+extra, to be filled in
+
+@item attrs-len
+length of @var{log-attrs} array
+
+@end table
+
+@end deffn
+
+@deffn Function pango-find-paragraph-boundary  (text@tie{}@code{mchars}) (length@tie{}@code{int}) @result{}@tie{} (paragraph_delimiter_index@tie{}@code{int}) (next_paragraph_start@tie{}@code{int})
+Locates a paragraph boundary in @var{text}. A boundary is caused by delimiter
+characters, such as a newline, carriage return, carriage return-newline pair, or
+Unicode paragraph separator character. The index of the run of delimiters is
+returned in @var{paragraph-delimiter-index}. The index of the start of the
+paragraph (index after all delimiters) is stored in @var{next-paragraph-start}.
+
+If no delimiters are found, both @var{paragraph-delimiter-index} and
+@var{next-paragraph-start} are filled with the length of @var{text} (an index
+one off the end).
+
+@table @var
+@item text
+UTF-8 text
+
+@item length
+length of @var{text} in bytes, or -1 if nul-terminated
+
+@item paragraph-delimiter-index
+return location for index of delimiter
+
+@item next-paragraph-start
+return location for start of next paragraph
+
+@end table
+
+@end deffn
+
+@deffn Function pango-shape  (text@tie{}@code{mchars}) (length@tie{}@code{int}) (analysis@tie{}@code{<pango-analysis*>}) (glyphs@tie{}@code{<pango-glyph-string>})
+Given a segment of text and the corresponding @code{<pango-analysis>} structure
+returned from @code{pango-itemize}, convert the characters into glyphs. You may
+also pass in only a substring of the item from @code{pango-itemize}.
+
+@table @var
+@item text
+the text to process
+
+@item length
+the length (in bytes) of @var{text}
+
+@item analysis
+@code{<pango-analysis>} structure from @code{pango-itemize}
+
+@item glyphs
+glyph string in which to store results
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

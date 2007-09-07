@@ -1,0 +1,83 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename guile-gnome-pango.info
+@settitle Guile-Pango
+@c %**end of header
+
+@set VERSION 2.15.93
+@set UPDATED 2 September 2007
+
+@copying 
+This manual is for @code{(gnome pango)} (version @value{VERSION}, updated
+@value{UPDATED})
+
+Copyright 2001-2007 Owen Taylor, Behdad Esfahbod, many others
+
+@c PANGO is LGPL, ergo GPL distribution is possible
+@quotation 
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU General Public License, Version 2 or any
+later version published by the Free Software Foundation.
+@end quotation
+
+@end copying
+
+@dircategory The Algorithmic Language Scheme
+@direntry 
+* Guile-Pango: (guile-gnome-pango.info).  Text layout and rendering.
+@end direntry
+
+@titlepage 
+@title Guile-GNOME: Pango
+@subtitle version @value{VERSION}, updated @value{UPDATED}
+@author Owen Taylor
+@author Behdad Esfahbod
+@author many others
+@page 
+@vskip 0pt plus 1filll
+@insertcopying 
+@end titlepage
+
+@ifnottex 
+@node Top
+@top Guile-Pango
+
+@insertcopying 
+@menu
+* Overview::                  About the binding.
+
+* Coverage Maps::             Unicode character range coverage storage
+* Fonts::                     Structures representing abstract fonts
+* Glyph Storage::             Structures for storing information about glyphs
+* Layout Objects::            High-level layout driver objects
+* Rendering::                 Functions to run the rendering pipeline
+* PangoRenderer::             Rendering driver base class
+* Scripts::                   Identifying writing systems
+* Tab Stops::                 Structures for storing tab stops
+* Text Attributes::           Font and other attributes for annotating text
+
+* Function Index::
+@end menu
+
+@end ifnottex
+
+@iftex 
+@shortcontents 
+@end iftex
+
+@include overview.texi
+@include section-coverage-maps.xml.texi
+@include section-fonts.xml.texi
+@include section-glyphs.xml.texi
+@include section-layout.xml.texi
+@include section-main.xml.texi
+@include section-pango-renderer.xml.texi
+@include section-scripts.xml.texi
+@include section-tab-stops.xml.texi
+@include section-text-attributes.xml.texi
+
+
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+@bye
