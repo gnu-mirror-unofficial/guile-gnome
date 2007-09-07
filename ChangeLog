@@ -1,5 +1,16 @@
 2007-09-07  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/support/gtk-doc.scm: Import gobject and goops so that
+	we can do some runtime introspection of classes.
+	(sdocbook-fold-structs): New function, folds over struct
+	definitions.
+	(signal-doc-name, signal-doc-docs, signal-refsect2-list)
+	(signal-docs-alist, signal-stexi-args, class-signal-stexi-docs)
+	(gobject-class-stexi-docs, gtk-doc-sdocbook->class-list/g-wrap):
+	New functions to document classes, with their properties and
+	signals.
+	(gtk-doc->texi-defuns): Put class documentation before functions.
+
 	* doc/section-*.texi: 
 	* doc/defuns-*.texi: Regenerated.
 

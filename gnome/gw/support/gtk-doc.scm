@@ -38,6 +38,9 @@
   #:use-module (match-bind)
 
   #:use-module (g-wrap)
+  #:use-module (g-wrap guile) ;; for `module'
+  #:use-module (gnome gobject)
+  #:use-module (oop goops)
 
   #:use-module (gnome gobject utils)
 
@@ -93,6 +96,23 @@ gtk-doc emits."
     (if (null? in)
         seed
         (lp (cdr in) (proc (car in) seed)))))
+
+(define (sdocbook-fold-structs proc seed sdocbook-fragment)
+  "Fold over the struct definitions in the gtk-doc-generated docbook
+fragment @var{sdocbook-fragment}. Very dependent on the form of docbook
+that gtk-doc emits. Normally this corresponds to the set of classes
+exported by the module, although it can contain other things."
+  (let lp ((in (map cddr ((sxpath '(refentry refsect1 refsect2
+                                    (title (anchor @ role
+                                            (equal? "struct")))))
+                          sdocbook-fragment)))
+           (seed seed))
+    (cond
+     ((null? in) seed)
+     ((and (pair? (car in)) (string? (caar in)))
+      (lp (cdr in) (proc (caar in) seed)))
+     (else
+      (lp (cdr in) seed)))))
 
 (define (string-value xml)
   ;; inefficient, but hey!
@@ -441,6 +461,101 @@ are output."
       '()
       sdocbook))))
 
+(define (signal-doc-name rs2)
+  (let ((full-name (cadar ((sxpath '(indexterm primary)) rs2))))
+    (substring full-name (1+ (string-index-right full-name #\:)))))
+
+(define (signal-doc-docs rs2)
+  (map
+   (lambda (fragment)
+     (pre-post-order
+      fragment
+      *gtk-doc-sdocbook->stexi-rules*))
+   ((sxpath '(para)) rs2)))
+
+(define (signal-refsect2-list sdocbook)
+  ((sxpath '(refentry (refsect1 (@ role (equal? "signals"))) refsect2))
+   sdocbook))
+
+(define (signal-docs-alist sdocbook)
+  (map (lambda (rs2)
+         (cons (signal-doc-name rs2)
+               (signal-doc-docs rs2)))
+       (signal-refsect2-list sdocbook)))
+
+(define (signal-stexi-args s)
+    (define (gtype->texi t)
+      `(code ,(symbol->string (class-name (gtype->class t)))))
+  (define (arg-texinfo name type)
+    `(" (" ,name (tie) ,(gtype->texi type) ")"))
+  (let ((inputs (append-map arg-texinfo
+                            (map (lambda (i)
+                                   (string-append "arg" (number->string i)))
+                                 (iota (vector-length
+                                        (gsignal:param-types s))))
+                            (vector->list (gsignal:param-types s))))
+        (outputs (let ((type (gsignal:return-type s)))
+                   (if (eq? type gtype:void)
+                       '()
+                       (gtype->texi type)))))
+    (if (null? outputs)
+        inputs
+        (append inputs '(" " (result) (tie)) outputs))))
+
+(define (class-signal-stexi-docs class sdocbook)
+  (let ((alist (signal-docs-alist sdocbook)))
+    (map
+     (lambda (s)
+       `(defop (% (category "Signal")
+                  (name ,(gsignal:name s))
+                  (class ,(symbol->string (class-name class)))
+                  (arguments ,@(signal-stexi-args s)))
+          ,@(or (assoc-ref alist (gsignal:name s)) '("undocumented"))))
+     (vector->list (class-slot-ref class 'gsignals)))))
+
+(define (gobject-class-stexi-docs module-name class-name sdocbook)
+  (define (doc-properties class)
+    ;; Using undocumented interfaces...
+    (let ((props (map gparam->param-struct
+                      (vector->list
+                       (class-slot-ref class 'gobject-properties)))))
+      (cond
+       ((null? props)
+        '((para "This " (code "<gobject>") " class defines no properties, "
+                "other than those defined by its superclasses.")))
+       (else
+        `((para "This " (code "<gobject>") " class defines the following "
+                "properties:")
+          (table (% (formatter (code)))
+                 ,@(map 
+                    (lambda (prop)
+                      `(entry (% (heading ,(symbol->string
+                                            (gparam-struct:name prop))))
+                              ,(gparam-struct:blurb prop)))
+                    props)))))))
+  (let ((class (module-ref (resolve-interface module-name) class-name)))
+    `((deftp (% (name ,(symbol->string class-name))
+                (category "Class"))
+        ,@(doc-properties class))
+      ,@(class-signal-stexi-docs class sdocbook))))
+
+(define (gtk-doc-sdocbook->class-list/g-wrap sdocbook process-def wrapset)
+  (reverse
+   (sdocbook-fold-structs
+    (lambda (cname seed)
+      (let ((class-name (gtype-name->class-name cname)))
+        (cond
+         ((fold-types (lambda (x y) (or y (eq? (name x) class-name)))
+                      #f wrapset)
+          (append (reverse
+                   (gobject-class-stexi-docs (module wrapset) class-name
+                                             sdocbook))
+                  seed))
+         (else
+          seed))))
+    '()
+    sdocbook)))
+
 (define (def-name def)
   (string->symbol (cadr (assq 'name (cdadr def)))))
 
@@ -457,6 +572,8 @@ are output."
                          (get-wrapset 'guile (string->symbol wrapset-name))))
               (docs (stexi->texi
                      `(*fragment*
+                       ,@(gtk-doc-sdocbook->class-list/g-wrap
+                          sdocbook (lambda (name def) def) wrapset)
                        ,@(gtk-doc-sdocbook->def-list/g-wrap
                           sdocbook (lambda (name def) def) wrapset)))))
          (with-output-to-file (string-append "defuns-" basename ".texi")
