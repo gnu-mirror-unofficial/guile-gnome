@@ -1,0 +1,366 @@
+
+@c %start of fragment
+
+@deffn Function pango-cairo-font-map-new  @result{}@tie{} (ret@tie{}@code{<pango-font-map>})
+Creates a new @code{<pango-cairo-font-map>} object; a fontmap is used to cache
+information about available fonts, and holds certain global parameters such as
+the resolution. In most cases, you can use
+@code{pango-cairo-font-map-get-default} instead.
+
+Note that the type of the returned object will depend on the particular font
+backend Cairo was compiled to use; You generally should only use the
+@code{<pango-font-map>} and @code{<pango-cairo-font-map>} interfaces on the
+returned object.
+
+@table @var
+@item ret
+the newly allocated @code{<pango-font-map>}, which should be freed with
+@code{g-object-unref}.
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-font-map-get-default  @result{}@tie{} (ret@tie{}@code{<pango-font-map>})
+Gets a default font map to use with Cairo.
+
+@table @var
+@item ret
+the default Cairo fontmap for @code{<pango>}. This object is owned by Pango and
+must not be freed.
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-font-map-set-resolution  (self@tie{}@code{<pango-cairo-font-map*>}) (dpi@tie{}@code{double})
+Sets the resolution for the fontmap. This is a scale factor between points
+specified in a @code{<pango-font-description>} and Cairo units. The default
+value is 96, meaning that a 10 point font will be 13 units high. (10 * 96. / 72.
+= 13.3).
+
+@table @var
+@item fontmap
+a @code{<pango-cairo-font-map>}
+
+@item dpi
+the resolution in "dots per inch". (Physical inches aren't actually involved;
+the terminology is conventional.)
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-font-map-get-resolution  (self@tie{}@code{<pango-cairo-font-map*>}) @result{}@tie{} (ret@tie{}@code{double})
+Gets the resolution for the fontmap. See
+@code{pango-cairo-font-map-set-resolution}
+
+@table @var
+@item fontmap
+a @code{<pango-cairo-font-map>}
+
+@item ret
+the resolution in "dots per inch"
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-font-map-create-context  (self@tie{}@code{<pango-cairo-font-map*>}) @result{}@tie{} (ret@tie{}@code{<pango-context*>})
+Create a @code{<pango-context>} for the given fontmap.
+
+@table @var
+@item fontmap
+a @code{<pango-cairo-font-map>}
+
+@item ret
+the newly created context; free with @code{g-object-unref}.
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-context-set-resolution  (context@tie{}@code{<pango-context*>}) (dpi@tie{}@code{double})
+Sets the resolution for the context. This is a scale factor between points
+specified in a @code{<pango-font-description>} and Cairo units. The default
+value is 96, meaning that a 10 point font will be 13 units high. (10 * 96. / 72.
+= 13.3).
+
+@table @var
+@item context
+a @code{<pango-context>}, from @code{pango-cairo-font-map-create-context}
+
+@item dpi
+the resolution in "dots per inch". (Physical inches aren't actually involved;
+the terminology is conventional.) A 0 or negative value means to use the
+resolution from the font map.
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-context-get-resolution  (context@tie{}@code{<pango-context*>}) @result{}@tie{} (ret@tie{}@code{double})
+Gets the resolution for the context. See
+@code{pango-cairo-context-set-resolution}
+
+@table @var
+@item context
+a @code{<pango-context>}, from @code{pango-cairo-font-map-create-context}
+
+@item ret
+the resolution in "dots per inch". A negative value will be returned if no
+resolution has previously been set.
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-update-context  (cr@tie{}@code{cairo-t}) (context@tie{}@code{<pango-context*>})
+Updates a @code{<pango-context>} previously created for use with Cairo to match
+the current transformation and target surface of a Cairo context. If any layouts
+have been created for the context, it's necessary to call
+@code{pango-layout-context-changed} on those layouts.
+
+@table @var
+@item cr
+a Cairo context
+
+@item context
+a @code{<pango-context>}, from @code{pango-cairo-font-map-create-context}
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-create-layout  (cr@tie{}@code{cairo-t}) @result{}@tie{} (ret@tie{}@code{<pango-layout*>})
+Creates a layout object set up to match the current transformation and target
+surface of the Cairo context. This layout can then be used for text measurement
+with functions like @code{pango-layout-get-size} or drawing with functions like
+@code{pango-cairo-show-layout}. If you change the transformation or target
+surface for @var{cr}, you need to call @code{pango-cairo-update-layout}
+
+This function is the most convenient way to use Cairo with Pango, however it is
+slightly inefficient since it creates a separate @code{<pango-context>} object
+for each layout. This might matter in an application that was laying out large
+amounts of text.
+
+@table @var
+@item cr
+a Cairo context
+
+@item ret
+the newly created @code{<pango-layout>}. Free with @code{g-object-unref}.
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-update-layout  (cr@tie{}@code{cairo-t}) (layout@tie{}@code{<pango-layout*>})
+Updates the private @code{<pango-context>} of a @code{<pango-layout>} created
+with @code{pango-cairo-create-layout} to match the current transformation and
+target surface of a Cairo context.
+
+@table @var
+@item cr
+a Cairo context
+
+@item layout
+a @code{<pango-layout>}, from @code{pango-cairo-create-layout}
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-show-glyph-string  (cr@tie{}@code{cairo-t}) (font@tie{}@code{<pango-font>}) (glyphs@tie{}@code{<pango-glyph-string>})
+Draws the glyphs in @var{glyphs} in the specified cairo context. The origin of
+the glyphs (the left edge of the baseline) will be drawn at the current point of
+the cairo context.
+
+@table @var
+@item cr
+a Cairo context
+
+@item font
+a @code{<pango-font>}
+
+@item glyphs
+a @code{<pango-glyph-string>}
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-show-layout-line  (cr@tie{}@code{cairo-t}) (line@tie{}@code{<pango-layout-line*>})
+Draws a @code{<pango-layout-line>} in the specified cairo context. The origin of
+the glyphs (the left edge of the line) will be drawn at the current point of the
+cairo context.
+
+@table @var
+@item cr
+a Cairo context
+
+@item line
+a @code{<pango-layout-line>}
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-show-layout  (cr@tie{}@code{cairo-t}) (layout@tie{}@code{<pango-layout*>})
+Draws a @code{<pango-layout-line>} in the specified cairo context. The top-left
+corner of the @code{<pango-layout>} will be drawn at the current point of the
+cairo context.
+
+@table @var
+@item cr
+a Cairo context
+
+@item layout
+a Pango layout
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-show-error-underline  (cr@tie{}@code{cairo-t}) (x@tie{}@code{double}) (y@tie{}@code{double}) (width@tie{}@code{double}) (height@tie{}@code{double})
+Draw a squiggly line in the specified cairo context that approximately covers
+the given rectangle in the style of an underline used to indicate a spelling
+error. (The width of the underline is rounded to an integer number of up/down
+segments and the resulting rectangle is centered in the original rectangle)
+
+@table @var
+@item cr
+a Cairo context
+
+@item x
+The X coordinate of one corner of the rectangle
+
+@item y
+The Y coordinate of one corner of the rectangle
+
+@item width
+Non-negative width of the rectangle
+
+@item height
+Non-negative height of the rectangle
+
+@end table
+
+Since 1.14
+
+@end deffn
+
+@deffn Function pango-cairo-glyph-string-path  (cr@tie{}@code{cairo-t}) (font@tie{}@code{<pango-font>}) (glyphs@tie{}@code{<pango-glyph-string>})
+Adds the glyphs in @var{glyphs} to the current path in the specified cairo
+context. The origin of the glyphs (the left edge of the baseline) will be at the
+current point of the cairo context.
+
+@table @var
+@item cr
+a Cairo context
+
+@item font
+a @code{<pango-font>}
+
+@item glyphs
+a @code{<pango-glyph-string>}
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-layout-line-path  (cr@tie{}@code{cairo-t}) (line@tie{}@code{<pango-layout-line*>})
+Adds the text in @code{<pango-layout-line>} to the current path in the specified
+cairo context. The origin of the glyphs (the left edge of the line) will be at
+the current point of the cairo context.
+
+@table @var
+@item cr
+a Cairo context
+
+@item line
+a @code{<pango-layout-line>}
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-layout-path  (cr@tie{}@code{cairo-t}) (layout@tie{}@code{<pango-layout*>})
+Adds the text in a @code{<pango-layout>} to the current path in the specified
+cairo context. The top-left corner of the @code{<pango-layout>} will be at the
+current point of the cairo context.
+
+@table @var
+@item cr
+a Cairo context
+
+@item layout
+a Pango layout
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-cairo-error-underline-path  (cr@tie{}@code{cairo-t}) (x@tie{}@code{double}) (y@tie{}@code{double}) (width@tie{}@code{double}) (height@tie{}@code{double})
+Add a squiggly line to the current path in the specified cairo context that
+approximately covers the given rectangle in the style of an underline used to
+indicate a spelling error. (The width of the underline is rounded to an integer
+number of up/down segments and the resulting rectangle is centered in the
+original rectangle)
+
+@table @var
+@item cr
+a Cairo context
+
+@item x
+The X coordinate of one corner of the rectangle
+
+@item y
+The Y coordinate of one corner of the rectangle
+
+@item width
+Non-negative width of the rectangle
+
+@item height
+Non-negative height of the rectangle
+
+@end table
+
+Since 1.14
+
+@end deffn
+
+
+@c %end of fragment

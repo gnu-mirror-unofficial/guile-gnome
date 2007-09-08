@@ -1,3 +1,20 @@
+2007-09-08  Andy Wingo  <wingo@pobox.com>
+
+	* doc/Makefile.am: 
+	* doc/pango/Makefile.am: 
+	* doc/pango/guile-gnome-pango.texi:
+	* doc/pango/overview.texi:
+	* doc/pango/overrides.texi:
+	* doc/pango/section-*.texi:
+	* doc/pango/defuns-*.texi: Move pango docs to a subdir.
+	
+	* doc/pangocairo/Makefile.am: 
+	* doc/pangocairo/guile-gnome-pangocairo.texi:
+	* doc/pangocairo/overview.texi:
+	* doc/pangocairo/overrides.texi:
+	* doc/pangocairo/section-*.texi:
+	* doc/pangocairo/defuns-*.texi: Add pangocairo docs.
+	
 2007-09-07  Andy Wingo  <wingo@pobox.com>
 
 	* doc/Makefile.am: 
