@@ -3,8 +3,12 @@
 
 include $(top_srcdir)/generate-docs.mk
 
-docbook_xml_wildcard = ~/src/gnome2/gtk+/docs/reference/gdk/xml/*.xml
+docbook_xml_wildcard = ~/src/gnome2/gtk+/docs/reference/gdk/xml/*.xml \
+	~/src/gnome2/gtk+/docs/reference/gdk-pixbuf/xml/*.xml
 docbook_xml_files = $(wildcard $(docbook_xml_wildcard))
+
+## SIGH, have to munge the parsed entities list
+GUILE_FLAGS=-l munge-parsed-ents --debug
 
 wrapset_stem = gdk
 

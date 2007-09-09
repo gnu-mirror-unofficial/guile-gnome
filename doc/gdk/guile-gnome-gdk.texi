@@ -11,7 +11,7 @@
 This manual is for @code{(gnome gdk)} (version @value{VERSION}, updated
 @value{UPDATED})
 
-Copyright 1997-2007 Damon Chaplin and others
+GDK documentation Copyright 1997-2007 Damon Chaplin and others
 
 @c from gtk+/docs/reference/COPYING
 @quotation 
@@ -47,6 +47,28 @@ WORK, EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGES.
 @end quotation
 
+GDK-Pixbuf documentation Copyright 2000 Free Software Foundation.
+
+@quotation
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation with no
+Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. You
+may obtain a copy of the GNU Free Documentation License from the Free
+Software Foundation by visiting their Web site or by writing to:
+
+  The Free Software Foundation, Inc.,
+  59 Temple Place - Suite 330,
+  Boston, MA 02111-1307,
+  USA
+
+Many of the names used by companies to distinguish their products and
+services are claimed as trademarks. Where those names appear in any
+GNOME documentation, and those trademarks are made aware to the
+members of the GNOME Documentation Project, the names have been
+printed in caps or initial caps.
+@end quotation
+
 @end copying
 
 @dircategory The Algorithmic Language Scheme
@@ -72,6 +94,7 @@ POSSIBILITY OF SUCH DAMAGES.
 @menu
 * Overview:: Overview
 
+GDK
 * General:: Library initialization and miscellaneous functions
 * GdkDisplay:: Controls the keyboard/mouse pointer grabs and a set of s
 * GdkDisplayManager:: Maintains a list of all open s
@@ -100,6 +123,24 @@ POSSIBILITY OF SUCH DAMAGES.
 * Pango Interaction:: Using Pango in GDK
 * Cairo Interaction:: Functions to support using Cairo
 * X Window System Interaction:: X backend-specific functions
+
+GDK-Pixbuf
+* Initialization and Versions:: Library version numbers.
+* The GdkPixbuf Structure:: Information that describes an image.
+* Reference Counting and Memory Mangement:: Functions for reference counting and memory management on pixbufs.
+* File Loading:: Loading a pixbuf from a file.
+* File saving:: Saving a pixbuf to a file.
+* Image Data in Memory:: Creating a pixbuf from image data that is already in memory.
+* Inline data:: Functions for inlined pixbuf handling.
+* Scaling:: Scaling pixbufs and scaling and compositing pixbufs
+* Utilities:: Utility and miscellaneous convenience functions.
+* Animations:: Animated images.
+* GdkPixbufLoader:: Application-driven progressive image loading.
+* Module Interface:: Extending gdk-pixbuf
+* gdk-pixbuf Xlib initialization:: Initializing the gdk-pixbuf Xlib library.
+* Xlib Rendering:: Rendering a pixbuf to an X drawable.
+* X Drawables to Pixbufs:: Getting parts of an X drawable's image data into a pixbuf.
+* XlibRGB:: Rendering RGB buffers to X drawables.
 
 * Concept Index::
 * Function Index::
@@ -141,6 +182,23 @@ POSSIBILITY OF SUCH DAMAGES.
 @include section-pango_interaction.xml.texi
 @include section-cairo_interaction.xml.texi
 @include section-x_interaction.xml.texi
+
+@include section-initialization_versions.xml.texi
+@include section-gdk-pixbuf.xml.texi
+@include section-refcounting.xml.texi
+@include section-file-loading.xml.texi
+@include section-file-saving.xml.texi
+@include section-creating.xml.texi
+@include section-inline.xml.texi
+@include section-scaling.xml.texi
+@include section-util.xml.texi
+@include section-animation.xml.texi
+@include section-gdk-pixbuf-loader.xml.texi
+@include section-module_interface.xml.texi
+@include section-gdk-pixbuf-xlib-init.xml.texi
+@include section-gdk-pixbuf-xlib-rendering.xml.texi
+@include section-gdk-pixbuf-xlib-from-drawables.xml.texi
+@include section-gdk-pixbuf-xlib-rgb.xml.texi
 
 @node Concept Index
 @unnumbered Concept Index

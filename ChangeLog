@@ -1,5 +1,7 @@
 2007-09-09  Andy Wingo  <wingo@pobox.com>
 
+	* doc/gdk/guile-gnome-gdk.texi: Add GDK-Pixbuf documentation.
+
 	* doc/Makefile.am: 
 	* doc/gtk/Makefile.am: 
 	* doc/gtk/guile-gnome-gtk.texi:

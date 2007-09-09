@@ -1,0 +1,296 @@
+
+@c %start of fragment
+
+@deffn Function gdk-pixbuf-scale-simple  (self@tie{}@code{<gdk-pixbuf>}) (dest_width@tie{}@code{int}) (dest_height@tie{}@code{int}) (interp_type@tie{}@code{<gdk-interp-type>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method scale-simple
+Create a new @code{<gdk-pixbuf>} containing a copy of @var{src} scaled to
+@var{dest-width} x @var{dest-height}. Leaves @var{src} unaffected.
+@var{interp-type} should be @code{<gdk-interp-nearest>} if you want maximum
+speed (but when scaling down @code{<gdk-interp-nearest>} is usually unusably
+ugly). The default @var{interp-type} should be @code{<gdk-interp-bilinear>}
+which offers reasonable quality and speed.
+
+You can scale a sub-portion of @var{src} by creating a sub-pixbuf pointing into
+@var{src}; see @code{gdk-pixbuf-new-subpixbuf}.
+
+For more complicated scaling/compositing see @code{gdk-pixbuf-scale} and
+@code{gdk-pixbuf-composite}.
+
+@table @var
+@item src
+a @code{<gdk-pixbuf>}
+
+@item dest-width
+the width of destination image
+
+@item dest-height
+the height of destination image
+
+@item interp-type
+the interpolation type for the transformation.
+
+@item ret
+the new @code{<gdk-pixbuf>}, or @samp{@code{#f}} if not enough memory could be
+allocated for it.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-scale  (self@tie{}@code{<gdk-pixbuf>}) (dest@tie{}@code{<gdk-pixbuf>}) (dest_x@tie{}@code{int}) (dest_y@tie{}@code{int}) (dest_width@tie{}@code{int}) (dest_height@tie{}@code{int}) (offset_x@tie{}@code{double}) (offset_y@tie{}@code{double}) (scale_x@tie{}@code{double}) (scale_y@tie{}@code{double}) (interp_type@tie{}@code{<gdk-interp-type>})
+@deffnx Method scale
+Creates a transformation of the source image @var{src} by scaling by
+@var{scale-x} and @var{scale-y} then translating by @var{offset-x} and
+@var{offset-y}, then renders the rectangle (@var{dest-x}, @var{dest-y},
+@var{dest-width}, @var{dest-height}) of the resulting image onto the destination
+image replacing the previous contents.
+
+Try to use @code{gdk-pixbuf-scale-simple} first, this function is the
+industrial-strength power tool you can fall back to if
+@code{gdk-pixbuf-scale-simple} isn't powerful enough.
+
+@table @var
+@item src
+a @code{<gdk-pixbuf>}
+
+@item dest
+the @code{<gdk-pixbuf>} into which to render the results
+
+@item dest-x
+the left coordinate for region to render
+
+@item dest-y
+the top coordinate for region to render
+
+@item dest-width
+the width of the region to render
+
+@item dest-height
+the height of the region to render
+
+@item offset-x
+the offset in the X direction (currently rounded to an integer)
+
+@item offset-y
+the offset in the Y direction (currently rounded to an integer)
+
+@item scale-x
+the scale factor in the X direction
+
+@item scale-y
+the scale factor in the Y direction
+
+@item interp-type
+the interpolation type for the transformation.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-composite-color-simple  (self@tie{}@code{<gdk-pixbuf>}) (dest_width@tie{}@code{int}) (dest_height@tie{}@code{int}) (interp_type@tie{}@code{<gdk-interp-type>}) (overall_alpha@tie{}@code{int}) (check_size@tie{}@code{int}) (color1@tie{}@code{unsigned-int32}) (color2@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method composite-color-simple
+Creates a new @code{<gdk-pixbuf>} by scaling @var{src} to @var{dest-width} x
+@var{dest-height} and compositing the result with a checkboard of colors
+@var{color1} and @var{color2}.
+
+@table @var
+@item src
+a @code{<gdk-pixbuf>}
+
+@item dest-width
+the width of destination image
+
+@item dest-height
+the height of destination image
+
+@item interp-type
+the interpolation type for the transformation.
+
+@item overall-alpha
+overall alpha for source image (0..255)
+
+@item check-size
+the size of checks in the checkboard (must be a power of two)
+
+@item color1
+the color of check at upper left
+
+@item color2
+the color of the other check
+
+@item ret
+the new @code{<gdk-pixbuf>}, or @samp{@code{#f}} if not enough memory could be
+allocated for it.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-composite  (self@tie{}@code{<gdk-pixbuf>}) (dest@tie{}@code{<gdk-pixbuf>}) (dest_x@tie{}@code{int}) (dest_y@tie{}@code{int}) (dest_width@tie{}@code{int}) (dest_height@tie{}@code{int}) (offset_x@tie{}@code{double}) (offset_y@tie{}@code{double}) (scale_x@tie{}@code{double}) (scale_y@tie{}@code{double}) (interp_type@tie{}@code{<gdk-interp-type>}) (overall_alpha@tie{}@code{int})
+@deffnx Method composite
+Creates a transformation of the source image @var{src} by scaling by
+@var{scale-x} and @var{scale-y} then translating by @var{offset-x} and
+@var{offset-y}. This gives an image in the coordinates of the destination
+pixbuf. The rectangle (@var{dest-x}, @var{dest-y}, @var{dest-width},
+@var{dest-height}) is then composited onto the corresponding rectangle of the
+original destination image.
+
+When the destination rectangle contains parts not in the source image, the data
+at the edges of the source image is replicated to infinity.
+
+(The missing figure, pixbuf-composite-diagram
+
+@table @var
+@item src
+a @code{<gdk-pixbuf>}
+
+@item dest
+the @code{<gdk-pixbuf>} into which to render the results
+
+@item dest-x
+the left coordinate for region to render
+
+@item dest-y
+the top coordinate for region to render
+
+@item dest-width
+the width of the region to render
+
+@item dest-height
+the height of the region to render
+
+@item offset-x
+the offset in the X direction (currently rounded to an integer)
+
+@item offset-y
+the offset in the Y direction (currently rounded to an integer)
+
+@item scale-x
+the scale factor in the X direction
+
+@item scale-y
+the scale factor in the Y direction
+
+@item interp-type
+the interpolation type for the transformation.
+
+@item overall-alpha
+overall alpha for source image (0..255)
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-composite-color  (self@tie{}@code{<gdk-pixbuf>}) (dest@tie{}@code{<gdk-pixbuf>}) (dest_x@tie{}@code{int}) (dest_y@tie{}@code{int}) (dest_width@tie{}@code{int}) (dest_height@tie{}@code{int}) (offset_x@tie{}@code{double}) (offset_y@tie{}@code{double}) (scale_x@tie{}@code{double}) (scale_y@tie{}@code{double}) (interp_type@tie{}@code{<gdk-interp-type>}) (overall_alpha@tie{}@code{int}) (check_x@tie{}@code{int}) (check_y@tie{}@code{int}) (check_size@tie{}@code{int}) (color1@tie{}@code{unsigned-int32}) (color2@tie{}@code{unsigned-int32})
+@deffnx Method composite-color
+Creates a transformation of the source image @var{src} by scaling by
+@var{scale-x} and @var{scale-y} then translating by @var{offset-x} and
+@var{offset-y}, then composites the rectangle (@var{dest-x} ,@var{dest-y},
+@var{dest-width}, @var{dest-height}) of the resulting image with a checkboard of
+the colors @var{color1} and @var{color2} and renders it onto the destination
+image.
+
+See @code{gdk-pixbuf-composite-color-simple} for a simpler variant of this
+function suitable for many tasks.
+
+@table @var
+@item src
+a @code{<gdk-pixbuf>}
+
+@item dest
+the @code{<gdk-pixbuf>} into which to render the results
+
+@item dest-x
+the left coordinate for region to render
+
+@item dest-y
+the top coordinate for region to render
+
+@item dest-width
+the width of the region to render
+
+@item dest-height
+the height of the region to render
+
+@item offset-x
+the offset in the X direction (currently rounded to an integer)
+
+@item offset-y
+the offset in the Y direction (currently rounded to an integer)
+
+@item scale-x
+the scale factor in the X direction
+
+@item scale-y
+the scale factor in the Y direction
+
+@item interp-type
+the interpolation type for the transformation.
+
+@item overall-alpha
+overall alpha for source image (0..255)
+
+@item check-x
+the X offset for the checkboard (origin of checkboard is at -@var{check-x},
+-@var{check-y})
+
+@item check-y
+the Y offset for the checkboard
+
+@item check-size
+the size of checks in the checkboard (must be a power of two)
+
+@item color1
+the color of check at upper left
+
+@item color2
+the color of the other check
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-rotate-simple  (self@tie{}@code{<gdk-pixbuf>}) (angle@tie{}@code{<gdk-pixbuf-rotation>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method rotate-simple
+Rotates a pixbuf by a multiple of 90 degrees, and returns the result in a new
+pixbuf.
+
+@table @var
+@item src
+a @code{<gdk-pixbuf>}
+
+@item angle
+the angle to rotate by
+
+@item ret
+a new pixbuf
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gdk-pixbuf-flip  (self@tie{}@code{<gdk-pixbuf>}) (horizontal@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method flip
+Flips a pixbuf horizontally or vertically and returns the result in a new
+pixbuf.
+
+@table @var
+@item src
+a @code{<gdk-pixbuf>}
+
+@item horizontal
+@samp{@code{#t}} to flip horizontally, @samp{@code{#f}} to flip vertically
+
+@item ret
+a new pixbuf.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

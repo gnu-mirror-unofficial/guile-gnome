@@ -1,0 +1,112 @@
+
+@c %start of fragment
+
+@deffn Function gdk-pixbuf-savev  (self@tie{}@code{<gdk-pixbuf>}) (filename@tie{}@code{mchars}) (type@tie{}@code{mchars}) (option_keys@tie{}@code{<char**>}) (option_values@tie{}@code{<char**>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method savev
+Saves pixbuf to a file in @var{type}, which is currently "jpeg", "png", "tiff",
+"ico" or "bmp". If @var{error} is set, @samp{@code{#f}} will be returned. See
+@code{gdk-pixbuf-save} for more details.
+
+@table @var
+@item pixbuf
+a @code{<gdk-pixbuf>}.
+
+@item filename
+name of file to save.
+
+@item type
+name of file format.
+
+@item option-keys
+name of options to set, @samp{@code{#f}}-terminated
+
+@item option-values
+values for named options
+
+@item error
+return location for error, or @samp{@code{#f}}
+
+@item ret
+whether an error was set
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-save-to-callbackv  (self@tie{}@code{<gdk-pixbuf>}) (save_func@tie{}@code{<gdk-pixbuf-save-func>}) (user_data@tie{}@code{<gpointer>}) (type@tie{}@code{mchars}) (option_keys@tie{}@code{<char**>}) (option_values@tie{}@code{<char**>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method save-to-callbackv
+Saves pixbuf to a callback in format @var{type}, which is currently "jpeg",
+"png", "tiff", "ico" or "bmp". If @var{error} is set, @samp{@code{#f}} will be
+returned. See @code{gdk-pixbuf-save-to-callback} for more details.
+
+@table @var
+@item pixbuf
+a @code{<gdk-pixbuf>}.
+
+@item save-func
+a function that is called to save each block of data that the save routine
+generates.
+
+@item user-data
+user data to pass to the save function.
+
+@item type
+name of file format.
+
+@item option-keys
+name of options to set, @samp{@code{#f}}-terminated
+
+@item option-values
+values for named options
+
+@item error
+return location for error, or @samp{@code{#f}}
+
+@item ret
+whether an error was set
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gdk-pixbuf-save-to-bufferv  (self@tie{}@code{<gdk-pixbuf>}) (type@tie{}@code{mchars}) (option_keys@tie{}@code{<char**>}) (option_values@tie{}@code{<char**>}) @result{}@tie{} (ret@tie{}@code{bool}) (buffer@tie{}@code{mchars}) (buffer_size@tie{}@code{size_t})
+@deffnx Method save-to-bufferv
+Saves pixbuf to a new buffer in format @var{type}, which is currently "jpeg",
+"tiff", "png", "ico" or "bmp". See @code{gdk-pixbuf-save-to-buffer} for more
+details.
+
+@table @var
+@item pixbuf
+a @code{<gdk-pixbuf>}.
+
+@item buffer
+location to receive a pointer to the new buffer.
+
+@item buffer-size
+location to receive the size of the new buffer.
+
+@item type
+name of file format.
+
+@item option-keys
+name of options to set, @samp{@code{#f}}-terminated
+
+@item option-values
+values for named options
+
+@item error
+return location for error, or @samp{@code{#f}}
+
+@item ret
+whether an error was set
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

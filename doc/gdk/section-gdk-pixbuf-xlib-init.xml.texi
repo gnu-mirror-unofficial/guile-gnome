@@ -1,0 +1,19 @@
+
+@c %start of fragment
+
+@node gdk-pixbuf Xlib initialization
+@chapter gdk-pixbuf Xlib initialization
+Initializing the gdk-pixbuf Xlib library.
+
+@section Overview
+In addition to the normal Gdk-specific functions, the gdk-pixbuf package
+provides a small library that lets Xlib-only applications use
+@code{<gdk-pixbuf>} structures and render them to X drawables. The functions in
+this section are used to initialize the gdk-pixbuf Xlib library. This library
+must be initialized near the beginning of the program or before calling any of
+the other gdk-pixbuf Xlib functions.
+
+@section Usage
+@include defuns-gdk-pixbuf-xlib-init.xml.texi
+
+@c %end of fragment

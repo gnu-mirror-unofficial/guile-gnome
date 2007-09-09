@@ -11,8 +11,6 @@ its superclasses.
 The ::closed signal is emitted when the connection to the windowing system for
 @var{display} is closed.
 
-
-
 Since 2.2
 
 @end defop

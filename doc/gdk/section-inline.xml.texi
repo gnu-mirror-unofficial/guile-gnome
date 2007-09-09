@@ -1,0 +1,19 @@
+
+@c %start of fragment
+
+@node Inline data
+@chapter Inline data
+Functions for inlined pixbuf handling.
+
+@section Overview
+Using @code{<gdk-pixdata>}, images can be compiled into an application, making
+it unnecessary to refer to external image files at runtime. gdk-pixbuf includes
+a utility named gdk-pixbuf-csource, which can be used to convert image files
+into @code{<gdk-pixdata>} structures suitable for inclusion in C sources. To
+convert the @code{<gdk-pixdata>} structures back into @code{<gdk-pixbuf>}s, use
+gdk_pixbuf_from_pixdata.
+
+@section Usage
+@include defuns-inline.xml.texi
+
+@c %end of fragment

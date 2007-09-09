@@ -1,0 +1,49 @@
+
+@c %start of fragment
+
+@node Module Interface
+@chapter Module Interface
+Extending gdk-pixbuf
+
+@section Overview
+If gdk-pixbuf has been compiled with GModule support, it can be extended by
+modules which can load (and perhaps also save) new image and animation formats.
+Each loadable module must export a @code{<gdk-pixbuf-module-fill-info-func>}
+function named @code{fill-info} and a
+@code{<gdk-pixbuf-module-fill-vtable-func>} function named @code{fill-vtable}.
+
+In order to make format-checking work before actually loading the modules (which
+may require dlopening image libraries), modules export their signatures (and
+other information) via the @code{fill-info} function. An external utility, ,
+uses this to create a text file containing a list of all available loaders and
+their signatures. This file is then read at runtime by gdk-pixbuf to obtain the
+list of available loaders and their signatures.
+
+Modules may only implement a subset of the functionality available via
+@code{<gdk-pixbuf-module>}. If a particular functionality is not implemented,
+the @code{fill-vtable} function will simply not set the corresponding function
+pointers of the @code{<gdk-pixbuf-module>} structure. If a module supports
+incremental loading (i.e. provides @code{<begin-load>}, @code{<stop-load>} and
+@code{<load-increment>}), it doesn't have to implement @code{<load>}, since
+gdk-pixbuf can supply a generic @code{<load>} implementation wrapping the
+incremental loading.
+
+Installing a module is a two-step process:
+
+copy the module file(s) to the loader directory (normally
+@file{/gtk-2.0//loaders}, unless overridden by the environment variable
+@env{GDK_PIXBUF_MODULEDIR})
+
+call to update the module file (normally @file{/gtk-2.0/gdk-pixbuf.loaders},
+unless overridden by the environment variable @env{GDK_PIXBUF_MODULE_FILE})
+
+The gdk-pixbuf interfaces needed for implementing modules are contained in
+@file{gdk-pixbuf-io.h} (and @file{gdk-pixbuf-animation.h} if the module supports
+animations). They are not covered by the same stability guarantees as the
+regular gdk-pixbuf API. To underline this fact, they are protected by
+@samp{#ifdef GDK_PIXBUF_ENABLE_BACKEND}.
+
+@section Usage
+@include defuns-module_interface.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,226 @@
+
+@c %start of fragment
+
+@deftp Class <gdk-pixbuf-loader>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@defop Signal <gdk-pixbuf-loader> closed 
+This signal is emitted when @code{gdk-pixbuf-loader-close} is called. It can be
+used by different parts of an application to receive notification when an image
+loader is closed by the code that drives it.
+
+@end defop
+
+@defop Signal <gdk-pixbuf-loader> size-prepared  (arg0@tie{}@code{<gint>}) (arg1@tie{}@code{<gint>})
+This signal is emitted when the pixbuf loader has been fed the initial amount of
+data that is required to figure out the size of the image that it will create.
+Applications can call @code{gdk-pixbuf-loader-set-size} in response to this
+signal to set the desired size to which the image should be scaled.
+
+@end defop
+
+@defop Signal <gdk-pixbuf-loader> area-prepared 
+This signal is emitted when the pixbuf loader has allocated the pixbuf in the
+desired size. After this signal is emitted, applications can call
+@code{gdk-pixbuf-loader-get-pixbuf} to fetch the partially-loaded pixbuf.
+
+@end defop
+
+@defop Signal <gdk-pixbuf-loader> area-updated  (arg0@tie{}@code{<gint>}) (arg1@tie{}@code{<gint>}) (arg2@tie{}@code{<gint>}) (arg3@tie{}@code{<gint>})
+This signal is emitted when a significant area of the image being loaded has
+been updated. Normally it means that a complete scanline has been read in, but
+it could be a different area as well. Applications can use this signal to know
+when to repaint areas of an image that is being loaded.
+
+@end defop
+
+@deffn Function gdk-pixbuf-loader-new  @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf-loader>})
+Creates a new pixbuf loader object.
+
+@table @var
+@item ret
+A newly-created pixbuf loader.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-loader-new-with-type  (image_type@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf-loader>})
+Creates a new pixbuf loader object that always attempts to parse image data as
+if it were an image of type @var{image-type}, instead of identifying the type
+automatically. Useful if you want an error if the image isn't the expected type,
+for loading image formats that can't be reliably identified by looking at the
+data, or if the user manually forces a specific type.
+
+The list of supported image formats depends on what image loaders are installed,
+but typically "png", "jpeg", "gif", "tiff" and "xpm" are among the supported
+formats. To obtain the full list of supported image formats, call
+@code{gdk-pixbuf-format-get-name} on each of the @code{<gdk-pixbuf-format>}
+structs returned by @code{gdk-pixbuf-get-formats}.
+
+@table @var
+@item image-type
+name of the image format to be loaded with the image
+
+@item error
+return location for an allocated @code{<g-error>}, or @samp{@code{#f}} to ignore
+errors
+
+@item ret
+A newly-created pixbuf loader.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-loader-get-format  (self@tie{}@code{<gdk-pixbuf-loader>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf-format*>})
+@deffnx Method get-format
+Obtains the available information about the format of the currently loading
+image file.
+
+@table @var
+@item loader
+A pixbuf loader.
+
+@item ret
+A @code{<gdk-pixbuf-format>} or @samp{@code{#f}}. The return value is owned by
+GdkPixbuf and should not be freed.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-pixbuf-loader-write  (self@tie{}@code{<gdk-pixbuf-loader>}) (buf@tie{}@code{<guchar*>}) (count@tie{}@code{size_t}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method write
+This will cause a pixbuf loader to parse the next @var{count} bytes of an image.
+It will return @samp{@code{#t}} if the data was loaded successfully, and
+@samp{@code{#f}} if an error occurred. In the latter case, the loader will be
+closed, and will not accept further writes. If @samp{@code{#f}} is returned,
+@var{error} will be set to an error from the @code{<gdk-pixbuf-error>} or
+@code{<g-file-error>} domains.
+
+@table @var
+@item loader
+A pixbuf loader.
+
+@item buf
+Pointer to image data.
+
+@item count
+Length of the @var{buf} buffer in bytes.
+
+@item error
+return location for errors
+
+@item ret
+@samp{@code{#t}} if the write was successful, or @samp{@code{#f}} if the loader
+cannot parse the buffer.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-loader-set-size  (self@tie{}@code{<gdk-pixbuf-loader>}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method set-size
+Causes the image to be scaled while it is loaded. The desired image size can be
+determined relative to the original size of the image by calling
+@code{gdk-pixbuf-loader-set-size} from a signal handler for the ::size_prepared
+signal.
+
+Attempts to set the desired image size are ignored after the emission of the
+::size_prepared signal.
+
+@table @var
+@item loader
+A pixbuf loader.
+
+@item width
+The desired width of the image being loaded.
+
+@item height
+The desired height of the image being loaded.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-pixbuf-loader-get-pixbuf  (self@tie{}@code{<gdk-pixbuf-loader>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method get-pixbuf
+Queries the @code{<gdk-pixbuf>} that a pixbuf loader is currently creating. In
+general it only makes sense to call this function after the "area_prepared"
+signal has been emitted by the loader; this means that enough data has been read
+to know the size of the image that will be allocated. If the loader has not
+received enough data via @code{gdk-pixbuf-loader-write}, then this function
+returns @samp{@code{#f}}. The returned pixbuf will be the same in all future
+calls to the loader, so simply calling @code{g-object-ref} should be sufficient
+to continue using it. Additionally, if the loader is an animation, it will
+return the "static image" of the animation (see
+@code{gdk-pixbuf-animation-get-static-image}).
+
+@table @var
+@item loader
+A pixbuf loader.
+
+@item ret
+The @code{<gdk-pixbuf>} that the loader is creating, or @samp{@code{#f}} if not
+enough data has been read to determine how to create the image buffer.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-loader-get-animation  (self@tie{}@code{<gdk-pixbuf-loader>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf-animation>})
+@deffnx Method get-animation
+Queries the @code{<gdk-pixbuf-animation>} that a pixbuf loader is currently
+creating. In general it only makes sense to call this function after the
+"area_prepared" signal has been emitted by the loader. If the loader doesn't
+have enough bytes yet (hasn't emitted the "area_prepared" signal) this function
+will return @samp{@code{#f}}.
+
+@table @var
+@item loader
+A pixbuf loader
+
+@item ret
+The @code{<gdk-pixbuf-animation>} that the loader is loading, or
+@samp{@code{#f}} if not enough data has been read to determine the information.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-loader-close  (self@tie{}@code{<gdk-pixbuf-loader>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method close
+Informs a pixbuf loader that no further writes with
+@code{gdk-pixbuf-loader-write} will occur, so that it can free its internal
+loading structures. Also, tries to parse any data that hasn't yet been parsed;
+if the remaining data is partial or corrupt, an error will be returned. If
+@samp{@code{#f}} is returned, @var{error} will be set to an error from the
+@code{<gdk-pixbuf-error>} or @code{<g-file-error>} domains. If you're just
+cancelling a load rather than expecting it to be finished, passing
+@samp{@code{#f}} for @var{error} to ignore it is reasonable.
+
+@table @var
+@item loader
+A pixbuf loader.
+
+@item error
+return location for a @code{<g-error>}, or @samp{@code{#f}} to ignore errors
+
+@item ret
+@samp{@code{#t}} if all image data written so far was successfully passed out
+via the update_area signal
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

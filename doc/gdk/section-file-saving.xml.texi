@@ -1,0 +1,17 @@
+
+@c %start of fragment
+
+@node File saving
+@chapter File saving
+Saving a pixbuf to a file.
+
+@section Overview
+These functions allow to save a @code{<gdk-pixbuf>} in a number of file formats.
+The formatted data can be written to a file or to a memory buffer. gdk-pixbuf
+can also call a user-defined callback on the data, which allows to e.g. write
+the image to a socket or store it in a database.
+
+@section Usage
+@include defuns-file-saving.xml.texi
+
+@c %end of fragment

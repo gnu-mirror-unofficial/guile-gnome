@@ -1,0 +1,20 @@
+
+@c %start of fragment
+
+@node X Drawables to Pixbufs
+@chapter X Drawables to Pixbufs
+Getting parts of an X drawable's image data into a pixbuf.
+
+@section Overview
+The functions in this section allow you to take the image data from an X
+drawable and dump it into a @code{<gdk-pixbuf>}. This can be used for
+screenshots and other special effects. Note that these operations can be
+expensive, since the image data has to be transferred from the X server to the
+client program and converted.
+
+These functions are analogous to those for the GDK version of gdk-pixbuf.
+
+@section Usage
+@include defuns-gdk-pixbuf-xlib-from-drawables.xml.texi
+
+@c %end of fragment

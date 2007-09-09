@@ -1,0 +1,120 @@
+
+@c %start of fragment
+
+@deffn Function gdk-pixbuf-add-alpha  (self@tie{}@code{<gdk-pixbuf>}) (substitute_color@tie{}@code{bool}) (r@tie{}@code{unsigned-char}) (g@tie{}@code{unsigned-char}) (b@tie{}@code{unsigned-char}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method add-alpha
+Takes an existing pixbuf and adds an alpha channel to it. If the existing pixbuf
+already had an alpha channel, the channel values are copied from the original;
+otherwise, the alpha channel is initialized to 255 (full opacity).
+
+If @var{substitute-color} is @samp{@code{#t}}, then the color specified by
+(@var{r}, @var{g}, @var{b}) will be assigned zero opacity. That is, if you pass
+(255, 255, 255) for the substitute color, all white pixels will become fully
+transparent.
+
+@table @var
+@item pixbuf
+A @code{<gdk-pixbuf>}.
+
+@item substitute-color
+Whether to set a color to zero opacity. If this is @samp{@code{#f}}, then the
+(@var{r}, @var{g}, @var{b}) arguments will be ignored.
+
+@item r
+Red value to substitute.
+
+@item g
+Green value to substitute.
+
+@item b
+Blue value to substitute.
+
+@item ret
+A newly-created pixbuf with a reference count of 1.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-copy-area  (self@tie{}@code{<gdk-pixbuf>}) (src_x@tie{}@code{int}) (src_y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (dest_pixbuf@tie{}@code{<gdk-pixbuf>}) (dest_x@tie{}@code{int}) (dest_y@tie{}@code{int})
+@deffnx Method copy-area
+Copies a rectangular area from @var{src-pixbuf} to @var{dest-pixbuf}. Conversion
+of pixbuf formats is done automatically.
+
+@table @var
+@item src-pixbuf
+Source pixbuf.
+
+@item src-x
+Source X coordinate within @var{src-pixbuf}.
+
+@item src-y
+Source Y coordinate within @var{src-pixbuf}.
+
+@item width
+Width of the area to copy.
+
+@item height
+Height of the area to copy.
+
+@item dest-pixbuf
+Destination pixbuf.
+
+@item dest-x
+X coordinate within @var{dest-pixbuf}.
+
+@item dest-y
+Y coordinate within @var{dest-pixbuf}.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-saturate-and-pixelate  (self@tie{}@code{<gdk-pixbuf>}) (dest@tie{}@code{<gdk-pixbuf>}) (saturation@tie{}@code{float}) (pixelate@tie{}@code{bool})
+@deffnx Method saturate-and-pixelate
+Modifies saturation and optionally pixelates @var{src}, placing the result in
+@var{dest}. @var{src} and @var{dest} may be the same pixbuf with no ill effects.
+If @var{saturation} is 1.0 then saturation is not changed. If it's less than
+1.0, saturation is reduced (the image turns toward grayscale); if greater than
+1.0, saturation is increased (the image gets more vivid colors). If
+@var{pixelate} is @samp{@code{#t}}, then pixels are faded in a checkerboard
+pattern to create a pixelated image. @var{src} and @var{dest} must have the same
+image format, size, and rowstride.
+
+@table @var
+@item src
+source image
+
+@item dest
+place to write modified version of @var{src}
+
+@item saturation
+saturation factor
+
+@item pixelate
+whether to pixelate
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-fill  (self@tie{}@code{<gdk-pixbuf>}) (pixel@tie{}@code{unsigned-int32})
+@deffnx Method fill
+Clears a pixbuf to the given RGBA value, converting the RGBA value into the
+pixbuf's pixel format. The alpha will be ignored if the pixbuf doesn't have an
+alpha channel.
+
+@table @var
+@item pixbuf
+a @code{<gdk-pixbuf>}
+
+@item pixel
+RGBA pixel to clear to (0xffffffff is opaque white, 0x00000000 transparent
+black)
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

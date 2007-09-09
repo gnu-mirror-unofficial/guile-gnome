@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@node Initialization and Versions
+@chapter Initialization and Versions
+Library version numbers.
+
+@section Overview
+These macros and variables let you check the version of gdk-pixbuf you're
+linking against.
+
+@section Usage
+@include defuns-initialization_versions.xml.texi
+
+@c %end of fragment

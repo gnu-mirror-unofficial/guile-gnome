@@ -15,8 +15,6 @@ The resolution for fonts on the screen@end table
 The ::size_changed signal is emitted when the pixel width or height of a screen
 changes.
 
-
-
 Since 2.2
 
 @end defop
@@ -24,8 +22,6 @@ Since 2.2
 @defop Signal <gdk-screen> composited-changed 
 The ::composited_changed signal is emitted when the composited status of the
 screen changes
-
-
 
 Since 2.10
 

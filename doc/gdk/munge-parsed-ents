@@ -1,0 +1,11 @@
+; -*- scheme -*-
+
+(use-modules (sxml ssax))
+
+(for-each
+ (lambda (pair)
+   (set! ssax:predefined-parsed-entities
+         (assoc-set! ssax:predefined-parsed-entities
+                     (car pair) (cdr pair))))
+ '((gdk-pixbuf . "gdk-pixbuf")))
+
