@@ -1,0 +1,17 @@
+
+@c %start of fragment
+
+@node Event Structures
+@chapter Event Structures
+Data structures specific to each type of event
+
+@section Overview
+The event structs contain data specific to each type of event in GDK.
+
+A common mistake is to forget to set the event mask of a widget so that the
+required events are received. See @code{gtk-widget-set-events}.
+
+@section Usage
+@include defuns-event_structs.xml.texi
+
+@c %end of fragment

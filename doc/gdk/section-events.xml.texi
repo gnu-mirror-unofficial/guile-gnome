@@ -1,0 +1,19 @@
+
+@c %start of fragment
+
+@node Events
+@chapter Events
+Functions for handling events from the window system
+
+@section Overview
+This section describes functions dealing with events from the window system.
+
+In GTK+ applications the events are handled automatically in
+@code{gtk-main-do-event} and passed on to the appropriate widgets, so these
+functions are rarely needed. Though some of the fields in the Event Structures
+are useful.
+
+@section Usage
+@include defuns-events.xml.texi
+
+@c %end of fragment

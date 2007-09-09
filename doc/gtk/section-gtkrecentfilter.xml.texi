@@ -1,0 +1,31 @@
+
+@c %start of fragment
+
+@node GtkRecentFilter
+@chapter GtkRecentFilter
+A filter for selecting a subset of recently used files
+
+@section Overview
+A @code{<gtk-recent-filter>} can be used to restrict the files being shown in a
+@code{<gtk-recent-chooser>}. Files can be filtered based on their name (with
+@code{gtk-recent-filter-add-pattern}), on their mime type (with
+@code{gtk-file-filter-add-mime-type}), on the application that has registered
+them (with @code{gtk-recent-filter-add-application}), or by a custom filter
+function (with @code{gtk-recent-filter-add-custom}).
+
+Filtering by mime type handles aliasing and subclassing of mime types; e.g. a
+filter for text/plain also matches a file with mime type application/rtf, since
+application/rtf is a subclass of text/plain. Note that
+@code{<gtk-recent-filter>} allows wildcards for the subtype of a mime type, so
+you can e.g. filter for image/*.
+
+Normally, filters are used by adding them to a @code{<gtk-recent-chooser>}, see
+@code{gtk-recent-chooser-add-filter}, but it is also possible to manually use a
+filter on a file with @code{gtk-recent-filter-filter}.
+
+Recently used files are supported since GTK+ 2.10.
+
+@section Usage
+@include defuns-gtkrecentfilter.xml.texi
+
+@c %end of fragment

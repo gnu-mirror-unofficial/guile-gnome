@@ -1,0 +1,168 @@
+
+@c %start of fragment
+
+@deffn Function gdk-pixmap-new  (drawable@tie{}@code{<gdk-drawable>}) (width@tie{}@code{int}) (height@tie{}@code{int}) (depth@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-pixmap*>})
+Create a new pixmap with a given size and depth.
+
+@table @var
+@item drawable
+A @code{<gdk-drawable>}, used to determine default values for the new pixmap.
+Can be @samp{@code{#f}} if @var{depth} is specified,
+
+@item width
+The width of the new pixmap in pixels.
+
+@item height
+The height of the new pixmap in pixels.
+
+@item depth
+The depth (number of bits per pixel) of the new pixmap. If -1, and
+@var{drawable} is not @samp{@code{#f}}, the depth of the new pixmap will be
+equal to that of @var{drawable}.
+
+@item ret
+the @code{<gdk-pixmap>}
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-bitmap-create-from-data  (drawable@tie{}@code{<gdk-drawable>}) (data@tie{}@code{mchars}) (width@tie{}@code{int}) (height@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-bitmap*>})
+Creates a new bitmap from data in XBM format.
+
+@table @var
+@item drawable
+a @code{<gdk-drawable>}, used to determine default values for the new pixmap.
+Can be @samp{@code{#f}}, in which case the root window is used.
+
+@item data
+a pointer to the XBM data.
+
+@item width
+the width of the new pixmap in pixels.
+
+@item height
+the height of the new pixmap in pixels.
+
+@item ret
+the @code{<gdk-bitmap>}
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixmap-create-from-data  (drawable@tie{}@code{<gdk-drawable>}) (data@tie{}@code{mchars}) (width@tie{}@code{int}) (height@tie{}@code{int}) (depth@tie{}@code{int}) (fg@tie{}@code{<gdk-color>}) (bg@tie{}@code{<gdk-color>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixmap*>})
+Create a two-color pixmap from data in XBM data.
+
+@table @var
+@item drawable
+a @code{<gdk-drawable>}, used to determine default values for the new pixmap.
+Can be @samp{@code{#f}}, if the depth is given.
+
+@item data
+a pointer to the data.
+
+@item width
+the width of the new pixmap in pixels.
+
+@item height
+the height of the new pixmap in pixels.
+
+@item depth
+the depth (number of bits per pixel) of the new pixmap.
+
+@item fg
+the foreground color.
+
+@item bg
+the background color.
+
+@item ret
+the @code{<gdk-pixmap>}
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixmap-create-from-xpm  (drawable@tie{}@code{<gdk-drawable>}) (mask@tie{}@code{<gdk-bitmap**>}) (transparent_color@tie{}@code{<gdk-color>}) (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gdk-pixmap*>})
+Create a pixmap from a XPM file.
+
+@table @var
+@item drawable
+a @code{<gdk-drawable>}, used to determine default values for the new pixmap.
+
+@item mask
+a pointer to a place to store a bitmap representing the transparency mask of the
+XPM file. Can be @samp{@code{#f}}, in which case transparency will be ignored.
+
+@item transparent-color
+the color to be used for the pixels that are transparent in the input file. Can
+be @samp{@code{#f}}, in which case a default color will be used.
+
+@item filename
+the filename of a file containing XPM data.
+
+@item ret
+the @code{<gdk-pixmap>}
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixmap-colormap-create-from-xpm  (drawable@tie{}@code{<gdk-drawable>}) (colormap@tie{}@code{<gdk-colormap>}) (mask@tie{}@code{<gdk-bitmap**>}) (transparent_color@tie{}@code{<gdk-color>}) (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gdk-pixmap*>})
+Create a pixmap from a XPM file using a particular colormap.
+
+@table @var
+@item drawable
+a @code{<gdk-drawable>}, used to determine default values for the new pixmap.
+Can be @samp{@code{#f}} if @var{colormap} is given.
+
+@item colormap
+the @code{<gdk-colormap>} that the new pixmap will be use. If omitted, the
+colormap for @var{window} will be used.
+
+@item mask
+a pointer to a place to store a bitmap representing the transparency mask of the
+XPM file. Can be @samp{@code{#f}}, in which case transparency will be ignored.
+
+@item transparent-color
+the color to be used for the pixels that are transparent in the input file. Can
+be @samp{@code{#f}}, in which case a default color will be used.
+
+@item filename
+the filename of a file containing XPM data.
+
+@item ret
+the @code{<gdk-pixmap>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixmap-create-from-xpm-d  (drawable@tie{}@code{<gdk-drawable>}) (mask@tie{}@code{<gdk-bitmap**>}) (transparent_color@tie{}@code{<gdk-color>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixmap*>}) (data@tie{}@code{mchars})
+Create a pixmap from data in XPM format.
+
+@table @var
+@item drawable
+a @code{<gdk-drawable>}, used to determine default values for the new pixmap.
+
+@item mask
+Pointer to a place to store a bitmap representing the transparency mask of the
+XPM file. Can be @samp{@code{#f}}, in which case transparency will be ignored.
+
+@item transparent-color
+This color will be used for the pixels that are transparent in the input file.
+Can be @samp{@code{#f}} in which case a default color will be used.
+
+@item data
+Pointer to a string containing the XPM data.
+
+@item ret
+the @code{<gdk-pixmap>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

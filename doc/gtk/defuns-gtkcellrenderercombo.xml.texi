@@ -1,0 +1,34 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-cell-renderer-combo>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item model
+The model containing the possible values for the combo box@item text-column
+A column in the data source model to get the strings from@item has-entry
+If FALSE, don't allow to enter strings other than the chosen ones@end table
+
+@end deftp
+
+@deffn Function gtk-cell-renderer-combo-new  @result{}@tie{} (ret@tie{}@code{<gtk-cell-renderer>})
+Creates a new @code{<gtk-cell-renderer-combo>}. Adjust how text is drawn using
+object properties. Object properties can be set globally (with
+@code{g-object-set}). Also, with @code{<gtk-tree-view-column>}, you can bind a
+property to a value in a @code{<gtk-tree-model>}. For example, you can bind the
+"text" property on the cell renderer to a string value in the model, thus
+rendering a different string in each row of the @code{<gtk-tree-view>}.
+
+@table @var
+@item ret
+the new cell renderer
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

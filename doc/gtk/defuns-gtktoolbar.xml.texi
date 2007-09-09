@@ -1,0 +1,371 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-toolbar>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item orientation
+The orientation of the toolbar@item toolbar-style
+How to draw the toolbar@item show-arrow
+If an arrow should be shown if the toolbar doesn't fit@item tooltips
+If the tooltips of the toolbar should be active or not@item icon-size
+Size of icons in this toolbar@item icon-size-set
+Whether the icon-size property has been set@end table
+
+@end deftp
+
+@defop Signal <gtk-toolbar> orientation-changed  (arg0@tie{}@code{<gtk-orientation>})
+Emitted when the orientation of the toolbar changes.
+
+@end defop
+
+@defop Signal <gtk-toolbar> style-changed  (arg0@tie{}@code{<gtk-toolbar-style>})
+Emitted when the style of the toolbar changes.
+
+@end defop
+
+@defop Signal <gtk-toolbar> popup-context-menu  (arg0@tie{}@code{<gint>}) (arg1@tie{}@code{<gint>}) (arg2@tie{}@code{<gint>}) @result{}@tie{}@code{<gboolean>}
+Emitted when the user right-clicks the toolbar or uses the keybinding to display
+a popup menu.
+
+Application developers should handle this signal if they want to display a
+context menu on the toolbar. The context-menu should appear at the coordinates
+given by @var{x} and @var{y}. The mouse button number is given by the
+@var{button} parameter. If the menu was popped up using the keybaord,
+@var{button} is -1.
+
+@end defop
+
+@defop Signal <gtk-toolbar> focus-home-or-end  (arg0@tie{}@code{<gboolean>}) @result{}@tie{}@code{<gboolean>}
+A keybinding signal used internally by GTK+. This signal can't be used in
+application code
+
+@end defop
+
+@deffn Function gtk-toolbar-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new toolbar.
+
+@table @var
+@item ret
+the newly-created toolbar.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toolbar-insert  (self@tie{}@code{<gtk-toolbar>}) (item@tie{}@code{<gtk-tool-item>}) (pos@tie{}@code{int})
+@deffnx Method insert
+Insert a @code{<gtk-tool-item>} into the toolbar at position @var{pos}. If
+@var{pos} is 0 the item is prepended to the start of the toolbar. If @var{pos}
+is negative, the item is appended to the end of the toolbar.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}
+
+@item item
+a @code{<gtk-tool-item>}
+
+@item pos
+the position of the new item
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toolbar-get-item-index  (self@tie{}@code{<gtk-toolbar>}) (item@tie{}@code{<gtk-tool-item>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-item-index
+Returns the position of @var{item} on the toolbar, starting from 0. It is an
+error if @var{item} is not a child of the toolbar.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}
+
+@item item
+a @code{<gtk-tool-item>} that is a child of @var{toolbar}
+
+@item ret
+the position of item on the toolbar.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toolbar-get-n-items  (self@tie{}@code{<gtk-toolbar>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-n-items
+Returns the number of items on the toolbar.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}
+
+@item ret
+the number of items on the toolbar
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toolbar-get-nth-item  (self@tie{}@code{<gtk-toolbar>}) (n@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-tool-item>})
+@deffnx Method get-nth-item
+Returns the @var{n}'th item on @var{toolbar}, or @samp{@code{#f}} if the toolbar
+does not contain an @var{n}'th item.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}
+
+@item n
+A position on the toolbar
+
+@item ret
+The @var{n}'th @code{<gtk-tool-item>} on @var{toolbar}, or @samp{@code{#f}} if
+there isn't an @var{n}'th item.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toolbar-get-drop-index  (self@tie{}@code{<gtk-toolbar>}) (x@tie{}@code{int}) (y@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-drop-index
+Returns the position corresponding to the indicated point on @var{toolbar}. This
+is useful when dragging items to the toolbar: this function returns the position
+a new item should be inserted.
+
+@var{x} and @var{y} are in @var{toolbar} coordinates.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}
+
+@item x
+x coordinate of a point on the toolbar
+
+@item y
+y coordinate of a point on the toolbar
+
+@item ret
+The position corresponding to the point (@var{x}, @var{y}) on the toolbar.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toolbar-set-drop-highlight-item  (self@tie{}@code{<gtk-toolbar>}) (tool_item@tie{}@code{<gtk-tool-item>}) (index_@tie{}@code{int})
+@deffnx Method set-drop-highlight-item
+Highlights @var{toolbar} to give an idea of what it would look like if
+@var{item} was added to @var{toolbar} at the position indicated by @var{index}.
+If @var{item} is @samp{@code{#f}}, highlighting is turned off. In that case
+@var{index} is ignored.
+
+The @var{tool-item} passed to this function must not be part of any widget
+hierarchy. When an item is set as drop highlight item it can not added to any
+widget hierarchy or used as highlight item for another toolbar.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}
+
+@item tool-item
+a @code{<gtk-tool-item>}, or @samp{@code{#f}} to turn of highlighting
+
+@item index
+a position on @var{toolbar}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toolbar-set-show-arrow  (self@tie{}@code{<gtk-toolbar>}) (show_arrow@tie{}@code{bool})
+@deffnx Method set-show-arrow
+Sets whether to show an overflow menu when @var{toolbar} doesn't have room for
+all items on it. If @samp{@code{#t}}, items that there are not room are
+available through an overflow menu.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}
+
+@item show-arrow
+Whether to show an overflow menu
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toolbar-set-orientation  (self@tie{}@code{<gtk-toolbar>}) (orientation@tie{}@code{<gtk-orientation>})
+@deffnx Method set-orientation
+Sets whether a toolbar should appear horizontally or vertically.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}.
+
+@item orientation
+a new @code{<gtk-orientation>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toolbar-set-tooltips  (self@tie{}@code{<gtk-toolbar>}) (enable@tie{}@code{bool})
+@deffnx Method set-tooltips
+Sets if the tooltips of a toolbar should be active or not.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}.
+
+@item enable
+set to @samp{@code{#f}} to disable the tooltips, or @samp{@code{#t}} to enable
+them.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toolbar-get-show-arrow  (self@tie{}@code{<gtk-toolbar>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-show-arrow
+Returns whether the toolbar has an overflow menu. See
+@code{gtk-toolbar-set-show-arrow}.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}
+
+@item ret
+@samp{@code{#t}} if the toolbar has an overflow menu.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toolbar-get-orientation  (self@tie{}@code{<gtk-toolbar>}) @result{}@tie{} (ret@tie{}@code{<gtk-orientation>})
+@deffnx Method get-orientation
+Retrieves the current orientation of the toolbar. See
+@code{gtk-toolbar-set-orientation}.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}
+
+@item ret
+the orientation
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toolbar-get-style  (self@tie{}@code{<gtk-toolbar>}) @result{}@tie{} (ret@tie{}@code{<gtk-toolbar-style>})
+@deffnx Method get-style
+Retrieves whether the toolbar has text, icons, or both . See
+@code{gtk-toolbar-set-style}.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}
+
+@item ret
+the current style of @var{toolbar}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toolbar-get-icon-size  (self@tie{}@code{<gtk-toolbar>}) @result{}@tie{} (ret@tie{}@code{<gtk-icon-size>})
+@deffnx Method get-icon-size
+Retrieves the icon size for the toolbar. See @code{gtk-toolbar-set-icon-size}.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}
+
+@item ret
+the current icon size for the icons on the toolbar.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toolbar-get-tooltips  (self@tie{}@code{<gtk-toolbar>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-tooltips
+Retrieves whether tooltips are enabled. See @code{gtk-toolbar-set-tooltips}.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}
+
+@item ret
+@samp{@code{#t}} if tooltips are enabled
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toolbar-get-relief-style  (self@tie{}@code{<gtk-toolbar>}) @result{}@tie{} (ret@tie{}@code{<gtk-relief-style>})
+@deffnx Method get-relief-style
+Returns the relief style of buttons on @var{toolbar}. See
+@code{gtk-button-set-relief}.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}
+
+@item ret
+The relief style of buttons on @var{toolbar}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toolbar-set-style  (self@tie{}@code{<gtk-toolbar>}) (style@tie{}@code{<gtk-toolbar-style>})
+@deffnx Method set-style
+Alters the view of @var{toolbar} to display either icons only, text only, or
+both.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}.
+
+@item style
+the new style for @var{toolbar}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toolbar-unset-style  (self@tie{}@code{<gtk-toolbar>})
+@deffnx Method unset-style
+Unsets a toolbar style set with @code{gtk-toolbar-set-style}, so that user
+preferences will be used to determine the toolbar style.
+
+@table @var
+@item toolbar
+a @code{<gtk-toolbar>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

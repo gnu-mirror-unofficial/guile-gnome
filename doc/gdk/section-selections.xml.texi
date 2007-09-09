@@ -1,0 +1,34 @@
+
+@c %start of fragment
+
+@node Selections
+@chapter Selections
+Functions for transfering data via the X selection mechanism
+
+@section Overview
+The X selection mechanism provides a way to transfer arbitrary chunks of data
+between programs. A @dfn{selection} is a essentially a named clipboard,
+identified by a string interned as a @code{<gdk-atom>}. By claiming ownership of
+a selection, an application indicates that it will be responsible for supplying
+its contents. The most common selections are @samp{PRIMARY} and
+@samp{CLIPBOARD}.
+
+The contents of a selection can be represented in a number of formats, called
+@dfn{targets}. Each target is identified by an atom. A list of all possible
+targets supported by the selection owner can be retrieved by requesting the
+special target @samp{TARGETS}. When a selection is retrieved, the data is
+accompanied by a type (an atom), and a format (an integer, representing the
+number of bits per item). See Properties and Atoms for more information.
+
+The functions in this section only contain the lowlevel parts of the selection
+protocol. A considerably more complicated implementation is needed on top of
+this. GTK+ contains such an implementation in the functions in
+@samp{gtkselection.h} and programmers should use those functions instead of the
+ones presented here. If you plan to implement selection handling directly on top
+of the functions here, you should refer to the X Inter-client Communication
+Conventions Manual (ICCCM).
+
+@section Usage
+@include defuns-selections.xml.texi
+
+@c %end of fragment

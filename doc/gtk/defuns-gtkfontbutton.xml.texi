@@ -1,0 +1,273 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-font-button>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item title
+The title of the font selection dialog@item font-name
+The name of the selected font@item use-font
+Whether the label is drawn in the selected font@item use-size
+Whether the label is drawn with the selected font size@item show-style
+Whether the selected font style is shown in the label@item show-size
+Whether selected font size is shown in the label@end table
+
+@end deftp
+
+@defop Signal <gtk-font-button> font-set 
+The ::font-set signal is emitted when the user selects a font. When handling
+this signal, use @code{gtk-font-button-get-font-name} to find out which font was
+just selected.
+
+Note that this signal is only emitted when the @emph{user} changes the font. If
+you need to react to programmatic font changes as well, use the
+notify::font-name signal.
+
+Since 2.4
+
+@end defop
+
+@deffn Function gtk-font-button-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new font picker widget.
+
+@table @var
+@item ret
+a new font picker widget.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-font-button-new-with-font  (fontname@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new font picker widget.
+
+@table @var
+@item fontname
+Name of font to display in font selection dialog
+
+@item ret
+a new font picker widget.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-font-button-set-font-name  (self@tie{}@code{<gtk-font-button>}) (fontname@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-font-name
+Sets or updates the currently-displayed font in font picker dialog.
+
+@table @var
+@item font-button
+a @code{<gtk-font-button>}
+
+@item fontname
+Name of font to display in font selection dialog
+
+@item ret
+Return value of @code{gtk-font-selection-dialog-set-font-name} if the font
+selection dialog exists, otherwise @samp{@code{#f}}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-font-button-get-font-name  (self@tie{}@code{<gtk-font-button>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-font-name
+Retrieves the name of the currently selected font.
+
+@table @var
+@item font-button
+a @code{<gtk-font-button>}
+
+@item ret
+an internal copy of the font name which must not be freed.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-font-button-set-show-style  (self@tie{}@code{<gtk-font-button>}) (show_style@tie{}@code{bool})
+@deffnx Method set-show-style
+If @var{show-style} is @samp{@code{#t}}, the font style will be displayed along
+with name of the selected font.
+
+@table @var
+@item font-button
+a @code{<gtk-font-button>}
+
+@item show-style
+@samp{@code{#t}} if font style should be displayed in label.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-font-button-get-show-style  (self@tie{}@code{<gtk-font-button>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-show-style
+Returns whether the name of the font style will be shown in the label.
+
+@table @var
+@item font-button
+a @code{<gtk-font-button>}
+
+@item ret
+whether the font style will be shown in the label.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-font-button-set-show-size  (self@tie{}@code{<gtk-font-button>}) (show_size@tie{}@code{bool})
+@deffnx Method set-show-size
+If @var{show-size} is @samp{@code{#t}}, the font size will be displayed along
+with the name of the selected font.
+
+@table @var
+@item font-button
+a @code{<gtk-font-button>}
+
+@item show-size
+@samp{@code{#t}} if font size should be displayed in dialog.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-font-button-get-show-size  (self@tie{}@code{<gtk-font-button>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-show-size
+Returns whether the font size will be shown in the label.
+
+@table @var
+@item font-button
+a @code{<gtk-font-button>}
+
+@item ret
+whether the font size will be shown in the label.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-font-button-set-use-font  (self@tie{}@code{<gtk-font-button>}) (use_font@tie{}@code{bool})
+@deffnx Method set-use-font
+If @var{use-font} is @samp{@code{#t}}, the font name will be written using the
+selected font.
+
+@table @var
+@item font-button
+a @code{<gtk-font-button>}
+
+@item use-font
+If @samp{@code{#t}}, font name will be written using font chosen.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-font-button-get-use-font  (self@tie{}@code{<gtk-font-button>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-use-font
+Returns whether the selected font is used in the label.
+
+@table @var
+@item font-button
+a @code{<gtk-font-button>}
+
+@item ret
+whether the selected font is used in the label.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-font-button-set-use-size  (self@tie{}@code{<gtk-font-button>}) (use_size@tie{}@code{bool})
+@deffnx Method set-use-size
+If @var{use-size} is @samp{@code{#t}}, the font name will be written using the
+selected size.
+
+@table @var
+@item font-button
+a @code{<gtk-font-button>}
+
+@item use-size
+If @samp{@code{#t}}, font name will be written using the selected size.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-font-button-get-use-size  (self@tie{}@code{<gtk-font-button>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-use-size
+Returns whether the selected size is used in the label.
+
+@table @var
+@item font-button
+a @code{<gtk-font-button>}
+
+@item ret
+whether the selected size is used in the label.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-font-button-set-title  (self@tie{}@code{<gtk-font-button>}) (title@tie{}@code{mchars})
+@deffnx Method set-title
+Sets the title for the font selection dialog.
+
+@table @var
+@item font-button
+a @code{<gtk-font-button>}
+
+@item title
+a string containing the font selection dialog title
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-font-button-get-title  (self@tie{}@code{<gtk-font-button>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-title
+Retrieves the title of the font selection dialog.
+
+@table @var
+@item font-button
+a @code{<gtk-font-button>}
+
+@item ret
+an internal copy of the title string which must not be freed.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

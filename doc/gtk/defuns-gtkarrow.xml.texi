@@ -1,0 +1,50 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-arrow>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item arrow-type
+The direction the arrow should point@item shadow-type
+Appearance of the shadow surrounding the arrow@end table
+
+@end deftp
+
+@deffn Function gtk-arrow-new  (arrow_type@tie{}@code{<gtk-arrow-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new arrow widget.
+
+@table @var
+@item arrow-type
+a valid @code{<gtk-arrow-type>}.
+
+@item shadow-type
+a valid @code{<gtk-shadow-type>}.
+
+@item ret
+the new @code{<gtk-arrow>} widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-arrow-set  (self@tie{}@code{<gtk-arrow>}) (arrow_type@tie{}@code{<gtk-arrow-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>})
+@deffnx Method set
+Sets the direction and style of the @code{<gtk-arrow>}, @var{arrow}.
+
+@table @var
+@item arrow
+a widget of type @code{<gtk-arrow>}.
+
+@item arrow-type
+a valid @code{<gtk-arrow-type>}.
+
+@item shadow-type
+a valid @code{<gtk-shadow-type>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

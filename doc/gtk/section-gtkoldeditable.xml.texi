@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@node GtkOldEditable
+@chapter GtkOldEditable
+Base class for text-editing widgets
+
+@section Overview
+GtkOldEditable has been deprecated since GTK+ 2.0 and should not be used in
+newly written code. Use the @code{<gtk-editable>} interface instead.
+
+@section Usage
+@include defuns-gtkoldeditable.xml.texi
+
+@c %end of fragment

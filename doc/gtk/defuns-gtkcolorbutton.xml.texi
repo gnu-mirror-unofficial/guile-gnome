@@ -1,0 +1,202 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-color-button>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item use-alpha
+Whether or not to give the color an alpha value@item title
+The title of the color selection dialog@item color
+The selected color@item alpha
+The selected opacity value (0 fully transparent, 65535 fully opaque)@end table
+
+@end deftp
+
+@defop Signal <gtk-color-button> color-set 
+The ::color-set signal is emitted when the user selects a color. When handling
+this signal, use @code{gtk-color-button-get-color} and
+@code{gtk-color-button-get-alpha} to find out which color was just selected.
+
+Note that this signal is only emitted when the @emph{user} changes the color. If
+you need to react to programmatic color changes as well, use the notify::color
+signal.
+
+Since 2.4
+
+@end defop
+
+@deffn Function gtk-color-button-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new color button. This returns a widget in the form of a small button
+containing a swatch representing the current selected color. When the button is
+clicked, a color-selection dialog will open, allowing the user to select a
+color. The swatch will be updated to reflect the new color when the user
+finishes.
+
+@table @var
+@item ret
+a new color button.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-color-button-new-with-color  (color@tie{}@code{<gdk-color>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new color button.
+
+@table @var
+@item color
+A @code{<gdk-color>} to set the current color with.
+
+@item ret
+a new color button.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-color-button-set-color  (self@tie{}@code{<gtk-color-button>}) (color@tie{}@code{<gdk-color>})
+@deffnx Method set-color
+Sets the current color to be @var{color}.
+
+@table @var
+@item color-button
+a @code{<gtk-color-button>}.
+
+@item color
+A @code{<gdk-color>} to set the current color with.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-color-button-get-color  (self@tie{}@code{<gtk-color-button>}) (color@tie{}@code{<gdk-color>})
+@deffnx Method get-color
+Sets @var{color} to be the current color in the @code{<gtk-color-button>}
+widget.
+
+@table @var
+@item color-button
+a @code{<gtk-color-button>}.
+
+@item color
+a @code{<gdk-color>} to fill in with the current color.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-color-button-set-alpha  (self@tie{}@code{<gtk-color-button>}) (alpha@tie{}@code{unsigned-int16})
+@deffnx Method set-alpha
+Sets the current opacity to be @var{alpha}.
+
+@table @var
+@item color-button
+a @code{<gtk-color-button>}.
+
+@item alpha
+an integer between 0 and 65535.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-color-button-get-alpha  (self@tie{}@code{<gtk-color-button>}) @result{}@tie{} (ret@tie{}@code{unsigned-int16})
+@deffnx Method get-alpha
+Returns the current alpha value.
+
+@table @var
+@item color-button
+a @code{<gtk-color-button>}.
+
+@item ret
+an integer between 0 and 65535.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-color-button-set-use-alpha  (self@tie{}@code{<gtk-color-button>}) (use_alpha@tie{}@code{bool})
+@deffnx Method set-use-alpha
+Sets whether or not the color button should use the alpha channel.
+
+@table @var
+@item color-button
+a @code{<gtk-color-button>}.
+
+@item use-alpha
+@samp{@code{#t}} if color button should use alpha channel, @samp{@code{#f}} if
+not.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-color-button-get-use-alpha  (self@tie{}@code{<gtk-color-button>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-use-alpha
+Does the color selection dialog use the alpha channel?
+
+@table @var
+@item color-button
+a @code{<gtk-color-button>}.
+
+@item ret
+@samp{@code{#t}} if the color sample uses alpha channel, @samp{@code{#f}} if
+not.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-color-button-set-title  (self@tie{}@code{<gtk-color-button>}) (title@tie{}@code{mchars})
+@deffnx Method set-title
+Sets the title for the color selection dialog.
+
+@table @var
+@item color-button
+a @code{<gtk-color-button>}
+
+@item title
+String containing new window title.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-color-button-get-title  (self@tie{}@code{<gtk-color-button>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-title
+Gets the title of the color selection dialog.
+
+@table @var
+@item color-button
+a @code{<gtk-color-button>}
+
+@item ret
+An internal string, do not free the return value
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

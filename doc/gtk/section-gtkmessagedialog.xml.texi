@@ -1,0 +1,53 @@
+
+@c %start of fragment
+
+@node GtkMessageDialog
+@chapter GtkMessageDialog
+A convenient message window
+
+@section Overview
+@code{<gtk-message-dialog>} presents a dialog with an image representing the
+type of message (Error, Question, etc.) alongside some message text. It's simply
+a convenience widget; you could construct the equivalent of
+@code{<gtk-message-dialog>} from @code{<gtk-dialog>} without too much effort,
+but @code{<gtk-message-dialog>} saves typing.
+
+The easiest way to do a modal message dialog is to use @code{gtk-dialog-run},
+though you can also pass in the @samp{GTK_DIALOG_MODAL} flag,
+@code{gtk-dialog-run} automatically makes the dialog modal and waits for the
+user to respond to it. @code{gtk-dialog-run} returns when any dialog button is
+clicked.
+
+@example 
+
+ dialog = gtk_message_dialog_new (main_application_window,
+                                  GTK_DIALOG_DESTROY_WITH_PARENT,
+                                  GTK_MESSAGE_ERROR,
+                                  GTK_BUTTONS_CLOSE,
+                                  "Error loading file '%s': %s",
+                                  filename, g_strerror (errno));
+ gtk_dialog_run (GTK_DIALOG (dialog));
+ gtk_widget_destroy (dialog);
+@end example
+
+You might do a non-modal @code{<gtk-message-dialog>} as follows:
+
+@example 
+
+ dialog = gtk_message_dialog_new (main_application_window,
+                                  GTK_DIALOG_DESTROY_WITH_PARENT,
+                                  GTK_MESSAGE_ERROR,
+                                  GTK_BUTTONS_CLOSE,
+                                  "Error loading file '%s': %s",
+                                  filename, g_strerror (errno));
+
+ /* Destroy the dialog when the user responds to it (e.g. clicks a button) */
+ g_signal_connect_swapped (dialog, "response",
+                           G_CALLBACK (gtk_widget_destroy),
+                           dialog);
+@end example
+
+@section Usage
+@include defuns-gtkmessagedialog.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,46 @@
+
+@c %start of fragment
+
+@node GtkPrintUnixDialog
+@chapter GtkPrintUnixDialog
+A print dialog
+
+@section Overview
+GtkPrintUnixDialog implements a print dialog for platforms which don't provide a
+native print dialog, like Unix. It can be used very much like any other GTK+
+dialog, at the cost of the portability offered by the high-level printing API
+
+In order to print something with @code{<gtk-print-unix-dialog>}, you need to use
+@code{gtk-print-unix-dialog-get-selected-printer} to obtain a
+@code{<gtk-printer>} object and use it to construct a @code{<gtk-print-job>}
+using @code{gtk-print-job-new}.
+
+@code{<gtk-print-unix-dialog>} uses the following response values:
+
+@table @var
+@item GTK_RESPONSE_APPLY
+
+@c %start of fragment
+
+
+@c %end of fragment
+@item GTK_RESPONSE_CANCEL
+
+@c %start of fragment
+
+
+@c %end of fragment
+@end table
+
+for the "Print" button
+
+for the "Preview" button
+
+for the "Cancel" button
+
+Printing support was added in GTK+ 2.10.
+
+@section Usage
+@include defuns-gtkprintunixdialog.xml.texi
+
+@c %end of fragment

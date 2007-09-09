@@ -1,0 +1,18 @@
+
+@c %start of fragment
+
+@node GtkColorSelection
+@chapter GtkColorSelection
+A widget used to select a color
+
+@section Overview
+The @code{<gtk-color-selection>} is a widget that is used to select a color. It
+consists of a color wheel and number of sliders and entry boxes for color
+parameters such as hue, saturation, value, red, green, blue, and opacity. It is
+found on the standard color selection dialog box
+@code{<gtk-color-selection-dialog>}.
+
+@section Usage
+@include defuns-gtkcolorsel.xml.texi
+
+@c %end of fragment

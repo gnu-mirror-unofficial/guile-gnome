@@ -1,0 +1,22 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-hpaned>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function gtk-hpaned-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Create a new @code{<gtk-hpaned>}
+
+@table @var
+@item ret
+the new @code{<gtk-hpaned>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,35 @@
+
+@c %start of fragment
+
+@node GtkComboBoxEntry
+@chapter GtkComboBoxEntry
+A text entry field with a dropdown list
+
+@section Overview
+A @code{<gtk-combo-box-entry>} is a widget that allows the user to choose from a
+list of valid choices or enter a different value. It is very similar to a
+@code{<gtk-combo-box>}, but it displays the selected value in an entry to allow
+modifying it.
+
+In contrast to a @code{<gtk-combo-box>}, the underlying model of a
+@code{<gtk-combo-box-entry>} must always have a text column (see
+@code{gtk-combo-box-entry-set-text-column}), and the entry will show the content
+of the text column in the selected row. To get the text from the entry, use
+@code{gtk-combo-box-get-active-text}.
+
+The changed signal will be emitted while typing into a GtkComboBoxEntry, as well
+as when selecting an item from the GtkComboBoxEntry's list. Use
+@code{gtk-combo-box-get-active} or @code{gtk-combo-box-get-active-iter} to
+discover whether an item was actually selected from the list.
+
+Connect to the activate signal of the GtkEntry (use @code{gtk-bin-get-child}) to
+detect when the user actually finishes entering text.
+
+The convenience API to construct simple text-only @code{<gtk-combo-box>}es can
+also be used with @code{<gtk-combo-box-entry>}s which have been constructed with
+@code{gtk-combo-box-entry-new-text}.
+
+@section Usage
+@include defuns-gtkcomboboxentry.xml.texi
+
+@c %end of fragment

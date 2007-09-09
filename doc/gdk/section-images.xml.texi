@@ -1,0 +1,29 @@
+
+@c %start of fragment
+
+@node Images
+@chapter Images
+A client-side area for bit-mapped graphics
+
+@section Overview
+The @code{<gdk-image>} type represents an area for drawing graphics. It has now
+been superceded to a large extent by the much more flexible GdkRGB functions.
+
+To create an empty @code{<gdk-image>} use @code{gdk-image-new}. To create a
+@code{<gdk-image>} from bitmap data use @code{gdk-image-new-bitmap}. To create
+an image from part of a @code{<gdk-window>} use @code{gdk-drawable-get-image}.
+
+The image can be manipulated with @code{gdk-image-get-pixel} and
+@code{gdk-image-put-pixel}, or alternatively by changing the actual pixel data.
+Though manipulating the pixel data requires complicated code to cope with the
+different formats that may be used.
+
+To draw a @code{<gdk-image>} in a @code{<gdk-window>} or @code{<gdk-pixmap>} use
+@code{gdk-draw-image}.
+
+To destroy a @code{<gdk-image>} use @code{gdk-image-destroy}.
+
+@section Usage
+@include defuns-images.xml.texi
+
+@c %end of fragment

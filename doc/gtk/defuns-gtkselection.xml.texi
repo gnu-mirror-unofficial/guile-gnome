@@ -1,0 +1,385 @@
+
+@c %start of fragment
+
+@deffn Function gtk-target-table-new-from-list  (list@tie{}@code{<gtk-target-list*>}) @result{}@tie{} (ret@tie{}@code{<gtk-target-entry*>}) (n_targets@tie{}@code{int})
+This function creates an @code{<gtk-target-entry>} array that contains the same
+targets as the passed @samp{list}. The returned table is newly allocated and
+should be freed using @code{gtk-target-table-free} when no longer needed.
+
+@table @var
+@item list
+a @code{<gtk-target-list>}
+
+@item n-targets
+return location for the number ot targets in the table
+
+@item ret
+the new table.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-selection-owner-set  (self@tie{}@code{<gtk-widget>}) (selection@tie{}@code{<gdk-atom>}) (time@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
+Claims ownership of a given selection for a particular widget, or, if
+@var{widget} is @samp{@code{#f}}, release ownership of the selection.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}, or @samp{@code{#f}}.
+
+@item selection
+an interned atom representing the selection to claim
+
+@item time
+timestamp with which to claim the selection
+
+@item ret
+@samp{@code{#t}} if the operation succeeded
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-selection-owner-set-for-display  (display@tie{}@code{<gdk-display>}) (widget@tie{}@code{<gtk-widget>}) (selection@tie{}@code{<gdk-atom>}) (time@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
+Claim ownership of a given selection for a particular widget, or, if
+@var{widget} is @samp{@code{#f}}, release ownership of the selection.
+
+@table @var
+@item display
+the @code{<gdkdisplay>} where the selection is set
+
+@item widget
+new selection owner (a @code{<gdk-widget>}), or @samp{@code{#f}}.
+
+@item selection
+an interned atom representing the selection to claim.
+
+@item time
+timestamp with which to claim the selection
+
+@item ret
+TRUE if the operation succeeded
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-selection-add-target  (self@tie{}@code{<gtk-widget>}) (selection@tie{}@code{<gdk-atom>}) (target@tie{}@code{<gdk-atom>}) (info@tie{}@code{unsigned-int})
+Appends a specified target to the list of supported targets for a given widget
+and selection.
+
+@table @var
+@item widget
+a @code{<gtk-target>}
+
+@item selection
+the selection
+
+@item target
+target to add.
+
+@item info
+A unsigned integer which will be passed back to the application.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-selection-add-targets  (self@tie{}@code{<gtk-widget>}) (selection@tie{}@code{<gdk-atom>}) (targets@tie{}@code{<gtk-target-entry*>}) (ntargets@tie{}@code{unsigned-int})
+Prepends a table of targets to the list of supported targets for a given widget
+and selection.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item selection
+the selection
+
+@item targets
+a table of targets to add
+
+@item ntargets
+number of entries in @var{targets}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-selection-clear-targets  (self@tie{}@code{<gtk-widget>}) (selection@tie{}@code{<gdk-atom>})
+Remove all targets registered for the given selection for the widget.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item selection
+an atom representing a selection
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-selection-convert  (self@tie{}@code{<gtk-widget>}) (selection@tie{}@code{<gdk-atom>}) (target@tie{}@code{<gdk-atom>}) (time@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
+Requests the contents of a selection. When received, a "selection_received"
+signal will be generated.
+
+@table @var
+@item widget
+The widget which acts as requestor
+
+@item selection
+Which selection to get
+
+@item target
+Form of information desired (e.g., STRING)
+
+@item time
+Time of request (usually of triggering event) In emergency, you could use
+@code{<gdk-current-time>}
+
+@item ret
+@samp{@code{#t}} if requested succeeded. @samp{@code{#f}} if we could not
+process request. (e.g., there was already a request in process for this widget).
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-selection-data-set  (self@tie{}@code{<gtk-selection-data>}) (type@tie{}@code{<gdk-atom>}) (format@tie{}@code{int}) (data@tie{}@code{<guchar*>}) (length@tie{}@code{int})
+Stores new data into a @code{<gtk-selection-data>} object. Should @emph{only} be
+called from a selection handler callback. Zero-terminates the stored data.
+
+@table @var
+@item selection-data
+a pointer to a @code{<gtk-selection-data>} structure.
+
+@item type
+the type of selection data
+
+@item format
+format (number of bits in a unit)
+
+@item data
+pointer to the data (will be copied)
+
+@item length
+length of the data
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-selection-data-set-text  (self@tie{}@code{<gtk-selection-data>}) (str@tie{}@code{mchars}) (len@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Sets the contents of the selection from a UTF-8 encoded string. The string is
+converted to the form determined by @var{selection-data->target}.
+
+@table @var
+@item selection-data
+a @code{<gtk-selection-data>}
+
+@item str
+a UTF-8 string
+
+@item len
+the length of @var{str}, or -1 if @var{str} is nul-terminated.
+
+@item ret
+@samp{@code{#t}} if the selection was successfully set, otherwise
+@samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-selection-data-get-text  (self@tie{}@code{<gtk-selection-data>}) @result{}@tie{} (ret@tie{}@code{<guchar*>})
+Gets the contents of the selection data as a UTF-8 string.
+
+@table @var
+@item selection-data
+a @code{<gtk-selection-data>}
+
+@item ret
+if the selection data contained a recognized text type and it could be converted
+to UTF-8, a newly allocated string containing the converted text, otherwise
+@samp{@code{#f}}. If the result is non-@samp{@code{#f}} it must be freed with
+@code{g-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-selection-data-set-pixbuf  (self@tie{}@code{<gtk-selection-data>}) (pixbuf@tie{}@code{<gdk-pixbuf>}) @result{}@tie{} (ret@tie{}@code{bool})
+Sets the contents of the selection from a @code{<gdk-pixbuf>} The pixbuf is
+converted to the form determined by @var{selection-data->target}.
+
+@table @var
+@item selection-data
+a @code{<gtk-selection-data>}
+
+@item pixbuf
+a @code{<gdk-pixbuf>}
+
+@item ret
+@samp{@code{#t}} if the selection was successfully set, otherwise
+@samp{@code{#f}}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-selection-data-get-pixbuf  (self@tie{}@code{<gtk-selection-data>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+Gets the contents of the selection data as a @code{<gdk-pixbuf>}.
+
+@table @var
+@item selection-data
+a @code{<gtk-selection-data>}
+
+@item ret
+if the selection data contained a recognized image type and it could be
+converted to a @code{<gdk-pixbuf>}, a newly allocated pixbuf is returned,
+otherwise @samp{@code{#f}}. If the result is non-@samp{@code{#f}} it must be
+freed with @code{g-object-unref}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-selection-data-get-targets  (self@tie{}@code{<gtk-selection-data>}) (targets@tie{}@code{<gdk-atom**>}) @result{}@tie{} (ret@tie{}@code{bool}) (n_atoms@tie{}@code{int})
+Gets the contents of @var{selection-data} as an array of targets. This can be
+used to interpret the results of getting the standard TARGETS target that is
+always supplied for any selection.
+
+@table @var
+@item selection-data
+a @code{<gtk-selection-data>} object
+
+@item targets
+location to store an array of targets. The result stored here must be freed with
+@code{g-free}.
+
+@item n-atoms
+location to store number of items in @var{targets}.
+
+@item ret
+@samp{@code{#t}} if @var{selection-data} contains a valid array of targets,
+otherwise @samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-targets-include-image  (targets@tie{}@code{<gdk-atom*>}) (n_targets@tie{}@code{int}) (writable@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+Determines if any of the targets in @var{targets} can be used to provide a
+@code{<gdk-pixbuf>}.
+
+@table @var
+@item targets
+an array of @code{<gdk-atom>}s
+
+@item n-targets
+the length of @var{targets}
+
+@item writable
+whether to accept only targets for which GTK+ knows how to convert a pixbuf into
+the format
+
+@item ret
+@samp{@code{#t}} if @var{targets} include a suitable target for images,
+otherwise @samp{@code{#f}}.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-targets-include-text  (targets@tie{}@code{<gdk-atom*>}) (n_targets@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Determines if any of the targets in @var{targets} can be used to provide text.
+
+@table @var
+@item targets
+an array of @code{<gdk-atom>}s
+
+@item n-targets
+the length of @var{targets}
+
+@item ret
+@samp{@code{#t}} if @var{targets} include a suitable target for text, otherwise
+@samp{@code{#f}}.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-targets-include-uri  (targets@tie{}@code{<gdk-atom*>}) (n_targets@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Determines if any of the targets in @var{targets} can be used to provide an uri
+list.
+
+@table @var
+@item targets
+an array of @code{<gdk-atom>}s
+
+@item n-targets
+the length of @var{targets}
+
+@item ret
+@samp{@code{#t}} if @var{targets} include a suitable target for uri lists,
+otherwise @samp{@code{#f}}.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-targets-include-rich-text  (targets@tie{}@code{<gdk-atom*>}) (n_targets@tie{}@code{int}) (buffer@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (ret@tie{}@code{bool})
+Determines if any of the targets in @var{targets} can be used to provide rich
+text.
+
+@table @var
+@item targets
+an array of @code{<gdk-atom>}s
+
+@item n-targets
+the length of @var{targets}
+
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item ret
+@samp{@code{#t}} if @var{targets} include a suitable target for rich text,
+otherwise @samp{@code{#f}}.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-selection-remove-all  (self@tie{}@code{<gtk-widget>})
+Removes all handlers and unsets ownership of all selections for a widget. Called
+when widget is being destroyed. This function will not generally be called by
+applications.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,102 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-fixed>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function gtk-fixed-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-fixed>}.
+
+@table @var
+@item ret
+a new @code{<gtk-fixed>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-fixed-put  (self@tie{}@code{<gtk-fixed>}) (widget@tie{}@code{<gtk-widget>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method put
+Adds a widget to a @code{<gtk-fixed>} container at the given position.
+
+@table @var
+@item fixed
+a @code{<gtk-fixed>}.
+
+@item widget
+the widget to add.
+
+@item x
+the horizontal position to place the widget at.
+
+@item y
+the vertical position to place the widget at.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-fixed-move  (self@tie{}@code{<gtk-fixed>}) (widget@tie{}@code{<gtk-widget>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method move
+Moves a child of a @code{<gtk-fixed>} container to the given position.
+
+@table @var
+@item fixed
+a @code{<gtk-fixed>}.
+
+@item widget
+the child widget.
+
+@item x
+the horizontal position to move the widget to.
+
+@item y
+the vertical position to move the widget to.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-fixed-get-has-window  (self@tie{}@code{<gtk-fixed>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-has-window
+Gets whether the @code{<gtk-fixed>} has its own @code{<gdk-window>}. See
+@code{gdk-fixed-set-has-window}.
+
+@table @var
+@item fixed
+a @code{<gtk-widget>}
+
+@item ret
+@samp{@code{#t}} if @var{fixed} has its own window.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-fixed-set-has-window  (self@tie{}@code{<gtk-fixed>}) (has_window@tie{}@code{bool})
+@deffnx Method set-has-window
+Sets whether a @code{<gtk-fixed>} widget is created with a separate
+@code{<gdk-window>} for @var{widget->window} or not. (By default, it will be
+created with no separate @code{<gdk-window>}). This function must be called
+while the @code{<gtk-fixed>} is not realized, for instance, immediately after
+the window is created.
+
+This function was added to provide an easy migration path for older applications
+which may expect @code{<gtk-fixed>} to have a separate window.
+
+@table @var
+@item fixed
+a @code{<gtk-fixed>}
+
+@item has-window
+@samp{@code{#t}} if a separate window should be created
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

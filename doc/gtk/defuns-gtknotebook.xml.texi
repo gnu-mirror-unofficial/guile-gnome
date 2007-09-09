@@ -1,0 +1,890 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-notebook>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item tab-pos
+Which side of the notebook holds the tabs@item show-tabs
+Whether tabs should be shown or not@item show-border
+Whether the border should be shown or not@item scrollable
+If TRUE, scroll arrows are added if there are too many tabs to fit@item tab-border
+Width of the border around the tab labels@item tab-hborder
+Width of the horizontal border of tab labels@item tab-vborder
+Width of the vertical border of tab labels@item page
+The index of the current page@item enable-popup
+If TRUE, pressing the right mouse button on the notebook pops up a menu that you can use to go to a page@item group-id
+Group ID for tabs drag and drop@item group
+Group for tabs drag and drop@item homogeneous
+Whether tabs should have homogeneous sizes@end table
+
+@end deftp
+
+@defop Signal <gtk-notebook> switch-page  (arg0@tie{}@code{<gpointer>}) (arg1@tie{}@code{<guint>})
+Emitted when the user or a function changes the current page.
+
+@end defop
+
+@defop Signal <gtk-notebook> focus-tab  (arg0@tie{}@code{<gtk-notebook-tab>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-notebook> select-page  (arg0@tie{}@code{<gboolean>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-notebook> change-current-page  (arg0@tie{}@code{<gint>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-notebook> move-focus-out  (arg0@tie{}@code{<gtk-direction-type>})
+@end defop
+
+@defop Signal <gtk-notebook> reorder-tab  (arg0@tie{}@code{<gtk-direction-type>}) (arg1@tie{}@code{<gboolean>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-notebook> page-reordered  (arg0@tie{}@code{<gtk-widget>}) (arg1@tie{}@code{<guint>})
+the ::page-reordered signal is emitted in the notebook right after a page has
+been reordered.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-notebook> page-removed  (arg0@tie{}@code{<gtk-widget>}) (arg1@tie{}@code{<guint>})
+the ::page-removed signal is emitted in the notebook right after a page is
+removed from the notebook.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-notebook> page-added  (arg0@tie{}@code{<gtk-widget>}) (arg1@tie{}@code{<guint>})
+the ::page-added signal is emitted in the notebook right after a page is added
+to the notebook.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-notebook> create-window  (arg0@tie{}@code{<gtk-widget>}) (arg1@tie{}@code{<gint>}) (arg2@tie{}@code{<gint>}) @result{}@tie{}@code{<gtk-notebook>}
+undocumented
+@end defop
+
+@deffn Function gtk-notebook-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-notebook>} widget with no pages.
+
+@table @var
+@item ret
+the newly created @code{<gtk-notebook>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-append-page  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) (tab_label@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method append-page
+Appends a page to @var{notebook}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+the @code{<gtk-widget>} to use as the contents of the page.
+
+@item tab-label
+the @code{<gtk-widget>} to be used as the label for the page, or
+@samp{@code{#f}} to use the default label, 'page N'.
+
+@item ret
+the index (starting from 0) of the appended page in the notebook, or -1 if
+function fails
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-append-page-menu  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) (tab_label@tie{}@code{<gtk-widget>}) (menu_label@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method append-page-menu
+Appends a page to @var{notebook}, specifying the widget to use as the label in
+the popup menu.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+the @code{<gtk-widget>} to use as the contents of the page.
+
+@item tab-label
+the @code{<gtk-widget>} to be used as the label for the page, or
+@samp{@code{#f}} to use the default label, 'page N'.
+
+@item menu-label
+the widget to use as a label for the page-switch menu, if that is enabled. If
+@samp{@code{#f}}, and @var{tab-label} is a @code{<gtk-label>} or
+@samp{@code{#f}}, then the menu label will be a newly created label with the
+same text as @var{tab-label}; If @var{tab-label} is not a @code{<gtk-label>},
+@var{menu-label} must be specified if the page-switch menu is to be used.
+
+@item ret
+the index (starting from 0) of the appended page in the notebook, or -1 if
+function fails
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-prepend-page  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) (tab_label@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method prepend-page
+Prepends a page to @var{notebook}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+the @code{<gtk-widget>} to use as the contents of the page.
+
+@item tab-label
+the @code{<gtk-widget>} to be used as the label for the page, or
+@samp{@code{#f}} to use the default label, 'page N'.
+
+@item ret
+the index (starting from 0) of the prepended page in the notebook, or -1 if
+function fails
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-prepend-page-menu  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) (tab_label@tie{}@code{<gtk-widget>}) (menu_label@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method prepend-page-menu
+Prepends a page to @var{notebook}, specifying the widget to use as the label in
+the popup menu.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+the @code{<gtk-widget>} to use as the contents of the page.
+
+@item tab-label
+the @code{<gtk-widget>} to be used as the label for the page, or
+@samp{@code{#f}} to use the default label, 'page N'.
+
+@item menu-label
+the widget to use as a label for the page-switch menu, if that is enabled. If
+@samp{@code{#f}}, and @var{tab-label} is a @code{<gtk-label>} or
+@samp{@code{#f}}, then the menu label will be a newly created label with the
+same text as @var{tab-label}; If @var{tab-label} is not a @code{<gtk-label>},
+@var{menu-label} must be specified if the page-switch menu is to be used.
+
+@item ret
+the index (starting from 0) of the prepended page in the notebook, or -1 if
+function fails
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-insert-page  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) (tab_label@tie{}@code{<gtk-widget>}) (position@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method insert-page
+Insert a page into @var{notebook} at the given position.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+the @code{<gtk-widget>} to use as the contents of the page.
+
+@item tab-label
+the @code{<gtk-widget>} to be used as the label for the page, or
+@samp{@code{#f}} to use the default label, 'page N'.
+
+@item position
+the index (starting at 0) at which to insert the page, or -1 to append the page
+after all other pages.
+
+@item ret
+the index (starting from 0) of the inserted page in the notebook, or -1 if
+function fails
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-insert-page-menu  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) (tab_label@tie{}@code{<gtk-widget>}) (menu_label@tie{}@code{<gtk-widget>}) (position@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method insert-page-menu
+Insert a page into @var{notebook} at the given position, specifying the widget
+to use as the label in the popup menu.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+the @code{<gtk-widget>} to use as the contents of the page.
+
+@item tab-label
+the @code{<gtk-widget>} to be used as the label for the page, or
+@samp{@code{#f}} to use the default label, 'page N'.
+
+@item menu-label
+the widget to use as a label for the page-switch menu, if that is enabled. If
+@samp{@code{#f}}, and @var{tab-label} is a @code{<gtk-label>} or
+@samp{@code{#f}}, then the menu label will be a newly created label with the
+same text as @var{tab-label}; If @var{tab-label} is not a @code{<gtk-label>},
+@var{menu-label} must be specified if the page-switch menu is to be used.
+
+@item position
+the index (starting at 0) at which to insert the page, or -1 to append the page
+after all other pages.
+
+@item ret
+the index (starting from 0) of the inserted page in the notebook
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-remove-page  (self@tie{}@code{<gtk-notebook>}) (page_num@tie{}@code{int})
+@deffnx Method remove-page
+Removes a page from the notebook given its index in the notebook.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}.
+
+@item page-num
+the index of a notebook page, starting from 0. If -1, the last page will be
+removed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-page-num  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method page-num
+Finds the index of the page which contains the given child widget.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+a @code{<gtk-widget>}
+
+@item ret
+the index of the page containing @var{child}, or -1 if @var{child} is not in the
+notebook.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-next-page  (self@tie{}@code{<gtk-notebook>})
+@deffnx Method next-page
+Switches to the next page. Nothing happens if the current page is the last page.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-prev-page  (self@tie{}@code{<gtk-notebook>})
+@deffnx Method prev-page
+Switches to the previous page. Nothing happens if the current page is the first
+page.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-reorder-child  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) (position@tie{}@code{int})
+@deffnx Method reorder-child
+Reorders the page containing @var{child}, so that it appears in position
+@var{position}. If @var{position} is greater than or equal to the number of
+children in the list or negative, @var{child} will be moved to the end of the
+list.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+the child to move
+
+@item position
+the new position, or -1 to move to the end
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-set-tab-pos  (self@tie{}@code{<gtk-notebook>}) (pos@tie{}@code{<gtk-position-type>})
+@deffnx Method set-tab-pos
+Sets the edge at which the tabs for switching pages in the notebook are drawn.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}.
+
+@item pos
+the edge to draw the tabs at.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-set-show-tabs  (self@tie{}@code{<gtk-notebook>}) (show_tabs@tie{}@code{bool})
+@deffnx Method set-show-tabs
+Sets whether to show the tabs for the notebook or not.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item show-tabs
+@samp{@code{#t}} if the tabs should be shown.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-set-show-border  (self@tie{}@code{<gtk-notebook>}) (show_border@tie{}@code{bool})
+@deffnx Method set-show-border
+Sets whether a bevel will be drawn around the notebook pages. This only has a
+visual effect when the tabs are not shown. See
+@code{gtk-notebook-set-show-tabs}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item show-border
+@samp{@code{#t}} if a bevel should be drawn around the notebook.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-set-scrollable  (self@tie{}@code{<gtk-notebook>}) (scrollable@tie{}@code{bool})
+@deffnx Method set-scrollable
+Sets whether the tab label area will have arrows for scrolling if there are too
+many tabs to fit in the area.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item scrollable
+@samp{@code{#t}} if scroll arrows should be added
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-popup-enable  (self@tie{}@code{<gtk-notebook>})
+@deffnx Method popup-enable
+Enables the popup menu: if the user clicks with the right mouse button on the
+bookmarks, a menu with all the pages will be popped up.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-popup-disable  (self@tie{}@code{<gtk-notebook>})
+@deffnx Method popup-disable
+Disables the popup menu.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-get-current-page  (self@tie{}@code{<gtk-notebook>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-current-page
+Returns the page number of the current page.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item ret
+the index (starting from 0) of the current page in the notebook. If the notebook
+has no pages, then -1 will be returned.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-get-menu-label  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-menu-label
+Retrieves the menu label widget of the page containing @var{child}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+a widget contained in a page of @var{notebook}
+
+@item ret
+the menu label, or @samp{@code{#f}} if the notebook page does not have a menu
+label other than the default (the tab label).
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-get-nth-page  (self@tie{}@code{<gtk-notebook>}) (page_num@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-nth-page
+Returns the child widget contained in page number @var{page-num}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item page-num
+the index of a page in the noteobok, or -1 to get the last page.
+
+@item ret
+the child widget, or @samp{@code{#f}} if @var{page-num} is out of bounds.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-get-n-pages  (self@tie{}@code{<gtk-notebook>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-n-pages
+Gets the number of pages in a notebook.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item ret
+the number of pages in the notebook.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-notebook-get-tab-label  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-tab-label
+Returns the tab label widget for the page @var{child}. @samp{@code{#f}} is
+returned if @var{child} is not in @var{notebook} or if no tab label has
+specifically been set for @var{child}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+the page
+
+@item ret
+the tab label
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-set-menu-label  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) (menu_label@tie{}@code{<gtk-widget>})
+@deffnx Method set-menu-label
+Changes the menu label for the page containing @var{child}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+the child widget
+
+@item menu-label
+the menu label, or NULL for default
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-set-menu-label-text  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) (menu_text@tie{}@code{mchars})
+@deffnx Method set-menu-label-text
+Creates a new label and sets it as the menu label of @var{child}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+the child widget
+
+@item menu-text
+the label text
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-set-tab-label  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) (tab_label@tie{}@code{<gtk-widget>})
+@deffnx Method set-tab-label
+Changes the tab label for @var{child}. If @samp{@code{#f}} is specified for
+@var{tab-label}, then the page will have the label 'page N'.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+the page
+
+@item tab-label
+the tab label widget to use, or @samp{@code{#f}} for default tab label.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-set-tab-label-packing  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) (expand@tie{}@code{bool}) (fill@tie{}@code{bool}) (pack_type@tie{}@code{<gtk-pack-type>})
+@deffnx Method set-tab-label-packing
+Sets the packing parameters for the tab label of the page containing
+@var{child}. See @code{gtk-box-pack-start} for the exact meaning of the
+parameters.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+the child widget
+
+@item expand
+whether to expand the bookmark or not
+
+@item fill
+whether the bookmark should fill the allocated area or not
+
+@item pack-type
+the position of the bookmark
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-set-tab-label-text  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) (tab_text@tie{}@code{mchars})
+@deffnx Method set-tab-label-text
+Creates a new label and sets it as the tab label for the page containing
+@var{child}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+the page
+
+@item tab-text
+the label text
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-set-tab-reorderable  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) (reorderable@tie{}@code{bool})
+@deffnx Method set-tab-reorderable
+Sets whether the notebook tab can be reordered via drag and drop or not.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+a child @code{<gtk-widget>}
+
+@item reorderable
+whether the tab is reorderable or not.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-notebook-set-tab-detachable  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) (detachable@tie{}@code{bool})
+@deffnx Method set-tab-detachable
+Sets whether the tab can be detached from @var{notebook} to another notebook or
+widget.
+
+Note that 2 notebooks must share a common group identificator (see
+@code{gtk-notebook-set-group-id}) to allow automatic tabs interchange between
+them.
+
+If you want a widget to interact with a notebook through DnD (i.e.: accept
+dragged tabs from it) it must be set as a drop destination and accept the target
+"GTK_NOTEBOOK_TAB". The notebook will fill the selection with a GtkWidget**
+pointing to the child widget that corresponds to the dropped tab.
+
+@example 
+
+ static void
+ on_drop_zone_drag_data_received (GtkWidget        *widget,
+                                  GdkDragContext   *context,
+                                  gint              x,
+                                  gint              y,
+                                  GtkSelectionData *selection_data,
+                                  guint             info,
+                                  guint             time,
+                                  gpointer          user_data)
+ @{
+   GtkWidget *notebook;
+   GtkWidget **child;
+   
+   notebook = gtk_drag_get_source_widget (context);
+   child = (void*) selection_data->data;
+   
+   process_widget (*child);
+   gtk_container_remove (GTK_CONTAINER (notebook), *child);
+ @}
+@end example
+
+If you want a notebook to accept drags from other widgets, you will have to set
+your own DnD code to do it.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+a child @code{<gtk-widget>}
+
+@item detachable
+whether the tab is detachable or not
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-notebook-get-menu-label-text  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-menu-label-text
+Retrieves the text of the menu label for the page containing @var{child}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+the child widget of a page of the notebook.
+
+@item ret
+value: the text of the tab label, or @samp{@code{#f}} if the widget does not
+have a menu label other than the default menu label, or the menu label widget is
+not a @code{<gtk-label>}. The string is owned by the widget and must not be
+freed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-get-scrollable  (self@tie{}@code{<gtk-notebook>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-scrollable
+Returns whether the tab label area has arrows for scrolling. See
+@code{gtk-notebook-set-scrollable}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item ret
+@samp{@code{#t}} if arrows for scrolling are present
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-get-show-border  (self@tie{}@code{<gtk-notebook>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-show-border
+Returns whether a bevel will be drawn around the notebook pages. See
+@code{gtk-notebook-set-show-border}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item ret
+@samp{@code{#t}} if the bevel is drawn
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-get-show-tabs  (self@tie{}@code{<gtk-notebook>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-show-tabs
+Returns whether the tabs of the notebook are shown. See
+@code{gtk-notebook-set-show-tabs}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item ret
+@samp{@code{#t}} if the tabs are shown
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-get-tab-label-text  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-tab-label-text
+Retrieves the text of the tab label for the page containing @var{child}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+a widget contained in a page of @var{notebook}
+
+@item ret
+value: the text of the tab label, or @samp{@code{#f}} if the tab label widget is
+not a @code{<gtk-label>}. The string is owned by the widget and must not be
+freed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-get-tab-pos  (self@tie{}@code{<gtk-notebook>}) @result{}@tie{} (ret@tie{}@code{<gtk-position-type>})
+@deffnx Method get-tab-pos
+Gets the edge at which the tabs for switching pages in the notebook are drawn.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item ret
+the edge at which the tabs are drawn
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-get-tab-reorderable  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-tab-reorderable
+Gets whether the tab can be reordered via drag and drop or not.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+a child @code{<gtk-widget>}
+
+@item ret
+@samp{@code{#t}} if the tab is reorderable.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-notebook-get-tab-detachable  (self@tie{}@code{<gtk-notebook>}) (child@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-tab-detachable
+Returns whether the tab contents can be detached from @var{notebook}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item child
+a child @code{<gtk-widget>}
+
+@item ret
+TRUE if the tab is detachable.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-notebook-set-current-page  (self@tie{}@code{<gtk-notebook>}) (page_num@tie{}@code{int})
+@deffnx Method set-current-page
+Switches to the page number @var{page-num}.
+
+Note that due to historical reasons, GtkNotebook refuses to switch to a page
+unless the child widget is visible. Therefore, it is recommended to show child
+widgets before adding them to a notebook.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item page-num
+index of the page to switch to, starting from 0. If negative, the last page will
+be used. If greater than the number of pages in the notebook, nothing will be
+done.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-notebook-set-group-id  (self@tie{}@code{<gtk-notebook>}) (group_id@tie{}@code{int})
+@deffnx Method set-group-id
+Sets an group identificator for @var{notebook}, notebooks sharing the same group
+identificator will be able to exchange tabs via drag and drop. A notebook with
+group identificator -1 will not be able to exchange tabs with any other
+notebook.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item group-id
+a group identificator, or -1 to unset it
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-notebook-get-group-id  (self@tie{}@code{<gtk-notebook>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-group-id
+Gets the current group identificator for @var{notebook}.
+
+@table @var
+@item notebook
+a @code{<gtk-notebook>}
+
+@item ret
+the group identificator, or -1 if none is set.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment

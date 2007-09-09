@@ -1,0 +1,17 @@
+
+@c %start of fragment
+
+@node GtkFrame
+@chapter GtkFrame
+A bin with a decorative frame and optional label
+
+@section Overview
+The frame widget is a Bin that surrounds its child with a decorative frame and
+an optional label. If present, the label is drawn in a gap in the top side of
+the frame. The position of the label can be controlled with
+@code{gtk-frame-set-label-align}.
+
+@section Usage
+@include defuns-gtkframe.xml.texi
+
+@c %end of fragment

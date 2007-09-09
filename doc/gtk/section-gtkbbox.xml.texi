@@ -1,0 +1,34 @@
+
+@c %start of fragment
+
+@node GtkButtonBox
+@chapter GtkButtonBox
+Base class for and
+
+@section Overview
+The primary purpose of this class is to keep track of the various properties of
+@code{<gtk-hbutton-box>} and @code{<gtk-vbutton-box>} widgets.
+
+@code{gtk-button-box-get-child-size} retrieves the minimum width and height for
+widgets in a given button box. @code{gtk-button-box-set-child-size} allows those
+properties to be changed.
+
+The internal padding of buttons can be retrieved and changed per button box
+using @code{gtk-button-box-get-child-ipadding} and
+@code{gtk-button-box-set-child-ipadding} respectively.
+
+@code{gtk-button-box-get-spacing} and @code{gtk-button-box-set-spacing} retrieve
+and change default number of pixels between buttons, respectively.
+
+@code{gtk-button-box-get-layout} and @code{gtk-button-box-set-layout} retrieve
+and alter the method used to spread the buttons in a button box across the
+container, respectively.
+
+The main purpose of GtkButtonBox is to make sure the children have all the same
+size. Therefore it ignores the homogeneous property which it inherited from
+GtkBox, and always behaves as if homogeneous was @samp{@code{#t}}.
+
+@section Usage
+@include defuns-gtkbbox.xml.texi
+
+@c %end of fragment

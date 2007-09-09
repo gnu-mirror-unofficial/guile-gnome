@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@node GtkScale
+@chapter GtkScale
+Base class for GtkHScale and GtkVScale
+
+@section Overview
+A @code{<gtk-scale>} is a slider control used to select a numeric value. To use
+it, you'll probably want to investigate the methods on its base class,
+@code{<gtk-range>}, in addition to the methods for @code{<gtk-scale>} itself. To
+set the value of a scale, you would normally use @code{gtk-range-set-value}. To
+detect changes to the value, you would normally use the "value_changed" signal.
+
+The @code{<gtk-scale>} widget is an abstract class, used only for deriving the
+subclasses @code{<gtk-hscale>} and @code{<gtk-vscale>}. To create a scale
+widget, call @code{gtk-hscale-new-with-range} or
+@code{gtk-vscale-new-with-range}.
+
+@section Usage
+@include defuns-gtkscale.xml.texi
+
+@c %end of fragment

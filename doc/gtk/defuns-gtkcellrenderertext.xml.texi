@@ -1,0 +1,78 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-cell-renderer-text>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item text
+Text to render@item markup
+Marked up text to render@item attributes
+A list of style attributes to apply to the text of the renderer@item single-paragraph-mode
+Whether or not to keep all text in a single paragraph@item width-chars
+The desired width of the label, in characters@item wrap-width
+The width at which the text is wrapped@item alignment
+How to align the lines@item background
+Background color as a string@item foreground
+Foreground color as a string@item background-gdk
+Background color as a GdkColor@item foreground-gdk
+Foreground color as a GdkColor@item font
+Font description as a string, e.g. "Sans Italic 12"@item font-desc
+Font description as a PangoFontDescription struct@item family
+Name of the font family, e.g. Sans, Helvetica, Times, Monospace@item style
+Font style@item variant
+Font variant@item weight
+Font weight@item stretch
+Font stretch@item size
+Font size@item size-points
+Font size in points@item scale
+Font scaling factor@item editable
+Whether the text can be modified by the user@item strikethrough
+Whether to strike through the text@item underline
+Style of underline for this text@item rise
+Offset of text above the baseline (below the baseline if rise is negative)@item language
+The language this text is in, as an ISO code. Pango can use this as a hint when rendering the text. If you don't understand this parameter, you probably don't need it@item ellipsize
+The preferred place to ellipsize the string, if the cell renderer does not have enough room to display the entire string@item wrap-mode
+How to break the string into multiple lines, if the cell renderer does not have enough room to display the entire string@item background-set
+Whether this tag affects the background color@item foreground-set
+Whether this tag affects the foreground color@item family-set
+Whether this tag affects the font family@item style-set
+Whether this tag affects the font style@item variant-set
+Whether this tag affects the font variant@item weight-set
+Whether this tag affects the font weight@item stretch-set
+Whether this tag affects the font stretch@item size-set
+Whether this tag affects the font size@item scale-set
+Whether this tag scales the font size by a factor@item editable-set
+Whether this tag affects text editability@item strikethrough-set
+Whether this tag affects strikethrough@item underline-set
+Whether this tag affects underlining@item rise-set
+Whether this tag affects the rise@item language-set
+Whether this tag affects the language the text is rendered as@item ellipsize-set
+Whether this tag affects the ellipsize mode@item align-set
+Whether this tag affects the alignment mode@end table
+
+@end deftp
+
+@defop Signal <gtk-cell-renderer-text> edited  (arg0@tie{}@code{<gchararray>}) (arg1@tie{}@code{<gchararray>})
+This signal is emitted after @var{renderer} has been edited.
+
+@end defop
+
+@deffn Function gtk-cell-renderer-text-new  @result{}@tie{} (ret@tie{}@code{<gtk-cell-renderer>})
+Creates a new @code{<gtk-cell-renderer-text>}. Adjust how text is drawn using
+object properties. Object properties can be set globally (with
+@code{g-object-set}). Also, with @code{<gtk-tree-view-column>}, you can bind a
+property to a value in a @code{<gtk-tree-model>}. For example, you can bind the
+"text" property on the cell renderer to a string value in the model, thus
+rendering a different string in each row of the @code{<gtk-tree-view>}
+
+@table @var
+@item ret
+the new cell renderer
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,411 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-action-group>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item name
+A name for the action group.@item sensitive
+Whether the action group is enabled.@item visible
+Whether the action group is visible.@end table
+
+@end deftp
+
+@defop Signal <gtk-action-group> connect-proxy  (arg0@tie{}@code{<gtk-action>}) (arg1@tie{}@code{<gtk-widget>})
+The connect_proxy signal is emitted after connecting a proxy to an action in the
+group. Note that the proxy may have been connected to a different action before.
+
+This is intended for simple customizations for which a custom action class would
+be too clumsy, e.g. showing tooltips for menuitems in the statusbar.
+
+@code{<gtk-ui-manager>} proxies the signal and provides global notification just
+before any action is connected to a proxy, which is probably more convenient to
+use.
+
+Since 2.4
+
+@end defop
+
+@defop Signal <gtk-action-group> disconnect-proxy  (arg0@tie{}@code{<gtk-action>}) (arg1@tie{}@code{<gtk-widget>})
+The disconnect_proxy signal is emitted after disconnecting a proxy from an
+action in the group.
+
+@code{<gtk-ui-manager>} proxies the signal and provides global notification just
+before any action is connected to a proxy, which is probably more convenient to
+use.
+
+Since 2.4
+
+@end defop
+
+@defop Signal <gtk-action-group> pre-activate  (arg0@tie{}@code{<gtk-action>})
+The pre_activate signal is emitted just before the @var{action} in the
+@var{action-group} is activated
+
+This is intended for @code{<gtk-ui-manager>} to proxy the signal and provide
+global notification just before any action is activated.
+
+Since 2.4
+
+@end defop
+
+@defop Signal <gtk-action-group> post-activate  (arg0@tie{}@code{<gtk-action>})
+The post_activate signal is emitted just after the @var{action} in the
+@var{action-group} is activated
+
+This is intended for @code{<gtk-ui-manager>} to proxy the signal and provide
+global notification just after any action is activated.
+
+Since 2.4
+
+@end defop
+
+@deffn Function gtk-action-group-new  (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-action-group>})
+Creates a new @code{<gtk-action-group>} object. The name of the action group is
+used when associating keybindings with the actions.
+
+@table @var
+@item name
+the name of the action group.
+
+@item ret
+the new @code{<gtk-action-group>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-group-get-name  (self@tie{}@code{<gtk-action-group>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-name
+Gets the name of the action group.
+
+@table @var
+@item action-group
+the action group
+
+@item ret
+the name of the action group.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-group-get-sensitive  (self@tie{}@code{<gtk-action-group>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-sensitive
+Returns @samp{@code{#t}} if the group is sensitive. The constituent actions can
+only be logically sensitive (see @code{gtk-action-is-sensitive}) if they are
+sensitive (see @code{gtk-action-get-sensitive}) and their group is sensitive.
+
+@table @var
+@item action-group
+the action group
+
+@item ret
+@samp{@code{#t}} if the group is sensitive.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-group-set-sensitive  (self@tie{}@code{<gtk-action-group>}) (sensitive@tie{}@code{bool})
+@deffnx Method set-sensitive
+Changes the sensitivity of @var{action-group}
+
+@table @var
+@item action-group
+the action group
+
+@item sensitive
+new sensitivity
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-group-get-visible  (self@tie{}@code{<gtk-action-group>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-visible
+Returns @samp{@code{#t}} if the group is visible. The constituent actions can
+only be logically visible (see @code{gtk-action-is-visible}) if they are visible
+(see @code{gtk-action-get-visible}) and their group is visible.
+
+@table @var
+@item action-group
+the action group
+
+@item ret
+@samp{@code{#t}} if the group is visible.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-group-set-visible  (self@tie{}@code{<gtk-action-group>}) (visible@tie{}@code{bool})
+@deffnx Method set-visible
+Changes the visible of @var{action-group}.
+
+@table @var
+@item action-group
+the action group
+
+@item visible
+new visiblity
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-group-get-action  (self@tie{}@code{<gtk-action-group>}) (action_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-action>})
+@deffnx Method get-action
+Looks up an action in the action group by name.
+
+@table @var
+@item action-group
+the action group
+
+@item action-name
+the name of the action
+
+@item ret
+the action, or @samp{@code{#f}} if no action by that name exists
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-group-list-actions  (self@tie{}@code{<gtk-action-group>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method list-actions
+Lists the actions in the action group.
+
+@table @var
+@item action-group
+the action group
+
+@item ret
+an allocated list of the action objects in the action group
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-group-add-action  (self@tie{}@code{<gtk-action-group>}) (action@tie{}@code{<gtk-action>})
+@deffnx Method add-action
+Adds an action object to the action group. Note that this function does not set
+up the accel path of the action, which can lead to problems if a user tries to
+modify the accelerator of a menuitem associated with the action. Therefore you
+must either set the accel path yourself with @code{gtk-action-set-accel-path},
+or use @samp{gtk_action_group_add_action_with_accel (..., NULL)}.
+
+@table @var
+@item action-group
+the action group
+
+@item action
+an action
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-group-remove-action  (self@tie{}@code{<gtk-action-group>}) (action@tie{}@code{<gtk-action>})
+@deffnx Method remove-action
+Removes an action object from the action group.
+
+@table @var
+@item action-group
+the action group
+
+@item action
+an action
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-group-add-actions  (self@tie{}@code{<gtk-action-group>}) (entries@tie{}@code{scm})
+@deffnx Method add-actions
+This is a convenience function to create a number of actions and add them to the
+action group.
+
+The "activate" signals of the actions are connected to the callbacks and their
+accel paths are set to @samp{<Actions>//}.
+
+@table @var
+@item action-group
+the action group
+
+@item entries
+an array of action descriptions
+
+@item n-entries
+the number of entries
+
+@item user-data
+data to pass to the action callbacks
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-group-add-actions-full  (self@tie{}@code{<gtk-action-group>}) (entries@tie{}@code{<gtk-action-entry*>}) (n_entries@tie{}@code{unsigned-int}) (user_data@tie{}@code{<gpointer>}) (destroy@tie{}@code{<g-destroy-notify>})
+@deffnx Method add-actions-full
+This variant of @code{gtk-action-group-add-actions} adds a
+@code{<g-destroy-notify>} callback for @var{user-data}.
+
+@table @var
+@item action-group
+the action group
+
+@item entries
+an array of action descriptions
+
+@item n-entries
+the number of entries
+
+@item user-data
+data to pass to the action callbacks
+
+@item destroy
+destroy notification callback for @var{user-data}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-group-add-toggle-actions  (self@tie{}@code{<gtk-action-group>}) (entries@tie{}@code{scm})
+@deffnx Method add-toggle-actions
+This is a convenience function to create a number of toggle actions and add them
+to the action group.
+
+The "activate" signals of the actions are connected to the callbacks and their
+accel paths are set to @samp{<Actions>//}.
+
+@table @var
+@item action-group
+the action group
+
+@item entries
+an array of toggle action descriptions
+
+@item n-entries
+the number of entries
+
+@item user-data
+data to pass to the action callbacks
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-group-add-radio-actions  (self@tie{}@code{<gtk-action-group>}) (entries@tie{}@code{scm}) (value@tie{}@code{int}) (on_change@tie{}@code{scm})
+@deffnx Method add-radio-actions
+This is a convenience routine to create a group of radio actions and add them to
+the action group.
+
+The "changed" signal of the first radio action is connected to the
+@var{on-change} callback and the accel paths of the actions are set to
+@samp{<Actions>//}.
+
+@table @var
+@item action-group
+the action group
+
+@item entries
+an array of radio action descriptions
+
+@item n-entries
+the number of entries
+
+@item value
+the value of the action to activate initially, or -1 if no action should be
+activated
+
+@item on-change
+the callback to connect to the changed signal
+
+@item user-data
+data to pass to the action callbacks
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-group-set-translate-func  (self@tie{}@code{<gtk-action-group>}) (func@tie{}@code{<gtk-translate-func>}) (data@tie{}@code{<gpointer>}) (notify@tie{}@code{<gtk-destroy-notify>})
+@deffnx Method set-translate-func
+Sets a function to be used for translating the @var{label} and @var{tooltip} of
+@code{<gtk-action-group-entry>}s added by @code{gtk-action-group-add-actions}.
+
+If you're using @code{gettext}, it is enough to set the translation domain with
+@code{gtk-action-group-set-translation-domain}.
+
+@table @var
+@item action-group
+a @code{<gtk-action-group>}
+
+@item func
+a @code{<gtk-translate-func>}
+
+@item data
+data to be passed to @var{func} and @var{notify}
+
+@item notify
+a @code{<gtk-destroy-notify>} function to be called when @var{action-group} is
+destroyed and when the translation function is changed again
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-group-translate-string  (self@tie{}@code{<gtk-action-group>}) (string@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method translate-string
+Translates a string using the specified @code{translate-func}. This is mainly
+intended for language bindings.
+
+@table @var
+@item action-group
+a @code{<gtk-action-group>}
+
+@item string
+a string
+
+@item ret
+the translation of @var{string}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

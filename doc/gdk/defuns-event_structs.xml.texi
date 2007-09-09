@@ -1,0 +1,59 @@
+
+@c %start of fragment
+
+@deftp Class <gdk-event-any>
+@end deftp
+
+@deftp Class <gdk-event-key>
+@end deftp
+
+@deftp Class <gdk-event-button>
+@end deftp
+
+@deftp Class <gdk-event-scroll>
+@end deftp
+
+@deftp Class <gdk-event-motion>
+@end deftp
+
+@deftp Class <gdk-event-expose>
+@end deftp
+
+@deftp Class <gdk-event-visibility>
+@end deftp
+
+@deftp Class <gdk-event-crossing>
+@end deftp
+
+@deftp Class <gdk-event-focus>
+@end deftp
+
+@deftp Class <gdk-event-configure>
+@end deftp
+
+@deftp Class <gdk-event-property>
+@end deftp
+
+@deftp Class <gdk-event-selection>
+@end deftp
+
+@deftp Class <gdk-event-dnd>
+@end deftp
+
+@deftp Class <gdk-event-proximity>
+@end deftp
+
+@deftp Class <gdk-event-client>
+@end deftp
+
+@deftp Class <gdk-event-no-expose>
+@end deftp
+
+@deftp Class <gdk-event-window-state>
+@end deftp
+
+@deftp Class <gdk-event-setting>
+@end deftp
+
+
+@c %end of fragment

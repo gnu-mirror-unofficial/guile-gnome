@@ -1,0 +1,102 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-ruler>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item lower
+Lower limit of ruler@item upper
+Upper limit of ruler@item position
+Position of mark on the ruler@item max-size
+Maximum size of the ruler@item metric
+The metric used for the ruler@end table
+
+@end deftp
+
+@deffn Function gtk-ruler-set-metric  (self@tie{}@code{<gtk-ruler>}) (metric@tie{}@code{<gtk-metric-type>})
+@deffnx Method set-metric
+This calls the @code{<gtk-metric-type>} to set the ruler to units defined.
+Available units are GTK_PIXELS, GTK_INCHES, or GTK_CENTIMETERS. The default unit
+of measurement is GTK_PIXELS.
+
+@table @var
+@item ruler
+the gtkruler
+
+@item metric
+the unit of measurement
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-ruler-set-range  (self@tie{}@code{<gtk-ruler>}) (lower@tie{}@code{double}) (upper@tie{}@code{double}) (position@tie{}@code{double}) (max_size@tie{}@code{double})
+@deffnx Method set-range
+This sets the range of the ruler using gfloat lower, gfloat upper, gfloat
+position, and gfloat max_size.
+
+@table @var
+@item ruler
+the gtkruler
+
+@item lower
+the lower limit of the ruler
+
+@item upper
+the upper limit of the ruler
+
+@item position
+the mark on the ruler
+
+@item max-size
+the maximum size of the ruler
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-ruler-get-metric  (self@tie{}@code{<gtk-ruler>}) @result{}@tie{} (ret@tie{}@code{<gtk-metric-type>})
+@deffnx Method get-metric
+Gets the units used for a @code{<gtk-ruler>}. See @code{gtk-ruler-set-metric}.
+
+@table @var
+@item ruler
+a @code{<gtk-ruler>}
+
+@item ret
+the units currently used for @var{ruler}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-ruler-get-range  (self@tie{}@code{<gtk-ruler>}) @result{}@tie{} (lower@tie{}@code{double}) (upper@tie{}@code{double}) (position@tie{}@code{double}) (max_size@tie{}@code{double})
+@deffnx Method get-range
+Retrieves values indicating the range and current position of a
+@code{<gtk-ruler>}. See @code{gtk-ruler-set-range}.
+
+@table @var
+@item ruler
+a @code{<gtk-ruler>}
+
+@item lower
+location to store lower limit of the ruler, or @samp{@code{#f}}
+
+@item upper
+location to store upper limit of the ruler, or @samp{@code{#f}}
+
+@item position
+location to store the current position of the mark on the ruler, or
+@samp{@code{#f}}
+
+@item max-size
+location to store the maximum size of the ruler used when calculating the space
+to leave for the text, or @samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

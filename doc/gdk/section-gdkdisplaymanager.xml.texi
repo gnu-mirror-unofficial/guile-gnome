@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@node GdkDisplayManager
+@chapter GdkDisplayManager
+Maintains a list of all open s
+
+@section Overview
+The purpose of the @code{<gdk-display-manager>} singleton object is to offer
+notification when displays appear or disappear or the default display changes.
+
+@section Usage
+@include defuns-gdkdisplaymanager.xml.texi
+
+@c %end of fragment

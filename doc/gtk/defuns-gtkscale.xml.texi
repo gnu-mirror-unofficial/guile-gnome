@@ -1,0 +1,172 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-scale>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item digits
+The number of decimal places that are displayed in the value@item draw-value
+Whether the current value is displayed as a string next to the slider@item value-pos
+The position in which the current value is displayed@end table
+
+@end deftp
+
+@defop Signal <gtk-scale> format-value  (arg0@tie{}@code{<gdouble>}) @result{}@tie{}@code{<gchararray>}
+Signal which allows you to change how the scale value is displayed. Connect a
+signal handler which returns an allocated string representing @var{value}. That
+string will then be used to display the scale's value. Here's an example signal
+handler which displays a value 1.0 as with "-->1.0<--".
+
+@example 
+
+static gchar*
+format_value_callback (GtkScale *scale,
+                       gdouble   value)
+@{
+  return g_strdup_printf ("-->%0.*g<--",
+                          gtk_scale_get_digits (scale), value);
+@}
+@end example
+
+@end defop
+
+@deffn Function gtk-scale-set-digits  (self@tie{}@code{<gtk-scale>}) (digits@tie{}@code{int})
+@deffnx Method set-digits
+Sets the number of decimal places that are displayed in the value. Also causes
+the value of the adjustment to be rounded off to this number of digits, so the
+retrieved value matches the value the user saw.
+
+@table @var
+@item scale
+a @code{<gtk-scale>}.
+
+@item digits
+the number of decimal places to display, e.g. use 1 to display 1.0, 2 to display
+1.00 etc.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scale-set-draw-value  (self@tie{}@code{<gtk-scale>}) (draw_value@tie{}@code{bool})
+@deffnx Method set-draw-value
+Specifies whether the current value is displayed as a string next to the slider.
+
+@table @var
+@item scale
+a @code{<gtk-scale>}.
+
+@item draw-value
+a boolean.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scale-set-value-pos  (self@tie{}@code{<gtk-scale>}) (pos@tie{}@code{<gtk-position-type>})
+@deffnx Method set-value-pos
+Sets the position in which the current value is displayed.
+
+@table @var
+@item scale
+a @code{<gtk-scale>}.
+
+@item pos
+the position in which the current value is displayed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scale-get-digits  (self@tie{}@code{<gtk-scale>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-digits
+Gets the number of decimal places that are displayed in the value.
+
+@table @var
+@item scale
+a @code{<gtk-scale>}.
+
+@item ret
+the number of decimal places that are displayed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scale-get-draw-value  (self@tie{}@code{<gtk-scale>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-draw-value
+Returns whether the current value is displayed as a string next to the slider.
+
+@table @var
+@item scale
+a @code{<gtk-scale>}.
+
+@item ret
+whether the current value is displayed as a string.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scale-get-value-pos  (self@tie{}@code{<gtk-scale>}) @result{}@tie{} (ret@tie{}@code{<gtk-position-type>})
+@deffnx Method get-value-pos
+Gets the position in which the current value is displayed.
+
+@table @var
+@item scale
+a @code{<gtk-scale>}.
+
+@item ret
+the position in which the current value is displayed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scale-get-layout  (self@tie{}@code{<gtk-scale>}) @result{}@tie{} (ret@tie{}@code{<pango-layout*>})
+@deffnx Method get-layout
+Gets the @code{<pango-layout>} used to display the scale. The returned object is
+owned by the scale so does not need to be freed by the caller.
+
+@table @var
+@item scale
+A @code{<gtk-scale>}
+
+@item ret
+the @code{<pango-layout>} for this scale, or @samp{@code{#f}} if the draw_value
+property is @samp{@code{#f}}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-scale-get-layout-offsets  (self@tie{}@code{<gtk-scale>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method get-layout-offsets
+Obtains the coordinates where the scale will draw the @code{<pango-layout>}
+representing the text in the scale. Remember when using the
+@code{<pango-layout>} function you need to convert to and from pixels using
+@code{pango-pixels} or @code{<pango-scale>}.
+
+If the draw_value property is @samp{@code{#f}}, the return values are undefined.
+
+@table @var
+@item scale
+a @code{<gtk-scale>}
+
+@item x
+location to store X offset of layout, or @samp{@code{#f}}
+
+@item y
+location to store Y offset of layout, or @samp{@code{#f}}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

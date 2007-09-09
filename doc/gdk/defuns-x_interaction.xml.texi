@@ -1,0 +1,123 @@
+
+@c %start of fragment
+
+@deffn Function gdk-pixmap-foreign-new-for-display  (display@tie{}@code{<gdk-display>}) (anid@tie{}@code{unsigned-long}) @result{}@tie{} (ret@tie{}@code{<gdk-pixmap*>})
+Wraps a native pixmap in a @code{<gdk-pixmap>}. This may fail if the pixmap has
+been destroyed.
+
+For example in the X backend, a native pixmap handle is an Xlib @code{<xid>}.
+
+@table @var
+@item display
+The @code{<gdk-display>} where @var{anid} is located.
+
+@item anid
+a native pixmap handle.
+
+@item ret
+the newly-created @code{<gdk-pixmap>} wrapper for the native pixmap or
+@samp{@code{#f}} if the pixmap has been destroyed.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-pixmap-foreign-new-for-screen  (screen@tie{}@code{<gdk-screen>}) (anid@tie{}@code{unsigned-long}) (width@tie{}@code{int}) (height@tie{}@code{int}) (depth@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-pixmap*>})
+Wraps a native pixmap in a @code{<gdk-pixmap>}. This may fail if the pixmap has
+been destroyed.
+
+For example in the X backend, a native pixmap handle is an Xlib @code{<xid>}.
+
+This function is an alternative to @code{gdk-pixmap-foreign-new-for-display} for
+cases where the dimensions of the pixmap are known. For the X backend, this
+avoids a roundtrip to the server.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item anid
+a native pixmap handle
+
+@item width
+the width of the pixmap identified by @var{anid}
+
+@item height
+the height of the pixmap identified by @var{anid}
+
+@item depth
+the depth of the pixmap identified by @var{anid}
+
+@item ret
+the newly-created @code{<gdk-pixmap>} wrapper for the native pixmap or
+@samp{@code{#f}} if the pixmap has been destroyed.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gdk-window-foreign-new-for-display  (display@tie{}@code{<gdk-display>}) (anid@tie{}@code{unsigned-long}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>})
+Wraps a native window in a @code{<gdk-window>}. This may fail if the window has
+been destroyed. If the window was already known to GDK, a new reference to the
+existing @code{<gdk-window>} is returned.
+
+For example in the X backend, a native window handle is an Xlib @code{<xid>}.
+
+@table @var
+@item display
+the @code{<gdk-display>} where the window handle comes from.
+
+@item anid
+a native window handle.
+
+@item ret
+a @code{<gdk-window>} wrapper for the native window or @samp{@code{#f}} if the
+window has been destroyed. The wrapper will be newly created, if one doesn't
+exist already.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-window-lookup  (anid@tie{}@code{unsigned-long}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>})
+Looks up the @code{<gdk-window>} that wraps the given native window handle.
+
+For example in the X backend, a native window handle is an Xlib @code{<xid>}.
+
+@table @var
+@item anid
+a native window handle.
+
+@item ret
+the @code{<gdk-window>} wrapper for the native window, or @samp{@code{#f}} if
+there is none.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixmap-lookup  (anid@tie{}@code{unsigned-long}) @result{}@tie{} (ret@tie{}@code{<gdk-pixmap*>})
+Looks up the @code{<gdk-pixmap>} that wraps the given native pixmap handle.
+
+For example in the X backend, a native pixmap handle is an Xlib @code{<xid>}.
+
+@table @var
+@item anid
+a native pixmap handle.
+
+@item ret
+the @code{<gdk-window>} wrapper for the native window, or @samp{@code{#f}} if
+there is none.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,25 @@
+
+@c %start of fragment
+
+@node GtkPixmap
+@chapter GtkPixmap
+A widget displaying a graphical image or icon
+
+@section Overview
+The @code{<gtk-pixmap>} widget displays a graphical image or icon. The icon is
+typically created using @code{gdk-pixmap-colormap-create-from-xpm} or
+@code{gdk-pixmap-colormap-create-from-xpm-d}.
+
+The pixels in a @code{<gtk-pixmap>} cannot be manipulated by the application
+after creation, since under the X Window system the pixel data is stored on the
+X server and so is not available to the client application. If you want to
+create graphical images which can be manipulated by the application, look at
+@code{<gtk-image>} and @code{<gdk-rgb>}.
+
+GtkPixmap has been deprecated since GTK+ 2.0 and should not be used in newly
+written code. Use @code{<gtk-image>} instead.
+
+@section Usage
+@include defuns-gtkpixmap.xml.texi
+
+@c %end of fragment

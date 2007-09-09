@@ -1,0 +1,280 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-scrolled-window>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item hadjustment
+The GtkAdjustment for the horizontal position@item vadjustment
+The GtkAdjustment for the vertical position@item hscrollbar-policy
+When the horizontal scrollbar is displayed@item vscrollbar-policy
+When the vertical scrollbar is displayed@item window-placement
+Where the contents are located with respect to the scrollbars. This property only takes effect if "window-placement-set" is TRUE.@item window-placement-set
+Whether "window-placement" should be used to determine the location of the contents with respect to the scrollbars.@item shadow-type
+Style of bevel around the contents@end table
+
+@end deftp
+
+@defop Signal <gtk-scrolled-window> move-focus-out  (arg0@tie{}@code{<gtk-direction-type>})
+@end defop
+
+@defop Signal <gtk-scrolled-window> scroll-child  (arg0@tie{}@code{<gtk-scroll-type>}) (arg1@tie{}@code{<gboolean>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@deffn Function gtk-scrolled-window-new  (hadjustment@tie{}@code{<gtk-adjustment>}) (vadjustment@tie{}@code{<gtk-adjustment>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new scrolled window. The two arguments are the scrolled window's
+adjustments; these will be shared with the scrollbars and the child widget to
+keep the bars in sync with the child. Usually you want to pass @samp{@code{#f}}
+for the adjustments, which will cause the scrolled window to create them for
+you.
+
+@table @var
+@item hadjustment
+Horizontal adjustment.
+
+@item vadjustment
+Vertical adjustment.
+
+@item ret
+New scrolled window.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scrolled-window-get-hadjustment  (self@tie{}@code{<gtk-scrolled-window>}) @result{}@tie{} (ret@tie{}@code{<gtk-adjustment>})
+@deffnx Method get-hadjustment
+Returns the horizontal scrollbar's adjustment, used to connect the horizontal
+scrollbar to the child widget's horizontal scroll functionality.
+
+@table @var
+@item scrolled-window
+A @code{<gtk-scrolled-window>}.
+
+@item ret
+The horizontal @code{<gtk-adjustment>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scrolled-window-get-vadjustment  (self@tie{}@code{<gtk-scrolled-window>}) @result{}@tie{} (ret@tie{}@code{<gtk-adjustment>})
+@deffnx Method get-vadjustment
+Returns the vertical scrollbar's adjustment, used to connect the vertical
+scrollbar to the child widget's vertical scroll functionality.
+
+@table @var
+@item scrolled-window
+A @code{<gtk-scrolled-window>}.
+
+@item ret
+The vertical @code{<gtk-adjustment>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scrolled-window-get-hscrollbar  (self@tie{}@code{<gtk-scrolled-window>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-hscrollbar
+Returns the horizontal scrollbar of @var{scrolled-window}.
+
+@table @var
+@item scrolled-window
+a @code{<gtk-scrolled-window>}
+
+@item ret
+the horizontal scrollbar of the scrolled window, or @samp{@code{#f}} if it does
+not have one.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-scrolled-window-get-vscrollbar  (self@tie{}@code{<gtk-scrolled-window>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-vscrollbar
+Returns the vertical scrollbar of @var{scrolled-window}.
+
+@table @var
+@item scrolled-window
+a @code{<gtk-scrolled-window>}
+
+@item ret
+the vertical scrollbar of the scrolled window, or @samp{@code{#f}} if it does
+not have one.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-scrolled-window-set-policy  (self@tie{}@code{<gtk-scrolled-window>}) (hscrollbar_policy@tie{}@code{<gtk-policy-type>}) (vscrollbar_policy@tie{}@code{<gtk-policy-type>})
+@deffnx Method set-policy
+Sets the scrollbar policy for the horizontal and vertical scrollbars. The policy
+determines when the scrollbar should appear; it is a value from the
+@code{<gtk-policy-type>} enumeration. If @samp{GTK_POLICY_ALWAYS}, the scrollbar
+is always present; if @samp{GTK_POLICY_NEVER}, the scrollbar is never present;
+if @samp{GTK_POLICY_AUTOMATIC}, the scrollbar is present only if needed (that
+is, if the slider part of the bar would be smaller than the trough - the display
+is larger than the page size).
+
+@table @var
+@item scrolled-window
+A @code{<gtk-scrolled-window>}.
+
+@item hscrollbar-policy
+Policy for horizontal bar.
+
+@item vscrollbar-policy
+Policy for vertical bar.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scrolled-window-set-placement  (self@tie{}@code{<gtk-scrolled-window>}) (window_placement@tie{}@code{<gtk-corner-type>})
+@deffnx Method set-placement
+Sets the placement of the contents with respect to the scrollbars for the
+scrolled window.
+
+See also @code{gtk-scrolled-window-get-placement} and
+@code{gtk-scrolled-window-unset-placement}.
+
+Determines the location of the child widget with respect to the scrollbars. The
+default is @samp{GTK_CORNER_TOP_LEFT}, meaning the child is in the top left,
+with the scrollbars underneath and to the right. Other values in
+@code{<gtk-corner-type>} are @samp{GTK_CORNER_TOP_RIGHT},
+@samp{GTK_CORNER_BOTTOM_LEFT}, and @samp{GTK_CORNER_BOTTOM_RIGHT}.
+
+@table @var
+@item scrolled-window
+a @code{<gtk-scrolled-window>}
+
+@item window-placement
+Position of the child window.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scrolled-window-unset-placement  (self@tie{}@code{<gtk-scrolled-window>})
+@deffnx Method unset-placement
+Unsets the placement of the contents with respect to the scrollbars for the
+scrolled window. If no window placement is set for a scrolled window, it obeys
+the "gtk-scrolled-window-placement" XSETTING.
+
+See also @code{gtk-scrolled-window-set-placement} and
+@code{gtk-scrolled-window-get-placement}.
+
+@table @var
+@item scrolled-window
+a @code{<gtk-scrolled-window>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-scrolled-window-set-shadow-type  (self@tie{}@code{<gtk-scrolled-window>}) (type@tie{}@code{<gtk-shadow-type>})
+@deffnx Method set-shadow-type
+Changes the type of shadow drawn around the contents of @var{scrolled-window}.
+
+@table @var
+@item scrolled-window
+a @code{<gtk-scrolled-window>}
+
+@item type
+kind of shadow to draw around scrolled window contents
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scrolled-window-set-hadjustment  (self@tie{}@code{<gtk-scrolled-window>}) (hadjustment@tie{}@code{<gtk-adjustment>})
+@deffnx Method set-hadjustment
+Sets the @code{<gtk-adjustment>} for the horizontal scrollbar.
+
+@table @var
+@item scrolled-window
+A @code{<gtk-scrolled-window>}.
+
+@item hadjustment
+Horizontal scroll adjustment.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scrolled-window-set-vadjustment  (self@tie{}@code{<gtk-scrolled-window>}) (vadjustment@tie{}@code{<gtk-adjustment>})
+@deffnx Method set-vadjustment
+Sets the @code{<gtk-adjustment>} for the vertical scrollbar.
+
+@table @var
+@item scrolled-window
+A @code{<gtk-scrolled-window>}.
+
+@item vadjustment
+Vertical scroll adjustment.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scrolled-window-get-placement  (self@tie{}@code{<gtk-scrolled-window>}) @result{}@tie{} (ret@tie{}@code{<gtk-corner-type>})
+@deffnx Method get-placement
+Gets the placement of the contents with respect to the scrollbars for the
+scrolled window. See @code{gtk-scrolled-window-set-placement}.
+
+@table @var
+@item scrolled-window
+a @code{<gtk-scrolled-window>}
+
+@item ret
+the current placement value. See also @code{gtk-scrolled-window-set-placement}
+and @code{gtk-scrolled-window-unset-placement}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scrolled-window-get-policy  (self@tie{}@code{<gtk-scrolled-window>}) (hscrollbar_policy@tie{}@code{<gtk-policy-type*>}) (vscrollbar_policy@tie{}@code{<gtk-policy-type*>})
+@deffnx Method get-policy
+Retrieves the current policy values for the horizontal and vertical scrollbars.
+See @code{gtk-scrolled-window-set-policy}.
+
+@table @var
+@item scrolled-window
+a @code{<gtk-scrolled-window>}
+
+@item hscrollbar-policy
+location to store the policy for the horizontal scrollbar, or @samp{@code{#f}}.
+
+@item vscrollbar-policy
+location to store the policy for the horizontal scrollbar, or @samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-scrolled-window-get-shadow-type  (self@tie{}@code{<gtk-scrolled-window>}) @result{}@tie{} (ret@tie{}@code{<gtk-shadow-type>})
+@deffnx Method get-shadow-type
+Gets the shadow type of the scrolled window. See
+@code{gtk-scrolled-window-set-shadow-type}.
+
+@table @var
+@item scrolled-window
+a @code{<gtk-scrolled-window>}
+
+@item ret
+the current shadow type
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

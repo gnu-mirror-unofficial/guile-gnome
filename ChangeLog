@@ -1,3 +1,20 @@
+2007-09-09  Andy Wingo  <wingo@pobox.com>
+
+	* doc/Makefile.am: 
+	* doc/gtk/Makefile.am: 
+	* doc/gtk/guile-gnome-gtk.texi:
+	* doc/gtk/overview.texi:
+	* doc/gtk/overrides.texi:
+	* doc/gtk/section-*.texi:
+	* doc/gtk/defuns-*.texi: Add gtk docs.
+	
+	* doc/gdk/Makefile.am: 
+	* doc/gdk/guile-gnome-gdk.texi:
+	* doc/gdk/overview.texi:
+	* doc/gdk/overrides.texi:
+	* doc/gdk/section-*.texi:
+	* doc/gdk/defuns-*.texi: Add gdk docs.
+	
 2007-06-15  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.93 ==

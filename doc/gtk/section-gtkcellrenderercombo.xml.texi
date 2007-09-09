@@ -1,0 +1,26 @@
+
+@c %start of fragment
+
+@node GtkCellRendererCombo
+@chapter GtkCellRendererCombo
+Renders a combobox in a cell
+
+@section Overview
+@code{<gtk-cell-renderer-combo>} renders text in a cell like
+@code{<gtk-cell-renderer-text>} from which it is derived. But while
+@code{<gtk-cell-renderer-text>} offers a simple entry to edit the text,
+@code{<gtk-cell-renderer-combo>} offers a @code{<gtk-combo-box>} or
+@code{<gtk-combo-box-entry>} widget to edit the text. The values to display in
+the combo box are taken from the tree model specified in the model property.
+
+The combo cell renderer takes care of adding a text cell renderer to the combo
+box and sets it to display the column specified by its text-column property.
+Further properties of the comnbo box can be set in a handler for the
+editing-started signal.
+
+The @code{<gtk-cell-renderer-combo>} cell renderer was added in GTK+ 2.6.
+
+@section Usage
+@include defuns-gtkcellrenderercombo.xml.texi
+
+@c %end of fragment

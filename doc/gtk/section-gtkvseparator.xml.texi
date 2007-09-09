@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node GtkVSeparator
+@chapter GtkVSeparator
+A vertical separator
+
+@section Overview
+The @code{<gtk-vseparator>} widget is a vertical separator, used to group the
+widgets within a window. It displays a vertical line with a shadow to make it
+appear sunken into the interface.
+
+@section Usage
+@include defuns-gtkvseparator.xml.texi
+
+@c %end of fragment

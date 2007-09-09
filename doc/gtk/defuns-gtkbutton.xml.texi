@@ -1,0 +1,470 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-button>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item label
+Text of the label widget inside the button, if the button contains a label widget@item image
+Child widget to appear next to the button text@item relief
+The border relief style@item use-underline
+If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key@item use-stock
+If set, the label is used to pick a stock item instead of being displayed@item focus-on-click
+Whether the button grabs focus when it is clicked with the mouse@item xalign
+Horizontal position of child in available space. 0.0 is left aligned, 1.0 is right aligned@item yalign
+Vertical position of child in available space. 0.0 is top aligned, 1.0 is bottom aligned@item image-position
+The position of the image relative to the text@end table
+
+@end deftp
+
+@defop Signal <gtk-button> activate 
+The "activate" signal on GtkButton is an action signal and emitting it causes
+the button to animate press then release. Applications should never connect to
+this signal, but use the "clicked" signal.
+
+@end defop
+
+@defop Signal <gtk-button> pressed 
+Emitted when the button is pressed.
+
+@var{deprecated}: Use the GtkWidget::button-press-event signal.
+
+@end defop
+
+@defop Signal <gtk-button> released 
+Emitted when the button is released.
+
+@var{deprecated}: Use the GtkWidget::button-release-event signal.
+
+@end defop
+
+@defop Signal <gtk-button> clicked 
+Emitted when the button has been activated (pressed and released).
+
+@end defop
+
+@defop Signal <gtk-button> enter 
+Emitted when the pointer enters the button.
+
+@var{deprecated}: Use the GtkWidget::enter-notify-event signal.
+
+@end defop
+
+@defop Signal <gtk-button> leave 
+Emitted when the pointer leaves the button.
+
+@var{deprecated}: Use the GtkWidget::leave-notify-event signal.
+
+@end defop
+
+@deffn Function gtk-button-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-button>} widget. To add a child widget to the button,
+use @code{gtk-container-add}.
+
+@table @var
+@item ret
+The newly created @code{<gtk-button>} widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-new-with-label  (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a @code{<gtk-button>} widget with a @code{<gtk-label>} child containing
+the given text.
+
+@table @var
+@item label
+The text you want the @code{<gtk-label>} to hold.
+
+@item ret
+The newly created @code{<gtk-button>} widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-new-with-mnemonic  (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-button>} containing a label. If characters in
+@var{label} are preceded by an underscore, they are underlined. If you need a
+literal underscore character in a label, use '__' (two underscores). The first
+underlined character represents a keyboard accelerator called a mnemonic.
+Pressing Alt and that key activates the button.
+
+@table @var
+@item label
+The text of the button, with an underscore in front of the mnemonic character
+
+@item ret
+a new @code{<gtk-button>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-new-from-stock  (stock_id@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-button>} containing the image and text from a stock
+item. Some stock ids have preprocessor macros like @code{<gtk-stock-ok>} and
+@code{<gtk-stock-apply>}.
+
+If @var{stock-id} is unknown, then it will be treated as a mnemonic label (as
+for @code{gtk-button-new-with-mnemonic}).
+
+@table @var
+@item stock-id
+the name of the stock item
+
+@item ret
+a new @code{<gtk-button>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-pressed  (self@tie{}@code{<gtk-button>})
+@deffnx Method pressed
+Emits a @code{<gtk-button::pressed>} signal to the given @code{<gtk-button>}.
+
+@table @var
+@item button
+The @code{<gtk-button>} you want to send the signal to.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-released  (self@tie{}@code{<gtk-button>})
+@deffnx Method released
+Emits a @code{<gtk-button::released>} signal to the given @code{<gtk-button>}.
+
+@table @var
+@item button
+The @code{<gtk-button>} you want to send the signal to.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-clicked  (self@tie{}@code{<gtk-button>})
+@deffnx Method clicked
+Emits a @code{<gtk-button::clicked>} signal to the given @code{<gtk-button>}.
+
+@table @var
+@item button
+The @code{<gtk-button>} you want to send the signal to.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-enter  (self@tie{}@code{<gtk-button>})
+@deffnx Method enter
+Emits a @code{<gtk-button::enter>} signal to the given @code{<gtk-button>}.
+
+@table @var
+@item button
+The @code{<gtk-button>} you want to send the signal to.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-leave  (self@tie{}@code{<gtk-button>})
+@deffnx Method leave
+Emits a @code{<gtk-button::leave>} signal to the given @code{<gtk-button>}.
+
+@table @var
+@item button
+The @code{<gtk-button>} you want to send the signal to.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-set-relief  (self@tie{}@code{<gtk-button>}) (newstyle@tie{}@code{<gtk-relief-style>})
+@deffnx Method set-relief
+Sets the relief style of the edges of the given @code{<gtk-button>} widget.
+Three styles exist, GTK_RELIEF_NORMAL, GTK_RELIEF_HALF, GTK_RELIEF_NONE. The
+default style is, as one can guess, GTK_RELIEF_NORMAL.
+
+@table @var
+@item button
+The @code{<gtk-button>} you want to set relief styles of.
+
+@item newstyle
+The GtkReliefStyle as described above.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-get-relief  (self@tie{}@code{<gtk-button>}) @result{}@tie{} (ret@tie{}@code{<gtk-relief-style>})
+@deffnx Method get-relief
+Returns the current relief style of the given @code{<gtk-button>}.
+
+@table @var
+@item button
+The @code{<gtk-button>} you want the @code{<gtk-relief-style>} from.
+
+@item ret
+The current @code{<gtk-relief-style>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-get-label  (self@tie{}@code{<gtk-button>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-label
+Fetches the text from the label of the button, as set by
+@code{gtk-button-set-label}. If the label text has not been set the return value
+will be @samp{@code{#f}}. This will be the case if you create an empty button
+with @code{gtk-button-new} to use as a container.
+
+@table @var
+@item button
+a @code{<gtk-button>}
+
+@item ret
+The text of the label widget. This string is owned by the widget and must not be
+modified or freed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-set-label  (self@tie{}@code{<gtk-button>}) (label@tie{}@code{mchars})
+@deffnx Method set-label
+Sets the text of the label of the button to @var{str}. This text is also used to
+select the stock item if @code{gtk-button-set-use-stock} is used.
+
+This will also clear any previously set labels.
+
+@table @var
+@item button
+a @code{<gtk-button>}
+
+@item label
+a string
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-get-use-stock  (self@tie{}@code{<gtk-button>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-use-stock
+Returns whether the button label is a stock item.
+
+@table @var
+@item button
+a @code{<gtk-button>}
+
+@item ret
+@samp{@code{#t}} if the button label is used to select a stock item instead of
+being used directly as the label text.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-set-use-stock  (self@tie{}@code{<gtk-button>}) (use_stock@tie{}@code{bool})
+@deffnx Method set-use-stock
+If true, the label set on the button is used as a stock id to select the stock
+item for the button.
+
+@table @var
+@item button
+a @code{<gtk-button>}
+
+@item use-stock
+@samp{@code{#t}} if the button should use a stock item
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-get-use-underline  (self@tie{}@code{<gtk-button>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-use-underline
+Returns whether an embedded underline in the button label indicates a mnemonic.
+See @code{gtk-button-set-use-underline}.
+
+@table @var
+@item button
+a @code{<gtk-button>}
+
+@item ret
+@samp{@code{#t}} if an embedded underline in the button label indicates the
+mnemonic accelerator keys.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-set-use-underline  (self@tie{}@code{<gtk-button>}) (use_underline@tie{}@code{bool})
+@deffnx Method set-use-underline
+If true, an underline in the text of the button label indicates the next
+character should be used for the mnemonic accelerator key.
+
+@table @var
+@item button
+a @code{<gtk-button>}
+
+@item use-underline
+@samp{@code{#t}} if underlines in the text indicate mnemonics
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-set-focus-on-click  (self@tie{}@code{<gtk-button>}) (focus_on_click@tie{}@code{bool})
+@deffnx Method set-focus-on-click
+Sets whether the button will grab focus when it is clicked with the mouse.
+Making mouse clicks not grab focus is useful in places like toolbars where you
+don't want the keyboard focus removed from the main area of the application.
+
+@table @var
+@item button
+a @code{<gtk-button>}
+
+@item focus-on-click
+whether the button grabs focus when clicked with the mouse
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-button-get-focus-on-click  (self@tie{}@code{<gtk-button>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-focus-on-click
+Returns whether the button grabs focus when it is clicked with the mouse. See
+@code{gtk-button-set-focus-on-click}.
+
+@table @var
+@item button
+a @code{<gtk-button>}
+
+@item ret
+@samp{@code{#t}} if the button grabs focus when it is clicked with the mouse.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-button-set-alignment  (self@tie{}@code{<gtk-button>}) (xalign@tie{}@code{float}) (yalign@tie{}@code{float})
+@deffnx Method set-alignment
+Sets the alignment of the child. This property has no effect unless the child is
+a @code{<gtk-misc>} or a @code{<gtk-aligment>}.
+
+@table @var
+@item button
+a @code{<gtk-button>}
+
+@item xalign
+the horizontal position of the child, 0.0 is left aligned, 1.0 is right aligned
+
+@item yalign
+the vertical position of the child, 0.0 is top aligned, 1.0 is bottom aligned
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-button-get-alignment  (self@tie{}@code{<gtk-button>}) @result{}@tie{} (xalign@tie{}@code{float}) (yalign@tie{}@code{float})
+@deffnx Method get-alignment
+Gets the alignment of the child in the button.
+
+@table @var
+@item button
+a @code{<gtk-button>}
+
+@item xalign
+return location for horizontal alignment
+
+@item yalign
+return location for vertical alignment
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-button-set-image  (self@tie{}@code{<gtk-button>}) (image@tie{}@code{<gtk-widget>})
+@deffnx Method set-image
+Set the image of @var{button} to the given widget. Note that it depends on the
+gtk-button-images setting whether the image will be displayed or not, you don't
+have to call @code{gtk-widget-show} on @var{image} yourself.
+
+@table @var
+@item button
+a @code{<gtk-button>}
+
+@item image
+a widget to set as the image for the button
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-button-get-image  (self@tie{}@code{<gtk-button>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-image
+Gets the widget that is currenty set as the image of @var{button}. This may have
+been explicitly set by @code{gtk-button-set-image} or constructed by
+@code{gtk-button-new-from-stock}.
+
+@table @var
+@item button
+a @code{<gtk-button>}
+
+@item ret
+a @code{<gtk-widget>} or @samp{@code{#f}} in case there is no image
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-button-set-image-position  (self@tie{}@code{<gtk-button>}) (position@tie{}@code{<gtk-position-type>})
+@deffnx Method set-image-position
+Sets the position of the image relative to the text inside the button.
+
+@table @var
+@item button
+a @code{<gtk-button>}
+
+@item position
+the position
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-button-get-image-position  (self@tie{}@code{<gtk-button>}) @result{}@tie{} (ret@tie{}@code{<gtk-position-type>})
+@deffnx Method get-image-position
+Gets the position of the image relative to the text inside the button.
+
+@table @var
+@item button
+a @code{<gtk-button>}
+
+@item ret
+the position
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment

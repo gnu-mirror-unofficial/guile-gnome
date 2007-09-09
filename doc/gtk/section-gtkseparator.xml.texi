@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@node GtkSeparator
+@chapter GtkSeparator
+Base class for and
+
+@section Overview
+The @code{<gtk-separator>} widget is an abstract class, used only for deriving
+the subclasses @code{<gtk-hseparator>} and @code{<gtk-vseparator>}.
+
+@section Usage
+@include defuns-gtkseparator.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,62 @@
+
+@c %start of fragment
+
+@node GtkSocket
+@chapter GtkSocket
+Container for widgets from other processes
+
+@section Overview
+Together with @code{<gtk-plug>}, @code{<gtk-socket>} provides the ability to
+embed widgets from one process into another process in a fashion that is
+transparent to the user. One process creates a @code{<gtk-socket>} widget and,
+passes the that widget's window ID to the other process, which then creates a
+@code{<gtk-plug>} with that window ID. Any widgets contained in the
+@code{<gtk-plug>} then will appear inside the first applications window.
+
+The socket's window ID is obtained by using @code{gtk-socket-get-id}. Before
+using this function, the socket must have been realized, and for hence, have
+been added to its parent.
+
+@example 
+
+GtkWidget *socket = gtk_socket_new ();
+gtk_widget_show (socket);
+gtk_container_add (GTK_CONTAINER (parent), socket);
+
+/* The following call is only necessary if one of
+ * the ancestors of the socket is not yet visible.
+ */
+gtk_widget_realize (socket);
+g_print ("The ID of the sockets window is %x\n",
+         gtk_socket_get_id (socket));
+@end example
+
+Note that if you pass the window ID of the socket to another process that will
+create a plug in the socket, you must make sure that the socket widget is not
+destroyed until that plug is created. Violating this rule will cause
+unpredictable consequences, the most likely consequence being that the plug will
+appear as a separate toplevel window. You can check if the plug has been created
+by examining the field of the @code{<gtk-socket>} structure. If this field is
+non-@samp{@code{#f}}, then the plug has been successfully created inside of the
+socket.
+
+When GTK+ is notified that the embedded window has been destroyed, then it will
+destroy the socket as well. You should always, therefore, be prepared for your
+sockets to be destroyed at any time when the main event loop is running.
+
+The communication between a @code{<gtk-socket>} and a @code{<gtk-plug>} follows
+the @uref{http://www.freedesktop.org/standards/xembed-spec,XEmbed} protocol.
+This protocol has also been implemented in other toolkits, e.g. , allowing the
+same level of integration when embedding a widget in GTK or vice versa.
+
+A socket can also be used to swallow arbitrary pre-existing top-level windows
+using @code{gtk-socket-steal}, though the integration when this is done will not
+be as close as between a @code{<gtk-plug>} and a @code{<gtk-socket>}.
+
+The @code{<gtk-plug>} and @code{<gtk-socket>} widgets are currently not
+available on all platforms supported by GTK+.
+
+@section Usage
+@include defuns-gtksocket.xml.texi
+
+@c %end of fragment

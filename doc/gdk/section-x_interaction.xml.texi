@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node X Window System Interaction
+@chapter X Window System Interaction
+X backend-specific functions
+
+@section Overview
+@section Usage
+@include defuns-x_interaction.xml.texi
+
+@c %end of fragment

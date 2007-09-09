@@ -1,0 +1,19 @@
+
+@c %start of fragment
+
+@node Windows
+@chapter Windows
+Onscreen display areas in the target window system
+
+@section Overview
+A @code{<gdk-window>} is a rectangular region on the screen. It's a low-level
+object, used to implement high-level objects such as @code{<gtk-widget>} and
+@code{<gtk-window>} on the GTK+ level. A @code{<gtk-window>} is a toplevel
+window, the thing a user might think of as a "window" with a titlebar and so on;
+a @code{<gtk-window>} may contain many @code{<gdk-window>}. For example, each
+@code{<gtk-button>} has a @code{<gdk-window>} associated with it.
+
+@section Usage
+@include defuns-windows.xml.texi
+
+@c %end of fragment

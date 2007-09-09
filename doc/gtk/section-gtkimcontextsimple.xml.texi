@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GtkIMContextSimple
+@chapter GtkIMContextSimple
+An input method context supporting table-based input methods
+
+@section Overview
+@section Usage
+@include defuns-gtkimcontextsimple.xml.texi
+
+@c %end of fragment

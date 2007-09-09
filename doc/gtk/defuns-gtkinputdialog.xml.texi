@@ -1,0 +1,36 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-input-dialog>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@defop Signal <gtk-input-dialog> enable-device  (arg0@tie{}@code{<gdk-device>})
+This signal is emitted when the user changes the mode of a device from
+@code{<gdk-mode-disabled>} to a @code{<gdk-mode-screen>} or
+@code{<gdk-mode-window>}.
+
+@end defop
+
+@defop Signal <gtk-input-dialog> disable-device  (arg0@tie{}@code{<gdk-device>})
+This signal is emitted when the user changes the mode of a device from a
+@code{<gdk-mode-screen>} or @code{<gdk-mode-window>} to
+@code{<gdk-mode-enabled>}.
+
+@end defop
+
+@deffn Function gtk-input-dialog-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-input-dialog>}.
+
+@table @var
+@item ret
+the new @code{<gtk-input-dialog>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

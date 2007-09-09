@@ -1,0 +1,76 @@
+
+@c %start of fragment
+
+@node GtkTooltips
+@chapter GtkTooltips
+Add tips to your widgets
+
+@section Overview
+Tooltips are the messages that appear next to a widget when the mouse pointer is
+held over it for a short amount of time. They are especially helpful for adding
+more verbose descriptions of things such as buttons in a toolbar.
+
+An individual tooltip belongs to a group of tooltips. A group is created with a
+call to @code{gtk-tooltips-new}. Every tooltip in the group can then be turned
+off with a call to @code{gtk-tooltips-disable} and enabled with
+@code{gtk-tooltips-enable}.
+
+The length of time the user must keep the mouse over a widget before the tip is
+shown, can be altered with @code{gtk-tooltips-set-delay}. This is set on a 'per
+group of tooltips' basis.
+
+To assign a tip to a particular @code{<gtk-widget>}, @code{gtk-tooltips-set-tip}
+is used.
+
+Tooltips can only be set on widgets which have their own X window and receive
+enter and leave events. To check if a widget has its own window use
+@code{gtk-widget-no-window}. To add a tooltip to a widget that doesn't have its
+own window, place the widget inside a @code{<gtk-event-box>} and add a tooltip
+to that instead.
+
+The default appearance of all tooltips in a program is determined by the current
+GTK+ theme that the user has selected.
+
+Information about the tooltip (if any) associated with an arbitrary widget can
+be retrieved using @code{gtk-tooltips-data-get}.
+
+
+
+@example 
+
+   GtkWidget *load_button, *save_button, *hbox;
+   GtkTooltips *button_bar_tips;
+   
+   button_bar_tips = gtk_tooltips_new ();
+   
+   /* Create the buttons and pack them into a GtkHBox */
+   hbox = gtk_hbox_new (TRUE, 2);
+   
+   load_button = gtk_button_new_with_label ("Load a file");
+   gtk_box_pack_start (GTK_BOX (hbox), load_button, TRUE, TRUE, 2);
+   gtk_widget_show (load_button);
+   
+   save_button = gtk_button_new_with_label ("Save a file");
+   gtk_box_pack_start (GTK_BOX (hbox), save_button, TRUE, TRUE, 2);
+   gtk_widget_show (save_button);
+   gtk_widget_show (hbox);
+   
+   /* Add the tips */
+   gtk_tooltips_set_tip (GTK_TOOLTIPS (button_bar_tips), load_button,
+				 "Load a new document into this window",
+				 "Requests the filename of a document.
+				  This will then be loaded into the current
+				  window, replacing the contents of whatever
+				  is already loaded.");
+   gtk_tooltips_set_tip (GTK_TOOLTIPS (button_bar_tips), save_button,
+				 "Saves the current document to a file",
+				 "If you have saved the document previously,
+				  then the new version will be saved over the
+				  old one. Otherwise, you will be prompted for
+				  a filename."); 
+@end example
+
+@section Usage
+@include defuns-gtktooltips.xml.texi
+
+@c %end of fragment

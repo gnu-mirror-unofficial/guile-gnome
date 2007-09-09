@@ -1,0 +1,19 @@
+
+@c %start of fragment
+
+@node GtkMenuItem
+@chapter GtkMenuItem
+The widget used for item in menus
+
+@section Overview
+The @code{<gtk-menu-item>} widget and the derived widgets are the only valid
+childs for menus. Their function is to correctly handle highlighting, alignment,
+events and submenus.
+
+As it derives from @code{<gtk-bin>} it can hold any valid child widget, altough
+only a few are really useful.
+
+@section Usage
+@include defuns-gtkmenuitem.xml.texi
+
+@c %end of fragment

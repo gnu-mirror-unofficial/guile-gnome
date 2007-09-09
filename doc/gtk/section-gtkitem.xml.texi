@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@node GtkItem
+@chapter GtkItem
+Abstract base class for GtkMenuItem, GtkListItem and GtkTreeItem
+
+@section Overview
+The @code{<gtk-item>} widget is an abstract base class for
+@code{<gtk-menu-item>}, @code{<gtk-list-item>} and @code{<gtk-tree-item>}.
+
+@section Usage
+@include defuns-gtkitem.xml.texi
+
+@c %end of fragment

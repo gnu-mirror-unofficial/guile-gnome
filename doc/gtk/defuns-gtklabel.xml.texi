@@ -1,0 +1,803 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-label>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item label
+The text of the label@item attributes
+A list of style attributes to apply to the text of the label@item use-markup
+The text of the label includes XML markup. See pango_parse_markup()@item use-underline
+If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key@item justify
+The alignment of the lines in the text of the label relative to each other. This does NOT affect the alignment of the label within its allocation. See GtkMisc::xalign for that@item pattern
+A string with _ characters in positions correspond to characters in the text to underline@item wrap
+If set, wrap lines if the text becomes too wide@item wrap-mode
+If wrap is set, controls how linewrapping is done@item selectable
+Whether the label text can be selected with the mouse@item mnemonic-keyval
+The mnemonic accelerator key for this label@item mnemonic-widget
+The widget to be activated when the label's mnemonic key is pressed@item cursor-position
+The current position of the insertion cursor in chars@item selection-bound
+The position of the opposite end of the selection from the cursor in chars@item ellipsize
+The preferred place to ellipsize the string, if the label does not have enough room to display the entire string@item width-chars
+The desired width of the label, in characters@item single-line-mode
+Whether the label is in single line mode@item angle
+Angle at which the label is rotated@item max-width-chars
+The desired maximum width of the label, in characters@end table
+
+@end deftp
+
+@defop Signal <gtk-label> move-cursor  (arg0@tie{}@code{<gtk-movement-step>}) (arg1@tie{}@code{<gint>}) (arg2@tie{}@code{<gboolean>})
+@end defop
+
+@defop Signal <gtk-label> copy-clipboard 
+@end defop
+
+@defop Signal <gtk-label> populate-popup  (arg0@tie{}@code{<gtk-menu>})
+@end defop
+
+@deffn Function gtk-label-new  (str@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new label with the given text inside it. You can pass @samp{@code{#f}}
+to get an empty label widget.
+
+@table @var
+@item str
+The text of the label
+
+@item ret
+the new @code{<gtk-label>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-set-text  (self@tie{}@code{<gtk-label>}) (str@tie{}@code{mchars})
+@deffnx Method set-text
+Sets the text within the @code{<gtk-label>} widget. It overwrites any text that
+was there before.
+
+This will also clear any previously set mnemonic accelerators.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item str
+The text you want to set.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-set-attributes  (self@tie{}@code{<gtk-label>}) (attrs@tie{}@code{<pango-attr-list>})
+@deffnx Method set-attributes
+Sets a @code{<pango-attr-list>}; the attributes in the list are applied to the
+label text. The attributes set with this function will be ignored if the
+"use_underline" property or the "use_markup" property is @samp{@code{#t}}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item attrs
+a @code{<pango-attr-list>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-set-markup  (self@tie{}@code{<gtk-label>}) (str@tie{}@code{mchars})
+@deffnx Method set-markup
+Parses @var{str} which is marked up with the Pango text markup language, setting
+the label's text and attribute list based on the parse results. If the @var{str}
+is external data, you may need to escape it with @code{g-markup-escape-text} or
+@code{g-markup-printf-escaped}:
+
+@example 
+
+char *markup;
+
+markup = g_markup_printf_escaped ("<span style=\"italic\">%s</span>", str);
+gtk_label_set_markup (GTK_LABEL (label), markup);
+g_free (markup);
+@end example
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item str
+a markup string (see Pango markup format)
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-set-markup-with-mnemonic  (self@tie{}@code{<gtk-label>}) (str@tie{}@code{mchars})
+@deffnx Method set-markup-with-mnemonic
+Parses @var{str} which is marked up with the Pango text markup language, setting
+the label's text and attribute list based on the parse results. If characters in
+@var{str} are preceded by an underscore, they are underlined indicating that
+they represent a keyboard accelerator called a mnemonic.
+
+The mnemonic key can be used to activate another widget, chosen automatically,
+or explicitly using @code{gtk-label-set-mnemonic-widget}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item str
+a markup string (see Pango markup format)
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-set-pattern  (self@tie{}@code{<gtk-label>}) (pattern@tie{}@code{mchars})
+@deffnx Method set-pattern
+The pattern of underlines you want under the existing text within the
+@code{<gtk-label>} widget. For example if the current text of the label says
+"FooBarBaz" passing a pattern of "___ ___" will underline "Foo" and "Baz" but
+not "Bar".
+
+@table @var
+@item label
+The @code{<gtk-label>} you want to set the pattern to.
+
+@item pattern
+The pattern as described above.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-set-justify  (self@tie{}@code{<gtk-label>}) (jtype@tie{}@code{<gtk-justification>})
+@deffnx Method set-justify
+Sets the alignment of the lines in the text of the label relative to each other.
+@samp{GTK_JUSTIFY_LEFT} is the default value when the widget is first created
+with @code{gtk-label-new}. If you instead want to set the alignment of the label
+as a whole, use @code{gtk-misc-set-alignment} instead.
+@code{gtk-label-set-justify} has no effect on labels containing only a single
+line.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item jtype
+a @code{<gtk-justification>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-set-ellipsize  (self@tie{}@code{<gtk-label>}) (mode@tie{}@code{<pango-ellipsize-mode>})
+@deffnx Method set-ellipsize
+Sets the mode used to ellipsize (add an ellipsis: "...") to the text if there is
+not enough space to render the entire string.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item mode
+a @code{<pango-ellipsize-mode>}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-label-set-width-chars  (self@tie{}@code{<gtk-label>}) (n_chars@tie{}@code{int})
+@deffnx Method set-width-chars
+Sets the desired width in characters of @var{label} to @var{n-chars}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item n-chars
+the new desired width, in characters.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-label-set-max-width-chars  (self@tie{}@code{<gtk-label>}) (n_chars@tie{}@code{int})
+@deffnx Method set-max-width-chars
+Sets the desired maximum width in characters of @var{label} to @var{n-chars}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item n-chars
+the new desired maximum width, in characters.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-label-set-line-wrap  (self@tie{}@code{<gtk-label>}) (wrap@tie{}@code{bool})
+@deffnx Method set-line-wrap
+Toggles line wrapping within the @code{<gtk-label>} widget. @samp{@code{#t}}
+makes it break lines if text exceeds the widget's size. @samp{@code{#f}} lets
+the text get cut off by the edge of the widget if it exceeds the widget size.
+
+Note that setting line wrapping to @samp{@code{#t}} does not make the label wrap
+at its parent container's width, because GTK+ widgets conceptually can't make
+their requisition depend on the parent container's size. For a label that wraps
+at a specific position, set the label's width using
+@code{gtk-widget-set-size-request}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item wrap
+the setting
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-set-line-wrap-mode  (self@tie{}@code{<gtk-label>}) (wrap_mode@tie{}@code{<pango-wrap-mode>})
+@deffnx Method set-line-wrap-mode
+If line wrapping is on (see @code{gtk-label-set-line-wrap}) this controls how
+the line wrapping is done. The default is @samp{PANGO_WRAP_WORD} which means
+wrap on word boundaries.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item wrap-mode
+the line wrapping mode
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-label-get-layout-offsets  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method get-layout-offsets
+Obtains the coordinates where the label will draw the @code{<pango-layout>}
+representing the text in the label; useful to convert mouse events into
+coordinates inside the @code{<pango-layout>}, e.g. to take some action if some
+part of the label is clicked. Of course you will need to create a
+@code{<gtk-event-box>} to receive the events, and pack the label inside it,
+since labels are a @code{<gtk-no-window>} widget. Remember when using the
+@code{<pango-layout>} functions you need to convert to and from pixels using
+@code{pango-pixels} or @code{<pango-scale>}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item x
+location to store X offset of layout, or @samp{@code{#f}}
+
+@item y
+location to store Y offset of layout, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-get-mnemonic-keyval  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+@deffnx Method get-mnemonic-keyval
+If the label has been set so that it has an mnemonic key this function returns
+the keyval used for the mnemonic accelerator. If there is no mnemonic set up it
+returns @code{<gdk--void-symbol>}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+GDK keyval usable for accelerators, or @code{<gdk--void-symbol>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-get-selectable  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-selectable
+Gets the value set by @code{gtk-label-set-selectable}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+@samp{@code{#t}} if the user can copy text from the label
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-get-text  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-text
+Fetches the text from a label widget, as displayed on the screen. This does not
+include any embedded underlines indicating mnemonics or Pango markup. (See
+@code{gtk-label-get-label})
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+the text in the label widget. This is the internal string used by the label, and
+must not be modified.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-new-with-mnemonic  (str@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-label>}, containing the text in @var{str}.
+
+If characters in @var{str} are preceded by an underscore, they are underlined.
+If you need a literal underscore character in a label, use '__' (two
+underscores). The first underlined character represents a keyboard accelerator
+called a mnemonic. The mnemonic key can be used to activate another widget,
+chosen automatically, or explicitly using @code{gtk-label-set-mnemonic-widget}.
+
+If @code{gtk-label-set-mnemonic-widget} is not called, then the first
+activatable ancestor of the @code{<gtk-label>} will be chosen as the mnemonic
+widget. For instance, if the label is inside a button or menu item, the button
+or menu item will automatically become the mnemonic widget and be activated by
+the mnemonic.
+
+@table @var
+@item str
+The text of the label, with an underscore in front of the mnemonic character
+
+@item ret
+the new @code{<gtk-label>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-select-region  (self@tie{}@code{<gtk-label>}) (start_offset@tie{}@code{int}) (end_offset@tie{}@code{int})
+@deffnx Method select-region
+Selects a range of characters in the label, if the label is selectable. See
+@code{gtk-label-set-selectable}. If the label is not selectable, this function
+has no effect. If @var{start-offset} or @var{end-offset} are -1, then the end of
+the label will be substituted.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item start-offset
+start offset (in characters not bytes)
+
+@item end-offset
+end offset (in characters not bytes)
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-set-mnemonic-widget  (self@tie{}@code{<gtk-label>}) (widget@tie{}@code{<gtk-widget>})
+@deffnx Method set-mnemonic-widget
+If the label has been set so that it has an mnemonic key (using i.e.
+@code{gtk-label-set-markup-with-mnemonic},
+@code{gtk-label-set-text-with-mnemonic}, @code{gtk-label-new-with-mnemonic} or
+the "use_underline" property) the label can be associated with a widget that is
+the target of the mnemonic. When the label is inside a widget (like a
+@code{<gtk-button>} or a @code{<gtk-notebook>} tab) it is automatically
+associated with the correct widget, but sometimes (i.e. when the target is a
+@code{<gtk-entry>} next to the label) you need to set it explicitly using this
+function.
+
+The target widget will be accelerated by emitting "mnemonic_activate" on it. The
+default handler for this signal will activate the widget if there are no
+mnemonic collisions and toggle focus between the colliding widgets otherwise.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item widget
+the target @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-set-selectable  (self@tie{}@code{<gtk-label>}) (setting@tie{}@code{bool})
+@deffnx Method set-selectable
+Selectable labels allow the user to select text from the label, for
+copy-and-paste.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item setting
+@samp{@code{#t}} to allow selecting text in the label
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-set-text-with-mnemonic  (self@tie{}@code{<gtk-label>}) (str@tie{}@code{mchars})
+@deffnx Method set-text-with-mnemonic
+Sets the label's text from the string @var{str}. If characters in @var{str} are
+preceded by an underscore, they are underlined indicating that they represent a
+keyboard accelerator called a mnemonic. The mnemonic key can be used to activate
+another widget, chosen automatically, or explicitly using
+@code{gtk-label-set-mnemonic-widget}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item str
+a string
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-get-attributes  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{<pango-attr-list>})
+@deffnx Method get-attributes
+Gets the attribute list that was set on the label using
+@code{gtk-label-set-attributes}, if any. This function does not reflect
+attributes that come from the labels markup (see @code{gtk-label-set-markup}).
+If you want to get the effective attributes for the label, use
+pango_layout_get_attribute (gtk_label_get_layout (label)).
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+the attribute list, or @samp{@code{#f}} if none was set.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-get-justify  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{<gtk-justification>})
+@deffnx Method get-justify
+Returns the justification of the label. See @code{gtk-label-set-justify}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+@code{<gtk-justification>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-get-ellipsize  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{<pango-ellipsize-mode>})
+@deffnx Method get-ellipsize
+Returns the ellipsizing position of the label. See
+@code{gtk-label-set-ellipsize}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+@code{<pango-ellipsize-mode>}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-label-get-width-chars  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-width-chars
+Retrieves the desired width of @var{label}, in characters. See
+@code{gtk-label-set-width-chars}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+the width of the label in characters.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-label-get-max-width-chars  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-max-width-chars
+Retrieves the desired maximum width of @var{label}, in characters. See
+@code{gtk-label-set-width-chars}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+the maximum width of the label in characters.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-label-get-label  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-label
+Fetches the text from a label widget including any embedded underlines
+indicating mnemonics and Pango markup. (See @code{gtk-label-get-text}).
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+the text of the label widget. This string is owned by the widget and must not be
+modified or freed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-get-layout  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{<pango-layout*>})
+@deffnx Method get-layout
+Gets the @code{<pango-layout>} used to display the label. The layout is useful
+to e.g. convert text positions to pixel positions, in combination with
+@code{gtk-label-get-layout-offsets}. The returned layout is owned by the label
+so need not be freed by the caller.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+the @code{<pango-layout>} for this label
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-get-line-wrap  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-line-wrap
+Returns whether lines in the label are automatically wrapped. See
+@code{gtk-label-set-line-wrap}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+@samp{@code{#t}} if the lines of the label are automatically wrapped.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-get-line-wrap-mode  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{<pango-wrap-mode>})
+@deffnx Method get-line-wrap-mode
+Returns line wrap mode used by the label. See
+@code{gtk-label-set-line-wrap-mode}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+@samp{@code{#t}} if the lines of the label are automatically wrapped.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-label-get-mnemonic-widget  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-mnemonic-widget
+Retrieves the target of the mnemonic (keyboard shortcut) of this label. See
+@code{gtk-label-set-mnemonic-widget}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+the target of the label's mnemonic, or @samp{@code{#f}} if none has been set and
+the default algorithm will be used.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-get-selection-bounds  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{bool}) (start@tie{}@code{int}) (end@tie{}@code{int})
+@deffnx Method get-selection-bounds
+Gets the selected range of characters in the label, returning @samp{@code{#t}}
+if there's a selection.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item start
+return location for start of selection, as a character offset
+
+@item end
+return location for end of selection, as a character offset
+
+@item ret
+@samp{@code{#t}} if selection is non-empty
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-get-use-markup  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-use-markup
+Returns whether the label's text is interpreted as marked up with the Pango text
+markup language. See @code{gtk-label-set-use-markup}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+@samp{@code{#t}} if the label's text will be parsed for markup.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-get-use-underline  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-use-underline
+Returns whether an embedded underline in the label indicates a mnemonic. See
+@code{gtk-label-set-use-underline}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+@samp{@code{#t}} whether an embedded underline in the label indicates the
+mnemonic accelerator keys.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-get-single-line-mode  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-single-line-mode
+Returns whether the label is in single line mode.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+@samp{@code{#t}} when the label is in single line mode.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-label-get-angle  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-angle
+Gets the angle of rotation for the label. See gtk_label_set_angle.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item ret
+the angle of rotation for the label
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-label-set-label  (self@tie{}@code{<gtk-label>}) (str@tie{}@code{mchars})
+@deffnx Method set-label
+Sets the text of the label. The label is interpreted as including embedded
+underlines and/or Pango markup depending on the values of label->use_underline
+and label->use_markup.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item str
+the new text to set for the label
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-set-use-markup  (self@tie{}@code{<gtk-label>}) (setting@tie{}@code{bool})
+@deffnx Method set-use-markup
+Sets whether the text of the label contains markup in Pango's text markup
+language. See @code{gtk-label-set-markup}.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item setting
+@samp{@code{#t}} if the label's text should be parsed for markup.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-set-use-underline  (self@tie{}@code{<gtk-label>}) (setting@tie{}@code{bool})
+@deffnx Method set-use-underline
+If true, an underline in the text indicates the next character should be used
+for the mnemonic accelerator key.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item setting
+@samp{@code{#t}} if underlines in the text indicate mnemonics
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-label-set-single-line-mode  (self@tie{}@code{<gtk-label>}) (single_line_mode@tie{}@code{bool})
+@deffnx Method set-single-line-mode
+Sets whether the label is in single line mode.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item single-line-mode
+@samp{@code{#t}} if the label should be in single line mode
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-label-set-angle  (self@tie{}@code{<gtk-label>}) (angle@tie{}@code{double})
+@deffnx Method set-angle
+Sets the angle of rotation for the label. An angle of 90 reads from from bottom
+to top, an angle of 270, from top to bottom. The angle setting for the label is
+ignored if the label is selectable, wrapped, or ellipsized.
+
+@table @var
+@item label
+a @code{<gtk-label>}
+
+@item angle
+the angle that the baseline of the label makes with the horizontal, in degrees,
+measured counterclockwise
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

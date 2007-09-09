@@ -1,0 +1,632 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-recent-manager>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item filename
+The full path to the file to be used to store and read the list@item limit
+The maximum number of items to be returned by gtk_recent_manager_get_items()@item size
+The size of the recently used resources list@end table
+
+@end deftp
+
+@defop Signal <gtk-recent-manager> changed 
+Emitted when the current recently used resources manager changes its contents.
+
+Since 2.10
+
+@end defop
+
+@deffn Function gtk-recent-manager-new  @result{}@tie{} (ret@tie{}@code{<gtk-recent-manager>})
+Creates a new recent manager object. Recent manager objects are used to handle
+the list of recently used resources. A @code{<gtk-recent-manager>} object
+monitors the recently used resources list, and emits the "changed" signal each
+time something inside the list changes.
+
+@code{<gtk-recent-manager>} objects are expensive: be sure to create them only
+when needed. You should use the @code{gtk-recent-manager-new-for-screen} or the
+@code{gtk-recent-manager-get-default} functions instead.
+
+@table @var
+@item ret
+A newly created @code{<gtk-recent-manager>} object.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-manager-get-default  @result{}@tie{} (ret@tie{}@code{<gtk-recent-manager>})
+Gets the recent manager for the default screen. See
+@code{gtk-recent-manager-get-for-screen}.
+
+@table @var
+@item ret
+A unique @code{<gtk-recent-manager>} associated with the default screen. This
+recent manager is associated with the screen and can be used as long as the
+screen is open. Do not ref or unref it.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-manager-get-for-screen  (screen@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<gtk-recent-manager>})
+Gets the recent manager object associated with @var{screen}; if this function
+has not previously been called for the given screen, a new recent manager object
+will be created and associated with the screen. Recent manager objects are
+fairly expensive to create, so using this function is usually a better choice
+than calling @code{gtk-recent-manager-new} and setting the screen yourself; by
+using this function a single recent manager object will be shared between users.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+A unique @code{<gtk-recent-manager>} associated with the given screen. This
+recent manager is associated to the with the screen and can be used as long as
+the screen is open. Do not ref or unref it.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-manager-set-screen  (self@tie{}@code{<gtk-recent-manager>}) (screen@tie{}@code{<gdk-screen>})
+@deffnx Method set-screen
+Sets the screen for a recent manager; the screen is used to track the user's
+currently configured recently used documents storage.
+
+@table @var
+@item manager
+a @code{<gtk-recent-manager>}
+
+@item screen
+a @code{<gdk-screen>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-manager-add-item  (self@tie{}@code{<gtk-recent-manager>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method add-item
+Adds a new resource, pointed by @var{uri}, into the recently used resources
+list.
+
+This function automatically retrieving some of the needed metadata and setting
+other metadata to common default values; it then feeds the data to
+@code{gtk-recent-manager-add-full}.
+
+See @code{gtk-recent-manager-add-full} if you want to explicitely define the
+metadata for the resource pointed by @var{uri}.
+
+@table @var
+@item manager
+a @code{<gtk-recent-manager>}
+
+@item uri
+a valid URI
+
+@item ret
+@samp{@code{#t}} if the new item was successfully added to the recently used
+resources list
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-manager-remove-item  (self@tie{}@code{<gtk-recent-manager>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method remove-item
+Removes a resource pointed by @var{uri} from the recently used resources list
+handled by a recent manager.
+
+@table @var
+@item manager
+a @code{<gtk-recent-manager>}
+
+@item uri
+the URI of the item you wish to remove
+
+@item error
+return location for a @code{<g-error>}, or @samp{@code{#f}}
+
+@item ret
+@samp{@code{#t}} if the item pointed by @var{uri} has been successfully removed
+by the recently used resources list, and @samp{@code{#f}} otherwise.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-manager-lookup-item  (self@tie{}@code{<gtk-recent-manager>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-recent-info*>})
+@deffnx Method lookup-item
+Searches for a URI inside the recently used resources list, and returns a
+structure containing informations about the resource like its MIME type, or its
+display name.
+
+@table @var
+@item manager
+a @code{<gtk-recent-manager>}
+
+@item uri
+a URI
+
+@item error
+a return location for a @code{<g-error>}, or @samp{@code{#f}}
+
+@item ret
+a @code{<gtk-recent-info>} structure containing information about the resource
+pointed by @var{uri}, or @samp{@code{#f}} if the URI was not registered in the
+recently used resources list. Free with @code{gtk-recent-info-unref}.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-manager-has-item  (self@tie{}@code{<gtk-recent-manager>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method has-item
+Checks whether there is a recently used resource registered with @var{uri}
+inside the recent manager.
+
+@table @var
+@item manager
+a @code{<gtk-recent-manager>}
+
+@item uri
+a URI
+
+@item ret
+@samp{@code{#t}} if the resource was found, @samp{@code{#f}} otherwise.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-manager-move-item  (self@tie{}@code{<gtk-recent-manager>}) (uri@tie{}@code{mchars}) (new_uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method move-item
+Changes the location of a recently used resource from @var{uri} to
+@var{new-uri}.
+
+Please note that this function will not affect the resource pointed by the URIs,
+but only the URI used in the recently used resources list.
+
+@table @var
+@item manager
+a @code{<gtk-recent-manager>}
+
+@item uri
+the URI of a recently used resource
+
+@item new-uri
+the new URI of the recently used resource, or @samp{@code{#f}} to remove the
+item pointed by @var{uri} in the list
+
+@item error
+a return location for a @code{<g-error>}, or @samp{@code{#f}}
+
+@item ret
+@samp{@code{#t}} on success.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-manager-get-limit  (self@tie{}@code{<gtk-recent-manager>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-limit
+Gets the maximum number of items that the @code{gtk-recent-manager-get-items}
+function should return.
+
+@table @var
+@item manager
+a @code{<gtk-recent-manager>}
+
+@item ret
+the number of items to return, or -1 for every item.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-manager-set-limit  (self@tie{}@code{<gtk-recent-manager>}) (limit@tie{}@code{int})
+@deffnx Method set-limit
+Sets the maximum number of item that the @code{gtk-recent-manager-get-items}
+function should return. If @var{limit} is set to -1, then return all the items.
+
+@table @var
+@item manager
+a @code{<gtk-recent-manager>}
+
+@item limit
+the maximum number of items to return, or -1.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-manager-get-items  (self@tie{}@code{<gtk-recent-manager>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method get-items
+Gets the list of recently used resources.
+
+@table @var
+@item manager
+a @code{<gtk-recent-manager>}
+
+@item ret
+a list of newly allocated @code{<gtk-recent-info>} objects. Use
+@code{gtk-recent-info-unref} on each item inside the list, and then free the
+list itself using @code{g-list-free}.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-manager-purge-items  (self@tie{}@code{<gtk-recent-manager>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method purge-items
+Purges every item from the recently used resources list.
+
+@table @var
+@item manager
+a @code{<gtk-recent-manager>}
+
+@item error
+a return location for a @code{<g-error>}, or @samp{@code{#f}}
+
+@item ret
+the number of items that have been removed from the recently used resources
+list.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-get-uri  (self@tie{}@code{<gtk-recent-info*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the URI of the resource.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item ret
+the URI of the resource. The returned string is owned by the recent manager, and
+should not be freed.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-get-display-name  (self@tie{}@code{<gtk-recent-info*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the name of the resource. If none has been defined, the basename of the
+resource is obtained.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item ret
+the display name of the resource. The returned string is owned by the recent
+manager, and should not be freed.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-get-description  (self@tie{}@code{<gtk-recent-info*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the (short) description of the resource.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item ret
+the description of the resource. The returned string is owned by the recent
+manager, and should not be freed.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-get-mime-type  (self@tie{}@code{<gtk-recent-info*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the MIME type of the resource.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item ret
+the MIME type of the resource. The returned string is owned by the recent
+manager, and should not be freed.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-get-added  (self@tie{}@code{<gtk-recent-info*>}) @result{}@tie{} (ret@tie{}@code{long})
+Gets the timestamp (seconds from system's Epoch) when the resource was added to
+the recently used resources list.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item ret
+the number of seconds elapsed from system's Epoch when the resource was added to
+the list, or -1 on failure.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-get-modified  (self@tie{}@code{<gtk-recent-info*>}) @result{}@tie{} (ret@tie{}@code{long})
+Gets the timestamp (seconds from system's Epoch) when the resource was last
+modified.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item ret
+the number of seconds elapsed from system's Epoch when the resource was last
+modified, or -1 on failure.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-get-visited  (self@tie{}@code{<gtk-recent-info*>}) @result{}@tie{} (ret@tie{}@code{long})
+Gets the timestamp (seconds from system's Epoch) when the resource was last
+visited.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item ret
+the number of seconds elapsed from system's Epoch when the resource was last
+visited, or -1 on failure.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-get-private-hint  (self@tie{}@code{<gtk-recent-info*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Gets the value of the "private" flag. Resources in the recently used list that
+have this flag set to @samp{@code{#t}} should only be displayed by the
+applications that have registered them.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item ret
+@samp{@code{#t}} if the private flag was found, @samp{@code{#f}} otherwise.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-last-application  (self@tie{}@code{<gtk-recent-info*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the name of the last application that have registered the recently used
+resource represented by @var{info}.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item ret
+an application name. Use @code{g-free} to free it.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-has-group  (self@tie{}@code{<gtk-recent-info*>}) (group_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Checks whether @var{group-name} appears inside the groups registered for the
+recently used item @var{info}.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item group-name
+name of a group
+
+@item ret
+@samp{@code{#t}} if the group was found.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-has-application  (self@tie{}@code{<gtk-recent-info*>}) (app_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Checks whether an application registered this resource using @var{app-name}.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item app-name
+a string containing an application name
+
+@item ret
+@samp{@code{#t}} if an application with name @var{app-name} was found,
+@samp{@code{#f}} otherwise.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-get-icon  (self@tie{}@code{<gtk-recent-info*>}) (size@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+Retrieves the icon of size @var{size} associated to the resource MIME type.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item size
+the size of the icon in pixels
+
+@item ret
+a @code{<gdk-pixbuf>} containing the icon, or @samp{@code{#f}}.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-get-short-name  (self@tie{}@code{<gtk-recent-info*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Computes a valid UTF-8 string that can be used as the name of the item in a menu
+or list. For example, calling this function on an item that refers to
+"file:///foo/bar.txt" will yield "bar.txt".
+
+@table @var
+@item info
+an @code{<gtk-recent-info>}
+
+@item ret
+A newly-allocated string in UTF-8 encoding; free it with @code{g-free}.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-get-uri-display  (self@tie{}@code{<gtk-recent-info*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets a displayable version of the resource's URI.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item ret
+a UTF-8 string containing the resource's URI or @samp{@code{#f}}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-get-age  (self@tie{}@code{<gtk-recent-info*>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the number of days elapsed since the last update of the resource pointed by
+@var{info}.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item ret
+a positive integer containing the number of days elapsed since the time this
+resource was last modified.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-is-local  (self@tie{}@code{<gtk-recent-info*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Checks whether the resource is local or not by looking at the scheme of its URI.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item ret
+@samp{@code{#t}} if the resource is local.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-exists  (self@tie{}@code{<gtk-recent-info*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Checks whether the resource pointed by @var{info} still exists. At the moment
+this check is done only on resources pointing to local files.
+
+@table @var
+@item info
+a @code{<gtk-recent-info>}
+
+@item ret
+@samp{@code{#t}} if the resource exists
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-info-match  (self@tie{}@code{<gtk-recent-info*>}) (info_b@tie{}@code{<gtk-recent-info*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Checks whether two @code{<gtk-recent-info>} structures point to the same
+resource.
+
+@table @var
+@item info-a
+a @code{<gtk-recent-info>}
+
+@item info-b
+a @code{<gtk-recent-info>}
+
+@item ret
+@samp{@code{#t}} if both @code{<gtk-recent-info>} structures point to se same
+resource, @samp{@code{#f}} otherwise.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment

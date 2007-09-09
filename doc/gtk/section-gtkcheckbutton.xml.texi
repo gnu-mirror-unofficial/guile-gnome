@@ -1,0 +1,20 @@
+
+@c %start of fragment
+
+@node GtkCheckButton
+@chapter GtkCheckButton
+Create widgets with a discrete toggle button
+
+@section Overview
+A @code{<gtk-check-button>} places a discrete @code{<gtk-toggle-button>} next to
+a widget, (usually a @code{<gtk-label>}). See the section on
+@code{<gtk-toggle-button>} widgets for more information about toggle/check
+buttons.
+
+The important signal ('toggled') is also inherited from
+@code{<gtk-toggle-button>}.
+
+@section Usage
+@include defuns-gtkcheckbutton.xml.texi
+
+@c %end of fragment

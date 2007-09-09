@@ -1,0 +1,145 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-handle-box>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item shadow
+Deprecated property, use shadow_type instead@item shadow-type
+Appearance of the shadow that surrounds the container@item handle-position
+Position of the handle relative to the child widget@item snap-edge
+Side of the handlebox that's lined up with the docking point to dock the handlebox@item snap-edge-set
+Whether to use the value from the snap_edge property or a value derived from handle_position@end table
+
+@end deftp
+
+@defop Signal <gtk-handle-box> child-attached  (arg0@tie{}@code{<gtk-widget>})
+This signal is emitted when the contents of the handlebox are reattached to the
+main window.
+
+@end defop
+
+@defop Signal <gtk-handle-box> child-detached  (arg0@tie{}@code{<gtk-widget>})
+This signal is emitted when the contents of the handlebox are detached from the
+main window.
+
+@end defop
+
+@deffn Function gtk-handle-box-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Create a new handle box.
+
+@table @var
+@item ret
+a new @code{<gtk-handle-box>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-handle-box-set-shadow-type  (self@tie{}@code{<gtk-handle-box>}) (type@tie{}@code{<gtk-shadow-type>})
+@deffnx Method set-shadow-type
+Sets the type of shadow to be drawn around the border of the handle box.
+
+@table @var
+@item handle-box
+a @code{<gtk-handle-box>}
+
+@item type
+the shadow type.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-handle-box-set-handle-position  (self@tie{}@code{<gtk-handle-box>}) (position@tie{}@code{<gtk-position-type>})
+@deffnx Method set-handle-position
+Sets the side of the handlebox where the handle is drawn.
+
+@table @var
+@item handle-box
+a @code{<gtk-handle-box>}
+
+@item position
+the side of the handlebox where the handle should be drawn.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-handle-box-set-snap-edge  (self@tie{}@code{<gtk-handle-box>}) (edge@tie{}@code{<gtk-position-type>})
+@deffnx Method set-snap-edge
+Sets the snap edge of a handlebox. The snap edge is the edge of the detached
+child that must be aligned with the corresponding edge of the "ghost" left
+behind when the child was detached to reattach the torn-off window. Usually, the
+snap edge should be chosen so that it stays in the same place on the screen when
+the handlebox is torn off.
+
+If the snap edge is not set, then an appropriate value will be guessed from the
+handle position. If the handle position is @samp{GTK_POS_RIGHT} or
+@samp{GTK_POS_LEFT}, then the snap edge will be @samp{GTK_POS_TOP}, otherwise it
+will be @samp{GTK_POS_LEFT}.
+
+@table @var
+@item handle-box
+a @code{<gtk-handle-box>}
+
+@item edge
+the snap edge, or -1 to unset the value; in which case GTK+ will try to guess an
+appropriate value in the future.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-handle-box-get-handle-position  (self@tie{}@code{<gtk-handle-box>}) @result{}@tie{} (ret@tie{}@code{<gtk-position-type>})
+@deffnx Method get-handle-position
+Gets the handle position of the handle box. See
+@code{gtk-handle-box-set-handle-position}.
+
+@table @var
+@item handle-box
+a @code{<gtk-handle-box>}
+
+@item ret
+the current handle position.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-handle-box-get-shadow-type  (self@tie{}@code{<gtk-handle-box>}) @result{}@tie{} (ret@tie{}@code{<gtk-shadow-type>})
+@deffnx Method get-shadow-type
+Gets the type of shadow drawn around the handle box. See
+@code{gtk-handle-box-set-shadow-type}.
+
+@table @var
+@item handle-box
+a @code{<gtk-handle-box>}
+
+@item ret
+the type of shadow currently drawn around the handle box.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-handle-box-get-snap-edge  (self@tie{}@code{<gtk-handle-box>}) @result{}@tie{} (ret@tie{}@code{<gtk-position-type>})
+@deffnx Method get-snap-edge
+Gets the edge used for determining reattachment of the handle box. See
+@code{gtk-handle-box-set-snap-edge}.
+
+@table @var
+@item handle-box
+a @code{<gtk-handle-box>}
+
+@item ret
+the edge used for determining reattachment, or (GtkPositionType)-1 if this is
+determined (as per default) from the handle position.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

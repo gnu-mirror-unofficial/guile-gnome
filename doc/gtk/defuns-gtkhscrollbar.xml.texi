@@ -1,0 +1,26 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-hscrollbar>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function gtk-hscrollbar-new  (adjustment@tie{}@code{<gtk-adjustment>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new horizontal scrollbar.
+
+@table @var
+@item adjustment
+the @code{<gtk-adjustment>} to use, or @samp{@code{#f}} to create a new
+adjustment.
+
+@item ret
+the new @code{<gtk-hscrollbar>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

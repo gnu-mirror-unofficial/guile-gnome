@@ -1,0 +1,11 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-recent-chooser-dialog>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+
+@c %end of fragment

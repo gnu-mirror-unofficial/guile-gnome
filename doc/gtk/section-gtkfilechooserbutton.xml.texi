@@ -1,0 +1,41 @@
+
+@c %start of fragment
+
+@node GtkFileChooserButton
+@chapter GtkFileChooserButton
+A button to launch a file selection dialog
+
+@section Overview
+The @code{<gtk-file-chooser-button>} is a widget that lets the user select a
+file. It implements the @code{<gtk-file-chooser>} interface. Visually, it is a
+file name with a button to bring up a @code{<gtk-file-chooser-dialog>}. The user
+can then use that dialog to change the file associated with that button. This
+widget does not support setting the "select-multiple" property to
+@samp{@code{#t}}.
+
+@example 
+
+@{
+  GtkWidget *button;
+
+  button = gtk_file_chooser_button_new (_("Select a file"),
+                                        GTK_FILE_CHOOSER_ACTION_OPEN);
+  gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (button),
+                                       "/etc");
+@}
+@end example
+
+The @code{<gtk-file-chooser-button>} supports the
+@code{<gtk-file-chooser-action>}s @samp{GTK_FILE_CHOOSER_ACTION_OPEN} and
+@samp{GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER}.
+
+The @code{<gtk-file-chooser-button>} will ellipsize the label, and thus will
+thus request little horizontal space. To give the button more space, you should
+call @code{gtk-widget-size-request},
+@code{gtk-file-chooser-button-set-width-chars}, or pack the button in such a way
+that other interface elements give space to the widget.
+
+@section Usage
+@include defuns-gtkfilechooserbutton.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GtkWindowGroup
+@chapter GtkWindowGroup
+Limit the effect of grabs
+
+@section Overview
+@section Usage
+@include defuns-gtkwindowgroup.xml.texi
+
+@c %end of fragment

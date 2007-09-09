@@ -1,0 +1,173 @@
+
+@c %start of fragment
+
+@deffn Function gdk-query-depths  (depths@tie{}@code{<gint**>}) @result{}@tie{} (count@tie{}@code{int})
+This function returns the available bit depths for the default screen. It's
+equivalent to listing the visuals (@code{gdk-list-visuals}) and then looking at
+the depth field in each visual, removing duplicates.
+
+The array returned by this function should not be freed.
+
+@table @var
+@item depths
+return location for available depths
+
+@item count
+return location for number of available depths
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-query-visual-types  (visual_types@tie{}@code{<gdk-visual-type**>}) @result{}@tie{} (count@tie{}@code{int})
+This function returns the available visual types for the default screen. It's
+equivalent to listing the visuals (@code{gdk-list-visuals}) and then looking at
+the type field in each visual, removing duplicates.
+
+The array returned by this function should not be freed.
+
+@table @var
+@item visual-types
+return location for the available visual types
+
+@item count
+return location for the number of available visual types
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-list-visuals  @result{}@tie{} (ret@tie{}@code{glist-of})
+Lists the available visuals for the default screen. (See
+@code{gdk-screen-list-visuals}) A visual describes a hardware image data format.
+For example, a visual might support 24-bit color, or 8-bit color, and might
+expect pixels to be in a certain format.
+
+Call @code{g-list-free} on the return value when you're finished with it.
+
+@table @var
+@item ret
+a list of visuals; the list must be freed, but not its contents
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-visual-get-best-depth  @result{}@tie{} (ret@tie{}@code{int})
+Get the best available depth for the default GDK screen. "Best" means "largest,"
+i.e. 32 preferred over 24 preferred over 8 bits per pixel.
+
+@table @var
+@item ret
+best available depth
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-visual-get-best-type  @result{}@tie{} (ret@tie{}@code{<gdk-visual-type>})
+Return the best available visual type for the default GDK screen.
+
+@table @var
+@item ret
+best visual type
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-visual-get-system  @result{}@tie{} (ret@tie{}@code{<gdk-visual*>})
+Get the system'sdefault visual for the default GDK screen. This is the visual
+for the root window of the display. The return value should not be freed.
+
+@table @var
+@item ret
+system visual
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-visual-get-best  @result{}@tie{} (ret@tie{}@code{<gdk-visual*>})
+Get the visual with the most available colors for the default GDK screen. The
+return value should not be freed.
+
+@table @var
+@item ret
+best visual
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-visual-get-best-with-depth  (depth@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-visual*>})
+Get the best visual with depth @var{depth} for the default GDK screen. Color
+visuals and visuals with mutable colormaps are preferred over grayscale or
+fixed-colormap visuals. The return value should not be freed. @samp{@code{#f}}
+may be returned if no visual supports @var{depth}.
+
+@table @var
+@item depth
+a bit depth
+
+@item ret
+best visual for the given depth
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-visual-get-best-with-type  (visual_type@tie{}@code{<gdk-visual-type>}) @result{}@tie{} (ret@tie{}@code{<gdk-visual*>})
+Get the best visual of the given @var{visual-type} for the default GDK screen.
+Visuals with higher color depths are considered better. The return value should
+not be freed. @samp{@code{#f}} may be returned if no visual has type
+@var{visual-type}.
+
+@table @var
+@item visual-type
+a visual type
+
+@item ret
+best visual of the given type
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-visual-get-best-with-both  (depth@tie{}@code{int}) (visual_type@tie{}@code{<gdk-visual-type>}) @result{}@tie{} (ret@tie{}@code{<gdk-visual*>})
+Combines @code{gdk-visual-get-best-with-depth} and
+@code{gdk-visual-get-best-with-type}.
+
+@table @var
+@item depth
+a bit depth
+
+@item visual-type
+a visual type
+
+@item ret
+best visual with both @var{depth} and @var{visual-type}, or @samp{@code{#f}} if
+none
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-visual-get-screen  (self@tie{}@code{<gdk-visual*>}) @result{}@tie{} (ret@tie{}@code{<gdk-screen>})
+Gets the screen to which this visual belongs
+
+@table @var
+@item visual
+a @code{<gdk-visual>}
+
+@item ret
+the screen to which this visual belongs.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+
+@c %end of fragment

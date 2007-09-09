@@ -1,0 +1,77 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-invisible>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item screen
+The screen where this window will be displayed@end table
+
+@end deftp
+
+@deffn Function gtk-invisible-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-invisible>}.
+
+@table @var
+@item ret
+a new @code{<gtk-invisible>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-invisible-new-for-screen  (screen@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-invisible>} object for a specified screen
+
+@table @var
+@item screen
+a @code{<gdk-screen>} which identifies on which the new @code{<gtk-invisible>}
+will be created.
+
+@item ret
+a newly created @code{<gtk-invisible>} object
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-invisible-set-screen  (self@tie{}@code{<gtk-invisible>}) (screen@tie{}@code{<gdk-screen>})
+@deffnx Method set-screen
+Sets the @code{<gdk-screen>} where the @code{<gtk-invisible>} object will be
+displayed.
+
+@table @var
+@item invisible
+a @code{<gtk-invisible>}.
+
+@item screen
+a @code{<gdk-screen>}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-invisible-get-screen  (self@tie{}@code{<gtk-invisible>}) @result{}@tie{} (ret@tie{}@code{<gdk-screen>})
+@deffnx Method get-screen
+Returns the @code{<gdk-screen>} object associated with @var{invisible}
+
+@table @var
+@item invisible
+a @code{<gtk-invisible>}.
+
+@item ret
+the associated @code{<gdk-screen>}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+
+@c %end of fragment

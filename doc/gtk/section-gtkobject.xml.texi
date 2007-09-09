@@ -1,0 +1,77 @@
+
+@c %start of fragment
+
+@node GtkObject
+@chapter GtkObject
+The base class of the GTK+ type hierarchy
+
+@section Overview
+@section Description
+@code{<gtk-object>} is the base class for all widgets, and for a few non-widget
+objects such as @code{<gtk-adjustment>}. @code{<gtk-object>} predates
+@code{<gobject>}; non-widgets that derive from @code{<gtk-object>} rather than
+@code{<gobject>} do so for backward compatibility reasons.
+
+@code{<gtk-object>}s are created with a "floating" reference count. This means
+that the initial reference is not owned by anyone. Calling @code{g-object-unref}
+on a newly-created @code{<gtk-object>} is incorrect, the floating reference has
+to be removed first. This can be done by anyone at any time, by calling
+@code{g-object-ref-sink} to convert the floating reference into a regular
+reference. @code{g-object-ref-sink} returns a new reference if an object is
+already sunk (has no floating reference).
+
+When you add a widget to its parent container, the parent container will do
+this: This means that the container now owns a reference to the child widget and
+the child widget has no floating reference.
+
+@example 
+
+  g_object_ref_sink (G_OBJECT (child_widget));
+@end example
+
+The purpose of the floating reference is to keep the child widget alive until
+you add it to a parent container:
+
+@example 
+
+   button = gtk_button_new ();
+   /* button has one floating reference to keep it alive */
+   gtk_container_add (GTK_CONTAINER (container), button);
+   /* button has one non-floating reference owned by the container */
+@end example
+
+@code{<gtk-window>} is a special case, because GTK+ itself will ref/sink it on
+creation. That is, after calling @code{gtk-window-new}, the @code{<gtk-window>}
+will have one reference which is owned by GTK+, and no floating references.
+
+One more factor comes into play: the "destroy" signal, emitted by the
+@code{gtk-object-destroy} method. The "destroy" signal asks all code owning a
+reference to an object to release said reference. So, for example, if you call
+@code{gtk-object-destroy} on a @code{<gtk-window>}, GTK+ will release the
+reference count that it owns; if you call @code{gtk-object-destroy} on a
+@code{<gtk-button>}, then the button will be removed from its parent container
+and the parent container will release its reference to the button. Because these
+references are released, calling @code{gtk-object-destroy} should result in
+freeing all memory associated with an object, unless some buggy code fails to
+release its references in response to the "destroy" signal. Freeing memory
+(referred to as @dfn{finalization} only happens if the reference count reaches
+zero.
+
+Some simple rules for handling @code{<gtk-object:>}
+
+Never call @code{g-object-unref} unless you have previously called
+@code{g-object-ref}, even if you created the @code{<gtk-object>}. (Note: this is
+@emph{not} true for @code{<gobject>}; for @code{<gobject>}, the creator of the
+object owns a reference.)
+
+Call @code{gtk-object-destroy} to get rid of most objects in most cases. In
+particular, widgets are almost always destroyed in this way.
+
+Because of the floating reference count, you don't need to worry about reference
+counting for widgets and toplevel windows, unless you explicitly call
+@code{g-object-ref} yourself.
+
+@section Usage
+@include defuns-gtkobject.xml.texi
+
+@c %end of fragment

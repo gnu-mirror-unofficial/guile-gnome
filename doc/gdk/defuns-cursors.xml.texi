@@ -1,0 +1,244 @@
+
+@c %start of fragment
+
+@deftp Class <gdk-cursor>
+@end deftp
+
+@deffn Function gdk-cursor-new  (cursor_type@tie{}@code{<gdk-cursor-type>}) @result{}@tie{} (ret@tie{}@code{<gdk-cursor>})
+Creates a new cursor from the set of builtin cursors for the default display.
+See @code{gdk-cursor-new-for-display}.
+
+To make the cursor invisible, use @code{gdk-cursor-new-from-pixmap} to create a
+cursor with no pixels in it.
+
+@table @var
+@item cursor-type
+cursor to create
+
+@item ret
+a new @code{<gdk-cursor>}
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-cursor-new-from-pixmap  (source@tie{}@code{<gdk-pixmap*>}) (mask@tie{}@code{<gdk-pixmap*>}) (fg@tie{}@code{<gdk-color>}) (bg@tie{}@code{<gdk-color>}) (x@tie{}@code{int}) (y@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-cursor>})
+Creates a new cursor from a given pixmap and mask. Both the pixmap and mask must
+have a depth of 1 (i.e. each pixel has only 2 values - on or off). The standard
+cursor size is 16 by 16 pixels. You can create a bitmap from inline data as in
+the below example.
+
+
+
+@example 
+
+/* This data is in X bitmap format, and can be created with the 'bitmap'
+   utility. */
+&#x0023;define cursor1_width 16
+&#x0023;define cursor1_height 16
+static unsigned char cursor1_bits[] = @{
+  0x80, 0x01, 0x40, 0x02, 0x20, 0x04, 0x10, 0x08, 0x08, 0x10, 0x04, 0x20,
+  0x82, 0x41, 0x41, 0x82, 0x41, 0x82, 0x82, 0x41, 0x04, 0x20, 0x08, 0x10,
+  0x10, 0x08, 0x20, 0x04, 0x40, 0x02, 0x80, 0x01@};
+ 
+static unsigned char cursor1mask_bits[] = @{
+  0x80, 0x01, 0xc0, 0x03, 0x60, 0x06, 0x30, 0x0c, 0x18, 0x18, 0x8c, 0x31,
+  0xc6, 0x63, 0x63, 0xc6, 0x63, 0xc6, 0xc6, 0x63, 0x8c, 0x31, 0x18, 0x18,
+  0x30, 0x0c, 0x60, 0x06, 0xc0, 0x03, 0x80, 0x01@};
+ 
+ 
+ GdkCursor *cursor;
+ GdkPixmap *source, *mask;
+ GdkColor fg = @{ 0, 65535, 0, 0 @}; /* Red. */
+ GdkColor bg = @{ 0, 0, 0, 65535 @}; /* Blue. */
+ 
+ 
+ source = gdk_bitmap_create_from_data (NULL, cursor1_bits,
+                                       cursor1_width, cursor1_height);
+ mask = gdk_bitmap_create_from_data (NULL, cursor1mask_bits,
+                                     cursor1_width, cursor1_height);
+ cursor = gdk_cursor_new_from_pixmap (source, mask, &fg, &bg, 8, 8);
+ gdk_pixmap_unref (source);
+ gdk_pixmap_unref (mask);
+ 
+ 
+ gdk_window_set_cursor (widget->window, cursor);
+@end example
+
+@table @var
+@item source
+the pixmap specifying the cursor.
+
+@item mask
+the pixmap specifying the mask, which must be the same size as @var{source}.
+
+@item fg
+the foreground color, used for the bits in the source which are 1. The color
+does not have to be allocated first.
+
+@item bg
+the background color, used for the bits in the source which are 0. The color
+does not have to be allocated first.
+
+@item x
+the horizontal offset of the 'hotspot' of the cursor.
+
+@item y
+the vertical offset of the 'hotspot' of the cursor.
+
+@item ret
+a new @code{<gdk-cursor>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-cursor-new-from-pixbuf  (display@tie{}@code{<gdk-display>}) (pixbuf@tie{}@code{<gdk-pixbuf>}) (x@tie{}@code{int}) (y@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-cursor>})
+Creates a new cursor from a pixbuf.
+
+Not all GDK backends support RGBA cursors. If they are not supported, a
+monochrome approximation will be displayed. The functions
+@code{gdk-display-supports-cursor-alpha} and
+@code{gdk-display-supports-cursor-color} can be used to determine whether RGBA
+cursors are supported; @code{gdk-display-get-default-cursor-size} and
+@code{gdk-display-get-maximal-cursor-size} give information about cursor sizes.
+
+On the X backend, support for RGBA cursors requires a sufficently new version of
+the X Render extension.
+
+@table @var
+@item display
+the @code{<gdk-display>} for which the cursor will be created
+
+@item pixbuf
+the @code{<gdk-pixbuf>} containing the cursor image
+
+@item x
+the horizontal offset of the 'hotspot' of the cursor.
+
+@item y
+the vertical offset of the 'hotspot' of the cursor.
+
+@item ret
+a new @code{<gdk-cursor>}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gdk-cursor-new-from-name  (display@tie{}@code{<gdk-display>}) (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gdk-cursor>})
+Creates a new cursor by looking up @var{name} in the current cursor theme.
+
+@table @var
+@item display
+the @code{<gdk-display>} for which the cursor will be created
+
+@item name
+the name of the cursor
+
+@item ret
+a new @code{<gdk-cursor>}, or @samp{@code{#f}} if there is no cursor with the
+given name
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gdk-cursor-new-for-display  (display@tie{}@code{<gdk-display>}) (cursor_type@tie{}@code{<gdk-cursor-type>}) @result{}@tie{} (ret@tie{}@code{<gdk-cursor>})
+Creates a new cursor from the set of builtin cursors. Some useful ones are:
+
+@code{<gdk-right-ptr>} (right-facing arrow)
+
+@code{<gdk-crosshair>} (crosshair)
+
+@code{<gdk-xterm>} (I-beam)
+
+@code{<gdk-watch>} (busy)
+
+@code{<gdk-fleur>} (for moving objects)
+
+@code{<gdk-hand1>} (a right-pointing hand)
+
+@code{<gdk-hand2>} (a left-pointing hand)
+
+@code{<gdk-left-side>} (resize left side)
+
+@code{<gdk-right-side>} (resize right side)
+
+@code{<gdk-top-left-corner>} (resize northwest corner)
+
+@code{<gdk-top-right-corner>} (resize northeast corner)
+
+@code{<gdk-bottom-left-corner>} (resize southwest corner)
+
+@code{<gdk-bottom-right-corner>} (resize southeast corner)
+
+@code{<gdk-top-side>} (resize top side)
+
+@code{<gdk-bottom-side>} (resize bottom side)
+
+@code{<gdk-sb-h-double-arrow>} (move vertical splitter)
+
+@code{<gdk-sb-v-double-arrow>} (move horizontal splitter)
+
+To make the cursor invisible, use @code{gdk-cursor-new-from-pixmap} to create a
+cursor with no pixels in it.
+
+@table @var
+@item display
+the @code{<gdk-display>} for which the cursor will be created
+
+@item cursor-type
+cursor to create
+
+@item ret
+a new @code{<gdk-cursor>}
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-cursor-get-display  (self@tie{}@code{<gdk-cursor>}) @result{}@tie{} (ret@tie{}@code{<gdk-display>})
+Returns the display on which the @code{<gdk-cursor>} is defined.
+
+@table @var
+@item cursor
+a @code{<gdk-cursor>}.
+
+@item ret
+the @code{<gdk-display>} associated to @var{cursor}
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-cursor-get-image  (self@tie{}@code{<gdk-cursor>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+Returns a @code{<gdk-pixbuf>} with the image used to display the cursor.
+
+Note that depending on the capabilities of the windowing system and on the
+cursor, GDK may not be able to obtain the image data. In this case,
+@samp{@code{#f}} is returned.
+
+@table @var
+@item cursor
+a @code{<gdk-cursor>}
+
+@item ret
+a @code{<gdk-pixbuf>} representing @var{cursor}, or @samp{@code{#f}}
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+
+@c %end of fragment

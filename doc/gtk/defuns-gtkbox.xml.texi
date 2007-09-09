@@ -1,0 +1,272 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-box>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item spacing
+The amount of space between children@item homogeneous
+Whether the children should all be the same size@end table
+
+@end deftp
+
+@deffn Function gtk-box-pack-start  (self@tie{}@code{<gtk-box>}) (child@tie{}@code{<gtk-widget>}) (expand@tie{}@code{bool}) (fill@tie{}@code{bool}) (padding@tie{}@code{unsigned-int})
+@deffnx Method pack-start
+Adds @var{child} to @var{box}, packed with reference to the start of @var{box}.
+The @var{child} is packed after any other child packed with reference to the
+start of @var{box}.
+
+@table @var
+@item box
+a @code{<gtk-box>}.
+
+@item child
+the @code{<gtk-widget>} to be added to @var{box}.
+
+@item expand
+@samp{@code{#t}} if the new child is to be given extra space allocated to
+@var{box}. The extra space will be divided evenly between all children of
+@var{box} that use this option.
+
+@item fill
+@samp{@code{#t}} if space given to @var{child} by the @var{expand} option is
+actually allocated to @var{child}, rather than just padding it. This parameter
+has no effect if @var{expand} is set to @samp{@code{#f}}. A child is always
+allocated the full height of a @code{<gtk-hbox>} and the full width of a
+@code{<gtk-vbox>}. This option affects the other dimension.
+
+@item padding
+extra space in pixels to put between this child and its neighbors, over and
+above the global amount specified by in @code{<gtk-box>}. If @var{child} is a
+widget at one of the reference ends of @var{box}, then @var{padding} pixels are
+also put between @var{child} and the reference edge of @var{box}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-box-pack-end  (self@tie{}@code{<gtk-box>}) (child@tie{}@code{<gtk-widget>}) (expand@tie{}@code{bool}) (fill@tie{}@code{bool}) (padding@tie{}@code{unsigned-int})
+@deffnx Method pack-end
+Adds @var{child} to @var{box}, packed with reference to the end of @var{box}.
+The @var{child} is packed after (away from end of) any other child packed with
+reference to the end of @var{box}.
+
+@table @var
+@item box
+a @code{<gtk-box>}.
+
+@item child
+the @code{<gtk-widget>} to be added to @var{box}.
+
+@item expand
+@samp{@code{#t}} if the new child is to be given extra space allocated to
+@var{box}. The extra space will be divided evenly between all children of
+@var{box} that use this option.
+
+@item fill
+@samp{@code{#t}} if space given to @var{child} by the @var{expand} option is
+actually allocated to @var{child}, rather than just padding it. This parameter
+has no effect if @var{expand} is set to @samp{@code{#f}}. A child is always
+allocated the full height of a @code{<gtk-hbox>} and the full width of a
+@code{<gtk-vbox>}. This option affects the other dimension.
+
+@item padding
+extra space in pixels to put between this child and its neighbors, over and
+above the global amount specified by in @code{<gtk-box>}. If @var{child} is a
+widget at one of the reference ends of @var{box}, then @var{padding} pixels are
+also put between @var{child} and the reference edge of @var{box}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-box-pack-start-defaults  (self@tie{}@code{<gtk-box>}) (widget@tie{}@code{<gtk-widget>})
+@deffnx Method pack-start-defaults
+Adds @var{widget} to @var{box}, packed with reference to the start of @var{box}.
+The child is packed after any other child packed with reference to the start of
+@var{box}.
+
+Parameters for how to pack the child @var{widget}, , , and in
+@code{<gtk-box-child>}, are given their default values, @samp{@code{#t}},
+@samp{@code{#t}}, and 0, respectively.
+
+@table @var
+@item box
+a @code{<gtk-box>}.
+
+@item widget
+the @code{<gtk-widget>} to be added to @var{box}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-box-pack-end-defaults  (self@tie{}@code{<gtk-box>}) (widget@tie{}@code{<gtk-widget>})
+@deffnx Method pack-end-defaults
+Adds @var{widget} to @var{box}, packed with reference to the end of @var{box}.
+The child is packed after (away from end of) any other child packed with
+reference to the end of @var{box}.
+
+Parameters for how to pack the child @var{widget}, , , and in
+@code{<gtk-box-child>}, are given their default values, @samp{@code{#t}},
+@samp{@code{#t}}, and 0, respectively.
+
+@table @var
+@item box
+a @code{<gtk-box>}.
+
+@item widget
+the @code{<gtk-widget>} to be added to @var{box}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-box-get-homogeneous  (self@tie{}@code{<gtk-box>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-homogeneous
+Returns whether the box is homogeneous (all children are the same size). See
+@code{gtk-box-set-homogeneous}.
+
+@table @var
+@item box
+a @code{<gtk-box>}
+
+@item ret
+@samp{@code{#t}} if the box is homogeneous.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-box-set-homogeneous  (self@tie{}@code{<gtk-box>}) (homogeneous@tie{}@code{bool})
+@deffnx Method set-homogeneous
+Sets the field of @code{<gtk-box>}, controlling whether or not all children of
+@var{box} are given equal space in the box.
+
+@table @var
+@item box
+a @code{<gtk-box>}.
+
+@item homogeneous
+a boolean value, @samp{@code{#t}} to create equal allotments, @samp{@code{#f}}
+for variable allotments.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-box-get-spacing  (self@tie{}@code{<gtk-box>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-spacing
+Gets the value set by @code{gtk-box-set-spacing}.
+
+@table @var
+@item box
+a @code{<gtk-box>}
+
+@item ret
+spacing between children
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-box-set-spacing  (self@tie{}@code{<gtk-box>}) (spacing@tie{}@code{int})
+@deffnx Method set-spacing
+Sets the field of @code{<gtk-box>}, which is the number of pixels to place
+between children of @var{box}.
+
+@table @var
+@item box
+a @code{<gtk-box>}.
+
+@item spacing
+the number of pixels to put between children.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-box-reorder-child  (self@tie{}@code{<gtk-box>}) (child@tie{}@code{<gtk-widget>}) (position@tie{}@code{int})
+@deffnx Method reorder-child
+Moves @var{child} to a new @var{position} in the list of @var{box} children. The
+list is the field of @code{<gtk-box>}, and contains both widgets packed
+@code{<gtk-pack-start>} as well as widgets packed @code{<gtk-pack-end>}, in the
+order that these widgets were added to @var{box}.
+
+A widget's position in the @var{box} children list determines where the widget
+is packed into @var{box}. A child widget at some position in the list will be
+packed just after all other widgets of the same packing type that appear earlier
+in the list.
+
+@table @var
+@item box
+a @code{<gtk-box>}.
+
+@item child
+the @code{<gtk-widget>} to move.
+
+@item position
+the new position for @var{child} in the list of @code{<gtk-box>}, starting from
+0. If negative, indicates the end of the list.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-box-query-child-packing  (self@tie{}@code{<gtk-box>}) (child@tie{}@code{<gtk-widget>}) (pack_type@tie{}@code{<gtk-pack-type*>}) @result{}@tie{} (expand@tie{}@code{bool}) (fill@tie{}@code{bool}) (padding@tie{}@code{unsigned-int})
+@deffnx Method query-child-packing
+Returns information about how @var{child} is packed into @var{box}.
+
+@table @var
+@item box
+a @code{<gtk-box>}.
+
+@item child
+the @code{<gtk-widget>} of the child to query.
+
+@item expand
+the returned value of the field in @code{<gtk-box-child>}.
+
+@item fill
+the returned value of the field in @code{<gtk-box-child>}.
+
+@item padding
+the returned value of the field in @code{<gtk-box-child>}.
+
+@item pack-type
+the returned value of the field in @code{<gtk-box-child>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-box-set-child-packing  (self@tie{}@code{<gtk-box>}) (child@tie{}@code{<gtk-widget>}) (expand@tie{}@code{bool}) (fill@tie{}@code{bool}) (padding@tie{}@code{unsigned-int}) (pack_type@tie{}@code{<gtk-pack-type>})
+@deffnx Method set-child-packing
+Sets the way @var{child} is packed into @var{box}.
+
+@table @var
+@item box
+a @code{<gtk-box>}.
+
+@item child
+the @code{<gtk-widget>} of the child to set.
+
+@item expand
+the new value of the field in @code{<gtk-box-child>}.
+
+@item fill
+the new value of the field in @code{<gtk-box-child>}.
+
+@item padding
+the new value of the field in @code{<gtk-box-child>}.
+
+@item pack-type
+the new value of the field in @code{<gtk-box-child>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

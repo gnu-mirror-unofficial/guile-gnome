@@ -1,0 +1,25 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-color-selection-dialog>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function gtk-color-selection-dialog-new  (title@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-color-selection-dialog>}.
+
+@table @var
+@item title
+a string containing the title text for the dialog.
+
+@item ret
+a @code{<gtk-color-selection-dialog>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

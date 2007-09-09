@@ -1,0 +1,79 @@
+
+@c %start of fragment
+
+@node GtkIconTheme
+@chapter GtkIconTheme
+Looking up icons by name
+
+@section Overview
+@code{<gtk-icon-theme>} provides a facility for looking up icons by name and
+size. The main reason for using a name rather than simply providing a filename
+is to allow different icons to be used depending on what @dfn{icon theme} is
+selecetd by the user. The operation of icon themes on Linux and Unix follows the
+@uref{http://www.freedesktop.org/Standards/icon-theme-spec,Icon Theme
+Specification}. There is a default icon theme, named @samp{hicolor} where
+applications should install their icons, but more additional application themes
+can be installed as operating system vendors and users choose.
+
+Named icons are similar to the @emph{(the missing figure,
+gtk-Themeable-Stock-Images} facility, and the distinction between the two may be
+a bit confusing. A few things to keep in mind:
+
+Stock images usually are used in conjunction with @emph{(the missing figure,
+gtk-Stock-Items}., such as @samp{GTK_STOCK_OK} or @samp{GTK_STOCK_OPEN}. Named
+icons are easier to set up and therefore are more useful for new icons that an
+application wants to add, such as application icons or window icons.
+
+Stock images can only be loaded at the symbolic sizes defined by the
+@code{<gtk-icon-size>} enumeration, or by custom sizes defined by
+@code{gtk-icon-size-register}, while named icons are more flexible and any pixel
+size can be specified.
+
+Because stock images are closely tied to stock items, and thus to actions in the
+user interface, stock images may come in multiple variants for different widget
+states or writing directions.
+
+A good rule of thumb is that if there is a stock image for what you want to use,
+use it, otherwise use a named icon. It turns out that internally stock images
+are generally defined in terms of one or more named icons. (An example of the
+more than one case is icons that depend on writing direction;
+GTK_STOCK_GO_FORWARD uses the two themed icons "gtk-stock-go-forward-ltr" and
+"gtk-stock-go-forward-rtl".)
+
+In many cases, named themes are used indirectly, via @code{<gtk-image>} or stock
+items, rather than directly, but looking up icons directly is also simple. The
+@code{<gtk-icon-theme>} object acts as a database of all the icons in the
+current theme. You can create new @code{<gtk-icon-theme>} objects, but its much
+more efficient to use the standard icon theme for the @code{<gdk-screen>} so
+that the icon information is shared with other people looking up icons. In the
+case where the default screen is being used, looking up an icon can be as simple
+as:
+
+@example 
+
+GError *error = NULL;
+GtkIconTheme *icon_theme;
+GdkPixbuf *pixbuf;
+
+icon_theme = gtk_icon_theme_get_default ();
+pixbuf = gtk_icon_theme_load_icon (icon_theme,
+                                   "my-icon-name", /* icon name */
+                                   48, /* size */
+                                   0,  /* flags */
+                                   &error);
+if (!pixbuf)
+  @{
+    g_warning ("Couldn't load icon: %s", error->message);
+    g_error_free (error);
+  @}
+else
+  @{
+    /* Use the pixbuf */
+    g_object_unref (pixbuf);
+  @}
+@end example
+
+@section Usage
+@include defuns-gtkicontheme.xml.texi
+
+@c %end of fragment

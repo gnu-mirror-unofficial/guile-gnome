@@ -1,0 +1,460 @@
+
+@c %start of fragment
+
+@deftp Class <gdk-font>
+@end deftp
+
+@deffn Function gdk-font-load  (font_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gdk-font>})
+@samp{gdk_font_load} is deprecated and should not be used in newly-written code.
+
+Loads a font.
+
+The font may be newly loaded or looked up the font in a cache. You should make
+no assumptions about the initial reference count.
+
+@table @var
+@item font-name
+a XLFD describing the font to load.
+
+@item ret
+a @code{<gdk-font>}, or @samp{@code{#f}} if the font could not be loaded.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-fontset-load  (fontset_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gdk-font>})
+@samp{gdk_fontset_load} is deprecated and should not be used in newly-written
+code.
+
+Loads a fontset.
+
+The fontset may be newly loaded or looked up in a cache. You should make no
+assumptions about the initial reference count.
+
+@table @var
+@item fontset-name
+a comma-separated list of XLFDs describing the component fonts of the fontset to
+load.
+
+@item ret
+a @code{<gdk-font>}, or @samp{@code{#f}} if the fontset could not be loaded.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-font-from-description  (font_desc@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{<gdk-font>})
+@samp{gdk_font_from_description} is deprecated and should not be used in
+newly-written code.
+
+Load a @code{<gdk-font>} based on a Pango font description. This font will only
+be an approximation of the Pango font, and internationalization will not be
+handled correctly. This function should only be used for legacy code that cannot
+be easily converted to use Pango. Using Pango directly will produce better
+results.
+
+@table @var
+@item font-desc
+a @code{<pango-font-description>}.
+
+@item ret
+the newly loaded font, or @samp{@code{#f}} if the font cannot be loaded.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-font-id  (self@tie{}@code{<gdk-font>}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_font_id} is deprecated and should not be used in newly-written code.
+
+Returns the X Font ID for the given font.
+
+@table @var
+@item font
+a @code{<gdk-font>}.
+
+@item ret
+the numeric X Font ID
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-string-extents  (font@tie{}@code{<gdk-font>}) (string@tie{}@code{mchars}) @result{}@tie{} (lbearing@tie{}@code{int}) (rbearing@tie{}@code{int}) (width@tie{}@code{int}) (ascent@tie{}@code{int}) (descent@tie{}@code{int})
+@samp{gdk_string_extents} is deprecated and should not be used in newly-written
+code.
+
+Gets the metrics of a nul-terminated string.
+
+@table @var
+@item font
+a @code{<gdk-font>}.
+
+@item string
+the nul-terminated string to measure.
+
+@item lbearing
+the left bearing of the string.
+
+@item rbearing
+the right bearing of the string.
+
+@item width
+the width of the string.
+
+@item ascent
+the ascent of the string.
+
+@item descent
+the descent of the string.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-text-extents  (font@tie{}@code{<gdk-font>}) (text@tie{}@code{mchars}) (text_length@tie{}@code{int}) @result{}@tie{} (lbearing@tie{}@code{int}) (rbearing@tie{}@code{int}) (width@tie{}@code{int}) (ascent@tie{}@code{int}) (descent@tie{}@code{int})
+@samp{gdk_text_extents} is deprecated and should not be used in newly-written
+code.
+
+Gets the metrics of a string.
+
+@table @var
+@item font
+a @code{<gdk-font>}
+
+@item text
+the text to measure
+
+@item text-length
+the length of the text in bytes. (If the font is a 16-bit font, this is twice
+the length of the text in characters.)
+
+@item lbearing
+the left bearing of the string.
+
+@item rbearing
+the right bearing of the string.
+
+@item width
+the width of the string.
+
+@item ascent
+the ascent of the string.
+
+@item descent
+the descent of the string.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-text-extents-wc  (font@tie{}@code{<gdk-font>}) (text@tie{}@code{<gdk-wchar*>}) (text_length@tie{}@code{int}) @result{}@tie{} (lbearing@tie{}@code{int}) (rbearing@tie{}@code{int}) (width@tie{}@code{int}) (ascent@tie{}@code{int}) (descent@tie{}@code{int})
+@samp{gdk_text_extents_wc} is deprecated and should not be used in newly-written
+code.
+
+Gets the metrics of a string of wide characters.
+
+@table @var
+@item font
+a @code{<gdk-font>}
+
+@item text
+the text to measure.
+
+@item text-length
+the length of the text in character.
+
+@item lbearing
+the left bearing of the string.
+
+@item rbearing
+the right bearing of the string.
+
+@item width
+the width of the string.
+
+@item ascent
+the ascent of the string.
+
+@item descent
+the descent of the string.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-string-width  (font@tie{}@code{<gdk-font>}) (string@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_string_width} is deprecated and should not be used in newly-written
+code.
+
+Determines the width of a nul-terminated string. (The distance from the origin
+of the string to the point where the next string in a sequence of strings should
+be drawn)
+
+@table @var
+@item font
+a @code{<gdk-font>}
+
+@item string
+the nul-terminated string to measure
+
+@item ret
+the width of the string in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-text-width  (font@tie{}@code{<gdk-font>}) (text@tie{}@code{mchars}) (text_length@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_text_width} is deprecated and should not be used in newly-written
+code.
+
+Determines the width of a given string.
+
+@table @var
+@item font
+a @code{<gdk-font>}
+
+@item text
+the text to measure.
+
+@item text-length
+the length of the text in bytes.
+
+@item ret
+the width of the string in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-text-width-wc  (font@tie{}@code{<gdk-font>}) (text@tie{}@code{<gdk-wchar*>}) (text_length@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_text_width_wc} is deprecated and should not be used in newly-written
+code.
+
+Determines the width of a given wide-character string.
+
+@table @var
+@item font
+a @code{<gdk-font>}
+
+@item text
+the text to measure.
+
+@item text-length
+the length of the text in characters.
+
+@item ret
+the width of the string in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-char-width  (font@tie{}@code{<gdk-font>}) (character@tie{}@code{char}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_char_width} is deprecated and should not be used in newly-written
+code. Use @code{gdk-text-extents} instead.
+
+Determines the width of a given character.
+
+@table @var
+@item font
+a @code{<gdk-font>}
+
+@item character
+the character to measure.
+
+@item ret
+the width of the character in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-char-width-wc  (font@tie{}@code{<gdk-font>}) (character@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_char_width_wc} is deprecated and should not be used in newly-written
+code.
+
+Determines the width of a given wide character. (Encoded in the wide-character
+encoding of the current locale).
+
+@table @var
+@item font
+a @code{<gdk-font>}
+
+@item character
+the character to measure.
+
+@item ret
+the width of the character in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-string-measure  (font@tie{}@code{<gdk-font>}) (string@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_string_measure} is deprecated and should not be used in newly-written
+code.
+
+Determines the distance from the origin to the rightmost portion of a
+nul-terminated string when drawn. This is not the correct value for determining
+the origin of the next portion when drawing text in multiple pieces. See
+@code{gdk-string-width}.
+
+@table @var
+@item font
+a @code{<gdk-font>}
+
+@item string
+the nul-terminated string to measure.
+
+@item ret
+the right bearing of the string in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-text-measure  (font@tie{}@code{<gdk-font>}) (text@tie{}@code{mchars}) (text_length@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_text_measure} is deprecated and should not be used in newly-written
+code.
+
+Determines the distance from the origin to the rightmost portion of a string
+when drawn. This is not the correct value for determining the origin of the next
+portion when drawing text in multiple pieces. See @code{gdk-text-width}.
+
+@table @var
+@item font
+a @code{<gdk-font>}
+
+@item text
+the text to measure.
+
+@item text-length
+the length of the text in bytes.
+
+@item ret
+the right bearing of the string in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-char-measure  (font@tie{}@code{<gdk-font>}) (character@tie{}@code{char}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_char_measure} is deprecated and should not be used in newly-written
+code.
+
+Determines the distance from the origin to the rightmost portion of a character
+when drawn. This is not the correct value for determining the origin of the next
+portion when drawing text in multiple pieces.
+
+@table @var
+@item font
+a @code{<gdk-font>}
+
+@item character
+the character to measure.
+
+@item ret
+the right bearing of the character in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-string-height  (font@tie{}@code{<gdk-font>}) (string@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_string_height} is deprecated and should not be used in newly-written
+code.
+
+Determines the total height of a given nul-terminated string. This value is not
+generally useful, because you cannot determine how this total height will be
+drawn in relation to the baseline. See @code{gdk-string-extents}.
+
+@table @var
+@item font
+a @code{<gdk-font>}
+
+@item string
+the nul-terminated string to measure.
+
+@item ret
+the height of the string in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-text-height  (font@tie{}@code{<gdk-font>}) (text@tie{}@code{mchars}) (text_length@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_text_height} is deprecated and should not be used in newly-written
+code.
+
+Determines the total height of a given string. This value is not generally
+useful, because you cannot determine how this total height will be drawn in
+relation to the baseline. See @code{gdk-text-extents}.
+
+@table @var
+@item font
+a @code{<gdk-font>}
+
+@item text
+the text to measure.
+
+@item text-length
+the length of the text in bytes.
+
+@item ret
+the height of the string in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-char-height  (font@tie{}@code{<gdk-font>}) (character@tie{}@code{char}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_char_height} is deprecated and should not be used in newly-written
+code. Use @code{gdk-text-extents} instead.
+
+Determines the total height of a given character. This value is not generally
+useful, because you cannot determine how this total height will be drawn in
+relation to the baseline. See @code{gdk-text-extents}.
+
+@table @var
+@item font
+a @code{<gdk-font>}
+
+@item character
+the character to measure.
+
+@item ret
+the height of the character in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-mbstowcs  (dest@tie{}@code{<gdk-wchar*>}) (src@tie{}@code{mchars}) (dest_max@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_mbstowcs} is deprecated and should not be used in newly-written code.
+
+Converts a multi-byte string to a wide character string. (The function name
+comes from an acronym of 'Multi-Byte String TO Wide Character String').
+
+@table @var
+@item dest
+the space to place the converted wide character string into.
+
+@item src
+the multi-byte string to convert, which must be nul-terminated.
+
+@item dest-max
+the maximum number of wide characters to place in @var{dest}.
+
+@item ret
+the number of wide characters written into @var{dest}, or -1 if the conversion
+failed.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

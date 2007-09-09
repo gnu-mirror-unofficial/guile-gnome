@@ -1,0 +1,20 @@
+
+@c %start of fragment
+
+@node GtkToggleToolButton
+@chapter GtkToggleToolButton
+A GtkToolItem containing a toggle button
+
+@section Overview
+A @code{<gtk-toggle-tool-button>} is a @code{<gtk-tool-item>} that contains a
+toggle button.
+
+Use @code{gtk-toggle-tool-button-new} to create a new
+@code{<gtk-toggle-tool-button>}. Use
+@code{gtk-toggle-tool-button-new-from-stock} to create a new
+@code{<gtk-toggle-tool-button>} containing a stock item.
+
+@section Usage
+@include defuns-gtktoggletoolbutton.xml.texi
+
+@c %end of fragment

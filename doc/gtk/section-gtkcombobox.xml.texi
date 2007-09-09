@@ -1,0 +1,35 @@
+
+@c %start of fragment
+
+@node GtkComboBox
+@chapter GtkComboBox
+A widget used to choose from a list of items
+
+@section Overview
+A @code{<gtk-combo-box>} is a widget that allows the user to choose from a list
+of valid choices. The @code{<gtk-combo-box>} displays the selected choice. When
+activated, the @code{<gtk-combo-box>} displays a popup which allows the user to
+make a new choice. The style in which the selected value is displayed, and the
+style of the popup is determined by the current theme. It may be similar to a
+@code{<gtk-option-menu>}, or similar to a Windows-style combo box.
+
+Unlike its predecessors @code{<gtk-combo>} and @code{<gtk-option-menu>}, the
+@code{<gtk-combo-box>} uses the model-view pattern; the list of valid choices is
+specified in the form of a tree model, and the display of the choices can be
+adapted to the data in the model by using cell renderers, as you would in a tree
+view. This is possible since @code{<gtk-combo-box>} implements the
+@code{<gtk-cell-layout>} interface. The tree model holding the valid choices is
+not restricted to a flat list, it can be a real tree, and the popup will reflect
+the tree structure.
+
+In addition to the model-view API, @code{<gtk-combo-box>} offers a simple API
+which is suitable for text-only combo boxes, and hides the complexity of
+managing the data in a model. It consists of the functions
+@code{gtk-combo-box-new-text}, @code{gtk-combo-box-append-text},
+@code{gtk-combo-box-insert-text}, @code{gtk-combo-box-prepend-text},
+@code{gtk-combo-box-remove-text} and @code{gtk-combo-box-get-active-text}.
+
+@section Usage
+@include defuns-gtkcombobox.xml.texi
+
+@c %end of fragment

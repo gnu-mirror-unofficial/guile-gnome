@@ -1,0 +1,20 @@
+
+@c %start of fragment
+
+@node GtkButton
+@chapter GtkButton
+A widget that creates a signal when clicked on
+
+@section Overview
+The @code{<gtk-button>} widget is generally used to attach a function to that is
+called when the button is pressed. The various signals and how to use them are
+outlined below.
+
+The @code{<gtk-button>} widget can hold any valid child widget. That is it can
+hold most any other standard @code{<gtk-widget>}. The most commonly used child
+is the @code{<gtk-label>}.
+
+@section Usage
+@include defuns-gtkbutton.xml.texi
+
+@c %end of fragment

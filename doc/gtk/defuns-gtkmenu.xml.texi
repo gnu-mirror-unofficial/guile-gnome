@@ -1,0 +1,418 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-menu>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item tearoff-state
+A boolean that indicates whether the menu is torn-off@item tearoff-title
+A title that may be displayed by the window manager when this menu is torn-off@end table
+
+@end deftp
+
+@defop Signal <gtk-menu> move-scroll  (arg0@tie{}@code{<gtk-scroll-type>})
+@end defop
+
+@deffn Function gtk-menu-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-menu>}.
+
+@table @var
+@item ret
+a new @code{<gtk-menu>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-set-screen  (self@tie{}@code{<gtk-menu>}) (screen@tie{}@code{<gdk-screen>})
+@deffnx Method set-screen
+Sets the @code{<gdk-screen>} on which the menu will be displayed.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}.
+
+@item screen
+a @code{<gdk-screen>}, or @samp{@code{#f}} if the screen should be determined by
+the widget the menu is attached to.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-menu-reorder-child  (self@tie{}@code{<gtk-menu>}) (child@tie{}@code{<gtk-widget>}) (position@tie{}@code{int})
+@deffnx Method reorder-child
+Moves a @code{<gtk-menu-item>} to a new position within the @code{<gtk-menu>}.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}.
+
+@item child
+the @code{<gtk-menu-item>} to move.
+
+@item position
+the new position to place @var{child}. Positions are numbered from 0 to n-1.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-attach  (self@tie{}@code{<gtk-menu>}) (child@tie{}@code{<gtk-widget>}) (left_attach@tie{}@code{unsigned-int}) (right_attach@tie{}@code{unsigned-int}) (top_attach@tie{}@code{unsigned-int}) (bottom_attach@tie{}@code{unsigned-int})
+@deffnx Method attach
+Adds a new @code{<gtk-menu-item>} to a (table) menu. The number of 'cells' that
+an item will occupy is specified by @var{left-attach}, @var{right-attach},
+@var{top-attach} and @var{bottom-attach}. These each represent the leftmost,
+rightmost, uppermost and lower column and row numbers of the table. (Columns and
+rows are indexed from zero).
+
+Note that this function is not related to @code{gtk-menu-detach}.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}.
+
+@item child
+a @code{<gtk-menu-item>}.
+
+@item left-attach
+The column number to attach the left side of the item to.
+
+@item right-attach
+The column number to attach the right side of the item to.
+
+@item top-attach
+The row number to attach the top of the item to.
+
+@item bottom-attach
+The row number to attach the bottom of the item to.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-menu-popup  (self@tie{}@code{<gtk-menu>}) (parent_menu_shell@tie{}@code{<gtk-widget>}) (parent_menu_item@tie{}@code{<gtk-widget>}) (func@tie{}@code{<gtk-menu-position-func>}) (data@tie{}@code{<gpointer>}) (button@tie{}@code{unsigned-int}) (activate_time@tie{}@code{unsigned-int32})
+@deffnx Method popup
+Displays a menu and makes it available for selection. Applications can use this
+function to display context-sensitive menus, and will typically supply
+@samp{@code{#f}} for the @var{parent-menu-shell}, @var{parent-menu-item},
+@var{func} and @var{data} parameters. The default menu positioning function will
+position the menu at the current mouse cursor position.
+
+The @var{button} parameter should be the mouse button pressed to initiate the
+menu popup. If the menu popup was initiated by something other than a mouse
+button press, such as a mouse button release or a keypress, @var{button} should
+be 0.
+
+The @var{activate-time} parameter should be the time stamp of the event that
+initiated the popup. If such an event is not available, use
+@code{gtk-get-current-event-time} instead.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}.
+
+@item parent-menu-shell
+the menu shell containing the triggering menu item, or @samp{@code{#f}}
+
+@item parent-menu-item
+the menu item whose activation triggered the popup, or @samp{@code{#f}}
+
+@item func
+a user supplied function used to position the menu, or @samp{@code{#f}}
+
+@item data
+user supplied data to be passed to @var{func}.
+
+@item button
+the mouse button which was pressed to initiate the event.
+
+@item activate-time
+the time at which the activation event occurred.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-set-accel-group  (self@tie{}@code{<gtk-menu>}) (accel_group@tie{}@code{<gtk-accel-group>})
+@deffnx Method set-accel-group
+Set the @code{<gtk-accel-group>} which holds global accelerators for the menu.
+This accelerator group needs to also be added to all windows that this menu is
+being used in with @code{gtk-window-add-accel-group}, in order for those windows
+to support all the accelerators contained in this group.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}.
+
+@item accel-group
+the @code{<gtk-accel-group>} to be associated with the menu.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-get-accel-group  (self@tie{}@code{<gtk-menu>}) @result{}@tie{} (ret@tie{}@code{<gtk-accel-group>})
+@deffnx Method get-accel-group
+Gets the @code{<gtk-accel-group>} which holds global accelerators for the menu.
+See @code{gtk-menu-set-accel-group}.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}.
+
+@item ret
+the @code{<gtk-accel-group>} associated with the menu.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-set-accel-path  (self@tie{}@code{<gtk-menu>}) (accel_path@tie{}@code{mchars})
+@deffnx Method set-accel-path
+Sets an accelerator path for this menu from which accelerator paths for its
+immediate children, its menu items, can be constructed. The main purpose of this
+function is to spare the programmer the inconvenience of having to call
+@code{gtk-menu-item-set-accel-path} on each menu item that should support
+runtime user changable accelerators. Instead, by just calling
+@code{gtk-menu-set-accel-path} on their parent, each menu item of this menu,
+that contains a label describing its purpose, automatically gets an accel path
+assigned. For example, a menu containing menu items "New" and "Exit", will,
+after @samp{gtk_menu_set_accel_path (menu, "<Gnumeric-Sheet>/File");} has been
+called, assign its items the accel paths: @samp{"<Gnumeric-Sheet>/File/New"} and
+@samp{"<Gnumeric-Sheet>/File/Exit"}. Assigning accel paths to menu items then
+enables the user to change their accelerators at runtime. More details about
+accelerator paths and their default setups can be found at
+@code{gtk-accel-map-add-entry}.
+
+@table @var
+@item menu
+a valid @code{<gtk-menu>}
+
+@item accel-path
+a valid accelerator path
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-set-title  (self@tie{}@code{<gtk-menu>}) (title@tie{}@code{mchars})
+@deffnx Method set-title
+Sets the title string for the menu. The title is displayed when the menu is
+shown as a tearoff menu. If @var{title} is @samp{@code{#f}}, the menu will see
+if it is attached to a parent menu item, and if so it will try to use the same
+text as that menu item's label.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}
+
+@item title
+a string containing the title for the menu.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-get-tearoff-state  (self@tie{}@code{<gtk-menu>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-tearoff-state
+Returns whether the menu is torn off. See @code{gtk-menu-set-tearoff-state}.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}
+
+@item ret
+@samp{@code{#t}} if the menu is currently torn off.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-get-title  (self@tie{}@code{<gtk-menu>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-title
+Returns the title of the menu. See @code{gtk-menu-set-title}.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}
+
+@item ret
+the title of the menu, or @samp{@code{#f}} if the menu has no title set on it.
+This string is owned by the widget and should not be modified or freed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-popdown  (self@tie{}@code{<gtk-menu>})
+@deffnx Method popdown
+Removes the menu from the screen.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-reposition  (self@tie{}@code{<gtk-menu>})
+@deffnx Method reposition
+Repositions the menu according to its position function.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-get-active  (self@tie{}@code{<gtk-menu>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-active
+Returns the selected menu item from the menu. This is used by the
+@code{<gtk-option-menu>}.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}.
+
+@item ret
+the @code{<gtk-menu-item>} that was last selected in the menu. If a selection
+has not yet been made, the first menu item is selected.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-set-active  (self@tie{}@code{<gtk-menu>}) (index@tie{}@code{unsigned-int})
+@deffnx Method set-active
+Selects the specified menu item within the menu. This is used by the
+@code{<gtk-option-menu>} and should not be used by anyone else.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}.
+
+@item index
+the index of the menu item to select. Index values are from 0 to n-1.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-set-tearoff-state  (self@tie{}@code{<gtk-menu>}) (torn_off@tie{}@code{bool})
+@deffnx Method set-tearoff-state
+Changes the tearoff state of the menu. A menu is normally displayed as drop down
+menu which persists as long as the menu is active. It can also be displayed as a
+tearoff menu which persists until it is closed or reattached.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}.
+
+@item torn-off
+If @samp{@code{#t}}, menu is displayed as a tearoff menu.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-attach-to-widget  (self@tie{}@code{<gtk-menu>}) (attach_widget@tie{}@code{<gtk-widget>}) (detacher@tie{}@code{<gtk-menu-detach-func>})
+@deffnx Method attach-to-widget
+Attaches the menu to the widget and provides a callback function that will be
+invoked when the menu calls @code{gtk-menu-detach} during its destruction.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}.
+
+@item attach-widget
+the @code{<gtk-widget>} that the menu will be attached to.
+
+@item detacher
+the user supplied callback function that will be called when the menu calls
+@code{gtk-menu-detach}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-detach  (self@tie{}@code{<gtk-menu>})
+@deffnx Method detach
+Detaches the menu from the widget to which it had been attached. This function
+will call the callback function, @var{detacher}, provided when the
+@code{gtk-menu-attach-to-widget} function was called.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-get-attach-widget  (self@tie{}@code{<gtk-menu>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-attach-widget
+Returns the @code{<gtk-widget>} that the menu is attached to.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}.
+
+@item ret
+the @code{<gtk-widget>} that the menu is attached to.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-get-for-attach-widget  (widget@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+Returns a list of the menus which are attached to this widget. This list is
+owned by GTK+ and must not be modified.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the list of menus attached to his widget.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-menu-set-monitor  (self@tie{}@code{<gtk-menu>}) (monitor_num@tie{}@code{int})
+@deffnx Method set-monitor
+Informs GTK+ on which monitor a menu should be popped up. See
+@code{gdk-screen-get-monitor-geometry}.
+
+This function should be called from a @code{<gtk-menu-position-func>} if the
+menu should not appear on the same monitor as the pointer. This information
+can't be reliably inferred from the coordinates returned by a
+@code{<gtk-menu-position-func>}, since, for very long menus, these coordinates
+may extend beyond the monitor boundaries or even the screen boundaries.
+
+@table @var
+@item menu
+a @code{<gtk-menu>}
+
+@item monitor-num
+the number of the monitor on which the menu should be popped up
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

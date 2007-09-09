@@ -1,0 +1,105 @@
+
+@c %start of fragment
+
+@node GtkListStore
+@chapter GtkListStore
+A list-like data structure that can be used with the
+
+@section Overview
+The @code{<gtk-list-store>} object is a list model for use with a
+@code{<gtk-tree-view>} widget. It implements the @code{<gtk-tree-model>}
+interface, and consequentialy, can use all of the methods available there. It
+also implements the @code{<gtk-tree-sortable>} interface so it can be sorted by
+the view. Finally, it also implements the tree drag and drop interfaces.
+
+The @code{<gtk-list-store>} can accept most GObject types as a column type,
+though it can't accept all custom types. Internally, it will keep a copy of data
+passed in (such as a string or a boxed pointer). Columns that accept
+@code{<gobject>}s are handled a little differently. The @code{<gtk-list-store>}
+will keep a reference to the object instead of copying the value. As a result,
+if the object is modified, it is up to the application writer to call
+@var{gtk-tree-model-row-changed} to emit the "row_changed" signal. This most
+commonly affects lists with @code{<gdk-pixbuf>}s stored.
+
+@example 
+
+enum @{
+  COLUMN_STRING,
+  COLUMN_INT,
+  COLUMN_BOOLEAN,
+  N_COLUMNS
+@};
+
+@{
+  GtkListStore *list_store;
+  GtkTreePath *path;
+  GtkTreeIter iter;
+  gint i;
+
+  list_store = gtk_list_store_new (N_COLUMNS,
+                                   G_TYPE_STRING,
+                                   G_TYPE_INT,
+                                   G_TYPE_BOOLEAN);
+
+  for (i = 0; i < 10; i++)
+    @{
+      gchar *some_data;
+
+      some_data = get_some_data (i);
+
+      /* Add a new row to the model */
+      gtk_list_store_append (list_store, &iter);
+      gtk_list_store_set (list_store, &iter,
+                          COLUMN_STRING, some_data,
+                          COLUMN_INT, i,
+                          COLUMN_BOOLEAN,  FALSE,
+                          -1);
+
+      /* As the store will keep a copy of the string internally, we
+       * free some_data.
+       */
+      g_free (some_data);
+    @}
+
+  /* Modify a particular row */
+  path = gtk_tree_path_new_from_string ("4");
+  gtk_tree_model_get_iter (GTK_TREE_MODEL (list_store),
+                           &iter,
+                           path);
+  gtk_tree_path_free (path);
+  gtk_list_store_set (list_store, &iter,
+                      COLUMN_BOOLEAN, TRUE,
+                      -1);
+@}
+@end example
+
+@section Performance Considerations
+Internally, the @code{<gtk-list-store>} was implemented with a linked list with
+a tail pointer prior to GTK+ 2.6. As a result, it was fast at data insertion and
+deletion, and not fast at random data access. The @code{<gtk-list-store>} sets
+the @code{<gtk-tree-model-iters-persist>} flag, which means that
+@code{<gtk-tree-iter>}s can be cached while the row exists. Thus, if access to a
+particular row is needed often and your code is expected to run on older
+versions of GTK+, it is worth keeping the iter around.
+
+It is important to note that only the methods
+@var{gtk-list-store-insert-with-values} and
+@var{gtk-list-store-insert-with-valuesv} are atomic, in the sense that the row
+is being appended to the store and the values filled in in a single operation
+with regard to @code{<gtk-tree-model>} signaling. In contrast, using e.g.
+@var{gtk-list-store-append} and then @var{gtk-list-store-set} will first create
+a row, which triggers the "row_inserted" @code{<gtk-tree-model>} signal on
+@code{<gtk-list-store>}. The row, however, is still empty, and any signal
+handler connecting to "row_inserted" on this particular store should be prepared
+for the situation that the row might be empty. This is especially important if
+you are wrapping the @code{<gtk-list-store>} inside a
+@code{<gtk-tree-model-filter>} and are using a
+@code{<gtk-tree-model-filter-visible-func>}. Using any of the non-atomic
+operations to append rows to the @code{<gtk-list-store>} will cause the
+@code{<gtk-tree-model-filter-visible-func>} to be visited with an empty row
+first; the function must be prepared for that.
+
+@section Usage
+@include defuns-gtkliststore.xml.texi
+
+@c %end of fragment

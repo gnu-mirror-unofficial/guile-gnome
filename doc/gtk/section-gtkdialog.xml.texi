@@ -1,0 +1,94 @@
+
+@c %start of fragment
+
+@node GtkDialog
+@chapter GtkDialog
+Create popup windows
+
+@section Overview
+Dialog boxes are a convenient way to prompt the user for a small amount of
+input, e.g. to display a message, ask a question, or anything else that does not
+require extensive effort on the user's part.
+
+GTK+ treats a dialog as a window split vertically. The top section is a
+@code{<gtk-vbox>}, and is where widgets such as a @code{<gtk-label>} or a
+@code{<gtk-entry>} should be packed. The bottom area is known as the . This is
+generally used for packing buttons into the dialog which may perform functions
+such as cancel, ok, or apply. The two areas are separated by a
+@code{<gtk-hseparator>}.
+
+@code{<gtk-dialog>} boxes are created with a call to @code{gtk-dialog-new} or
+@code{gtk-dialog-new-with-buttons}. @code{gtk-dialog-new-with-buttons} is
+recommended; it allows you to set the dialog title, some convenient flags, and
+add simple buttons.
+
+If 'dialog' is a newly created dialog, the two primary areas of the window can
+be accessed as @samp{GTK_DIALOG(dialog)->vbox} and
+@samp{GTK_DIALOG(dialog)->action_area}, as can be seen from the example, below.
+
+A 'modal' dialog (that is, one which freezes the rest of the application from
+user input), can be created by calling @code{gtk-window-set-modal} on the
+dialog. Use the @code{gtk-window} macro to cast the widget returned from
+@code{gtk-dialog-new} into a @code{<gtk-window>}. When using
+@code{gtk-dialog-new-with-buttons} you can also pass the
+@code{<gtk-dialog-modal>} flag to make a dialog modal.
+
+If you add buttons to @code{<gtk-dialog>} using
+@code{gtk-dialog-new-with-buttons}, @code{gtk-dialog-add-button},
+@code{gtk-dialog-add-buttons}, or @code{gtk-dialog-add-action-widget}, clicking
+the button will emit a signal called "response" with a response ID that you
+specified. GTK+ will never assign a meaning to positive response IDs; these are
+entirely user-defined. But for convenience, you can use the response IDs in the
+@code{<gtk-response-type>} enumeration (these all have values less than zero).
+If a dialog receives a delete event, the "response" signal will be emitted with
+a response ID of @code{<gtk-response-delete-event>}.
+
+If you want to block waiting for a dialog to return before returning control
+flow to your code, you can call @code{gtk-dialog-run}. This function enters a
+recursive main loop and waits for the user to respond to the dialog, returning
+the response ID corresponding to the button the user clicked.
+
+For the simple dialog in the following example, in reality you'd probably use
+@code{<gtk-message-dialog>} to save yourself some effort. But you'd need to
+create the dialog contents manually if you had more than a simple message in the
+dialog.
+
+@example 
+
+
+/* Function to open a dialog box displaying the message provided. */
+
+void quick_message (gchar *message) @{
+
+   GtkWidget *dialog, *label;
+   
+   /* Create the widgets */
+   
+   dialog = gtk_dialog_new_with_buttons ("Message",
+                                         main_application_window,
+                                         GTK_DIALOG_DESTROY_WITH_PARENT,
+                                         GTK_STOCK_OK,
+                                         GTK_RESPONSE_NONE,
+                                         NULL);
+   label = gtk_label_new (message);
+   
+   /* Ensure that the dialog box is destroyed when the user responds. */
+   
+   g_signal_connect_swapped (dialog,
+                             "response", 
+                             G_CALLBACK (gtk_widget_destroy),
+                             dialog);
+
+   /* Add the label, and show everything we've added to the dialog. */
+
+   gtk_container_add (GTK_CONTAINER (GTK_DIALOG(dialog)->vbox),
+                      label);
+   gtk_widget_show_all (dialog);
+@}
+
+@end example
+
+@section Usage
+@include defuns-gtkdialog.xml.texi
+
+@c %end of fragment

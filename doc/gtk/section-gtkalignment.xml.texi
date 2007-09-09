@@ -1,0 +1,24 @@
+
+@c %start of fragment
+
+@node GtkAlignment
+@chapter GtkAlignment
+A widget which controls the alignment and size of its child
+
+@section Overview
+The @code{<gtk-alignment>} widget controls the alignment and size of its child
+widget. It has four settings: xscale, yscale, xalign, and yalign.
+
+The scale settings are used to specify how much the child widget should expand
+to fill the space allocated to the @code{<gtk-alignment>}. The values can range
+from 0 (meaning the child doesn't expand at all) to 1 (meaning the child expands
+to fill all of the available space).
+
+The align settings are used to place the child widget within the available area.
+The values range from 0 (top or left) to 1 (bottom or right). Of course, if the
+scale settings are both set to 1, the alignment settings have no effect.
+
+@section Usage
+@include defuns-gtkalignment.xml.texi
+
+@c %end of fragment

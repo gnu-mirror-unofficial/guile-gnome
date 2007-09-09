@@ -1,0 +1,669 @@
+
+@c %start of fragment
+
+@deffn Function gtk-drag-dest-set  (self@tie{}@code{<gtk-widget>}) (flags@tie{}@code{<gtk-dest-defaults>}) (types@tie{}@code{glist-of}) (actions@tie{}@code{<gdk-drag-action>})
+Sets a widget as a potential drop destination.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item flags
+the flags that specify what actions GTK+ should take on behalf of a widget for
+drops onto that widget. The @var{targets} and @var{actions} fields only are used
+if @samp{GTK_DEST_DEFAULT_MOTION} or @samp{GTK_DEST_DEFAULT_DROP} are given.
+
+@item targets
+a pointer to an array of @code{<gtk-target-entry>}s indicating the drop types
+that this widget will accept.
+
+@item n-targets
+the number of entries in @var{targets}.
+
+@item actions
+a bitmask of possible actions for a drop onto this widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-dest-set-proxy  (self@tie{}@code{<gtk-widget>}) (proxy_window@tie{}@code{<gdk-window*>}) (protocol@tie{}@code{<gdk-drag-protocol>}) (use_coordinates@tie{}@code{bool})
+Sets this widget as a proxy for drops to another window.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item proxy-window
+the window to which to forward drag events
+
+@item protocol
+the drag protocol which the @var{proxy-window} accepts (You can use
+@code{gdk-drag-get-protocol} to determine this)
+
+@item use-coordinates
+If @samp{@code{#t}}, send the same coordinates to the destination, because it is
+an embedded subwindow.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-dest-unset  (self@tie{}@code{<gtk-widget>})
+Clears information about a drop destination set with @code{gtk-drag-dest-set}.
+The widget will no longer receive notification of drags.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-dest-find-target  (self@tie{}@code{<gtk-widget>}) (context@tie{}@code{<gdk-drag-context>}) (target_list@tie{}@code{<gtk-target-list*>}) @result{}@tie{} (ret@tie{}@code{<gdk-atom>})
+Looks for a match between @var{context->targets} and the @var{dest-target-list},
+returning the first matching target, otherwise returning @samp{GDK_NONE}.
+@var{dest-target-list} should usually be the return value from
+@code{gtk-drag-dest-get-target-list}, but some widgets may have different valid
+targets for different parts of the widget; in that case, they will have to
+implement a drag_motion handler that passes the correct target list to this
+function.
+
+@table @var
+@item widget
+drag destination widget
+
+@item context
+drag context
+
+@item target-list
+list of droppable targets, or @samp{@code{#f}} to use
+gtk_drag_dest_get_target_list (@var{widget}).
+
+@item ret
+first target that the source offers and the dest can accept, or @samp{GDK_NONE}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-dest-get-target-list  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gtk-target-list*>})
+Returns the list of targets this widget can accept from drag-and-drop.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the @code{<gtk-target-list>}, or @samp{@code{#f}} if none
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-dest-set-target-list  (self@tie{}@code{<gtk-widget>}) (target_list@tie{}@code{<gtk-target-list*>})
+Sets the target types that this widget can accept from drag-and-drop. The widget
+must first be made into a drag destination with @code{gtk-drag-dest-set}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>} that's a drag destination
+
+@item target-list
+list of droppable targets, or @samp{@code{#f}} for none
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-dest-add-text-targets  (widget@tie{}@code{<gtk-widget>})
+Add the text targets supported by @code{<gtk-selection>} to the target list of
+the drag destination. The targets are added with @var{info} = 0. If you need
+another value, use @code{gtk-target-list-add-text-targets} and
+@code{gtk-drag-dest-set-target-list}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>} that's a drag destination
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-drag-dest-add-image-targets  (widget@tie{}@code{<gtk-widget>})
+Add the image targets supported by @code{<gtk-selection>} to the target list of
+the drag destination. The targets are added with @var{info} = 0. If you need
+another value, use @code{gtk-target-list-add-image-targets} and
+@code{gtk-drag-dest-set-target-list}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>} that's a drag destination
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-drag-dest-add-uri-targets  (widget@tie{}@code{<gtk-widget>})
+Add the URI targets supported by @code{<gtk-selection>} to the target list of
+the drag destination. The targets are added with @var{info} = 0. If you need
+another value, use @code{gtk-target-list-add-uri-targets} and
+@code{gtk-drag-dest-set-target-list}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>} that's a drag destination
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-drag-dest-set-track-motion  (widget@tie{}@code{<gtk-widget>}) (track_motion@tie{}@code{bool})
+Tells the widget to emit ::drag-motion and ::drag-leave events regardless of the
+targets and the @samp{GTK_DEST_DEFAULT_MOTION} flag.
+
+This may be used when a widget wants to do generic actions regardless of the
+targets that the source offers.
+
+@table @var
+@item widget
+a @code{<gtk-widget>} that's a drag destination
+
+@item track-motion
+whether to accept all targets
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-drag-dest-get-track-motion  (widget@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{bool})
+Returns whether the widget has been configured to always emit ::drag-motion
+signals.
+
+@table @var
+@item widget
+a @code{<gtk-widget>} that's a drag destination
+
+@item ret
+@samp{@code{#t}} if the widget always emits ::drag-motion events
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-drag-finish  (self@tie{}@code{<gdk-drag-context>}) (success@tie{}@code{bool}) (del@tie{}@code{bool}) (time@tie{}@code{unsigned-int32})
+Informs the drag source that the drop is finished, and that the data of the drag
+will no longer be required.
+
+@table @var
+@item context
+the drag context.
+
+@item success
+a flag indicating whether the drop was successful
+
+@item del
+a flag indicating whether the source should delete the original data. (This
+should be @samp{@code{#t}} for a move)
+
+@item time
+the timestamp from the "drag_data_drop" signal.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-get-data  (self@tie{}@code{<gtk-widget>}) (context@tie{}@code{<gdk-drag-context>}) (target@tie{}@code{<gdk-atom>}) (time@tie{}@code{unsigned-int32})
+Gets the data associated with a drag. When the data is received or the retrieval
+fails, GTK+ will emit a "drag_data_received" signal. Failure of the retrieval is
+indicated by the length field of the @var{selection-data} signal parameter being
+negative. However, when @code{gtk-drag-get-data} is called implicitely because
+the @samp{GTK_DEST_DEFAULT_DROP} was set, then the widget will not receive
+notification of failed drops.
+
+@table @var
+@item widget
+the widget that will receive the "drag_data_received" signal.
+
+@item context
+the drag context
+
+@item target
+the target (form of the data) to retrieve.
+
+@item time
+a timestamp for retrieving the data. This will generally be the time received in
+a "drag_data_motion" or "drag_data_drop" signal.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-get-source-widget  (self@tie{}@code{<gdk-drag-context>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Determines the source widget for a drag.
+
+@table @var
+@item context
+a (destination side) drag context.
+
+@item ret
+if the drag is occurring within a single application, a pointer to the source
+widget. Otherwise, @samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-highlight  (self@tie{}@code{<gtk-widget>})
+Draws a highlight around a widget. This will attach handlers to "expose_event"
+and "draw", so the highlight will continue to be displayed until
+@code{gtk-drag-unhighlight} is called.
+
+@table @var
+@item widget
+a widget to highlight
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-unhighlight  (self@tie{}@code{<gtk-widget>})
+Removes a highlight set by @code{gtk-drag-highlight} from a widget.
+
+@table @var
+@item widget
+a widget to remove the highlight from.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-begin  (self@tie{}@code{<gtk-widget>}) (targets@tie{}@code{<gtk-target-list*>}) (actions@tie{}@code{<gdk-drag-action>}) (button@tie{}@code{int}) (event@tie{}@code{<gdk-event>}) @result{}@tie{} (ret@tie{}@code{<gdk-drag-context>})
+Initiates a drag on the source side. The function only needs to be used when the
+application is starting drags itself, and is not needed when
+@code{gtk-drag-source-set} is used.
+
+@table @var
+@item widget
+the source widget.
+
+@item targets
+The targets (data formats) in which the source can provide the data.
+
+@item actions
+A bitmask of the allowed drag actions for this drag.
+
+@item button
+The button the user clicked to start the drag.
+
+@item event
+The event that triggered the start of the drag.
+
+@item ret
+the context for this drag.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-set-icon-widget  (self@tie{}@code{<gdk-drag-context>}) (widget@tie{}@code{<gtk-widget>}) (hot_x@tie{}@code{int}) (hot_y@tie{}@code{int})
+Changes the icon for a widget to a given widget. GTK+ will not destroy the icon,
+so if you don't want it to persist, you should connect to the "drag_end" signal
+and destroy it yourself.
+
+@table @var
+@item context
+the context for a drag. (This must be called with a context for the source side
+of a drag)
+
+@item widget
+a toplevel window to use as an icon.
+
+@item hot-x
+the X offset within @var{widget} of the hotspot.
+
+@item hot-y
+the Y offset within @var{widget} of the hotspot.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-set-icon-pixmap  (self@tie{}@code{<gdk-drag-context>}) (colormap@tie{}@code{<gdk-colormap>}) (pixmap@tie{}@code{<gdk-pixmap*>}) (mask@tie{}@code{<gdk-bitmap*>}) (hot_x@tie{}@code{int}) (hot_y@tie{}@code{int})
+Sets @var{pixmap} as the icon for a given drag. GTK+ retains references for the
+arguments, and will release them when they are no longer needed. In general,
+@code{gtk-drag-set-icon-pixbuf} will be more convenient to use.
+
+@table @var
+@item context
+the context for a drag. (This must be called with a context for the source side
+of a drag)
+
+@item colormap
+the colormap of the icon
+
+@item pixmap
+the image data for the icon
+
+@item mask
+the transparency mask for the icon
+
+@item hot-x
+the X offset within @var{pixmap} of the hotspot.
+
+@item hot-y
+the Y offset within @var{pixmap} of the hotspot.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-set-icon-pixbuf  (self@tie{}@code{<gdk-drag-context>}) (pixbuf@tie{}@code{<gdk-pixbuf>}) (hot_x@tie{}@code{int}) (hot_y@tie{}@code{int})
+Sets @var{pixbuf} as the icon for a given drag.
+
+@table @var
+@item context
+the context for a drag. (This must be called with a context for the source side
+of a drag)
+
+@item pixbuf
+the @code{<gdk-pixbuf>} to use as the drag icon.
+
+@item hot-x
+the X offset within @var{widget} of the hotspot.
+
+@item hot-y
+the Y offset within @var{widget} of the hotspot.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-set-icon-stock  (self@tie{}@code{<gdk-drag-context>}) (stock_id@tie{}@code{mchars}) (hot_x@tie{}@code{int}) (hot_y@tie{}@code{int})
+Sets the icon for a given drag from a stock ID.
+
+@table @var
+@item context
+the context for a drag. (This must be called with a context for the source side
+of a drag)
+
+@item stock-id
+the ID of the stock icon to use for the drag.
+
+@item hot-x
+the X offset within the icon of the hotspot.
+
+@item hot-y
+the Y offset within the icon of the hotspot.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-set-icon-name  (context@tie{}@code{<gdk-drag-context>}) (icon_name@tie{}@code{mchars}) (hot_x@tie{}@code{int}) (hot_y@tie{}@code{int})
+Sets the icon for a given drag from a named themed icon. See the docs for
+@code{<gtk-icon-theme>} for more details. Note that the size of the icon depends
+on the icon theme (the icon is loaded at the symbolic size
+@code{<gtk-icon-size-dnd>}), thus @var{hot-x} and @var{hot-y} have to be used
+with care.
+
+@table @var
+@item context
+the context for a drag. (This must be called with a context for the source side
+of a drag)
+
+@item icon-name
+name of icon to use
+
+@item hot-x
+the X offset of the hotspot within the icon
+
+@item hot-y
+the Y offset of the hotspot within the icon
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-drag-set-icon-default  (self@tie{}@code{<gdk-drag-context>})
+Sets the icon for a particular drag to the default icon.
+
+@table @var
+@item context
+the context for a drag. (This must be called with a context for the source side
+of a drag)
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-check-threshold  (self@tie{}@code{<gtk-widget>}) (start_x@tie{}@code{int}) (start_y@tie{}@code{int}) (current_x@tie{}@code{int}) (current_y@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+Checks to see if a mouse drag starting at (@var{start-x}, @var{start-y}) and
+ending at (@var{current-x}, @var{current-y}) has passed the GTK+ drag threshold,
+and thus should trigger the beginning of a drag-and-drop operation.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item start-x
+X coordinate of start of drag
+
+@item start-y
+Y coordinate of start of drag
+
+@item current-x
+current X coordinate
+
+@item current-y
+current Y coordinate
+
+@item ret
+@samp{@code{#t}} if the drag threshold has been passed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-source-set  (self@tie{}@code{<gtk-widget>}) (start_button_mask@tie{}@code{<gdk-modifier-type>}) (targets@tie{}@code{<gtk-target-entry*>}) (n_targets@tie{}@code{int}) (actions@tie{}@code{<gdk-drag-action>})
+Sets up a widget so that GTK+ will start a drag operation when the user clicks
+and drags on the widget. The widget must have a window.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item start-button-mask
+the bitmask of buttons that can start the drag
+
+@item targets
+the table of targets that the drag will support
+
+@item n-targets
+the number of items in @var{targets}
+
+@item actions
+the bitmask of possible actions for a drag from this widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-source-set-icon  (self@tie{}@code{<gtk-widget>}) (colormap@tie{}@code{<gdk-colormap>}) (pixmap@tie{}@code{<gdk-pixmap*>}) (mask@tie{}@code{<gdk-bitmap*>})
+Sets the icon that will be used for drags from a particular widget from a
+pixmap/mask. GTK+ retains references for the arguments, and will release them
+when they are no longer needed. Use @code{gtk-drag-source-set-icon-pixbuf}
+instead.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item colormap
+the colormap of the icon
+
+@item pixmap
+the image data for the icon
+
+@item mask
+the transparency mask for an image.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-source-set-icon-pixbuf  (self@tie{}@code{<gtk-widget>}) (pixbuf@tie{}@code{<gdk-pixbuf>})
+Sets the icon that will be used for drags from a particular widget from a
+@code{<gdk-pixbuf>}. GTK+ retains a reference for @var{pixbuf} and will release
+it when it is no longer needed.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item pixbuf
+the @code{<gdk-pixbuf>} for the drag icon
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-source-set-icon-stock  (self@tie{}@code{<gtk-widget>}) (stock_id@tie{}@code{mchars})
+Sets the icon that will be used for drags from a particular source to a stock
+icon.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item stock-id
+the ID of the stock icon to use
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-source-set-icon-name  (widget@tie{}@code{<gtk-widget>}) (icon_name@tie{}@code{mchars})
+Sets the icon that will be used for drags from a particular source to a themed
+icon. See the docs for @code{<gtk-icon-theme>} for more details.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item icon-name
+name of icon to use
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-drag-source-unset  (self@tie{}@code{<gtk-widget>})
+Undoes the effects of @code{gtk-drag-source-set}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-drag-source-set-target-list  (widget@tie{}@code{<gtk-widget>}) (target_list@tie{}@code{<gtk-target-list*>})
+Changes the target types that this widget offers for drag-and-drop. The widget
+must first be made into a drag source with @code{gtk-drag-source-set}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>} that's a drag source
+
+@item target-list
+list of draggable targets, or @samp{@code{#f}} for none
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-drag-source-get-target-list  (widget@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gtk-target-list*>})
+Gets the list of targets this widget can provide for drag-and-drop.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the @code{<gtk-target-list>}, or @samp{@code{#f}} if none
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-drag-source-add-text-targets  (widget@tie{}@code{<gtk-widget>})
+Add the text targets supported by @code{<gtk-selection>} to the target list of
+the drag source. The targets are added with @var{info} = 0. If you need another
+value, use @code{gtk-target-list-add-text-targets} and
+@code{gtk-drag-source-set-target-list}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>} that's is a drag source
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-drag-source-add-image-targets  (widget@tie{}@code{<gtk-widget>})
+Add the writable image targets supported by @code{<gtk-selection>} to the target
+list of the drag source. The targets are added with @var{info} = 0. If you need
+another value, use @code{gtk-target-list-add-image-targets} and
+@code{gtk-drag-source-set-target-list}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>} that's is a drag source
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-drag-source-add-uri-targets  (widget@tie{}@code{<gtk-widget>})
+Add the URI targets supported by @code{<gtk-selection>} to the target list of
+the drag source. The targets are added with @var{info} = 0. If you need another
+value, use @code{gtk-target-list-add-uri-targets} and
+@code{gtk-drag-source-set-target-list}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>} that's is a drag source
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,151 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename guile-gnome-gdk.info
+@settitle Guile-Gdk
+@c %**end of header
+
+@set VERSION 2.15.93
+@set UPDATED 2 September 2007
+
+@copying 
+This manual is for @code{(gnome gdk)} (version @value{VERSION}, updated
+@value{UPDATED})
+
+Copyright 1997-2007 Damon Chaplin and others
+
+@c from gtk+/docs/reference/COPYING
+@quotation 
+This work may be reproduced and distributed in whole or in part, in
+any medium, physical or electronic, so as long as this copyright
+notice remains intact and unchanged on all copies.  Commercial
+redistribution is permitted and encouraged, but you may not
+redistribute, in whole or in part, under terms more restrictive than
+those under which you received it. If you redistribute a modified or
+translated version of this work, you must also make the source code to
+the modified or translated version available in electronic form
+without charge.  However, mere aggregation as part of a larger work
+shall not count as a modification for this purpose.
+
+All code examples in this work are placed into the public domain,
+and may be used, modified and redistributed without restriction.
+
+BECAUSE THIS WORK IS LICENSED FREE OF CHARGE, THERE IS NO
+WARRANTY FOR THE WORK, TO THE EXTENT PERMITTED BY APPLICABLE LAW.
+EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR
+OTHER PARTIES PROVIDE THE WORK "AS IS" WITHOUT WARRANTY OF ANY
+KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE.  SHOULD THE WORK PROVE DEFECTIVE, YOU ASSUME
+THE COST OF ALL NECESSARY REPAIR OR CORRECTION.
+
+IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN
+WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY
+AND/OR REDISTRIBUTE THE WORK AS PERMITTED ABOVE, BE LIABLE TO YOU
+FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR
+CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE
+WORK, EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE 
+POSSIBILITY OF SUCH DAMAGES.
+@end quotation
+
+@end copying
+
+@dircategory The Algorithmic Language Scheme
+@direntry 
+* Guile-Gdk: (guile-gnome-gdk.info).  The GIMP Drawing Kit.
+@end direntry
+
+@titlepage 
+@title Guile-GNOME: Gdk
+@subtitle version @value{VERSION}, updated @value{UPDATED}
+@author Damon Chaplin
+@author many others
+@page 
+@vskip 0pt plus 1filll
+@insertcopying 
+@end titlepage
+
+@ifnottex 
+@node Top
+@top Guile-Gdk
+
+@insertcopying 
+@menu
+* Overview:: Overview
+
+* General:: Library initialization and miscellaneous functions
+* GdkDisplay:: Controls the keyboard/mouse pointer grabs and a set of s
+* GdkDisplayManager:: Maintains a list of all open s
+* GdkScreen:: Object representing a physical screen
+* Points Rectangles and Regions:: Simple graphical data types
+* Graphics Contexts:: Objects to encapsulate drawing properties
+* Drawing Primitives:: Functions for drawing points, lines, arcs, and text
+* Bitmaps and Pixmaps:: Offscreen drawables
+* GdkRGB:: Renders RGB, grayscale, or indexed image data to a GdkDrawable
+* Images:: A client-side area for bit-mapped graphics
+* Pixbufs:: Functions for rendering pixbufs on drawables
+* Colormaps and Colors:: Manipulation of colors and colormaps
+* Visuals:: Low-level display hardware information
+* Fonts:: Loading and manipulating fonts
+* Cursors:: Standard and pixmap cursors
+* Windows:: Onscreen display areas in the target window system
+* Events:: Functions for handling events from the window system
+* Event Structures:: Data structures specific to each type of event
+* Key Values:: Functions for manipulating keyboard codes
+* Selections:: Functions for transfering data via the X selection mechanism
+* Drag and Drop:: Functions for controlling drag and drop handling
+* Properties and Atoms:: Functions to manipulate properties on windows
+* Threads:: Functions for using GDK in multi-threaded programs
+* Input:: Callbacks on file descriptors
+* Input Devices:: Functions for handling extended input devices
+* Pango Interaction:: Using Pango in GDK
+* Cairo Interaction:: Functions to support using Cairo
+* X Window System Interaction:: X backend-specific functions
+
+* Concept Index::
+* Function Index::
+@end menu
+
+@end ifnottex
+
+@iftex 
+@shortcontents 
+@end iftex
+
+@include overview.texi
+
+@include section-general.xml.texi
+@include section-gdkdisplay.xml.texi
+@include section-gdkdisplaymanager.xml.texi
+@include section-gdkscreen.xml.texi
+@include section-regions.xml.texi
+@include section-gcs.xml.texi
+@include section-drawing.xml.texi
+@include section-pixmaps.xml.texi
+@include section-rgb.xml.texi
+@include section-images.xml.texi
+@include section-pixbufs.xml.texi
+@include section-colors.xml.texi
+@include section-visuals.xml.texi
+@include section-fonts.xml.texi
+@include section-cursors.xml.texi
+@include section-windows.xml.texi
+@include section-events.xml.texi
+@include section-event_structs.xml.texi
+@include section-keys.xml.texi
+@include section-selections.xml.texi
+@include section-dnd.xml.texi
+@include section-properties.xml.texi
+@include section-threads.xml.texi
+@include section-input.xml.texi
+@include section-input_devices.xml.texi
+@include section-pango_interaction.xml.texi
+@include section-cairo_interaction.xml.texi
+@include section-x_interaction.xml.texi
+
+@node Concept Index
+@unnumbered Concept Index
+@printindex cp
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+@bye

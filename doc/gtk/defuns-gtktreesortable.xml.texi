@@ -1,0 +1,40 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-tree-sortable>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@defop Signal <gtk-tree-sortable> sort-column-changed 
+@end defop
+
+@deffn Function gtk-tree-sortable-set-sort-func  (self@tie{}@code{<gtk-tree-sortable>}) (sort_column_id@tie{}@code{int}) (sort_func@tie{}@code{<gtk-tree-iter-compare-func>}) (user_data@tie{}@code{<gpointer>}) (destroy@tie{}@code{<gtk-destroy-notify>})
+@deffnx Method set-sort-func
+Sets the comparison function used when sorting to be @var{sort-func}. If the
+current sort column id of @var{sortable} is the same as @var{sort-column-id},
+then the model will sort using this function.
+
+@table @var
+@item sortable
+A @code{<gtk-tree-sortable>}
+
+@item sort-column-id
+the sort column id to set the function for
+
+@item sort-func
+The comparison function
+
+@item user-data
+User data to pass to @var{sort-func}, or @samp{@code{#f}}
+
+@item destroy
+Destroy notifier of @var{user-data}, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

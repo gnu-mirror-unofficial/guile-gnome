@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GtkRange
+@chapter GtkRange
+Base class for widgets which visualize an adjustment
+
+@section Overview
+@section Usage
+@include defuns-gtkrange.xml.texi
+
+@c %end of fragment

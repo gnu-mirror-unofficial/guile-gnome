@@ -1,0 +1,22 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-vruler>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function gtk-vruler-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new vertical ruler
+
+@table @var
+@item ret
+a new @code{<gtk-vruler>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

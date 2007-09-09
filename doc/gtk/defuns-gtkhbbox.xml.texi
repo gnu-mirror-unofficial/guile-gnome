@@ -1,0 +1,22 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-hbutton-box>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function gtk-hbutton-box-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new horizontal button box.
+
+@table @var
+@item ret
+a new button box @code{<gtk-widget>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

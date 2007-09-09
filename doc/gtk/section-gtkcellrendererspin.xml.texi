@@ -1,0 +1,27 @@
+
+@c %start of fragment
+
+@node GtkCellRendererSpin
+@chapter GtkCellRendererSpin
+Renders a spin button in a cell
+
+@section Overview
+@code{<gtk-cell-renderer-spin>} renders text in a cell like
+@code{<gtk-cell-renderer-text>} from which it is derived. But while
+@code{<gtk-cell-renderer-text>} offers a simple entry to edit the text,
+@code{<gtk-cell-renderer-spin>} offers a @code{<gtk-spin-button>} widget. Of
+course, that means that the text has to be parseable as a floating point number.
+
+The range of the spinbutton is taken from the adjustment property of the cell
+renderer, which can be set explicitly or mapped to a column in the tree model,
+like all properties of cell renders. @code{<gtk-cell-renderer-spin>} also has
+properties for the climb rate and the number of digits to display. Other
+@code{<gtk-spin-button>} properties can be set in a handler for the
+start-editing signal.
+
+The @code{<gtk-cell-renderer-spin>} cell renderer was added in GTK+ 2.10.
+
+@section Usage
+@include defuns-gtkcellrendererspin.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,197 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-layout>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item hadjustment
+The GtkAdjustment for the horizontal position@item vadjustment
+The GtkAdjustment for the vertical position@item width
+The width of the layout@item height
+The height of the layout@end table
+
+@end deftp
+
+@defop Signal <gtk-layout> set-scroll-adjustments  (arg0@tie{}@code{<gtk-adjustment>}) (arg1@tie{}@code{<gtk-adjustment>})
+@end defop
+
+@deffn Function gtk-layout-new  (hadjustment@tie{}@code{<gtk-adjustment>}) (vadjustment@tie{}@code{<gtk-adjustment>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-layout>}. Unless you have a specific adjustment you'd
+like the layout to use for scrolling, pass @samp{@code{#f}} for
+@var{hadjustment} and @var{vadjustment}.
+
+@table @var
+@item hadjustment
+horizontal scroll adjustment, or @samp{@code{#f}}
+
+@item vadjustment
+vertical scroll adjustment, or @samp{@code{#f}}
+
+@item ret
+a new @code{<gtk-layout>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-layout-put  (self@tie{}@code{<gtk-layout>}) (child_widget@tie{}@code{<gtk-widget>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method put
+Adds @var{child-widget} to @var{layout}, at position (@var{x},@var{y}).
+@var{layout} becomes the new parent container of @var{child-widget}.
+
+@table @var
+@item layout
+a @code{<gtk-layout>}
+
+@item child-widget
+child widget
+
+@item x
+X position of child widget
+
+@item y
+Y position of child widget
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-layout-move  (self@tie{}@code{<gtk-layout>}) (child_widget@tie{}@code{<gtk-widget>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method move
+Moves a current child of @var{layout} to a new position.
+
+@table @var
+@item layout
+a @code{<gtk-layout>}
+
+@item child-widget
+a current child of @var{layout}
+
+@item x
+X position to move to
+
+@item y
+Y position to move to
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-layout-set-size  (self@tie{}@code{<gtk-layout>}) (width@tie{}@code{unsigned-int}) (height@tie{}@code{unsigned-int})
+@deffnx Method set-size
+Sets the size of the scrollable area of the layout.
+
+@table @var
+@item layout
+a @code{<gtk-layout>}
+
+@item width
+width of entire scrollable area
+
+@item height
+height of entire scrollable area
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-layout-get-size  (self@tie{}@code{<gtk-layout>}) @result{}@tie{} (width@tie{}@code{unsigned-int}) (height@tie{}@code{unsigned-int})
+@deffnx Method get-size
+Gets the size that has been set on the layout, and that determines the total
+extents of the layout's scrollbar area. See @code{gtk-layout-set-size}.
+
+@table @var
+@item layout
+a @code{<gtk-layout>}
+
+@item width
+location to store the width set on @var{layout}, or @samp{@code{#f}}
+
+@item height
+location to store the height set on @var{layout}, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-layout-get-hadjustment  (self@tie{}@code{<gtk-layout>}) @result{}@tie{} (ret@tie{}@code{<gtk-adjustment>})
+@deffnx Method get-hadjustment
+This function should only be called after the layout has been placed in a
+@code{<gtk-scrolled-window>} or otherwise configured for scrolling. It returns
+the @code{<gtk-adjustment>} used for communication between the horizontal
+scrollbar and @var{layout}.
+
+See @code{<gtk-scrolled-window>}, @code{<gtk-scrollbar>},
+@code{<gtk-adjustment>} for details.
+
+@table @var
+@item layout
+a @code{<gtk-layout>}
+
+@item ret
+horizontal scroll adjustment
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-layout-get-vadjustment  (self@tie{}@code{<gtk-layout>}) @result{}@tie{} (ret@tie{}@code{<gtk-adjustment>})
+@deffnx Method get-vadjustment
+This function should only be called after the layout has been placed in a
+@code{<gtk-scrolled-window>} or otherwise configured for scrolling. It returns
+the @code{<gtk-adjustment>} used for communication between the vertical
+scrollbar and @var{layout}.
+
+See @code{<gtk-scrolled-window>}, @code{<gtk-scrollbar>},
+@code{<gtk-adjustment>} for details.
+
+@table @var
+@item layout
+a @code{<gtk-layout>}
+
+@item ret
+vertical scroll adjustment
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-layout-set-hadjustment  (self@tie{}@code{<gtk-layout>}) (adjustment@tie{}@code{<gtk-adjustment>})
+@deffnx Method set-hadjustment
+Sets the horizontal scroll adjustment for the layout.
+
+See @code{<gtk-scrolled-window>}, @code{<gtk-scrollbar>},
+@code{<gtk-adjustment>} for details.
+
+@table @var
+@item layout
+a @code{<gtk-layout>}
+
+@item adjustment
+new scroll adjustment
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-layout-set-vadjustment  (self@tie{}@code{<gtk-layout>}) (adjustment@tie{}@code{<gtk-adjustment>})
+@deffnx Method set-vadjustment
+Sets the vertical scroll adjustment for the layout.
+
+See @code{<gtk-scrolled-window>}, @code{<gtk-scrollbar>},
+@code{<gtk-adjustment>} for details.
+
+@table @var
+@item layout
+a @code{<gtk-layout>}
+
+@item adjustment
+new scroll adjustment
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

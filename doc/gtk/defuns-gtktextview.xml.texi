@@ -1,0 +1,972 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-text-view>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item pixels-above-lines
+Pixels of blank space above paragraphs@item pixels-below-lines
+Pixels of blank space below paragraphs@item pixels-inside-wrap
+Pixels of blank space between wrapped lines in a paragraph@item editable
+Whether the text can be modified by the user@item wrap-mode
+Whether to wrap lines never, at word boundaries, or at character boundaries@item justification
+Left, right, or center justification@item left-margin
+Width of the left margin in pixels@item right-margin
+Width of the right margin in pixels@item indent
+Amount to indent the paragraph, in pixels@item tabs
+Custom tabs for this text@item cursor-visible
+If the insertion cursor is shown@item buffer
+The buffer which is displayed@item overwrite
+Whether entered text overwrites existing contents@item accepts-tab
+Whether Tab will result in a tab character being entered@end table
+
+@end deftp
+
+@defop Signal <gtk-text-view> move-cursor  (arg0@tie{}@code{<gtk-movement-step>}) (arg1@tie{}@code{<gint>}) (arg2@tie{}@code{<gboolean>})
+The ::move-cursor signal is a keybinding signal which gets emitted when the user
+initiates a cursor movement.
+
+Applications should not connect to it, but may emit it with
+@code{g-signal-emit-by-name} if they need to control scrolling programmatically.
+
+@end defop
+
+@defop Signal <gtk-text-view> copy-clipboard 
+@end defop
+
+@defop Signal <gtk-text-view> populate-popup  (arg0@tie{}@code{<gtk-menu>})
+@end defop
+
+@defop Signal <gtk-text-view> insert-at-cursor  (arg0@tie{}@code{<gchararray>})
+@end defop
+
+@defop Signal <gtk-text-view> delete-from-cursor  (arg0@tie{}@code{<gtk-delete-type>}) (arg1@tie{}@code{<gint>})
+@end defop
+
+@defop Signal <gtk-text-view> backspace 
+@end defop
+
+@defop Signal <gtk-text-view> cut-clipboard 
+@end defop
+
+@defop Signal <gtk-text-view> paste-clipboard 
+@end defop
+
+@defop Signal <gtk-text-view> toggle-overwrite 
+@end defop
+
+@defop Signal <gtk-text-view> set-scroll-adjustments  (arg0@tie{}@code{<gtk-adjustment>}) (arg1@tie{}@code{<gtk-adjustment>})
+@end defop
+
+@defop Signal <gtk-text-view> select-all  (arg0@tie{}@code{<gboolean>})
+@end defop
+
+@defop Signal <gtk-text-view> page-horizontally  (arg0@tie{}@code{<gint>}) (arg1@tie{}@code{<gboolean>})
+@end defop
+
+@defop Signal <gtk-text-view> move-viewport  (arg0@tie{}@code{<gtk-scroll-step>}) (arg1@tie{}@code{<gint>})
+@end defop
+
+@defop Signal <gtk-text-view> set-anchor 
+@end defop
+
+@defop Signal <gtk-text-view> toggle-cursor-visible 
+undocumented
+@end defop
+
+@deftp Class <gtk-text-child-anchor>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function gtk-text-view-new-with-buffer  (buffer@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-text-view>} widget displaying the buffer @var{buffer}.
+One buffer can be shared among many widgets. @var{buffer} may be NULL to create
+a default buffer, in which case this function is equivalent to
+@code{gtk-text-view-new}. The text view adds its own reference count to the
+buffer; it does not take over an existing reference.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item ret
+a new @code{<gtk-text-view>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-set-buffer  (self@tie{}@code{<gtk-text-view>}) (buffer@tie{}@code{<gtk-text-buffer>})
+@deffnx Method set-buffer
+Sets @var{buffer} as the buffer being displayed by @var{text-view}. The previous
+buffer displayed by the text view is unreferenced, and a reference is added to
+@var{buffer}. If you owned a reference to @var{buffer} before passing it to this
+function, you must remove that reference yourself; @code{<gtk-text-view>} will
+not "adopt" it.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-buffer  (self@tie{}@code{<gtk-text-view>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-buffer>})
+@deffnx Method get-buffer
+Returns the @code{<gtk-text-buffer>} being displayed by this text view. The
+reference count on the buffer is not incremented; the caller of this function
+won't own a new reference.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item ret
+a @code{<gtk-text-buffer>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-scroll-to-mark  (self@tie{}@code{<gtk-text-view>}) (mark@tie{}@code{<gtk-text-mark>}) (within_margin@tie{}@code{double}) (use_align@tie{}@code{bool}) (xalign@tie{}@code{double}) (yalign@tie{}@code{double})
+@deffnx Method scroll-to-mark
+Scrolls @var{text-view} so that @var{mark} is on the screen in the position
+indicated by @var{xalign} and @var{yalign}. An alignment of 0.0 indicates left
+or top, 1.0 indicates right or bottom, 0.5 means center. If @var{use-align} is
+@samp{@code{#f}}, the text scrolls the minimal distance to get the mark
+onscreen, possibly not scrolling at all. The effective screen for purposes of
+this function is reduced by a margin of size @var{within-margin}.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item mark
+a @code{<gtk-text-mark>}
+
+@item within-margin
+margin as a [0.0,0.5) fraction of screen size
+
+@item use-align
+whether to use alignment arguments (if @samp{@code{#f}}, just get the mark
+onscreen)
+
+@item xalign
+horizontal alignment of mark within visible area.
+
+@item yalign
+vertical alignment of mark within visible area
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-scroll-to-iter  (self@tie{}@code{<gtk-text-view>}) (iter@tie{}@code{<gtk-text-iter>}) (within_margin@tie{}@code{double}) (use_align@tie{}@code{bool}) (xalign@tie{}@code{double}) (yalign@tie{}@code{double}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method scroll-to-iter
+Scrolls @var{text-view} so that @var{iter} is on the screen in the position
+indicated by @var{xalign} and @var{yalign}. An alignment of 0.0 indicates left
+or top, 1.0 indicates right or bottom, 0.5 means center. If @var{use-align} is
+@samp{@code{#f}}, the text scrolls the minimal distance to get the mark
+onscreen, possibly not scrolling at all. The effective screen for purposes of
+this function is reduced by a margin of size @var{within-margin}. NOTE: This
+function uses the currently-computed height of the lines in the text buffer.
+Note that line heights are computed in an idle handler; so this function may not
+have the desired effect if it's called before the height computations. To avoid
+oddness, consider using @code{gtk-text-view-scroll-to-mark} which saves a point
+to be scrolled to after line validation.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item iter
+a @code{<gtk-text-iter>}
+
+@item within-margin
+margin as a [0.0,0.5) fraction of screen size
+
+@item use-align
+whether to use alignment arguments (if @samp{@code{#f}}, just get the mark
+onscreen)
+
+@item xalign
+horizontal alignment of mark within visible area.
+
+@item yalign
+vertical alignment of mark within visible area
+
+@item ret
+@samp{@code{#t}} if scrolling occurred
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-scroll-mark-onscreen  (self@tie{}@code{<gtk-text-view>}) (mark@tie{}@code{<gtk-text-mark>})
+@deffnx Method scroll-mark-onscreen
+Scrolls @var{text-view} the minimum distance such that @var{mark} is contained
+within the visible area of the widget.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item mark
+a mark in the buffer for @var{text-view}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-move-mark-onscreen  (self@tie{}@code{<gtk-text-view>}) (mark@tie{}@code{<gtk-text-mark>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method move-mark-onscreen
+Moves a mark within the buffer so that it's located within the currently-visible
+text area.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item mark
+a @code{<gtk-text-mark>}
+
+@item ret
+@samp{@code{#t}} if the mark moved (wasn't already onscreen)
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-place-cursor-onscreen  (self@tie{}@code{<gtk-text-view>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method place-cursor-onscreen
+Moves the cursor to the currently visible region of the buffer, it it isn't
+there already.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item ret
+TRUE if the cursor had to be moved.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-visible-rect  (self@tie{}@code{<gtk-text-view>}) (visible_rect@tie{}@code{<gdk-rectangle>})
+@deffnx Method get-visible-rect
+Fills @var{visible-rect} with the currently-visible region of the buffer, in
+buffer coordinates. Convert to window coordinates with
+@code{gtk-text-view-buffer-to-window-coords}.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item visible-rect
+rectangle to fill
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-iter-location  (self@tie{}@code{<gtk-text-view>}) (iter@tie{}@code{<gtk-text-iter>}) (location@tie{}@code{<gdk-rectangle>})
+@deffnx Method get-iter-location
+Gets a rectangle which roughly contains the character at @var{iter}. The
+rectangle position is in buffer coordinates; use
+@code{gtk-text-view-buffer-to-window-coords} to convert these coordinates to
+coordinates for one of the windows in the text view.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item iter
+a @code{<gtk-text-iter>}
+
+@item location
+bounds of the character at @var{iter}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-line-at-y  (self@tie{}@code{<gtk-text-view>}) (target_iter@tie{}@code{<gtk-text-iter>}) (y@tie{}@code{int}) @result{}@tie{} (line_top@tie{}@code{int})
+@deffnx Method get-line-at-y
+Gets the @code{<gtk-text-iter>} at the start of the line containing the
+coordinate @var{y}. @var{y} is in buffer coordinates, convert from window
+coordinates with @code{gtk-text-view-window-to-buffer-coords}. If
+non-@samp{@code{#f}}, @var{line-top} will be filled with the coordinate of the
+top edge of the line.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item target-iter
+a @code{<gtk-text-iter>}
+
+@item y
+a y coordinate
+
+@item line-top
+return location for top coordinate of the line
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-line-yrange  (self@tie{}@code{<gtk-text-view>}) (iter@tie{}@code{<gtk-text-iter>}) @result{}@tie{} (y@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method get-line-yrange
+Gets the y coordinate of the top of the line containing @var{iter}, and the
+height of the line. The coordinate is a buffer coordinate; convert to window
+coordinates with @code{gtk-text-view-buffer-to-window-coords}.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item iter
+a @code{<gtk-text-iter>}
+
+@item y
+return location for a y coordinate
+
+@item height
+return location for a height
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-iter-at-location  (self@tie{}@code{<gtk-text-view>}) (iter@tie{}@code{<gtk-text-iter>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method get-iter-at-location
+Retrieves the iterator at buffer coordinates @var{x} and @var{y}. Buffer
+coordinates are coordinates for the entire buffer, not just the
+currently-displayed portion. If you have coordinates from an event, you have to
+convert those to buffer coordinates with
+@code{gtk-text-view-window-to-buffer-coords}.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item iter
+a @code{<gtk-text-iter>}
+
+@item x
+x position, in buffer coordinates
+
+@item y
+y position, in buffer coordinates
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-window  (self@tie{}@code{<gtk-text-view>}) (win@tie{}@code{<gtk-text-window-type>}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>})
+@deffnx Method get-window
+Retrieves the @code{<gdk-window>} corresponding to an area of the text view;
+possible windows include the overall widget window, child windows on the left,
+right, top, bottom, and the window that displays the text buffer. Windows are
+@samp{@code{#f}} and nonexistent if their width or height is 0, and are
+nonexistent before the widget has been realized.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item win
+window to get
+
+@item ret
+a @code{<gdk-window>}, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-window-type  (self@tie{}@code{<gtk-text-view>}) (window@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-window-type>})
+@deffnx Method get-window-type
+Usually used to find out which window an event corresponds to. If you connect to
+an event signal on @var{text-view}, this function should be called on
+@samp{event->window} to see which window it was.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item window
+a window type
+
+@item ret
+the window type.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-forward-display-line  (self@tie{}@code{<gtk-text-view>}) (iter@tie{}@code{<gtk-text-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method forward-display-line
+Moves the given @var{iter} forward by one display (wrapped) line. A display line
+is different from a paragraph. Paragraphs are separated by newlines or other
+paragraph separator characters. Display lines are created by line-wrapping a
+paragraph. If wrapping is turned off, display lines and paragraphs will be the
+same. Display lines are divided differently for each view, since they depend on
+the view's width; paragraphs are the same in all views, since they depend on the
+contents of the @code{<gtk-text-buffer>}.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item iter
+a @code{<gtk-text-iter>}
+
+@item ret
+@samp{@code{#t}} if @var{iter} was moved and is not on the end iterator
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-backward-display-line  (self@tie{}@code{<gtk-text-view>}) (iter@tie{}@code{<gtk-text-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method backward-display-line
+Moves the given @var{iter} backward by one display (wrapped) line. A display
+line is different from a paragraph. Paragraphs are separated by newlines or
+other paragraph separator characters. Display lines are created by line-wrapping
+a paragraph. If wrapping is turned off, display lines and paragraphs will be the
+same. Display lines are divided differently for each view, since they depend on
+the view's width; paragraphs are the same in all views, since they depend on the
+contents of the @code{<gtk-text-buffer>}.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item iter
+a @code{<gtk-text-iter>}
+
+@item ret
+@samp{@code{#t}} if @var{iter} was moved and is not on the end iterator
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-starts-display-line  (self@tie{}@code{<gtk-text-view>}) (iter@tie{}@code{<gtk-text-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method starts-display-line
+Determines whether @var{iter} is at the start of a display line. See
+@code{gtk-text-view-forward-display-line} for an explanation of display lines
+vs. paragraphs.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item iter
+a @code{<gtk-text-iter>}
+
+@item ret
+@samp{@code{#t}} if @var{iter} begins a wrapped line
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-move-visually  (self@tie{}@code{<gtk-text-view>}) (iter@tie{}@code{<gtk-text-iter>}) (count@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method move-visually
+Move the iterator a given number of characters visually, treating it as the
+strong cursor position. If @var{count} is positive, then the new strong cursor
+position will be @var{count} positions to the right of the old cursor position.
+If @var{count} is negative then the new strong cursor position will be
+@var{count} positions to the left of the old cursor position.
+
+In the presence of bidirection text, the correspondence between logical and
+visual order will depend on the direction of the current run, and there may be
+jumps when the cursor is moved off of the end of a run.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item iter
+a @code{<gtk-text-iter>}
+
+@item count
+number of characters to move (negative moves left, positive moves right)
+
+@item ret
+@samp{@code{#t}} if @var{iter} moved and is not on the end iterator
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-add-child-at-anchor  (self@tie{}@code{<gtk-text-view>}) (child@tie{}@code{<gtk-widget>}) (anchor@tie{}@code{<gtk-text-child-anchor>})
+@deffnx Method add-child-at-anchor
+Adds a child widget in the text buffer, at the given @var{anchor}.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item child
+a @code{<gtk-widget>}
+
+@item anchor
+a @code{<gtk-text-child-anchor>} in the @code{<gtk-text-buffer>} for
+@var{text-view}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-child-anchor-new  @result{}@tie{} (ret@tie{}@code{<gtk-text-child-anchor>})
+Creates a new @code{<gtk-text-child-anchor>}. Usually you would then insert it
+into a @code{<gtk-text-buffer>} with @code{gtk-text-buffer-insert-child-anchor}.
+To perform the creation and insertion in one step, use the convenience function
+@code{gtk-text-buffer-create-child-anchor}.
+
+@table @var
+@item ret
+a new @code{<gtk-text-child-anchor>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-child-anchor-get-widgets  (self@tie{}@code{<gtk-text-child-anchor>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method get-widgets
+Gets a list of all widgets anchored at this child anchor. The returned list
+should be freed with @code{g-list-free}.
+
+@table @var
+@item anchor
+a @code{<gtk-text-child-anchor>}
+
+@item ret
+list of widgets anchored at @var{anchor}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-child-anchor-get-deleted  (self@tie{}@code{<gtk-text-child-anchor>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-deleted
+Determines whether a child anchor has been deleted from the buffer. Keep in mind
+that the child anchor will be unreferenced when removed from the buffer, so you
+need to hold your own reference (with @code{g-object-ref}) if you plan to use
+this function &#x2014; otherwise all deleted child anchors will also be
+finalized.
+
+@table @var
+@item anchor
+a @code{<gtk-text-child-anchor>}
+
+@item ret
+@samp{@code{#t}} if the child anchor has been deleted from its buffer
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-add-child-in-window  (self@tie{}@code{<gtk-text-view>}) (child@tie{}@code{<gtk-widget>}) (which_window@tie{}@code{<gtk-text-window-type>}) (xpos@tie{}@code{int}) (ypos@tie{}@code{int})
+@deffnx Method add-child-in-window
+Adds a child at fixed coordinates in one of the text widget's windows. The
+window must have nonzero size (see @code{gtk-text-view-set-border-window-size}).
+Note that the child coordinates are given relative to the @code{<gdk-window>} in
+question, and that these coordinates have no sane relationship to scrolling.
+When placing a child in @code{<gtk-text-window-widget>}, scrolling is
+irrelevant, the child floats above all scrollable areas. But when placing a
+child in one of the scrollable windows (border windows or text window), you'll
+need to compute the child's correct position in buffer coordinates any time
+scrolling occurs or buffer changes occur, and then call
+@code{gtk-text-view-move-child} to update the child's position. Unfortunately
+there's no good way to detect that scrolling has occurred, using the current
+API; a possible hack would be to update all child positions when the scroll
+adjustments change or the text buffer changes. See bug 64518 on
+bugzilla.gnome.org for status of fixing this issue.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item child
+a @code{<gtk-widget>}
+
+@item which-window
+which window the child should appear in
+
+@item xpos
+X position of child in window coordinates
+
+@item ypos
+Y position of child in window coordinates
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-move-child  (self@tie{}@code{<gtk-text-view>}) (child@tie{}@code{<gtk-widget>}) (xpos@tie{}@code{int}) (ypos@tie{}@code{int})
+@deffnx Method move-child
+Updates the position of a child, as for
+@code{gtk-text-view-add-child-in-window}.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item child
+child widget already added to the text view
+
+@item xpos
+new X position in window coordinates
+
+@item ypos
+new Y position in window coordinates
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-set-wrap-mode  (self@tie{}@code{<gtk-text-view>}) (wrap_mode@tie{}@code{<gtk-wrap-mode>})
+@deffnx Method set-wrap-mode
+Sets the line wrapping for the view.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item wrap-mode
+a @code{<gtk-wrap-mode>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-wrap-mode  (self@tie{}@code{<gtk-text-view>}) @result{}@tie{} (ret@tie{}@code{<gtk-wrap-mode>})
+@deffnx Method get-wrap-mode
+Gets the line wrapping for the view.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item ret
+the line wrap setting
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-set-editable  (self@tie{}@code{<gtk-text-view>}) (setting@tie{}@code{bool})
+@deffnx Method set-editable
+Sets the default editability of the @code{<gtk-text-view>}. You can override
+this default setting with tags in the buffer, using the "editable" attribute of
+tags.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item setting
+whether it's editable
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-editable  (self@tie{}@code{<gtk-text-view>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-editable
+Returns the default editability of the @code{<gtk-text-view>}. Tags in the
+buffer may override this setting for some ranges of text.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item ret
+whether text is editable by default
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-set-cursor-visible  (self@tie{}@code{<gtk-text-view>}) (setting@tie{}@code{bool})
+@deffnx Method set-cursor-visible
+Toggles whether the insertion point is displayed. A buffer with no editable text
+probably shouldn't have a visible cursor, so you may want to turn the cursor
+off.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item setting
+whether to show the insertion cursor
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-cursor-visible  (self@tie{}@code{<gtk-text-view>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-cursor-visible
+Find out whether the cursor is being displayed.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item ret
+whether the insertion mark is visible
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-set-overwrite  (self@tie{}@code{<gtk-text-view>}) (overwrite@tie{}@code{bool})
+@deffnx Method set-overwrite
+Changes the @code{<gtk-text-view>} overwrite mode.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item overwrite
+@samp{@code{#t}} to turn on overwrite mode, @samp{@code{#f}} to turn it off
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-text-view-get-overwrite  (self@tie{}@code{<gtk-text-view>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-overwrite
+Returns whether the @code{<gtk-text-view>} is in overwrite mode or not.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item ret
+whether @var{text-view} is in overwrite mode or not.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-text-view-set-justification  (self@tie{}@code{<gtk-text-view>}) (justification@tie{}@code{<gtk-justification>})
+@deffnx Method set-justification
+Sets the default justification of text in @var{text-view}. Tags in the view's
+buffer may override the default.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item justification
+justification
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-justification  (self@tie{}@code{<gtk-text-view>}) @result{}@tie{} (ret@tie{}@code{<gtk-justification>})
+@deffnx Method get-justification
+Gets the default justification of paragraphs in @var{text-view}. Tags in the
+buffer may override the default.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item ret
+default justification
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-set-left-margin  (self@tie{}@code{<gtk-text-view>}) (left_margin@tie{}@code{int})
+@deffnx Method set-left-margin
+Sets the default left margin for text in @var{text-view}. Tags in the buffer may
+override the default.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item left-margin
+left margin in pixels
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-left-margin  (self@tie{}@code{<gtk-text-view>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-left-margin
+Gets the default left margin size of paragraphs in the @var{text-view}. Tags in
+the buffer may override the default.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item ret
+left margin in pixels
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-set-right-margin  (self@tie{}@code{<gtk-text-view>}) (right_margin@tie{}@code{int})
+@deffnx Method set-right-margin
+Sets the default right margin for text in the text view. Tags in the buffer may
+override the default.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item right-margin
+right margin in pixels
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-right-margin  (self@tie{}@code{<gtk-text-view>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-right-margin
+Gets the default right margin for text in @var{text-view}. Tags in the buffer
+may override the default.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item ret
+right margin in pixels
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-set-indent  (self@tie{}@code{<gtk-text-view>}) (indent@tie{}@code{int})
+@deffnx Method set-indent
+Sets the default indentation for paragraphs in @var{text-view}. Tags in the
+buffer may override the default.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item indent
+indentation in pixels
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-indent  (self@tie{}@code{<gtk-text-view>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-indent
+Gets the default indentation of paragraphs in @var{text-view}. Tags in the
+view's buffer may override the default. The indentation may be negative.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item ret
+number of pixels of indentation
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-set-tabs  (self@tie{}@code{<gtk-text-view>}) (tabs@tie{}@code{<pango-tab-array>})
+@deffnx Method set-tabs
+Sets the default tab stops for paragraphs in @var{text-view}. Tags in the buffer
+may override the default.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item tabs
+tabs as a @code{<pango-tab-array>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-get-tabs  (self@tie{}@code{<gtk-text-view>}) @result{}@tie{} (ret@tie{}@code{<pango-tab-array>})
+@deffnx Method get-tabs
+Gets the default tabs for @var{text-view}. Tags in the buffer may override the
+defaults. The returned array will be @samp{@code{#f}} if "standard" (8-space)
+tabs are used. Free the return value with @code{pango-tab-array-free}.
+
+@table @var
+@item text-view
+a @code{<gtk-text-view>}
+
+@item ret
+copy of default tab array, or @samp{@code{#f}} if "standard" tabs are used; must
+be freed with @code{pango-tab-array-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-view-set-accepts-tab  (self@tie{}@code{<gtk-text-view>}) (accepts_tab@tie{}@code{bool})
+@deffnx Method set-accepts-tab
+Sets the behavior of the text widget when the Tab key is pressed. If
+@var{accepts-tab} is @samp{@code{#t}} a tab character is inserted. If
+@var{accepts-tab} is @samp{@code{#f}} the keyboard focus is moved to the next
+widget in the focus chain.
+
+@table @var
+@item text-view
+A @code{<gtk-text-view>}
+
+@item accepts-tab
+@samp{@code{#t}} if pressing the Tab key should insert a tab character,
+@samp{@code{#f}}, if pressing the Tab key should move the keyboard focus.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-text-view-get-accepts-tab  (self@tie{}@code{<gtk-text-view>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-accepts-tab
+Returns whether pressing the Tab key inserts a tab characters.
+@code{gtk-text-view-set-accepts-tab}.
+
+@table @var
+@item text-view
+A @code{<gtk-text-view>}
+
+@item ret
+@samp{@code{#t}} if pressing the Tab key inserts a tab character,
+@samp{@code{#f}} if pressing the Tab key moves the keyboard focus.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

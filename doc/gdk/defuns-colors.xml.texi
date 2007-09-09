@@ -1,0 +1,122 @@
+
+@c %start of fragment
+
+@deftp Class <gdk-color>
+@end deftp
+
+@deftp Class <gdk-colormap>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function gdk-color-white  (colormap@tie{}@code{<gdk-colormap>}) (color@tie{}@code{<gdk-color>}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_color_white} is deprecated and should not be used in newly-written
+code.
+
+Returns the white color for a given colormap. The resulting value has already
+allocated been allocated.
+
+@table @var
+@item colormap
+a @code{<gdk-colormap>}.
+
+@item color
+the location to store the color.
+
+@item ret
+@samp{@code{#t}} if the allocation succeeded.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-color-black  (colormap@tie{}@code{<gdk-colormap>}) (color@tie{}@code{<gdk-color>}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_color_black} is deprecated and should not be used in newly-written
+code.
+
+Returns the black color for a given colormap. The resulting value has already
+benn allocated.
+
+@table @var
+@item colormap
+a @code{<gdk-colormap>}.
+
+@item color
+the location to store the color.
+
+@item ret
+@samp{@code{#t}} if the allocation succeeded.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-color-parse  (spec@tie{}@code{mchars}) (color@tie{}@code{<gdk-color>}) @result{}@tie{} (ret@tie{}@code{bool})
+Parses a textual specification of a color and fill in the , , and fields of a
+@code{<gdk-color>} structure. The color is @emph{not} allocated, you must call
+@code{gdk-colormap-alloc-color} yourself. The text string can be in any of the
+forms accepted by @code{x-parse-color}; these include name for a color from
+@file{rgb.txt}, such as @samp{DarkSlateGray}, or a hex specification such as
+@samp{&#x0023;3050b2} or @samp{&#x0023;35b}.
+
+@table @var
+@item spec
+the string specifying the color.
+
+@item color
+the @code{<gdk-color>} to fill in
+
+@item ret
+@samp{@code{#t}} if the parsing succeeded.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-color-alloc  (colormap@tie{}@code{<gdk-colormap>}) (color@tie{}@code{<gdk-color>}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_color_alloc} is deprecated and should not be used in newly-written
+code. Use @code{gdk-colormap-alloc-color} instead.
+
+Allocates a single color from a colormap.
+
+@table @var
+@item colormap
+a @code{<gdk-colormap>}.
+
+@item color
+The color to allocate. On return, the field will be filled in.
+
+@item ret
+@samp{@code{#t}} if the allocation succeeded.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-color-change  (colormap@tie{}@code{<gdk-colormap>}) (color@tie{}@code{<gdk-color>}) @result{}@tie{} (ret@tie{}@code{int})
+@samp{gdk_color_change} is deprecated and should not be used in newly-written
+code.
+
+Changes the value of a color that has already been allocated. If @var{colormap}
+is not a private colormap, then the color must have been allocated using
+@code{gdk-colormap-alloc-colors} with the @var{writeable} set to
+@samp{@code{#t}}.
+
+@table @var
+@item colormap
+a @code{<gdk-colormap>}.
+
+@item color
+a @code{<gdk-color>}, with the color to change in the field, and the new value
+in the remaining fields.
+
+@item ret
+@samp{@code{#t}} if the color was successfully changed.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

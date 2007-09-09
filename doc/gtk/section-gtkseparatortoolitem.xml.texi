@@ -1,0 +1,24 @@
+
+@c %start of fragment
+
+@node GtkSeparatorToolItem
+@chapter GtkSeparatorToolItem
+A toolbar item that separates groups of other toolbar items
+
+@section Overview
+A @code{<gtk-separator-item>} is a @code{<gtk-tool-item>} that separates groups
+of other @code{<gtk-tool-items>}. Depending on the theme, a
+@code{<gtk-separator-tool-item>} will often look like a vertical line on
+horizontally docked toolbars.
+
+If the property "expand" is @code{@code{#t}} and the property "draw" is
+@code{@code{#f}}, a @code{<gtk-separator-tool-item>} will act as a "spring" that
+forces other items to the ends of the toolbar.
+
+Use @code{gtk-separator-tool-item-new} to create a new
+@code{<gtk-separator-tool-item>}.
+
+@section Usage
+@include defuns-gtkseparatortoolitem.xml.texi
+
+@c %end of fragment

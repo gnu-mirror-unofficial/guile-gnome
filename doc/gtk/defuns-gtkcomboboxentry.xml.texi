@@ -1,0 +1,106 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-combo-box-entry>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item text-column
+A column in the data source model to get the strings from@end table
+
+@end deftp
+
+@deffn Function gtk-combo-box-entry-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-combo-box-entry>} which has a @code{<gtk-entry>} as
+child. After construction, you should set a model using
+@code{gtk-combo-box-set-model} and a text_column * using
+@code{gtk-combo-box-entry-set-text-column}.
+
+@table @var
+@item ret
+A new @code{<gtk-combo-box-entry>}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-entry-new-with-model  (model@tie{}@code{<gtk-tree-model>}) (text_column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-combo-box-entry>} which has a @code{<gtk-entry>} as
+child and a list of strings as popup. You can get the @code{<gtk-entry>} from a
+@code{<gtk-combo-box-entry>} using GTK_ENTRY (GTK_BIN (combo_box_entry)->child).
+To add and remove strings from the list, just modify @var{model} using its data
+manipulation API.
+
+@table @var
+@item model
+A @code{<gtk-tree-model>}.
+
+@item text-column
+A column in @var{model} to get the strings from.
+
+@item ret
+A new @code{<gtk-combo-box-entry>}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-entry-new-text  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Convenience function which constructs a new editable text combo box, which is a
+@code{<gtk-combo-box-entry>} just displaying strings. If you use this function
+to create a text combo box, you should only manipulate its data source with the
+following convenience functions: @code{gtk-combo-box-append-text},
+@code{gtk-combo-box-insert-text}, @code{gtk-combo-box-prepend-text} and
+@code{gtk-combo-box-remove-text}.
+
+@table @var
+@item ret
+A new text @code{<gtk-combo-box-entry>}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-entry-set-text-column  (self@tie{}@code{<gtk-combo-box-entry>}) (text_column@tie{}@code{int})
+@deffnx Method set-text-column
+Sets the model column which @var{entry-box} should use to get strings from to be
+@var{text-column}.
+
+@table @var
+@item entry-box
+A @code{<gtk-combo-box-entry>}.
+
+@item text-column
+A column in @var{model} to get the strings from.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-entry-get-text-column  (self@tie{}@code{<gtk-combo-box-entry>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-text-column
+Returns the column which @var{entry-box} is using to get the strings from.
+
+@table @var
+@item entry-box
+A @code{<gtk-combo-box-entry>}.
+
+@item ret
+A column in the data source model of @var{entry-box}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

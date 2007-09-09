@@ -1,0 +1,160 @@
+
+@c %start of fragment
+
+@deffn Function gtk-cell-layout-pack-start  (self@tie{}@code{<gtk-cell-layout*>}) (cell@tie{}@code{<gtk-cell-renderer>}) (expand@tie{}@code{bool})
+Packs the @var{cell} into the beginning of @var{cell-layout}. If @var{expand} is
+@samp{@code{#f}}, then the @var{cell} is allocated no more space than it needs.
+Any unused space is divided evenly between cells for which @var{expand} is
+@samp{@code{#t}}.
+
+Note that reusing the same cell renderer is not supported.
+
+@table @var
+@item cell-layout
+A @code{<gtk-cell-layout>}.
+
+@item cell
+A @code{<gtk-cell-renderer>}.
+
+@item expand
+@samp{@code{#t}} if @var{cell} is to be given extra space allocated to
+@var{cell-layout}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-cell-layout-pack-end  (self@tie{}@code{<gtk-cell-layout*>}) (cell@tie{}@code{<gtk-cell-renderer>}) (expand@tie{}@code{bool})
+Adds the @var{cell} to the end of @var{cell-layout}. If @var{expand} is
+@samp{@code{#f}}, then the @var{cell} is allocated no more space than it needs.
+Any unused space is divided evenly between cells for which @var{expand} is
+@samp{@code{#t}}.
+
+Note that reusing the same cell renderer is not supported.
+
+@table @var
+@item cell-layout
+A @code{<gtk-cell-layout>}.
+
+@item cell
+A @code{<gtk-cell-renderer>}.
+
+@item expand
+@samp{@code{#t}} if @var{cell} is to be given extra space allocated to
+@var{cell-layout}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-cell-layout-reorder  (self@tie{}@code{<gtk-cell-layout*>}) (cell@tie{}@code{<gtk-cell-renderer>}) (position@tie{}@code{int})
+Re-inserts @var{cell} at @var{position}. Note that @var{cell} has already to be
+packed into @var{cell-layout} for this to function properly.
+
+@table @var
+@item cell-layout
+A @code{<gtk-cell-layout>}.
+
+@item cell
+A @code{<gtk-cell-renderer>} to reorder.
+
+@item position
+New position to insert @var{cell} at.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-cell-layout-clear  (self@tie{}@code{<gtk-cell-layout*>})
+Unsets all the mappings on all renderers on @var{cell-layout} and removes all
+renderers from @var{cell-layout}.
+
+@table @var
+@item cell-layout
+A @code{<gtk-cell-layout>}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-cell-layout-add-attribute  (self@tie{}@code{<gtk-cell-layout*>}) (cell@tie{}@code{<gtk-cell-renderer>}) (attribute@tie{}@code{mchars}) (column@tie{}@code{int})
+Adds an attribute mapping to the list in @var{cell-layout}. The @var{column} is
+the column of the model to get a value from, and the @var{attribute} is the
+parameter on @var{cell} to be set from the value. So for example if column 2 of
+the model contains strings, you could have the "text" attribute of a
+@code{<gtk-cell-renderer-text>} get its values from column 2.
+
+@table @var
+@item cell-layout
+A @code{<gtk-cell-layout>}.
+
+@item cell
+A @code{<gtk-cell-renderer>}.
+
+@item attribute
+An attribute on the renderer.
+
+@item column
+The column position on the model to get the attribute from.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-cell-layout-set-cell-data-func  (self@tie{}@code{<gtk-cell-layout*>}) (cell@tie{}@code{<gtk-cell-renderer>}) (func@tie{}@code{<gtk-cell-layout-data-func>}) (func_data@tie{}@code{<gpointer>}) (destroy@tie{}@code{<g-destroy-notify>})
+Sets the @code{<gtk-cell-layout-data-func>} to use for @var{cell-layout}. This
+function is used instead of the standard attributes mapping for setting the
+column value, and should set the value of @var{cell-layout}'s cell renderer(s)
+as appropriate. @var{func} may be @samp{@code{#f}} to remove and older one.
+
+@table @var
+@item cell-layout
+A @code{<gtk-cell-layout>}.
+
+@item cell
+A @code{<gtk-cell-renderer>}.
+
+@item func
+The @code{<gtk-cell-layout-data-func>} to use.
+
+@item func-data
+The user data for @var{func}.
+
+@item destroy
+The destroy notification for @var{func-data}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-cell-layout-clear-attributes  (self@tie{}@code{<gtk-cell-layout*>}) (cell@tie{}@code{<gtk-cell-renderer>})
+Clears all existing attributes previously set with
+@code{gtk-cell-layout-set-attributes}.
+
+@table @var
+@item cell-layout
+A @code{<gtk-cell-layout>}.
+
+@item cell
+A @code{<gtk-cell-renderer>} to clear the attribute mapping on.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

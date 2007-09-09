@@ -1,0 +1,93 @@
+
+@c %start of fragment
+
+@node GdkRGB
+@chapter GdkRGB
+Renders RGB, grayscale, or indexed image data to a GdkDrawable
+
+@section Overview
+GdkRGB is a low-level module which renders RGB, grayscale, and indexed colormap
+images to a @code{<gdk-drawable>}. It does this as efficiently as possible,
+handling issues such as colormaps, visuals, dithering, temporary buffers, and so
+on. Most code should use the higher-level @code{<gdk-pixbuf>} features in place
+of this module; for example, @code{gdk-pixbuf-render-to-drawable} uses GdkRGB in
+its implementation.
+
+GdkRGB allocates a color cube to use when rendering images. You can set the
+threshold for installing colormaps with @code{gdk-rgb-set-min-colors}. The
+default is 5x5x5 (125). If a colorcube of this size or larger can be allocated
+in the default colormap, then that's done. Otherwise, GdkRGB creates its own
+private colormap. Setting it to 0 means that it always tries to use the default
+colormap, and setting it to 216 means that it always creates a private one if it
+cannot allocate the 6x6x6 colormap in the default. If you always want a private
+colormap (to avoid consuming too many colormap entries for other apps, say), you
+can use @samp{gdk_rgb_set_install(TRUE)}. Setting the value greater than 216
+exercises a bug in older versions of GdkRGB. Note, however, that setting it to 0
+doesn't let you get away with ignoring the colormap and visual - a colormap is
+always created in grayscale and direct color modes, and the visual is changed in
+cases where a "better" visual than the default is available.
+
+@example 
+
+&#x0023;include <gtk/gtk.h>
+
+&#x0023;define IMAGE_WIDTH	256
+&#x0023;define IMAGE_HEIGHT	256
+
+guchar rgbbuf[IMAGE_WIDTH * IMAGE_HEIGHT * 3];
+
+gboolean on_darea_expose (GtkWidget *widget,
+			  GdkEventExpose *event,
+			  gpointer user_data);
+
+int
+main (int argc, char *argv[])
+@{
+  GtkWidget *window, *darea;
+  gint x, y;
+  guchar *pos;
+
+  gtk_init (&argc, &argv);
+
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  darea = gtk_drawing_area_new ();
+  gtk_widget_set_size_request (darea, IMAGE_WIDTH, IMAGE_HEIGHT);
+  gtk_container_add (GTK_CONTAINER (window), darea);
+  gtk_signal_connect (GTK_OBJECT (darea), "expose-event",
+                      GTK_SIGNAL_FUNC (on_darea_expose), NULL);
+  gtk_widget_show_all (window);
+
+  /* Set up the RGB buffer. */
+  pos = rgbbuf;
+  for (y = 0; y < IMAGE_HEIGHT; y++)
+    @{
+      for (x = 0; x < IMAGE_WIDTH; x++)
+	@{
+	  *pos++ = x - x % 32;			/* Red. */
+	  *pos++ = (x / 32) * 4 + y - y % 32;	/* Green. */
+	  *pos++ = y - y % 32;			/* Blue. */
+	@}
+    @}
+
+  gtk_main ();
+  return 0;
+@}
+
+
+gboolean
+on_darea_expose (GtkWidget *widget,
+		 GdkEventExpose *event,
+		 gpointer user_data)
+@{
+  gdk_draw_rgb_image (widget->window, widget->style->fg_gc[GTK_STATE_NORMAL],
+		      0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
+		      GDK_RGB_DITHER_MAX, rgbbuf, IMAGE_WIDTH * 3);
+
+  return TRUE;
+@}
+@end example
+
+@section Usage
+@include defuns-rgb.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,486 @@
+
+@c %start of fragment
+
+@deftp Class <gdk-gc>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function gdk-gc-new  (drawable@tie{}@code{<gdk-drawable>}) @result{}@tie{} (ret@tie{}@code{<gdk-gc>})
+Create a new graphics context with default values.
+
+@table @var
+@item drawable
+a @code{<gdk-drawable>}. The created GC must always be used with drawables of
+the same depth as this one.
+
+@item ret
+the new graphics context.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-new-with-values  (drawable@tie{}@code{<gdk-drawable>}) (values@tie{}@code{<gdk-gc-values*>}) (values_mask@tie{}@code{<gdk-gc-values-mask>}) @result{}@tie{} (ret@tie{}@code{<gdk-gc>})
+Create a new GC with the given initial values.
+
+@table @var
+@item drawable
+a @code{<gdk-drawable>}. The created GC must always be used with drawables of
+the same depth as this one.
+
+@item values
+a structure containing initial values for the GC.
+
+@item values-mask
+a bit mask indicating which fields in @var{values} are set.
+
+@item ret
+the new graphics context.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-get-screen  (self@tie{}@code{<gdk-gc>}) @result{}@tie{} (ret@tie{}@code{<gdk-screen>})
+@deffnx Method get-screen
+Gets the @code{<gdk-screen>} for which @var{gc} was created
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item ret
+the @code{<gdk-screen>} for @var{gc}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-gc-set-values  (self@tie{}@code{<gdk-gc>}) (values@tie{}@code{<gdk-gc-values*>}) (values_mask@tie{}@code{<gdk-gc-values-mask>})
+@deffnx Method set-values
+Sets attributes of a graphics context in bulk. For each flag set in
+@var{values-mask}, the corresponding field will be read from @var{values} and
+set as the new value for @var{gc}. If you're only setting a few values on
+@var{gc}, calling individual "setter" functions is likely more convenient.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}
+
+@item values
+struct containing the new values
+
+@item values-mask
+mask indicating which struct fields are to be used
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-get-values  (self@tie{}@code{<gdk-gc>}) (values@tie{}@code{<gdk-gc-values*>})
+@deffnx Method get-values
+Retrieves the current values from a graphics context. Note that only the pixel
+values of the @var{values->foreground} and @var{values->background} are filled,
+use @code{gdk-colormap-query-color} to obtain the rgb values if you need them.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item values
+the @code{<gdk-gc-values>} structure in which to store the results.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-foreground  (self@tie{}@code{<gdk-gc>}) (color@tie{}@code{<gdk-color>})
+@deffnx Method set-foreground
+Sets the foreground color for a graphics context. Note that this function uses
+@var{color->pixel}, use @code{gdk-gc-set-rgb-fg-color} to specify the foreground
+color as red, green, blue components.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item color
+the new foreground color.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-background  (self@tie{}@code{<gdk-gc>}) (color@tie{}@code{<gdk-color>})
+@deffnx Method set-background
+Sets the background color for a graphics context. Note that this function uses
+@var{color->pixel}, use @code{gdk-gc-set-rgb-bg-color} to specify the background
+color as red, green, blue components.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item color
+the new background color.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-rgb-fg-color  (self@tie{}@code{<gdk-gc>}) (color@tie{}@code{<gdk-color>})
+@deffnx Method set-rgb-fg-color
+Set the foreground color of a GC using an unallocated color. The pixel value for
+the color will be determined using GdkRGB. If the colormap for the GC has not
+previously been initialized for GdkRGB, then for pseudo-color colormaps
+(colormaps with a small modifiable number of colors), a colorcube will be
+allocated in the colormap.
+
+Calling this function for a GC without a colormap is an error.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}
+
+@item color
+an unallocated @code{<gdk-color>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-rgb-bg-color  (self@tie{}@code{<gdk-gc>}) (color@tie{}@code{<gdk-color>})
+@deffnx Method set-rgb-bg-color
+Set the background color of a GC using an unallocated color. The pixel value for
+the color will be determined using GdkRGB. If the colormap for the GC has not
+previously been initialized for GdkRGB, then for pseudo-color colormaps
+(colormaps with a small modifiable number of colors), a colorcube will be
+allocated in the colormap.
+
+Calling this function for a GC without a colormap is an error.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}
+
+@item color
+an unallocated @code{<gdk-color>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-font  (self@tie{}@code{<gdk-gc>}) (font@tie{}@code{<gdk-font>})
+@deffnx Method set-font
+@samp{gdk_gc_set_font} is deprecated and should not be used in newly-written
+code.
+
+Sets the font for a graphics context. (Note that all text-drawing functions in
+GDK take a @var{font} argument; the value set here is used when that argument is
+@samp{@code{#f}}.)
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item font
+the new font.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-function  (self@tie{}@code{<gdk-gc>}) (function@tie{}@code{<gdk-function>})
+@deffnx Method set-function
+Determines how the current pixel values and the pixel values being drawn are
+combined to produce the final pixel values.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item function
+the @code{<gdk-function>} to use
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-fill  (self@tie{}@code{<gdk-gc>}) (fill@tie{}@code{<gdk-fill>})
+@deffnx Method set-fill
+Set the fill mode for a graphics context.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item fill
+the new fill mode.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-tile  (self@tie{}@code{<gdk-gc>}) (tile@tie{}@code{<gdk-pixmap*>})
+@deffnx Method set-tile
+Set a tile pixmap for a graphics context. This will only be used if the fill
+mode is @samp{GDK_TILED}.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item tile
+the new tile pixmap.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-stipple  (self@tie{}@code{<gdk-gc>}) (stipple@tie{}@code{<gdk-pixmap*>})
+@deffnx Method set-stipple
+Set the stipple bitmap for a graphics context. The stipple will only be used if
+the fill mode is @samp{GDK_STIPPLED} or @samp{GDK_OPAQUE_STIPPLED}.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item stipple
+the new stipple bitmap.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-ts-origin  (self@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method set-ts-origin
+Set the origin when using tiles or stipples with the GC. The tile or stipple
+will be aligned such that the upper left corner of the tile or stipple will
+coincide with this point.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item x
+the x-coordinate of the origin.
+
+@item y
+the y-coordinate of the origin.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-clip-origin  (self@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method set-clip-origin
+Sets the origin of the clip mask. The coordinates are interpreted relative to
+the upper-left corner of the destination drawable of the current operation.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item x
+the x-coordinate of the origin.
+
+@item y
+the y-coordinate of the origin.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-clip-mask  (self@tie{}@code{<gdk-gc>}) (mask@tie{}@code{<gdk-bitmap*>})
+@deffnx Method set-clip-mask
+Sets the clip mask for a graphics context from a bitmap. The clip mask is
+interpreted relative to the clip origin. (See @code{gdk-gc-set-clip-origin}).
+
+@table @var
+@item gc
+the @code{<gdk-gc>}.
+
+@item mask
+a bitmap.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-clip-rectangle  (self@tie{}@code{<gdk-gc>}) (rectangle@tie{}@code{<gdk-rectangle>})
+@deffnx Method set-clip-rectangle
+Sets the clip mask for a graphics context from a rectangle. The clip mask is
+interpreted relative to the clip origin. (See @code{gdk-gc-set-clip-origin}).
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item rectangle
+the rectangle to clip to.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-clip-region  (self@tie{}@code{<gdk-gc>}) (region@tie{}@code{<gdk-region*>})
+@deffnx Method set-clip-region
+Sets the clip mask for a graphics context from a region structure. The clip mask
+is interpreted relative to the clip origin. (See @code{gdk-gc-set-clip-origin}).
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item region
+the @code{<gdk-region>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-subwindow  (self@tie{}@code{<gdk-gc>}) (mode@tie{}@code{<gdk-subwindow-mode>})
+@deffnx Method set-subwindow
+Sets how drawing with this GC on a window will affect child windows of that
+window.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item mode
+the subwindow mode.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-exposures  (self@tie{}@code{<gdk-gc>}) (exposures@tie{}@code{bool})
+@deffnx Method set-exposures
+Sets whether copying non-visible portions of a drawable using this graphics
+context generate exposure events for the corresponding regions of the
+destination drawable. (See @code{gdk-draw-drawable}).
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item exposures
+if @samp{@code{#t}}, exposure events will be generated.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-line-attributes  (self@tie{}@code{<gdk-gc>}) (line_width@tie{}@code{int}) (line_style@tie{}@code{<gdk-line-style>}) (cap_style@tie{}@code{<gdk-cap-style>}) (join_style@tie{}@code{<gdk-join-style>})
+@deffnx Method set-line-attributes
+Sets various attributes of how lines are drawn. See the corresponding members of
+@code{<gdk-gc-values>} for full explanations of the arguments.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item line-width
+the width of lines.
+
+@item line-style
+the dash-style for lines.
+
+@item cap-style
+the manner in which the ends of lines are drawn.
+
+@item join-style
+the in which lines are joined together.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-dashes  (self@tie{}@code{<gdk-gc>}) (dash_offset@tie{}@code{int}) (dash_list@tie{}@code{<gint8*>}) (n@tie{}@code{int})
+@deffnx Method set-dashes
+Sets the way dashed-lines are drawn. Lines will be drawn with alternating on and
+off segments of the lengths specified in @var{dash-list}. The manner in which
+the on and off segments are drawn is determined by the @var{line-style} value of
+the GC. (This can be changed with @code{gdk-gc-set-line-attributes}.)
+
+The @var{dash-offset} defines the phase of the pattern, specifying how many
+pixels into the dash-list the pattern should actually begin.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}.
+
+@item dash-offset
+the phase of the dash pattern.
+
+@item dash-list
+an array of dash lengths.
+
+@item n
+the number of elements in @var{dash-list}.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-set-colormap  (self@tie{}@code{<gdk-gc>}) (colormap@tie{}@code{<gdk-colormap>})
+@deffnx Method set-colormap
+Sets the colormap for the GC to the given colormap. The depth of the colormap's
+visual must match the depth of the drawable for which the GC was created.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}
+
+@item colormap
+a @code{<gdk-colormap>}
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-get-colormap  (self@tie{}@code{<gdk-gc>}) @result{}@tie{} (ret@tie{}@code{<gdk-colormap>})
+@deffnx Method get-colormap
+Retrieves the colormap for a given GC, if it exists. A GC will have a colormap
+if the drawable for which it was created has a colormap, or if a colormap was
+set explicitely with gdk_gc_set_colormap.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}
+
+@item ret
+the colormap of @var{gc}, or @samp{@code{#f}} if @var{gc} doesn't have one.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-offset  (self@tie{}@code{<gdk-gc>}) (x_offset@tie{}@code{int}) (y_offset@tie{}@code{int})
+@deffnx Method offset
+Offset attributes such as the clip and tile-stipple origins of the GC so that
+drawing at x - x_offset, y - y_offset with the offset GC has the same effect as
+drawing at x, y with the original GC.
+
+@table @var
+@item gc
+a @code{<gdk-gc>}
+
+@item x-offset
+amount by which to offset the GC in the X direction
+
+@item y-offset
+amount by which to offset the GC in the Y direction
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

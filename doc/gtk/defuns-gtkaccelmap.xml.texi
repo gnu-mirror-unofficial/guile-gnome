@@ -1,0 +1,234 @@
+
+@c %start of fragment
+
+@deffn Function gtk-accel-map-add-entry  (accel_path@tie{}@code{mchars}) (accel_key@tie{}@code{unsigned-int}) (accel_mods@tie{}@code{<gdk-modifier-type>})
+Registers a new accelerator with the global accelerator map. This function
+should only be called once per @var{accel-path} with the canonical
+@var{accel-key} and @var{accel-mods} for this path. To change the accelerator
+during runtime programatically, use @code{gtk-accel-map-change-entry}. The
+accelerator path must consist of "<WINDOWTYPE>/Category1/Category2/.../Action",
+where <WINDOWTYPE> should be a unique application-specific identifier, that
+corresponds to the kind of window the accelerator is being used in, e.g.
+"Gimp-Image", "Abiword-Document" or "Gnumeric-Settings". The
+Category1/.../Action portion is most appropriately chosen by the action the
+accelerator triggers, i.e. for accelerators on menu items, choose the item's
+menu path, e.g. "File/Save As", "Image/View/Zoom" or "Edit/Select All". So a
+full valid accelerator path may look like: "<Gimp-Toolbox>/File/Dialogs/Tool
+Options...".
+
+@table @var
+@item accel-path
+valid accelerator path
+
+@item accel-key
+the accelerator key
+
+@item accel-mods
+the accelerator modifiers
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-map-lookup-entry  (accel_path@tie{}@code{mchars}) (key@tie{}@code{<gtk-accel-key*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Looks up the accelerator entry for @var{accel-path} and fills in @var{key}.
+
+@table @var
+@item accel-path
+a valid accelerator path
+
+@item key
+the accelerator key to be filled in (optional)
+
+@item ret
+@samp{@code{#t}} if @var{accel-path} is known, @samp{@code{#f}} otherwise
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-map-change-entry  (accel_path@tie{}@code{mchars}) (accel_key@tie{}@code{unsigned-int}) (accel_mods@tie{}@code{<gdk-modifier-type>}) (replace@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+Changes the @var{accel-key} and @var{accel-mods} currently associated with
+@var{accel-path}. Due to conflicts with other accelerators, a change may not
+always be possible, @var{replace} indicates whether other accelerators may be
+deleted to resolve such conflicts. A change will only occur if all conflicts
+could be resolved (which might not be the case if conflicting accelerators are
+locked). Successful changes are indicated by a @samp{@code{#t}} return value.
+
+@table @var
+@item accel-path
+a valid accelerator path
+
+@item accel-key
+the new accelerator key
+
+@item accel-mods
+the new accelerator modifiers
+
+@item replace
+@samp{@code{#t}} if other accelerators may be deleted upon conflicts
+
+@item ret
+@samp{@code{#t}} if the accelerator could be changed, @samp{@code{#f}} otherwise
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-map-load  (file_name@tie{}@code{mchars})
+Parses a file previously saved with @code{gtk-accel-map-save} for accelerator
+specifications, and propagates them accordingly.
+
+@table @var
+@item file-name
+a file containing accelerator specifications, in the GLib file name encoding
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-map-save  (file_name@tie{}@code{mchars})
+Saves current accelerator specifications (accelerator path, key and modifiers)
+to @var{file-name}. The file is written in a format suitable to be read back in
+by @code{gtk-accel-map-load}.
+
+@table @var
+@item file-name
+the name of the file to contain accelerator specifications, in the GLib file
+name encoding
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-map-load-fd  (fd@tie{}@code{int})
+Filedescriptor variant of @code{gtk-accel-map-load}.
+
+Note that the file descriptor will not be closed by this function.
+
+@table @var
+@item fd
+a valid readable file descriptor
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-map-save-fd  (fd@tie{}@code{int})
+Filedescriptor variant of @code{gtk-accel-map-save}.
+
+Note that the file descriptor will not be closed by this function.
+
+@table @var
+@item fd
+a valid writable file descriptor
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-map-load-scanner  (scanner@tie{}@code{<g-scanner*>})
+@code{<g-scanner>} variant of @code{gtk-accel-map-load}.
+
+@table @var
+@item scanner
+a @code{<g-scanner>} which has already been provided with an input file
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-map-add-filter  (filter_pattern@tie{}@code{mchars})
+Adds a filter to the global list of accel path filters.
+
+Accel map entries whose accel path matches one of the filters are skipped by
+@code{gtk-accel-map-foreach}.
+
+This function is intended for GTK+ modules that create their own menus, but
+don't want them to be saved into the applications accelerator map dump.
+
+@table @var
+@item filter-pattern
+a pattern (see @code{<g-pattern-spec>})
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-map-foreach-unfiltered  (data@tie{}@code{<gpointer>}) (foreach_func@tie{}@code{<gtk-accel-map-foreach>})
+Loops over all entries in the accelerator map, and execute @var{foreach-func} on
+each. The signature of @var{foreach-func} is that of
+@code{<gtk-accel-map-foreach>}, the @var{changed} parameter indicates whether
+this accelerator was changed during runtime (thus, would need saving during an
+accelerator map dump).
+
+@table @var
+@item data
+data to be passed into @var{foreach-func}
+
+@item foreach-func
+function to be executed for each accel map entry
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-map-get  @result{}@tie{} (ret@tie{}@code{<gtk-accel-map*>})
+Gets the singleton global @code{<gtk-accel-map>} object. This object is useful
+only for notification of changes to the accelerator map via the ::changed
+signal; it isn't a parameter to the other accelerator map functions.
+
+@table @var
+@item ret
+the global @code{<gtk-accel-map>} object
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-accel-map-lock-path  (accel_path@tie{}@code{mchars})
+Locks the given accelerator path. If the accelerator map doesn't yet contain an
+entry for @var{accel-path}, a new one is created.
+
+Locking an accelerator path prevents its accelerator from being changed during
+runtime. A locked accelerator path can be unlocked by
+@code{gtk-accel-map-unlock-path}. Refer to @code{gtk-accel-map-change-entry} for
+information about runtime accelerator changes.
+
+If called more than once, @var{accel-path} remains locked until
+@code{gtk-accel-map-unlock-path} has been called an equivalent number of times.
+
+Note that locking of individual accelerator paths is independent from locking
+the @code{<gtk-accel-group>} containing them. For runtime accelerator changes to
+be possible both the accelerator path and its @code{<gtk-accel-group>} have to
+be unlocked.
+
+@table @var
+@item accel-path
+a valid accelerator path
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-accel-map-unlock-path  (accel_path@tie{}@code{mchars})
+Undoes the last call to @code{gtk-accel-map-lock-path} on this @var{accel-path}.
+Refer to @code{gtk-accel-map-lock-path} for information about accelerator path
+locking.
+
+@table @var
+@item accel-path
+a valid accelerator path
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

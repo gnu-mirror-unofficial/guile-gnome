@@ -1,0 +1,118 @@
+
+@c %start of fragment
+
+@node Signals
+@chapter Signals
+Object methods and callbacks
+
+@section Overview
+The GTK+ signal system merely proxies the GLib signal system now. For future
+usage, direct use of the GSignal API is recommended, this avoids significant
+performance hits where @code{<gtk-arg>} structures have to be converted into
+@code{<gvalue>}s.
+
+@section What are signals?
+Signals are a way to get notification when something happens and to customize
+object behavior according to the user's needs. Every is uniquely identified by a
+name, "class_name::signal_name", where signal_name might be something like
+"clicked" and class_name might be "GtkButton". Note that some other class may
+also define a "clicked" callback, so long as it doesn't derive from
+@code{<gtk-button>}.
+
+When they are created, they are also assigned a unique positive integer, the
+signal id (1 is the first signal id- 0 is used to flag an error). Each is also
+tied to an array of types that describes the prototype of the function
+pointer(s) (handlers) you may connect to the signal. Finally, every signal has a
+default handler that is given by a function pointer in its class structure: it
+is run by default whenever the signal is emitted. (It is possible that a signal
+will be emitted and a user-defined handler will prevent the default handler from
+being run.)
+
+Signals are used by everyone, but they are only created on a per class basis --
+so you should not call call @code{gtk-signal-new} unless you are writing a new
+@code{<gtk-object>} type. However, if you want to make a new signal for an
+existing type, you may use @code{gtk-object-class-user-signal-new} to create a
+signal that doesn't correspond to a class's builtin methods.
+
+@section How are signals used?
+There are two basic actions in the signal handling game. If you want
+notification of an event, you must @emph{connect} a function pointer and a data
+pointer to that signal; the data pointer will be passed as the last argument to
+the function (so long as you are using the default marshalling functions). You
+will receive a connection id, a unique positive integer corresponding to that
+attachment.
+
+Functions that want to notify the user of certain actions, @emph{emit} signals.
+
+@section Basic Terminology
+@table @var
+@item default handler
+
+@c %start of fragment
+
+
+@c %end of fragment
+@item user-defined handler
+
+@c %start of fragment
+
+
+@c %end of fragment
+@item emission
+
+@c %start of fragment
+
+
+@c %end of fragment
+@item signal id
+
+@c %start of fragment
+
+
+@c %end of fragment
+@item connection id
+
+@c %start of fragment
+
+
+@c %end of fragment
+@end table
+
+A class method, e.g. GtkButton::clicked. More precisely it is a unique
+class-branch/signal-name pair. This means you may not define a signal handler
+for a class which derives from @code{<gtk-button>} that is called clicked, but
+it is okay to share signals names if they are separate in the class tree.
+
+The object's internal method which is invoked when the signal is emitted.
+
+A function pointer and data connected to a signal (for a particular object).
+
+There are really two types: those which are connected normally, and those which
+are connected by one of the connect_after functions. The connect_after handlers
+are always run after the default handler.
+
+Many toolkits refer to these as .
+
+the whole process of emitting a signal, including the invocation of all the
+different handler types mentioned above.
+
+The unique positive (nonzero) integer used to identify a signal. It can be used
+instead of a name to many functions for a slight performance improvement.
+
+The unique positive (nonzero) integer used to identify the connection of a
+user-defined handler to a signal. Notice that it is allowed to connect the same
+function-pointer/user-data pair twice, so there is no guarantee that a
+function-pointer/user-data maps to a unique connection id.
+
+@section A brief note on how they work.
+The functions responsible for translating an array of @code{<gtk-args>} to your
+C compiler's normal semantics are called Marshallers. They are identified by
+gtk_marshal___() for example a C function returning a gboolean and taking a gint
+can be invoked by using @code{gtk-marshal-bool--int}. Not all possibly
+combinations of return/params are available, of course, so if you are writing a
+@code{<gtk-object>} with parameters you might have to write a marshaller.
+
+@section Usage
+@include defuns-gtksignal.xml.texi
+
+@c %end of fragment

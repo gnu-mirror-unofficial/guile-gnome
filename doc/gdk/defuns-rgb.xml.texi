@@ -1,0 +1,382 @@
+
+@c %start of fragment
+
+@deffn Function gdk-rgb-init 
+@samp{gdk_rgb_init} is deprecated and should not be used in newly-written code.
+
+This function no longer does anything at all. It's completely useless (and
+harmless).
+
+@end deffn
+
+@deffn Function gdk-draw-rgb-image  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (dith@tie{}@code{<gdk-rgb-dither>}) (rgb_buf@tie{}@code{<guchar*>}) (rowstride@tie{}@code{int})
+Draws an RGB image in the drawable. This is the core GdkRGB function, and likely
+the only one you will need to use.
+
+The @var{rowstride} parameter allows for lines to be aligned more flexibly. For
+example, lines may be allocated to begin on 32-bit boundaries, even if the width
+of the rectangle is odd. Rowstride is also useful when drawing a subrectangle of
+a larger image in memory. Finally, to replicate the same line a number of times,
+the trick of setting @var{rowstride} to 0 is allowed.
+
+In general, for 0 <= i < @var{width} and 0 <= j < height, the pixel (x + i, y +
+j) is colored with red value @var{rgb-buf}[@var{j} * @var{rowstride} + @var{i} *
+3], green value @var{rgb-buf}[@var{j} * @var{rowstride} + @var{i} * 3 + 1], and
+blue value @var{rgb-buf}[@var{j} * @var{rowstride} + @var{i} * 3 + 2].
+
+@table @var
+@item drawable
+The @code{<gdk-drawable>} to draw in (usually a @code{<gdk-window>}).
+
+@item gc
+The graphics context (all GDK drawing operations require one; its contents are
+ignored).
+
+@item x
+The x coordinate of the top-left corner in the drawable.
+
+@item y
+The y coordinate of the top-left corner in the drawable.
+
+@item width
+The width of the rectangle to be drawn.
+
+@item height
+The height of the rectangle to be drawn.
+
+@item dith
+A @code{<gdk-rgb-dither>} value, selecting the desired dither mode.
+
+@item rgb-buf
+The pixel data, represented as packed 24-bit data.
+
+@item rowstride
+The number of bytes from the start of one row in @var{rgb-buf} to the start of
+the next.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-draw-indexed-image  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (dith@tie{}@code{<gdk-rgb-dither>}) (buf@tie{}@code{<guchar*>}) (rowstride@tie{}@code{int}) (cmap@tie{}@code{<gdk-rgb-cmap*>})
+Draws an indexed image in the drawable, using a @code{<gdk-rgb-cmap>} to assign
+actual colors to the color indices.
+
+@table @var
+@item drawable
+The @code{<gdk-drawable>} to draw in (usually a @code{<gdk-window>}).
+
+@item gc
+The graphics context.
+
+@item x
+The x coordinate of the top-left corner in the drawable.
+
+@item y
+The y coordinate of the top-left corner in the drawable.
+
+@item width
+The width of the rectangle to be drawn.
+
+@item height
+The height of the rectangle to be drawn.
+
+@item dith
+A @code{<gdk-rgb-dither>} value, selecting the desired dither mode.
+
+@item buf
+The pixel data, represented as 8-bit color indices.
+
+@item rowstride
+The number of bytes from the start of one row in @var{buf} to the start of the
+next.
+
+@item cmap
+The @code{<gdk-rgb-cmap>} used to assign colors to the color indices.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-draw-gray-image  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (dith@tie{}@code{<gdk-rgb-dither>}) (buf@tie{}@code{<guchar*>}) (rowstride@tie{}@code{int})
+Draws a grayscale image in the drawable.
+
+@table @var
+@item drawable
+The @code{<gdk-drawable>} to draw in (usually a @code{<gdk-window>}).
+
+@item gc
+The graphics context.
+
+@item x
+The x coordinate of the top-left corner in the drawable.
+
+@item y
+The y coordinate of the top-left corner in the drawable.
+
+@item width
+The width of the rectangle to be drawn.
+
+@item height
+The height of the rectangle to be drawn.
+
+@item dith
+A @code{<gdk-rgb-dither>} value, selecting the desired dither mode.
+
+@item buf
+The pixel data, represented as 8-bit gray values.
+
+@item rowstride
+The number of bytes from the start of one row in @var{buf} to the start of the
+next.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-draw-rgb-32-image  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (dith@tie{}@code{<gdk-rgb-dither>}) (buf@tie{}@code{<guchar*>}) (rowstride@tie{}@code{int})
+Draws a padded RGB image in the drawable. The image is stored as one pixel per
+32-bit word. It is laid out as a red byte, a green byte, a blue byte, and a
+padding byte.
+
+It's unlikely that this function will give significant performance gains in
+practice. In my experience, the performance gain from having pixels aligned to
+32-bit boundaries is cancelled out by the increased memory bandwidth.
+
+@table @var
+@item drawable
+The @code{<gdk-drawable>} to draw in (usually a @code{<gdk-window>}).
+
+@item gc
+The graphics context.
+
+@item x
+The x coordinate of the top-left corner in the drawable.
+
+@item y
+The y coordinate of the top-left corner in the drawable.
+
+@item width
+The width of the rectangle to be drawn.
+
+@item height
+The height of the rectangle to be drawn.
+
+@item dith
+A @code{<gdk-rgb-dither>} value, selecting the desired dither mode.
+
+@item buf
+The pixel data, represented as padded 32-bit data.
+
+@item rowstride
+The number of bytes from the start of one row in @var{buf} to the start of the
+next.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-cmap-new  (n_colors@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-rgb-cmap*>}) (colors@tie{}@code{unsigned-int32})
+Creates a new @code{<gdk-rgb-cmap>} structure. The cmap maps color indexes to
+RGB colors. If @var{n-colors} is less than 256, then images containing color
+values greater than or equal to @var{n-colors} will produce undefined results,
+including possibly segfaults.
+
+@table @var
+@item colors
+The colors, represented as 0xRRGGBB integer values.
+
+@item n-colors
+The number of colors in the cmap.
+
+@item ret
+The newly created @code{<gdk-rgb-cmap>}
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-gc-set-foreground  (gc@tie{}@code{<gdk-gc>}) (rgb@tie{}@code{unsigned-int32})
+@samp{gdk_rgb_gc_set_foreground} is deprecated and should not be used in
+newly-written code.
+
+Sets the foreground color in @var{gc} to the specified color (or the closest
+approximation, in the case of limited visuals).
+
+@table @var
+@item gc
+The @code{<gdk-gc>} to modify.
+
+@item rgb
+The color, represented as a 0xRRGGBB integer value.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-gc-set-background  (gc@tie{}@code{<gdk-gc>}) (rgb@tie{}@code{unsigned-int32})
+@samp{gdk_rgb_gc_set_background} is deprecated and should not be used in
+newly-written code.
+
+Sets the background color in @var{gc} to the specified color (or the closest
+approximation, in the case of limited visuals).
+
+@table @var
+@item gc
+The @code{<gdk-gc>} to modify.
+
+@item rgb
+The color, represented as a 0xRRGGBB integer value.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-xpixel-from-rgb  (rgb@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{unsigned-long})
+@samp{gdk_rgb_xpixel_from_rgb} is deprecated and should not be used in
+newly-written code.
+
+Finds the X pixel closest in color to the @var{rgb} color specified. This value
+may be used to set the field of a @code{<gdk-color>} struct.
+
+@table @var
+@item rgb
+The color, represented as a 0xRRGGBB integer value.
+
+@item ret
+The X pixel value.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-find-color  (colormap@tie{}@code{<gdk-colormap>}) (color@tie{}@code{<gdk-color>})
+@var{colormap} should be the colormap for the graphics context and drawable
+you're using to draw. If you're drawing to a @code{<gtk-widget>}, call
+@code{gtk-widget-get-colormap}.
+
+@var{color} should have its @samp{red}, @samp{green}, and @samp{blue} fields
+initialized; @code{gdk-rgb-find-color} will fill in the @samp{pixel} field with
+the best matching pixel from a color cube. The color is then ready to be used
+for drawing, e.g. you can call @code{gdk-gc-set-foreground} which expects
+@samp{pixel} to be initialized.
+
+In many cases, you can avoid this whole issue by calling
+@code{gdk-gc-set-rgb-fg-color} or @code{gdk-gc-set-rgb-bg-color}, which do not
+expect @samp{pixel} to be initialized in advance. If you use those functions,
+there's no need for @code{gdk-rgb-find-color}.
+
+@table @var
+@item colormap
+a @code{<gdk-colormap>}
+
+@item color
+a @code{<gdk-color>}
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-set-install  (install@tie{}@code{bool})
+If @var{install} is @samp{@code{#t}}, directs GdkRGB to always install a new
+"private" colormap rather than trying to find a best fit with the colors already
+allocated. Ordinarily, GdkRGB will install a colormap only if a sufficient cube
+cannot be allocated.
+
+A private colormap has more colors, leading to better quality display, but also
+leads to the dreaded "colormap flashing" effect.
+
+@table @var
+@item install
+@samp{@code{#t}} to set install mode.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-set-min-colors  (min_colors@tie{}@code{int})
+Sets the minimum number of colors for the color cube. Generally, GdkRGB tries to
+allocate the largest color cube it can. If it can't allocate a color cube at
+least as large as @var{min-colors}, it installs a private colormap.
+
+@table @var
+@item min-colors
+The minimum number of colors accepted.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-get-visual  @result{}@tie{} (ret@tie{}@code{<gdk-visual*>})
+Gets a "preferred visual" chosen by GdkRGB for rendering image data on the
+default screen. In previous versions of GDK, this was the only visual GdkRGB
+could use for rendering. In current versions, it's simply the visual GdkRGB
+would have chosen as the optimal one in those previous versions. GdkRGB can now
+render to drawables with any visual.
+
+@table @var
+@item ret
+The @code{<gdk-visual>} chosen by GdkRGB.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-get-colormap  @result{}@tie{} (ret@tie{}@code{<gdk-colormap>})
+Get the preferred colormap for rendering image data. Not a very useful function;
+historically, GDK could only render RGB image data to one colormap and visual,
+but in the current version it can render to any colormap and visual. So there's
+no need to call this function.
+
+@table @var
+@item ret
+the preferred colormap
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-ditherable  @result{}@tie{} (ret@tie{}@code{bool})
+Determines whether the preferred visual is ditherable. This function may be
+useful for presenting a user interface choice to the user about which dither
+mode is desired; if the display is not ditherable, it may make sense to gray out
+or hide the corresponding UI widget.
+
+@table @var
+@item ret
+@samp{@code{#t}} if the preferred visual is ditherable.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-colormap-ditherable  (cmap@tie{}@code{<gdk-colormap>}) @result{}@tie{} (ret@tie{}@code{bool})
+Determines whether the visual associated with @var{cmap} is ditherable. This
+function may be useful for presenting a user interface choice to the user about
+which dither mode is desired; if the display is not ditherable, it may make
+sense to gray out or hide the corresponding UI widget.
+
+@table @var
+@item cmap
+a @code{<gdk-colormap>}
+
+@item ret
+@samp{@code{#t}} if the visual associated with @var{cmap} is ditherable.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-set-verbose  (verbose@tie{}@code{bool})
+Sets the "verbose" flag. This is generally only useful for debugging.
+
+@table @var
+@item verbose
+@samp{@code{#t}} if verbose messages are desired.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

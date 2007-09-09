@@ -1,0 +1,326 @@
+
+@c %start of fragment
+
+@deffn Function gtk-disable-setlocale 
+Prevents @code{gtk-init}, @code{gtk-init-check}, @code{gtk-init-with-args} and
+@code{gtk-parse-args} from automatically calling @samp{setlocale (LC_ALL, "")}.
+You would want to use this function if you wanted to set the locale for your
+program to something other than the user's locale, or if you wanted to set
+different values for different locale categories.
+
+Most programs should not need to call this function.
+
+@end deffn
+
+@deffn Function gtk-get-default-language  @result{}@tie{} (ret@tie{}@code{<pango-language>})
+Returns the @code{<pango-language>} for the default language currently in
+effect. (Note that this can change over the life of an application.) The default
+language is derived from the current locale. It determines, for example, whether
+GTK+ uses the right-to-left or left-to-right text direction. See
+@code{-gtk-get-lc-ctype} for notes on behaviour on Windows.
+
+@table @var
+@item ret
+the default language as a @code{<pango-language>}, must not be freed
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-get-option-group  (open_default_display@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<g-option-group*>})
+Returns a @code{<g-option-group>} for the commandline arguments recognized by
+GTK+ and GDK. You should add this group to your @code{<g-option-context>} with
+@code{g-option-context-add-group}, if you are using
+@code{g-option-context-parse} to parse your commandline arguments.
+
+@table @var
+@item open-default-display
+whether to open the default display when parsing the commandline arguments
+
+@item ret
+a @code{<g-option-group>} for the commandline arguments recognized by GTK+
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-events-pending  @result{}@tie{} (ret@tie{}@code{bool})
+Checks if any events are pending. This can be used to update the GUI and invoke
+timeouts etc. while doing some time intensive computation.
+
+@example 
+
+	/* computation going on */
+...
+        while (gtk_events_pending ())
+	  gtk_main_iteration ();
+...
+	/* computation continued */
+@end example
+
+@table @var
+@item ret
+@samp{@code{#t}} if any events are pending, @samp{@code{#f}} otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-main 
+Runs the main loop until @code{gtk-main-quit} is called. You can nest calls to
+@code{gtk-main}. In that case @code{gtk-main-quit} will make the innermost
+invocation of the main loop return.
+
+@end deffn
+
+@deffn Function gtk-main-level  @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Asks for the current nesting level of the main loop. This can be useful when
+calling @code{gtk-quit-add}.
+
+@table @var
+@item ret
+the nesting level of the current invocation of the main loop.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-main-quit 
+Makes the innermost invocation of the main loop return when it regains control.
+
+@end deffn
+
+@deffn Function gtk-main-iteration  @result{}@tie{} (ret@tie{}@code{bool})
+Runs a single iteration of the mainloop. If no events are waiting to be
+processed GTK+ will block until the next event is noticed. If you don't want to
+block look at @code{gtk-main-iteration-do} or check if any events are pending
+with @code{gtk-events-pending} first.
+
+@table @var
+@item ret
+@samp{@code{#t}} if @code{gtk-main-quit} has been called for the innermost
+mainloop.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-main-iteration-do  (blocking@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+Runs a single iteration of the mainloop. If no events are available either
+return or block dependent on the value of @var{blocking}.
+
+@table @var
+@item blocking
+@samp{@code{#t}} if you want GTK+ to block if no events are pending.
+
+@item ret
+@samp{@code{#t}} if @code{gtk-main-quit} has been called for the innermost
+mainloop.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-main-do-event  (event@tie{}@code{<gdk-event>})
+Processes a single GDK event. This is public only to allow filtering of events
+between GDK and GTK+. You will not usually need to call this function directly.
+
+While you should not call this function directly, you might want to know how
+exactly events are handled. So here is what this function does with the event:
+
+@enumerate 
+@item
+@item
+@item
+@item
+@item
+@end enumerate
+
+Compress enter/leave notify events. If the event passed build an enter/leave
+pair together with the next event (peeked from GDK) both events are thrown away.
+This is to avoid a backlog of (de-)highlighting widgets crossed by the pointer.
+
+Find the widget which got the event. If the widget can't be determined the event
+is thrown away unless it belongs to a INCR transaction. In that case it is
+passed to @code{gtk-selection-incr-event}.
+
+Then the event is passed on a stack so you can query the currently handled event
+with @code{gtk-get-current-event}.
+
+The event is sent to a widget. If a grab is active all events for widgets that
+are not in the contained in the grab widget are sent to the latter with a few
+exceptions: Another point of interest might be that all key events are first
+passed through the key snooper functions if there are any. Read the description
+of @code{gtk-key-snooper-install} if you need this feature.
+
+Deletion and destruction events are still sent to the event widget for obvious
+reasons.
+
+Events which directly relate to the visual representation of the event widget.
+
+Leave events are delivered to the event widget if there was an enter event
+delivered to it before without the paired leave event.
+
+Drag events are not redirected because it is unclear what the semantics of that
+would be.
+
+After finishing the delivery the event is popped from the event stack.
+
+@table @var
+@item event
+An event to process (normally) passed by GDK.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-true  @result{}@tie{} (ret@tie{}@code{bool})
+All this function does it to return @samp{@code{#t}}. This can be useful for
+example if you want to inhibit the deletion of a window. Of course you should
+not do this as the user expects a reaction from clicking the close icon of the
+window...
+
+@example 
+
+##include <gtk/gtk.h>
+
+int
+main (int argc, char **argv)
+@{
+  GtkWidget     *win, *but;
+
+  gtk_init( &argc, &argv );
+
+  win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  g_signal_connect (win, "delete-event",
+                    G_CALLBACK (gtk_true), NULL);
+  g_signal_connect (win, "destroy",
+		    G_CALLBACK (gtk_main_quit), NULL);
+
+  but = gtk_button_new_with_label ("Close yourself. I mean it!");
+  g_signal_connect_swapped (but, "clicked",
+		  G_CALLBACK (gtk_object_destroy), win);
+  gtk_container_add (GTK_CONTAINER (win), but);
+
+  gtk_widget_show_all (win);
+  gtk_main ();
+  return 0;
+@}
+@end example
+
+@table @var
+@item ret
+@samp{@code{#t}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-false  @result{}@tie{} (ret@tie{}@code{bool})
+Analogical to @code{gtk-true} this function does nothing but always returns
+@samp{@code{#f}}.
+
+@table @var
+@item ret
+@samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-grab-add  (self@tie{}@code{<gtk-widget>})
+Makes @var{widget} the current grabbed widget. This means that interaction with
+other widgets in the same application is blocked and mouse as well as keyboard
+events are delivered to this widget.
+
+@table @var
+@item widget
+The widget that grabs keyboard and pointer events.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-grab-get-current  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Queries the current grab of the default window group.
+
+@table @var
+@item ret
+The widget which currently has the grab or @samp{@code{#f}} if no grab is
+active.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-grab-remove  (self@tie{}@code{<gtk-widget>})
+Removes the grab from the given widget. You have to pair calls to
+@code{gtk-grab-add} and @code{gtk-grab-remove}.
+
+@table @var
+@item widget
+The widget which gives up the grab.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-get-current-event-time  @result{}@tie{} (ret@tie{}@code{unsigned-int32})
+If there is a current event and it has a timestamp, return that timestamp,
+otherwise return @samp{GDK_CURRENT_TIME}.
+
+@table @var
+@item ret
+the timestamp from the current event, or @samp{GDK_CURRENT_TIME}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-get-current-event-state  (state@tie{}@code{<gdk-modifier-type*>}) @result{}@tie{} (ret@tie{}@code{bool})
+If there is a current event and it has a state field, place that state field in
+@var{state} and return @samp{@code{#t}}, otherwise return @samp{@code{#f}}.
+
+@table @var
+@item state
+a location to store the state of the current event
+
+@item ret
+@samp{@code{#t}} if there was a current event and it had a state field
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-propagate-event  (self@tie{}@code{<gtk-widget>}) (event@tie{}@code{<gdk-event>})
+Sends an event to a widget, propagating the event to parent widgets if the event
+remains unhandled. Events received by GTK+ from GDK normally begin in
+@code{gtk-main-do-event}. Depending on the type of event, existence of modal
+dialogs, grabs, etc., the event may be propagated; if so, this function is used.
+@code{gtk-propagate-event} calls @code{gtk-widget-event} on each widget it
+decides to send the event to. So @code{gtk-widget-event} is the lowest-level
+function; it simply emits the "event" and possibly an event-specific signal on a
+widget. @code{gtk-propagate-event} is a bit higher-level, and
+@code{gtk-main-do-event} is the highest level.
+
+All that said, you most likely don't want to use any of these functions;
+synthesizing events is rarely needed. Consider asking on the mailing list for
+better ways to achieve your goals. For example, use
+@code{gdk-window-invalidate-rect} or @code{gtk-widget-queue-draw} instead of
+making up expose events.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item event
+an event
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

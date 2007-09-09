@@ -1,0 +1,29 @@
+
+@c %start of fragment
+
+@node GtkLinkButton
+@chapter GtkLinkButton
+Create buttons bound to a URL
+
+@section Overview
+A @code{<gtk-link-button>} is a @code{<gtk-button>} with a hyperlink, similar to
+the one used by web browsers, which triggers an action when clicked. It is
+useful to show quick links to resources.
+
+A link button is created by calling either @code{gtk-link-button-new} or
+@code{gtk-link-button-new-with-label}. If using the former, the URI you pass to
+the constructor is used as a label for the widget.
+
+The URI bound to a @code{<gtk-link-button>} can be set specifically using
+@code{gtk-link-button-set-uri}, and retrieved using
+@code{gtk-link-button-get-uri}.
+
+@code{<gtk-link-button>} offers a global hook, which is called when the used
+clicks on it: see @code{gtk-link-button-set-uri-hook}.
+
+@code{<gtk-link-button>} was added in GTK+ 2.10.
+
+@section Usage
+@include defuns-gtklinkbutton.xml.texi
+
+@c %end of fragment

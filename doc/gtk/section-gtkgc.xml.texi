@@ -1,0 +1,19 @@
+
+@c %start of fragment
+
+@node Graphics Contexts
+@chapter Graphics Contexts
+A shared pool of GdkGC objects
+
+@section Overview
+These functions provide access to a shared pool of @code{<gdk-gc>} objects. When
+a new @code{<gdk-gc>} is needed, @code{gtk-gc-get} is called with the required
+depth, colormap and @code{<gdk-gc-values>}. If a @code{<gdk-gc>} with the
+required properties already exists then that is returned. If not, a new
+@code{<gdk-gc>} is created. When the @code{<gdk-gc>} is no longer needed,
+@code{gtk-gc-release} should be called.
+
+@section Usage
+@include defuns-gtkgc.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,466 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-assistant>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@defop Signal <gtk-assistant> close 
+The ::close signal is emitted either when the close button of a summary page is
+clicked, or when the apply button in the last page in the flow (of type
+GTK_ASSISTANT_PAGE_CONFIRM) is clicked.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-assistant> cancel 
+The ::cancel signal is emitted when then the cancel button is clicked.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-assistant> prepare  (arg0@tie{}@code{<gtk-widget>})
+The ::prepared signal is emitted when a new page is set as the assistant's
+current page, before making the new page visible. A handler for this signal can
+do any preparation which are necessary before showing @var{page}.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-assistant> apply 
+The ::apply signal is emitted when the apply button is clicked. The default
+behavior of the @code{<gtk-assistant>} is to switch to the page after the
+current page, unless the current page is the last one.
+
+A handler for the ::apply signal should carry out the actions for which the
+wizard has collected data. If the action takes a long time to complete, you
+might consider to put a page of type GTK_ASSISTANT_PAGE_PROGRESS after the
+confirmation page and handle this operation within the ::prepare signal of the
+progress page.
+
+Since 2.10
+
+@end defop
+
+@deffn Function gtk-assistant-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-assistant>}.
+
+@table @var
+@item ret
+a newly created @code{<gtk-assistant>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-get-current-page  (self@tie{}@code{<gtk-assistant>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-current-page
+Returns the page number of the current page
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item ret
+The index (starting from 0) of the current page in the @var{assistant}, if the
+@var{assistant} has no pages, -1 will be returned
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-set-current-page  (self@tie{}@code{<gtk-assistant>}) (page_num@tie{}@code{int})
+@deffnx Method set-current-page
+Switches the page to @var{page-num}. Note that this will only be necessary in
+custom buttons, as the @var{assistant} flow can be set with
+@code{gtk-assistant-set-forward-page-func}.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item page-num
+index of the page to switch to, starting from 0. If negative, the last page will
+be used. If greater than the number of pages in the @var{assistant}, nothing
+will be done.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-get-n-pages  (self@tie{}@code{<gtk-assistant>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-n-pages
+Returns the number of pages in the @var{assistant}
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item ret
+The number of pages in the @var{assistant}.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-get-nth-page  (self@tie{}@code{<gtk-assistant>}) (page_num@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-nth-page
+Returns the child widget contained in page number @var{page-num}.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item page-num
+The index of a page in the @var{assistant}, or -1 to get the last page;
+
+@item ret
+The child widget, or @samp{@code{#f}} if @var{page-num} is out of bounds.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-prepend-page  (self@tie{}@code{<gtk-assistant>}) (page@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method prepend-page
+Prepends a page to the @var{assistant}.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item page
+a @code{<gtk-widget>}
+
+@item ret
+the index (starting at 0) of the inserted page
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-append-page  (self@tie{}@code{<gtk-assistant>}) (page@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method append-page
+Appends a page to the @var{assistant}.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item page
+a @code{<gtk-widget>}
+
+@item ret
+the index (starting at 0) of the inserted page
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-insert-page  (self@tie{}@code{<gtk-assistant>}) (page@tie{}@code{<gtk-widget>}) (position@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method insert-page
+Inserts a page in the @var{assistant} at a given position.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item page
+a @code{<gtk-widget>}
+
+@item position
+the index (starting at 0) at which to insert the page, or -1 to append the page
+to the @var{assistant}
+
+@item ret
+the index (starting from 0) of the inserted page
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-set-page-type  (self@tie{}@code{<gtk-assistant>}) (page@tie{}@code{<gtk-widget>}) (type@tie{}@code{<gtk-assistant-page-type>})
+@deffnx Method set-page-type
+Sets the page type for @var{page}. The page type determines the page behavior in
+the @var{assistant}.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item page
+a page of @var{assistant}
+
+@item type
+the new type for @var{page}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-get-page-type  (self@tie{}@code{<gtk-assistant>}) (page@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gtk-assistant-page-type>})
+@deffnx Method get-page-type
+Gets the page type of @var{page}.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item page
+a page of @var{assistant}
+
+@item ret
+the page type of @var{page}.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-set-page-title  (self@tie{}@code{<gtk-assistant>}) (page@tie{}@code{<gtk-widget>}) (title@tie{}@code{mchars})
+@deffnx Method set-page-title
+Sets a title for @var{page}. The title is displayed in the header area of the
+assistant when @var{page} is the current page.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item page
+a page of @var{assistant}
+
+@item title
+the new title for @var{page}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-get-page-title  (self@tie{}@code{<gtk-assistant>}) (page@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-page-title
+Gets the title for @var{page}.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item page
+a page of @var{assistant}
+
+@item ret
+the title for @var{page}.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-set-page-header-image  (self@tie{}@code{<gtk-assistant>}) (page@tie{}@code{<gtk-widget>}) (pixbuf@tie{}@code{<gdk-pixbuf>})
+@deffnx Method set-page-header-image
+Sets a header image for @var{page}. This image is displayed in the header area
+of the assistant when @var{page} is the current page.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item page
+a page of @var{assistant}
+
+@item pixbuf
+the new header image @var{page}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-get-page-header-image  (self@tie{}@code{<gtk-assistant>}) (page@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method get-page-header-image
+Gets the header image for @var{page}.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item page
+a page of @var{assistant}
+
+@item ret
+the header image for @var{page}, or @samp{@code{#f}} if there's no header image
+for the page.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-set-page-side-image  (self@tie{}@code{<gtk-assistant>}) (page@tie{}@code{<gtk-widget>}) (pixbuf@tie{}@code{<gdk-pixbuf>})
+@deffnx Method set-page-side-image
+Sets a header image for @var{page}. This image is displayed in the side area of
+the assistant when @var{page} is the current page.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item page
+a page of @var{assistant}
+
+@item pixbuf
+the new header image @var{page}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-get-page-side-image  (self@tie{}@code{<gtk-assistant>}) (page@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method get-page-side-image
+Gets the header image for @var{page}.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item page
+a page of @var{assistant}
+
+@item ret
+the side image for @var{page}, or @samp{@code{#f}} if there's no side image for
+the page.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-set-page-complete  (self@tie{}@code{<gtk-assistant>}) (page@tie{}@code{<gtk-widget>}) (complete@tie{}@code{bool})
+@deffnx Method set-page-complete
+Sets whether @var{page} contents are complete. This will make @var{assistant}
+update the buttons state to be able to continue the task.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item page
+a page of @var{assistant}
+
+@item complete
+the completeness status of the page
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-get-page-complete  (self@tie{}@code{<gtk-assistant>}) (page@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-page-complete
+Gets whether @var{page} is complete..
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item page
+a page of @var{assistant}
+
+@item ret
+@samp{@code{#t}} if @var{page} is complete.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-add-action-widget  (self@tie{}@code{<gtk-assistant>}) (child@tie{}@code{<gtk-widget>})
+@deffnx Method add-action-widget
+Adds a widget to the action area of a @code{<gtk-assistant>}.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item child
+a @code{<gtk-widget>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-remove-action-widget  (self@tie{}@code{<gtk-assistant>}) (child@tie{}@code{<gtk-widget>})
+@deffnx Method remove-action-widget
+Removes a widget from the action area of a @code{<gtk-assistant>}.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@item child
+a @code{<gtk-widget>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-assistant-update-buttons-state  (self@tie{}@code{<gtk-assistant>})
+@deffnx Method update-buttons-state
+Forces @var{assistant} to recompute the buttons state.
+
+GTK+ automatically takes care of this in most situations, e.g. when the user
+goes to a different page, or when the visibility or completeness of a page
+changes.
+
+One situation where it can be necessary to call this function is when changing a
+value on the current page affects the future page flow of the assistant.
+
+@table @var
+@item assistant
+a @code{<gtk-assistant>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment

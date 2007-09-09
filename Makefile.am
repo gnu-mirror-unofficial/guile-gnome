@@ -1,6 +1,6 @@
 include $(top_srcdir)/common.mk
 
-SUBDIRS = gnome examples 
+SUBDIRS = gnome examples  doc
 
 EXTRA_DIST = ChangeLog NEWS AUTHORS README $(wildcard *.ac)
 

@@ -1,0 +1,20 @@
+
+@c %start of fragment
+
+@node GtkText
+@chapter GtkText
+A text widget
+
+@section Overview
+A @code{<gtk-text>} widget allows one to display any given text and manipulate
+it by deleting from one point to another, selecting a region, and various other
+functions as outlined below. It is inherited from @code{<gtk-editable>}.
+
+@code{<gtk-text>} is deprecated and unsupported. It is known to be buggy. To use
+it, you must define the symbol @samp{GTK_ENABLE_BROKEN} prior to including the
+GTK+ header files. Use @code{<gtk-text-view>} instead.
+
+@section Usage
+@include defuns-gtktext.xml.texi
+
+@c %end of fragment

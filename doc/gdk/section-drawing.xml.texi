@@ -1,0 +1,29 @@
+
+@c %start of fragment
+
+@node Drawing Primitives
+@chapter Drawing Primitives
+Functions for drawing points, lines, arcs, and text
+
+@section Overview
+These functions provide support for drawing points, lines, arcs and text onto
+what are called 'drawables'. Drawables, as the name suggests, are things which
+support drawing onto them, and are either @code{<gdk-window>} or
+@code{<gdk-pixmap>} objects.
+
+Many of the drawing operations take a @code{<gdk-gc>} argument, which represents
+a graphics context. This @code{<gdk-gc>} contains a number of drawing attributes
+such as foreground color, background color and line width, and is used to reduce
+the number of arguments needed for each drawing operation. See the Graphics
+Contexts section for more information.
+
+Some of the drawing operations take Pango data structures like
+@code{<pango-context>}, @code{<pango-layout>} or @code{<pango-layout-line>} as
+arguments. If you're using GTK+, the ususal way to obtain these structures is
+via @code{gtk-widget-create-pango-context} or
+@code{gtk-widget-create-pango-layout}.
+
+@section Usage
+@include defuns-drawing.xml.texi
+
+@c %end of fragment

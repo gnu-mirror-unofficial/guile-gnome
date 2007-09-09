@@ -1,0 +1,131 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-size-group>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item mode
+The directions in which the size group affects the requested sizes of its component widgets@item ignore-hidden
+If TRUE, unmapped widgets are ignored when determining the size of the group@end table
+
+@end deftp
+
+@deffn Function gtk-size-group-new  (mode@tie{}@code{<gtk-size-group-mode>}) @result{}@tie{} (ret@tie{}@code{<gtk-size-group>})
+Create a new @code{<gtk-size-group>}.
+
+@table @var
+@item mode
+the mode for the new size group.
+
+@item ret
+a newly created @code{<gtk-size-group>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-size-group-set-mode  (self@tie{}@code{<gtk-size-group>}) (mode@tie{}@code{<gtk-size-group-mode>})
+@deffnx Method set-mode
+Sets the @code{<gtk-size-group-mode>} of the size group. The mode of the size
+group determines whether the widgets in the size group should all have the same
+horizontal requisition (@samp{GTK_SIZE_GROUP_MODE_HORIZONTAL}) all have the same
+vertical requisition (@samp{GTK_SIZE_GROUP_MODE_VERTICAL}), or should all have
+the same requisition in both directions (@samp{GTK_SIZE_GROUP_MODE_BOTH}).
+
+@table @var
+@item size-group
+a @code{<gtk-size-group>}
+
+@item mode
+the mode to set for the size group.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-size-group-get-mode  (self@tie{}@code{<gtk-size-group>}) @result{}@tie{} (ret@tie{}@code{<gtk-size-group-mode>})
+@deffnx Method get-mode
+Gets the current mode of the size group. See @code{gtk-size-group-set-mode}.
+
+@table @var
+@item size-group
+a @code{<gtk-size-group>}
+
+@item ret
+the current mode of the size group.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-size-group-set-ignore-hidden  (self@tie{}@code{<gtk-size-group>}) (ignore_hidden@tie{}@code{bool})
+@deffnx Method set-ignore-hidden
+Sets whether unmapped widgets should be ignored when calculating the size.
+
+@table @var
+@item size-group
+a @code{<gtk-size-group>}
+
+@item ignore-hidden
+whether unmapped widgets should be ignored when calculating the size
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-size-group-get-ignore-hidden  (self@tie{}@code{<gtk-size-group>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-ignore-hidden
+Returns if invisible widgets are ignored when calculating the size.
+
+@table @var
+@item size-group
+a @code{<gtk-size-group>}
+
+@item ret
+@samp{@code{#t}} if invisible widgets are ignored.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-size-group-add-widget  (self@tie{}@code{<gtk-size-group>}) (widget@tie{}@code{<gtk-widget>})
+@deffnx Method add-widget
+Adds a widget to a @code{<gtk-size-group>}. In the future, the requisition of
+the widget will be determined as the maximum of its requisition and the
+requisition of the other widgets in the size group. Whether this applies
+horizontally, vertically, or in both directions depends on the mode of the size
+group. See @code{gtk-size-group-set-mode}.
+
+@table @var
+@item size-group
+a @code{<gtk-size-group>}
+
+@item widget
+the @code{<gtk-widget>} to add
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-size-group-remove-widget  (self@tie{}@code{<gtk-size-group>}) (widget@tie{}@code{<gtk-widget>})
+@deffnx Method remove-widget
+Removes a widget from a @code{<gtk-size-group>}.
+
+@table @var
+@item size-group
+a @code{<gtk-size-grup>}
+
+@item widget
+the @code{<gtk-widget>} to remove
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@node GtkFontSelectionDialog
+@chapter GtkFontSelectionDialog
+A dialog box for selecting fonts
+
+@section Overview
+The @code{<gtk-font-selection-dialog>} widget is a dialog box for selecting a
+font.
+
+To set the font which is initially selected, use
+@code{gtk-font-selection-dialog-set-font-name}.
+
+To get the selected font use @code{gtk-font-selection-dialog-get-font-name}.
+
+To change the text which is shown in the preview area, use
+@code{gtk-font-selection-dialog-set-preview-text}.
+
+@section Usage
+@include defuns-gtkfontseldlg.xml.texi
+
+@c %end of fragment

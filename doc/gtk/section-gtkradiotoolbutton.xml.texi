@@ -1,0 +1,24 @@
+
+@c %start of fragment
+
+@node GtkRadioToolButton
+@chapter GtkRadioToolButton
+A toolbar item that contains a radio button
+
+@section Overview
+A @code{<gtk-radio-tool-button>} is a @code{<gtk-tool-item>} that contains a
+radio button, that is, a button that is part of a group of toggle buttons where
+only one button can be active at a time.
+
+Use @code{gtk-radio-tool-button-new} to create a new
+@code{<gtk-radio-tool-button>}. use @code{gtk-radio-tool-button-new-from-widget}
+to create a new @code{<gtk-radio-tool-button>} that is part of the same group as
+an existing @code{<gtk-radio-tool-button>}. Use
+@code{gtk-radio-tool-button-new-from-stock} or
+@code{gtk-radio-tool-button-new-from-widget-with-stock} to create a new
+@code{<gtk-radio-tool-button>} containing a stock item.
+
+@section Usage
+@include defuns-gtkradiotoolbutton.xml.texi
+
+@c %end of fragment

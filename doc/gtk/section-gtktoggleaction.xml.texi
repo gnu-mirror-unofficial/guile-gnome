@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node GtkToggleAction
+@chapter GtkToggleAction
+An action which can be toggled between two states
+
+@section Overview
+A @code{<gtk-toggle-action>} corresponds roughly to a
+@code{<gtk-check-menu-item>}. It has an "active" state specifying whether the
+action has been checked or not.
+
+@section Usage
+@include defuns-gtktoggleaction.xml.texi
+
+@c %end of fragment

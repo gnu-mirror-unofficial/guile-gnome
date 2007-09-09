@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node Bindings
+@chapter Bindings
+Key bindings for individual widgets
+
+@section Overview
+@section Usage
+@include defuns-gtkbindings.xml.texi
+
+@c %end of fragment

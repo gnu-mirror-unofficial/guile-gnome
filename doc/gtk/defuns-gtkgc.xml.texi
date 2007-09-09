@@ -1,0 +1,32 @@
+
+@c %start of fragment
+
+@deffn Function gtk-gc-get  (depth@tie{}@code{int}) (colormap@tie{}@code{<gdk-colormap>}) (values@tie{}@code{<gdk-gc-values*>}) (values_mask@tie{}@code{<gdk-gc-values-mask>}) @result{}@tie{} (ret@tie{}@code{<gdk-gc>})
+Gets a @code{<gdk-gc>} with the given depth, colormap and
+@code{<gdk-gc-values>}. If a @code{<gdk-gc>} with the given properties already
+exists then it is returned, otherwise a new @code{<gdk-gc>} is created. The
+returned @code{<gdk-gc>} should be released with @code{gtk-gc-release} when it
+is no longer needed.
+
+@table @var
+@item depth
+the depth of the @code{<gdk-gc>} to create.
+
+@item colormap
+the @code{<gdk-colormap>} (FIXME: I don't know why this is needed).
+
+@item values
+a @code{<gdk-gc-values>} struct containing settings for the @code{<gdk-gc>}.
+
+@item values-mask
+a set of flags indicating which of the fields in @var{values} has been set.
+
+@item ret
+a @code{<gdk-gc>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

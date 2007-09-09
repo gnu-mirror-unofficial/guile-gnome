@@ -1,0 +1,77 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-aspect-frame>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item xalign
+X alignment of the child@item yalign
+Y alignment of the child@item ratio
+Aspect ratio if obey_child is FALSE@item obey-child
+Force aspect ratio to match that of the frame's child@end table
+
+@end deftp
+
+@deffn Function gtk-aspect-frame-new  (label@tie{}@code{mchars}) (xalign@tie{}@code{float}) (yalign@tie{}@code{float}) (ratio@tie{}@code{float}) (obey_child@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Create a new @code{<gtk-aspect-frame>}.
+
+@table @var
+@item label
+Label text.
+
+@item xalign
+Horizontal alignment of the child within the allocation of the
+@code{<gtk-aspect-frame>}. This ranges from 0.0 (left aligned) to 1.0 (right
+aligned)
+
+@item yalign
+Vertical alignment of the child within the allocation of the
+@code{<gtk-aspect-frame>}. This ranges from 0.0 (left aligned) to 1.0 (right
+aligned)
+
+@item ratio
+The desired aspect ratio.
+
+@item obey-child
+If @samp{@code{#t}}, @var{ratio} is ignored, and the aspect ratio is taken from
+the requistion of the child.
+
+@item ret
+the new @code{<gtk-aspect-frame>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-aspect-frame-set  (self@tie{}@code{<gtk-aspect-frame>}) (xalign@tie{}@code{float}) (yalign@tie{}@code{float}) (ratio@tie{}@code{float}) (obey_child@tie{}@code{bool})
+@deffnx Method set
+Set parameters for an existing @code{<gtk-aspect-frame>}.
+
+@table @var
+@item aspect-frame
+a @code{<gtk-aspect-frame>}
+
+@item xalign
+Horizontal alignment of the child within the allocation of the
+@code{<gtk-aspect-frame>}. This ranges from 0.0 (left aligned) to 1.0 (right
+aligned)
+
+@item yalign
+Vertical alignment of the child within the allocation of the
+@code{<gtk-aspect-frame>}. This ranges from 0.0 (left aligned) to 1.0 (right
+aligned)
+
+@item ratio
+The desired aspect ratio.
+
+@item obey-child
+If @samp{@code{#t}}, @var{ratio} is ignored, and the aspect ratio is taken from
+the requistion of the child.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

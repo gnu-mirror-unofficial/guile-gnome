@@ -1,0 +1,28 @@
+
+@c %start of fragment
+
+@node GtkTreeView drag-and-drop
+@chapter GtkTreeView drag-and-drop
+Interfaces for drag-and-drop support in GtkTreeView
+
+@section Overview
+GTK+ supports Drag-and-Drop in tree views with a high-level and a low-level API.
+
+The low-level API consists of the GTK+ DND API, augmented by some treeview
+utility functions: @code{gtk-tree-view-set-drag-dest-row},
+@code{gtk-tree-view-get-drag-dest-row},
+@code{gtk-tree-view-get-dest-row-at-pos},
+@code{gtk-tree-view-create-row-drag-icon}, @code{gtk-tree-set-row-drag-data} and
+@code{gtk-tree-get-row-drag-data}. This API leaves a lot of flexibility, but
+nothing is done automatically, and implementing advanced features like
+hover-to-open-rows or autoscrolling on top of this API is a lot of work.
+
+On the other hand, if you write to the high-level API, then all the bookkeeping
+of rows is done for you, as well as things like hover-to-open and auto-scroll,
+but your models have to implement the @code{<gtk-tree-drag-source>} and
+@code{<gtk-tree-drag-dest>} interfaces.
+
+@section Usage
+@include defuns-gtktreednd.xml.texi
+
+@c %end of fragment

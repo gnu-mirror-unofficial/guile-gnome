@@ -1,0 +1,29 @@
+
+@c %start of fragment
+
+@node GtkCalendar
+@chapter GtkCalendar
+Displays a calendar and allows the user to select a date
+
+@section Overview
+@code{<gtk-calendar>} is a widget that displays a calendar, one month at a time.
+It can be created with @code{gtk-calendar-new}.
+
+The month and year currently displayed can be altered with
+@code{gtk-calendar-select-month}. The exact day can be selected from the
+displayed month using @code{gtk-calendar-select-day}.
+
+To place a visual marker on a particular day, use @code{gtk-calendar-mark-day}
+and to remove the marker, @code{gtk-calendar-unmark-day}. Alternative, all marks
+can be cleared with @code{gtk-calendar-clear-marks}.
+
+The way in which the calendar itself is displayed can be altered using
+@code{gtk-calendar-set-display-options}.
+
+The selected date can be retrieved from a @code{<gtk-calendar>} using
+@code{gtk-calendar-get-date}.
+
+@section Usage
+@include defuns-gtkcalendar.xml.texi
+
+@c %end of fragment

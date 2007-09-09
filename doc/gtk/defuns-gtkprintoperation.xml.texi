@@ -1,0 +1,499 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-print-operation>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item default-page-setup
+The GtkPageSetup used by default@item print-settings
+The GtkPrintSettings used for initializing the dialog@item job-name
+A string used for identifying the print job.@item n-pages
+The number of pages in the document.@item current-page
+The current page in the document@item use-full-page
+TRUE if the origin of the context should be at the corner of the page and not the corner of the imageable area@item track-print-status
+TRUE if the print operation will continue to report on the print job status after the print data has been sent to the printer or print server.@item unit
+The unit in which distances can be measured in the context@item show-progress
+TRUE if a progress dialog is shown while printing.@item allow-async
+TRUE if print process may run asynchronous.@item export-filename
+Export filename@item status
+The status of the print operation@item status-string
+A human-readable description of the status@item custom-tab-label
+Label for the tab containing custom widgets.@end table
+
+@end deftp
+
+@defop Signal <gtk-print-operation> done  (arg0@tie{}@code{<gtk-print-operation-result>})
+Emitted when the print operation run has finished doing everything required for
+printing. @var{result} gives you information about what happened during the run.
+If @var{result} is @samp{GTK_PRINT_OPERATION_RESULT_ERROR} then you can call
+@code{gtk-print-operation-get-error} for more information.
+
+If you enabled print status tracking then @code{gtk-print-operation-is-finished}
+may still return @samp{@code{#f}} after this was emitted.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-print-operation> begin-print  (arg0@tie{}@code{<gtk-print-context>})
+Emitted after the user has finished changing print settings in the dialog,
+before the actual rendering starts.
+
+A typical use for this signal is to use the parameters from the
+@code{<gtk-print-context>} and paginate the document accordingly, and then set
+the number of pages with @code{gtk-print-operation-set-n-pages}.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-print-operation> paginate  (arg0@tie{}@code{<gtk-print-context>}) @result{}@tie{}@code{<gboolean>}
+Emitted after the begin-print signal, but before the actual rendering starts. It
+keeps getting emitted until it returns @samp{@code{#f}}.
+
+This signal is intended to be used for paginating the document in small chunks,
+to avoid blocking the user interface for a long time. The signal handler should
+update the number of pages using @code{gtk-print-operation-set-n-pages}, and
+return @samp{@code{#t}} if the document has been completely paginated.
+
+If you don't need to do pagination in chunks, you can simply do it all in the
+begin-print handler, and set the number of pages from there.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-print-operation> request-page-setup  (arg0@tie{}@code{<gtk-print-context>}) (arg1@tie{}@code{<gint>}) (arg2@tie{}@code{<gtk-page-setup>})
+Emitted once for every page that is printed, to give the application a chance to
+modify the page setup. Any changes done to @var{setup} will be in force only for
+printing this page.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-print-operation> draw-page  (arg0@tie{}@code{<gtk-print-context>}) (arg1@tie{}@code{<gint>})
+Emitted for every page that is printed. The signal handler must render the
+@var{page-nr}'s page onto the cairo context obtained from @var{context} using
+@code{gtk-print-context-get-cairo-context}.
+
+@example 
+
+static void
+draw_page (GtkPrintOperation *operation,
+           GtkPrintContext   *context,
+           gint               page_nr,
+           gpointer           user_data)
+@{
+  cairo_t *cr;
+  PangoLayout *layout;
+  gdouble width, text_height;
+  gint layout_height;
+  PangoFontDescription *desc;
+  
+  cr = gtk_print_context_get_cairo_context (context);
+  width = gtk_print_context_get_width (context);
+  
+  cairo_rectangle (cr, 0, 0, width, HEADER_HEIGHT);
+  
+  cairo_set_source_rgb (cr, 0.8, 0.8, 0.8);
+  cairo_fill (cr);
+  
+  layout = gtk_print_context_create_pango_layout (context);
+  
+  desc = pango_font_description_from_string ("sans 14");
+  pango_layout_set_font_description (layout, desc);
+  pango_font_description_free (desc);
+  
+  pango_layout_set_text (layout, "some text", -1);
+  pango_layout_set_width (layout, width);
+  pango_layout_set_alignment (layout, PANGO_ALIGN_CENTER);
+     		      
+  pango_layout_get_size (layout, NULL, &layout_height);
+  text_height = (gdouble)layout_height / PANGO_SCALE;
+  
+  cairo_move_to (cr, width / 2,  (HEADER_HEIGHT - text_height) / 2);
+  pango_cairo_show_layout (cr, layout);
+  
+  g_object_unref (layout);
+@}
+@end example
+
+Use @code{gtk-print-operation-set-use-full-page} and
+@code{gtk-print-operation-set-unit} before starting the print operation to set
+up the transformation of the cairo context according to your needs.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-print-operation> end-print  (arg0@tie{}@code{<gtk-print-context>})
+Emitted after all pages have been rendered. A handler for this signal can clean
+up any resources that have been allocated in the ::begin-print handler.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-print-operation> status-changed 
+Emitted at between the various phases of the print operation. See
+@code{<gtk-print-status>} for the phases that are being discriminated. Use
+@code{gtk-print-operation-get-status} to find out the current status.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-print-operation> create-custom-widget  @result{}@tie{}@code{<gobject>}
+Emitted when displaying the print dialog. If you return a widget in a handler
+for this signal it will be added to a custom tab in the print dialog. You
+typically return a container widget with multiple widgets in it.
+
+The print dialog owns the returned widget, and its lifetime isn't controlled by
+the app. However, the widget is guaranteed to stay around until the
+custom-widget-apply signal is emitted on the operation. Then you can read out
+any information you need from the widgets.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-print-operation> custom-widget-apply  (arg0@tie{}@code{<gtk-widget>})
+Emitted right before begin-print if you added a custom widget in the
+create-custom-widget handler. When you get this signal you should read the
+information from the custom widgets, as the widgets are not guaraneed to be
+around at a later time.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-print-operation> preview  (arg0@tie{}@code{<gtk-print-operation-preview>}) (arg1@tie{}@code{<gtk-print-context>}) (arg2@tie{}@code{<gtk-window>}) @result{}@tie{}@code{<gboolean>}
+Gets emitted when a preview is requested from the native dialog.
+
+The default handler for this signal uses an external viewer application to
+preview.
+
+To implement a custom print preview, an application must return @samp{@code{#t}}
+from its handler for this signal. In order to use the provided @var{context} for
+the preview implementation, it must be given a suitable cairo context with
+@code{gtk-print-context-set-cairo-context}.
+
+The custom preview implementation can use
+@code{gtk-print-operation-preview-is-selected} and
+@code{gtk-print-operation-preview-render-page} to find pages which are selected
+for print and render them. The preview must be finished by calling
+@code{gtk-print-operation-preview-end-preview} (typically in response to the
+user clicking a close button).
+
+Since 2.10
+
+@end defop
+
+@deffn Function gtk-print-operation-new  @result{}@tie{} (ret@tie{}@code{<gtk-print-operation>})
+Creates a new @code{<gtk-print-operation>}.
+
+@table @var
+@item ret
+a new @code{<gtk-print-operation>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-operation-set-allow-async  (self@tie{}@code{<gtk-print-operation>}) (allow_async@tie{}@code{bool})
+@deffnx Method set-allow-async
+Sets whether the @code{gtk-print-operation-run} may return before the print
+operation is completed. Note that some platforms may not allow asynchronous
+operation.
+
+@table @var
+@item op
+a @code{<gtk-print-operation>}
+
+@item allow-async
+@samp{@code{#t}} to allow asynchronous operation
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-operation-get-error  (self@tie{}@code{<gtk-print-operation>})
+@deffnx Method get-error
+Call this when the result of a print operation is
+@samp{GTK_PRINT_OPERATION_RESULT_ERROR}, either as returned by
+@code{gtk-print-operation-run}, or in the ::done signal handler. The returned
+@code{<g-error>} will contain more details on what went wrong.
+
+@table @var
+@item op
+a @code{<gtk-print-operation>}
+
+@item error
+return location for the error
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-operation-set-job-name  (self@tie{}@code{<gtk-print-operation>}) (job_name@tie{}@code{mchars})
+@deffnx Method set-job-name
+Sets the name of the print job. The name is used to identify the job (e.g. in
+monitoring applications like eggcups).
+
+If you don't set a job name, GTK+ picks a default one by numbering successive
+print jobs.
+
+@table @var
+@item op
+a @code{<gtk-print-operation>}
+
+@item job-name
+a string that identifies the print job
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-operation-set-n-pages  (self@tie{}@code{<gtk-print-operation>}) (n_pages@tie{}@code{int})
+@deffnx Method set-n-pages
+Sets the number of pages in the document.
+
+This @emph{must} be set to a positive number before the rendering starts. It may
+be set in a ::begin-print signal hander.
+
+Note that the page numbers passed to the ::request-page-setup and ::draw-page
+signals are 0-based, i.e. if the user chooses to print all pages, the last
+::draw-page signal will be for page @var{n-pages} - 1.
+
+@table @var
+@item op
+a @code{<gtk-print-operation>}
+
+@item n-pages
+the number of pages
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-operation-set-unit  (self@tie{}@code{<gtk-print-operation>}) (unit@tie{}@code{<gtk-unit>})
+@deffnx Method set-unit
+Sets up the transformation for the cairo context obtained from
+@code{<gtk-print-context>} in such a way that distances are measured in units of
+@var{unit}.
+
+@table @var
+@item op
+a @code{<gtk-print-operation>}
+
+@item unit
+the unit to use
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-operation-run  (self@tie{}@code{<gtk-print-operation>}) (action@tie{}@code{<gtk-print-operation-action>}) (parent@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{<gtk-print-operation-result>})
+@deffnx Method run
+Runs the print operation, by first letting the user modify print settings in the
+print dialog, and then print the document.
+
+Normally that this function does not return until the rendering of all pages is
+complete. You can connect to the ::status-changed signal on @var{op} to obtain
+some information about the progress of the print operation. Furthermore, it may
+use a recursive mainloop to show the print dialog.
+
+If you call @code{gtk-print-operation-set-allow-async} or set the allow-async
+property the operation will run asyncronously if this is supported on the
+platform. The ::done signal will be emitted with the operation results when the
+operation is done (i.e. when the dialog is canceled, or when the print succeeds
+or fails).
+
+@example 
+
+if (settings != NULL)
+  gtk_print_operation_set_print_settings (print, settings);
+  
+if (page_setup != NULL)
+  gtk_print_operation_set_default_page_setup (print, page_setup);
+  
+g_signal_connect (print, "begin-print", 
+                  G_CALLBACK (begin_print), &data);
+g_signal_connect (print, "draw-page", 
+                  G_CALLBACK (draw_page), &data);
+ 
+res = gtk_print_operation_run (print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG, parent, &error);
+ 
+if (res == GTK_PRINT_OPERATION_RESULT_ERROR)
+ @{
+   error_dialog = gtk_message_dialog_new (GTK_WINDOW (parent),
+  			                     GTK_DIALOG_DESTROY_WITH_PARENT,
+					     GTK_MESSAGE_ERROR,
+					     GTK_BUTTONS_CLOSE,
+					     "Error printing file:\n%s",
+					     error->message);
+   g_signal_connect (error_dialog, "response", 
+                     G_CALLBACK (gtk_widget_destroy), NULL);
+   gtk_widget_show (error_dialog);
+   g_error_free (error);
+ @}
+else if (res == GTK_PRINT_OPERATION_RESULT_APPLY)
+ @{
+   if (settings != NULL)
+g_object_unref (settings);
+   settings = g_object_ref (gtk_print_operation_get_print_settings (print));
+ @}
+@end example
+
+Note that @code{gtk-print-operation-run} can only be called once on a given
+@code{<gtk-print-operation>}.
+
+@table @var
+@item op
+a @code{<gtk-print-operation>}
+
+@item action
+the action to start
+
+@item parent
+Transient parent of the dialog, or @samp{@code{#f}}
+
+@item error
+Return location for errors, or @samp{@code{#f}}
+
+@item ret
+the result of the print operation. A return value of
+@samp{GTK_PRINT_OPERATION_RESULT_APPLY} indicates that the printing was
+completed successfully. In this case, it is a good idea to obtain the used print
+settings with @code{gtk-print-operation-get-print-settings} and store them for
+reuse with the next print operation. A value of
+@samp{GTK_PRINT_OPERATION_RESULT_IN_PROGRESS} means the operation is running
+asynchronously, and will emit the ::done signal when done.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-operation-cancel  (self@tie{}@code{<gtk-print-operation>})
+@deffnx Method cancel
+Cancels a running print operation. This function may be called from a
+begin-print, paginate or draw-page signal handler to stop the currently running
+print operation.
+
+@table @var
+@item op
+a @code{<gtk-print-operation>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-operation-get-status  (self@tie{}@code{<gtk-print-operation>}) @result{}@tie{} (ret@tie{}@code{<gtk-print-status>})
+@deffnx Method get-status
+Returns the status of the print operation. Also see
+@code{gtk-print-operation-get-status-string}.
+
+@table @var
+@item op
+a @code{<gtk-print-operation>}
+
+@item ret
+the status of the print operation
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-operation-is-finished  (self@tie{}@code{<gtk-print-operation>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-finished
+A convenience function to find out if the print operation is finished, either
+successfully (@samp{GTK_PRINT_STATUS_FINISHED}) or unsuccessfully
+(@samp{GTK_PRINT_STATUS_FINISHED_ABORTED}).
+
+Note: when you enable print status tracking the print operation can be in a
+non-finished state even after done has been called, as the operation status then
+tracks the print job status on the printer.
+
+@table @var
+@item op
+a @code{<gtk-print-operation>}
+
+@item ret
+@samp{@code{#t}}, if the print operation is finished.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-operation-get-error  (self@tie{}@code{<gtk-print-operation>})
+@deffnx Method get-error
+Call this when the result of a print operation is
+@samp{GTK_PRINT_OPERATION_RESULT_ERROR}, either as returned by
+@code{gtk-print-operation-run}, or in the ::done signal handler. The returned
+@code{<g-error>} will contain more details on what went wrong.
+
+@table @var
+@item op
+a @code{<gtk-print-operation>}
+
+@item error
+return location for the error
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-run-page-setup-dialog  (parent@tie{}@code{<gtk-window>}) (page_setup@tie{}@code{<gtk-page-setup*>}) (settings@tie{}@code{<gtk-print-settings*>}) @result{}@tie{} (ret@tie{}@code{<gtk-page-setup*>})
+Runs a page setup dialog, letting the user modify the values from
+@var{page-setup}. If the user cancels the dialog, the returned
+@code{<gtk-page-setup>} is identical to the passed in @var{page-setup},
+otherwise it contains the modifications done in the dialog.
+
+Note that this function may use a recursive mainloop to show the page setup
+dialog. See @code{gtk-print-run-page-setup-dialog-async} if this is a problem.
+
+@table @var
+@item parent
+transient parent, or @samp{@code{#f}}
+
+@item page-setup
+an existing @code{<gtk-page-setup>}, or @samp{@code{#f}}
+
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+a new @code{<gtk-page-setup>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment

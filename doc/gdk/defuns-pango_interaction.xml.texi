@@ -1,0 +1,218 @@
+
+@c %start of fragment
+
+@deftp Class <gdk-pango-renderer>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item screen
+the GdkScreen for the renderer@end table
+
+@end deftp
+
+@deffn Function gdk-pango-renderer-new  (screen@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<pango-renderer>})
+Creates a new @code{<pango-renderer>} for @var{screen}. Normally you can use the
+results of @code{gdk-pango-renderer-get-default} rather than creating a new
+renderer.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+a newly created @code{<pango-renderer>}. Free with @code{g-object-unref}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gdk-pango-renderer-get-default  (screen@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<pango-renderer>})
+Gets the default @code{<pango-renderer>} for a screen. This default renderer is
+shared by all users of the display, so properties such as the color or
+transformation matrix set for the renderer may be overwritten by functions such
+as @code{gdk-draw-layout}.
+
+Before using the renderer, you need to call
+@code{gdk-pango-renderer-set-drawable} and @code{gdk-pango-renderer-set-gc} to
+set the drawable and graphics context to use for drawing.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+the default @code{<pango-renderer>} for @var{screen}. The renderer is owned by
+GTK+ and will be kept around until the screen is closed.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gdk-pango-renderer-set-drawable  (self@tie{}@code{<gdk-pango-renderer>}) (drawable@tie{}@code{<gdk-drawable>})
+@deffnx Method set-drawable
+Sets the drawable the renderer draws to.
+
+@table @var
+@item gdk-renderer
+a @code{<gdk-pango-renderer>}
+
+@item drawable
+the new target drawable, or @samp{@code{#f}}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gdk-pango-renderer-set-gc  (self@tie{}@code{<gdk-pango-renderer>}) (gc@tie{}@code{<gdk-gc>})
+@deffnx Method set-gc
+Sets the GC the renderer draws with. Note that the GC must not be modified until
+it is unset by calling the function again with @samp{@code{#f}} for the @var{gc}
+parameter, since GDK may make internal copies of the GC which won't be updated
+to follow changes to the original GC.
+
+@table @var
+@item gdk-renderer
+a @code{<gdk-pango-renderer>}
+
+@item gc
+the new GC to use for drawing, or @samp{@code{#f}}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gdk-pango-renderer-set-stipple  (self@tie{}@code{<gdk-pango-renderer>}) (part@tie{}@code{<pango-render-part>}) (stipple@tie{}@code{<gdk-bitmap*>})
+@deffnx Method set-stipple
+Sets the stipple for one render part (foreground, background, underline, etc.)
+Note that this is overwritten when iterating through the individual styled runs
+of a @code{<pango-layout>} or @code{<pango-layout-line>}. This function is thus
+only useful when you call low level functions like
+@code{pango-renderer-draw-glyphs} directly, or in the 'prepare_run' virtual
+function of a subclass of @code{<gdk-pango-renderer>}.
+
+@table @var
+@item gdk-renderer
+a @code{<gdk-pango-renderer>}
+
+@item part
+the part to render with the stipple
+
+@item stipple
+the new stipple value.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gdk-pango-context-get  @result{}@tie{} (ret@tie{}@code{<pango-context*>})
+Creates a @code{<pango-context>} for the default GDK screen.
+
+The context must be freed when you're finished with it.
+
+When using GTK+, normally you should use @code{gtk-widget-get-pango-context}
+instead of this function, to get the appropriate context for the widget you
+intend to render text onto.
+
+The newly created context will have the default font options (see
+@code{<cairo-font-options-t>}) for the default screen; if these options change
+it will not be updated. Using @code{gtk-widget-get-pango-context} is more
+convenient if you want to keep a context around and track changes to the
+screen's font rendering settings.
+
+@table @var
+@item ret
+a new @code{<pango-context>} for the default display
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pango-context-get-for-screen  (screen@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<pango-context*>})
+Creates a @code{<pango-context>} for @var{screen}.
+
+The context must be freed when you're finished with it.
+
+When using GTK+, normally you should use @code{gtk-widget-get-pango-context}
+instead of this function, to get the appropriate context for the widget you
+intend to render text onto.
+
+The newly created context will have the default font options (see
+@code{<cairo-font-options-t>}) for the screen; if these options change it will
+not be updated. Using @code{gtk-widget-get-pango-context} is more convenient if
+you want to keep a context around and track changes to the screen's font
+rendering settings.
+
+@table @var
+@item screen
+the @code{<gdk-screen>} for which the context is to be created.
+
+@item ret
+a new @code{<pango-context>} for @var{screen}
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-pango-context-set-colormap  (context@tie{}@code{<pango-context*>}) (colormap@tie{}@code{<gdk-colormap>})
+@samp{gdk_pango_context_set_colormap} is deprecated and should not be used in
+newly-written code.
+
+This function used to set the colormap to be used for drawing with
+@var{context}. The colormap is now always derived from the graphics context used
+for drawing, so calling this function is no longer necessary.
+
+@table @var
+@item context
+a @code{<pango-context>}
+
+@item colormap
+a @code{<gdk-colormap>}
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pango-attr-embossed-new  (embossed@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Creates a new attribute containing a embossed bitmap to be used when rendering
+the text.
+
+@table @var
+@item embossed
+a bitmap to be set as embossed
+
+@item ret
+new @code{<pango-attribute>}
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pango-attr-stipple-new  (stipple@tie{}@code{<gdk-bitmap*>}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+Creates a new attribute containing a stipple bitmap to be used when rendering
+the text.
+
+@table @var
+@item stipple
+a bitmap to be set as stipple
+
+@item ret
+new @code{<pango-attribute>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

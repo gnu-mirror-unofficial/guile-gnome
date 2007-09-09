@@ -1,0 +1,714 @@
+
+@c %start of fragment
+
+@deftp Class <gdk-screen>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item font-options
+The default font options for the screen@item resolution
+The resolution for fonts on the screen@end table
+
+@end deftp
+
+@defop Signal <gdk-screen> size-changed 
+The ::size_changed signal is emitted when the pixel width or height of a screen
+changes.
+
+
+
+Since 2.2
+
+@end defop
+
+@defop Signal <gdk-screen> composited-changed 
+The ::composited_changed signal is emitted when the composited status of the
+screen changes
+
+
+
+Since 2.10
+
+@end defop
+
+@deffn Function gdk-screen-get-default  @result{}@tie{} (ret@tie{}@code{<gdk-screen>})
+Gets the default screen for the default display. (See
+@code{gdk-display-get-default}).
+
+@table @var
+@item ret
+a @code{<gdk-screen>}, or @samp{@code{#f}} if there is no default display.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-default-colormap  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<gdk-colormap>})
+@deffnx Method get-default-colormap
+Gets the default colormap for @var{screen}.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+the default @code{<gdk-colormap>}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-set-default-colormap  (self@tie{}@code{<gdk-screen>}) (colormap@tie{}@code{<gdk-colormap>})
+@deffnx Method set-default-colormap
+Sets the default @var{colormap} for @var{screen}.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item colormap
+a @code{<gdk-colormap>}
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-system-colormap  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<gdk-colormap>})
+@deffnx Method get-system-colormap
+Gets the system's default colormap for @var{screen}
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+the default colormap for @var{screen}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-system-visual  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<gdk-visual*>})
+@deffnx Method get-system-visual
+Get the system's default visual for @var{screen}. This is the visual for the
+root window of the display. The return value should not be freed.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}.
+
+@item ret
+the system visual
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-rgb-colormap  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<gdk-colormap>})
+@deffnx Method get-rgb-colormap
+Gets the preferred colormap for rendering image data on @var{screen}. Not a very
+useful function; historically, GDK could only render RGB image data to one
+colormap and visual, but in the current version it can render to any colormap
+and visual. So there's no need to call this function.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}.
+
+@item ret
+the preferred colormap
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-rgb-visual  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<gdk-visual*>})
+@deffnx Method get-rgb-visual
+Gets a "preferred visual" chosen by GdkRGB for rendering image data on
+@var{screen}. In previous versions of GDK, this was the only visual GdkRGB could
+use for rendering. In current versions, it's simply the visual GdkRGB would have
+chosen as the optimal one in those previous versions. GdkRGB can now render to
+drawables with any visual.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+The @code{<gdk-visual>} chosen by GdkRGB.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-rgba-colormap  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<gdk-colormap>})
+@deffnx Method get-rgba-colormap
+Gets a colormap to use for creating windows or pixmaps with an alpha channel.
+The windowing system on which GTK+ is running may not support this capability,
+in which case @samp{@code{#f}} will be returned. Even if a non-@samp{@code{#f}}
+value is returned, its possible that the window's alpha channel won't be honored
+when displaying the window on the screen: in particular, for X an appropriate
+windowing manager and compositing manager must be running to provide appropriate
+display.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}.
+
+@item ret
+a colormap to use for windows with an alpha channel or @samp{@code{#f}} if the
+capability is not available.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gdk-screen-get-rgba-visual  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<gdk-visual*>})
+@deffnx Method get-rgba-visual
+Gets a visual to use for creating windows or pixmaps with an alpha channel. See
+the docs for @code{gdk-screen-get-rgba-colormap} for caveats.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+a visual to use for windows with an alpha channel or @samp{@code{#f}} if the
+capability is not available.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gdk-screen-is-composited  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-composited
+Returns whether windows with an RGBA visual can reasonably be expected to have
+their alpha channel drawn correctly on the screen.
+
+On X11 this function returns whether a compositing manager is compositing
+@var{screen}.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+Whether windows with RGBA visuals can reasonably be expected to have their alpha
+channels drawn correctly on the screen.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gdk-screen-get-root-window  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>})
+@deffnx Method get-root-window
+Gets the root window of @var{screen}.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+the root window
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-display  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<gdk-display>})
+@deffnx Method get-display
+Gets the display to which the @var{screen} belongs.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+the display to which @var{screen} belongs
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-number  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-number
+Gets the index of @var{screen} among the screens in the display to which it
+belongs. (See @code{gdk-screen-get-display})
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+the index
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-width  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-width
+Gets the width of @var{screen} in pixels
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+the width of @var{screen} in pixels.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-height  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-height
+Gets the height of @var{screen} in pixels
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+the height of @var{screen} in pixels.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-width-mm  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-width-mm
+Gets the width of @var{screen} in millimeters. Note that on some X servers this
+value will not be correct.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+the width of @var{screen} in millimeters.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-height-mm  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-height-mm
+Returns the height of @var{screen} in millimeters. Note that on some X servers
+this value will not be correct.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+the heigth of @var{screen} in millimeters.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-list-visuals  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method list-visuals
+Lists the available visuals for the specified @var{screen}. A visual describes a
+hardware image data format. For example, a visual might support 24-bit color, or
+8-bit color, and might expect pixels to be in a certain format.
+
+Call @code{g-list-free} on the return value when you're finished with it.
+
+@table @var
+@item screen
+the relevant @code{<gdk-screen>}.
+
+@item ret
+a list of visuals; the list must be freed, but not its contents
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-toplevel-windows  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method get-toplevel-windows
+Obtains a list of all toplevel windows known to GDK on the screen @var{screen}.
+A toplevel window is a child of the root window (see
+@code{gdk-get-default-root-window}).
+
+The returned list should be freed with @code{g-list-free}, but its elements need
+not be freed.
+
+@table @var
+@item screen
+The @code{<gdk-screen>} where the toplevels are located.
+
+@item ret
+list of toplevel windows, free with @code{g-list-free}
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-make-display-name  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method make-display-name
+Determines the name to pass to @code{gdk-display-open} to get a
+@code{<gdk-display>} with this screen as the default screen.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+a newly allocated string, free with @code{g-free}
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-n-monitors  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-n-monitors
+Returns the number of monitors which @var{screen} consists of.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}.
+
+@item ret
+number of monitors which @var{screen} consists of.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-monitor-geometry  (self@tie{}@code{<gdk-screen>}) (monitor_num@tie{}@code{int}) (dest@tie{}@code{<gdk-rectangle>})
+@deffnx Method get-monitor-geometry
+Retrieves the @code{<gdk-rectangle>} representing the size and position of the
+individual monitor within the entire screen area.
+
+Note that the size of the entire screen area can be retrieved via
+@code{gdk-screen-get-width} and @code{gdk-screen-get-height}.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}.
+
+@item monitor-num
+the monitor number.
+
+@item dest
+a @code{<gdk-rectangle>} to be filled with the monitor geometry
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-monitor-at-point  (self@tie{}@code{<gdk-screen>}) (x@tie{}@code{int}) (y@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-monitor-at-point
+Returns the monitor number in which the point (@var{x},@var{y}) is located.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}.
+
+@item x
+the x coordinate in the virtual screen.
+
+@item y
+the y coordinate in the virtual screen.
+
+@item ret
+the monitor number in which the point (@var{x},@var{y}) lies, or a monitor close
+to (@var{x},@var{y}) if the point is not in any monitor.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-monitor-at-window  (self@tie{}@code{<gdk-screen>}) (window@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-monitor-at-window
+Returns the number of the monitor in which the largest area of the bounding
+rectangle of @var{window} resides.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}.
+
+@item window
+a @code{<gdk-window>}
+
+@item ret
+the monitor number in which most of @var{window} is located, or if @var{window}
+does not intersect any monitors, a monitor, close to @var{window}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-broadcast-client-message  (self@tie{}@code{<gdk-screen>}) (event@tie{}@code{<gdk-event>})
+@deffnx Method broadcast-client-message
+On X11, sends an X ClientMessage event to all toplevel windows on @var{screen}.
+
+Toplevel windows are determined by checking for the WM_STATE property, as
+described in the Inter-Client Communication Conventions Manual (ICCCM). If no
+windows are found with the WM_STATE property set, the message is sent to all
+children of the root window.
+
+On Windows, broadcasts a message registered with the name
+GDK_WIN32_CLIENT_MESSAGE to all top-level windows. The amount of data is limited
+to one long, i.e. four bytes.
+
+@table @var
+@item screen
+the @code{<gdk-screen>} where the event will be broadcasted.
+
+@item event
+the @code{<gdk-event>}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-setting  (self@tie{}@code{<gdk-screen>}) (name@tie{}@code{mchars}) (value@tie{}@code{<gvalue>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-setting
+Retrieves a desktop-wide setting such as double-click time for the
+@code{<gdk-screen>}@var{screen}.
+
+FIXME needs a list of valid settings here, or a link to more information.
+
+@table @var
+@item screen
+the @code{<gdk-screen>} where the setting is located
+
+@item name
+the name of the setting
+
+@item value
+location to store the value of the setting
+
+@item ret
+@samp{@code{#t}} if the setting existed and a value was stored in @var{value},
+@samp{@code{#f}} otherwise.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-screen-get-font-options  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{cairo-font-options-t})
+@deffnx Method get-font-options
+Gets any options previously set with @code{gdk-screen-set-font-options}.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+the current font options, or @samp{@code{#f}} if no default font options have
+been set.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gdk-screen-set-font-options  (self@tie{}@code{<gdk-screen>}) (options@tie{}@code{cairo-font-options-t})
+@deffnx Method set-font-options
+Sets the default font options for the screen. These options will be set on any
+@code{<pango-context>}'s newly created with
+@code{gdk-pango-context-get-for-screen}. Changing the default set of font
+options does not affect contexts that have already been created.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item options
+a @code{<cairo-font-options-t>}, or @samp{@code{#f}} to unset any previously set
+default font options.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gdk-screen-get-resolution  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-resolution
+Gets the resolution for font handling on the screen; see
+@code{gdk-screen-set-resolution} for full details.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+the current resolution, or -1 if no resolution has been set.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gdk-screen-set-resolution  (self@tie{}@code{<gdk-screen>}) (dpi@tie{}@code{double})
+@deffnx Method set-resolution
+Sets the resolution for font handling on the screen. This is a scale factor
+between points specified in a @code{<pango-font-description>} and cairo units.
+The default value is 96, meaning that a 10 point font will be 13 units high. (10
+* 96. / 72. = 13.3).
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item dpi
+the resolution in "dots per inch". (Physical inches aren't actually involved;
+the terminology is conventional.)
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gdk-screen-get-active-window  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>})
+@deffnx Method get-active-window
+Returns the screen's currently active window.
+
+On X11, this is done by inspecting the _NET_ACTIVE_WINDOW property on the root
+window, as described in the
+@uref{http://www.freedesktop.org/Standards/wm-spec,Extended Window Manager
+Hints}. If there is no currently currently active window, or the window manager
+does not support the _NET_ACTIVE_WINDOW hint, this function returns
+@samp{@code{#f}}.
+
+On other platforms, this function may return @samp{@code{#f}}, depending on
+whether it is implementable on that platform.
+
+The returned window should be unrefed using @code{g-object-unref} when no longer
+needed.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+the currently active window, or @samp{@code{#f}}.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gdk-screen-get-window-stack  (self@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method get-window-stack
+Returns a @code{<g-list>} of @code{<gdk-window>}s representing the current
+window stack.
+
+On X11, this is done by inspecting the _NET_CLIENT_LIST_STACKING property on the
+root window, as described in the
+@uref{http://www.freedesktop.org/Standards/wm-spec,Extended Window Manager
+Hints}. If the window manager does not support the _NET_CLIENT_LIST_STACKING
+hint, this function returns @samp{@code{#f}}.
+
+On other platforms, this function may return @samp{@code{#f}}, depending on
+whether it is implementable on that platform.
+
+The returned list is newly allocated and owns references to the windows it
+contains, so it should be freed using @code{g-list-free} and its windows unrefed
+using @code{g-object-unref} when no longer needed.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+a list of @code{<gdk-window>}s for the current window stack, or
+@samp{@code{#f}}.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gdk-spawn-command-line-on-screen  (screen@tie{}@code{<gdk-screen>}) (command_line@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Like @code{g-spawn-command-line-async}, except the child process is spawned in
+such an environment that on calling @code{gdk-display-open} it would be returned
+a @code{<gdk-display>} with @var{screen} as the default screen.
+
+This is useful for applications which wish to launch an application on a
+specific screen.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item command-line
+a command line
+
+@item error
+return location for errors
+
+@item ret
+@samp{@code{#t}} on success, @samp{@code{#f}} if error is set.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

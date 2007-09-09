@@ -1,0 +1,25 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-font-selection-dialog>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function gtk-font-selection-dialog-new  (title@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-font-selection-dialog>}.
+
+@table @var
+@item title
+the title of the dialog box.
+
+@item ret
+a new @code{<gtk-font-selection-dialog>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

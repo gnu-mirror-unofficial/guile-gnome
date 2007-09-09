@@ -1,0 +1,78 @@
+
+@c %start of fragment
+
+@node GtkRadioButton
+@chapter GtkRadioButton
+A choice from multiple check buttons
+
+@section Overview
+A single radio button performs the same basic function as a
+@code{<gtk-check-button>}, as its position in the object hierarchy reflects. It
+is only when multiple radio buttons are grouped together that they become a
+different user interface component in their own right.
+
+Every radio button is a member of some group of radio buttons. When one is
+selected, all other radio buttons in the same group are deselected. A
+@code{<gtk-radio-button>} is one way of giving the user a choice from many
+options.
+
+Radio button widgets are created with @code{gtk-radio-button-new}, passing NULL
+as the argument if this is the first radio button in a group. In subsequent
+calls, the group you wish to add this button to should be passed as an argument.
+Optionally, @code{gtk-radio-button-new-with-label} can be used if you want a
+text label on the radio button.
+
+Alternatively, when adding widgets to an existing group of radio buttons, use
+@code{gtk-radio-button-new-from-widget} with a @code{<gtk-radio-button>} that
+already has a group assigned to it. The convenience function
+@code{gtk-radio-button-new-with-label-from-widget} is also provided.
+
+To retrieve the group a @code{<gtk-radio-button>} is assigned to, use
+@code{gtk-radio-button-get-group}.
+
+To remove a @code{<gtk-radio-button>} from one group and make it part of a new
+one, use @code{gtk-radio-button-set-group}.
+
+The group list does not need to be freed, as each @code{<gtk-radio-button>} will
+remove itself and its list item when it is destroyed.
+
+
+
+@example 
+
+
+void create_radio_buttons (void) @{
+
+   GtkWidget *window, *radio1, *radio2, *box, *entry;
+   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+   box = gtk_vbox_new (TRUE, 2);
+   
+   /* Create a radio button with a GtkEntry widget */
+   radio1 = gtk_radio_button_new (NULL);
+   entry = gtk_entry_new ();
+   gtk_container_add (GTK_CONTAINER (radio1), entry);
+   
+   
+   /* Create a radio button with a label */
+   radio2 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1),
+							"I'm the second radio button.");
+   
+   /* Pack them into a box, then show all the widgets */
+   gtk_box_pack_start (GTK_BOX (box), radio1, TRUE, TRUE, 2);
+   gtk_box_pack_start (GTK_BOX (box), radio2, TRUE, TRUE, 2);
+   gtk_container_add (GTK_CONTAINER (window), box);
+   gtk_widget_show_all (window);
+   return;
+@}
+
+@end example
+
+When an unselected button in the group is clicked the clicked button receives
+the "toggled" signal, as does the previously selected button. Inside the
+"toggled" handler, @code{gtk-toggle-button-get-active} can be used to determine
+if the button has been selected or deselected.
+
+@section Usage
+@include defuns-gtkradiobutton.xml.texi
+
+@c %end of fragment

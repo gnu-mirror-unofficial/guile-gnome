@@ -1,0 +1,17 @@
+
+@c %start of fragment
+
+@node GtkCellRendererProgress
+@chapter GtkCellRendererProgress
+Renders numbers as progress bars
+
+@section Overview
+@code{<gtk-cell-renderer-progress>} renders a numeric value as a progress par in
+a cell. Additionally, it can display a text on top of the progress bar.
+
+The @code{<gtk-cell-renderer-progress>} cell renderer was added in GTK+ 2.6.
+
+@section Usage
+@include defuns-gtkcellrendererprogress.xml.texi
+
+@c %end of fragment

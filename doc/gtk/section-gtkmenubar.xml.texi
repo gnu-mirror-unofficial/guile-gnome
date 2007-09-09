@@ -1,0 +1,18 @@
+
+@c %start of fragment
+
+@node GtkMenuBar
+@chapter GtkMenuBar
+A subclass widget for which holds widgets
+
+@section Overview
+The @code{<gtk-menu-bar>} is a subclass of @code{<gtk-menu-shell>} which
+contains one to many @code{<gtk-menu-item>}. The result is a standard menu bar
+which can hold many menu items. @code{<gtk-menu-bar>} allows for a shadow type
+to be set for aesthetic purposes. The shadow types are defined in the
+@code{<gtk-menu-bar-set-shadow-type>} function.
+
+@section Usage
+@include defuns-gtkmenubar.xml.texi
+
+@c %end of fragment

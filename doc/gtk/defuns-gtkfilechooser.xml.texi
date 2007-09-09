@@ -1,0 +1,810 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-file-chooser>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item extra-widget
+Application supplied widget for extra options.@item preview-widget
+Application supplied widget for custom previews.@item action
+The type of operation that the file selector is performing@item file-system-backend
+Name of file system backend to use@item preview-widget-active
+Whether the application supplied widget for custom previews should be shown.@item filter
+The current filter for selecting which files are displayed@item show-hidden
+Whether the hidden files and folders should be displayed@item use-preview-label
+Whether to display a stock label with the name of the previewed file.@item do-overwrite-confirmation
+Whether a file chooser in save mode will present an overwrite confirmation dialog if necessary.@item local-only
+Whether the selected file(s) should be limited to local file: URLs@item select-multiple
+Whether to allow multiple files to be selected@end table
+
+@end deftp
+
+@defop Signal <gtk-file-chooser> current-folder-changed 
+This signal is emitted when the current folder in a @code{<gtk-file-chooser>}
+changes. This can happen due to the user performing some action that changes
+folders, such as selecting a bookmark or visiting a folder on the file list. It
+can also happen as a result of calling a function to explicitly change the
+current folder in a file chooser.
+
+Normally you do not need to connect to this signal, unless you need to keep
+track of which folder a file chooser is showing.
+
+See also: @code{gtk-file-chooser-set-current-folder},
+@code{gtk-file-chooser-get-current-folder},
+@code{gtk-file-chooser-set-current-folder-uri},
+@code{gtk-file-chooser-get-current-folder-uri}.
+
+@end defop
+
+@defop Signal <gtk-file-chooser> selection-changed 
+This signal is emitted when there is a change in the set of selected files in a
+@code{<gtk-file-chooser>}. This can happen when the user modifies the selection
+with the mouse or the keyboard, or when explicitly calling functions to change
+the selection.
+
+Normally you do not need to connect to this signal, as it is easier to wait for
+the file chooser to finish running, and then to get the list of selected files
+using the functions mentioned below.
+
+See also: @code{gtk-file-chooser-select-filename},
+@code{gtk-file-chooser-unselect-filename}, @code{gtk-file-chooser-get-filename},
+@code{gtk-file-chooser-get-filenames}, @code{gtk-file-chooser-select-uri},
+@code{gtk-file-chooser-unselect-uri}, @code{gtk-file-chooser-get-uri},
+@code{gtk-file-chooser-get-uris}.
+
+@end defop
+
+@defop Signal <gtk-file-chooser> update-preview 
+This signal is emitted when the preview in a file chooser should be regenerated.
+For example, this can happen when the currently selected file changes. You
+should use this signal if you want your file chooser to have a preview widget.
+
+Once you have installed a preview widget with
+@code{gtk-file-chooser-set-preview-widget}, you should update it when this
+signal is emitted. You can use the functions
+@code{gtk-file-chooser-get-preview-filename} or
+@code{gtk-file-chooser-get-preview-uri} to get the name of the file to preview.
+Your widget may not be able to preview all kinds of files; your callback must
+call @code{gtk-file-chooser-set-preview-wiget-active} to inform the file chooser
+about whether the preview was generated successfully or not.
+
+Please see the example code in @emph{(the missing figure,
+gtkfilechooser-preview}.
+
+See also: @code{gtk-file-chooser-set-preview-widget},
+@code{gtk-file-chooser-set-preview-widget-active},
+@code{gtk-file-chooser-set-use-preview-label},
+@code{gtk-file-chooser-get-preview-filename},
+@code{gtk-file-chooser-get-preview-uri}.
+
+@end defop
+
+@defop Signal <gtk-file-chooser> file-activated 
+This signal is emitted when the user "activates" a file in the file chooser.
+This can happen by double-clicking on a file in the file list, or by pressing .
+
+Normally you do not need to connect to this signal. It is used internally by
+@code{<gtk-file-chooser-dialog>} to know when to activate the default button in
+the dialog.
+
+See also: @code{gtk-file-chooser-get-filename},
+@code{gtk-file-chooser-get-filenames}, @code{gtk-file-chooser-get-uri},
+@code{gtk-file-chooser-get-uris}.
+
+@end defop
+
+@defop Signal <gtk-file-chooser> confirm-overwrite  @result{}@tie{}@code{<gtk-file-chooser-confirmation>}
+This signal gets emitted whenever it is appropriate to present a confirmation
+dialog when the user has selected a file name that already exists. The signal
+only gets emitted when the file chooser is in
+@code{<gtk-file-chooser-action-save>} mode.
+
+Most applications just need to turn on the do-overwrite-confirmation property
+(or call the @code{gtk-file-chooser-set-do-overwrite-confirmation} function),
+and they will automatically get a stock confirmation dialog. Applications which
+need to customize this behavior should do that, and also connect to the signal.
+
+A signal handler for this signal must return a
+@code{<gtk-file-chooser-confirmation>} value, which indicates the action to
+take. If the handler determines that the user wants to select a different
+filename, it should return @code{<gtk-file-chooser-confirmation-select-again>}.
+If it determines that the user is satisfied with his choice of file name, it
+should return @code{<gtk-file-chooser-confirmation-accept-filename>}. On the
+other hand, if it determines that the stock confirmation dialog should be used,
+it should return @code{<gtk-file-chooser-confirmation-confirm>}. The following
+example illustrates this.
+
+@end defop
+
+@deffn Function gtk-file-chooser-set-action  (self@tie{}@code{<gtk-file-chooser>}) (action@tie{}@code{<gtk-file-chooser-action>})
+@deffnx Method set-action
+Sets the type of operation that the chooser is performing; the user interface is
+adapted to suit the selected action. For example, an option to create a new
+folder might be shown if the action is @samp{GTK_FILE_CHOOSER_ACTION_SAVE} but
+not if the action is @samp{GTK_FILE_CHOOSER_ACTION_OPEN}.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item action
+the action that the file selector is performing
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-get-action  (self@tie{}@code{<gtk-file-chooser>}) @result{}@tie{} (ret@tie{}@code{<gtk-file-chooser-action>})
+@deffnx Method get-action
+Gets the type of operation that the file chooser is performing; see
+@code{gtk-file-chooser-set-action}.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item ret
+the action that the file selector is performing
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-set-local-only  (self@tie{}@code{<gtk-file-chooser>}) (local_only@tie{}@code{bool})
+@deffnx Method set-local-only
+Sets whether only local files can be selected in the file selector. If
+@var{local-only} is @samp{@code{#t}} (the default), then the selected file are
+files are guaranteed to be accessible through the operating systems native file
+file system and therefore the application only needs to worry about the filename
+functions in @code{<gtk-file-chooser>}, like
+@code{gtk-file-chooser-get-filename}, rather than the URI functions like
+@code{gtk-file-chooser-get-uri},
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item local-only
+@samp{@code{#t}} if only local files can be selected
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-get-local-only  (self@tie{}@code{<gtk-file-chooser>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-local-only
+Gets whether only local files can be selected in the file selector. See
+@code{gtk-file-chooser-set-local-only}
+
+@table @var
+@item chooser
+a @code{<gtk-file-choosre>}
+
+@item ret
+@samp{@code{#t}} if only local files can be selected.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-set-show-hidden  (self@tie{}@code{<gtk-file-chooser>}) (show_hidden@tie{}@code{bool})
+@deffnx Method set-show-hidden
+Sets whether hidden files and folders are displayed in the file selector.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item show-hidden
+@samp{@code{#t}} if hidden files and folders should be displayed.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-file-chooser-get-show-hidden  (self@tie{}@code{<gtk-file-chooser>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-show-hidden
+Gets whether hidden files and folders are displayed in the file selector. See
+@code{gtk-file-chooser-set-show-hidden}.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item ret
+@samp{@code{#t}} if hidden files and folders are displayed.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-file-chooser-set-current-name  (self@tie{}@code{<gtk-file-chooser>}) (name@tie{}@code{mchars})
+@deffnx Method set-current-name
+Sets the current name in the file selector, as if entered by the user. Note that
+the name passed in here is a UTF-8 string rather than a filename. This function
+is meant for such uses as a suggested name in a "Save As..." dialog.
+
+If you want to preselect a particular existing file, you should use
+@code{gtk-file-chooser-set-filename} or @code{gtk-file-chooser-set-uri} instead.
+Please see the documentation for those functions for an example of using
+@code{gtk-file-chooser-set-current-name} as well.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item name
+the filename to use, as a UTF-8 string
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-get-filename  (self@tie{}@code{<gtk-file-chooser>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-filename
+Gets the filename for the currently selected file in the file selector. If
+multiple files are selected, one of the filenames will be returned at random.
+
+If the file chooser is in folder mode, this function returns the selected
+folder.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item ret
+The currently selected filename, or @samp{@code{#f}} if no file is selected, or
+the selected file can't be represented with a local filename. Free with
+@code{g-free}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-set-filename  (self@tie{}@code{<gtk-file-chooser>}) (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-filename
+Sets @var{filename} as the current filename for the file chooser, by changing to
+the file's parent folder and actually selecting the file in list. If the
+@var{chooser} is in @code{<gtk-file-chooser-action-save>} mode, the file's base
+name will also appear in the dialog's file name entry.
+
+If the file name isn't in the current folder of @var{chooser}, then the current
+folder of @var{chooser} will be changed to the folder containing @var{filename}.
+This is equivalent to a sequence of @code{gtk-file-chooser-unselect-all}
+followed by @code{gtk-file-chooser-select-filename}.
+
+Note that the file must exist, or nothing will be done except for the directory
+change.
+
+If you are implementing a dialog, you should use this function if you already
+have a file name to which the user may save; for example, when the user opens an
+existing file and then does on it. If you don't have a file name already
+&#x2014; for example, if the user just created a new file and is saving it for
+the first time, do not call this function. Instead, use something similar to
+this:
+
+@example 
+
+if (document_is_new)
+  @{
+    /* the user just created a new document */
+    gtk_file_chooser_set_current_folder (chooser, default_folder_for_saving);
+    gtk_file_chooser_set_current_name (chooser, "Untitled document");
+  @}
+else
+  @{
+    /* the user edited an existing document */ 
+    gtk_file_chooser_set_filename (chooser, existing_filename);
+  @}
+@end example
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item filename
+the filename to set as current
+
+@item ret
+@samp{@code{#t}} if both the folder could be changed and the file was selected
+successfully, @samp{@code{#f}} otherwise.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-select-filename  (self@tie{}@code{<gtk-file-chooser>}) (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method select-filename
+Selects a filename. If the file name isn't in the current folder of
+@var{chooser}, then the current folder of @var{chooser} will be changed to the
+folder containing @var{filename}.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item filename
+the filename to select
+
+@item ret
+@samp{@code{#t}} if both the folder could be changed and the file was selected
+successfully, @samp{@code{#f}} otherwise.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-unselect-filename  (self@tie{}@code{<gtk-file-chooser>}) (filename@tie{}@code{mchars})
+@deffnx Method unselect-filename
+Unselects a currently selected filename. If the filename is not in the current
+directory, does not exist, or is otherwise not currently selected, does nothing.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item filename
+the filename to unselect
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-select-all  (self@tie{}@code{<gtk-file-chooser>})
+@deffnx Method select-all
+Selects all the files in the current folder of a file chooser.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-unselect-all  (self@tie{}@code{<gtk-file-chooser>})
+@deffnx Method unselect-all
+Unselects all the files in the current folder of a file chooser.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-get-filenames  (self@tie{}@code{<gtk-file-chooser>}) @result{}@tie{} (ret@tie{}@code{gslist-of})
+@deffnx Method get-filenames
+Lists all the selected files and subfolders in the current folder of
+@var{chooser}. The returned names are full absolute paths. If files in the
+current folder cannot be represented as local filenames they will be ignored.
+(See @code{gtk-file-chooser-get-uris})
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item ret
+a @code{<gs-list>} containing the filenames of all selected files and subfolders
+in the current folder. Free the returned list with @code{g-slist-free}, and the
+filenames with @code{g-free}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-set-current-folder  (self@tie{}@code{<gtk-file-chooser>}) (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-current-folder
+Sets the current folder for @var{chooser} from a local filename. The user will
+be shown the full contents of the current folder, plus user interface elements
+for navigating to other folders.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item filename
+the full path of the new current folder
+
+@item ret
+@samp{@code{#t}} if the folder could be changed successfully, @samp{@code{#f}}
+otherwise.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-get-current-folder  (self@tie{}@code{<gtk-file-chooser>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-current-folder
+Gets the current folder of @var{chooser} as a local filename. See
+@code{gtk-file-chooser-set-current-folder}.
+
+Note that this is the folder that the file chooser is currently displaying (e.g.
+"/home/username/Documents"), which is @emph{not the same} as the
+currently-selected folder if the chooser is in
+@code{<gtk-file-chooser-select-folder>} mode (e.g.
+"/home/username/Documents/selected-folder/". To get the currently-selected
+folder in that mode, use @code{gtk-file-chooser-get-uri} as the usual way to get
+the selection.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item ret
+the full path of the current folder, or @samp{@code{#f}} if the current path
+cannot be represented as a local filename. Free with @code{g-free}. This
+function will also return @samp{@code{#f}} if the file chooser was unable to
+load the last folder that was requested from it; for example, as would be for
+calling @code{gtk-file-chooser-set-current-folder} on a nonexistent folder.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-get-uri  (self@tie{}@code{<gtk-file-chooser>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-uri
+Gets the URI for the currently selected file in the file selector. If multiple
+files are selected, one of the filenames will be returned at random.
+
+If the file chooser is in folder mode, this function returns the selected
+folder.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item ret
+The currently selected URI, or @samp{@code{#f}} if no file is selected. Free
+with @code{g-free}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-set-uri  (self@tie{}@code{<gtk-file-chooser>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-uri
+Sets the file referred to by @var{uri} as the current file for the file chooser,
+by changing to the URI's parent folder and actually selecting the URI in the
+list. If the @var{chooser} is @code{<gtk-file-chooser-action-save>} mode, the
+URI's base name will also appear in the dialog's file name entry.
+
+If the URI isn't in the current folder of @var{chooser}, then the current folder
+of @var{chooser} will be changed to the folder containing @var{uri}. This is
+equivalent to a sequence of @code{gtk-file-chooser-unselect-all} followed by
+@code{gtk-file-chooser-select-uri}.
+
+Note that the URI must exist, or nothing will be done except for the directory
+change. If you are implementing a dialog, you should use this function if you
+already have a file name to which the user may save; for example, when the user
+opens an existing file and then does on it. If you don't have a file name
+already &#x2014; for example, if the user just created a new file and is saving
+it for the first time, do not call this function. Instead, use something similar
+to this:
+
+@example 
+
+if (document_is_new)
+  @{
+    /* the user just created a new document */
+    gtk_file_chooser_set_current_folder_uri (chooser, default_folder_for_saving);
+    gtk_file_chooser_set_current_name (chooser, "Untitled document");
+  @}
+else
+  @{
+    /* the user edited an existing document */ 
+    gtk_file_chooser_set_uri (chooser, existing_uri);
+  @}
+@end example
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item uri
+the URI to set as current
+
+@item ret
+@samp{@code{#t}} if both the folder could be changed and the URI was selected
+successfully, @samp{@code{#f}} otherwise.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-select-uri  (self@tie{}@code{<gtk-file-chooser>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method select-uri
+Selects the file to by @var{uri}. If the URI doesn't refer to a file in the
+current folder of @var{chooser}, then the current folder of @var{chooser} will
+be changed to the folder containing @var{filename}.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item uri
+the URI to select
+
+@item ret
+@samp{@code{#t}} if both the folder could be changed and the URI was selected
+successfully, @samp{@code{#f}} otherwise.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-unselect-uri  (self@tie{}@code{<gtk-file-chooser>}) (uri@tie{}@code{mchars})
+@deffnx Method unselect-uri
+Unselects the file referred to by @var{uri}. If the file is not in the current
+directory, does not exist, or is otherwise not currently selected, does nothing.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item uri
+the URI to unselect
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-get-uris  (self@tie{}@code{<gtk-file-chooser>}) @result{}@tie{} (ret@tie{}@code{gslist-of})
+@deffnx Method get-uris
+Lists all the selected files and subfolders in the current folder of
+@var{chooser}. The returned names are full absolute URIs.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item ret
+a @code{<gs-list>} containing the URIs of all selected files and subfolders in
+the current folder. Free the returned list with @code{g-slist-free}, and the
+filenames with @code{g-free}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-set-preview-widget  (self@tie{}@code{<gtk-file-chooser>}) (preview_widget@tie{}@code{<gtk-widget>})
+@deffnx Method set-preview-widget
+Sets an application-supplied widget to use to display a custom preview of the
+currently selected file. To implement a preview, after setting the preview
+widget, you connect to the ::update-preview signal, and call
+@code{gtk-file-chooser-get-preview-filename} or
+@code{gtk-file-chooser-get-preview-uri} on each change. If you can display a
+preview of the new file, update your widget and set the preview active using
+@code{gtk-file-chooser-set-preview-widget-active}. Otherwise, set the preview
+inactive.
+
+When there is no application-supplied preview widget, or the
+application-supplied preview widget is not active, the file chooser may display
+an internally generated preview of the current file or it may display no preview
+at all.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item preview-widget
+widget for displaying preview.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-get-preview-widget  (self@tie{}@code{<gtk-file-chooser>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-preview-widget
+Gets the current preview widget; see @code{gtk-file-chooser-set-preview-widget}.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item ret
+the current preview widget, or @samp{@code{#f}}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-get-preview-uri  (self@tie{}@code{<gtk-file-chooser>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-preview-uri
+Gets the URI that should be previewed in a custom preview widget. See
+@code{gtk-file-chooser-set-preview-widget}.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item ret
+the URI for the file to preview, or @samp{@code{#f}} if no file is selected.
+Free with @code{g-free}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-set-extra-widget  (self@tie{}@code{<gtk-file-chooser>}) (extra_widget@tie{}@code{<gtk-widget>})
+@deffnx Method set-extra-widget
+Sets an application-supplied widget to provide extra options to the user.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item extra-widget
+widget for extra options
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-get-extra-widget  (self@tie{}@code{<gtk-file-chooser>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-extra-widget
+Gets the current preview widget; see @code{gtk-file-chooser-set-extra-widget}.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item ret
+the current extra widget, or @samp{@code{#f}}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-add-filter  (self@tie{}@code{<gtk-file-chooser>}) (filter@tie{}@code{<gtk-file-filter*>})
+@deffnx Method add-filter
+Adds @var{filter} to the list of filters that the user can select between. When
+a filter is selected, only files that are passed by that filter are displayed.
+
+Note that the @var{chooser} takes ownership of the filter, so you have to ref
+and sink it if you want to keep a reference.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item filter
+a @code{<gtk-file-filter>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-remove-filter  (self@tie{}@code{<gtk-file-chooser>}) (filter@tie{}@code{<gtk-file-filter*>})
+@deffnx Method remove-filter
+Removes @var{filter} from the list of filters that the user can select between.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item filter
+a @code{<gtk-file-filter>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-list-filters  (self@tie{}@code{<gtk-file-chooser>}) @result{}@tie{} (ret@tie{}@code{gslist-of})
+@deffnx Method list-filters
+Lists the current set of user-selectable filters; see
+@code{gtk-file-chooser-add-filter}, @code{gtk-file-chooser-remove-filter}.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item ret
+a @code{<gs-list>} containing the current set of user selectable filters. The
+contents of the list are owned by GTK+, but you must free the list itself with
+@code{g-slist-free} when you are done with it.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-set-filter  (self@tie{}@code{<gtk-file-chooser>}) (filter@tie{}@code{<gtk-file-filter*>})
+@deffnx Method set-filter
+Sets the current filter; only the files that pass the filter will be displayed.
+If the user-selectable list of filters is non-empty, then the filter should be
+one of the filters in that list. Setting the current filter when the list of
+filters is empty is useful if you want to restrict the displayed set of files
+without letting the user change it.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item filter
+a @code{<gtk-file-filter>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-chooser-get-filter  (self@tie{}@code{<gtk-file-chooser>}) @result{}@tie{} (ret@tie{}@code{<gtk-file-filter*>})
+@deffnx Method get-filter
+Gets the current filter; see @code{gtk-file-chooser-set-filter}.
+
+@table @var
+@item chooser
+a @code{<gtk-file-chooser>}
+
+@item ret
+the current filter, or @samp{@code{#f}}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

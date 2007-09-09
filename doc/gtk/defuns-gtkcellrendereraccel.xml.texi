@@ -1,0 +1,44 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-cell-renderer-accel>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item accel-key
+The keyval of the accelerator@item accel-mods
+The modifier mask of the accelerator@item keycode
+The hardware keycode of the accelerator@item accel-mode
+The type of accelerators@end table
+
+@end deftp
+
+@defop Signal <gtk-cell-renderer-accel> accel-edited  (arg0@tie{}@code{<gchararray>}) (arg1@tie{}@code{<guint>}) (arg2@tie{}@code{<gdk-modifier-type>}) (arg3@tie{}@code{<guint>})
+Gets emitted when the user has selected a new accelerator.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-cell-renderer-accel> accel-cleared  (arg0@tie{}@code{<gchararray>})
+Gets emitted when the user has removed the accelerator.
+
+Since 2.10
+
+@end defop
+
+@deffn Function gtk-cell-renderer-accel-new  @result{}@tie{} (ret@tie{}@code{<gtk-cell-renderer>})
+Creates a new @code{<gtk-cell-renderer-accel>}.
+
+@table @var
+@item ret
+the new cell renderer
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment

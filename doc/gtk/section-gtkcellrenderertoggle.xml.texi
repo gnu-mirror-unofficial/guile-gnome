@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node GtkCellRendererToggle
+@chapter GtkCellRendererToggle
+Renders a toggle button in a cell
+
+@section Overview
+@code{<gtk-cell-renderer-toggle>} renders a toggle button in a cell. The button
+is drawn as a radio- or checkbutton, depending on the radio property. When
+activated, it emits the toggled signal.
+
+@section Usage
+@include defuns-gtkcellrenderertoggle.xml.texi
+
+@c %end of fragment

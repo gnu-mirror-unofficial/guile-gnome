@@ -1,0 +1,61 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-menu-bar>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item pack-direction
+The pack direction of the menubar@item child-pack-direction
+The child pack direction of the menubar@end table
+
+@end deftp
+
+@deffn Function gtk-menu-bar-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates the new @code{<gtk-menu-bar>}
+
+@table @var
+@item ret
+the @code{<gtk-menu-bar>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-bar-set-pack-direction  (self@tie{}@code{<gtk-menu-bar>}) (pack_dir@tie{}@code{<gtk-pack-direction>})
+@deffnx Method set-pack-direction
+Sets how items should be packed inside a menubar.
+
+@table @var
+@item menubar
+a @code{<gtk-menu-bar>}.
+
+@item pack-dir
+a new @code{<gtk-pack-direction>}.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-menu-bar-get-pack-direction  (self@tie{}@code{<gtk-menu-bar>}) @result{}@tie{} (ret@tie{}@code{<gtk-pack-direction>})
+@deffnx Method get-pack-direction
+Retrieves the current pack direction of the menubar. See
+@code{gtk-menu-bar-set-pack-direction}.
+
+@table @var
+@item menubar
+a @code{<gtk-menu-bar>}
+
+@item ret
+the pack direction
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+
+@c %end of fragment

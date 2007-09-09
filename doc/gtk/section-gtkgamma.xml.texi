@@ -1,0 +1,28 @@
+
+@c %start of fragment
+
+@node GtkGammaCurve
+@chapter GtkGammaCurve
+a subclass of for editing gamma curves.
+
+@section Overview
+This widget is considered too specialized/little-used for GTK+, and will in the
+future be moved to some other package. If your application needs this widget,
+feel free to use it, as the widget does work and is useful in some applications;
+it's just not of general interest. However, we are not accepting new features
+for the widget, and it will eventually move out of the GTK+ distribution.
+
+The @code{<gtk-gamma-curve>} widget is a variant of @code{<gtk-curve>}
+specifically for editing gamma curves, which are used in graphics applications
+such as the Gimp.
+
+The @code{<gtk-gamma-curve>} widget shows a curve which the user can edit with
+the mouse just like a @code{<gtk-curve>} widget. On the right of the curve it
+also displays 5 buttons, 3 of which change between the 3 curve modes (spline,
+linear and free), and the other 2 set the curve to a particular gamma value, or
+reset it to a straight line.
+
+@section Usage
+@include defuns-gtkgamma.xml.texi
+
+@c %end of fragment

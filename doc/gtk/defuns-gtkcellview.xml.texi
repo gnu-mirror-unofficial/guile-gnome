@@ -1,0 +1,199 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-cell-view>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item background
+Background color as a string@item background-gdk
+Background color as a GdkColor@item background-set
+Whether this tag affects the background color@item model
+The model for cell view@end table
+
+@end deftp
+
+@deffn Function gtk-cell-view-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-cell-view>} widget.
+
+@table @var
+@item ret
+A newly created @code{<gtk-cell-view>} widget.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-cell-view-new-with-text  (text@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-cell-view>} widget, adds a
+@code{<gtk-cell-renderer-text>} to it, and makes its show @var{text}.
+
+@table @var
+@item text
+the text to display in the cell view
+
+@item ret
+A newly created @code{<gtk-cell-view>} widget.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-cell-view-new-with-markup  (markup@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-cell-view>} widget, adds a
+@code{<gtk-cell-renderer-text>} to it, and makes its show @var{markup}. The text
+can text can be marked up with the Pango text markup language.
+
+@table @var
+@item markup
+the text to display in the cell view
+
+@item ret
+A newly created @code{<gtk-cell-view>} widget.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-cell-view-new-with-pixbuf  (pixbuf@tie{}@code{<gdk-pixbuf>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-cell-view>} widget, adds a
+@code{<gtk-cell-renderer-pixbuf>} to it, and makes its show @var{pixbuf}.
+
+@table @var
+@item pixbuf
+the image to display in the cell view
+
+@item ret
+A newly created @code{<gtk-cell-view>} widget.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-cell-view-set-model  (self@tie{}@code{<gtk-cell-view>}) (model@tie{}@code{<gtk-tree-model>})
+@deffnx Method set-model
+Sets the model for @var{cell-view}. If @var{cell-view} already has a model set,
+it will remove it before setting the new model. If @var{model} is
+@samp{@code{#f}}, then it will unset the old model.
+
+@table @var
+@item cell-view
+a @code{<gtk-cell-view>}
+
+@item model
+a @code{<gtk-tree-model>}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-cell-view-set-displayed-row  (self@tie{}@code{<gtk-cell-view>}) (path@tie{}@code{<gtk-tree-path>})
+@deffnx Method set-displayed-row
+Sets the row of the model that is currently displayed by the
+@code{<gtk-cell-view>}. If the path is unset, then the contents of the cellview
+"stick" at their last value; this is not normally a desired result, but may be a
+needed intermediate state if say, the model for the @code{<gtk-cell-view>}
+becomes temporarily empty.
+
+@table @var
+@item cell-view
+a @code{<gtk-cell-view>}
+
+@item path
+a @code{<gtk-tree-path>} or @samp{@code{#f}} to unset.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-cell-view-get-displayed-row  (self@tie{}@code{<gtk-cell-view>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-path>})
+@deffnx Method get-displayed-row
+Returns a @code{<gtk-tree-path>} referring to the currently displayed row. If no
+row is currently displayed, @samp{@code{#f}} is returned.
+
+@table @var
+@item cell-view
+a @code{<gtk-cell-view>}
+
+@item ret
+the currently displayed row or @samp{@code{#f}}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-cell-view-get-size-of-row  (self@tie{}@code{<gtk-cell-view>}) (path@tie{}@code{<gtk-tree-path>}) (requisition@tie{}@code{<gtk-requisition>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-size-of-row
+Sets @var{requisition} to the size needed by @var{cell-view} to display the
+model row pointed to by @var{path}.
+
+@table @var
+@item cell-view
+a @code{<gtk-cell-view>}
+
+@item path
+a @code{<gtk-tree-path>}
+
+@item requisition
+return location for the size
+
+@item ret
+@samp{@code{#t}}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-cell-view-set-background-color  (self@tie{}@code{<gtk-cell-view>}) (color@tie{}@code{<gdk-color>})
+@deffnx Method set-background-color
+Sets the background color of @var{view}.
+
+@table @var
+@item cell-view
+a @code{<gtk-cell-view>}
+
+@item color
+the new background color
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-cell-view-get-cell-renderers  (self@tie{}@code{<gtk-cell-view>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method get-cell-renderers
+Returns the cell renderers which have been added to @var{cell-view}.
+
+@table @var
+@item cell-view
+a @code{<gtk-cell-view>}
+
+@item ret
+a list of cell renderers. The list, but not the renderers has been newly
+allocated and should be freed with @code{g-list-free} when no longer needed.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

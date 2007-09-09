@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@node GtkItemFactory
+@chapter GtkItemFactory
+A factory for menus
+
+@section Overview
+As of GTK+ 2.4, @code{<gtk-item-factory>} has been deprecated in favour of
+@code{<gtk-ui-manager>}.
+
+@section Usage
+@include defuns-gtkitemfactory.xml.texi
+
+@c %end of fragment

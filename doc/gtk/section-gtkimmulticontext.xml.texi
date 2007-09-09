@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GtkIMMulticontext
+@chapter GtkIMMulticontext
+An input method context supporting multiple, loadable input methods
+
+@section Overview
+@section Usage
+@include defuns-gtkimmulticontext.xml.texi
+
+@c %end of fragment

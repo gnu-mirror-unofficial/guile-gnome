@@ -1,0 +1,25 @@
+
+@c %start of fragment
+
+@node GtkFontSelection
+@chapter GtkFontSelection
+A widget for selecting fonts
+
+@section Overview
+The @code{<gtk-font-selection>} widget lists the available fonts, styles and
+sizes, allowing the user to select a font. It is used in the
+@code{<gtk-font-selection-dialog>} widget to provide a dialog box for selecting
+fonts.
+
+To set the font which is initially selected, use
+@code{gtk-font-selection-set-font-name}.
+
+To get the selected font use @code{gtk-font-selection-get-font-name}.
+
+To change the text which is shown in the preview area, use
+@code{gtk-font-selection-set-preview-text}.
+
+@section Usage
+@include defuns-gtkfontsel.xml.texi
+
+@c %end of fragment

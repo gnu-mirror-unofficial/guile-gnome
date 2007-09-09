@@ -1,0 +1,311 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-settings>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item gtk-double-click-time
+Maximum time allowed between two clicks for them to be considered a double click (in milliseconds)@item gtk-double-click-distance
+Maximum distance allowed between two clicks for them to be considered a double click (in pixels)@item gtk-cursor-blink
+Whether the cursor should blink@item gtk-cursor-blink-time
+Length of the cursor blink cycle, in milliseconds@item gtk-cursor-blink-timeout
+Time after which the cursor stops blinking, in seconds@item gtk-split-cursor
+Whether two cursors should be displayed for mixed left-to-right and right-to-left text@item gtk-theme-name
+Name of theme RC file to load@item gtk-icon-theme-name
+Name of icon theme to use@item gtk-fallback-icon-theme
+Name of a icon theme to fall back to@item gtk-key-theme-name
+Name of key theme RC file to load@item gtk-menu-bar-accel
+Keybinding to activate the menu bar@item gtk-dnd-drag-threshold
+Number of pixels the cursor can move before dragging@item gtk-font-name
+Name of default font to use@item gtk-icon-sizes
+List of icon sizes (gtk-menu=16,16:gtk-button=20,20...@item gtk-modules
+List of currently active GTK modules@item gtk-xft-antialias
+Whether to antialias Xft fonts; 0=no, 1=yes, -1=default@item gtk-xft-hinting
+Whether to hint Xft fonts; 0=no, 1=yes, -1=default@item gtk-xft-hintstyle
+What degree of hinting to use; hintnone, hintslight, hintmedium, or hintfull@item gtk-xft-rgba
+Type of subpixel antialiasing; none, rgb, bgr, vrgb, vbgr@item gtk-xft-dpi
+Resolution for Xft, in 1024 * dots/inch. -1 to use default value@item gtk-cursor-theme-name
+Name of the cursor theme to use, or NULL to use the default theme@item gtk-cursor-theme-size
+Size to use for cursors, or 0 to use the default size@item gtk-alternative-button-order
+Whether buttons in dialogs should use the alternative button order@item gtk-alternative-sort-arrows
+Whether the direction of the sort indicators in list and tree views is inverted compared to the default (where down means ascending)@item gtk-show-input-method-menu
+Whether the context menus of entries and text views should offer to change the input method@item gtk-show-unicode-menu
+Whether the context menus of entries and text views should offer to insert control characters@item gtk-timeout-initial
+Starting value for timeouts, when button is pressed@item gtk-timeout-repeat
+Repeat value for timeouts, when button is pressed@item gtk-timeout-expand
+Expand value for timeouts, when a widget is expanding a new region@item gtk-color-scheme
+A palette of named colors for use in themes@item gtk-enable-animations
+Whether to enable toolkit-wide animations.@item gtk-touchscreen-mode
+When TRUE, there are no motion notify events delivered on this screen@item gtk-tooltip-timeout
+Timeout before tooltip is shown@item gtk-tooltip-browse-timeout
+Timeout before tooltip is shown when browse mode is enabled@item gtk-tooltip-browse-mode-timeout
+Timeout after which browse mode is disabled@item gtk-keynav-cursor-only
+When TRUE, there are only cursor keys available to navigate widgets@item gtk-keynav-wrap-around
+Whether to wrap around when keyboard-navigating widgets@item gtk-error-bell
+When TRUE, keyboard navigation and other errors will cause a beep@item color-hash
+A hash table representation of the color scheme.@item gtk-file-chooser-backend
+Name of the GtkFileChooser backend to use by default@item gtk-print-backends
+List of the GtkPrintBackend backends to use by default@item gtk-print-preview-command
+Command to run when displaying a print preview@item gtk-enable-mnemonics
+Whether labels should have mnemonics@item gtk-enable-accels
+Whether menu items should have accelerators@item gtk-recent-files-limit
+Number of recently used files@item gtk-label-select-on-focus
+Whether to select the contents of a selectable label when it is focused@item gtk-button-images
+Whether stock icons should be shown in buttons@item gtk-color-palette
+Palette to use in the color selector@item gtk-entry-select-on-focus
+Whether to select the contents of an entry when it is focused@item gtk-entry-password-hint-timeout
+How long to show the last inputted character in hidden entries@item gtk-can-change-accels
+Whether menu accelerators can be changed by pressing a key over the menu item@item gtk-menu-popup-delay
+Minimum time the pointer must stay over a menu item before the submenu appear@item gtk-menu-popdown-delay
+The time before hiding a submenu when the pointer is moving towards the submenu@item gtk-menu-images
+Whether images should be shown in menus@item gtk-menu-bar-popup-delay
+Delay before the submenus of a menu bar appear@item gtk-scrolled-window-placement
+Where the contents of scrolled windows are located with respect to the scrollbars, if not overridden by the scrolled window's own placement.@end table
+
+@end deftp
+
+@deffn Function gtk-settings-get-default  @result{}@tie{} (ret@tie{}@code{<gtk-settings>})
+Gets the @code{<gtk-settings>} object for the default GDK screen, creating it if
+necessary. See @code{gtk-settings-get-for-screen}.
+
+@table @var
+@item ret
+a @code{<gtk-settings>} object. If there is no default screen, then returns
+@samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-settings-get-for-screen  (screen@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<gtk-settings>})
+Gets the @code{<gtk-settings>} object for @var{screen}, creating it if
+necessary.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}.
+
+@item ret
+a @code{<gtk-settings>} object.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-settings-install-property  (pspec@tie{}@code{<gparam>})
+@table @var
+@item pspec
+
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-property-parse-color  (pspec@tie{}@code{<gparam>}) (gstring@tie{}@code{<g-string*>}) (property_value@tie{}@code{<gvalue>}) @result{}@tie{} (ret@tie{}@code{bool})
+A @code{<gtk-rc-property-parser>} for use with
+@code{gtk-settings-install-property-parser} or
+@code{gtk-widget-class-install-style-property-parser} which parses a color given
+either by its name or in the form @samp{@{ red, green, blue @}} where
+@samp{red}, @samp{green} and @samp{blue} are integers between 0 and 65535 or
+floating-point numbers between 0 and 1.
+
+@table @var
+@item pspec
+a @code{<gparam>}
+
+@item gstring
+the @code{<g-string>} to be parsed
+
+@item property-value
+a @code{<gvalue>} which must hold @code{<gdk-color>} values.
+
+@item ret
+@samp{@code{#t}} if @var{gstring} could be parsed and @var{property-value} has
+been set to the resulting @code{<gdk-color>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-property-parse-enum  (pspec@tie{}@code{<gparam>}) (gstring@tie{}@code{<g-string*>}) (property_value@tie{}@code{<gvalue>}) @result{}@tie{} (ret@tie{}@code{bool})
+A @code{<gtk-rc-property-parser>} for use with
+@code{gtk-settings-install-property-parser} or
+@code{gtk-widget-class-install-style-property-parser} which parses a single
+enumeration value.
+
+The enumeration value can be specified by its name, its nickname or its numeric
+value. For consistency with flags parsing, the value may be surrounded by
+parentheses.
+
+@table @var
+@item pspec
+a @code{<gparam>}
+
+@item gstring
+the @code{<g-string>} to be parsed
+
+@item property-value
+a @code{<gvalue>} which must hold enum values.
+
+@item ret
+@samp{@code{#t}} if @var{gstring} could be parsed and @var{property-value} has
+been set to the resulting @code{<g-enum-value>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-property-parse-flags  (pspec@tie{}@code{<gparam>}) (gstring@tie{}@code{<g-string*>}) (property_value@tie{}@code{<gvalue>}) @result{}@tie{} (ret@tie{}@code{bool})
+A @code{<gtk-rc-property-parser>} for use with
+@code{gtk-settings-install-property-parser} or
+@code{gtk-widget-class-install-style-property-parser} which parses flags.
+
+Flags can be specified by their name, their nickname or numerically. Multiple
+flags can be specified in the form @samp{"( flag1 | flag2 | ... )"}.
+
+@table @var
+@item pspec
+a @code{<gparam>}
+
+@item gstring
+the @code{<g-string>} to be parsed
+
+@item property-value
+a @code{<gvalue>} which must hold flags values.
+
+@item ret
+@samp{@code{#t}} if @var{gstring} could be parsed and @var{property-value} has
+been set to the resulting flags value.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-property-parse-requisition  (pspec@tie{}@code{<gparam>}) (gstring@tie{}@code{<g-string*>}) (property_value@tie{}@code{<gvalue>}) @result{}@tie{} (ret@tie{}@code{bool})
+A @code{<gtk-rc-property-parser>} for use with
+@code{gtk-settings-install-property-parser} or
+@code{gtk-widget-class-install-style-property-parser} which parses a requisition
+in the form @samp{"@{ width, height @}"} for integers @samp{width} and
+@samp{height}.
+
+@table @var
+@item pspec
+a @code{<gparam>}
+
+@item gstring
+the @code{<g-string>} to be parsed
+
+@item property-value
+a @code{<gvalue>} which must hold boxed values.
+
+@item ret
+@samp{@code{#t}} if @var{gstring} could be parsed and @var{property-value} has
+been set to the resulting @code{<gtk-requisition>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-property-parse-border  (pspec@tie{}@code{<gparam>}) (gstring@tie{}@code{<g-string*>}) (property_value@tie{}@code{<gvalue>}) @result{}@tie{} (ret@tie{}@code{bool})
+A @code{<gtk-rc-property-parser>} for use with
+@code{gtk-settings-install-property-parser} or
+@code{gtk-widget-class-install-style-property-parser} which parses borders in
+the form @samp{"@{ left, right, top, bottom @}"} for integers @samp{left},
+@samp{right}, @samp{top} and @samp{bottom}.
+
+@table @var
+@item pspec
+a @code{<gparam>}
+
+@item gstring
+the @code{<g-string>} to be parsed
+
+@item property-value
+a @code{<gvalue>} which must hold boxed values.
+
+@item ret
+@samp{@code{#t}} if @var{gstring} could be parsed and @var{property-value} has
+been set to the resulting @code{<gtk-border>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-settings-set-property-value  (self@tie{}@code{<gtk-settings>}) (name@tie{}@code{mchars}) (svalue@tie{}@code{<gtk-settings-value*>})
+@deffnx Method set-property-value
+@table @var
+@item settings
+
+
+@item name
+
+
+@item svalue
+
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-settings-set-string-property  (self@tie{}@code{<gtk-settings>}) (name@tie{}@code{mchars}) (v_string@tie{}@code{mchars}) (origin@tie{}@code{mchars})
+@deffnx Method set-string-property
+@table @var
+@item settings
+
+
+@item name
+
+
+@item v-string
+
+
+@item origin
+
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-settings-set-long-property  (self@tie{}@code{<gtk-settings>}) (name@tie{}@code{mchars}) (v_long@tie{}@code{long}) (origin@tie{}@code{mchars})
+@deffnx Method set-long-property
+@table @var
+@item settings
+
+
+@item name
+
+
+@item v-long
+
+
+@item origin
+
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-settings-set-double-property  (self@tie{}@code{<gtk-settings>}) (name@tie{}@code{mchars}) (v_double@tie{}@code{double}) (origin@tie{}@code{mchars})
+@deffnx Method set-double-property
+@table @var
+@item settings
+
+
+@item name
+
+
+@item v-double
+
+
+@item origin
+
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

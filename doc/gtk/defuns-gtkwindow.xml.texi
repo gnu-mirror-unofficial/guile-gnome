@@ -1,0 +1,2061 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-window>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item type
+The type of the window@item title
+The title of the window@item role
+Unique identifier for the window to be used when restoring a session@item startup-id
+Unique startup identifier for the window used by startup-notification@item allow-shrink
+If TRUE, the window has no mimimum size. Setting this to TRUE is 99% of the time a bad idea@item allow-grow
+If TRUE, users can expand the window beyond its minimum size@item resizable
+If TRUE, users can resize the window@item modal
+If TRUE, the window is modal (other windows are not usable while this one is up)@item window-position
+The initial position of the window@item default-width
+The default width of the window, used when initially showing the window@item default-height
+The default height of the window, used when initially showing the window@item destroy-with-parent
+If this window should be destroyed when the parent is destroyed@item icon
+Icon for this window@item icon-name
+Name of the themed icon for this window@item screen
+The screen where this window will be displayed@item type-hint
+Hint to help the desktop environment understand what kind of window this is and how to treat it.@item skip-taskbar-hint
+TRUE if the window should not be in the task bar.@item skip-pager-hint
+TRUE if the window should not be in the pager.@item urgency-hint
+TRUE if the window should be brought to the user's attention.@item accept-focus
+TRUE if the window should receive the input focus.@item focus-on-map
+TRUE if the window should receive the input focus when mapped.@item decorated
+Whether the window should be decorated by the window manager@item deletable
+Whether the window frame should have a close button@item gravity
+The window gravity of the window@item transient-for
+The transient parent of the dialog@item opacity
+The opacity of the window, from 0 to 1@item is-active
+Whether the toplevel is the current active window@item has-toplevel-focus
+Whether the input focus is within this GtkWindow@end table
+
+@end deftp
+
+@defop Signal <gtk-window> set-focus  (arg0@tie{}@code{<gtk-widget>})
+@end defop
+
+@defop Signal <gtk-window> frame-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-window> activate-focus 
+@end defop
+
+@defop Signal <gtk-window> activate-default 
+@end defop
+
+@defop Signal <gtk-window> keys-changed 
+@end defop
+
+@deffn Function gtk-window-new  (type@tie{}@code{<gtk-window-type>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-window>}, which is a toplevel window that can contain
+other widgets. Nearly always, the type of the window should be
+@code{<gtk-window-toplevel>}. If you're implementing something like a popup menu
+from scratch (which is a bad idea, just use @code{<gtk-menu>}), you might use
+@code{<gtk-window-popup>}. @code{<gtk-window-popup>} is not for dialogs, though
+in some other toolkits dialogs are called "popups". In GTK+,
+@code{<gtk-window-popup>} means a pop-up menu or pop-up tooltip. On X11, popup
+windows are not controlled by the window manager.
+
+If you simply want an undecorated window (no window borders), use
+@code{gtk-window-set-decorated}, don't use @code{<gtk-window-popup>}.
+
+@table @var
+@item type
+type of window
+
+@item ret
+a new @code{<gtk-window>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-title  (self@tie{}@code{<gtk-window>}) (title@tie{}@code{mchars})
+@deffnx Method set-title
+Sets the title of the @code{<gtk-window>}. The title of a window will be
+displayed in its title bar; on the X Window System, the title bar is rendered by
+the window manager, so exactly how the title appears to users may vary according
+to a user's exact configuration. The title should help a user distinguish this
+window from other windows they may have open. A good title might include the
+application name and current document filename, for example.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item title
+title of the window
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-wmclass  (self@tie{}@code{<gtk-window>}) (wmclass_name@tie{}@code{mchars}) (wmclass_class@tie{}@code{mchars})
+@deffnx Method set-wmclass
+Don't use this function. It sets the X Window System "class" and "name" hints
+for a window. According to the ICCCM, you should always set these to the same
+value for all windows in an application, and GTK+ sets them to that value by
+default, so calling this function is sort of pointless. However, you may want to
+call @code{gtk-window-set-role} on each window in your application, for the
+benefit of the session manager. Setting the role allows the window manager to
+restore window positions when loading a saved session.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item wmclass-name
+window name hint
+
+@item wmclass-class
+window class hint
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-resizable  (self@tie{}@code{<gtk-window>}) (resizable@tie{}@code{bool})
+@deffnx Method set-resizable
+Sets whether the user can resize a window. Windows are user resizable by
+default.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item resizable
+@samp{@code{#t}} if the user can resize this window
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-resizable  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-resizable
+Gets the value set by @code{gtk-window-set-resizable}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+@samp{@code{#t}} if the user can resize the window
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-add-accel-group  (self@tie{}@code{<gtk-window>}) (accel_group@tie{}@code{<gtk-accel-group>})
+@deffnx Method add-accel-group
+Associate @var{accel-group} with @var{window}, such that calling
+@code{gtk-accel-groups-activate} on @var{window} will activate accelerators in
+@var{accel-group}.
+
+@table @var
+@item window
+window to attach accelerator group to
+
+@item accel-group
+a @code{<gtk-accel-group>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-remove-accel-group  (self@tie{}@code{<gtk-window>}) (accel_group@tie{}@code{<gtk-accel-group>})
+@deffnx Method remove-accel-group
+Reverses the effects of @code{gtk-window-add-accel-group}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item accel-group
+a @code{<gtk-accel-group>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-activate-focus  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method activate-focus
+Activates the current focused widget within the window.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+@samp{@code{#t}} if a widget got activated.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-activate-default  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method activate-default
+Activates the default widget for the window, unless the current focused widget
+has been configured to receive the default action (see
+@code{<gtk-receives-default>} in @code{<gtk-widget-flags>}), in which case the
+focused widget is activated.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+@samp{@code{#t}} if a widget got activated.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-modal  (self@tie{}@code{<gtk-window>}) (modal@tie{}@code{bool})
+@deffnx Method set-modal
+Sets a window modal or non-modal. Modal windows prevent interaction with other
+windows in the same application. To keep modal dialogs on top of main
+application windows, use @code{gtk-window-set-transient-for} to make the dialog
+transient for the parent; most window managers will then disallow lowering the
+dialog below the parent.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item modal
+whether the window is modal
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-default-size  (self@tie{}@code{<gtk-window>}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method set-default-size
+Sets the default size of a window. If the window's "natural" size (its size
+request) is larger than the default, the default will be ignored. More
+generally, if the default size does not obey the geometry hints for the window
+(@code{gtk-window-set-geometry-hints} can be used to set these explicitly), the
+default size will be clamped to the nearest permitted size.
+
+Unlike @code{gtk-widget-set-size-request}, which sets a size request for a
+widget and thus would keep users from shrinking the window, this function only
+sets the initial size, just as if the user had resized the window themselves.
+Users can still shrink the window again as they normally would. Setting a
+default size of -1 means to use the "natural" default size (the size request of
+the window).
+
+For more control over a window's initial size and how resizing works,
+investigate @code{gtk-window-set-geometry-hints}.
+
+For some uses, @code{gtk-window-resize} is a more appropriate function.
+@code{gtk-window-resize} changes the current size of the window, rather than the
+size to be used on initial display. @code{gtk-window-resize} always affects the
+window itself, not the geometry widget.
+
+The default size of a window only affects the first time a window is shown; if a
+window is hidden and re-shown, it will remember the size it had prior to hiding,
+rather than using the default size.
+
+Windows can't actually be 0x0 in size, they must be at least 1x1, but passing 0
+for @var{width} and @var{height} is OK, resulting in a 1x1 default size.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item width
+width in pixels, or -1 to unset the default width
+
+@item height
+height in pixels, or -1 to unset the default height
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-geometry-hints  (self@tie{}@code{<gtk-window>}) (geometry_widget@tie{}@code{<gtk-widget>}) (geometry@tie{}@code{<gdk-geometry*>}) (geom_mask@tie{}@code{<gdk-window-hints>})
+@deffnx Method set-geometry-hints
+This function sets up hints about how a window can be resized by the user. You
+can set a minimum and maximum size; allowed resize increments (e.g. for xterm,
+you can only resize by the size of a character); aspect ratios; and more. See
+the @code{<gdk-geometry>} struct.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item geometry-widget
+widget the geometry hints will be applied to
+
+@item geometry
+struct containing geometry information
+
+@item geom-mask
+mask indicating which struct fields should be paid attention to
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-gravity  (self@tie{}@code{<gtk-window>}) (gravity@tie{}@code{<gdk-gravity>})
+@deffnx Method set-gravity
+Window gravity defines the meaning of coordinates passed to
+@code{gtk-window-move}. See @code{gtk-window-move} and @code{<gdk-gravity>} for
+more details.
+
+The default window gravity is @code{<gdk-gravity-north-west>} which will
+typically "do what you mean."
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item gravity
+window gravity
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-gravity  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{<gdk-gravity>})
+@deffnx Method get-gravity
+Gets the value set by @code{gtk-window-set-gravity}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+window gravity
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-position  (self@tie{}@code{<gtk-window>}) (position@tie{}@code{<gtk-window-position>})
+@deffnx Method set-position
+Sets a position constraint for this window. If the old or new constraint is
+@samp{GTK_WIN_POS_CENTER_ALWAYS}, this will also cause the window to be
+repositioned to satisfy the new constraint.
+
+@table @var
+@item window
+a @code{<gtk-window>}.
+
+@item position
+a position constraint.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-transient-for  (self@tie{}@code{<gtk-window>}) (parent@tie{}@code{<gtk-window>})
+@deffnx Method set-transient-for
+Dialog windows should be set transient for the main application window they were
+spawned from. This allows window managers to e.g. keep the dialog on top of the
+main window, or center the dialog over the main window.
+@code{gtk-dialog-new-with-buttons} and other convenience functions in GTK+ will
+sometimes call @code{gtk-window-set-transient-for} on your behalf.
+
+On Windows, this function will and put the child window on top of the parent,
+much as the window manager would have done on X.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item parent
+parent window
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-destroy-with-parent  (self@tie{}@code{<gtk-window>}) (setting@tie{}@code{bool})
+@deffnx Method set-destroy-with-parent
+If @var{setting} is @samp{@code{#t}}, then destroying the transient parent of
+@var{window} will also destroy @var{window} itself. This is useful for dialogs
+that shouldn't persist beyond the lifetime of the main window they're associated
+with, for example.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item setting
+whether to destroy @var{window} with its transient parent
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-screen  (self@tie{}@code{<gtk-window>}) (screen@tie{}@code{<gdk-screen>})
+@deffnx Method set-screen
+Sets the @code{<gdk-screen>} where the @var{window} is displayed; if the window
+is already mapped, it will be unmapped, and then remapped on the new screen.
+
+@table @var
+@item window
+a @code{<gtk-window>}.
+
+@item screen
+a @code{<gdk-screen>}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-window-get-screen  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{<gdk-screen>})
+@deffnx Method get-screen
+Returns the @code{<gdk-screen>} associated with @var{window}.
+
+@table @var
+@item window
+a @code{<gtk-window>}.
+
+@item ret
+a @code{<gdk-screen>}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-window-is-active  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-active
+Returns whether the window is part of the current active toplevel. (That is, the
+toplevel window receiving keystrokes.) The return value is @samp{@code{#t}} if
+the window is active toplevel itself, but also if it is, say, a
+@code{<gtk-plug>} embedded in the active toplevel. You might use this function
+if you wanted to draw a widget differently in an active window from a widget in
+an inactive window. See @code{gtk-window-has-toplevel-focus}
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+@samp{@code{#t}} if the window part of the current active window.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-window-has-toplevel-focus  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method has-toplevel-focus
+Returns whether the input focus is within this GtkWindow. For real toplevel
+windows, this is identical to @code{gtk-window-is-active}, but for embedded
+windows, like @code{<gtk-plug>}, the results will differ.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+@samp{@code{#t}} if the input focus is within this GtkWindow
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-window-list-toplevels  @result{}@tie{} (ret@tie{}@code{glist-of})
+Returns a list of all existing toplevel windows. The widgets in the list are not
+individually referenced. If you want to iterate through the list and perform
+actions involving callbacks that might destroy the widgets, you @emph{must} call
+@samp{g_list_foreach (result, (GFunc)g_object_ref, NULL)} first, and then unref
+all the widgets afterwards.
+
+@table @var
+@item ret
+list of toplevel widgets
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-add-mnemonic  (self@tie{}@code{<gtk-window>}) (keyval@tie{}@code{unsigned-int}) (target@tie{}@code{<gtk-widget>})
+@deffnx Method add-mnemonic
+Adds a mnemonic to this window.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item keyval
+the mnemonic
+
+@item target
+the widget that gets activated by the mnemonic
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-remove-mnemonic  (self@tie{}@code{<gtk-window>}) (keyval@tie{}@code{unsigned-int}) (target@tie{}@code{<gtk-widget>})
+@deffnx Method remove-mnemonic
+Removes a mnemonic from this window.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item keyval
+the mnemonic
+
+@item target
+the widget that gets activated by the mnemonic
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-mnemonic-activate  (self@tie{}@code{<gtk-window>}) (keyval@tie{}@code{unsigned-int}) (modifier@tie{}@code{<gdk-modifier-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method mnemonic-activate
+Activates the targets associated with the mnemonic.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item keyval
+the mnemonic
+
+@item modifier
+the modifiers
+
+@item ret
+@samp{@code{#t}} if the activation is done.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-activate-key  (self@tie{}@code{<gtk-window>}) (event@tie{}@code{<gdk-event-key>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method activate-key
+Activates mnemonics and accelerators for this @code{<gtk-window>}. This is
+normally called by the default ::key_press_event handler for toplevel windows,
+however in some cases it may be useful to call this directly when overriding the
+standard key handling for a toplevel window.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item event
+a @code{<gdk-event-key>}
+
+@item ret
+@samp{@code{#t}} if a mnemonic or accelerator was found and activated.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-propagate-key-event  (self@tie{}@code{<gtk-window>}) (event@tie{}@code{<gdk-event-key>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method propagate-key-event
+Propagate a key press or release event to the focus widget and up the focus
+container chain until a widget handles @var{event}. This is normally called by
+the default ::key_press_event and ::key_release_event handlers for toplevel
+windows, however in some cases it may be useful to call this directly when
+overriding the standard key handling for a toplevel window.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item event
+a @code{<gdk-event-key>}
+
+@item ret
+@samp{@code{#t}} if a widget in the focus chain handled the event.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-focus  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-focus
+Retrieves the current focused widget within the window. Note that this is the
+widget that would have the focus if the toplevel window focused; if the toplevel
+window is not focused then @samp{GTK_WIDGET_HAS_FOCUS (widget)} will not be
+@samp{@code{#t}} for the widget.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+the currently focused widget, or @samp{@code{#f}} if there is none.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-focus  (self@tie{}@code{<gtk-window>}) (focus@tie{}@code{<gtk-widget>})
+@deffnx Method set-focus
+If @var{focus} is not the current focus widget, and is focusable, sets it as the
+focus widget for the window. If @var{focus} is @samp{@code{#f}}, unsets the
+focus widget for this window. To set the focus to a particular widget in the
+toplevel, it is usually more convenient to use @code{gtk-widget-grab-focus}
+instead of this function.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item focus
+widget to be the new focus widget, or @samp{@code{#f}} to unset any focus widget
+for the toplevel window.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-default  (self@tie{}@code{<gtk-window>}) (default_widget@tie{}@code{<gtk-widget>})
+@deffnx Method set-default
+The default widget is the widget that's activated when the user presses Enter in
+a dialog (for example). This function sets or unsets the default widget for a
+@code{<gtk-window>} about. When setting (rather than unsetting) the default
+widget it's generally easier to call @code{gtk-widget-grab-focus} on the widget.
+Before making a widget the default widget, you must set the
+@code{<gtk-can-default>} flag on the widget you'd like to make the default using
+@code{gtk-widget-set-flags}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item default-widget
+widget to be the default, or @samp{@code{#f}} to unset the default widget for
+the toplevel.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-present  (self@tie{}@code{<gtk-window>})
+@deffnx Method present
+Presents a window to the user. This may mean raising the window in the stacking
+order, deiconifying it, moving it to the current desktop, and/or giving it the
+keyboard focus, possibly dependent on the user's platform, window manager, and
+preferences.
+
+If @var{window} is hidden, this function calls @code{gtk-widget-show} as well.
+
+This function should be used when the user tries to open a window that's already
+open. Say for example the preferences dialog is currently open, and the user
+chooses Preferences from the menu a second time; use @code{gtk-window-present}
+to move the already-open dialog where the user can see it.
+
+If you are calling this function in response to a user interaction, it is
+preferable to use @code{gtk-window-present-with-time}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-present-with-time  (self@tie{}@code{<gtk-window>}) (timestamp@tie{}@code{unsigned-int32})
+@deffnx Method present-with-time
+Presents a window to the user in response to a user interaction. If you need to
+present a window without a timestamp, use @code{gtk-window-present}. See
+@code{gtk-window-present} for details.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item timestamp
+the timestamp of the user interaction (typically a button or key press event)
+which triggered this call
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-window-iconify  (self@tie{}@code{<gtk-window>})
+@deffnx Method iconify
+Asks to iconify (i.e. minimize) the specified @var{window}. Note that you
+shouldn't assume the window is definitely iconified afterward, because other
+entities (e.g. the user or window manager) could deiconify it again, or there
+may not be a window manager in which case iconification isn't possible, etc. But
+normally the window will end up iconified. Just don't write code that crashes if
+not.
+
+It's permitted to call this function before showing a window, in which case the
+window will be iconified before it ever appears onscreen.
+
+You can track iconification via the "window_state_event" signal on
+@code{<gtk-widget>}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-deiconify  (self@tie{}@code{<gtk-window>})
+@deffnx Method deiconify
+Asks to deiconify (i.e. unminimize) the specified @var{window}. Note that you
+shouldn't assume the window is definitely deiconified afterward, because other
+entities (e.g. the user or window manager) could iconify it again before your
+code which assumes deiconification gets to run.
+
+You can track iconification via the "window_state_event" signal on
+@code{<gtk-widget>}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-stick  (self@tie{}@code{<gtk-window>})
+@deffnx Method stick
+Asks to stick @var{window}, which means that it will appear on all user
+desktops. Note that you shouldn't assume the window is definitely stuck
+afterward, because other entities (e.g. the user or window manager) could
+unstick it again, and some window managers do not support sticking windows. But
+normally the window will end up stuck. Just don't write code that crashes if
+not.
+
+It's permitted to call this function before showing a window.
+
+You can track stickiness via the "window_state_event" signal on
+@code{<gtk-widget>}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-unstick  (self@tie{}@code{<gtk-window>})
+@deffnx Method unstick
+Asks to unstick @var{window}, which means that it will appear on only one of the
+user's desktops. Note that you shouldn't assume the window is definitely unstuck
+afterward, because other entities (e.g. the user or window manager) could stick
+it again. But normally the window will end up stuck. Just don't write code that
+crashes if not.
+
+You can track stickiness via the "window_state_event" signal on
+@code{<gtk-widget>}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-maximize  (self@tie{}@code{<gtk-window>})
+@deffnx Method maximize
+Asks to maximize @var{window}, so that it becomes full-screen. Note that you
+shouldn't assume the window is definitely maximized afterward, because other
+entities (e.g. the user or window manager) could unmaximize it again, and not
+all window managers support maximization. But normally the window will end up
+maximized. Just don't write code that crashes if not.
+
+It's permitted to call this function before showing a window, in which case the
+window will be maximized when it appears onscreen initially.
+
+You can track maximization via the "window_state_event" signal on
+@code{<gtk-widget>}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-unmaximize  (self@tie{}@code{<gtk-window>})
+@deffnx Method unmaximize
+Asks to unmaximize @var{window}. Note that you shouldn't assume the window is
+definitely unmaximized afterward, because other entities (e.g. the user or
+window manager) could maximize it again, and not all window managers honor
+requests to unmaximize. But normally the window will end up unmaximized. Just
+don't write code that crashes if not.
+
+You can track maximization via the "window_state_event" signal on
+@code{<gtk-widget>}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-fullscreen  (self@tie{}@code{<gtk-window>})
+@deffnx Method fullscreen
+Asks to place @var{window} in the fullscreen state. Note that you shouldn't
+assume the window is definitely full screen afterward, because other entities
+(e.g. the user or window manager) could unfullscreen it again, and not all
+window managers honor requests to fullscreen windows. But normally the window
+will end up fullscreen. Just don't write code that crashes if not.
+
+You can track the fullscreen state via the "window_state_event" signal on
+@code{<gtk-widget>}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-window-unfullscreen  (self@tie{}@code{<gtk-window>})
+@deffnx Method unfullscreen
+Asks to toggle off the fullscreen state for @var{window}. Note that you
+shouldn't assume the window is definitely not full screen afterward, because
+other entities (e.g. the user or window manager) could fullscreen it again, and
+not all window managers honor requests to unfullscreen windows. But normally the
+window will end up restored to its normal state. Just don't write code that
+crashes if not.
+
+You can track the fullscreen state via the "window_state_event" signal on
+@code{<gtk-widget>}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-window-set-keep-above  (self@tie{}@code{<gtk-window>}) (setting@tie{}@code{bool})
+@deffnx Method set-keep-above
+Asks to keep @var{window} above, so that it stays on top. Note that you
+shouldn't assume the window is definitely above afterward, because other
+entities (e.g. the user or window manager) could not keep it above, and not all
+window managers support keeping windows above. But normally the window will end
+kept above. Just don't write code that crashes if not.
+
+It's permitted to call this function before showing a window, in which case the
+window will be kept above when it appears onscreen initially.
+
+You can track the above state via the "window_state_event" signal on
+@code{<gtk-widget>}.
+
+Note that, according to the
+@uref{http://www.freedesktop.org/Standards/wm-spec,Extended Window Manager
+Hints} specification, the above state is mainly meant for user preferences and
+should not be used by applications e.g. for drawing attention to their dialogs.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item setting
+whether to keep @var{window} above other windows
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-window-set-keep-below  (self@tie{}@code{<gtk-window>}) (setting@tie{}@code{bool})
+@deffnx Method set-keep-below
+Asks to keep @var{window} below, so that it stays in bottom. Note that you
+shouldn't assume the window is definitely below afterward, because other
+entities (e.g. the user or window manager) could not keep it below, and not all
+window managers support putting windows below. But normally the window will be
+kept below. Just don't write code that crashes if not.
+
+It's permitted to call this function before showing a window, in which case the
+window will be kept below when it appears onscreen initially.
+
+You can track the below state via the "window_state_event" signal on
+@code{<gtk-widget>}.
+
+Note that, according to the
+@uref{http://www.freedesktop.org/Standards/wm-spec,Extended Window Manager
+Hints} specification, the above state is mainly meant for user preferences and
+should not be used by applications e.g. for drawing attention to their dialogs.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item setting
+whether to keep @var{window} below other windows
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-window-begin-resize-drag  (self@tie{}@code{<gtk-window>}) (edge@tie{}@code{<gdk-window-edge>}) (button@tie{}@code{int}) (root_x@tie{}@code{int}) (root_y@tie{}@code{int}) (timestamp@tie{}@code{unsigned-int32})
+@deffnx Method begin-resize-drag
+Starts resizing a window. This function is used if an application has window
+resizing controls. When GDK can support it, the resize will be done using the
+standard mechanism for the window manager or windowing system. Otherwise, GDK
+will try to emulate window resizing, potentially not all that well, depending on
+the windowing system.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item edge
+position of the resize control
+
+@item button
+mouse button that initiated the drag
+
+@item root-x
+X position where the user clicked to initiate the drag, in root window
+coordinates
+
+@item root-y
+Y position where the user clicked to initiate the drag
+
+@item timestamp
+timestamp from the click event that initiated the drag
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-begin-move-drag  (self@tie{}@code{<gtk-window>}) (button@tie{}@code{int}) (root_x@tie{}@code{int}) (root_y@tie{}@code{int}) (timestamp@tie{}@code{unsigned-int32})
+@deffnx Method begin-move-drag
+Starts moving a window. This function is used if an application has window
+movement grips. When GDK can support it, the window movement will be done using
+the standard mechanism for the window manager or windowing system. Otherwise,
+GDK will try to emulate window movement, potentially not all that well,
+depending on the windowing system.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item button
+mouse button that initiated the drag
+
+@item root-x
+X position where the user clicked to initiate the drag, in root window
+coordinates
+
+@item root-y
+Y position where the user clicked to initiate the drag
+
+@item timestamp
+timestamp from the click event that initiated the drag
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-decorated  (self@tie{}@code{<gtk-window>}) (setting@tie{}@code{bool})
+@deffnx Method set-decorated
+By default, windows are decorated with a title bar, resize controls, etc. Some
+window managers allow GTK+ to disable these decorations, creating a borderless
+window. If you set the decorated property to @samp{@code{#f}} using this
+function, GTK+ will do its best to convince the window manager not to decorate
+the window. Depending on the system, this function may not have any effect when
+called on a window that is already visible, so you should call it before calling
+@code{gtk-window-show}.
+
+On Windows, this function always works, since there's no window manager policy
+involved.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item setting
+@samp{@code{#t}} to decorate the window
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-deletable  (self@tie{}@code{<gtk-window>}) (setting@tie{}@code{bool})
+@deffnx Method set-deletable
+By default, windows have a close button in the window frame. Some window
+managers allow GTK+ to disable this button. If you set the deletable property to
+@samp{@code{#f}} using this function, GTK+ will do its best to convince the
+window manager not to show a close button. Depending on the system, this
+function may not have any effect when called on a window that is already
+visible, so you should call it before calling @code{gtk-window-show}.
+
+On Windows, this function always works, since there's no window manager policy
+involved.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item setting
+@samp{@code{#t}} to decorate the window as deletable
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-window-set-frame-dimensions  (self@tie{}@code{<gtk-window>}) (left@tie{}@code{int}) (top@tie{}@code{int}) (right@tie{}@code{int}) (bottom@tie{}@code{int})
+@deffnx Method set-frame-dimensions
+(Note: this is a special-purpose function intended for the framebuffer port; see
+@code{gtk-window-set-has-frame}. It will have no effect on the window border
+drawn by the window manager, which is the normal case when using the X Window
+system.)
+
+For windows with frames (see @code{gtk-window-set-has-frame}) this function can
+be used to change the size of the frame border.
+
+@table @var
+@item window
+a @code{<gtk-window>} that has a frame
+
+@item left
+The width of the left border
+
+@item top
+The height of the top border
+
+@item right
+The width of the right border
+
+@item bottom
+The height of the bottom border
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-has-frame  (self@tie{}@code{<gtk-window>}) (setting@tie{}@code{bool})
+@deffnx Method set-has-frame
+(Note: this is a special-purpose function for the framebuffer port, that causes
+GTK+ to draw its own window border. For most applications, you want
+@code{gtk-window-set-decorated} instead, which tells the window manager whether
+to draw the window border.)
+
+If this function is called on a window with setting of @samp{@code{#t}}, before
+it is realized or showed, it will have a "frame" window around
+@var{window->window}, accessible in @var{window->frame}. Using the signal
+frame_event you can receive all events targeted at the frame.
+
+This function is used by the linux-fb port to implement managed windows, but it
+could conceivably be used by X-programs that want to do their own window
+decorations.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item setting
+a boolean
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-mnemonic-modifier  (self@tie{}@code{<gtk-window>}) (modifier@tie{}@code{<gdk-modifier-type>})
+@deffnx Method set-mnemonic-modifier
+Sets the mnemonic modifier for this window.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item modifier
+the modifier mask used to activate mnemonics on this window.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-role  (self@tie{}@code{<gtk-window>}) (role@tie{}@code{mchars})
+@deffnx Method set-role
+This function is only useful on X11, not with other GTK+ targets.
+
+In combination with the window title, the window role allows a window manager to
+identify "the same" window when an application is restarted. So for example you
+might set the "toolbox" role on your app's toolbox window, so that when the user
+restarts their session, the window manager can put the toolbox back in the same
+place.
+
+If a window already has a unique title, you don't need to set the role, since
+the WM can use the title to identify the window when restoring the session.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item role
+unique identifier for the window to be used when restoring a session
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-type-hint  (self@tie{}@code{<gtk-window>}) (hint@tie{}@code{<gdk-window-type-hint>})
+@deffnx Method set-type-hint
+By setting the type hint for the window, you allow the window manager to
+decorate and handle the window in a way which is suitable to the function of the
+window in your application.
+
+This function should be called before the window becomes visible.
+
+@code{gtk-dialog-new-with-buttons} and other convenience functions in GTK+ will
+sometimes call @code{gtk-window-set-type-hint} on your behalf.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item hint
+the window type
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-skip-taskbar-hint  (self@tie{}@code{<gtk-window>}) (setting@tie{}@code{bool})
+@deffnx Method set-skip-taskbar-hint
+Windows may set a hint asking the desktop environment not to display the window
+in the task bar. This function sets this hint.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item setting
+@samp{@code{#t}} to keep this window from appearing in the task bar
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-window-set-skip-pager-hint  (self@tie{}@code{<gtk-window>}) (setting@tie{}@code{bool})
+@deffnx Method set-skip-pager-hint
+Windows may set a hint asking the desktop environment not to display the window
+in the pager. This function sets this hint. (A "pager" is any desktop navigation
+tool such as a workspace switcher that displays a thumbnail representation of
+the windows on the screen.)
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item setting
+@samp{@code{#t}} to keep this window from appearing in the pager
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-window-set-urgency-hint  (self@tie{}@code{<gtk-window>}) (setting@tie{}@code{bool})
+@deffnx Method set-urgency-hint
+Windows may set a hint asking the desktop environment to draw the users
+attention to the window. This function sets this hint.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item setting
+@samp{@code{#t}} to mark this window as urgent
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-window-set-accept-focus  (self@tie{}@code{<gtk-window>}) (setting@tie{}@code{bool})
+@deffnx Method set-accept-focus
+Windows may set a hint asking the desktop environment not to receive the input
+focus. This function sets this hint.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item setting
+@samp{@code{#t}} to let this window receive input focus
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-window-set-focus-on-map  (self@tie{}@code{<gtk-window>}) (setting@tie{}@code{bool})
+@deffnx Method set-focus-on-map
+Windows may set a hint asking the desktop environment not to receive the input
+focus when the window is mapped. This function sets this hint.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item setting
+@samp{@code{#t}} to let this window receive input focus on map
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-window-get-decorated  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-decorated
+Returns whether the window has been set to have decorations such as a title bar
+via @code{gtk-window-set-decorated}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+@samp{@code{#t}} if the window has been set to have decorations
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-deletable  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-deletable
+Returns whether the window has been set to have a close button via
+@code{gtk-window-set-deletable}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+@samp{@code{#t}} if the window has been set to have a close button
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-window-get-default-icon-list  @result{}@tie{} (ret@tie{}@code{glist-of})
+Gets the value set by @code{gtk-window-set-default-icon-list}. The list is a
+copy and should be freed with @code{g-list-free}, but the pixbufs in the list
+have not had their reference count incremented.
+
+@table @var
+@item ret
+copy of default icon list
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-default-size  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method get-default-size
+Gets the default size of the window. A value of -1 for the width or height
+indicates that a default size has not been explicitly set for that dimension, so
+the "natural" size of the window will be used.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item width
+location to store the default width, or @samp{@code{#f}}
+
+@item height
+location to store the default height, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-destroy-with-parent  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-destroy-with-parent
+Returns whether the window will be destroyed with its transient parent. See
+@code{gtk-window-set-destroy-with-parent}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+@samp{@code{#t}} if the window will be destroyed with its transient parent.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-frame-dimensions  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (left@tie{}@code{int}) (top@tie{}@code{int}) (right@tie{}@code{int}) (bottom@tie{}@code{int})
+@deffnx Method get-frame-dimensions
+(Note: this is a special-purpose function intended for the framebuffer port; see
+@code{gtk-window-set-has-frame}. It will not return the size of the window
+border drawn by the window manager, which is the normal case when using a
+windowing system. See @code{gdk-window-get-frame-extents} to get the standard
+window border extents.)
+
+Retrieves the dimensions of the frame window for this toplevel. See
+@code{gtk-window-set-has-frame}, @code{gtk-window-set-frame-dimensions}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item left
+location to store the width of the frame at the left, or @samp{@code{#f}}
+
+@item top
+location to store the height of the frame at the top, or @samp{@code{#f}}
+
+@item right
+location to store the width of the frame at the returns, or @samp{@code{#f}}
+
+@item bottom
+location to store the height of the frame at the bottom, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-has-frame  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-has-frame
+Accessor for whether the window has a frame window exterior to
+@var{window->window}. Gets the value set by @code{gtk-window-set-has-frame}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+@samp{@code{#t}} if a frame has been added to the window via
+@code{gtk-window-set-has-frame}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-icon  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method get-icon
+Gets the value set by @code{gtk-window-set-icon} (or if you've called
+@code{gtk-window-set-icon-list}, gets the first icon in the icon list).
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+icon for window
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-icon-list  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method get-icon-list
+Retrieves the list of icons set by @code{gtk-window-set-icon-list}. The list is
+copied, but the reference count on each member won't be incremented.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+copy of window's icon list
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-icon-name  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-icon-name
+Returns the name of the themed icon for the window, see
+@code{gtk-window-set-icon-name}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+the icon name or @samp{@code{#f}} if the window has no themed icon
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-window-get-mnemonic-modifier  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{<gdk-modifier-type>})
+@deffnx Method get-mnemonic-modifier
+Returns the mnemonic modifier for this window. See
+@code{gtk-window-set-mnemonic-modifier}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+the modifier mask used to activate mnemonics on this window.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-modal  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-modal
+Returns whether the window is modal. See @code{gtk-window-set-modal}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+@samp{@code{#t}} if the window is set to be modal and establishes a grab when
+shown
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-position  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (root_x@tie{}@code{int}) (root_y@tie{}@code{int})
+@deffnx Method get-position
+This function returns the position you need to pass to @code{gtk-window-move} to
+keep @var{window} in its current position. This means that the meaning of the
+returned value varies with window gravity. See @code{gtk-window-move} for more
+details.
+
+If you haven't changed the window gravity, its gravity will be
+@code{<gdk-gravity-north-west>}. This means that @code{gtk-window-get-position}
+gets the position of the top-left corner of the window manager frame for the
+window. @code{gtk-window-move} sets the position of this same top-left corner.
+
+@code{gtk-window-get-position} is not 100% reliable because the X Window System
+does not specify a way to obtain the geometry of the decorations placed on a
+window by the window manager. Thus GTK+ is using a "best guess" that works with
+most window managers.
+
+Moreover, nearly all window managers are historically broken with respect to
+their handling of window gravity. So moving a window to its current position as
+returned by @code{gtk-window-get-position} tends to result in moving the window
+slightly. Window managers are slowly getting better over time.
+
+If a window has gravity @code{<gdk-gravity-static>} the window manager frame is
+not relevant, and thus @code{gtk-window-get-position} will always produce
+accurate results. However you can't use static gravity to do things like place a
+window in a corner of the screen, because static gravity ignores the window
+manager decorations.
+
+If you are saving and restoring your application's window positions, you should
+know that it's impossible for applications to do this without getting it
+somewhat wrong because applications do not have sufficient knowledge of window
+manager state. The Correct Mechanism is to support the session management
+protocol (see the "GnomeClient" object in the GNOME libraries for example) and
+allow the window manager to save your window sizes and positions.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item root-x
+return location for X coordinate of gravity-determined reference p\oint
+
+@item root-y
+return location for Y coordinate of gravity-determined reference p\oint
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-role  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-role
+Returns the role of the window. See @code{gtk-window-set-role} for further
+explanation.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+the role of the window if set, or @samp{@code{#f}}. The returned is owned by the
+widget and must not be modified or freed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-size  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method get-size
+Obtains the current size of @var{window}. If @var{window} is not onscreen, it
+returns the size GTK+ will suggest to the window manager for the initial window
+size (but this is not reliably the same as the size the window manager will
+actually select). The size obtained by @code{gtk-window-get-size} is the last
+size received in a @code{<gdk-event-configure>}, that is, GTK+ uses its
+locally-stored size, rather than querying the X server for the size. As a
+result, if you call @code{gtk-window-resize} then immediately call
+@code{gtk-window-get-size}, the size won't have taken effect yet. After the
+window manager processes the resize request, GTK+ receives notification that the
+size has changed via a configure event, and the size of the window gets updated.
+
+Note 1: Nearly any use of this function creates a race condition, because the
+size of the window may change between the time that you get the size and the
+time that you perform some action assuming that size is the current size. To
+avoid race conditions, connect to "configure_event" on the window and adjust
+your size-dependent state to match the size delivered in the
+@code{<gdk-event-configure>}.
+
+Note 2: The returned size does @emph{not} include the size of the window manager
+decorations (aka the window frame or border). Those are not drawn by GTK+ and
+GTK+ has no reliable method of determining their size.
+
+Note 3: If you are getting a window size in order to position the window
+onscreen, there may be a better way. The preferred way is to simply set the
+window's semantic type with @code{gtk-window-set-type-hint}, which allows the
+window manager to e.g. center dialogs. Also, if you set the transient parent of
+dialogs with @code{gtk-window-set-transient-for} window managers will often
+center the dialog over its parent window. It's much preferred to let the window
+manager handle these things rather than doing it yourself, because all apps will
+behave consistently and according to user prefs if the window manager handles
+it. Also, the window manager can take the size of the window decorations/border
+into account, while your application cannot.
+
+In any case, if you insist on application-specified window positioning, there's
+@emph{still} a better way than doing it yourself -
+@code{gtk-window-set-position} will frequently handle the details for you.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item width
+return location for width, or @samp{@code{#f}}
+
+@item height
+return location for height, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-title  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-title
+Retrieves the title of the window. See @code{gtk-window-set-title}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+the title of the window, or @samp{@code{#f}} if none has been set explicitely.
+The returned string is owned by the widget and must not be modified or freed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-transient-for  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{<gtk-window>})
+@deffnx Method get-transient-for
+Fetches the transient parent for this window. See
+@code{gtk-window-set-transient-for}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+the transient parent for this window, or @samp{@code{#f}} if no transient parent
+has been set.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-type-hint  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{<gdk-window-type-hint>})
+@deffnx Method get-type-hint
+Gets the type hint for this window. See @code{gtk-window-set-type-hint}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+the type hint for @var{window}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-get-skip-taskbar-hint  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-skip-taskbar-hint
+Gets the value set by @code{gtk-window-set-skip-taskbar-hint}
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+@samp{@code{#t}} if window shouldn't be in taskbar
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-window-get-skip-pager-hint  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-skip-pager-hint
+Gets the value set by @code{gtk-window-set-skip-pager-hint}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+@samp{@code{#t}} if window shouldn't be in pager
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-window-get-urgency-hint  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-urgency-hint
+Gets the value set by @code{gtk-window-set-urgency-hint}
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+@samp{@code{#t}} if window is urgent
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-window-get-accept-focus  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-accept-focus
+Gets the value set by @code{gtk-window-set-accept-focus}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+@samp{@code{#t}} if window should receive the input focus
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-window-get-focus-on-map  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-focus-on-map
+Gets the value set by @code{gtk-window-set-focus-on-map}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item ret
+@samp{@code{#t}} if window should receive the input focus when mapped.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-window-get-group  (self@tie{}@code{<gtk-window>}) @result{}@tie{} (ret@tie{}@code{<gtk-window-group>})
+@deffnx Method get-group
+Returns the group for @var{window} or the default group, if @var{window} is
+@samp{@code{#f}} or if @var{window} does not have an explicit window group.
+
+@table @var
+@item window
+a @code{<gtk-window>}, or @samp{@code{#f}}
+
+@item ret
+the @code{<gtk-window-group>} for a window or the default group
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-window-move  (self@tie{}@code{<gtk-window>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method move
+Asks the window manager to move @var{window} to the given position. Window
+managers are free to ignore this; most window managers ignore requests for
+initial window positions (instead using a user-defined placement algorithm) and
+honor requests after the window has already been shown.
+
+Note: the position is the position of the gravity-determined reference point for
+the window. The gravity determines two things: first, the location of the
+reference point in root window coordinates; and second, which point on the
+window is positioned at the reference point.
+
+By default the gravity is @code{<gdk-gravity-north-west>}, so the reference
+point is simply the @var{x}, @var{y} supplied to @code{gtk-window-move}. The
+top-left corner of the window decorations (aka window frame or border) will be
+placed at @var{x}, @var{y}. Therefore, to position a window at the top left of
+the screen, you want to use the default gravity (which is
+@code{<gdk-gravity-north-west>}) and move the window to 0,0.
+
+To position a window at the bottom right corner of the screen, you would set
+@code{<gdk-gravity-south-east>}, which means that the reference point is at
+@var{x} + the window width and @var{y} + the window height, and the bottom-right
+corner of the window border will be placed at that reference point. So, to place
+a window in the bottom right corner you would first set gravity to south east,
+then write: @samp{gtk_window_move (window, @code{gdk-screen-width} -
+window_width, @code{gdk-screen-height} - window_height)} (note that this example
+does not take multi-head scenarios into account).
+
+The Extended Window Manager Hints specification at
+@uref{http://www.freedesktop.org/Standards/wm-spec,
+http://www.freedesktop.org/Standards/wm-spec} has a nice table of gravities in
+the "implementation notes" section.
+
+The @code{gtk-window-get-position} documentation may also be relevant.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item x
+X coordinate to move window to
+
+@item y
+Y coordinate to move window to
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-parse-geometry  (self@tie{}@code{<gtk-window>}) (geometry@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method parse-geometry
+Parses a standard X Window System geometry string - see the manual page for X
+(type 'man X') for details on this. @code{gtk-window-parse-geometry} does work
+on all GTK+ ports including Win32 but is primarily intended for an X
+environment.
+
+If either a size or a position can be extracted from the geometry string,
+@code{gtk-window-parse-geometry} returns @samp{@code{#t}} and calls
+@code{gtk-window-set-default-size} and/or @code{gtk-window-move} to resize/move
+the window.
+
+If @code{gtk-window-parse-geometry} returns @samp{@code{#t}}, it will also set
+the @code{<gdk-hint-user-pos>} and/or @code{<gdk-hint-user-size>} hints
+indicating to the window manager that the size/position of the window was
+user-specified. This causes most window managers to honor the geometry.
+
+Note that for @code{gtk-window-parse-geometry} to work as expected, it has to be
+called when the window has its "final" size, i.e. after calling
+@code{gtk-widget-show-all} on the contents and
+@code{gtk-window-set-geometry-hints} on the window.
+
+@example 
+
+#include <gtk/gtk.h>
+   
+static void
+fill_with_content (GtkWidget *vbox)
+@{
+  /* fill with content... */
+@}
+   
+int
+main (int argc, char *argv[])
+@{
+  GtkWidget *window, *vbox;
+  GdkGeometry size_hints = @{
+    100, 50, 0, 0, 100, 50, 10, 10, 0.0, 0.0, GDK_GRAVITY_NORTH_WEST  
+  @};
+   
+  gtk_init (&argc, &argv);
+  
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  vbox = gtk_vbox_new (FALSE, 0);
+  
+  gtk_container_add (GTK_CONTAINER (window), vbox);
+  fill_with_content (vbox);
+  gtk_widget_show_all (vbox);
+  
+  gtk_window_set_geometry_hints (GTK_WINDOW (window),
+	  			    window,
+				    &size_hints,
+				    GDK_HINT_MIN_SIZE | 
+				    GDK_HINT_BASE_SIZE | 
+				    GDK_HINT_RESIZE_INC);
+  
+  if (argc > 1)
+    @{
+      if (!gtk_window_parse_geometry (GTK_WINDOW (window), argv[1]))
+        fprintf (stderr, "Failed to parse '%s'\n", argv[1]);
+    @}
+   
+  gtk_widget_show_all (window);
+  gtk_main ();
+   
+  return 0;
+@}
+@end example
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item geometry
+geometry string
+
+@item ret
+@samp{@code{#t}} if string was parsed successfully
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-reshow-with-initial-size  (self@tie{}@code{<gtk-window>})
+@deffnx Method reshow-with-initial-size
+Hides @var{window}, then reshows it, resetting the default size and position of
+the window. Used by GUI builders only.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-resize  (self@tie{}@code{<gtk-window>}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method resize
+Resizes the window as if the user had done so, obeying geometry constraints. The
+default geometry constraint is that windows may not be smaller than their size
+request; to override this constraint, call @code{gtk-widget-set-size-request} to
+set the window's request to a smaller value.
+
+If @code{gtk-window-resize} is called before showing a window for the first
+time, it overrides any default size set with @code{gtk-window-set-default-size}.
+
+Windows may not be resized smaller than 1 by 1 pixels.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item width
+width in pixels to resize the window to
+
+@item height
+height in pixels to resize the window to
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-default-icon-list  (list@tie{}@code{glist-of})
+Sets an icon list to be used as fallback for windows that haven't had
+@code{gtk-window-set-icon-list} called on them to set up a window-specific icon
+list. This function allows you to set up the icon for all windows in your app at
+once.
+
+See @code{gtk-window-set-icon-list} for more details.
+
+@table @var
+@item list
+a list of @code{<gdk-pixbuf>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-default-icon  (icon@tie{}@code{<gdk-pixbuf>})
+Sets an icon to be used as fallback for windows that haven't had
+@code{gtk-window-set-icon} called on them from a pixbuf.
+
+@table @var
+@item icon
+the icon
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-window-set-default-icon-name  (name@tie{}@code{mchars})
+Sets an icon to be used as fallback for windows that haven't had
+@code{gtk-window-set-icon-list} called on them from a named themed icon, see
+@code{gtk-window-set-icon-name}.
+
+@table @var
+@item name
+the name of the themed icon
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-window-set-icon  (self@tie{}@code{<gtk-window>}) (icon@tie{}@code{<gdk-pixbuf>})
+@deffnx Method set-icon
+Sets up the icon representing a @code{<gtk-window>}. This icon is used when the
+window is minimized (also known as iconified). Some window managers or desktop
+environments may also place it in the window frame, or display it in other
+contexts.
+
+The icon should be provided in whatever size it was naturally drawn; that is,
+don't scale the image before passing it to GTK+. Scaling is postponed until the
+last minute, when the desired final size is known, to allow best quality.
+
+If you have your icon hand-drawn in multiple sizes, use
+@code{gtk-window-set-icon-list}. Then the best size will be used.
+
+This function is equivalent to calling @code{gtk-window-set-icon-list} with a
+1-element list.
+
+See also @code{gtk-window-set-default-icon-list} to set the icon for all windows
+in your application in one go.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item icon
+icon image, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-icon-list  (self@tie{}@code{<gtk-window>}) (list@tie{}@code{glist-of})
+@deffnx Method set-icon-list
+Sets up the icon representing a @code{<gtk-window>}. The icon is used when the
+window is minimized (also known as iconified). Some window managers or desktop
+environments may also place it in the window frame, or display it in other
+contexts.
+
+@code{gtk-window-set-icon-list} allows you to pass in the same icon in several
+hand-drawn sizes. The list should contain the natural sizes your icon is
+available in; that is, don't scale the image before passing it to GTK+. Scaling
+is postponed until the last minute, when the desired final size is known, to
+allow best quality.
+
+By passing several sizes, you may improve the final image quality of the icon,
+by reducing or eliminating automatic image scaling.
+
+Recommended sizes to provide: 16x16, 32x32, 48x48 at minimum, and larger images
+(64x64, 128x128) if you have them.
+
+See also @code{gtk-window-set-default-icon-list} to set the icon for all windows
+in your application in one go.
+
+Note that transient windows (those who have been set transient for another
+window using @code{gtk-window-set-transient-for}) will inherit their icon from
+their transient parent. So there's no need to explicitly set the icon on
+transient windows.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item list
+list of @code{<gdk-pixbuf>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-window-set-icon-from-file  (self@tie{}@code{<gtk-window>}) (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-icon-from-file
+Sets the icon for @var{window}. Warns on failure if @var{err} is
+@samp{@code{#f}}.
+
+This function is equivalent to calling @code{gtk-window-set-icon} with a pixbuf
+created by loading the image from @var{filename}.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item filename
+location of icon file
+
+@item err
+location to store error, or @samp{@code{#f}}.
+
+@item ret
+@samp{@code{#t}} if setting the icon succeeded.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-window-set-icon-name  (self@tie{}@code{<gtk-window>}) (name@tie{}@code{mchars})
+@deffnx Method set-icon-name
+Sets the icon for the window from a named themed icon. See the docs for
+@code{<gtk-icon-theme>} for more details.
+
+Note that this has nothing to do with the WM_ICON_NAME property which is
+mentioned in the ICCCM.
+
+@table @var
+@item window
+a @code{<gtk-window>}
+
+@item name
+the name of the themed icon
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

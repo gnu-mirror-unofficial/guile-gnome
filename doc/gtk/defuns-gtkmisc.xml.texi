@@ -1,0 +1,91 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-misc>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item xalign
+The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts.@item yalign
+The vertical alignment, from 0 (top) to 1 (bottom)@item xpad
+The amount of space to add on the left and right of the widget, in pixels@item ypad
+The amount of space to add on the top and bottom of the widget, in pixels@end table
+
+@end deftp
+
+@deffn Function gtk-misc-set-alignment  (self@tie{}@code{<gtk-misc>}) (xalign@tie{}@code{float}) (yalign@tie{}@code{float})
+@deffnx Method set-alignment
+Sets the alignment of the widget.
+
+@table @var
+@item misc
+a @code{<gtk-misc>}.
+
+@item xalign
+the horizontal alignment, from 0 (left) to 1 (right).
+
+@item yalign
+the vertical alignment, from 0 (top) to 1 (bottom).
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-misc-set-padding  (self@tie{}@code{<gtk-misc>}) (xpad@tie{}@code{int}) (ypad@tie{}@code{int})
+@deffnx Method set-padding
+Sets the amount of space to add around the widget.
+
+@table @var
+@item misc
+a @code{<gtk-misc>}.
+
+@item xpad
+the amount of space to add on the left and right of the widget, in pixels.
+
+@item ypad
+the amount of space to add on the top and bottom of the widget, in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-misc-get-alignment  (self@tie{}@code{<gtk-misc>}) @result{}@tie{} (xalign@tie{}@code{float}) (yalign@tie{}@code{float})
+@deffnx Method get-alignment
+Gets the X and Y alignment of the widget within its allocation. See
+@code{gtk-misc-set-alignment}.
+
+@table @var
+@item misc
+a @code{<gtk-misc>}
+
+@item xalign
+location to store X alignment of @var{misc}, or @samp{@code{#f}}
+
+@item yalign
+location to store Y alignment of @var{misc}, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-misc-get-padding  (self@tie{}@code{<gtk-misc>}) @result{}@tie{} (xpad@tie{}@code{int}) (ypad@tie{}@code{int})
+@deffnx Method get-padding
+Gets the padding in the X and Y directions of the widget. See
+@code{gtk-misc-set-padding}.
+
+@table @var
+@item misc
+a @code{<gtk-misc>}
+
+@item xpad
+location to store padding in the X direction, or @samp{@code{#f}}
+
+@item ypad
+location to store padding in the Y direction, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

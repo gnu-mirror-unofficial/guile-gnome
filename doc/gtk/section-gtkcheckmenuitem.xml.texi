@@ -1,0 +1,20 @@
+
+@c %start of fragment
+
+@node GtkCheckMenuItem
+@chapter GtkCheckMenuItem
+A menu item with a check box
+
+@section Overview
+A @code{<gtk-check-menu-item>} is a menu item that maintains the state of a
+boolean value in addition to a @code{<gtk-menu-item>}'s usual role in activating
+application code.
+
+A check box indicating the state of the boolean value is displayed at the left
+side of the @code{<gtk-menu-item>}. Activating the @code{<gtk-menu-item>}
+toggles the value.
+
+@section Usage
+@include defuns-gtkcheckmenuitem.xml.texi
+
+@c %end of fragment

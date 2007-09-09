@@ -1,0 +1,38 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-recent-chooser-menu>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item show-numbers
+Whether the items should be displayed with a number@end table
+
+@end deftp
+
+@deffn Function gtk-recent-chooser-menu-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-recent-chooser-menu>} widget.
+
+This kind of widget shows the list of recently used resources as a menu, each
+item as a menu item. Each item inside the menu might have an icon, representing
+its MIME type, and a number, for mnemonic access.
+
+This widget implements the @code{<gtk-recent-chooser>} interface.
+
+This widget creates its own @code{<gtk-recent-manager>} object. See the
+@code{gtk-recent-chooser-menu-new-for-manager} function to know how to create a
+@code{<gtk-recent-chooser-menu>} widget bound to another
+@code{<gtk-recent-manager>} object.
+
+@table @var
+@item ret
+a new @code{<gtk-recent-chooser-menu>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment

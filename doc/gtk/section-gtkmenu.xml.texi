@@ -1,0 +1,67 @@
+
+@c %start of fragment
+
+@node GtkMenu
+@chapter GtkMenu
+A menu widget
+
+@section Overview
+A @code{<gtk-menu>} is a @code{<gtk-menu-shell>} that implements a drop down
+menu consisting of a list of @code{<gtk-menu-item>} objects which can be
+navigated and activated by the user to perform application functions.
+
+A @code{<gtk-menu>} is most commonly dropped down by activating a
+@code{<gtk-menu-item>} in a @code{<gtk-menu-bar>} or popped up by activating a
+@code{<gtk-menu-item>} in another @code{<gtk-menu>}.
+
+A @code{<gtk-menu>} can also be popped up by activating a
+@code{<gtk-option-menu>}. Other composite widgets such as the
+@code{<gtk-notebook>} can pop up a @code{<gtk-menu>} as well.
+
+Applications can display a @code{<gtk-menu>} as a popup menu by calling the
+@code{gtk-menu-popup} function. The example below shows how an application can
+pop up a menu when the 3rd mouse button is pressed.
+
+@example 
+
+    /* connect our handler which will popup the menu */
+    g_signal_connect_swapped (window, "button_press_event",
+	G_CALLBACK (my_popup_handler), menu);
+@end example
+
+@example 
+
+static gint
+my_popup_handler (GtkWidget *widget, GdkEvent *event)
+@{
+  GtkMenu *menu;
+  GdkEventButton *event_button;
+
+  g_return_val_if_fail (widget != NULL, FALSE);
+  g_return_val_if_fail (GTK_IS_MENU (widget), FALSE);
+  g_return_val_if_fail (event != NULL, FALSE);
+
+  /* The "widget" is the menu that was supplied when 
+   * g_signal_connect_swapped() was called.
+   */
+  menu = GTK_MENU (widget);
+
+  if (event->type == GDK_BUTTON_PRESS)
+    @{
+      event_button = (GdkEventButton *) event;
+      if (event_button->button == 3)
+	@{
+	  gtk_menu_popup (menu, NULL, NULL, NULL, NULL, 
+			  event_button->button, event_button->time);
+	  return TRUE;
+	@}
+    @}
+
+  return FALSE;
+@}
+@end example
+
+@section Usage
+@include defuns-gtkmenu.xml.texi
+
+@c %end of fragment

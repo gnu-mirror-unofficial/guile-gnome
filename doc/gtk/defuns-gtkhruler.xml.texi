@@ -1,0 +1,22 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-hruler>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function gtk-hruler-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new horizontal ruler.
+
+@table @var
+@item ret
+a new @code{<gtk-hruler>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

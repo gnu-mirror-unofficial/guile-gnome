@@ -1,0 +1,20 @@
+
+@c %start of fragment
+
+@node GtkTree
+@chapter GtkTree
+A tree widget
+
+@section Overview
+The @code{<gtk-tree>} widget is a container that shows users a list of items, in
+a tree format complete with branches and leafnodes. Branches can be expanded to
+show their child items, or collapsed to hide them.
+
+@code{<gtk-tree>} is deprecated and unsupported. It is known to be buggy. To use
+it, you must define the symbol @samp{GTK_ENABLE_BROKEN} prior to including the
+GTK+ header files. Use @code{<gtk-tree-view>} instead.
+
+@section Usage
+@include defuns-gtktree.xml.texi
+
+@c %end of fragment

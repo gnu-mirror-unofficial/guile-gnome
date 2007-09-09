@@ -1,0 +1,565 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-image>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item pixbuf
+A GdkPixbuf to display@item pixmap
+A GdkPixmap to display@item image
+A GdkImage to display@item mask
+Mask bitmap to use with GdkImage or GdkPixmap@item file
+Filename to load and display@item stock
+Stock ID for a stock image to display@item icon-set
+Icon set to display@item icon-size
+Symbolic size to use for stock icon, icon set or named icon@item pixel-size
+Pixel size to use for named icon@item pixbuf-animation
+GdkPixbufAnimation to display@item icon-name
+The name of the icon from the icon theme@item storage-type
+The representation being used for image data@end table
+
+@end deftp
+
+@deffn Function gtk-image-get-icon-set  (self@tie{}@code{<gtk-image>}) (icon_set@tie{}@code{<gtk-icon-set**>}) (size@tie{}@code{<gtk-icon-size*>})
+@deffnx Method get-icon-set
+Gets the icon set and size being displayed by the @code{<gtk-image>}. The
+storage type of the image must be @samp{GTK_IMAGE_EMPTY} or
+@samp{GTK_IMAGE_ICON_SET} (see @code{gtk-image-get-storage-type}).
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item icon-set
+location to store a @code{<gtk-icon-set>}
+
+@item size
+location to store a stock icon size
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-get-image  (self@tie{}@code{<gtk-image>}) (gdk_image@tie{}@code{<gdk-image**>}) (mask@tie{}@code{<gdk-bitmap**>})
+@deffnx Method get-image
+Gets the @code{<gdk-image>} and mask being displayed by the @code{<gtk-image>}.
+The storage type of the image must be @samp{GTK_IMAGE_EMPTY} or
+@samp{GTK_IMAGE_IMAGE} (see @code{gtk-image-get-storage-type}). The caller of
+this function does not own a reference to the returned image and mask.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item gdk-image
+return location for a @code{<gtk-image>}
+
+@item mask
+return location for a @code{<gdk-bitmap>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-get-pixbuf  (self@tie{}@code{<gtk-image>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method get-pixbuf
+Gets the @code{<gdk-pixbuf>} being displayed by the @code{<gtk-image>}. The
+storage type of the image must be @samp{GTK_IMAGE_EMPTY} or
+@samp{GTK_IMAGE_PIXBUF} (see @code{gtk-image-get-storage-type}). The caller of
+this function does not own a reference to the returned pixbuf.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item ret
+the displayed pixbuf, or @samp{@code{#f}} if the image is empty
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-get-pixmap  (self@tie{}@code{<gtk-image>}) (pixmap@tie{}@code{<gdk-pixmap**>}) (mask@tie{}@code{<gdk-bitmap**>})
+@deffnx Method get-pixmap
+Gets the pixmap and mask being displayed by the @code{<gtk-image>}. The storage
+type of the image must be @samp{GTK_IMAGE_EMPTY} or @samp{GTK_IMAGE_PIXMAP} (see
+@code{gtk-image-get-storage-type}). The caller of this function does not own a
+reference to the returned pixmap and mask.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item pixmap
+location to store the pixmap, or @samp{@code{#f}}
+
+@item mask
+location to store the mask, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-get-stock  (self@tie{}@code{<gtk-image>}) (size@tie{}@code{<gtk-icon-size*>}) @result{}@tie{} (stock_id@tie{}@code{mchars})
+@deffnx Method get-stock
+Gets the stock icon name and size being displayed by the @code{<gtk-image>}. The
+storage type of the image must be @samp{GTK_IMAGE_EMPTY} or
+@samp{GTK_IMAGE_STOCK} (see @code{gtk-image-get-storage-type}). The returned
+string is owned by the @code{<gtk-image>} and should not be freed.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item stock-id
+place to store a stock icon name
+
+@item size
+place to store a stock icon size
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-get-animation  (self@tie{}@code{<gtk-image>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf-animation>})
+@deffnx Method get-animation
+Gets the @code{<gdk-pixbuf-animation>} being displayed by the
+@code{<gtk-image>}. The storage type of the image must be @samp{GTK_IMAGE_EMPTY}
+or @samp{GTK_IMAGE_ANIMATION} (see @code{gtk-image-get-storage-type}). The
+caller of this function does not own a reference to the returned animation.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item ret
+the displayed animation, or @samp{@code{#f}} if the image is empty
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-get-icon-name  (self@tie{}@code{<gtk-image>}) (icon_name@tie{}@code{<gchar**>}) (size@tie{}@code{<gtk-icon-size*>})
+@deffnx Method get-icon-name
+Gets the icon name and size being displayed by the @code{<gtk-image>}. The
+storage type of the image must be @samp{GTK_IMAGE_EMPTY} or
+@samp{GTK_IMAGE_ICON_NAME} (see @code{gtk-image-get-storage-type}). The returned
+string is owned by the @code{<gtk-image>} and should not be freed.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item icon-name
+place to store an icon name
+
+@item size
+place to store an icon size
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-image-get-storage-type  (self@tie{}@code{<gtk-image>}) @result{}@tie{} (ret@tie{}@code{<gtk-image-type>})
+@deffnx Method get-storage-type
+Gets the type of representation being used by the @code{<gtk-image>} to store
+image data. If the @code{<gtk-image>} has no image data, the return value will
+be @samp{GTK_IMAGE_EMPTY}.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item ret
+image representation being used
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-new-from-file  (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-image>} displaying the file @var{filename}. If the file
+isn't found or can't be loaded, the resulting @code{<gtk-image>} will display a
+"broken image" icon. This function never returns @samp{@code{#f}}, it always
+returns a valid @code{<gtk-image>} widget.
+
+If the file contains an animation, the image will contain an animation.
+
+If you need to detect failures to load the file, use
+@code{gdk-pixbuf-new-from-file} to load the file yourself, then create the
+@code{<gtk-image>} from the pixbuf. (Or for animations, use
+@code{gdk-pixbuf-animation-new-from-file}).
+
+The storage type (@code{gtk-image-get-storage-type}) of the returned image is
+not defined, it will be whatever is appropriate for displaying the file.
+
+@table @var
+@item filename
+a filename
+
+@item ret
+a new @code{<gtk-image>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-new-from-icon-set  (icon_set@tie{}@code{<gtk-icon-set>}) (size@tie{}@code{<gtk-icon-size>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a @code{<gtk-image>} displaying an icon set. Sample stock sizes are
+@code{<gtk-icon-size-menu>}, @code{<gtk-icon-size-small-toolbar>}. Instead of
+using this function, usually it's better to create a @code{<gtk-icon-factory>},
+put your icon sets in the icon factory, add the icon factory to the list of
+default factories with @code{gtk-icon-factory-add-default}, and then use
+@code{gtk-image-new-from-stock}. This will allow themes to override the icon you
+ship with your application.
+
+The @code{<gtk-image>} does not assume a reference to the icon set; you still
+need to unref it if you own references. @code{<gtk-image>} will add its own
+reference rather than adopting yours.
+
+@table @var
+@item icon-set
+a @code{<gtk-icon-set>}
+
+@item size
+a stock icon size
+
+@item ret
+a new @code{<gtk-image>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-new-from-image  (image@tie{}@code{<gdk-image>}) (mask@tie{}@code{<gdk-bitmap*>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a @code{<gtk-image>} widget displaying a @var{image} with a @var{mask}.
+A @code{<gdk-image>} is a client-side image buffer in the pixel format of the
+current display. The @code{<gtk-image>} does not assume a reference to the image
+or mask; you still need to unref them if you own references. @code{<gtk-image>}
+will add its own reference rather than adopting yours.
+
+@table @var
+@item image
+a @code{<gdk-image>}, or @samp{@code{#f}}
+
+@item mask
+a @code{<gdk-bitmap>}, or @samp{@code{#f}}
+
+@item ret
+a new @code{<gtk-image>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-new-from-pixbuf  (pixbuf@tie{}@code{<gdk-pixbuf>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-image>} displaying @var{pixbuf}. The @code{<gtk-image>}
+does not assume a reference to the pixbuf; you still need to unref it if you own
+references. @code{<gtk-image>} will add its own reference rather than adopting
+yours.
+
+Note that this function just creates an @code{<gtk-image>} from the pixbuf. The
+@code{<gtk-image>} created will not react to state changes. Should you want
+that, you should use @code{gtk-image-new-from-icon-set}.
+
+@table @var
+@item pixbuf
+a @code{<gdk-pixbuf>}, or @samp{@code{#f}}
+
+@item ret
+a new @code{<gtk-image>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-new-from-pixmap  (pixmap@tie{}@code{<gdk-pixmap*>}) (mask@tie{}@code{<gdk-bitmap*>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a @code{<gtk-image>} widget displaying @var{pixmap} with a @var{mask}. A
+@code{<gdk-pixmap>} is a server-side image buffer in the pixel format of the
+current display. The @code{<gtk-image>} does not assume a reference to the
+pixmap or mask; you still need to unref them if you own references.
+@code{<gtk-image>} will add its own reference rather than adopting yours.
+
+@table @var
+@item pixmap
+a @code{<gdk-pixmap>}, or @samp{@code{#f}}
+
+@item mask
+a @code{<gdk-bitmap>}, or @samp{@code{#f}}
+
+@item ret
+a new @code{<gtk-image>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-new-from-stock  (stock_id@tie{}@code{mchars}) (size@tie{}@code{<gtk-icon-size>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a @code{<gtk-image>} displaying a stock icon. Sample stock icon names
+are @code{<gtk-stock-open>}, @code{<gtk-stock-quit>}. Sample stock sizes are
+@code{<gtk-icon-size-menu>}, @code{<gtk-icon-size-small-toolbar>}. If the stock
+icon name isn't known, the image will be empty. You can register your own stock
+icon names, see @code{gtk-icon-factory-add-default} and
+@code{gtk-icon-factory-add}.
+
+@table @var
+@item stock-id
+a stock icon name
+
+@item size
+a stock icon size
+
+@item ret
+a new @code{<gtk-image>} displaying the stock icon
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-new-from-animation  (animation@tie{}@code{<gdk-pixbuf-animation>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a @code{<gtk-image>} displaying the given animation. The
+@code{<gtk-image>} does not assume a reference to the animation; you still need
+to unref it if you own references. @code{<gtk-image>} will add its own reference
+rather than adopting yours.
+
+Note that the animation frames are shown using a timeout with
+@code{<g-priority-default>}. When using animations to indicate busyness, keep in
+mind that the animation will only be shown if the main loop is not busy with
+something that has a higher priority.
+
+@table @var
+@item animation
+an animation
+
+@item ret
+a new @code{<gtk-image>} widget
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-new-from-icon-name  (icon_name@tie{}@code{mchars}) (size@tie{}@code{<gtk-icon-size>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a @code{<gtk-image>} displaying an icon from the current icon theme. If
+the icon name isn't known, a "broken image" icon will be displayed instead. If
+the current icon theme is changed, the icon will be updated appropriately.
+
+@table @var
+@item icon-name
+an icon name
+
+@item size
+a stock icon size
+
+@item ret
+a new @code{<gtk-image>} displaying the themed icon
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-image-set-from-file  (self@tie{}@code{<gtk-image>}) (filename@tie{}@code{mchars})
+@deffnx Method set-from-file
+See @code{gtk-image-new-from-file} for details.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item filename
+a filename or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-set-from-icon-set  (self@tie{}@code{<gtk-image>}) (icon_set@tie{}@code{<gtk-icon-set>}) (size@tie{}@code{<gtk-icon-size>})
+@deffnx Method set-from-icon-set
+See @code{gtk-image-new-from-icon-set} for details.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item icon-set
+a @code{<gtk-icon-set>}
+
+@item size
+a stock icon size
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-set-from-image  (self@tie{}@code{<gtk-image>}) (gdk_image@tie{}@code{<gdk-image>}) (mask@tie{}@code{<gdk-bitmap*>})
+@deffnx Method set-from-image
+See @code{gtk-image-new-from-image} for details.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item gdk-image
+a @code{<gdk-image>} or @samp{@code{#f}}
+
+@item mask
+a @code{<gdk-bitmap>} or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-set-from-pixbuf  (self@tie{}@code{<gtk-image>}) (pixbuf@tie{}@code{<gdk-pixbuf>})
+@deffnx Method set-from-pixbuf
+See @code{gtk-image-new-from-pixbuf} for details.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item pixbuf
+a @code{<gdk-pixbuf>} or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-set-from-pixmap  (self@tie{}@code{<gtk-image>}) (pixmap@tie{}@code{<gdk-pixmap*>}) (mask@tie{}@code{<gdk-bitmap*>})
+@deffnx Method set-from-pixmap
+See @code{gtk-image-new-from-pixmap} for details.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item pixmap
+a @code{<gdk-pixmap>} or @samp{@code{#f}}
+
+@item mask
+a @code{<gdk-bitmap>} or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-set-from-stock  (self@tie{}@code{<gtk-image>}) (stock_id@tie{}@code{mchars}) (size@tie{}@code{<gtk-icon-size>})
+@deffnx Method set-from-stock
+See @code{gtk-image-new-from-stock} for details.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item stock-id
+a stock icon name
+
+@item size
+a stock icon size
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-set-from-animation  (self@tie{}@code{<gtk-image>}) (animation@tie{}@code{<gdk-pixbuf-animation>})
+@deffnx Method set-from-animation
+Causes the @code{<gtk-image>} to display the given animation (or display
+nothing, if you set the animation to @samp{@code{#f}}).
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item animation
+the @code{<gdk-pixbuf-animation>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-set-from-icon-name  (self@tie{}@code{<gtk-image>}) (icon_name@tie{}@code{mchars}) (size@tie{}@code{<gtk-icon-size>})
+@deffnx Method set-from-icon-name
+See @code{gtk-image-new-from-icon-name} for details.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item icon-name
+an icon name
+
+@item size
+an icon size
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-image-clear  (self@tie{}@code{<gtk-image>})
+@deffnx Method clear
+Resets the image to be empty.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-image-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new empty @code{<gtk-image>} widget.
+
+@table @var
+@item ret
+a newly created @code{<gtk-image>} widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-set-pixel-size  (self@tie{}@code{<gtk-image>}) (pixel_size@tie{}@code{int})
+@deffnx Method set-pixel-size
+Sets the pixel size to use for named icons. If the pixel size is set to a value
+!= -1, it is used instead of the icon size set by
+@code{gtk-image-set-from-icon-name}.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item pixel-size
+the new pixel size
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-image-get-pixel-size  (self@tie{}@code{<gtk-image>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-pixel-size
+Gets the pixel size used for named icons.
+
+@table @var
+@item image
+a @code{<gtk-image>}
+
+@item ret
+the pixel size used for named icons.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

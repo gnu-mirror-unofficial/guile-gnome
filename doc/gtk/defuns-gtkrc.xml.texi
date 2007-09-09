@@ -1,0 +1,370 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-rc-style>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function gtk-rc-scanner-new  @result{}@tie{} (ret@tie{}@code{<g-scanner*>})
+@table @var
+@item ret
+
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-get-style  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gtk-style>})
+Finds all matching RC styles for a given widget, composites them together, and
+then creates a @code{<gtk-style>} representing the composite appearance. (GTK+
+actually keeps a cache of previously created styles, so a new style may not be
+created.)
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the resulting style. No refcount is added to the returned style, so if you want
+to save this style around, you should add a reference yourself.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-get-style-by-paths  (settings@tie{}@code{<gtk-settings>}) (widget_path@tie{}@code{mchars}) (class_path@tie{}@code{mchars}) (type@tie{}@code{<gtype>}) @result{}@tie{} (ret@tie{}@code{<gtk-style>})
+Creates up a @code{<gtk-style>} from styles defined in a RC file by providing
+the raw components used in matching. This function may be useful when creating
+pseudo-widgets that should be themed like widgets but don't actually have
+corresponding GTK+ widgets. An example of this would be items inside a GNOME
+canvas widget.
+
+The action of @code{gtk-rc-get-style} is similar to:
+
+@example 
+
+ gtk_widget_path (widget, NULL, &path, NULL);
+ gtk_widget_class_path (widget, NULL, &class_path, NULL);
+ gtk_rc_get_style_by_paths (gtk_widget_get_settings (widget), path, class_path,
+                            G_OBJECT_TYPE (widget));
+@end example
+
+@table @var
+@item settings
+a @code{<gtk-settings>} object
+
+@item widget-path
+the widget path to use when looking up the style, or @samp{@code{#f}} if no
+matching against the widget path should be done
+
+@item class-path
+the class path to use when looking up the style, or @samp{@code{#f}} if no
+matching against the class path should be done.
+
+@item type
+a type that will be used along with parent types of this type when matching
+against class styles, or @code{<g-type-none>}
+
+@item ret
+A style created by matching with the supplied paths, or @samp{@code{#f}} if
+nothing matching was specified and the default style should be used. The
+returned value is owned by GTK+ as part of an internal cache, so you must call
+@code{g-object-ref} on the returned value if you want to keep a reference to it.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-parse  (filename@tie{}@code{mchars})
+Parses a given resource file.
+
+@table @var
+@item filename
+the filename of a file to parse. If @var{filename} is not absolute, it is
+searched in the current directory.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-parse-string  (rc_string@tie{}@code{mchars})
+Parses resource information directly from a string.
+
+@table @var
+@item rc-string
+a string to parse.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-reparse-all  @result{}@tie{} (ret@tie{}@code{bool})
+If the modification time on any previously read file for the default
+@code{<gtk-settings>} has changed, discard all style information and then reread
+all previously read RC files.
+
+@table @var
+@item ret
+@samp{@code{#t}} if the files were reread.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-reparse-all-for-settings  (settings@tie{}@code{<gtk-settings>}) (force_load@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+If the modification time on any previously read file for the given
+@code{<gtk-settings>} has changed, discard all style information and then reread
+all previously read RC files.
+
+@table @var
+@item settings
+a @code{<gtk-settings>}
+
+@item force-load
+load whether or not anything changed
+
+@item ret
+@samp{@code{#t}} if the files were reread.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-reset-styles  (settings@tie{}@code{<gtk-settings>})
+This function recomputes the styles for all widgets that use a particular
+@code{<gtk-settings>} object. (There is one @code{<gtk-settings>} object per
+@code{<gdk-screen>}, see @code{gtk-settings-get-for-screen}); It is useful when
+some global parameter has changed that affects the appearance of all widgets,
+because when a widget gets a new style, it will both redraw and recompute any
+cached information about its appearance. As an example, it is used when the
+default font size set by the operating system changes. Note that this function
+doesn't affect widgets that have a style set explicitely on them with
+@code{gtk-widget-set-style}.
+
+@table @var
+@item settings
+a @code{<gtk-settings>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-rc-add-default-file  (filename@tie{}@code{mchars})
+Adds a file to the list of files to be parsed at the end of @code{gtk-init}.
+
+@table @var
+@item filename
+the pathname to the file. If @var{filename} is not absolute, it is searched in
+the current directory.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-get-default-files  @result{}@tie{} (ret@tie{}@code{<gchar**>})
+Retrieves the current list of RC files that will be parsed at the end of
+@code{gtk-init}.
+
+@table @var
+@item ret
+A @samp{@code{#f}}-terminated array of filenames. This memory is owned by GTK+
+and must not be freed by the application. If you want to store this information,
+you should make a copy.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-set-default-files  @result{}@tie{} (filenames@tie{}@code{mchars})
+Sets the list of files that GTK+ will read at the end of @code{gtk-init}.
+
+@table @var
+@item filenames
+A @samp{@code{#f}}-terminated list of filenames.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-parse-color  (scanner@tie{}@code{<g-scanner*>}) (color@tie{}@code{<gdk-color>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Parses a color in the format expected in a RC file.
+
+@table @var
+@item scanner
+a @code{<gtk-scanner>}
+
+@item color
+a pointer to a @code{<gtk-color>} structure in which to store the result
+
+@item ret
+@samp{G_TOKEN_NONE} if parsing succeeded, otherwise the token that was expected
+but not found.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-parse-state  (scanner@tie{}@code{<g-scanner*>}) (state@tie{}@code{<gtk-state-type*>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Parses a @code{<gtk-state-type>} variable from the format expected in a RC file.
+
+@table @var
+@item scanner
+a @code{<gtk-scanner>} (must be initialized for parsing an RC file)
+
+@item state
+A pointer to a @code{<gtk-state-type>} variable in which to store the result.
+
+@item ret
+@samp{G_TOKEN_NONE} if parsing succeeded, otherwise the token that was expected
+but not found.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-parse-priority  (scanner@tie{}@code{<g-scanner*>}) (priority@tie{}@code{<gtk-path-priority-type*>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Parses a @code{<gtk-path-priority-type>} variable from the format expected in a
+RC file.
+
+@table @var
+@item scanner
+a @code{<gtk-scanner>} (must be initialized for parsing an RC file)
+
+@item priority
+A pointer to @code{<gtk-path-priority-type>} variable in which to store the
+result.
+
+@item ret
+@samp{G_TOKEN_NONE} if parsing succeeded, otherwise the token that was expected
+but not found.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-find-module-in-path  (module_file@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Searches for a theme engine in the GTK+ search path. This function is not useful
+for applications and should not be used.
+
+@table @var
+@item module-file
+name of a theme engine
+
+@item ret
+The filename, if found (must be freed with @code{g-free}), otherwise
+@samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-find-pixmap-in-path  (settings@tie{}@code{<gtk-settings>}) (scanner@tie{}@code{<g-scanner*>}) (pixmap_file@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Looks up a file in pixmap path for the specified @code{<gtk-settings>}. If the
+file is not found, it outputs a warning message using @code{g-warning} and
+returns @samp{@code{#f}}.
+
+@table @var
+@item settings
+a @code{<gtk-settings>}
+
+@item scanner
+Scanner used to get line number information for the warning message, or
+@samp{@code{#f}}
+
+@item pixmap-file
+name of the pixmap file to locate.
+
+@item ret
+the filename.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-get-module-dir  @result{}@tie{} (ret@tie{}@code{mchars})
+Returns a directory in which GTK+ looks for theme engines. For full information
+about the search for theme engines, see the docs for @env{GTK_PATH} in
+@emph{(the missing figure, gtk-running}.
+
+@table @var
+@item ret
+the directory. (Must be freed with @code{g-free})
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-get-im-module-path  @result{}@tie{} (ret@tie{}@code{mchars})
+Obtains the path in which to look for IM modules. See the documentation of the
+@env{GTK_PATH} environment variable for more details about looking up modules.
+This function is useful solely for utilities supplied with GTK+ and should not
+be used by applications under normal circumstances.
+
+@table @var
+@item ret
+a newly-allocated string containing the path in which to look for IM modules.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-get-im-module-file  @result{}@tie{} (ret@tie{}@code{mchars})
+Obtains the path to the IM modules file. See the documentation of the
+@env{GTK_IM_MODULE_FILE} environment variable for more details.
+
+@table @var
+@item ret
+a newly-allocated string containing the name of the file listing the IM modules
+available for loading
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-get-theme-dir  @result{}@tie{} (ret@tie{}@code{mchars})
+Returns the standard directory in which themes should be installed. (GTK+ does
+not actually use this directory itself.)
+
+@table @var
+@item ret
+The directory (must be freed with @code{g-free}).
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-style-new  @result{}@tie{} (ret@tie{}@code{<gtk-rc-style>})
+Creates a new @code{<gtk-rc-style>} with no fields set and a reference count of
+1.
+
+@table @var
+@item ret
+the newly-created @code{<gtk-rc-style>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-rc-style-copy  (self@tie{}@code{<gtk-rc-style>}) @result{}@tie{} (ret@tie{}@code{<gtk-rc-style>})
+@deffnx Method copy
+Makes a copy of the specified @code{<gtk-rc-style>}. This function will
+correctly copy an RC style that is a member of a class derived from
+@code{<gtk-rc-style>}.
+
+@table @var
+@item orig
+the style to copy
+
+@item ret
+the resulting @code{<gtk-rc-style>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

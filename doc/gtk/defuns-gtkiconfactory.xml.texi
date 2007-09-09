@@ -1,0 +1,690 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-icon-source>
+@end deftp
+
+@deftp Class <gtk-icon-factory>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deftp Class <gtk-icon-set>
+@end deftp
+
+@deffn Function gtk-icon-source-copy  (self@tie{}@code{<gtk-icon-source>}) @result{}@tie{} (ret@tie{}@code{<gtk-icon-source>})
+Creates a copy of @var{source}; mostly useful for language bindings.
+
+@table @var
+@item source
+a @code{<gtk-icon-source>}
+
+@item ret
+a new @code{<gtk-icon-source>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-factory-add  (self@tie{}@code{<gtk-icon-factory>}) (stock_id@tie{}@code{mchars}) (icon_set@tie{}@code{<gtk-icon-set>})
+@deffnx Method add
+Adds the given @var{icon-set} to the icon factory, under the name
+@var{stock-id}. @var{stock-id} should be namespaced for your application, e.g.
+"myapp-whatever-icon". Normally applications create a @code{<gtk-icon-factory>},
+then add it to the list of default factories with
+@code{gtk-icon-factory-add-default}. Then they pass the @var{stock-id} to
+widgets such as @code{<gtk-image>} to display the icon. Themes can provide an
+icon with the same name (such as "myapp-whatever-icon") to override your
+application's default icons. If an icon already existed in @var{factory} for
+@var{stock-id}, it is unreferenced and replaced with the new @var{icon-set}.
+
+@table @var
+@item factory
+a @code{<gtk-icon-factory>}
+
+@item stock-id
+icon name
+
+@item icon-set
+icon set
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-factory-add-default  (self@tie{}@code{<gtk-icon-factory>})
+@deffnx Method add-default
+Adds an icon factory to the list of icon factories searched by
+@code{gtk-style-lookup-icon-set}. This means that, for example,
+@code{gtk-image-new-from-stock} will be able to find icons in @var{factory}.
+There will normally be an icon factory added for each library or application
+that comes with icons. The default icon factories can be overridden by themes.
+
+@table @var
+@item factory
+a @code{<gtk-icon-factory>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-factory-lookup  (self@tie{}@code{<gtk-icon-factory>}) (stock_id@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-icon-set>})
+@deffnx Method lookup
+Looks up @var{stock-id} in the icon factory, returning an icon set if found,
+otherwise @samp{@code{#f}}. For display to the user, you should use
+@code{gtk-style-lookup-icon-set} on the @code{<gtk-style>} for the widget that
+will display the icon, instead of using this function directly, so that themes
+are taken into account.
+
+@table @var
+@item factory
+a @code{<gtk-icon-factory>}
+
+@item stock-id
+an icon name
+
+@item ret
+icon set of @var{stock-id}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-factory-lookup-default  (stock_id@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-icon-set>})
+Looks for an icon in the list of default icon factories. For display to the
+user, you should use @code{gtk-style-lookup-icon-set} on the @code{<gtk-style>}
+for the widget that will display the icon, instead of using this function
+directly, so that themes are taken into account.
+
+@table @var
+@item stock-id
+an icon name
+
+@item ret
+a @code{<gtk-icon-set>}, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-factory-new  @result{}@tie{} (ret@tie{}@code{<gtk-icon-factory>})
+Creates a new @code{<gtk-icon-factory>}. An icon factory manages a collection of
+@code{<gtk-icon-set>}s; a @code{<gtk-icon-set>} manages a set of variants of a
+particular icon (i.e. a @code{<gtk-icon-set>} contains variants for different
+sizes and widget states). Icons in an icon factory are named by a stock ID,
+which is a simple string identifying the icon. Each @code{<gtk-style>} has a
+list of @code{<gtk-icon-factory>}s derived from the current theme; those icon
+factories are consulted first when searching for an icon. If the theme doesn't
+set a particular icon, GTK+ looks for the icon in a list of default icon
+factories, maintained by @code{gtk-icon-factory-add-default} and
+@code{gtk-icon-factory-remove-default}. Applications with icons should add a
+default icon factory with their icons, which will allow themes to override the
+icons for the application.
+
+@table @var
+@item ret
+a new @code{<gtk-icon-factory>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-factory-remove-default  (self@tie{}@code{<gtk-icon-factory>})
+@deffnx Method remove-default
+Removes an icon factory from the list of default icon factories. Not normally
+used; you might use it for a library that can be unloaded or shut down.
+
+@table @var
+@item factory
+a @code{<gtk-icon-factory>} previously added with
+@code{gtk-icon-factory-add-default}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-set-add-source  (self@tie{}@code{<gtk-icon-set>}) (source@tie{}@code{<gtk-icon-source>})
+Icon sets have a list of @code{<gtk-icon-source>}, which they use as base icons
+for rendering icons in different states and sizes. Icons are scaled, made to
+look insensitive, etc. in @code{gtk-icon-set-render-icon}, but
+@code{<gtk-icon-set>} needs base images to work with. The base images and when
+to use them are described by a @code{<gtk-icon-source>}.
+
+This function copies @var{source}, so you can reuse the same source immediately
+without affecting the icon set.
+
+An example of when you'd use this function: a web browser's "Back to Previous
+Page" icon might point in a different direction in Hebrew and in English; it
+might look different when insensitive; and it might change size depending on
+toolbar mode (small/large icons). So a single icon set would contain all those
+variants of the icon, and you might add a separate source for each one.
+
+You should nearly always add a "default" icon source with all fields wildcarded,
+which will be used as a fallback if no more specific source matches.
+@code{<gtk-icon-set>} always prefers more specific icon sources to more generic
+icon sources. The order in which you add the sources to the icon set does not
+matter.
+
+@code{gtk-icon-set-new-from-pixbuf} creates a new icon set with a default icon
+source based on the given pixbuf.
+
+@table @var
+@item icon-set
+a @code{<gtk-icon-set>}
+
+@item source
+a @code{<gtk-icon-source>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-set-copy  (self@tie{}@code{<gtk-icon-set>}) @result{}@tie{} (ret@tie{}@code{<gtk-icon-set>})
+Copies @var{icon-set} by value.
+
+@table @var
+@item icon-set
+a @code{<gtk-icon-set>}
+
+@item ret
+a new @code{<gtk-icon-set>} identical to the first.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-set-new  @result{}@tie{} (ret@tie{}@code{<gtk-icon-set>})
+Creates a new @code{<gtk-icon-set>}. A @code{<gtk-icon-set>} represents a single
+icon in various sizes and widget states. It can provide a @code{<gdk-pixbuf>}
+for a given size and state on request, and automatically caches some of the
+rendered @code{<gdk-pixbuf>} objects.
+
+Normally you would use @code{gtk-widget-render-icon} instead of using
+@code{<gtk-icon-set>} directly. The one case where you'd use
+@code{<gtk-icon-set>} is to create application-specific icon sets to place in a
+@code{<gtk-icon-factory>}.
+
+@table @var
+@item ret
+a new @code{<gtk-icon-set>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-set-new-from-pixbuf  (pixbuf@tie{}@code{<gdk-pixbuf>}) @result{}@tie{} (ret@tie{}@code{<gtk-icon-set>})
+Creates a new @code{<gtk-icon-set>} with @var{pixbuf} as the default/fallback
+source image. If you don't add any additional @code{<gtk-icon-source>} to the
+icon set, all variants of the icon will be created from @var{pixbuf}, using
+scaling, pixelation, etc. as required to adjust the icon size or make the icon
+look insensitive/prelighted.
+
+@table @var
+@item pixbuf
+a @code{<gdk-pixbuf>}
+
+@item ret
+a new @code{<gtk-icon-set>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-set-render-icon  (self@tie{}@code{<gtk-icon-set>}) (style@tie{}@code{<gtk-style>}) (direction@tie{}@code{<gtk-text-direction>}) (state@tie{}@code{<gtk-state-type>}) (size@tie{}@code{<gtk-icon-size>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+Renders an icon using @code{gtk-style-render-icon}. In most cases,
+@code{gtk-widget-render-icon} is better, since it automatically provides most of
+the arguments from the current widget settings. This function never returns
+@samp{@code{#f}}; if the icon can't be rendered (perhaps because an image file
+fails to load), a default "missing image" icon will be returned instead.
+
+@table @var
+@item icon-set
+a @code{<gtk-icon-set>}
+
+@item style
+a @code{<gtk-style>} associated with @var{widget}, or @samp{@code{#f}}
+
+@item direction
+text direction
+
+@item state
+widget state
+
+@item size
+icon size. A size of (GtkIconSize)-1 means render at the size of the source and
+don't scale.
+
+@item widget
+widget that will display the icon, or @samp{@code{#f}}. The only use that is
+typically made of this is to determine the appropriate @code{<gdk-screen>}.
+
+@item detail
+detail to pass to the theme engine, or @samp{@code{#f}}. Note that passing a
+detail of anything but @samp{@code{#f}} will disable caching.
+
+@item ret
+a @code{<gdk-pixbuf>} to be displayed
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-size-lookup  (size@tie{}@code{<gtk-icon-size>}) @result{}@tie{} (ret@tie{}@code{bool}) (width@tie{}@code{int}) (height@tie{}@code{int})
+Obtains the pixel size of a semantic icon size, possibly modified by user
+preferences for the default @code{<gtk-settings>}. (See
+@code{gtk-icon-size-lookup-for-settings}.) Normally @var{size} would be
+@code{<gtk-icon-size-menu>}, @code{<gtk-icon-size-button>}, etc. This function
+isn't normally needed, @code{gtk-widget-render-icon} is the usual way to get an
+icon for rendering, then just look at the size of the rendered pixbuf. The
+rendered pixbuf may not even correspond to the width/height returned by
+@code{gtk-icon-size-lookup}, because themes are free to render the pixbuf
+however they like, including changing the usual size.
+
+@table @var
+@item size
+an icon size
+
+@item width
+location to store icon width
+
+@item height
+location to store icon height
+
+@item ret
+@samp{@code{#t}} if @var{size} was a valid size
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-size-lookup-for-settings  (settings@tie{}@code{<gtk-settings>}) (size@tie{}@code{<gtk-icon-size>}) @result{}@tie{} (ret@tie{}@code{bool}) (width@tie{}@code{int}) (height@tie{}@code{int})
+Obtains the pixel size of a semantic icon size, possibly modified by user
+preferences for a particular @code{<gtk-settings>}. Normally @var{size} would be
+@code{<gtk-icon-size-menu>}, @code{<gtk-icon-size-button>}, etc. This function
+isn't normally needed, @code{gtk-widget-render-icon} is the usual way to get an
+icon for rendering, then just look at the size of the rendered pixbuf. The
+rendered pixbuf may not even correspond to the width/height returned by
+@code{gtk-icon-size-lookup}, because themes are free to render the pixbuf
+however they like, including changing the usual size.
+
+@table @var
+@item settings
+a @code{<gtk-settings>} object, used to determine which set of user preferences
+to used.
+
+@item size
+an icon size
+
+@item width
+location to store icon width
+
+@item height
+location to store icon height
+
+@item ret
+@samp{@code{#t}} if @var{size} was a valid size
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-icon-size-register  (name@tie{}@code{mchars}) (width@tie{}@code{int}) (height@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-icon-size>})
+Registers a new icon size, along the same lines as @code{<gtk-icon-size-menu>},
+etc. Returns the integer value for the size.
+
+@table @var
+@item name
+name of the icon size
+
+@item width
+the icon width
+
+@item height
+the icon height
+
+@item ret
+integer value representing the size
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-size-register-alias  (alias@tie{}@code{mchars}) (target@tie{}@code{<gtk-icon-size>})
+Registers @var{alias} as another name for @var{target}. So calling
+@code{gtk-icon-size-from-name} with @var{alias} as argument will return
+@var{target}.
+
+@table @var
+@item alias
+an alias for @var{target}
+
+@item target
+an existing icon size
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-size-from-name  (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-icon-size>})
+Looks up the icon size associated with @var{name}.
+
+@table @var
+@item name
+the name to look up.
+
+@item ret
+the icon size with the given name.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-size-get-name  (size@tie{}@code{<gtk-icon-size>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the canonical name of the given icon size. The returned string is
+statically allocated and should not be freed.
+
+@table @var
+@item size
+a @code{<gtk-icon-size>}.
+
+@item ret
+the name of the given icon size.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-set-get-sizes  (self@tie{}@code{<gtk-icon-set>}) (sizes@tie{}@code{<gtk-icon-size**>}) @result{}@tie{} (n_sizes@tie{}@code{int})
+Obtains a list of icon sizes this icon set can render. The returned array must
+be freed with @code{g-free}.
+
+@table @var
+@item icon-set
+a @code{<gtk-icon-set>}
+
+@item sizes
+return location for array of sizes
+
+@item n-sizes
+location to store number of elements in returned array
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-source-get-direction  (self@tie{}@code{<gtk-icon-source>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-direction>})
+Obtains the text direction this icon source applies to. The return value is only
+useful/meaningful if the text direction is @emph{not} wildcarded.
+
+@table @var
+@item source
+a @code{<gtk-icon-source>}
+
+@item ret
+text direction this source matches
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-source-get-filename  (self@tie{}@code{<gtk-icon-source>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Retrieves the source filename, or @samp{@code{#f}} if none is set. The filename
+is not a copy, and should not be modified or expected to persist beyond the
+lifetime of the icon source.
+
+@table @var
+@item source
+a @code{<gtk-icon-source>}
+
+@item ret
+image filename. This string must not be modified or freed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-source-get-pixbuf  (self@tie{}@code{<gtk-icon-source>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+Retrieves the source pixbuf, or @samp{@code{#f}} if none is set. In addition, if
+a filename source is in use, this function in some cases will return the pixbuf
+from loaded from the filename. This is, for example, true for the GtkIconSource
+passed to the GtkStyle::@code{render-icon} virtual function. The reference count
+on the pixbuf is not incremented.
+
+@table @var
+@item source
+a @code{<gtk-icon-source>}
+
+@item ret
+source pixbuf
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-source-get-icon-name  (self@tie{}@code{<gtk-icon-source>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Retrieves the source icon name, or @samp{@code{#f}} if none is set. The
+icon_name is not a copy, and should not be modified or expected to persist
+beyond the lifetime of the icon source.
+
+@table @var
+@item source
+a @code{<gtk-icon-source>}
+
+@item ret
+icon name. This string must not be modified or freed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-source-get-size  (self@tie{}@code{<gtk-icon-source>}) @result{}@tie{} (ret@tie{}@code{<gtk-icon-size>})
+Obtains the icon size this source applies to. The return value is only
+useful/meaningful if the icon size is @emph{not} wildcarded.
+
+@table @var
+@item source
+a @code{<gtk-icon-source>}
+
+@item ret
+icon size this source matches.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-source-get-size-wildcarded  (self@tie{}@code{<gtk-icon-source>}) @result{}@tie{} (ret@tie{}@code{bool})
+Gets the value set by @code{gtk-icon-source-set-size-wildcarded}.
+
+@table @var
+@item source
+a @code{<gtk-icon-source>}
+
+@item ret
+@samp{@code{#t}} if this icon source is a base for any icon size variant
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-source-get-state  (self@tie{}@code{<gtk-icon-source>}) @result{}@tie{} (ret@tie{}@code{<gtk-state-type>})
+Obtains the widget state this icon source applies to. The return value is only
+useful/meaningful if the widget state is @emph{not} wildcarded.
+
+@table @var
+@item source
+a @code{<gtk-icon-source>}
+
+@item ret
+widget state this source matches
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-source-new  @result{}@tie{} (ret@tie{}@code{<gtk-icon-source>})
+Creates a new @code{<gtk-icon-source>}. A @code{<gtk-icon-source>} contains a
+@code{<gdk-pixbuf>} (or image filename) that serves as the base image for one or
+more of the icons in a @code{<gtk-icon-set>}, along with a specification for
+which icons in the icon set will be based on that pixbuf or image file. An icon
+set contains a set of icons that represent "the same" logical concept in
+different states, different global text directions, and different sizes.
+
+So for example a web browser's "Back to Previous Page" icon might point in a
+different direction in Hebrew and in English; it might look different when
+insensitive; and it might change size depending on toolbar mode (small/large
+icons). So a single icon set would contain all those variants of the icon.
+@code{<gtk-icon-set>} contains a list of @code{<gtk-icon-source>} from which it
+can derive specific icon variants in the set.
+
+In the simplest case, @code{<gtk-icon-set>} contains one source pixbuf from
+which it derives all variants. The convenience function
+@code{gtk-icon-set-new-from-pixbuf} handles this case; if you only have one
+source pixbuf, just use that function.
+
+If you want to use a different base pixbuf for different icon variants, you
+create multiple icon sources, mark which variants they'll be used to create, and
+add them to the icon set with @code{gtk-icon-set-add-source}.
+
+By default, the icon source has all parameters wildcarded. That is, the icon
+source will be used as the base icon for any desired text direction, widget
+state, or icon size.
+
+@table @var
+@item ret
+a new @code{<gtk-icon-source>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-source-set-direction  (self@tie{}@code{<gtk-icon-source>}) (direction@tie{}@code{<gtk-text-direction>})
+Sets the text direction this icon source is intended to be used with.
+
+Setting the text direction on an icon source makes no difference if the text
+direction is wildcarded. Therefore, you should usually call
+@code{gtk-icon-source-set-direction-wildcarded} to un-wildcard it in addition to
+calling this function.
+
+@table @var
+@item source
+a @code{<gtk-icon-source>}
+
+@item direction
+text direction this source applies to
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-source-set-filename  (self@tie{}@code{<gtk-icon-source>}) (filename@tie{}@code{mchars})
+Sets the name of an image file to use as a base image when creating icon
+variants for @code{<gtk-icon-set>}. The filename must be absolute.
+
+@table @var
+@item source
+a @code{<gtk-icon-source>}
+
+@item filename
+image file to use
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-source-set-pixbuf  (self@tie{}@code{<gtk-icon-source>}) (pixbuf@tie{}@code{<gdk-pixbuf>})
+Sets a pixbuf to use as a base image when creating icon variants for
+@code{<gtk-icon-set>}.
+
+@table @var
+@item source
+a @code{<gtk-icon-source>}
+
+@item pixbuf
+pixbuf to use as a source
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-source-set-icon-name  (self@tie{}@code{<gtk-icon-source>}) (icon_name@tie{}@code{mchars})
+Sets the name of an icon to look up in the current icon theme to use as a base
+image when creating icon variants for @code{<gtk-icon-set>}.
+
+@table @var
+@item source
+a @code{<gtk-icon-source>}
+
+@item icon-name
+name of icon to use
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-source-set-size  (self@tie{}@code{<gtk-icon-source>}) (size@tie{}@code{<gtk-icon-size>})
+Sets the icon size this icon source is intended to be used with.
+
+Setting the icon size on an icon source makes no difference if the size is
+wildcarded. Therefore, you should usually call
+@code{gtk-icon-source-set-size-wildcarded} to un-wildcard it in addition to
+calling this function.
+
+@table @var
+@item source
+a @code{<gtk-icon-source>}
+
+@item size
+icon size this source applies to
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-source-set-size-wildcarded  (self@tie{}@code{<gtk-icon-source>}) (setting@tie{}@code{bool})
+If the icon size is wildcarded, this source can be used as the base image for an
+icon of any size. If the size is not wildcarded, then the size the source
+applies to should be set with @code{gtk-icon-source-set-size} and the icon
+source will only be used with that specific size.
+
+@code{<gtk-icon-set>} prefers non-wildcarded sources (exact matches) over
+wildcarded sources, and will use an exact match when possible.
+
+@code{<gtk-icon-set>} will normally scale wildcarded source images to produce an
+appropriate icon at a given size, but will not change the size of source images
+that match exactly.
+
+@table @var
+@item source
+a @code{<gtk-icon-source>}
+
+@item setting
+@samp{@code{#t}} to wildcard the widget state
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-icon-source-set-state  (self@tie{}@code{<gtk-icon-source>}) (state@tie{}@code{<gtk-state-type>})
+Sets the widget state this icon source is intended to be used with.
+
+Setting the widget state on an icon source makes no difference if the state is
+wildcarded. Therefore, you should usually call
+@code{gtk-icon-source-set-state-wildcarded} to un-wildcard it in addition to
+calling this function.
+
+@table @var
+@item source
+a @code{<gtk-icon-source>}
+
+@item state
+widget state this source applies to
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

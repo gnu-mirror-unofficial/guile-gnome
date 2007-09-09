@@ -1,0 +1,186 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-toggle-button>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item active
+If the toggle button should be pressed in or not@item inconsistent
+If the toggle button is in an "in between" state@item draw-indicator
+If the toggle part of the button is displayed@end table
+
+@end deftp
+
+@defop Signal <gtk-toggle-button> toggled 
+Should be connected if you wish to perform an action whenever the
+@code{<gtk-toggle-button>}'s state is changed.
+
+@end defop
+
+@deffn Function gtk-toggle-button-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new toggle button. A widget should be packed into the button, as in
+@code{gtk-button-new}.
+
+@table @var
+@item ret
+a new toggle button.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toggle-button-new-with-label  (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new toggle button with a text label.
+
+@table @var
+@item label
+a string containing the message to be placed in the toggle button.
+
+@item ret
+a new toggle button.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toggle-button-new-with-mnemonic  (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-toggle-button>} containing a label. The label will be
+created using @code{gtk-label-new-with-mnemonic}, so underscores in @var{label}
+indicate the mnemonic for the button.
+
+@table @var
+@item label
+the text of the button, with an underscore in front of the mnemonic character
+
+@item ret
+a new @code{<gtk-toggle-button>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toggle-button-set-mode  (self@tie{}@code{<gtk-toggle-button>}) (draw_indicator@tie{}@code{bool})
+@deffnx Method set-mode
+Sets whether the button is displayed as a separate indicator and label. You can
+call this function on a checkbutton or a radiobutton with @var{draw-indicator} =
+@samp{@code{#f}} to make the button look like a normal button
+
+This function only affects instances of classes like @code{<gtk-check-button>}
+and @code{<gtk-radio-button>} that derive from @code{<gtk-toggle-button>}, not
+instances of @code{<gtk-toggle-button>} itself.
+
+@table @var
+@item toggle-button
+a @code{<gtk-toggle-button>}
+
+@item draw-indicator
+if @samp{@code{#t}}, draw the button as a separate indicator and label; if
+@samp{@code{#f}}, draw the button like a normal button
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toggle-button-get-mode  (self@tie{}@code{<gtk-toggle-button>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-mode
+Retrieves whether the button is displayed as a separate indicator and label. See
+@code{gtk-toggle-button-set-mode}.
+
+@table @var
+@item toggle-button
+a @code{<gtk-toggle-button>}
+
+@item ret
+@samp{@code{#t}} if the togglebutton is drawn as a separate indicator and label.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toggle-button-toggled  (self@tie{}@code{<gtk-toggle-button>})
+@deffnx Method toggled
+Emits the toggled signal on the @code{<gtk-toggle-button>}. There is no good
+reason for an application ever to call this function.
+
+@table @var
+@item toggle-button
+a @code{<gtk-toggle-button>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toggle-button-get-active  (self@tie{}@code{<gtk-toggle-button>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-active
+Queries a @code{<gtk-toggle-button>} and returns its current state. Returns
+@samp{@code{#t}} if the toggle button is pressed in and @samp{@code{#f}} if it
+is raised.
+
+@table @var
+@item toggle-button
+a @code{<gtk-toggle-button>}.
+
+@item ret
+a @code{<gboolean>} value.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toggle-button-set-active  (self@tie{}@code{<gtk-toggle-button>}) (is_active@tie{}@code{bool})
+@deffnx Method set-active
+Sets the status of the toggle button. Set to @samp{@code{#t}} if you want the
+GtkToggleButton to be 'pressed in', and @samp{@code{#f}} to raise it. This
+action causes the toggled signal to be emitted.
+
+@table @var
+@item toggle-button
+a @code{<gtk-toggle-button>}.
+
+@item is-active
+@samp{@code{#t}} or @samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toggle-button-get-inconsistent  (self@tie{}@code{<gtk-toggle-button>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-inconsistent
+Gets the value set by @code{gtk-toggle-button-set-inconsistent}.
+
+@table @var
+@item toggle-button
+a @code{<gtk-toggle-button>}
+
+@item ret
+@samp{@code{#t}} if the button is displayed as inconsistent, @samp{@code{#f}}
+otherwise
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-toggle-button-set-inconsistent  (self@tie{}@code{<gtk-toggle-button>}) (setting@tie{}@code{bool})
+@deffnx Method set-inconsistent
+If the user has selected a range of elements (such as some text or spreadsheet
+cells) that are affected by a toggle button, and the current values in that
+range are inconsistent, you may want to display the toggle in an "in between"
+state. This function turns on "in between" display. Normally you would turn off
+the inconsistent state again if the user toggles the toggle button. This has to
+be done manually, @code{gtk-toggle-button-set-inconsistent} only affects visual
+appearance, it doesn't affect the semantics of the button.
+
+@table @var
+@item toggle-button
+a @code{<gtk-toggle-button>}
+
+@item setting
+@samp{@code{#t}} if state is inconsistent
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

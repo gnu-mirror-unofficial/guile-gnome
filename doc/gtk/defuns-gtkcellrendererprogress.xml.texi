@@ -1,0 +1,32 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-cell-renderer-progress>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item value
+Value of the progress bar@item text
+Text on the progress bar@item pulse
+Set this to positive values to indicate that some progress is made, but you don't know how much.@item text-xalign
+The horizontal text alignment, from 0 (left) to 1 (right). Reversed for RTL layouts.@item text-yalign
+The vertical text alignment, from 0 (top) to 1 (bottom).@item orientation
+Orientation and growth direction of the progress bar@end table
+
+@end deftp
+
+@deffn Function gtk-cell-renderer-progress-new  @result{}@tie{} (ret@tie{}@code{<gtk-cell-renderer>})
+Creates a new @code{<gtk-cell-renderer-progress>}.
+
+@table @var
+@item ret
+the new cell renderer
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

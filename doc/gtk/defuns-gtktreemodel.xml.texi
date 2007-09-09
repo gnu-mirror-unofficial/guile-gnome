@@ -1,0 +1,706 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-tree-model>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@defop Signal <gtk-tree-model> row-changed  (arg0@tie{}@code{<gtk-tree-path>}) (arg1@tie{}@code{<gtk-tree-iter>})
+This signal is emitted when a row in the model has changed.
+
+@end defop
+
+@defop Signal <gtk-tree-model> row-inserted  (arg0@tie{}@code{<gtk-tree-path>}) (arg1@tie{}@code{<gtk-tree-iter>})
+This signal is emitted when a new row has been inserted in the model.
+
+Note that the row may still be empty at this point, since it is a common pattern
+to first insert an empty row, and then fill it with the desired values.
+
+@end defop
+
+@defop Signal <gtk-tree-model> row-has-child-toggled  (arg0@tie{}@code{<gtk-tree-path>}) (arg1@tie{}@code{<gtk-tree-iter>})
+This signal is emitted when a row has gotten the first child row or lost its
+last child row.
+
+@end defop
+
+@defop Signal <gtk-tree-model> row-deleted  (arg0@tie{}@code{<gtk-tree-path>})
+This signal is emitted when a row has been deleted.
+
+Note that no iterator is passed to the signal handler, since the row is already
+deleted.
+
+Implementations of GtkTreeModel must emit row-deleted @emph{before} removing the
+node from its internal data structures. This is because models and views which
+access and monitor this model might have references on the node which need to be
+released in the row-deleted handler.
+
+@end defop
+
+@defop Signal <gtk-tree-model> rows-reordered  (arg0@tie{}@code{<gtk-tree-path>}) (arg1@tie{}@code{<gtk-tree-iter>}) (arg2@tie{}@code{<gpointer>})
+This signal is emitted when the children of a node in the
+@code{<gtk-tree-model>} have been reordered.
+
+Note that this signal is @emph{not} emitted when rows are reordered by DND,
+since this is implemented by removing and then reinserting the row.
+
+@end defop
+
+@deftp Class <gtk-tree-iter>
+@end deftp
+
+@deftp Class <gtk-tree-path>
+@end deftp
+
+@deffn Function gtk-tree-path-new-from-string  (path@tie{}@code{mchars}) (path@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-path>})
+Creates a new @code{<gtk-tree-path>} initialized to @var{path}. @var{path} is
+expected to be a colon separated list of numbers. For example, the string
+"10:4:0" would create a path of depth 3 pointing to the 11th child of the root
+node, the 5th child of that 11th child, and the 1st child of that 5th child. If
+an invalid path string is passed in, @samp{@code{#f}} is returned.
+
+@table @var
+@item path
+The string representation of a path.
+
+@item ret
+A newly-created @code{<gtk-tree-path>}, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-path-append-index  (self@tie{}@code{<gtk-tree-path>}) (index@tie{}@code{int})
+Appends a new index to a path. As a result, the depth of the path is increased.
+
+@table @var
+@item path
+A @code{<gtk-tree-path>}.
+
+@item index
+The index.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-path-prepend-index  (self@tie{}@code{<gtk-tree-path>}) (index@tie{}@code{int})
+Prepends a new index to a path. As a result, the depth of the path is increased.
+
+@table @var
+@item path
+A @code{<gtk-tree-path>}.
+
+@item index
+The index.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-path-copy  (self@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-path>})
+Creates a new @code{<gtk-tree-path>} as a copy of @var{path}.
+
+@table @var
+@item path
+A @code{<gtk-tree-path>}.
+
+@item ret
+A new @code{<gtk-tree-path>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-row-reference-new  (model@tie{}@code{<gtk-tree-model>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-row-reference*>})
+Creates a row reference based on @var{path}. This reference will keep pointing
+to the node pointed to by @var{path}, so long as it exists. It listens to all
+signals emitted by @var{model}, and updates its path appropriately. If
+@var{path} isn't a valid path in @var{model}, then @samp{@code{#f}} is returned.
+
+@table @var
+@item model
+A @code{<gtk-tree-model>}
+
+@item path
+A valid @code{<gtk-tree-path>} to monitor
+
+@item ret
+A newly allocated @code{<gtk-tree-row-reference>}, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-row-reference-new-proxy  (proxy@tie{}@code{<gobject>}) (model@tie{}@code{<gtk-tree-model>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-row-reference*>})
+You do not need to use this function. Creates a row reference based on
+@var{path}. This reference will keep pointing to the node pointed to by
+@var{path}, so long as it exists. If @var{path} isn't a valid path in
+@var{model}, then @samp{@code{#f}} is returned. However, unlike references
+created with @code{gtk-tree-row-reference-new}, it does not listen to the model
+for changes. The creator of the row reference must do this explicitly using
+@code{gtk-tree-row-reference-inserted}, @code{gtk-tree-row-reference-deleted},
+@code{gtk-tree-row-reference-reordered}.
+
+These functions must be called exactly once per proxy when the corresponding
+signal on the model is emitted. This single call updates all row references for
+that proxy. Since built-in GTK+ objects like @code{<gtk-tree-view>} already use
+this mechanism internally, using them as the proxy object will produce
+unpredictable results. Further more, passing the same object as @var{model} and
+@var{proxy} doesn't work for reasons of internal implementation.
+
+This type of row reference is primarily meant by structures that need to
+carefully monitor exactly when a row reference updates itself, and is not
+generally needed by most applications.
+
+@table @var
+@item proxy
+A proxy @code{<gobject>}
+
+@item model
+A @code{<gtk-tree-model>}
+
+@item path
+A valid @code{<gtk-tree-path>} to monitor
+
+@item ret
+A newly allocated @code{<gtk-tree-row-reference>}, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-row-reference-get-model  (self@tie{}@code{<gtk-tree-row-reference*>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-model>})
+Returns the model that the row reference is monitoring.
+
+@table @var
+@item reference
+A @code{<gtk-tree-row-reference>}
+
+@item ret
+the model
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-tree-row-reference-get-path  (self@tie{}@code{<gtk-tree-row-reference*>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-path>})
+Returns a path that the row reference currently points to, or @samp{@code{#f}}
+if the path pointed to is no longer valid.
+
+@table @var
+@item reference
+A @code{<gtk-tree-row-reference>}
+
+@item ret
+A current path, or @samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-row-reference-valid  (self@tie{}@code{<gtk-tree-row-reference*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Returns @samp{@code{#t}} if the @var{reference} is non-@samp{@code{#f}} and
+refers to a current valid path.
+
+@table @var
+@item reference
+A @code{<gtk-tree-row-reference>}, or @samp{@code{#f}}
+
+@item ret
+@samp{@code{#t}} if @var{reference} points to a valid path.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-row-reference-inserted  (proxy@tie{}@code{<gobject>}) (path@tie{}@code{<gtk-tree-path>})
+Lets a set of row reference created by @code{gtk-tree-row-reference-new-proxy}
+know that the model emitted the "row_inserted" signal.
+
+@table @var
+@item proxy
+A @code{<gobject>}
+
+@item path
+The row position that was inserted
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-row-reference-deleted  (proxy@tie{}@code{<gobject>}) (path@tie{}@code{<gtk-tree-path>})
+Lets a set of row reference created by @code{gtk-tree-row-reference-new-proxy}
+know that the model emitted the "row_deleted" signal.
+
+@table @var
+@item proxy
+A @code{<gobject>}
+
+@item path
+The path position that was deleted
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-row-reference-reordered  (proxy@tie{}@code{<gobject>}) (path@tie{}@code{<gtk-tree-path>}) (iter@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (new_order@tie{}@code{int})
+Lets a set of row reference created by @code{gtk-tree-row-reference-new-proxy}
+know that the model emitted the "rows_reordered" signal.
+
+@table @var
+@item proxy
+A @code{<gobject>}
+
+@item path
+The parent path of the reordered signal
+
+@item iter
+The iter pointing to the parent of the reordered
+
+@item new-order
+The new order of rows
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-iter-copy  (self@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-iter>})
+Creates a dynamically allocated tree iterator as a copy of @var{iter}. This
+function is not intended for use in applications, because you can just copy the
+structs by value (@samp{GtkTreeIter new_iter = iter;}). You must free this iter
+with @code{gtk-tree-iter-free}.
+
+@table @var
+@item iter
+A @code{<gtk-tree-iter>}.
+
+@item ret
+a newly-allocated copy of @var{iter}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-get-flags  (self@tie{}@code{<gtk-tree-model>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-model-flags>})
+@deffnx Method get-flags
+Returns a set of flags supported by this interface. The flags are a bitwise
+combination of @code{<gtk-tree-model-flags>}. The flags supported should not
+change during the lifecycle of the @var{tree-model}.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}.
+
+@item ret
+The flags supported by this interface.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-get-n-columns  (self@tie{}@code{<gtk-tree-model>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-n-columns
+Returns the number of columns supported by @var{tree-model}.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}.
+
+@item ret
+The number of columns.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-get-column-type  (self@tie{}@code{<gtk-tree-model>}) (index@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtype>})
+@deffnx Method get-column-type
+Returns the type of the column.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}.
+
+@item index
+The column index.
+
+@item ret
+The type of the column.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-get-iter  (self@tie{}@code{<gtk-tree-model>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-iter>})
+@deffnx Method get-iter
+Sets @var{iter} to a valid iterator pointing to @var{path}.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}.
+
+@item iter
+The uninitialized @code{<gtk-tree-iter>}.
+
+@item path
+The @code{<gtk-tree-path>}.
+
+@item ret
+@samp{@code{#t}}, if @var{iter} was set.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-get-iter-first  (self@tie{}@code{<gtk-tree-model>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-iter>})
+@deffnx Method get-iter-first
+Initializes @var{iter} with the first iterator in the tree (the one at the path
+"0") and returns @samp{@code{#t}}. Returns @samp{@code{#f}} if the tree is
+empty.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}.
+
+@item iter
+The uninitialized @code{<gtk-tree-iter>}.
+
+@item ret
+@samp{@code{#t}}, if @var{iter} was set.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-get-path  (self@tie{}@code{<gtk-tree-model>}) (iter@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-path>})
+@deffnx Method get-path
+Returns a newly-created @code{<gtk-tree-path>} referenced by @var{iter}. This
+path should be freed with @code{gtk-tree-path-free}.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}.
+
+@item iter
+The @code{<gtk-tree-iter>}.
+
+@item ret
+a newly-created @code{<gtk-tree-path>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-get-value  (self@tie{}@code{<gtk-tree-model>}) (iter@tie{}@code{<gtk-tree-iter>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{scm})
+@deffnx Method get-value
+Sets initializes and sets @var{value} to that at @var{column}. When done with
+@var{value}, @code{g-value-unset} needs to be called to free any allocated
+memory.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}.
+
+@item iter
+The @code{<gtk-tree-iter>}.
+
+@item column
+The column to lookup the value at.
+
+@item value
+An empty @code{<gvalue>} to set.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-iter-next  (self@tie{}@code{<gtk-tree-model>}) (iter@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-iter>})
+@deffnx Method iter-next
+Sets @var{iter} to point to the node following it at the current level. If there
+is no next @var{iter}, @samp{@code{#f}} is returned and @var{iter} is set to be
+invalid.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}.
+
+@item iter
+The @code{<gtk-tree-iter>}.
+
+@item ret
+@samp{@code{#t}} if @var{iter} has been changed to the next node.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-iter-children  (self@tie{}@code{<gtk-tree-model>}) (parent@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method iter-children
+Sets @var{iter} to point to the first child of @var{parent}. If @var{parent} has
+no children, @samp{@code{#f}} is returned and @var{iter} is set to be invalid.
+@var{parent} will remain a valid node after this function has been called.
+
+If @var{parent} is @samp{@code{#f}} returns the first node, equivalent to
+@samp{gtk_tree_model_get_iter_first (tree_model, iter);}
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}.
+
+@item iter
+The new @code{<gtk-tree-iter>} to be set to the child.
+
+@item parent
+The @code{<gtk-tree-iter>}, or @samp{@code{#f}}
+
+@item ret
+@samp{@code{#t}}, if @var{child} has been set to the first child.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-iter-has-child  (self@tie{}@code{<gtk-tree-model>}) (iter@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method iter-has-child
+Returns @samp{@code{#t}} if @var{iter} has children, @samp{@code{#f}} otherwise.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}.
+
+@item iter
+The @code{<gtk-tree-iter>} to test for children.
+
+@item ret
+@samp{@code{#t}} if @var{iter} has children.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-iter-n-children  (self@tie{}@code{<gtk-tree-model>}) (iter@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method iter-n-children
+Returns the number of children that @var{iter} has. As a special case, if
+@var{iter} is @samp{@code{#f}}, then the number of toplevel nodes is returned.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}.
+
+@item iter
+The @code{<gtk-tree-iter>}, or @samp{@code{#f}}.
+
+@item ret
+The number of children of @var{iter}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-iter-nth-child  (self@tie{}@code{<gtk-tree-model>}) (parent@tie{}@code{<gtk-tree-iter>}) (n@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-iter>})
+@deffnx Method iter-nth-child
+Sets @var{iter} to be the child of @var{parent}, using the given index. The
+first index is 0. If @var{n} is too big, or @var{parent} has no children,
+@var{iter} is set to an invalid iterator and @samp{@code{#f}} is returned.
+@var{parent} will remain a valid node after this function has been called. As a
+special case, if @var{parent} is @samp{@code{#f}}, then the @var{n}th root node
+is set.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}.
+
+@item iter
+The @code{<gtk-tree-iter>} to set to the nth child.
+
+@item parent
+The @code{<gtk-tree-iter>} to get the child from, or @samp{@code{#f}}.
+
+@item n
+Then index of the desired child.
+
+@item ret
+@samp{@code{#t}}, if @var{parent} has an @var{n}th child.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-iter-parent  (self@tie{}@code{<gtk-tree-model>}) (child@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-iter>})
+@deffnx Method iter-parent
+Sets @var{iter} to be the parent of @var{child}. If @var{child} is at the
+toplevel, and doesn't have a parent, then @var{iter} is set to an invalid
+iterator and @samp{@code{#f}} is returned. @var{child} will remain a valid node
+after this function has been called.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}
+
+@item iter
+The new @code{<gtk-tree-iter>} to set to the parent.
+
+@item child
+The @code{<gtk-tree-iter>}.
+
+@item ret
+@samp{@code{#t}}, if @var{iter} is set to the parent of @var{child}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-get-string-from-iter  (self@tie{}@code{<gtk-tree-model>}) (iter@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-string-from-iter
+Generates a string representation of the iter. This string is a ':' separated
+list of numbers. For example, "4:10:0:3" would be an acceptable return value for
+this string.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}.
+
+@item iter
+An @code{<gtk-tree-iter>}.
+
+@item ret
+A newly-allocated string. Must be freed with @code{g-free}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-tree-model-ref-node  (self@tie{}@code{<gtk-tree-model>}) (iter@tie{}@code{<gtk-tree-iter>})
+@deffnx Method ref-node
+Lets the tree ref the node. This is an optional method for models to implement.
+To be more specific, models may ignore this call as it exists primarily for
+performance reasons.
+
+This function is primarily meant as a way for views to let caching model know
+when nodes are being displayed (and hence, whether or not to cache that node.)
+For example, a file-system based model would not want to keep the entire
+file-hierarchy in memory, just the sections that are currently being displayed
+by every current view.
+
+A model should be expected to be able to get an iter independent of its reffed
+state.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}.
+
+@item iter
+The @code{<gtk-tree-iter>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-unref-node  (self@tie{}@code{<gtk-tree-model>}) (iter@tie{}@code{<gtk-tree-iter>})
+@deffnx Method unref-node
+Lets the tree unref the node. This is an optional method for models to
+implement. To be more specific, models may ignore this call as it exists
+primarily for performance reasons.
+
+For more information on what this means, see @code{gtk-tree-model-ref-node}.
+Please note that nodes that are deleted are not unreffed.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}.
+
+@item iter
+The @code{<gtk-tree-iter>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-row-changed  (self@tie{}@code{<gtk-tree-model>}) (path@tie{}@code{<gtk-tree-path>}) (iter@tie{}@code{<gtk-tree-iter>})
+@deffnx Method row-changed
+Emits the "row_changed" signal on @var{tree-model}.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}
+
+@item path
+A @code{<gtk-tree-path>} pointing to the changed row
+
+@item iter
+A valid @code{<gtk-tree-iter>} pointing to the changed row
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-row-inserted  (self@tie{}@code{<gtk-tree-model>}) (path@tie{}@code{<gtk-tree-path>}) (iter@tie{}@code{<gtk-tree-iter>})
+@deffnx Method row-inserted
+Emits the "row_inserted" signal on @var{tree-model}
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}
+
+@item path
+A @code{<gtk-tree-path>} pointing to the inserted row
+
+@item iter
+A valid @code{<gtk-tree-iter>} pointing to the inserted row
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-row-deleted  (self@tie{}@code{<gtk-tree-model>}) (path@tie{}@code{<gtk-tree-path>})
+@deffnx Method row-deleted
+Emits the "row_deleted" signal on @var{tree-model}. This should be called by
+models after a row has been removed. The location pointed to by @var{path}
+should be the location that the row previously was at. It may not be a valid
+location anymore.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}
+
+@item path
+A @code{<gtk-tree-path>} pointing to the previous location of the deleted row.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-rows-reordered  (self@tie{}@code{<gtk-tree-model>}) (path@tie{}@code{<gtk-tree-path>}) (iter@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (new_order@tie{}@code{int})
+@deffnx Method rows-reordered
+Emits the "rows_reordered" signal on @var{tree-model}. This should be called by
+models when their rows have been reordered.
+
+@table @var
+@item tree-model
+A @code{<gtk-tree-model>}
+
+@item path
+A @code{<gtk-tree-path>} pointing to the tree node whose children have been
+reordered
+
+@item iter
+A valid @code{<gtk-tree-iter>} pointing to the node whose children have been
+reordered, or @samp{@code{#f}} if the depth of @var{path} is 0.
+
+@item new-order
+an array of integers mapping the current position of each child to its old
+position before the re-ordering, i.e. @var{new-order}@samp{[newpos] = oldpos}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

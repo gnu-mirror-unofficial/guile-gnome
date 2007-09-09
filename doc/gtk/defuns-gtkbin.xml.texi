@@ -1,0 +1,28 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-bin>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function gtk-bin-get-child  (self@tie{}@code{<gtk-bin>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-child
+Gets the child of the @code{<gtk-bin>}, or @samp{@code{#f}} if the bin contains
+no child widget. The returned widget does not have a reference added, so you do
+not need to unref it.
+
+@table @var
+@item bin
+a @code{<gtk-bin>}
+
+@item ret
+pointer to child of the @code{<gtk-bin>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

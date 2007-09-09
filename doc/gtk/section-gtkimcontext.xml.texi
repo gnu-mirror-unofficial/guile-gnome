@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GtkIMContext
+@chapter GtkIMContext
+Base class for input method contexts
+
+@section Overview
+@section Usage
+@include defuns-gtkimcontext.xml.texi
+
+@c %end of fragment

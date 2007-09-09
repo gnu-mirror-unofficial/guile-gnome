@@ -1,0 +1,21 @@
+
+@c %start of fragment
+
+@node GtkHSeparator
+@chapter GtkHSeparator
+A horizontal separator
+
+@section Overview
+The @code{<gtk-hseparator>} widget is a horizontal separator, used to group the
+widgets within a window. It displays a horizontal line with a shadow to make it
+appear sunken into the interface.
+
+The @code{<gtk-hseparator>} widget is not used as a separator within menus. To
+create a separator in a menu create an empty @code{<gtk-separator-menu-item>}
+widget using @code{gtk-separator-menu-item-new} and add it to the menu with
+@code{gtk-menu-shell-append}.
+
+@section Usage
+@include defuns-gtkhseparator.xml.texi
+
+@c %end of fragment

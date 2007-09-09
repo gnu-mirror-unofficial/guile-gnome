@@ -1,0 +1,85 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-tree-model-sort>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item model
+The model for the TreeModelSort to sort@end table
+
+@end deftp
+
+@deffn Function gtk-tree-model-sort-new-with-model  (child_model@tie{}@code{<gtk-tree-model>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-model>})
+Creates a new @code{<gtk-tree-model>}, with @var{child-model} as the child
+model.
+
+@table @var
+@item child-model
+A @code{<gtk-tree-model>}
+
+@item ret
+A new @code{<gtk-tree-model>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-sort-get-model  (self@tie{}@code{<gtk-tree-model-sort>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-model>})
+@deffnx Method get-model
+Returns the model the @code{<gtk-tree-model-sort>} is sorting.
+
+@table @var
+@item tree-model
+a @code{<gtk-tree-model-sort>}
+
+@item ret
+the "child model" being sorted
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-sort-clear-cache  (self@tie{}@code{<gtk-tree-model-sort>})
+@deffnx Method clear-cache
+This function should almost never be called. It clears the @var{tree-model-sort}
+of any cached iterators that haven't been reffed with
+@code{gtk-tree-model-ref-node}. This might be useful if the child model being
+sorted is static (and doesn't change often) and there has been a lot of unreffed
+access to nodes. As a side effect of this function, all unreffed iters will be
+invalid.
+
+@table @var
+@item tree-model-sort
+A @code{<gtk-tree-model-sort>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-model-sort-iter-is-valid  (self@tie{}@code{<gtk-tree-model-sort>}) (iter@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method iter-is-valid
+
+
+This function is slow. Only use it for debugging and/or testing purposes.
+
+Checks if the given iter is a valid iter for this @code{<gtk-tree-model-sort>}.
+
+@table @var
+@item tree-model-sort
+A @code{<gtk-tree-model-sort>}.
+
+@item iter
+A @code{<gtk-tree-iter>}.
+
+@item ret
+@samp{@code{#t}} if the iter is valid, @samp{@code{#f}} if the iter is invalid.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+
+@c %end of fragment

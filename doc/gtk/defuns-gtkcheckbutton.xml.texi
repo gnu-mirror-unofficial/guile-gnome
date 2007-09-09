@@ -1,0 +1,53 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-check-button>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function gtk-check-button-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-check-button>}.
+
+@table @var
+@item ret
+a @code{<gtk-widget>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-check-button-new-with-label  (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-check-button>} with a @code{<gtk-label>} to the right
+of it.
+
+@table @var
+@item label
+the text for the check button.
+
+@item ret
+a @code{<gtk-widget>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-check-button-new-with-mnemonic  (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-check-button>} containing a label. The label will be
+created using @code{gtk-label-new-with-mnemonic}, so underscores in @var{label}
+indicate the mnemonic for the check button.
+
+@table @var
+@item label
+The text of the button, with an underscore in front of the mnemonic character
+
+@item ret
+a new @code{<gtk-check-button>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

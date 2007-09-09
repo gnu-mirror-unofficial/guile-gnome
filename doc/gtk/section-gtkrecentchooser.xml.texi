@@ -1,0 +1,20 @@
+
+@c %start of fragment
+
+@node GtkRecentChooser
+@chapter GtkRecentChooser
+Interface implemented by GtkRecentChooserWidget, GtkRecentChooserMenu and
+GtkRecentChooserDialog
+
+@section Overview
+@code{<gtk-recent-chooser>} is an interface that can be implemented by widgets
+displaying the list of recently used files. In GTK+, the main objects that
+implement this interface are @code{<gtk-recent-chooser-widget>},
+@code{<gtk-recent-chooser-dialog>} and @code{<gtk-recent-chooser-menu>}.
+
+Recently used files are supported since GTK+ 2.10.
+
+@section Usage
+@include defuns-gtkrecentchooser.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,67 @@
+
+@c %start of fragment
+
+@deffn Function gtk-list-item-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@samp{gtk_list_item_new} is deprecated and should not be used in newly-written
+code.
+
+Creates a new @code{<gtk-listitem>}.
+
+@table @var
+@item ret
+a new @code{<gtk-list-item>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-list-item-new-with-label  (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@samp{gtk_list_item_new_with_label} is deprecated and should not be used in
+newly-written code.
+
+Creates a new @code{<gtk-list-item>} with a child label containing the given
+string.
+
+@table @var
+@item label
+the string to use for the child label.
+
+@item ret
+a new @code{<gtk-list-item>} with a child @code{<gtk-label>} with the text set
+to @var{label}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-list-item-select  (self@tie{}@code{<gtk-list-item*>})
+@samp{gtk_list_item_select} is deprecated and should not be used in
+newly-written code.
+
+Selects the item, by emitting the item's "select" signal. Depending on the
+selection mode of the list, this may cause other items to be deselected.
+
+@table @var
+@item list-item
+a @code{<gtk-list-item>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-list-item-deselect  (self@tie{}@code{<gtk-list-item*>})
+@samp{gtk_list_item_deselect} is deprecated and should not be used in
+newly-written code.
+
+Deselects the item, by emitting the item's "deselect" signal.
+
+@table @var
+@item list-item
+a @code{<gtk-list-item>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

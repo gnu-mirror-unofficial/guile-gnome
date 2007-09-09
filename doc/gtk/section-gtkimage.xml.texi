@@ -1,0 +1,91 @@
+
+@c %start of fragment
+
+@node GtkImage
+@chapter GtkImage
+A widget displaying an image
+
+@section Overview
+The @code{<gtk-image>} widget displays an image. Various kinds of object can be
+displayed as an image; most typically, you would load a @code{<gdk-pixbuf>}
+("pixel buffer") from a file, and then display that. There's a convenience
+function to do this, @code{gtk-image-new-from-file}, used as follows: If the
+file isn't loaded successfully, the image will contain a "broken image" icon
+similar to that used in many web browsers. If you want to handle errors in
+loading the file yourself, for example by displaying an error message, then load
+the image with @code{gdk-pixbuf-new-from-file}, then create the
+@code{<gtk-image>} with @code{gtk-image-new-from-pixbuf}.
+
+@example 
+
+  GtkWidget *image;
+  image = gtk_image_new_from_file ("myfile.png");
+@end example
+
+The image file may contain an animation, if so the @code{<gtk-image>} will
+display an animation (@code{<gdk-pixbuf-animation>}) instead of a static image.
+
+@code{<gtk-image>} is a subclass of @code{<gtk-misc>}, which implies that you
+can align it (center, left, right) and add padding to it, using
+@code{<gtk-misc>} methods.
+
+@code{<gtk-image>} is a "no window" widget (has no @code{<gdk-window>} of its
+own), so by default does not receive events. If you want to receive events on
+the image, such as button clicks, place the image inside a
+@code{<gtk-event-box>}, then connect to the event signals on the event box.
+
+@example 
+
+  static gboolean
+  button_press_callback (GtkWidget      *event_box, 
+                         GdkEventButton *event,
+                         gpointer        data)
+  @{
+    g_print ("Event box clicked at coordinates %f,%f\n", 
+             event->x, event->y);
+
+    /* Returning TRUE means we handled the event, so the signal 
+     * emission should be stopped (don't call any further 
+     * callbacks that may be connected). Return FALSE
+     * to continue invoking callbacks.
+     */
+    return TRUE;
+  @}
+
+  static GtkWidget*
+  create_image (void)
+  @{
+    GtkWidget *image;
+    GtkWidget *event_box;
+
+    image = gtk_image_new_from_file ("myfile.png");
+
+    event_box = gtk_event_box_new ();
+
+    gtk_container_add (GTK_CONTAINER (event_box), image);
+
+    g_signal_connect (G_OBJECT (event_box), 
+                      "button_press_event",
+                      G_CALLBACK (button_press_callback),
+                      image);
+
+    return image;
+  @}
+@end example
+
+When handling events on the event box, keep in mind that coordinates in the
+image may be different from event box coordinates due to the alignment and
+padding settings on the image (see @code{<gtk-misc>}). The simplest way to solve
+this is to set the alignment to 0.0 (left/top), and set the padding to zero.
+Then the origin of the image will be the same as the origin of the event box.
+
+Sometimes an application will want to avoid depending on external data files,
+such as image files. GTK+ comes with a program to avoid this, called . This
+program allows you to convert an image into a C variable declaration, which can
+then be loaded into a @code{<gdk-pixbuf>} using
+@code{gdk-pixbuf-new-from-inline}.
+
+@section Usage
+@include defuns-gtkimage.xml.texi
+
+@c %end of fragment

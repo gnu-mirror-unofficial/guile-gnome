@@ -1,0 +1,127 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-toggle-action>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item draw-as-radio
+Whether the proxies for this action look like radio action proxies@item active
+If the toggle action should be active in or not@end table
+
+@end deftp
+
+@defop Signal <gtk-toggle-action> toggled 
+@end defop
+
+@deffn Function gtk-toggle-action-new  (name@tie{}@code{mchars}) (label@tie{}@code{mchars}) (tooltip@tie{}@code{mchars}) (stock_id@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-toggle-action>})
+Creates a new @code{<gtk-toggle-action>} object. To add the action to a
+@code{<gtk-action-group>} and set the accelerator for the action, call
+@code{gtk-action-group-add-action-with-accel}.
+
+@table @var
+@item name
+A unique name for the action
+
+@item label
+The label displayed in menu items and on buttons
+
+@item tooltip
+A tooltip for the action
+
+@item stock-id
+The stock icon to display in widgets representing the action
+
+@item ret
+a new @code{<gtk-toggle-action>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toggle-action-toggled  (self@tie{}@code{<gtk-toggle-action>})
+@deffnx Method toggled
+Emits the "toggled" signal on the toggle action.
+
+@table @var
+@item action
+the action object
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toggle-action-set-active  (self@tie{}@code{<gtk-toggle-action>}) (is_active@tie{}@code{bool})
+@deffnx Method set-active
+Sets the checked state on the toggle action.
+
+@table @var
+@item action
+the action object
+
+@item is-active
+whether the action should be checked or not
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toggle-action-get-active  (self@tie{}@code{<gtk-toggle-action>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-active
+Returns the checked state of the toggle action.
+
+@table @var
+@item action
+the action object
+
+@item ret
+the checked state of the toggle action
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toggle-action-set-draw-as-radio  (self@tie{}@code{<gtk-toggle-action>}) (draw_as_radio@tie{}@code{bool})
+@deffnx Method set-draw-as-radio
+Sets whether the action should have proxies like a radio action.
+
+@table @var
+@item action
+the action object
+
+@item draw-as-radio
+whether the action should have proxies like a radio action
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toggle-action-get-draw-as-radio  (self@tie{}@code{<gtk-toggle-action>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-draw-as-radio
+Returns whether the action should have proxies like a radio action.
+
+@table @var
+@item action
+the action object
+
+@item ret
+whether the action should have proxies like a radio action.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment
