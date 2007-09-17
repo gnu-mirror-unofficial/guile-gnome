@@ -1,3 +1,8 @@
+2007-09-17  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/defs/libwnck-types.defs:
+	* gnome/defs/libwnck.defs: Remove.  These are moved to libwnck.
+
 2007-06-15  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.93 ==
