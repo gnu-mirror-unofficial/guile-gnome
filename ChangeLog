@@ -1,5 +1,12 @@
 2007-09-24  Andy Wingo  <wingo@pobox.com>
 
+	* test-suite/Makefile.am: Update for gobject docs moving.
+
+	* doc/gobject/docs.mk: Update a bit.
+
+	* test-suite/gobject.api: Regenerate for gtk-doc.scm changes, an
+	incompatible change but not in any released version.
+
 	* gnome/gw/support/gtk-doc.scm: Document the module, and reduce
 	the number of exports to just two. Move around some definitions.
 	(gtk-doc->texi-defuns): Rework to handle either the heuristics

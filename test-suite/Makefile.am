@@ -32,7 +32,7 @@ CLEANFILES = $(wildcard gnome-*.log test-*.log) 		\
 
 TESTS_ENVIRONMENT=\
 	API_FILE=$(srcdir)/gobject.api \
-	DOC_SCM=$(srcdir)/../doc/guile-gnome-gobject.scm \
+	DOC_SCM=$(srcdir)/../doc/gobject/guile-gnome-gobject.scm \
 	$(top_builddir)/dev-environ guile --debug -e main -s
 
 script := '(load (getenv "DOC_SCM"))\
@@ -43,7 +43,7 @@ script := '(load (getenv "DOC_SCM"))\
 
 gobject.api.update:
 	$(top_builddir)/dev-environ guile --debug -e update-api -s $(srcdir)/api.scm \
-	  $(shell DOC_SCM=$(srcdir)/../doc/guile-gnome-gobject.scm \
+	  $(shell DOC_SCM=$(srcdir)/../doc/gobject/guile-gnome-gobject.scm \
 	     guile -c $(script)) > $(srcdir)/gobject.api
 
 %.check: %

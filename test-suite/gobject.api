@@ -363,17 +363,8 @@
   ((gnome gw support gtk-doc)
    (uses-interfaces)
    (typed-exports
-     (docbook->sdocbook procedure (arity 1 0 #f))
-     (gtk-doc-sdocbook->def-list
-       procedure
-       (arity 2 0 #f))
-     (gtk-doc-sdocbook->description-fragment
-       procedure
-       (arity 1 0 #f))
-     (gtk-doc-sdocbook-subtitle
-       procedure
-       (arity 1 0 #f))
-     (gtk-doc-sdocbook-title procedure (arity 1 0 #f))))
+     (gtk-doc->texi-defuns procedure (arity 3 0 #t))
+     (gtk-doc->texi-stubs procedure (arity 1 0 #f))))
   ((gnome gw support modules)
    (uses-interfaces)
    (typed-exports
