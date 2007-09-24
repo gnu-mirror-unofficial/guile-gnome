@@ -1,3 +1,16 @@
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.94 ==
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* NEWS: Updated.
+
+2007-09-24  Andy Wingo  <wingo@pobox.com>
+
+	* doc/pangocairo/Makefile.am (guile_gnome_pangocairo_TEXINFOS):
+	Name the target correctly.
+
 2007-09-08  Andy Wingo  <wingo@pobox.com>
 
 	* doc/Makefile.am: 
