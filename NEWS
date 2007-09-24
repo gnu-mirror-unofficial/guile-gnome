@@ -1,12 +1,27 @@
 guile-gnome-glib NEWS --- history of user-visible changes.
 Copyright (C) 2004,2005,2006,2007 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 15 Jun 2007.
+Last updated 25 Sep 2007.
 
 
 guile-gnome-glib is a Guile binding for GLib and GObject, including a
 bindings generator. It is part of GNU guile-gnome. This file documents
 the user-visible changes in guile-gnome-glib only.
+
+
+guile-gnome-glib 2.15.94 - Andy Wingo, 2007-09-25
+=================================================
+
+* Added documentation for the gobject and glib wrappers.
+
+* Added unit tests which check that the (gnome gobject) and (gnome gw
+  glib) APIs do not unintentionally change incompatibly.
+
+* Added infrastructure for automatically producing documentation based
+  on upstream GTK-Doc documentation.
+
+* Fixed a number of API bugs; see the ChangeLog from 2006-09-01 and
+  before for more details. Should not affect user's applications.
 
 
 guile-gnome-glib 2.15.93 - Andy Wingo, 2007-06-15
