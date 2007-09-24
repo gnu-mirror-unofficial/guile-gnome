@@ -1,12 +1,18 @@
 guile-gnome-corba NEWS --- history of user-visible changes.
 Copyright (C) 2004,2005,2006,2007 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 15 Jun 2007.
+Last updated 25 Sep 2007.
 
 
 guile-gnome-corba is a Guile binding for CORBA. It is part of GNU
 guile-gnome. This file documents the user-visible changes in
 guile-gnome-corba only.
+
+
+guile-gnome-corba 2.15.94 - Andy Wingo, 2007-09-25
+==================================================
+
+* Fix a compiler warning.
 
 
 guile-gnome-corba 2.15.93 - Andy Wingo, 2007-06-15
