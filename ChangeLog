@@ -1,3 +1,16 @@
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.94 ==
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* NEWS: Updated.
+
+2007-09-24  Andy Wingo  <wingo@pobox.com>
+
+	* doc/gtk/Makefile.am: 
+	* doc/gdk/Makefile.am: Update to include overview.texi.
+
 2007-09-09  Andy Wingo  <wingo@pobox.com>
 
 	* doc/gdk/guile-gnome-gdk.texi: Add GDK-Pixbuf documentation.

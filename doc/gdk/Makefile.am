@@ -15,4 +15,4 @@ wrapset_stem = gdk
 EXTRA_DIST = overrides.texi
 
 info_TEXINFOS=guile-gnome-gdk.texi
-guile_gnome_gdk_TEXINFOS=$(wildcard section-*.texi) $(wildcard defuns-*.texi)
+guile_gnome_gdk_TEXINFOS=overview.texi $(wildcard section-*.texi) $(wildcard defuns-*.texi)
