@@ -1,3 +1,18 @@
+2007-09-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gtk-doc.scm: Document the module, and reduce
+	the number of exports to just two. Move around some definitions.
+	(gtk-doc->texi-defuns): Rework to handle either the heuristics
+	mode or g-wrap, and document.
+	(gtk-doc->texi-stubs): Document.
+
+	* doc/gobject/make-texinfo.scm: Add spaces between args to deal
+	with fixed guile-lib serialization.
+
+	* doc/glib/: 
+	* doc/gobject/: GLib and GObject docs moved to separate
+	directories.
+
 2007-09-07  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gtk-doc.scm: Import gobject and goops so that

@@ -14,7 +14,7 @@ $(doc)scmfiles: $(doc).scm
 	guile --debug --use-srfi=13 -l $(srcdir)/$(doc).scm \
 	 -c '(for-each (lambda (m) (format #t "~a.scm\n" (string-join (map symbol->string m) "/"))) (map car *modules*))' \
 	 > $@
-depfiles=$(addprefix $(srcdir)/../,$(shell test ! -f $(doc)scmfiles || cat $(doc)scmfiles))
+depfiles=$(addprefix $(srcdir)/../../,$(shell test ! -f $(doc)scmfiles || cat $(doc)scmfiles))
 
 $(doc).texi: $(srcdir)/$(doc).scm $(doc)scmfiles $(depfiles)
 	$(top_builddir)/dev-environ $(srcdir)/make-texinfo.scm $(srcdir)/$(doc).scm $(DOT_DOC_FILES) >$@.tmp

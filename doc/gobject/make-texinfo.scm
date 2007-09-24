@@ -158,10 +158,16 @@ preprocessor output."
               (else
                (loop (read-line port) result))))))
 
+(define (list-intersperse src-l elem)
+  (if (null? src-l) src-l
+      (let loop ((l (cdr src-l)) (dest (cons (car src-l) '())))
+        (if (null? l) (reverse dest)
+            (loop (cdr l) (cons (car l) (cons elem dest)))))))
+
 (define (snarfing->stexi alist)
   `(deffn (% (name ,(assq-ref alist 'scheme-name))
              (category "Primitive") ;; ,(assq-ref alist 'type))
-             (arguments ,@(assq-ref alist 'arguments)))
+             (arguments ,@(list-intersperse (assq-ref alist 'arguments) " ")))
      ,@(cdr (texi-fragment->stexi (assq-ref alist 'documentation)))))
 
 (define (parse-c-docs dot-doc-files)
