@@ -1,0 +1,63 @@
+
+@c %start of fragment
+
+@deffn Function gnome-util-user-shell  @result{}@tie{} (ret@tie{}@code{mchars})
+Retrieves the user's preferred shell.
+
+@table @var
+@item ret
+A newly allocated string that is the path to the shell.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-setenv  (name@tie{}@code{mchars}) (value@tie{}@code{mchars}) (overwrite@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{int})
+Adds "@var{name}=@var{value}" to the environment. Note that on systems without
+setenv, this leaks memory so please do not use inside a loop or anything like
+that. The semantics are the same as the glibc @code{setenv} (if @code{setenv}
+exists, it is used).
+
+If @var{overwrite} is @samp{@code{#f}} and the variable already exists in the
+environment, then @samp{0} is returned and the value is not changed.
+
+@table @var
+@item name
+An environment variable name.
+
+@item value
+The value to assign to the environment variable.
+
+@item overwrite
+If @samp{@code{#t}}, overwrite the existing @var{name} variable in the
+environment.
+
+@item ret
+@samp{0} on success, @samp{-1} on error
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-unsetenv  (name@tie{}@code{mchars})
+Removes @var{name} from the environment. In case there is no native
+implementation of unsetenv, this could cause leaks depending on the
+implementation of environment.
+
+@table @var
+@item name
+The environment variable to unset.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-clearenv 
+Clears out the environment completely. In case there is no native implementation
+of clearenv, this could cause leaks depending on the implementation of
+environment.
+
+@end deffn
+
+
+@c %end of fragment

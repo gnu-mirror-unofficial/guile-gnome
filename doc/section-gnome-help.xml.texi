@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node gnome-help
+@chapter gnome-help
+Display application and GNOME system help.
+
+@section Overview
+These functions provide a way to display help files that are either installed as
+part of the main GNOME installation or that are specific to the current
+application.
+
+@section Usage
+@include defuns-gnome-help.xml.texi
+
+@c %end of fragment

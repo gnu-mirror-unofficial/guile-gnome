@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node libgnometypebuiltins
+@chapter libgnometypebuiltins
+Some type macros defined by libgnome.
+
+@section Overview
+Most applications will not need to use the macros in this section. They are the
+types of the various enumerations created elsewhere in libgnome and registered
+with the GObject type system.
+
+@section Usage
+@include defuns-libgnometypebuiltins.xml.texi
+
+@c %end of fragment

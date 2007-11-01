@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node gnome-init
+@chapter gnome-init
+Functions used during initialisation of libgnome and other platform libraries.
+
+@section Overview
+@section Usage
+@include defuns-gnome-init.xml.texi
+
+@c %end of fragment

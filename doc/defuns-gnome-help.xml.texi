@@ -1,0 +1,130 @@
+
+@c %start of fragment
+
+@deffn Function gnome-help-display  (file_name@tie{}@code{mchars}) (link_id@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Displays the help file specified by @var{file-name} at location @var{link-id} in
+the preferred help browser of the user.
+
+@table @var
+@item file-name
+The name of the help document to display.
+
+@item link-id
+Can be @samp{@code{#f}}. If set, refers to an anchor or section id within the
+requested document.
+
+@item error
+A @code{<g-error>} instance that will hold the specifics of any error which
+occurs during processing, or @samp{@code{#f}}
+
+@item ret
+@samp{@code{#t}} on success, @samp{@code{#f}} otherwise (in which case
+@var{error} will contain the actual error).
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-help-display-with-doc-id  (program@tie{}@code{<gnome-program>}) (doc_id@tie{}@code{mchars}) (file_name@tie{}@code{mchars}) (link_id@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Displays the help file specified by @var{file-name} at location @var{link-id}
+within the @var{doc-id} domain in the preferred help browser of the user. Most
+of the time, you want to call @code{gnome-help-display} instead.
+
+This function will display the help through creating a "ghelp" URI, by looking
+for @var{file-name} in the applications installed help location (found by
+@code{<gnome-file-domain-app-help>}) and its app_id. The resulting URI is
+roughly in the form "ghelp:appid/file_name?link_id". If a matching file cannot
+be found, @samp{@code{#f}} is returned and @var{error} is set.
+
+Please note that this only displays application help. To display help files from
+the global GNOME domain, you will want to use @code{gnome-help-display-desktop}.
+
+@table @var
+@item program
+The current application object, or @samp{@code{#f}} for the default one.
+
+@item doc-id
+The document identifier, or @samp{@code{#f}} to default to the application ID
+(app_id) of the specified @var{program}.
+
+@item file-name
+The name of the help document to display.
+
+@item link-id
+Can be @samp{@code{#f}}. If set, refers to an anchor or section id within the
+requested document.
+
+@item error
+A @code{<g-error>} instance that will hold the specifics of any error which
+occurs during processing, or @samp{@code{#f}}
+
+@item ret
+@samp{@code{#t}} on success, @samp{@code{#f}} otherwise (in which case
+@var{error} will contain the actual error).
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-help-display-desktop  (program@tie{}@code{<gnome-program>}) (doc_id@tie{}@code{mchars}) (file_name@tie{}@code{mchars}) (link_id@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Displays the GNOME system help file specified by @var{file-name} at location
+@var{link-id} in the preferred help browser of the user. This is done by
+creating a "ghelp" URI, by looking for @var{file-name} in the system help domain
+(@code{<gnome-file-domain-help>}) and it's app_id. This domain is determined
+when the library is compiled. If a matching file cannot be found,
+@samp{@code{#f}} is returned and @var{error} is set.
+
+Please note that this only displays system help. To display help files for an
+application, you will want to use @code{gnome-help-display}.
+
+@table @var
+@item program
+The current application object, or @samp{@code{#f}} for the default one.
+
+@item doc-id
+The name of the help file relative to the system's help domain
+(@code{<gnome-file-domain-help>}).
+
+@item file-name
+The name of the help document to display.
+
+@item link-id
+Can be @samp{@code{#f}}. If set, refers to an anchor or section id within the
+requested document.
+
+@item error
+A @code{<g-error>} instance that will hold the specifics of any error which
+occurs during processing, or @samp{@code{#f}}
+
+@item ret
+@samp{@code{#t}} on success, @samp{@code{#f}} otherwise (in which case
+@var{error} will contain the actual error).
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-help-display-uri  (help_uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Displays @var{help-uri} in the user's preferred viewer. You should never need to
+call this function directly in code, since it is just a wrapper for
+@code{gnome-url-show} and consequently the viewer used to display the results
+depends upon the scheme of the URI (so it is not strictly a help-only function).
+
+@table @var
+@item help-uri
+The URI to display.
+
+@item error
+A @code{<g-error>} instance that will hold the specifics of any error which
+occurs during processing, or @samp{@code{#f}}
+
+@item ret
+@samp{@code{#t}} on success, @samp{@code{#f}} otherwise (in which case
+@var{error} will contain the actual error).
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

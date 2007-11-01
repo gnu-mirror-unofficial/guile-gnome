@@ -1,0 +1,21 @@
+
+@c %start of fragment
+
+@node gnome-i18n
+@chapter gnome-i18n
+Support for localization and internationalization.
+
+@section Overview
+This module allows the programmer to internationalize his application by
+providing functions to retrieve the preferred languages of the user as well as
+temporarily move back to the C locale for performing locale independent
+operations.
+
+A lot of the internationalization functions which were in this module in GNOME 1
+have now moved to libbonobo for GNOME 2 (@code{}, @code{textdomain},
+@code{gettext}, etc).
+
+@section Usage
+@include defuns-gnome-i18n.xml.texi
+
+@c %end of fragment

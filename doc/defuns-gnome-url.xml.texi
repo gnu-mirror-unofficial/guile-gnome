@@ -1,0 +1,27 @@
+
+@c %start of fragment
+
+@deffn Function gnome-url-show  (url@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Once the input has been converted into a fully qualified url this function calls
+gnome_vfs_url_show. Any error codes returned by gnome-vfs will be wrapped in the
+error parameter. All errors comes from the @samp{GNOME_URL_ERROR}% domain.
+
+@table @var
+@item url
+The url or path to display. The path can be relative to the current working
+directory or the user's home directory. This function will convert it into a
+fully qualified url using the gnome_url_get_from_input function.
+
+@item error
+Used to store any errors that result from trying to display the @var{url}.
+
+@item ret
+@samp{@code{#t}} if everything went fine, @samp{@code{#f}} otherwise (in which
+case @var{error} will contain the actual error).
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

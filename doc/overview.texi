@@ -1,0 +1,5 @@
+@node Overview
+@chapter Overview
+
+The libgnome wrapper for Guile is a part of Guile-GNOME. Maybe write
+more here at some point.

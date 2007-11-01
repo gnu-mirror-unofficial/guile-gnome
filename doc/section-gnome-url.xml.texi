@@ -1,0 +1,18 @@
+
+@c %start of fragment
+
+@node gnome-url
+@chapter gnome-url
+Display urls using appropriate viewers.
+
+@section Overview
+A GNOME user can configure which viewers they wish to use to view certain
+protocols. Protocols can include http, ftp (where "view" might mean "download"),
+ghelp, etc. This module provides a means for application to display a url
+without having to worry about which viewer is going to ultimately handle the
+job.
+
+@section Usage
+@include defuns-gnome-url.xml.texi
+
+@c %end of fragment

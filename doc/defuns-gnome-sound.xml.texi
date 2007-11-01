@@ -1,0 +1,53 @@
+
+@c %start of fragment
+
+@deffn Function gnome-sound-init  (hostname@tie{}@code{mchars})
+Initialize the esd connection.
+
+@table @var
+@item hostname
+Hostname where esd daemon resides.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-sound-shutdown 
+Shuts down the gnome sound support.
+
+@end deffn
+
+@deffn Function gnome-sound-play  (filename@tie{}@code{mchars})
+Plays the audio stored in @var{filename}, if possible. Fail quietly if playing
+is not possible (due to missing sound support or for other reasons).
+
+@table @var
+@item filename
+File containing the sound sample.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-sound-sample-load  (sample_name@tie{}@code{mchars}) (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{int})
+Loads the audio from @var{filename} and load it into the esd cache for later
+playing. Programs will rarely want to call this function directly. Use
+@code{gnome-sound-play} instead for fire and forget sound playing.
+
+@table @var
+@item sample-name
+The name of the sample.
+
+@item filename
+The filename where the audio is stored.
+
+@item ret
+The esound sample_id or @samp{-1} if the sample was unable to be cached for
+esound.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

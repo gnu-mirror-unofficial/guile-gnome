@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node gnome-program
+@chapter gnome-program
+Initialize and retrieve information about a GNOME application.
+
+@section Overview
+@section Usage
+@include defuns-gnome-program.xml.texi
+
+@c %end of fragment
