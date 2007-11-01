@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GnomeDruid
+@chapter GnomeDruid
+Widget for sequentially stepping through some pages.
+
+@section Overview
+@section Usage
+@include defuns-gnome-druid.xml.texi
+
+@c %end of fragment

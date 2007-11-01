@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GnomeAuthentication
+@chapter GnomeAuthentication
+
+
+@section Overview
+@section Usage
+@include defuns-gnome-authentication.xml.texi
+
+@c %end of fragment

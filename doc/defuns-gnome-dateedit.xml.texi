@@ -1,0 +1,185 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-date-edit>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item time
+The time currently selected
+
+@item dateedit-flags
+Flags for how DateEdit looks
+
+@item lower-hour
+Lower hour in the time popup selector
+
+@item upper-hour
+Upper hour in the time popup selector
+
+@item initial-time
+The initial time
+
+@end table
+
+@end deftp
+
+@defop Signal <gnome-date-edit> time-changed 
+@end defop
+
+@defop Signal <gnome-date-edit> date-changed 
+@end defop
+
+@deffn Function gnome-date-edit-new  (the_time@tie{}@code{long}) (show_time@tie{}@code{bool}) (use_24_format@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gnome-date-edit>} widget which can be used to provide an
+easy to use way for entering dates and times. If @var{the-time} is 0 then
+current time is used.
+
+@table @var
+@item the-time
+date and time to be displayed on the widget
+
+@item show-time
+whether time should be displayed
+
+@item use-24-format
+whether 24-hour format is desired for the time display.
+
+@item ret
+a new @code{<gnome-date-edit>} widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-date-edit-new-flags  (the_time@tie{}@code{long}) (flags@tie{}@code{<gnome-date-edit-flags>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gnome-date-edit>} widget with the specified flags. If
+@var{the-time} is 0 then current time is used.
+
+@table @var
+@item the-time
+The initial time for the date editor.
+
+@item flags
+A bitmask of GnomeDateEditFlags values.
+
+@item ret
+the newly-created date editor widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-date-edit-construct  (self@tie{}@code{<gnome-date-edit>}) (the_time@tie{}@code{long}) (flags@tie{}@code{<gnome-date-edit-flags>})
+@deffnx Method construct
+For language bindings and subclassing only
+
+@table @var
+@item gde
+The @code{<gnome-date-edit>} object to construct
+
+@item the-time
+The initial time for the date editor.
+
+@item flags
+A bitmask of GnomeDateEditFlags values.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-date-edit-set-time  (self@tie{}@code{<gnome-date-edit>}) (the_time@tie{}@code{long})
+@deffnx Method set-time
+Changes the displayed date and time in the GnomeDateEdit widget to be the one
+represented by @var{the-time}. If @var{the-time} is 0 then current time is used.
+
+@table @var
+@item gde
+the GnomeDateEdit widget
+
+@item the-time
+The time and date that should be set on the widget
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-date-edit-get-time  (self@tie{}@code{<gnome-date-edit>}) @result{}@tie{} (ret@tie{}@code{long})
+@deffnx Method get-time
+@table @var
+@item gde
+The GnomeDateEdit widget
+
+@item ret
+the time entered in the GnomeDateEdit widget
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-date-edit-set-popup-range  (self@tie{}@code{<gnome-date-edit>}) (low_hour@tie{}@code{int}) (up_hour@tie{}@code{int})
+@deffnx Method set-popup-range
+Sets the range of times that will be provide by the time popup selectors.
+
+@table @var
+@item gde
+The GnomeDateEdit widget
+
+@item low-hour
+low boundary for the time-range display popup.
+
+@item up-hour
+upper boundary for the time-range display popup.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-date-edit-set-flags  (self@tie{}@code{<gnome-date-edit>}) (flags@tie{}@code{<gnome-date-edit-flags>})
+@deffnx Method set-flags
+Changes the display flags on an existing date editor widget.
+
+@table @var
+@item gde
+The date editor widget whose flags should be changed.
+
+@item flags
+The new bitmask of GnomeDateEditFlags values.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-date-edit-get-flags  (self@tie{}@code{<gnome-date-edit>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-flags
+Queries the display flags on a date editor widget.
+
+@table @var
+@item gde
+The date editor whose flags should be queried.
+
+@item ret
+The current display flags for the specified date editor widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-date-edit-get-initial-time  (self@tie{}@code{<gnome-date-edit>}) @result{}@tie{} (ret@tie{}@code{long})
+@deffnx Method get-initial-time
+Queries the initial time that was set using the
+@code{<gnome-date-edit-set-time>} or during creation
+
+@table @var
+@item gde
+The date editor whose initial time should be queried
+
+@item ret
+The initial time in seconds (standard time_t format)
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,257 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-file-entry>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item history-id
+Unique identifier for the file entry. This will be used to save the history
+list.
+
+@item browse-dialog-title
+Title for the Browse file dialog.
+
+@item directory-entry
+Whether the file entry is being used to enter directory names or complete
+filenames.
+
+@item modal
+Whether the Browse file window should be modal.
+
+@item filename
+Filename that should be displayed in the file entry.
+
+@item default-path
+Default path for the Browse file window.
+
+@item gnome-entry
+GnomeEntry that the file entry uses for entering filenames. You can use this
+property to get the GnomeEntry if you need to modify or query any of its
+parameters.
+
+@item gtk-entry
+GtkEntry that the file entry uses for entering filenames. You can use this
+property to get the GtkEntry if you need to modify or query any of its
+parameters.
+
+@item use-filechooser
+Whether to use the new GtkFileChooser widget or the GtkFileSelection widget to
+select files.
+
+@item filechooser-action
+The type of operation that the file selector is performing.
+
+@end table
+
+@end deftp
+
+@defop Signal <gnome-file-entry> browse-clicked 
+@end defop
+
+@defop Signal <gnome-file-entry> activate 
+@end defop
+
+@deffn Function gnome-file-entry-new  (history_id@tie{}@code{mchars}) (browse_dialog_title@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@samp{gnome_file_entry_new} is deprecated and should not be used in
+newly-written code.
+
+Creates a new @code{<gnome-file-entry>} widget.
+
+@table @var
+@item history-id
+the id given to @code{<gnome-entry-new>} (see @code{<gnome-entry>}).
+
+@item browse-dialog-title
+Title for the file dialog window.
+
+@item ret
+A pointer to the widget, NULL if it cannot be created.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-file-entry-construct  (self@tie{}@code{<gnome-file-entry>}) (history_id@tie{}@code{mchars}) (browse_dialog_title@tie{}@code{mchars})
+@deffnx Method construct
+@samp{gnome_file_entry_construct} is deprecated and should not be used in
+newly-written code.
+
+Constructs a @code{<gnome-file-entry>}
+
+@table @var
+@item fentry
+A @code{<gnome-file-entry>} to construct.
+
+@item history-id
+the id given to @code{<gnome-entry-new>} (see @code{<gnome-entry>}).
+
+@item browse-dialog-title
+Title for the file dialog window.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-file-entry-gnome-entry  (self@tie{}@code{<gnome-file-entry>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method gnome-entry
+@samp{gnome_file_entry_gnome_entry} is deprecated and should not be used in
+newly-written code.
+
+It returns a pointer to the gnome entry widget of the widget
+(see@code{<gnome-entry>}).
+
+@table @var
+@item fentry
+The GnomeFileEntry widget to work with.
+
+@item ret
+A pointer to the component @code{<gnome-entry>} widget
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-file-entry-gtk-entry  (self@tie{}@code{<gnome-file-entry>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method gtk-entry
+@samp{gnome_file_entry_gtk_entry} is deprecated and should not be used in
+newly-written code.
+
+Similar to @code{<gnome-file-entry-gnome-entry>} but returns the gtk entry
+instead of the Gnome entry widget.
+
+@table @var
+@item fentry
+The GnomeFileEntry widget to work with.
+
+@item ret
+Returns the GtkEntry widget
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-file-entry-set-title  (self@tie{}@code{<gnome-file-entry>}) (browse_dialog_title@tie{}@code{mchars})
+@deffnx Method set-title
+@samp{gnome_file_entry_set_title} is deprecated and should not be used in
+newly-written code.
+
+Set the title of the browse dialog to @var{browse-dialog-title}. The new title
+will go into effect the next time the browse button is pressed.
+
+@table @var
+@item fentry
+The GnomeFileEntry widget to work with.
+
+@item browse-dialog-title
+The new title for the file browse dialog window.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-file-entry-set-default-path  (self@tie{}@code{<gnome-file-entry>}) (path@tie{}@code{mchars})
+@deffnx Method set-default-path
+@samp{gnome_file_entry_set_default_path} is deprecated and should not be used in
+newly-written code.
+
+Set the default path of browse dialog to @var{path}. The default path is only
+used if the entry is empty or if the current path of the entry is not an
+absolute path, in which case the default path is prepended to it before the
+dialog is started.
+
+@table @var
+@item fentry
+The GnomeFileEntry widget to work with.
+
+@item path
+A path string.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-file-entry-get-full-path  (self@tie{}@code{<gnome-file-entry>}) (file_must_exist@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-full-path
+@samp{gnome_file_entry_get_full_path} is deprecated and should not be used in
+newly-written code.
+
+Gets the full absolute path of the file from the entry. If @var{file-must-exist}
+is false, nothing is tested and the path is returned. If @var{file-must-exist}
+is true, then the path is only returned if the path actually exists. In case the
+entry is a directory entry (see @code{<gnome-file-entry-set-directory-entry>}),
+then if the path exists and is a directory then it's returned; if not, it is
+assumed it was a file so we try to strip it, and try again. It allocates memory
+for the returned string.
+
+@table @var
+@item fentry
+The GnomeFileEntry widget to work with.
+
+@item file-must-exist
+boolean
+
+@item ret
+a newly allocated string with the path or NULL if something went wrong
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-file-entry-set-filename  (self@tie{}@code{<gnome-file-entry>}) (filename@tie{}@code{mchars})
+@deffnx Method set-filename
+@samp{gnome_file_entry_set_filename} is deprecated and should not be used in
+newly-written code.
+
+Sets the internal entry to this string.
+
+@table @var
+@item fentry
+The GnomeFileEntry widget to work with.
+
+@item filename
+
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-file-entry-set-modal  (self@tie{}@code{<gnome-file-entry>}) (is_modal@tie{}@code{bool})
+@deffnx Method set-modal
+@samp{gnome_file_entry_set_modal} is deprecated and should not be used in
+newly-written code.
+
+Sets the modality of the browse dialog.
+
+@table @var
+@item fentry
+The GnomeFileEntry widget to work with.
+
+@item is-modal
+true if the window is to be modal, false otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-file-entry-get-modal  (self@tie{}@code{<gnome-file-entry>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-modal
+@samp{gnome_file_entry_get_modal} is deprecated and should not be used in
+newly-written code.
+
+This function gets the boolean which specifies if the browsing dialog is modal
+or not
+
+@table @var
+@item fentry
+The GnomeFileEntry widget to work with.
+
+@item ret
+A boolean.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,780 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-icon-list>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@defop Signal <gnome-icon-list> text-changed  (arg0@tie{}@code{<gint>}) (arg1@tie{}@code{<gchararray>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gnome-icon-list> select-icon  (arg0@tie{}@code{<gint>}) (arg1@tie{}@code{<gdk-event>})
+@end defop
+
+@defop Signal <gnome-icon-list> unselect-icon  (arg0@tie{}@code{<gint>}) (arg1@tie{}@code{<gdk-event>})
+@end defop
+
+@defop Signal <gnome-icon-list> focus-icon  (arg0@tie{}@code{<gint>})
+@end defop
+
+@defop Signal <gnome-icon-list> move-cursor  (arg0@tie{}@code{<gtk-direction-type>}) (arg1@tie{}@code{<gboolean>})
+@end defop
+
+@defop Signal <gnome-icon-list> toggle-cursor-selection 
+@end defop
+
+@deffn Function gnome-icon-list-new  (icon_width@tie{}@code{unsigned-int}) (adj@tie{}@code{<gtk-adjustment>}) (flags@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@samp{gnome_icon_list_new} is deprecated and should not be used in newly-written
+code.
+
+Creates a new icon list widget. The icon columns are allocated a width of
+@var{icon-width} pixels. Icon captions will be word-wrapped to this width as
+well.
+
+If @var{flags} has the @samp{GNOME_ICON_LIST_IS_EDITABLE} flag set, then the
+user will be able to edit the text in the icon captions, and the "text_changed"
+signal will be emitted when an icon's text is changed.
+
+If @var{flags} has the @samp{GNOME_ICON_LIST_STATIC_TEXT} flags set, then the
+text for the icon captions will not be copied inside the icon list; it will only
+store the pointers to the original text strings specified by the application.
+This is intended to save memory. If this flag is not set, then the text strings
+will be copied and managed internally.
+
+@table @var
+@item icon-width
+Width for the icon columns.
+
+@item adj
+
+
+@item flags
+A combination of @samp{GNOME_ICON_LIST_IS_EDITABLE} and
+@samp{GNOME_ICON_LIST_STATIC_TEXT}.
+
+@item ret
+a newly-created icon list widget
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-construct  (self@tie{}@code{<gnome-icon-list>}) (icon_width@tie{}@code{unsigned-int}) (adj@tie{}@code{<gtk-adjustment>}) (flags@tie{}@code{int})
+@deffnx Method construct
+@samp{gnome_icon_list_construct} is deprecated and should not be used in
+newly-written code.
+
+Constructor for the icon list, to be used by derived classes.
+
+@table @var
+@item gil
+An icon list.
+
+@item icon-width
+Width for the icon columns.
+
+@item adj
+
+
+@item flags
+A combination of @samp{GNOME_ICON_LIST_IS_EDITABLE} and
+@samp{GNOME_ICON_LIST_STATIC_TEXT}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-set-hadjustment  (self@tie{}@code{<gnome-icon-list>}) (hadj@tie{}@code{<gtk-adjustment>})
+@deffnx Method set-hadjustment
+@samp{gnome_icon_list_set_hadjustment} is deprecated and should not be used in
+newly-written code.
+
+Sets the adjustment to be used for horizontal scrolling. This is normally not
+required, as the icon list can be simply inserted in a &GtkScrolledWindow and
+scrolling will be handled automatically.
+
+@table @var
+@item gil
+An icon list.
+
+@item hadj
+Adjustment to be used for horizontal scrolling.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-set-vadjustment  (self@tie{}@code{<gnome-icon-list>}) (vadj@tie{}@code{<gtk-adjustment>})
+@deffnx Method set-vadjustment
+@samp{gnome_icon_list_set_vadjustment} is deprecated and should not be used in
+newly-written code.
+
+Sets the adjustment to be used for vertical scrolling. This is normally not
+required, as the icon list can be simply inserted in a &GtkScrolledWindow and
+scrolling will be handled automatically.
+
+@table @var
+@item gil
+An icon list.
+
+@item vadj
+Adjustment to be used for horizontal scrolling.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-freeze  (self@tie{}@code{<gnome-icon-list>})
+@deffnx Method freeze
+@samp{gnome_icon_list_freeze} is deprecated and should not be used in
+newly-written code.
+
+Freezes an icon list so that any changes made to it will not be reflected on the
+screen until it is thawed with @code{gnome-icon-list-thaw}. It is recommended to
+freeze the icon list before inserting or deleting many icons, for example, so
+that the layout process will only be executed once, when the icon list is
+finally thawed.
+
+You can call this function multiple times, but it must be balanced with the same
+number of calls to @code{gnome-icon-list-thaw} before the changes will take
+effect.
+
+@table @var
+@item gil
+An icon list.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-thaw  (self@tie{}@code{<gnome-icon-list>})
+@deffnx Method thaw
+@samp{gnome_icon_list_thaw} is deprecated and should not be used in
+newly-written code.
+
+Thaws the icon list and performs any pending layout operations. This is to be
+used in conjunction with @code{gnome-icon-list-freeze}.
+
+@table @var
+@item gil
+An icon list.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-insert  (self@tie{}@code{<gnome-icon-list>}) (pos@tie{}@code{int}) (icon_filename@tie{}@code{mchars}) (text@tie{}@code{mchars})
+@deffnx Method insert
+@samp{gnome_icon_list_insert} is deprecated and should not be used in
+newly-written code.
+
+Inserts an icon in the specified icon list. The icon's image is loaded from the
+specified file, and it is inserted at the @var{pos} index.
+
+@table @var
+@item gil
+An icon list.
+
+@item pos
+Position at which the new icon should be inserted.
+
+@item icon-filename
+Name of the file that holds the icon's image.
+
+@item text
+Text to be used for the icon's caption.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-insert-pixbuf  (self@tie{}@code{<gnome-icon-list>}) (pos@tie{}@code{int}) (im@tie{}@code{<gdk-pixbuf>}) (icon_filename@tie{}@code{mchars}) (text@tie{}@code{mchars})
+@deffnx Method insert-pixbuf
+@samp{gnome_icon_list_insert_pixbuf} is deprecated and should not be used in
+newly-written code.
+
+Inserts an icon in the specified icon list. The icon is created from the
+specified Imlib image, and it is inserted at the @var{pos} index.
+
+@table @var
+@item gil
+An icon list.
+
+@item pos
+Position at which the new icon should be inserted.
+
+@item im
+Pixbuf image with the icon image.
+
+@item icon-filename
+Filename of the image file.
+
+@item text
+Text to be used for the icon's caption.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-append  (self@tie{}@code{<gnome-icon-list>}) (icon_filename@tie{}@code{mchars}) (text@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method append
+@samp{gnome_icon_list_append} is deprecated and should not be used in
+newly-written code.
+
+Appends an icon to the specified icon list. The icon's image is loaded from the
+specified file, and it is inserted at the @var{pos} index.
+
+@table @var
+@item gil
+An icon list.
+
+@item icon-filename
+Name of the file that holds the icon's image.
+
+@item text
+Text to be used for the icon's caption.
+
+@item ret
+
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-append-pixbuf  (self@tie{}@code{<gnome-icon-list>}) (im@tie{}@code{<gdk-pixbuf>}) (icon_filename@tie{}@code{mchars}) (text@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method append-pixbuf
+@samp{gnome_icon_list_append_pixbuf} is deprecated and should not be used in
+newly-written code.
+
+Appends an icon to the specified icon list. The icon is created from the
+specified Imlib image.
+
+@table @var
+@item gil
+An icon list.
+
+@item im
+Pixbuf image with the icon image.
+
+@item icon-filename
+Filename of the image file.
+
+@item text
+Text to be used for the icon's caption.
+
+@item ret
+
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-clear  (self@tie{}@code{<gnome-icon-list>})
+@deffnx Method clear
+@samp{gnome_icon_list_clear} is deprecated and should not be used in
+newly-written code.
+
+Clears the contents for the icon list by removing all the icons. If destroy
+handlers were specified for any of the icons, they will be called with the
+appropriate data.
+
+@table @var
+@item gil
+An icon list.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-remove  (self@tie{}@code{<gnome-icon-list>}) (pos@tie{}@code{int})
+@deffnx Method remove
+@samp{gnome_icon_list_remove} is deprecated and should not be used in
+newly-written code.
+
+Removes the icon at index position @var{pos}. If a destroy handler was specified
+for that icon, it will be called with the appropriate data.
+
+@table @var
+@item gil
+An icon list.
+
+@item pos
+Index of the icon that should be removed.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-get-num-icons  (self@tie{}@code{<gnome-icon-list>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+@deffnx Method get-num-icons
+@samp{gnome_icon_list_get_num_icons} is deprecated and should not be used in
+newly-written code.
+
+@table @var
+@item gil
+An icon list.
+
+@item ret
+The number of icons in the icon list.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-get-selection-mode  (self@tie{}@code{<gnome-icon-list>}) @result{}@tie{} (ret@tie{}@code{<gtk-selection-mode>})
+@deffnx Method get-selection-mode
+@samp{gnome_icon_list_get_selection_mode} is deprecated and should not be used
+in newly-written code.
+
+@table @var
+@item gil
+An icon list.
+
+@item ret
+The current selection mode for an icon list.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-set-selection-mode  (self@tie{}@code{<gnome-icon-list>}) (mode@tie{}@code{<gtk-selection-mode>})
+@deffnx Method set-selection-mode
+@samp{gnome_icon_list_set_selection_mode} is deprecated and should not be used
+in newly-written code.
+
+Sets the selection mode for an icon list. The @samp{GTK_SELECTION_MULTIPLE} and
+@samp{GTK_SELECTION_EXTENDED} modes are considered equivalent.
+
+@table @var
+@item gil
+An icon list.
+
+@item mode
+New selection mode.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-select-icon  (self@tie{}@code{<gnome-icon-list>}) (pos@tie{}@code{int})
+@deffnx Method select-icon
+@samp{gnome_icon_list_select_icon} is deprecated and should not be used in
+newly-written code.
+
+Selects the icon at the index specified by @var{pos}.
+
+@table @var
+@item gil
+An icon list.
+
+@item pos
+Index of the icon to be selected.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-select-all  (self@tie{}@code{<gnome-icon-list>})
+@deffnx Method select-all
+@samp{gnome_icon_list_select_all} is deprecated and should not be used in
+newly-written code.
+
+@table @var
+@item gil
+An icon list.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-unselect-icon  (self@tie{}@code{<gnome-icon-list>}) (pos@tie{}@code{int})
+@deffnx Method unselect-icon
+@samp{gnome_icon_list_unselect_icon} is deprecated and should not be used in
+newly-written code.
+
+Unselects the icon at the index specified by @var{pos}.
+
+@table @var
+@item gil
+An icon list.
+
+@item pos
+Index of the icon to be unselected.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-unselect-all  (self@tie{}@code{<gnome-icon-list>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method unselect-all
+@samp{gnome_icon_list_unselect_all} is deprecated and should not be used in
+newly-written code.
+
+@table @var
+@item gil
+An icon list.
+
+@item ret
+The number of icons in the icon list
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-get-selection  (self@tie{}@code{<gnome-icon-list>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method get-selection
+@samp{gnome_icon_list_get_selection} is deprecated and should not be used in
+newly-written code.
+
+@table @var
+@item gil
+An icon list.
+
+@item ret
+A list of integers with the indices of the currently selected icons.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-focus-icon  (self@tie{}@code{<gnome-icon-list>}) (idx@tie{}@code{int})
+@deffnx Method focus-icon
+@samp{gnome_icon_list_focus_icon} is deprecated and should not be used in
+newly-written code.
+
+@table @var
+@item gil
+
+
+@item idx
+
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-set-icon-width  (self@tie{}@code{<gnome-icon-list>}) (w@tie{}@code{int})
+@deffnx Method set-icon-width
+@samp{gnome_icon_list_set_icon_width} is deprecated and should not be used in
+newly-written code.
+
+Sets the amount of horizontal space allocated to the icons, i.e. the column
+width of the icon list.
+
+@table @var
+@item gil
+An icon list.
+
+@item w
+New width for the icon columns.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-set-row-spacing  (self@tie{}@code{<gnome-icon-list>}) (pixels@tie{}@code{int})
+@deffnx Method set-row-spacing
+@samp{gnome_icon_list_set_row_spacing} is deprecated and should not be used in
+newly-written code.
+
+Sets the spacing to be used between rows of icons.
+
+@table @var
+@item gil
+An icon list.
+
+@item pixels
+Number of pixels for inter-row spacing.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-set-col-spacing  (self@tie{}@code{<gnome-icon-list>}) (pixels@tie{}@code{int})
+@deffnx Method set-col-spacing
+@samp{gnome_icon_list_set_col_spacing} is deprecated and should not be used in
+newly-written code.
+
+Sets the spacing to be used between columns of icons.
+
+@table @var
+@item gil
+An icon list.
+
+@item pixels
+Number of pixels for inter-column spacing.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-set-text-spacing  (self@tie{}@code{<gnome-icon-list>}) (pixels@tie{}@code{int})
+@deffnx Method set-text-spacing
+@samp{gnome_icon_list_set_text_spacing} is deprecated and should not be used in
+newly-written code.
+
+Sets the spacing to be used between an icon's image and its text caption.
+
+@table @var
+@item gil
+An icon list.
+
+@item pixels
+Number of pixels between an icon's image and its caption.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-set-icon-border  (self@tie{}@code{<gnome-icon-list>}) (pixels@tie{}@code{int})
+@deffnx Method set-icon-border
+@samp{gnome_icon_list_set_icon_border} is deprecated and should not be used in
+newly-written code.
+
+Sets the width of the border to be displayed around an icon's image. This is
+currently not implemented.
+
+@table @var
+@item gil
+An icon list.
+
+@item pixels
+Number of border pixels to be used around an icon's image.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-set-separators  (self@tie{}@code{<gnome-icon-list>}) (sep@tie{}@code{mchars})
+@deffnx Method set-separators
+@samp{gnome_icon_list_set_separators} is deprecated and should not be used in
+newly-written code.
+
+Sets the characters that can be used as word separators when doing word-wrapping
+in the icon text captions.
+
+@table @var
+@item gil
+An icon list.
+
+@item sep
+String with characters to be used as word separators.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-get-icon-filename  (self@tie{}@code{<gnome-icon-list>}) (idx@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-icon-filename
+@samp{gnome_icon_list_get_icon_filename} is deprecated and should not be used in
+newly-written code.
+
+@table @var
+@item gil
+An icon list.
+
+@item idx
+Index of an @var{icon}.
+
+@item ret
+The filename of the icon with index @var{idx}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-set-icon-data  (self@tie{}@code{<gnome-icon-list>}) (idx@tie{}@code{int}) (data@tie{}@code{<gpointer>})
+@deffnx Method set-icon-data
+@samp{gnome_icon_list_set_icon_data} is deprecated and should not be used in
+newly-written code.
+
+@table @var
+@item gil
+
+
+@item idx
+
+
+@item data
+
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-set-icon-data-full  (self@tie{}@code{<gnome-icon-list>}) (pos@tie{}@code{int}) (data@tie{}@code{<gpointer>}) (destroy@tie{}@code{<g-destroy-notify>})
+@deffnx Method set-icon-data-full
+@samp{gnome_icon_list_set_icon_data_full} is deprecated and should not be used
+in newly-written code.
+
+Associates the @var{data} pointer to the icon at the index specified by
+@var{pos}. The @var{destroy} argument points to a function that will be called
+when the icon is destroyed, or NULL if no function is to be called when this
+happens.
+
+@table @var
+@item gil
+An icon list.
+
+@item pos
+Index of an icon.
+
+@item data
+User data to set on the icon.
+
+@item destroy
+Destroy notification handler for the icon.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-find-icon-from-data  (self@tie{}@code{<gnome-icon-list>}) (data@tie{}@code{<gpointer>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method find-icon-from-data
+@samp{gnome_icon_list_find_icon_from_data} is deprecated and should not be used
+in newly-written code.
+
+@table @var
+@item gil
+An icon list.
+
+@item data
+Data pointer associated to an icon.
+
+@item ret
+The index of the icon whose user data has been set to @var{data}, or -1 if no
+icon has this data associated to it.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-get-icon-data  (self@tie{}@code{<gnome-icon-list>}) (pos@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gpointer>})
+@deffnx Method get-icon-data
+@samp{gnome_icon_list_get_icon_data} is deprecated and should not be used in
+newly-written code.
+
+@table @var
+@item gil
+An icon list.
+
+@item pos
+Index of an icon.
+
+@item ret
+The user data pointer associated to the icon at the index specified by
+@var{pos}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-moveto  (self@tie{}@code{<gnome-icon-list>}) (pos@tie{}@code{int}) (yalign@tie{}@code{double})
+@deffnx Method moveto
+@samp{gnome_icon_list_moveto} is deprecated and should not be used in
+newly-written code.
+
+Makes the icon whose index is @var{pos} be visible on the screen. The icon list
+gets scrolled so that the icon is visible. An alignment of 0.0 represents the
+top of the visible part of the icon list, and 1.0 represents the bottom. An icon
+can be centered on the icon list.
+
+@table @var
+@item gil
+An icon list.
+
+@item pos
+Index of an icon.
+
+@item yalign
+Vertical alignment of the icon.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-icon-is-visible  (self@tie{}@code{<gnome-icon-list>}) (pos@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-visibility>})
+@deffnx Method icon-is-visible
+@samp{gnome_icon_list_icon_is_visible} is deprecated and should not be used in
+newly-written code.
+
+@table @var
+@item gil
+An icon list.
+
+@item pos
+Index of an icon.
+
+@item ret
+Whether the icon at the index specified by @var{pos} is visible. This will be
+@samp{GTK_VISIBILITY_NONE} if the icon is not visible at all,
+@samp{GTK_VISIBILITY_PARTIAL} if the icon is at least partially shown, and
+@samp{GTK_VISIBILITY_FULL} if the icon is fully visible.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-get-icon-at  (self@tie{}@code{<gnome-icon-list>}) (x@tie{}@code{int}) (y@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-icon-at
+@samp{gnome_icon_list_get_icon_at} is deprecated and should not be used in
+newly-written code.
+
+@table @var
+@item gil
+An icon list.
+
+@item x
+X position in the icon list window.
+
+@item y
+Y position in the icon list window.
+
+@item ret
+The index of the icon that is under the specified coordinates, which are
+relative to the icon list's window. If there is no icon in that position, -1 is
+returned.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-get-items-per-line  (self@tie{}@code{<gnome-icon-list>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-items-per-line
+@samp{gnome_icon_list_get_items_per_line} is deprecated and should not be used
+in newly-written code.
+
+@table @var
+@item gil
+An icon list.
+
+@item ret
+The number of icons that fit in a line or row.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-icon-list-get-icon-text-item  (self@tie{}@code{<gnome-icon-list>}) (idx@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gnome-icon-text-item>})
+@deffnx Method get-icon-text-item
+@samp{gnome_icon_list_get_icon_text_item} is deprecated and should not be used
+in newly-written code.
+
+@table @var
+@item gil
+
+
+@item idx
+
+
+@item ret
+
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node gnome-ice
+@chapter gnome-ice
+Interface between ICE and gtk.
+
+@section Overview
+@section Usage
+@include defuns-gnome-ice.xml.texi
+
+@c %end of fragment

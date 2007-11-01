@@ -1,0 +1,14 @@
+
+@c %start of fragment
+
+@deffn Function gnome-gtk-module-info-get  @result{}@tie{} (ret@tie{}@code{<gnome-module-info*>})
+@table @var
+@item ret
+
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

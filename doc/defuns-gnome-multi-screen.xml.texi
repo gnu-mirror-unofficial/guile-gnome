@@ -1,0 +1,84 @@
+
+@c %start of fragment
+
+@deffn Function gnome-url-show-on-screen  (url@tie{}@code{mchars}) (screen@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{bool})
+Like @code{gnome-url-show}, but ensures that the viewer application appears on
+@var{screen}.
+
+@table @var
+@item url
+The url to display. Should begin with the protocol to use (e.g. "http:",
+"ghelp:", etc)
+
+@item screen
+a @code{<gdk-screen>}.
+
+@item error
+Used to store any errors that result from trying to display the @var{url}.
+
+@item ret
+@samp{@code{#t}} if everything went fine, @samp{@code{#f}} otherwise (in which
+case @var{error} will contain the actual error).
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-help-display-on-screen  (file_name@tie{}@code{mchars}) (link_id@tie{}@code{mchars}) (screen@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{bool})
+Like @code{gnome-help-display}, but ensures that the help viewer application
+appears on @var{screen}.
+
+@table @var
+@item file-name
+The name of the help document to display.
+
+@item link-id
+Can be @samp{@code{#f}}. If set, refers to an anchor or section id within the
+requested document.
+
+@item screen
+a @code{<gdk-screen>}.
+
+@item error
+A @code{<g-error>} instance that will hold the specifics of any error which
+occurs during processing, or @samp{@code{#f}}
+
+@item ret
+@samp{@code{#t}} on success, @samp{@code{#f}} otherwise (in which case
+@var{error} will contain the actual error).
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-help-display-uri-on-screen  (help_uri@tie{}@code{mchars}) (screen@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{bool})
+Like @code{gnome-help-display-uri}, but ensures that the help viewer application
+appears on @var{screen}.
+
+@table @var
+@item help-uri
+The URI to display.
+
+@item screen
+a @code{<gdk-screen>}.
+
+@item error
+A @code{<g-error>} instance that will hold the specifics of any error which
+occurs during processing, or @samp{@code{#f}}
+
+@item ret
+@samp{@code{#t}} on success, @samp{@code{#f}} otherwise (in which case
+@var{error} will contain the actual error).
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

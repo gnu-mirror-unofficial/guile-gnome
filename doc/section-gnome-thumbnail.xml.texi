@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GnomeThumbnail
+@chapter GnomeThumbnail
+
+
+@section Overview
+@section Usage
+@include defuns-gnome-thumbnail.xml.texi
+
+@c %end of fragment

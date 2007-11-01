@@ -1,0 +1,26 @@
+
+@c %start of fragment
+
+@deffn Function gnome-gdk-pixbuf-new-from-uri  (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+Loads a GdkPixbuf from the image file @var{uri} points to, scaling it to the
+desired size. If you pass -1 for @var{width} or @var{height} then the value
+specified in the file will be used.
+
+When preserving aspect ratio, if both height and width are set the size is
+picked such that the scaled image fits in a width * height rectangle.
+
+@table @var
+@item uri
+the uri of an image
+
+@item ret
+The loaded pixbuf, or NULL on error
+
+@end table
+
+Since 2.14
+
+@end deffn
+
+
+@c %end of fragment

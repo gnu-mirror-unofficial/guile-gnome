@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GnomeScores
+@chapter GnomeScores
+
+
+@section Overview
+@section Usage
+@include defuns-gnome-scores.xml.texi
+
+@c %end of fragment

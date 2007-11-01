@@ -1,0 +1,19 @@
+
+@c %start of fragment
+
+@node GnomeApp
+@chapter GnomeApp
+The main application widget.
+
+@section Overview
+The @var{gnome-app} widget and associated functions provides the easiest way to
+create an almost complete GNOME application in libgnomeui. Simple create an
+instance of the widget, append any menus, toolbar(s) and a status bar, as
+required (this will probably be done with some functions from the following
+pages). Then fill in the main contents with a call to
+@code{gnome-app-set-contents} and start the main loop (with @code{gtk-main}).
+
+@section Usage
+@include defuns-gnome-app.xml.texi
+
+@c %end of fragment

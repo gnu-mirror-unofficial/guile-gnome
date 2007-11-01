@@ -1,0 +1,17 @@
+
+@c %start of fragment
+
+@node gnome-window
+@chapter gnome-window
+Convenience functions for setting window attributes.
+
+@section Overview
+This module is a convenience wrapper for some similar functions in GTK+. This
+allows all GNOME applications to have a consistent way of setting their window
+and dialog titles. It is possible that in the future, a configurable way of
+setting window titles may be added.
+
+@section Usage
+@include defuns-gnome-window.xml.texi
+
+@c %end of fragment

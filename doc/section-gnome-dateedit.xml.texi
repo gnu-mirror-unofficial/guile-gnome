@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GnomeDateEdit
+@chapter GnomeDateEdit
+
+
+@section Overview
+@section Usage
+@include defuns-gnome-dateedit.xml.texi
+
+@c %end of fragment

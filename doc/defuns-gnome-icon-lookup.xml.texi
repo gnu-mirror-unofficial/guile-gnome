@@ -1,0 +1,95 @@
+
+@c %start of fragment
+
+@deffn Function gnome-icon-lookup  (icon_theme@tie{}@code{<gtk-icon-theme>}) (thumbnail_factory@tie{}@code{<gnome-thumbnail-factory>}) (file_uri@tie{}@code{mchars}) (custom_icon@tie{}@code{mchars}) (file_info@tie{}@code{<gnome-vfs-file-info*>}) (mime_type@tie{}@code{mchars}) (flags@tie{}@code{<gnome-icon-lookup-flags>}) (result@tie{}@code{<gnome-icon-lookup-result-flags*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+This function tries to locate an icon in @var{icon-theme} that can be used to
+represent the file passed. It can optionally also look for existing thumbnails.
+It does no I/O, so the lookup should be relatively fast.
+
+If you don't know any information about the file already you can use
+@code{gnome-icon-lookup-sync} which gets this information using gnome-vfs.
+
+For backwards compatibility, this function also accepts a GnomeIconTheme instead
+of a GtkIconTheme.
+
+The following @var{flags} are valid:
+
+GNOME_ICON_LOOKUP_FLAGS_EMBEDDING_TEXT - Return the text icon for scripts. This
+is useful if you do text embedding in the icons.
+
+GNOME_ICON_LOOKUP_FLAGS_SHOW_SMALL_IMAGES_AS_THEMSELVES - Return the filename of
+the filename itself for small images. Only availible if you pass a
+thumbnail_factory.
+
+Possible @var{result} flags:
+
+GNOME_ICON_LOOKUP_RESULT_FLAGS_THUMBNAIL - The returned file is a thumbnail.
+
+@table @var
+@item icon-theme
+a @code{<gtk-icon-theme>}, or (deprecated) a @code{<gnome-icon-theme>}
+
+@item thumbnail-factory
+an optional @code{<gnome-thumbnail-factory>} used to look up thumbnails
+
+@item file-uri
+the uri of the file
+
+@item custom-icon
+optionally the name of a custom icon to try
+
+@item file-info
+information about the file from @code{gnome-vfs-get-file-info}
+
+@item mime-type
+the mime type of the icon
+
+@item flags
+flags that affect the result of the lookup
+
+@item result
+optionally result flags of the lookups are stored here
+
+@item ret
+The name of an icon or an absolute filename of an image to use for the file.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gnome-icon-lookup-sync  (icon_theme@tie{}@code{<gtk-icon-theme>}) (thumbnail_factory@tie{}@code{<gnome-thumbnail-factory>}) (file_uri@tie{}@code{mchars}) (custom_icon@tie{}@code{mchars}) (flags@tie{}@code{<gnome-icon-lookup-flags>}) (result@tie{}@code{<gnome-icon-lookup-result-flags*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+This function tries to locate an icon in @var{icon-theme} that can be used to
+represent the file passed. See @code{gnome-icon-lookup} for more information.
+
+@table @var
+@item icon-theme
+a @code{<gtk-icon-theme>}, or (deprecated) a @code{<gnome-icon-theme>}
+
+@item thumbnail-factory
+an optional @code{<gnome-thumbnail-factory>} used to look up thumbnails
+
+@item file-uri
+the uri of the file
+
+@item custom-icon
+optionally the name of a custom icon to try
+
+@item flags
+flags that affect the result of the lookup
+
+@item result
+optionally result flags of the lookups are stored here
+
+@item ret
+The name of an icon or an absolute filename of an image to use for the file.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+
+@c %end of fragment

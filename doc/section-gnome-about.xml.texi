@@ -1,0 +1,17 @@
+
+@c %start of fragment
+
+@node GnomeAbout
+@chapter GnomeAbout
+Display author, documenter and translator credits for an application.
+
+@section Overview
+The GnomeAbout widget is used as the standard way of displaying credits in an
+application. Typically, it will be called when a user selects the
+@samp{About...} option from the @samp{Help} menu. With one simple function call,
+the application can then display all of the appropriate information.
+
+@section Usage
+@include defuns-gnome-about.xml.texi
+
+@c %end of fragment

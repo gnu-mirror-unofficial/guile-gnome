@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node gnome-stock-icons
+@chapter gnome-stock-icons
+Stock icons used across GNOME applications.
+
+@section Overview
+@section Usage
+@include defuns-gnome-stock-icons.xml.texi
+
+@c %end of fragment

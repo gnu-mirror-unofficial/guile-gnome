@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node gnome-uidefs
+@chapter gnome-uidefs
+Standard defines used throughout libgnomeui.
+
+@section Overview
+@section Usage
+@include defuns-gnome-uidefs.xml.texi
+
+@c %end of fragment

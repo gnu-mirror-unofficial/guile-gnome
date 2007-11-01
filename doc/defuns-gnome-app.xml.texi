@@ -1,0 +1,287 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-app>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item app-id
+The application ID string
+
+@end table
+
+@end deftp
+
+@deffn Function gnome-app-new  (appname@tie{}@code{mchars}) (title@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Create a new (empty) application window. You must specify the @var{appname}
+(used internally as an identifier). The @var{title} param can be left as NULL,
+in which case the window's title will not be set.
+
+@table @var
+@item appname
+Name of program, used in file names and paths.
+
+@item title
+Window title for application.
+
+@item ret
+Pointer to new @code{<gnome-app>} object.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-app-construct  (self@tie{}@code{<gnome-app>}) (appname@tie{}@code{mchars}) (title@tie{}@code{mchars})
+@deffnx Method construct
+Constructor for language bindings; you don't normally need this.
+
+@table @var
+@item app
+A newly created @code{<gnome-app>} object.
+
+@item appname
+Name of program, using in file names and paths.
+
+@item title
+Window title for application.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-app-set-menus  (self@tie{}@code{<gnome-app>}) (menubar@tie{}@code{<gtk-menu-bar>})
+@deffnx Method set-menus
+Sets the menu bar of the application window.
+
+@table @var
+@item app
+A @code{<gnome-app>} instance.
+
+@item menubar
+Menu bar widget for main application window.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-app-set-toolbar  (self@tie{}@code{<gnome-app>}) (toolbar@tie{}@code{<gtk-toolbar>})
+@deffnx Method set-toolbar
+Sets the main toolbar of the application window.
+
+@table @var
+@item app
+A @code{<gnome-app>} instance.
+
+@item toolbar
+Toolbar widget for main app window.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-app-set-statusbar  (self@tie{}@code{<gnome-app>}) (statusbar@tie{}@code{<gtk-widget>})
+@deffnx Method set-statusbar
+Sets the status bar of the application window.
+
+@table @var
+@item app
+A @code{<gnome-app>} instance
+
+@item statusbar
+Statusbar widget for main app window
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-app-set-statusbar-custom  (self@tie{}@code{<gnome-app>}) (container@tie{}@code{<gtk-widget>}) (statusbar@tie{}@code{<gtk-widget>})
+@deffnx Method set-statusbar-custom
+Sets the status bar of the application window, but use @var{container} as its
+container.
+
+@table @var
+@item app
+A @code{<gnome-app>} instance
+
+@item container
+container widget containing the statusbar
+
+@item statusbar
+Statusbar widget for main app window
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-app-set-contents  (self@tie{}@code{<gnome-app>}) (contents@tie{}@code{<gtk-widget>})
+@deffnx Method set-contents
+Sets the content area of the main window of @var{app}.
+
+@table @var
+@item app
+A @code{<gnome-app>} instance.
+
+@item contents
+Widget to be application content area.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-app-add-toolbar  (self@tie{}@code{<gnome-app>}) (toolbar@tie{}@code{<gtk-toolbar>}) (name@tie{}@code{mchars}) (behavior@tie{}@code{int}) (placement@tie{}@code{int}) (band_num@tie{}@code{int}) (band_position@tie{}@code{int}) (offset@tie{}@code{int})
+@deffnx Method add-toolbar
+Create a new @code{<bonobo-dock-item>} widget containing @var{toolbar}, and add
+it to @var{app}'s dock with the specified layout information. Notice that, if
+automatic layout configuration is enabled, the layout is overridden by the saved
+configuration, if any.
+
+@table @var
+@item app
+A @code{<gnome-app>} widget
+
+@item toolbar
+Toolbar to be added to @var{app}'s dock
+
+@item name
+Name for the dock item that will contain @var{toolbar}
+
+@item behavior
+Behavior for the new dock item
+
+@item placement
+Placement for the new dock item
+
+@item band-num
+Number of the band where the dock item should be placed
+
+@item band-position
+Position of the new dock item in band @var{band-num}
+
+@item offset
+Offset from the previous dock item in the band; if there is no previous item,
+offset from the beginning of the band.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-app-add-docked  (self@tie{}@code{<gnome-app>}) (widget@tie{}@code{<gtk-widget>}) (name@tie{}@code{mchars}) (behavior@tie{}@code{int}) (placement@tie{}@code{int}) (band_num@tie{}@code{int}) (band_position@tie{}@code{int}) (offset@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method add-docked
+Add @var{widget} as a dock item according to the specified layout information.
+Notice that, if automatic layout configuration is enabled, the layout is
+overridden by the saved configuration, if any.
+
+@table @var
+@item app
+A @code{<gnome-app>} widget.
+
+@item widget
+Widget to be added to the @code{<gnome-app>}.
+
+@item name
+Name for the new dock item.
+
+@item behavior
+Behavior for the new dock item.
+
+@item placement
+Placement for the new dock item.
+
+@item band-num
+Number of the band where the dock item should be placed.
+
+@item band-position
+Position of the new dock item in band @var{band-num}.
+
+@item offset
+Offset from the previous dock item in the band; if there is no previous item,
+offset from the beginning of the band.
+
+@item ret
+The dock item used to contain the widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-app-add-dock-item  (self@tie{}@code{<gnome-app>}) (item@tie{}@code{<bonobo-dock-item*>}) (placement@tie{}@code{int}) (band_num@tie{}@code{int}) (band_position@tie{}@code{int}) (offset@tie{}@code{int})
+@deffnx Method add-dock-item
+Add @var{item} according to the specified layout information. Notice that, if
+automatic layout configuration is enabled, the layout is overridden by the saved
+configuration, if any.
+
+@table @var
+@item app
+A @code{<gnome-app>} widget.
+
+@item item
+Dock item to be added to @var{app}'s dock.
+
+@item placement
+Placement for the dock item.
+
+@item band-num
+Number of the band where the dock item should be placed.
+
+@item band-position
+Position of the dock item in band @var{band-num}.
+
+@item offset
+Offset from the previous dock item in the band; if there is no previous item,
+offset from the beginning of the band.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-app-enable-layout-config  (self@tie{}@code{<gnome-app>}) (enable@tie{}@code{bool})
+@deffnx Method enable-layout-config
+Specify whether @var{app} should automatically save the dock's layout
+configuration via gnome-config whenever it changes or not.
+
+@table @var
+@item app
+A @code{<gnome-app>} widget.
+
+@item enable
+Boolean specifying whether automatic configuration saving is enabled.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-app-get-dock  (self@tie{}@code{<gnome-app>}) @result{}@tie{} (ret@tie{}@code{<bonobo-dock*>})
+@deffnx Method get-dock
+Retrieves the @code{<bonobo-dock>} widget contained in @var{app}.
+
+@table @var
+@item app
+A @code{<gnome-app>} widget
+
+@item ret
+The relevant @code{<bonobo-dock>} widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-app-get-dock-item-by-name  (self@tie{}@code{<gnome-app>}) (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<bonobo-dock-item*>})
+@deffnx Method get-dock-item-by-name
+Retrieve the dock item whose name matches @var{name}.
+
+@table @var
+@item app
+A @code{<gnome-app>} widget.
+
+@item name
+Name of the dock item to retrieve.
+
+@item ret
+The retrieved dock item.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

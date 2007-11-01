@@ -1,0 +1,228 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-druid>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item show-finish
+Show the 'Finish' button instead of the 'Next' button
+
+@item show-help
+Show the 'Help' button
+
+@end table
+
+@end deftp
+
+@defop Signal <gnome-druid> cancel 
+@end defop
+
+@defop Signal <gnome-druid> help 
+@end defop
+
+@deffn Function gnome-druid-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gnome-druid>} widget. You need to add this to a dialog
+yourself, it is not a dialog.
+
+@table @var
+@item ret
+A new @code{<gnome-druid>} widget
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-druid-set-buttons-sensitive  (self@tie{}@code{<gnome-druid>}) (back_sensitive@tie{}@code{bool}) (next_sensitive@tie{}@code{bool}) (cancel_sensitive@tie{}@code{bool}) (help_sensitive@tie{}@code{bool})
+@deffnx Method set-buttons-sensitive
+Sets the sensitivity of @var{druid}'s control-buttons. If the variables are
+@samp{@code{#t}}, then they will be clickable. This function is used primarily
+by the actual GnomeDruidPage widgets.
+
+@table @var
+@item druid
+A Druid.
+
+@item back-sensitive
+@samp{@code{#t}} if the back button is sensitive.
+
+@item next-sensitive
+@samp{@code{#t}} if the next button is sensitive.
+
+@item cancel-sensitive
+@samp{@code{#t}} if the cancel button is sensitive.
+
+@item help-sensitive
+@samp{@code{#t}} if the help button is sensitive.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-druid-set-show-finish  (self@tie{}@code{<gnome-druid>}) (show_finish@tie{}@code{bool})
+@deffnx Method set-show-finish
+Used to specify if @var{druid} is currently showing the last page of the
+sequence (and hence should display "Finish", rather than "Next").
+
+@table @var
+@item druid
+A @code{<gnome-druid>} widget.
+
+@item show-finish
+If @samp{@code{#t}}, then the "Next" button is changed to be "Finish"
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-druid-set-show-help  (self@tie{}@code{<gnome-druid>}) (show_help@tie{}@code{bool})
+@deffnx Method set-show-help
+Sets the "Help" button on the druid to be visible in the lower left corner of
+the widget, if @var{show-help} is @samp{@code{#t}}.
+
+@table @var
+@item druid
+A @code{<gnome-druid>}.
+
+@item show-help
+@samp{@code{#t}}, if the "Help" button is to be shown, @samp{@code{#f}}
+otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-druid-prepend-page  (self@tie{}@code{<gnome-druid>}) (page@tie{}@code{<gnome-druid-page>})
+@deffnx Method prepend-page
+This will prepend a GnomeDruidPage into the internal list of pages that the
+@var{druid} has. Since @code{<gnome-druid>} is just a container, you will need
+to also call @code{gtk-widget-show} on the page, otherwise the page will not be
+shown.
+
+@table @var
+@item druid
+A Druid widget.
+
+@item page
+The page to be inserted.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-druid-insert-page  (self@tie{}@code{<gnome-druid>}) (back_page@tie{}@code{<gnome-druid-page>}) (page@tie{}@code{<gnome-druid-page>})
+@deffnx Method insert-page
+This will insert @var{page} after @var{back-page} into the list of internal
+pages that the @var{druid} has. If @var{back-page} is not present in the list or
+@samp{@code{#f}}, @var{page} will be prepended to the list. Since
+@code{<gnome-druid>} is just a container, you will need to also call
+@code{gtk-widget-show} on the page, otherwise the page will not be shown.
+
+@table @var
+@item druid
+A @code{<gnome-druid>} widget.
+
+@item back-page
+The page prior to the page to be inserted.
+
+@item page
+The page to insert.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-druid-append-page  (self@tie{}@code{<gnome-druid>}) (page@tie{}@code{<gnome-druid-page>})
+@deffnx Method append-page
+This will append @var{page} onto the end of the internal list. Since
+@code{<gnome-druid>} is just a container, you will need to also call
+@code{gtk-widget-show} on the page, otherwise the page will not be shown.
+
+@table @var
+@item druid
+A @code{<gnome-druid>} widget.
+
+@item page
+The @code{<gnome-druid-page>} to be appended.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-druid-set-page  (self@tie{}@code{<gnome-druid>}) (page@tie{}@code{<gnome-druid-page>})
+@deffnx Method set-page
+This will make @var{page} the currently showing page in the druid. @var{page}
+must already be in the druid.
+
+@table @var
+@item druid
+A @code{<gnome-druid>} widget.
+
+@item page
+The @code{<gnome-druid-page>} to be brought to the foreground.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-druid-new-with-window  (title@tie{}@code{mchars}) (parent@tie{}@code{<gtk-window>}) (close_on_cancel@tie{}@code{bool}) (window@tie{}@code{<gtk-widget**>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gnome-druid>} widget. It also creates a new toplevel window
+with the title of @var{title} (which can be @samp{@code{#f}}) and a parent of
+@var{parent} (which also can be @samp{@code{#f}}). The window and the druid will
+both be shown. If you need the window widget pointer you can optionally get it
+through the last argument. When the druid gets destroyed, so will the window
+that is created here.
+
+@table @var
+@item title
+A title of the window.
+
+@item parent
+The parent of this window (transient_for).
+
+@item close-on-cancel
+@samp{@code{#t}} if the window should be closed when cancel is pressed.
+
+@item window
+Optional return of the @code{<gtk-window>} created.
+
+@item ret
+A new @code{<gnome-druid>} widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-druid-construct-with-window  (self@tie{}@code{<gnome-druid>}) (title@tie{}@code{mchars}) (parent@tie{}@code{<gtk-window>}) (close_on_cancel@tie{}@code{bool}) (window@tie{}@code{<gtk-widget**>})
+@deffnx Method construct-with-window
+Creates a new toplevel window with the title of @var{title} (which can be
+@samp{@code{#f}}) and a parent of @var{parent} (which also can be
+@samp{@code{#f}}). The @var{druid} will be placed inside this window. The window
+and the druid will both be shown. If you need the window widget pointer you can
+optionally get it through the last argument. When the druid gets destroyed, so
+will the window that is created here.
+
+See also @code{gnome-druid-new-with-window}.
+
+@table @var
+@item druid
+The @code{<gnome-druid>}.
+
+@item title
+A title of the window.
+
+@item parent
+The parent of this window (transient_for).
+
+@item close-on-cancel
+@samp{@code{#t}} if the window should be closed when cancel is pressed.
+
+@item window
+Optional return of the @code{<gtk-window>} created.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

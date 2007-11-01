@@ -1,0 +1,115 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-druid-page>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@defop Signal <gnome-druid-page> next  (arg0@tie{}@code{<gtk-widget>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gnome-druid-page> prepare  (arg0@tie{}@code{<gtk-widget>})
+@end defop
+
+@defop Signal <gnome-druid-page> back  (arg0@tie{}@code{<gtk-widget>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gnome-druid-page> finish  (arg0@tie{}@code{<gtk-widget>})
+@end defop
+
+@defop Signal <gnome-druid-page> cancel  (arg0@tie{}@code{<gtk-widget>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@deffn Function gnome-druid-page-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gnome-druid-page>}.
+
+@table @var
+@item ret
+The newly created @code{<gnome-druid-page>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-druid-page-next  (self@tie{}@code{<gnome-druid-page>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method next
+This will emit the "next" signal for that particular page. It is called by
+gnome-druid exclusively. It is expected that non-linear Druid's will override
+this signal and return TRUE if it handles changing pages.
+
+@table @var
+@item druid-page
+A DruidPage widget.
+
+@item ret
+This function will return FALSE by default.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-druid-page-prepare  (self@tie{}@code{<gnome-druid-page>})
+@deffnx Method prepare
+This emits the "prepare" signal for the page. It is called by gnome-druid
+exclusively. This function is called immediately prior to a druid page being
+shown so that it can "prepare" for display.
+
+@table @var
+@item druid-page
+A DruidPage widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-druid-page-back  (self@tie{}@code{<gnome-druid-page>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method back
+This will emit the "back" signal for that particular page. It is called by
+gnome-druid exclusively. It is expected that non-linear Druid's will override
+this signal and return TRUE if it handles changing pages.
+
+@table @var
+@item druid-page
+A DruidPage widget.
+
+@item ret
+This function will return FALSE by default.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-druid-page-cancel  (self@tie{}@code{<gnome-druid-page>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method cancel
+This will emit the "cancel" signal for that particular page. It is called by
+gnome-druid exclusively. It is expected that a Druid will override this signal
+and return TRUE if it does not want to exit.
+
+@table @var
+@item druid-page
+A DruidPage widget.
+
+@item ret
+This function will return FALSE by default.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-druid-page-finish  (self@tie{}@code{<gnome-druid-page>})
+@deffnx Method finish
+This emits the "finish" signal for the page. It is called by gnome-druid
+exclusively.
+
+@table @var
+@item druid-page
+A DruidPage widget.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment
