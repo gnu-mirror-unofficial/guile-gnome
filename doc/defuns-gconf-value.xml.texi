@@ -1,0 +1,493 @@
+
+@c %start of fragment
+
+@deftp Class <g-conf-value>
+@end deftp
+
+@deffn Function gconf-value-get-list-type  (self@tie{}@code{<g-conf-value>}) @result{}@tie{} (ret@tie{}@code{<g-conf-value-type>})
+Returns the type of the list elements in a @code{<g-conf-value>} with type
+@samp{GCONF_VALUE_LIST}.
+
+@table @var
+@item value
+a @code{<g-conf-value>}.
+
+@item ret
+the type of the list elements (a primitive type).
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-value-get-car  (self@tie{}@code{<g-conf-value>}) @result{}@tie{} (ret@tie{}@code{<g-conf-value>})
+Returns the first member (car) of a @code{<g-conf-value>} with type
+@samp{GCONF_VALUE_PAIR}. The car is another @code{<g-conf-value>}, with a
+primitive type (bool, int, float, string, schema).
+
+The returned value is not a copy; it is "owned" by the pair and will be
+destroyed when the pair is destroyed.
+
+@table @var
+@item value
+a @code{<g-conf-value>}.
+
+@item ret
+the first member of a pair, a primitive type.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-value-get-cdr  (self@tie{}@code{<g-conf-value>}) @result{}@tie{} (ret@tie{}@code{<g-conf-value>})
+Returns the second member (cdr) of a @code{<g-conf-value>} with type
+@samp{GCONF_VALUE_PAIR}. The cdr is another @code{<g-conf-value>}, with a
+primitive type (bool, int, float, string, schema).
+
+The returned value is not a copy; it is "owned" by the pair and will be
+destroyed when the pair is destroyed.
+
+@table @var
+@item value
+a @code{<g-conf-value>}.
+
+@item ret
+the second member of a pair, a primitive type.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-value-new  (type@tie{}@code{<g-conf-value-type>}) @result{}@tie{} (ret@tie{}@code{<g-conf-value>})
+Creates a new @code{<g-conf-value>} with type @var{type}. The type is immutable
+after creation; values have a fixed type. You @emph{must} initialize the
+@code{<g-conf-value>} after creation; that is, you must set its value with one
+of the "setter" functions.
+
+@table @var
+@item type
+type of the new @code{<g-conf-value>}.
+
+@item ret
+newly-allocated @code{<g-conf-value>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-value-new-from-string  (type@tie{}@code{<g-conf-value-type>}) (str@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<g-conf-value>})
+Creates a new @code{<g-conf-value>} with type @var{type} and value set to the
+string passed. Based on the value of @var{type}, this function does the
+appropriate conversion of the string passed to the @var{type}, does error checks
+to ensure the value is valid, and then calls the appropriate gconf_set function
+depending on the @var{type} to set the value.
+
+@table @var
+@item type
+type of the new @code{<g-conf-value>}.
+
+@item str
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@item err
+the value to be set.
+
+@item ret
+the value to be set.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-value-set-schema-nocopy  (self@tie{}@code{<g-conf-value>}) (sc@tie{}@code{<g-conf-schema>})
+Sets the value of a @code{<g-conf-value>} with type @samp{GCONF_VALUE_SCHEMA}.
+The @code{<g-conf-schema>} is @emph{not} copied; the @code{<g-conf-value>} takes
+ownership of it, and it should only be accessed via the
+@code{gconf-value-get-schema} macro. This function is provided as a more
+efficient version of @code{gconf-value-set-schema}.
+
+@table @var
+@item value
+a @code{<g-conf-value>} with type @samp{GCONF_VALUE_SCHEMA}.
+
+@item sc
+the @code{<g-conf-schema>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-value-set-car  (self@tie{}@code{<g-conf-value>}) (car@tie{}@code{<g-conf-value>})
+Sets the value of the first field (car) of a @code{<g-conf-value>} with type
+@samp{GCONF_VALUE_PAIR}. The @code{<g-conf-value>} is copied. Alternatively, use
+@code{gconf-value-set-car-nocopy}.
+
+@table @var
+@item value
+a @code{<g-conf-value>} with type @samp{GCONF_VALUE_PAIR}.
+
+@item car
+the @code{<g-conf-value>} to set as the car of the pair.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-value-set-car-nocopy  (self@tie{}@code{<g-conf-value>}) (car@tie{}@code{<g-conf-value>})
+Sets the value of the first field (car) of a @code{<g-conf-value>} with type
+@samp{GCONF_VALUE_PAIR}. The @code{<g-conf-value>} is @emph{not} copied; the
+@code{<g-conf-value>} takes ownership of it. Alternatively, use
+@code{gconf-value-set-car}.
+
+@table @var
+@item value
+a @code{<g-conf-value>} with type @samp{GCONF_VALUE_PAIR}.
+
+@item car
+the @code{<g-conf-value>} to set as the car of the pair.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-value-set-cdr  (self@tie{}@code{<g-conf-value>}) (cdr@tie{}@code{<g-conf-value>})
+Sets the value of the second field (cdr) of a @code{<g-conf-value>} with type
+@samp{GCONF_VALUE_PAIR}. The @code{<g-conf-value>} is copied. Alternatively, use
+@code{gconf-value-set-cdr-nocopy}.
+
+@table @var
+@item value
+a @code{<g-conf-value>} with type @samp{GCONF_VALUE_PAIR}.
+
+@item cdr
+the @code{<g-conf-value>} to set as the cdr of the pair.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-value-set-cdr-nocopy  (self@tie{}@code{<g-conf-value>}) (cdr@tie{}@code{<g-conf-value>})
+Sets the value of the second field (cdr) of a @code{<g-conf-value>} with type
+@samp{GCONF_VALUE_PAIR}. The @code{<g-conf-value>} is @emph{not} copied; the
+@code{<g-conf-value>} takes ownership of it. Alternatively, use
+@code{gconf-value-set-cdr}.
+
+@table @var
+@item value
+a @code{<g-conf-value>} with type @samp{GCONF_VALUE_PAIR}.
+
+@item cdr
+the @code{<g-conf-value>} to set as the cdr of the pair.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-value-set-list-type  (self@tie{}@code{<g-conf-value>}) (type@tie{}@code{<g-conf-value-type>})
+Sets the type of the elements in a @code{<g-conf-value>} of type
+@samp{GCONF_VALUE_LIST}. All the elements in the list must have the same type.
+You must set the list type before you can set the list value.
+
+@table @var
+@item value
+a @code{<g-conf-value>} with type @samp{GCONF_VALUE_LIST}.
+
+@item type
+the type of elements in this list.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-value-to-string  (self@tie{}@code{<g-conf-value>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Creates a human-readable string representation of a @code{<g-conf-value>}. This
+is intended for debugging and the like; the string representation is not
+suitable for reliable machine parsing (that is, you shouldn't use this function
+to save a value to a file or anything like that). The exact nature of the string
+representation may change in future versions. The returned string is
+newly-allocated and must be freed with @code{g-free}.
+
+@table @var
+@item value
+a @code{<g-conf-value>}.
+
+@item ret
+a newly-allocated string representing the @code{<g-conf-value>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-meta-info-new  @result{}@tie{} (ret@tie{}@code{<g-conf-meta-info*>})
+Creates a new @code{<g-conf-meta-info>} structure and returns the newly
+allocated @code{<g-conf-meta-info>}.
+
+@table @var
+@item ret
+the newly allocated @code{<g-conf-metainfo>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-meta-info-get-mod-user  (self@tie{}@code{<g-conf-meta-info*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Returns the user owning the daemon that made the last modification of the key.
+
+@table @var
+@item gcmi
+a @code{<g-conf-meta-info>}.
+
+@item ret
+mod_user, a char* value.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-meta-info-mod-time  (self@tie{}@code{<g-conf-meta-info*>}) @result{}@tie{} (ret@tie{}@code{int32})
+Returns the last modification time of the key.
+
+@table @var
+@item gcmi
+a @code{<g-conf-meta-info>}.
+
+@item ret
+the mod_time, a @code{<g-time>} value.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-meta-info-set-mod-user  (self@tie{}@code{<g-conf-meta-info*>}) (mod_user@tie{}@code{mchars})
+Sets the mod_user field of the @code{<g-conf-meta-info>} to the user name
+passed.
+
+@table @var
+@item gcmi
+a @code{<g-conf-meta-info>}.
+
+@item mod-user
+the value to be set, a char*.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-meta-info-set-mod-time  (self@tie{}@code{<g-conf-meta-info*>}) (mod_time@tie{}@code{int32})
+Sets the mod_last field of the @code{<g-conf-meta-info>} to the mod_time passed.
+
+@table @var
+@item gcmi
+a @code{<g-conf-meta-info>}.
+
+@item mod-time
+a @code{<g-time>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-entry-get-key  (self@tie{}@code{<g-conf-entry*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Accesses the @var{key} field of a @code{<g-conf-entry>}. The returned key is not
+a copy, and should not be freed or modified.
+
+@table @var
+@item entry
+a @code{<g-conf-entry>}.
+
+@item ret
+the key , a char*.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-entry-get-value  (self@tie{}@code{<g-conf-entry*>}) @result{}@tie{} (ret@tie{}@code{<g-conf-value>})
+Accesses the @var{value} field of a @code{<g-conf-entry>}. The returned value is
+not a copy, and should not be freed or modified. If you have called
+@code{gconf-entry-steal-value}, the returned value will be .
+
+@table @var
+@item entry
+a @code{<g-conf-entry>}.
+
+@item ret
+a @code{<g-conf-value>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-entry-get-schema-name  (self@tie{}@code{<g-conf-entry*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Returns the schema_name field of the @code{<g-conf-entry>}.
+
+@table @var
+@item entry
+a @code{<g-conf-entry>}.
+
+@item ret
+the schema_name , a char* value.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-entry-get-is-default  (self@tie{}@code{<g-conf-entry*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Returns the is_default field of the @code{<g-conf-entry>} , a gboolean value.
+
+@table @var
+@item entry
+a @code{<g-conf-entry>}.
+
+@item ret
+a @code{<gboolean>} value.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-entry-get-is-writable  (self@tie{}@code{<g-conf-entry*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Returns the is_writable field of the @code{<g-conf-entry>}, a gboolean value.
+
+@table @var
+@item entry
+a @code{<g-conf-entry>}.
+
+@item ret
+a @code{<gboolean>} value.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-entry-new  (key@tie{}@code{mchars}) (val@tie{}@code{<g-conf-value>}) @result{}@tie{} (ret@tie{}@code{<g-conf-entry*>})
+Creates a new @code{<g-conf-entry>} with key @var{key} and value @var{val}
+calling @code{gconf-entry-new-nocopy}.
+
+@table @var
+@item key
+the key name.
+
+@item val
+the value.
+
+@item ret
+a new @code{<g-conf-entry>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-entry-new-nocopy  (key@tie{}@code{mchars}) (val@tie{}@code{<g-conf-value>}) @result{}@tie{} (ret@tie{}@code{<g-conf-entry*>})
+Creates a new @code{<g-conf-entry>} with key @var{key} and value @var{val}.
+@var{key} should be a full path to the key, starting with '/'. Neither the key
+nor the value is copied; both are freed when the @code{<g-conf-entry>} is freed.
+The string will be freed with @code{g-free} so should be allocated with a GLib
+function, not @code{malloc}.
+
+@table @var
+@item key
+the key name.
+
+@item val
+the value.
+
+@item ret
+a new @code{<g-conf-entry>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-entry-steal-value  (self@tie{}@code{<g-conf-entry*>}) @result{}@tie{} (ret@tie{}@code{<g-conf-value>})
+Extracts the value from a @code{<g-conf-entry>}, leaving the @var{value} field
+in @code{<g-conf-entry>} set to . Destroying the @code{<g-conf-entry>} will
+@emph{not} destroy the value; the caller of @code{gconf-entry-steal-value}
+assumes ownership of it.
+
+@table @var
+@item entry
+a @code{<g-conf-entry>}.
+
+@item ret
+a @code{<g-conf-value>} that the caller must free.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-entry-set-value  (self@tie{}@code{<g-conf-entry*>}) (val@tie{}@code{<g-conf-value>})
+Sets the value field of the @code{<g-conf-entry>} to the @code{<g-conf-value>}
+passed.
+
+@table @var
+@item entry
+a @code{<g-conf-entry>}.
+
+@item val
+a @code{<g-conf-value>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-entry-set-value-nocopy  (self@tie{}@code{<g-conf-entry*>}) (val@tie{}@code{<g-conf-value>})
+Sets the value field to @var{val} after freeing the already existing value.
+
+@table @var
+@item entry
+a @code{<g-conf-entry>}.
+
+@item val
+the @code{<g-conf-value>} to be set.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-entry-set-schema-name  (self@tie{}@code{<g-conf-entry*>}) (name@tie{}@code{mchars})
+Sets the schema_name field of the @code{<g-conf-entry>} to the name passed after
+freeing the already existing name.
+
+@table @var
+@item entry
+a @code{<g-conf-entry>}.
+
+@item name
+the name to be set for the schema, a gchar* value.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-entry-set-is-default  (self@tie{}@code{<g-conf-entry*>}) (is_default@tie{}@code{bool})
+Sets the is_default field of the @code{<g-conf-entry>} to the boolean value
+passed.
+
+@table @var
+@item entry
+a @code{<g-conf-entry>}.
+
+@item is-default
+the boolean value to be set.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-entry-set-is-writable  (self@tie{}@code{<g-conf-entry*>}) (is_writable@tie{}@code{bool})
+Sets the is_writable field of the @code{<g-conf-entry>} to the boolean value
+passed.
+
+@table @var
+@item entry
+a @code{<g-conf-entry>}.
+
+@item is-writable
+a boolean value.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,73 @@
+
+@c %start of fragment
+
+@deffn Function gconf-engine-get-default  @result{}@tie{} (ret@tie{}@code{<g-conf-engine*>})
+Returns the default @code{<g-conf-engine>}. All clients should use this, unless
+they are special configuration-related tools. The caller of this function
+assumes one reference count, and must call @code{gconf-engine-unref} at some
+point. It's fairly important to unref the @code{<g-conf-engine>}, to cleanly
+close the connection to . So if possible close the connection before exiting
+your application. see ? @code{printf}@code{@code{printf}}
+
+@table @var
+@item ret
+the default @code{<g-conf-engine>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-get-for-address  (address@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<g-conf-engine*>})
+Obtains a special @code{<g-conf-engine>}; mostly useful for specialized
+GConf-related tools. Normal clients shouldn't need to use it. As with
+@code{gconf-engine-get-default}, the returned @code{<g-conf-engine>} should be
+unreferenced by the caller of this function.
+
+@table @var
+@item address
+a configuration source address.
+
+@item err
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@item ret
+a @code{<g-conf-engine>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-set-user-data  (self@tie{}@code{<g-conf-engine*>}) (data@tie{}@code{<gpointer>}) (dnotify@tie{}@code{<g-destroy-notify>})
+Sets the user_data and the destroy notification function fields of a
+@code{<g-conf-engine>}.
+
+@table @var
+@item engine
+a @code{<g-conf-engine>}.
+
+@item data
+a @code{<gpointer>}.
+
+@item dnotify
+a pointer to the function to be called during destroy.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-get-user-data  (self@tie{}@code{<g-conf-engine*>}) @result{}@tie{} (ret@tie{}@code{<gpointer>})
+Returns the user_data field of a @code{<g-conf-engine>}.
+
+@table @var
+@item engine
+a @code{<g-conf-engine>}.
+
+@item ret
+a pointer to the user_data.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

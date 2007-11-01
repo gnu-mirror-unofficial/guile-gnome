@@ -1,0 +1,22 @@
+
+@c %start of fragment
+
+@node GConfEngine
+@chapter GConfEngine
+a GConf "database"
+
+@section Overview
+A @code{<g-conf-engine>} represents a connection to the GConf database. The
+default @code{<g-conf-engine>}, returned from @code{gconf-engine-get-default},
+represents the user's normal configuration source search path.
+Configuration-related utilities, such as a configuration editor tool, might wish
+to access a particular configuration source directly; they can obtain a
+non-default @code{<g-conf-engine>} with @code{gconf-engine-get-for-address}.
+
+Once you have a @code{<g-conf-engine>}, you can query and manipulate
+configuration values.
+
+@section Usage
+@include defuns-gconf-engine.xml.texi
+
+@c %end of fragment

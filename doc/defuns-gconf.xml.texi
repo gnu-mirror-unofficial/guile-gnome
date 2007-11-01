@@ -1,0 +1,540 @@
+
+@c %start of fragment
+
+@deffn Function gconf-init  (argc@tie{}@code{int}) (argv@tie{}@code{<char**>}) @result{}@tie{} (ret@tie{}@code{bool})
+@samp{gconf_init} is deprecated and should not be used in newly-written code.
+
+Initializes the GConf library. Creates a connection to a CORBA ORB, and
+initializes OAF (the object activation framework) if it isn't already
+initialized.
+
+@table @var
+@item argc
+
+
+@item argv
+
+
+@item err
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@item ret
+on success, otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-is-initialized  @result{}@tie{} (ret@tie{}@code{bool})
+@samp{gconf_is_initialized} is deprecated and should not be used in
+newly-written code.
+
+Asks whether the library has been initialized.
+
+@table @var
+@item ret
+if the library has been initialized.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-notify-remove  (self@tie{}@code{<g-conf-engine*>}) (cnxn@tie{}@code{unsigned-int})
+Removes a notification request.
+
+@table @var
+@item conf
+the @code{<g-conf-engine>} you were monitoring for changes.
+
+@item cnxn
+The ID returned by @code{gconf-engine-notify-add}.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-get  (self@tie{}@code{<g-conf-engine*>}) (key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<g-conf-value>})
+Returns the @code{<g-conf-value>} stored at @var{key}, or if no value is set.
+You must call @code{gconf-value-free} to free the returned value. If you know
+the expected type of the value, you probably want to use the type-specific
+convenience wrappers (@code{gconf-engine-get-int}, etc.) because they will do
+the type-checking for you and return the appropriate type. Automatically returns
+the default value for a key, if the key is unset and a default exists.
+
+@table @var
+@item conf
+a @code{<g-conf-engine>} to get the value from.
+
+@item key
+the key to get.
+
+@item err
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@item ret
+newly-allocated @code{<g-conf-value>}, or if unset and no default exists.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-get-without-default  (self@tie{}@code{<g-conf-engine*>}) (key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<g-conf-value>})
+Identical to @code{gconf-engine-get}, except that it will return in place of the
+default value if the key is unset. Note that @code{gconf-engine-get} can also
+return if no default exists or an error occurs.
+
+@table @var
+@item conf
+a @code{<g-conf-engine>} to get the value from.
+
+@item key
+the key to get.
+
+@item err
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@item ret
+newly-allocated @code{<g-conf-value>}, or if unset.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-get-entry  (self@tie{}@code{<g-conf-engine*>}) (key@tie{}@code{mchars}) (locale@tie{}@code{mchars}) (use_schema_default@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<g-conf-entry*>})
+Obtain the full @code{<g-conf-entry>} for a value.
+
+@table @var
+@item conf
+a @code{<g-conf-engine>}.
+
+@item key
+the key to get.
+
+@item locale
+preferred locale (as in the locale-related environment variables).
+
+@item use-schema-default
+a @code{<gboolean>} value indicating whether the default value associated with
+schema should be used.
+
+@item err
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@item ret
+a @code{<g-conf-entry>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-get-with-locale  (self@tie{}@code{<g-conf-engine*>}) (key@tie{}@code{mchars}) (locale@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<g-conf-value>})
+Requests the value appropriate for a particular locale. Right now, only values
+of type @samp{GCONF_VALUE_SCHEMA} are localized; the locale is meaningless for
+other value types. Also, @code{gconf-engine-get} automatically requests the
+value in the user's current locale. So this function is only useful if you want
+a schema for some locale other than the user's current locale. Except for the
+additional argument, this function is identical to @code{gconf-engine-get} in
+all respects.
+
+@table @var
+@item conf
+a @code{<g-conf-engine>} to get the value from.
+
+@item key
+the key to get.
+
+@item locale
+preferred locale (as in the locale-related environment variables).
+
+@item err
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@item ret
+newly-allocated @code{<g-conf-value>}, or if unset.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-set  (self@tie{}@code{<g-conf-engine*>}) (key@tie{}@code{mchars}) (value@tie{}@code{<g-conf-value>}) @result{}@tie{} (ret@tie{}@code{bool})
+Sets the value of @var{key} to @var{value}. Does not modify the passed-in
+@code{<g-conf-value>}, you must free it yourself. You may prefer a type-specific
+convenience wrapper, such as @code{gconf-engine-set-int}.
+
+An error of note is @samp{GCONF_OVERRIDDEN}, indicating that the system
+administrator has "forced" a value for this key. If no writable configuration
+sources exist, it is not an error, but GConf will just forget all your values;
+this allows users to have a configuration-free setup without a constant barrage
+of error messages.
+
+@table @var
+@item conf
+a @code{<g-conf-engine>} to set the value in.
+
+@item key
+the key to set.
+
+@item value
+the new value of @var{key}.
+
+@item err
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@item ret
+on success, on error.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-unset  (self@tie{}@code{<g-conf-engine*>}) (key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Unsets the value of @var{key}; if @var{key} is already unset, has no effect. An
+error of note is @samp{GCONF_OVERRIDDEN}, indicating that the system
+administrator has "forced" a value for this key.
+
+@table @var
+@item conf
+a @code{<g-conf-engine>} to affect.
+
+@item key
+the key to unset.
+
+@item err
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@item ret
+on success, on error.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-associate-schema  (self@tie{}@code{<g-conf-engine*>}) (key@tie{}@code{mchars}) (schema_key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Directs GConf to find the schema for @var{key} at location @var{schema-key}.
+That is, the value stored at @var{schema-key} should have type
+@code{<gconf-value-schema>}, and be descriptive of @var{key}. Normally you don't
+call this function from C code; you can ship a special file with your
+application and ask to install schema associations into the database during
+"make install."
+
+@table @var
+@item conf
+a @code{<g-conf-engine>} to affect.
+
+@item key
+the key to associate the schema with.
+
+@item schema-key
+the key where the schema will be stored.
+
+@item err
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@item ret
+on success, on error.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-all-entries  (self@tie{}@code{<g-conf-engine*>}) (dir@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{gslist-of})
+Lists the key-value pairs in @var{dir}. Does not list subdirectories; for that
+use @code{gconf-engine-all-dirs}. The returned list contains
+@code{<g-conf-entry>} objects. A @code{<g-conf-entry>} contains an
+@emph{absolute} key and a value. The list is not recursive, it contains only the
+immediate children of @var{dir}. To free the returned list,
+@code{gconf-entry-free} each list element, then @code{g-slist-free} the list
+itself.
+
+@table @var
+@item conf
+a @code{<g-conf-engine>}.
+
+@item dir
+Directory to list.
+
+@item err
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@item ret
+List of @code{<g-conf-entry>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-all-dirs  (self@tie{}@code{<g-conf-engine*>}) (dir@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{gslist-of})
+Lists the subdirectories in @var{dir}. The returned list contains allocated
+strings. Each string is the absolute path of a subdirectory. You should
+@code{g-free} each string in the list, then @code{g-slist-free} the list itself.
+
+@table @var
+@item conf
+a @code{<g-conf-engine>}.
+
+@item dir
+Directory to get subdirectories from.
+
+@item err
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@item ret
+List of allocated subdirectory names.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-suggest-sync  (self@tie{}@code{<g-conf-engine*>})
+Suggests to that you've just finished a block of changes, and it would be an
+optimal time to sync to permanent storage. This is only a suggestion; and will
+eventually sync even if you don't call @code{gconf-engine-suggest-sync}. This
+function is just a "hint" provided to to maximize efficiency and minimize data
+loss.
+
+@table @var
+@item conf
+the @code{<g-conf-engine>} to suggest syncing to.
+
+@item err
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-dir-exists  (self@tie{}@code{<g-conf-engine*>}) (dir@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Queries whether the directory @var{dir} exists in the GConf database. Returns or
+.
+
+@table @var
+@item conf
+a @code{<g-conf-engine>}.
+
+@item dir
+Directory to check for.
+
+@item err
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@item ret
+or .
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-remove-dir  (self@tie{}@code{<g-conf-engine*>}) (dir@tie{}@code{mchars})
+This function first checks the validity of the gconf key. In case of a local
+@code{<g-conf-engine>} it removes the directory from the source backend calling
+@code{gconf-sources-remove-dir}. Otherwise it obtains the configuration database
+using @code{gconf-engine-get-database} and removes the directory from the
+database calling @code{config-database-remove-dir}.
+
+@table @var
+@item conf
+a @code{<g-conf-engine>}.
+
+@item dir
+the name of the directory to be removed.
+
+@item err
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-engine-key-is-writable  (self@tie{}@code{<g-conf-engine*>}) (key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Checks whether the key is writable.
+
+@table @var
+@item conf
+a @code{<g-conf-engine>}.
+
+@item key
+the value to be changed.
+
+@item err
+the return location for an allocated @code{<g-error>}, or to ignore errors.
+
+@item ret
+if the key is writable, if the key is read only.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-valid-key  (key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool}) (why_invalid@tie{}@code{mchars})
+Asks whether a key is syntactically correct, that is, it ensures that the key
+consists of slash-separated strings and contains only legal characters. Normally
+you shouldn't need to call this function; the GConf functions all check this for
+you and return an error if the key is invalid. However, it may be useful to
+validate input to an entry field or the like. If you pass a non- address as the
+@var{why-invalid} argument, an allocated string is returned explaining why the
+key is invalid, if it is. If the key is valid the @var{why-invalid} argument is
+unused.
+
+@table @var
+@item key
+key to check.
+
+@item why-invalid
+return location for an explanation of the problem, if any. @code{g-free} the
+returned string.
+
+@item ret
+if the key is valid, or if not.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-key-is-below  (above@tie{}@code{mchars}) (below@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Asks whether the key @var{below} would be found below the key @var{above}, were
+they both to exist in the database. For example, is always found below and above
+. This probably isn't useful but GConf uses it internally so here it is if you
+need it.
+
+@table @var
+@item above
+the key on the "left hand side" of the predicate.
+
+@item below
+the key on the "right hand side."
+
+@item ret
+or .
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-concat-dir-and-key  (dir@tie{}@code{mchars}) (key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Concatenates the dir and key passed removing the unnecessary '/' characters and
+returns the new string.
+
+@table @var
+@item dir
+the directory.
+
+@item key
+the key.
+
+@item ret
+the newly concatenated string.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-unique-key  @result{}@tie{} (ret@tie{}@code{mchars})
+Generates a new and unique key using serial number, process id, current time and
+a random number generated.
+
+@table @var
+@item ret
+a newly created key, a @code{<gchar>} value.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-escape-key  (arbitrary_text@tie{}@code{mchars}) (len@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+Escape @var{arbitrary-text} such that it's a valid key element (i.e. one part of
+the key path). The escaped key won't pass @code{gconf-valid-key} because it
+isn't a whole key (i.e. it doesn't have a preceding slash), but prepending a
+slash to the escaped text should always result in a valid key.
+
+@table @var
+@item arbitrary-text
+some text in any encoding or format
+
+@item len
+length of @var{arbitrary-text} in bytes, or -1 if @var{arbitrary-text} is
+nul-terminated
+
+@item ret
+a nul-terminated valid GConf key
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-unescape-key  (escaped_key@tie{}@code{mchars}) (len@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+Converts a string escaped with @code{gconf-escape-key} back into its original
+form.
+
+@table @var
+@item escaped-key
+a key created with @code{gconf-escape-key}
+
+@item len
+length of @var{escaped-key} in bytes, or -1 if @var{escaped-key} is
+nul-terminated
+
+@item ret
+the original string that was escaped to create @var{escaped-key}
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-string-to-enum  (lookup_table@tie{}@code{<g-conf-enum-string-pair*>}) (str@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool}) (enum_value_retloc@tie{}@code{int})
+It's best to store enumeration values as strings rather than integers. This is
+robust against changes in the enumeration, and also human-readable. This
+function makes it more convenient to store enums as strings.
+
+The first argument is a lookup table, typically declared statically as follows:
+Note that the last element of the table is @samp{@{ 0, NULL @}}. Typically the
+strings you use should be semi-human-readable, for GTK+ and GNOME stripping off
+the library prefix and converting to StudlyCaps is the recommended convention.
+
+@example 
+
+static GConfEnumStringPair foo_enum_lookup_table[] = @{
+  @{ FOO_BLAH, "Blah" @},
+  @{ FOO_BAR,  "Bar"  @},
+  @{ 0, NULL @}
+@};
+@end example
+
+The function returns if a match for the string is found, and if a match is found
+the enum value is placed in @var{enum-value-retloc}.
+
+@table @var
+@item lookup-table
+a lookup table mapping enum values to strings.
+
+@item str
+the string to convert to an enum value.
+
+@item enum-value-retloc
+the address of an enum variable.
+
+@item ret
+if a match was found.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-enum-to-string  (lookup_table@tie{}@code{<g-conf-enum-string-pair*>}) (enum_value@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+See @code{gconf-string-to-enum} for background information on this function.
+
+@table @var
+@item lookup-table
+a lookup table mapping enum values to strings.
+
+@item enum-value
+the enumeration value to convert to a string.
+
+@item ret
+a pointer to the proper string in the lookup table, or if no match was found.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

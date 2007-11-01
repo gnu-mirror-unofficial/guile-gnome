@@ -1,0 +1,21 @@
+
+@c %start of fragment
+
+@node GConf Core Interfaces
+@chapter GConf Core Interfaces
+Basic functions to initialize GConf and get/set values
+
+@section Overview
+These functions initialize GConf, and communicate with the server via a
+@code{<g-conf-engine>} object. You can install a notification request on the
+server, get values, set values, list directories, and associate schema names
+with keys.
+
+Most of this interface is replicated in the @code{<gobject>} wrapper
+(@code{<g-conf-client>} object); an alternative to the value-setting functions
+is the @code{<g-conf-change-set>} interface.
+
+@section Usage
+@include defuns-gconf.xml.texi
+
+@c %end of fragment

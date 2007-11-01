@@ -1,0 +1,84 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename guile-gnome-gconf.info
+@settitle Guile-GConf
+@c %**end of header
+
+@set VERSION 2.15.93
+@set UPDATED 1 November 2007
+
+@copying 
+This manual is for @code{(gnome gconf)} (version @value{VERSION}, updated
+@value{UPDATED})
+
+Copyright 1999-2007 Havoc Pennington
+
+@c GCONF is LGPL, ergo GPL distribution is possible
+@quotation 
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU General Public License, Version 2 or any
+later version published by the Free Software Foundation.
+@end quotation
+
+@end copying
+
+@dircategory The Algorithmic Language Scheme
+@direntry 
+* Guile-GConf: (guile-gnome-gconf.info).  GNOME's configuration system.
+@end direntry
+
+@titlepage 
+@title Guile-GNOME: GConf
+@subtitle version @value{VERSION}, updated @value{UPDATED}
+@author Havoc Pennington
+@page 
+@vskip 0pt plus 1filll
+@insertcopying 
+@end titlepage
+
+@ifnottex 
+@node Top
+@top Guile-GConf
+
+@insertcopying 
+@menu
+* Overview::             About GCONF and its Guile bindings.
+
+* GConfClient::          What you probably want out of this library.
+
+* GConf Core Interfaces::Basic functions to initialize GConf and get/set values
+* GConfChangeSet::       a set of configuration changes to be made.
+* GConfEngine::          a GConf "database"
+* GError::               error reporting.
+* GConfSchema:: 
+* GConfValue GConfEntry GConfMetaInfo:: 
+
+* Concept Index::
+* Function Index::
+@end menu
+
+@end ifnottex
+
+@iftex 
+@shortcontents 
+@end iftex
+
+@include overview.texi
+
+@include section-gconf-client.xml.texi
+
+@include section-gconf.xml.texi
+@include section-gconf-changeset.xml.texi
+@include section-gconf-engine.xml.texi
+@include section-gconf-error.xml.texi
+@include section-gconf-schema.xml.texi
+@include section-gconf-value.xml.texi
+
+
+@node Concept Index
+@unnumbered Concept Index
+@printindex cp
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+@bye

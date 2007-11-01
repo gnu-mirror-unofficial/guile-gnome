@@ -1,0 +1,27 @@
+
+@c %start of fragment
+
+@node GConfChangeSet
+@chapter GConfChangeSet
+a set of configuration changes to be made.
+
+@section Overview
+a @code{<g-conf-change-set>} allows you to collect a set of changes to
+configuration keys (set/unset operations). You can then commit all the changes
+at once. This is convenient for something like a preferences dialog; you can
+collect all the pending changes in a @code{<g-conf-change-set>}, then when the
+user clicks "apply" send them all to the configuration database. The
+@code{<g-conf-change-set>} allows you to avoid sending every preferences setting
+when "apply" is clicked; you only have to send the settings the user changed.
+
+In the future, GConf may also have optimizations so that changing a group of
+values with @code{<g-conf-change-set>} is faster than calling
+@code{gconf-engine-set} for each value. In the future,
+@code{<g-conf-change-set>} may also represent an atomic transaction, where all
+or none of the values are set; however, for now the operation is @emph{not}
+atomic.
+
+@section Usage
+@include defuns-gconf-changeset.xml.texi
+
+@c %end of fragment
