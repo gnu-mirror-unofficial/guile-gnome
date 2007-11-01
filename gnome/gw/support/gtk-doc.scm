@@ -626,7 +626,7 @@ created using @code{gtk-doc->texi-defuns}."
                     (lambda (prop)
                       `(entry (% (heading ,(symbol->string
                                             (gparam-struct:name prop))))
-                              ,(gparam-struct:blurb prop)))
+                              (para ,(gparam-struct:blurb prop))))
                     props)))))))
   (let ((class (module-ref (resolve-interface module-name) class-name)))
     `((deftp (% (name ,(symbol->string class-name))

@@ -1,3 +1,8 @@
+2007-11-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gtk-doc.scm (gobject-class-stexi-docs): Put
+	prop descriptions in a para.
+
 2007-09-25  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.94 ==
