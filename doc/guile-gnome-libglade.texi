@@ -1,0 +1,73 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename guile-gnome-libglade.info
+@settitle Guile-Libglade
+@c %**end of header
+
+@set VERSION 2.15.93
+@set UPDATED 1 November 2007
+
+@copying 
+This manual is for @code{(gnome libglade)} (version @value{VERSION}, updated
+@value{UPDATED})
+
+Copyright 1999-2002 James Henstridge
+
+@quotation 
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation with no
+Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. You
+may obtain a copy of the GNU Free Documentation License from the Free
+Software Foundation by visiting their Web site or by writing to: Free
+Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+02111-1307, USA.
+@end quotation
+
+@end copying
+
+@dircategory The Algorithmic Language Scheme
+@direntry 
+* Guile-Libglade: (guile-gnome-libglade.info).  Load GTK+ interfaces from XML.
+@end direntry
+
+@titlepage 
+@title Guile-GNOME: Libglade
+@subtitle version @value{VERSION}, updated @value{UPDATED}
+@author James Henstridge
+@page 
+@vskip 0pt plus 1filll
+@insertcopying 
+@end titlepage
+
+@ifnottex 
+@node Top
+@top Guile-Libglade
+
+@insertcopying 
+@menu
+* Overview::             About libglade and its Guile bindings.
+
+* GladeXML::             Allows dynamic loading of user interfaces
+                         from XML descriptions.
+
+* Concept Index::
+* Function Index::
+@end menu
+
+@end ifnottex
+
+@iftex 
+@shortcontents 
+@end iftex
+
+@include overview.texi
+@include section-glade-xml.xml.texi
+
+@node Concept Index
+@unnumbered Concept Index
+@printindex cp
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+@bye
