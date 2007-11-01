@@ -1,0 +1,14 @@
+
+@c %start of fragment
+
+@node GnomeCanvasRE
+@chapter GnomeCanvasRE
+Base class for rectangle and ellipse items
+
+@section Overview
+This forms a base class for rectangle and ellipse canvas items.
+
+@section Usage
+@include defuns-gnome-canvas-re.xml.texi
+
+@c %end of fragment

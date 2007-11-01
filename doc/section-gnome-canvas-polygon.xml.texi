@@ -1,0 +1,14 @@
+
+@c %start of fragment
+
+@node GnomeCanvasPolygon
+@chapter GnomeCanvasPolygon
+Polygon canvas item
+
+@section Overview
+A canvas item for drawing polygon (multi sided) shapes.
+
+@section Usage
+@include defuns-gnome-canvas-polygon.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node GnomeCanvasRect
+@chapter GnomeCanvasRect
+Rectangle canvas item
+
+@section Overview
+A canvas item for drawing rectangles and squares. The parameters are defined in
+the parent classes including @code{<gnome-canvas-re>} which is shared with
+@code{<gnome-canvas-ellipse>} items as well.
+
+@section Usage
+@include defuns-gnome-canvas-rect.xml.texi
+
+@c %end of fragment

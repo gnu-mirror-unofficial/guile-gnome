@@ -1,0 +1,93 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas-shape>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item fill-color
+
+
+@item fill-color-gdk
+
+
+@item fill-color-rgba
+
+
+@item outline-color
+
+
+@item outline-color-gdk
+
+
+@item outline-color-rgba
+
+
+@item fill-stipple
+
+
+@item outline-stipple
+
+
+@item width-pixels
+
+
+@item width-units
+
+
+@item cap-style
+
+
+@item join-style
+
+
+@item wind
+
+
+@item miterlimit
+
+
+@item dash
+
+
+@end table
+
+@end deftp
+
+@deffn Function gnome-canvas-shape-set-path-def  (self@tie{}@code{<gnome-canvas-shape>}) (def@tie{}@code{<gnome-canvas-path-def*>})
+@deffnx Method set-path-def
+This function sets the the GnomeCanvasPathDef used by the GnomeCanvasShape.
+Notice, that it does not request updates, as it is meant to be used from item
+implementations, from inside update queue.
+
+@table @var
+@item shape
+a GnomeCanvasShape
+
+@item def
+a GnomeCanvasPathDef
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-shape-get-path-def  (self@tie{}@code{<gnome-canvas-shape>}) @result{}@tie{} (ret@tie{}@code{<gnome-canvas-path-def*>})
+@deffnx Method get-path-def
+This function returns the @code{<gnome-canvas-path-def>} that the shape
+currently uses. It adds a reference to the @code{<gnome-canvas-path-def>} and
+returns it, if there is not a @code{<gnome-canvas-path-def>} set for the shape
+it returns NULL.
+
+@table @var
+@item shape
+a GnomeCanvasShape
+
+@item ret
+a @code{<gnome-canvas-path-def>} or NULL if none is set for the shape.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

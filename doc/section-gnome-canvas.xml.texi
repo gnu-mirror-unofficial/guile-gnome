@@ -1,0 +1,81 @@
+
+@c %start of fragment
+
+@node GnomeCanvas
+@chapter GnomeCanvas
+Main canvas widget
+
+@section Overview
+The @code{<gnome-canvas>} is an engine for structured graphics that offers a
+rich imaging model, high performance rendering, and a powerful, high level API.
+It offers a choice of two rendering back-ends, one based on Xlib for extremely
+fast display, and another based on Libart, a sophisticated, antialiased,
+alpha-compositing engine. This widget can be used for flexible display of
+graphics and for creating interactive user interface elements.
+
+To create a new @code{<gnome-canvas>} widget call @code{gnome-canvas-new} or
+@code{gnome-canvas-new-aa} for an anti-aliased mode canvas.
+
+A @code{<gnome-canvas>} widget contains one or more @code{<gnome-canvas-item>}
+objects. Items consist of graphing elements like lines, ellipses, polygons,
+images, text, and curves. These items are organized using
+@code{<gnome-canvas-group>} objects, which are themselves derived from
+@code{<gnome-canvas-item>}. Since a group is an item it can be contained within
+other groups, forming a tree of canvas items. Certain operations, like
+translating and scaling, can be performed on all items in a group.
+
+There is a special root group created by a @code{<gnome-canvas>}. This is the
+top level group under which all items in a canvas are contained. To get the root
+group from a canvas call @code{gnome-canvas-root}. To clear a canvas you can
+simply walk through the item_list member of the @code{<gnome-canvas-group>} and
+call @code{gtk-object-destroy} on each one.
+
+There are several different coordinate systems used by @code{<gnome-canvas>}
+widgets. The primary system is a logical, abstract coordinate space called world
+coordinates. World coordinates are expressed as unbounded double floating point
+numbers. When it comes to rendering to a screen the canvas pixel coordinate
+system (also referred to as just canvas coordinates) is used. This system uses
+integers to specify screen pixel positions. A user defined scaling factor and
+offset are used to convert between world coordinates and canvas coordinates.
+Each item in a canvas has its own coordinate system called item coordinates.
+This system is specified in world coordinates but they are relative to an item
+(0.0, 0.0 would be the top left corner of the item). The final coordinate system
+of interest is window coordinates. These are like canvas coordinates but are
+offsets from within a window a canvas is displayed in. This last system is
+rarely used, but is useful when manually handling GDK events (such as drag and
+drop) which are specified in window coordinates (the events processed by the
+canvas are already converted for you).
+
+Along with different coordinate systems comes functions to convert between them.
+@code{gnome-canvas-w2c} converts world to canvas pixel coordinates and
+@code{gnome-canvas-c2w} converts from canvas to world. @code{gnome-canvas-w2c-d}
+is like @code{gnome-canvas-w2c} but returns the pixel coordinates as doubles
+which is useful to avoid precision loss from integer rounding. To get the affine
+transform matrix for converting from world coordinates to canvas coordinates
+call @code{gnome-canvas-w2c-affine}. @code{gnome-canvas-window-to-world}
+converts from window to world coordinates and
+@code{gnome-canvas-world-to-window} converts in the other direction. There are
+no functions for converting between canvas and window coordinates, since this is
+just a matter of subtracting the canvas scrolling offset. To convert to/from
+item coordinates use the functions defined for @code{<gnome-canvas-item>}
+objects.
+
+To set the canvas zoom factor (canvas pixels per world unit, the scaling factor)
+call @code{gnome-canvas-set-pixels-per-unit}, setting this to 1.0 will cause the
+two coordinate systems to correspond (e.g., [5, 6] in pixel units would be [5.0,
+6.0] in world units).
+
+Defining the scrollable area of a canvas widget is done by calling
+@code{gnome-canvas-set-scroll-region} and to get the current region
+@code{gnome-canvas-get-scroll-region} can be used. If the window is larger than
+the canvas scrolling region it can optionally be centered in the window. Use
+@code{gnome-canvas-set-center-scroll-region} to enable or disable this behavior.
+To scroll to a particular canvas pixel coordinate use
+@code{gnome-canvas-scroll-to} (typically not used since scrollbars are usually
+set up to handle the scrolling), and to get the current canvas pixel scroll
+offset call @code{gnome-canvas-get-scroll-offsets}.
+
+@section Usage
+@include defuns-gnome-canvas.xml.texi
+
+@c %end of fragment

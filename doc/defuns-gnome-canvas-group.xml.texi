@@ -1,0 +1,19 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas-group>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item x
+X
+
+@item y
+Y
+
+@end table
+
+@end deftp
+
+
+@c %end of fragment

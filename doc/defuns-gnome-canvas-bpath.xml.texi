@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas-bpath>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item bpath
+
+
+@end table
+
+@end deftp
+
+
+@c %end of fragment

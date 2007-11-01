@@ -1,0 +1,14 @@
+
+@c %start of fragment
+
+@node GnomeCanvasPixbuf
+@chapter GnomeCanvasPixbuf
+Pixbuf image canvas item
+
+@section Overview
+A canvas item for drawing pixbuf images.
+
+@section Usage
+@include defuns-gnome-canvas-pixbuf.xml.texi
+
+@c %end of fragment

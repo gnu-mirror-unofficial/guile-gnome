@@ -1,0 +1,19 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas-clipgroup>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item path
+
+
+@item wind
+
+
+@end table
+
+@end deftp
+
+
+@c %end of fragment

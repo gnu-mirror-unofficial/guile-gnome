@@ -1,0 +1,137 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas-text>
+This @code{<gobject>} class defines the following properties:
+
+@table @code
+@item text
+Text to render
+
+@item markup
+Marked up text to render
+
+@item x
+
+
+@item y
+
+
+@item font
+Font description as a string
+
+@item font-desc
+Font description as a PangoFontDescription struct
+
+@item family
+Name of the font family, e.g. Sans, Helvetica, Times, Monospace
+
+@item family-set
+Whether this tag affects the font family
+
+@item attributes
+
+
+@item style
+Font style
+
+@item style-set
+Whether this tag affects the font style
+
+@item variant
+Font variant
+
+@item variant-set
+Whether this tag affects the font variant
+
+@item weight
+Font weight
+
+@item weight-set
+Whether this tag affects the font weight
+
+@item stretch
+Font stretch
+
+@item stretch-set
+Whether this tag affects the font stretch
+
+@item size
+Font size (as a multiple of PANGO_SCALE, eg. 12*PANGO_SCALE for a 12pt font
+size)
+
+@item size-set
+Whether this tag affects the font size
+
+@item size-points
+Font size in points (eg. 12 for a 12pt font size)
+
+@item strikethrough
+Whether to strike through the text
+
+@item strikethrough-set
+Whether this tag affects strikethrough
+
+@item underline
+Style of underline for this text
+
+@item underline-set
+Whether this tag affects underlining
+
+@item rise
+Offset of text above the baseline (below the baseline if rise is negative)
+
+@item rise-set
+Whether this tag affects the rise
+
+@item scale
+Size of font, relative to default size
+
+@item scale-set
+Whether this tag affects font scaling
+
+@item anchor
+
+
+@item justification
+
+
+@item clip-width
+
+
+@item clip-height
+
+
+@item clip
+
+
+@item x-offset
+
+
+@item y-offset
+
+
+@item fill-color
+Text color, as string
+
+@item fill-color-gdk
+Text color, as a GdkColor
+
+@item fill-color-rgba
+Text color, as an R/G/B/A combined integer
+
+@item fill-stipple
+
+
+@item text-width
+Width of the rendered text
+
+@item text-height
+Height of the rendered text
+
+@end table
+
+@end deftp
+
+
+@c %end of fragment

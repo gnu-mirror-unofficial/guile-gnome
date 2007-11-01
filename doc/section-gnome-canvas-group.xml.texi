@@ -1,0 +1,19 @@
+
+@c %start of fragment
+
+@node GnomeCanvasGroup
+@chapter GnomeCanvasGroup
+Canvas item group
+
+@section Overview
+A canvas item that groups other canvas items. A canvas group is used for
+organization, determining drawing stacking order, and for applying transforms on
+all items in the group.
+
+The @code{<gnome-canvas>} widget contains a toplevel "root" group which can be
+queried with a call to @code{gnome-canvas-root}.
+
+@section Usage
+@include defuns-gnome-canvas-group.xml.texi
+
+@c %end of fragment

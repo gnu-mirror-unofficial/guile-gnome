@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node GnomeCanvasShape
+@chapter GnomeCanvasShape
+Base class for canvas item shapes
+
+@section Overview
+Provides a base class for canvas item shapes, including:
+@code{<gnome-canvas-bpath>}, @code{<gnome-canvas-ellipse>},
+@code{<gnome-canvas-rect>}, and @code{<gnome-canvas-polygon>}.
+
+@section Usage
+@include defuns-gnome-canvas-shape.xml.texi
+
+@c %end of fragment

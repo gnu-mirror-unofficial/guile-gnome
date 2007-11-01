@@ -1,0 +1,65 @@
+
+@c %start of fragment
+
+@node GnomeCanvasItem
+@chapter GnomeCanvasItem
+Base class for all canvas items
+
+@section Overview
+This is the base class for all canvas items. Canvas items are the drawing
+elements of a @code{<gnome-canvas>}. Example items include lines, ellipses,
+polygons, images, text, curves and even arbitrary GTK+ widgets.
+
+Canvas items use the GObject property system to query and set parameters.
+Properties are inherited so, for example, a @code{<gnome-canvas-polygon>} has a
+"fill-color" property that is inherited from its parent class object
+@code{<gnome-canvas-shape>}. So be sure to check the parent classes of
+@code{<gnome-canvas-item>} objects when looking for item properties. More
+information on GObject properties can be found in the glib library GObject API
+reference documentation.
+
+To create a new canvas item call @code{gnome-canvas-item-new} which takes a
+parent @code{<gnome-canvas-group>}, GType of the item to create, and a NULL
+terminated list of name/value GObject properties to set for the new item.
+
+To change an existing canvas item's properties call
+@code{gnome-canvas-item-set}, or @code{g-object-set} can also be used.
+
+There are several functions to change the drawing stacking order of an item.
+Call @code{gnome-canvas-item-raise} to raise an item a specified number of
+positions or @code{gnome-canvas-item-lower} to lower it. To raise an item to the
+top call @code{gnome-canvas-item-raise-to-top}. The
+@code{gnome-canvas-item-lower-to-bottom} function will put it at the bottom.
+
+To show an item call @code{gnome-canvas-item-show}. Note that canvas item's are
+shown by default and so do not need to be explicitly shown after creation
+(contrary to GTK+ widget behavior). Call @code{gnome-canvas-item-hide} to hide
+an item.
+
+To move an item relative to its current position (item coordinates) call
+@code{gnome-canvas-item-move} or @code{gnome-canvas-item-affine-relative} for
+more complex transforms. @code{gnome-canvas-item-affine-absolute} can be used to
+set an item's transform to specific values (not offsets).
+
+To convert between world and item coordinate systems call
+@code{gnome-canvas-item-w2i}, and to convert in the other direction call
+@code{gnome-canvas-item-i2w}. To get the transform for converting from item to
+world coordinates use @code{gnome-canvas-item-i2w-affine} or for converting item
+to canvas coordinates, @code{gnome-canvas-item-i2c-affine}.
+
+Handling user input for interactive items is accomplished through a few
+functions and the "event" signal. To grab the mouse cursor call
+@code{gnome-canvas-item-grab}, it can be ungrabbed with
+@code{gnome-canvas-item-ungrab} (see @code{gdk-pointer-grab} of the GTK+ library
+for details). To grab keyboard focus call @code{gnome-canvas-item-grab-focus}.
+Received events will be signaled via the "event" signal.
+
+Some other useful functions include a reparenting routine,
+@code{gnome-canvas-item-reparent}, and a function to query the bounding box of
+an item (a minumum rectangular area containing all parts of the item),
+@code{gnome-canvas-item-get-bounds}.
+
+@section Usage
+@include defuns-gnome-canvas-item.xml.texi
+
+@c %end of fragment

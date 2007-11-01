@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@node GnomeCanvasClipgroup
+@chapter GnomeCanvasClipgroup
+Canvas group that implements clipping
+
+@section Overview
+A canvas group object that clips the view of its children to a shape defined by
+a @code{<gnome-canvas-path-def>}.
+
+@section Usage
+@include defuns-gnome-canvas-clipgroup.xml.texi
+
+@c %end of fragment

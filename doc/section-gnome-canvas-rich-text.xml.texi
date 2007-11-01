@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node GnomeCanvasRichText
+@chapter GnomeCanvasRichText
+Rich text canvas item
+
+@section Overview
+A canvas item that displays a GtkTextBuffer which is a flexible text display and
+editing widget. Consult GtkTextBuffer info in the GTK+ Reference documentation
+for more details.
+
+@section Usage
+@include defuns-gnome-canvas-rich-text.xml.texi
+
+@c %end of fragment
