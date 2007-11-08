@@ -1,0 +1,17 @@
+
+@c %start of fragment
+
+@node GnomeVFSURI
+@chapter GnomeVFSURI
+A uniform resource identifier.
+
+@section Overview
+A @code{<gnome-vfsuri>} is a semi-textual representation of a uniform resource
+identifier. It contains the information about a resource location encoded as
+canononicalized text, but also holds extra information about the context in
+which the URI is used.
+
+@section Usage
+@include defuns-gnome-vfs-uri.xml.texi
+
+@c %end of fragment

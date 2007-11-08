@@ -1,0 +1,68 @@
+
+@c %start of fragment
+
+@deffn Function gnome-vfs-make-directory  (text_uri@tie{}@code{mchars}) (perm@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Create @var{text-uri} as a directory.
+
+@table @var
+@item text-uri
+uri of the directory to be created.
+
+@item perm
+Unix-style permissions for the newly created directory
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-make-directory-for-uri  (uri@tie{}@code{<gnome-vfsuri*>}) (perm@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Create a directory at @var{uri}. Only succeeds if a file or directory does not
+already exist at @var{uri}.
+
+@table @var
+@item uri
+uri of the directory to be created.
+
+@item perm
+Unix-style permissions for the newly created directory.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-remove-directory  (text_uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Remove @var{text-uri}. @var{text-uri} must be an empty directory.
+
+@table @var
+@item text-uri
+path of the directory to be removed.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-remove-directory-from-uri  (uri@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Remove @var{uri}. @var{uri} must be an empty directory.
+
+@table @var
+@item uri
+uri of the directory to be removed.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

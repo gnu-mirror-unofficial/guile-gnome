@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node SSL support functions
+@chapter SSL support functions
+Functions to send and receive encrypted data over a socket.
+
+@section Overview
+@section Usage
+@include defuns-gnome-vfs-ssl.xml.texi
+
+@c %end of fragment

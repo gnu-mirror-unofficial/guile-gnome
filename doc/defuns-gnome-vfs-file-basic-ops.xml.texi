@@ -1,0 +1,267 @@
+
+@c %start of fragment
+
+@deffn Function gnome-vfs-create  (text_uri@tie{}@code{mchars}) (open_mode@tie{}@code{<gnome-vfs-open-mode>}) (exclusive@tie{}@code{bool}) (perm@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{scm})
+Create @var{text-uri} according to mode @var{open-mode}. On return, @var{handle}
+will then contain a pointer to a handle for the open file.
+
+@table @var
+@item handle
+pointer to a pointer to a @code{<gnome-vfs-handle>} object.
+
+@item text-uri
+string representing the uri to create.
+
+@item open-mode
+mode to leave the file opened in after creation (or
+@samp{GNOME_VFS_OPEN_MODE_NONE} to leave the file closed after creation).
+
+@item exclusive
+whether the file should be created in "exclusive" mode. i.e. if this flag is
+nonzero, operation will fail if a file with the same name already exists.
+
+@item perm
+bitmap representing the permissions for the newly created file (Unix style).
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-create-uri  (uri@tie{}@code{<gnome-vfsuri*>}) (open_mode@tie{}@code{<gnome-vfs-open-mode>}) (exclusive@tie{}@code{bool}) (perm@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{scm})
+Create @var{uri} according to mode @var{open-mode}. On return, @var{handle} will
+then contain a pointer to a handle for the open file.
+
+@table @var
+@item handle
+pointer to a pointer to a @code{<gnome-vfs-handle>} object.
+
+@item uri
+uri for the file to create.
+
+@item open-mode
+open mode.
+
+@item exclusive
+whether the file should be created in "exclusive" mode. i.e. if this flag is
+nonzero, operation will fail if a file with the same name already exists.
+
+@item perm
+bitmap representing the permissions for the newly created file (Unix style).
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-open  (text_uri@tie{}@code{mchars}) (open_mode@tie{}@code{<gnome-vfs-open-mode>}) @result{}@tie{} (ret@tie{}@code{scm})
+Open @var{text-uri} according to mode @var{open-mode}. On return, @var{handle}
+will then contain a pointer to a handle for the open file.
+
+@table @var
+@item handle
+pointer to a pointer to a @code{<gnome-vfs-handle>} object.
+
+@item text-uri
+string representing the uri to open.
+
+@item open-mode
+open mode.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-open-uri  (uri@tie{}@code{<gnome-vfsuri*>}) (open_mode@tie{}@code{<gnome-vfs-open-mode>}) @result{}@tie{} (ret@tie{}@code{scm})
+Open @var{uri} according to mode @var{open-mode}. On return, @var{handle} will
+then contain a pointer to a handle for the open file.
+
+@table @var
+@item handle
+pointer to a pointer to a @code{<gnome-vfs-handle>} object.
+
+@item uri
+uri to open.
+
+@item open-mode
+open mode.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-close  (handle@tie{}@code{<gnome-vfs-handle*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Close file associated with @var{handle}.
+
+@table @var
+@item handle
+pointer to a @code{<gnome-vfs-handle>} object.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-unlink  (text_uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Unlink @var{text-uri} (i.e. delete the file).
+
+@table @var
+@item text-uri
+uri of the file to be unlinked.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-unlink-from-uri  (uri@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Unlink @var{uri} (i.e. delete the file).
+
+@table @var
+@item uri
+uri of the file to be unlinked.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-move-uri  (old_uri@tie{}@code{<gnome-vfsuri*>}) (new_uri@tie{}@code{<gnome-vfsuri*>}) (force_replace@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Move a file from uri @var{old-uri} to @var{new-uri}. This will only work if
+@var{old-uri} and @var{new-uri} are on the same file system. Otherwise, it is
+necessary to use the more general @code{gnome-vfs-xfer-uri} function.
+
+@table @var
+@item old-uri
+source uri.
+
+@item new-uri
+destination uri.
+
+@item force-replace
+if @samp{@code{#t}}, move @var{old-uri} to @var{new-uri} even if there is
+already a file at @var{new-uri}. If there is a file, it will be discarded.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-move  (old_text_uri@tie{}@code{mchars}) (new_text_uri@tie{}@code{mchars}) (force_replace@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Move a file from @var{old-text-uri} to @var{new-text-uri}. This will only work
+if @var{old-text-uri} and @var{new-text-uri} are on the same file system.
+Otherwise, it is necessary to use the more general @code{gnome-vfs-xfer-uri}
+function.
+
+@table @var
+@item old-text-uri
+string representing the source file location.
+
+@item new-text-uri
+string representing the destination file location.
+
+@item force-replace
+if @samp{@code{#t}}, perform the operation even if it unlinks an existing file
+at @var{new-text-uri}.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-check-same-fs-uris  (source_uri@tie{}@code{<gnome-vfsuri*>}) (target_uri@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>}) (same_fs_return@tie{}@code{bool})
+Check if @var{source-uri} and @var{target-uri} are on the same file system.
+
+@table @var
+@item source-uri
+a uri.
+
+@item target-uri
+another uri.
+
+@item same-fs-return
+pointer to a boolean variable which will be set to @samp{@code{#t}} on return if
+@var{source-uri} and @var{target-uri} are on the same file system.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-check-same-fs  (source@tie{}@code{mchars}) (target@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>}) (same_fs_return@tie{}@code{bool})
+Check if @var{source} and @var{target} are on the same file system.
+
+@table @var
+@item source
+path to a file.
+
+@item target
+path to another file.
+
+@item same-fs-return
+pointer to a boolean variable which will be set to @samp{@code{#t}} on return if
+@var{source} and @var{target} are on the same file system.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-exists  (self@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Check if the uri points to an existing entity.
+
+@table @var
+@item uri
+a uri.
+
+@item ret
+@samp{@code{#t}} if uri exists.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-create-symbolic-link  (uri@tie{}@code{<gnome-vfsuri*>}) (target_reference@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Creates a symbolic link, or eventually, a uri link (as necessary) at @var{uri}
+pointing to @var{target-reference}.
+
+@table @var
+@item uri
+uri to create a link at.
+
+@item target-reference
+uri "reference" to point the link to (uri or relative path).
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@node Getting and Setting File Information
+@chapter Getting and Setting File Information
+Convenient high-level abstraction for obtaining and setting file information,
+including ACLs.
+
+@section Overview
+Applications can use the @code{gnome-vfs-get-file-info} family of operations to
+retrieve file information, as this operation can be quite costly in terms of
+time (specilly when sniffing the MIME type) applications can specify which
+information need at any time, reducing the performance impact.
+
+All of these operations use a @code{<gnome-vfs-file-info>} data structure that
+holds the file information, there are several methods that can be used to
+manipulate this information. See @code{<gnome-vfs-file-info>} for more
+information.
+
+@section Usage
+@include defuns-gnome-vfs-file-info-ops.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node gnome-vfs-mime-database-deprecated
+@chapter gnome-vfs-mime-database-deprecated
+
+
+@section Overview
+@section Usage
+@include defuns-gnome-vfs-mime-database-deprecated.xml.texi
+
+@c %end of fragment

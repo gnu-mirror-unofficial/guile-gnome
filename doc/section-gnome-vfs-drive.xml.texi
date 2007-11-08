@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GnomeVFSDrive
+@chapter GnomeVFSDrive
+Container for GnomeVFSVolume (floppy drive, CD reader, ...)
+
+@section Overview
+@section Usage
+@include defuns-gnome-vfs-drive.xml.texi
+
+@c %end of fragment

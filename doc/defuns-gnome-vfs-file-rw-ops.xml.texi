@@ -1,0 +1,123 @@
+
+@c %start of fragment
+
+@deffn Function gnome-vfs-read  (handle@tie{}@code{<gnome-vfs-handle*>}) (buffer@tie{}@code{<gpointer>}) (bytes@tie{}@code{unsigned-int64}) (bytes_read@tie{}@code{<gnome-vfs-file-size*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Read @var{bytes} from @var{handle}. As with Unix system calls, the number of
+bytes read can effectively be less than @var{bytes} on return and will be stored
+in @var{bytes-read}.
+
+@table @var
+@item handle
+handle of the file to read data from.
+
+@item buffer
+pointer to a buffer that must be at least @var{bytes} bytes large.
+
+@item bytes
+number of bytes to read.
+
+@item bytes-read
+pointer to a variable that will hold the number of bytes effectively read on
+return.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-write  (handle@tie{}@code{<gnome-vfs-handle*>}) (buffer@tie{}@code{<gconstpointer>}) (bytes@tie{}@code{unsigned-int64}) (bytes_written@tie{}@code{<gnome-vfs-file-size*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Write @var{bytes} into the file opened through @var{handle}. As with Unix system
+calls, the number of bytes written can effectively be less than @var{bytes} on
+return and will be stored in @var{bytes-written}.
+
+@table @var
+@item handle
+handle of the file to write data to.
+
+@item buffer
+pointer to the buffer containing the data to be written.
+
+@item bytes
+number of bytes to write.
+
+@item bytes-written
+pointer to a variable that will hold the number of bytes effectively written on
+return.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-seek  (handle@tie{}@code{<gnome-vfs-handle*>}) (whence@tie{}@code{<gnome-vfs-seek-position>}) (offset@tie{}@code{int64}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Set the current position for reading/writing through @var{handle}.
+
+@table @var
+@item handle
+handle for which the current position must be changed.
+
+@item whence
+integer value representing the starting position.
+
+@item offset
+number of bytes to skip from the position specified by @var{whence}. (a positive
+value means to move forward; a negative one to move backwards).
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-tell  (handle@tie{}@code{<gnome-vfs-handle*>}) (offset_return@tie{}@code{<gnome-vfs-file-size*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Return the current position on @var{handle}. This is the point in the file
+pointed to by handle that reads and writes will occur on.
+
+@table @var
+@item handle
+handle for which the current position must be retrieved.
+
+@item offset-return
+pointer to a variable that will contain the current position on return.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-forget-cache  (handle@tie{}@code{<gnome-vfs-handle*>}) (offset@tie{}@code{int64}) (size@tie{}@code{unsigned-int64}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+With this call you can announce to gnome-vfs that you will no longer use the
+region of data starting at @var{offset} with the size of @var{size}. Any cached
+data for this region might then be freed.
+
+This might be useful if you stream large files, for example.
+
+@table @var
+@item handle
+handle of the file to affect.
+
+@item offset
+start point of the region to be freed.
+
+@item size
+length of the region to be freed (or until the end of the file if 0 is
+specified).
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+Since 2.12
+
+@end deffn
+
+
+@c %end of fragment

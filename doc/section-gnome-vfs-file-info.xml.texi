@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GnomeVFSFileInfo
+@chapter GnomeVFSFileInfo
+stores information about files, GnomeVFS equivalent of stat
+
+@section Overview
+@section Usage
+@include defuns-gnome-vfs-file-info.xml.texi
+
+@c %end of fragment

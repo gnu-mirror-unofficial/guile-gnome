@@ -1,0 +1,93 @@
+
+@c %start of fragment
+
+@deffn Function gnome-vfs-mime-type-is-equal  (a@tie{}@code{mchars}) (b@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Compares two mime types to determine if they are equivalent. They are equivalent
+if and only if they refer to the same mime type.
+
+@table @var
+@item a
+a const char * containing a mime type, e.g. "image/png".
+
+@item b
+a const char * containing a mime type, e.g. "image/png".
+
+@item ret
+@samp{@code{#t}}, if a and b are equivalent mime types.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-get-mime-type-for-name  (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Determine the mime type for @var{filename}. The file @var{filename} may not
+exist, this function does not access the actual file. If the mime-type cannot be
+determined, @samp{GNOME_VFS_MIME_TYPE_UNKNOWN} is returned.
+
+@table @var
+@item filename
+a filename.
+
+@item ret
+the mime-type for this filename or @samp{GNOME_VFS_MIME_TYPE_UNKNOWN} if
+mime-type could not be determined.
+
+@end table
+
+Since 2.14
+
+@end deffn
+
+@deffn Function gnome-vfs-get-mime-type-for-data  (data@tie{}@code{<gconstpointer>}) (data_size@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+Tries to guess the mime type of the data in @var{data} using the magic patterns.
+
+@table @var
+@item data
+a pointer to data in memory.
+
+@item data-size
+size of the data.
+
+@item ret
+the mime-type for @var{data}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-get-mime-type  (text_uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Determine the mime type of @var{text-uri}. The mime type is determined in the
+same way as by @code{gnome-vfs-get-file-info}. This is meant as a convenient
+function for times when you only want the mime type.
+
+@table @var
+@item text-uri
+path of the file for which to get the mime type.
+
+@item ret
+The mime type, or @samp{@code{#f}} if there is an error reading the file.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-get-slow-mime-type  (text_uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Determine the mime type of @var{text-uri}. The mime type is determined in the
+same way as by @code{gnome-vfs-get-file-info}. This is meant as a convenience
+function for times when you only want the mime type.
+
+@table @var
+@item text-uri
+URI of the file for which to get the mime type
+
+@item ret
+The mime type, or NULL if there is an error reading the file.
+
+@end table
+
+Since 2.14
+
+@end deffn
+
+
+@c %end of fragment

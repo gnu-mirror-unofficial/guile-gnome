@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node DNS Resolution
+@chapter DNS Resolution
+Generic thread-safe address resolution functions.
+
+@section Overview
+@section Usage
+@include defuns-gnome-vfs-resolve.xml.texi
+
+@c %end of fragment

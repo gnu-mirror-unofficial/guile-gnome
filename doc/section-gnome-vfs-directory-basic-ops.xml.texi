@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node Basic Directory Operations
+@chapter Basic Directory Operations
+Creating and removing directories.
+
+@section Overview
+@section Usage
+@include defuns-gnome-vfs-directory-basic-ops.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GnomeVFSVolume
+@chapter GnomeVFSVolume
+Abstraction for a mounted file system or a network location.
+
+@section Overview
+@section Usage
+@include defuns-gnome-vfs-volume.xml.texi
+
+@c %end of fragment

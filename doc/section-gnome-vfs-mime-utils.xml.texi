@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node gnome-vfs-mime-utils
+@chapter gnome-vfs-mime-utils
+
+
+@section Overview
+@section Usage
+@include defuns-gnome-vfs-mime-utils.xml.texi
+
+@c %end of fragment

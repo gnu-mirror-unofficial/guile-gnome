@@ -1,0 +1,45 @@
+
+@c %start of fragment
+
+@deffn Function gnome-vfs-find-directory  (near_uri@tie{}@code{<gnome-vfsuri*>}) (kind@tie{}@code{<gnome-vfs-find-directory-kind>}) (result@tie{}@code{<gnome-vfsuri**>}) (create_if_needed@tie{}@code{bool}) (find_if_needed@tie{}@code{bool}) (permissions@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Used to return well known directories such as Trash, Desktop, etc. from
+different file systems.
+
+There is quite a complicated logic behind finding/creating a Trash directory and
+you need to be aware of some implications: Finding the Trash the first time when
+using the file method may be pretty expensive. A cache file is used to store the
+location of that Trash file for next time. If @var{create-if-needed} is
+specified without @var{find-if-needed}, you may end up creating a Trash file
+when there already is one. Your app should start out by doing a
+@code{gnome-vfs-find-directory} with the @var{find-if-needed} to avoid this and
+then use the @var{create-if-needed} flag to create Trash lazily when it is
+needed for throwing away an item on a given disk.
+
+@table @var
+@item near-uri
+find a well known directory on the same volume as @var{near-uri}.
+
+@item kind
+kind of well known directory.
+
+@item result
+newly created uri of the directory we found.
+
+@item create-if-needed
+if directory we are looking for does not exist, try to create it.
+
+@item find-if-needed
+if we don't know where directory is yet, look for it.
+
+@item permissions
+if creating, use these permissions.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

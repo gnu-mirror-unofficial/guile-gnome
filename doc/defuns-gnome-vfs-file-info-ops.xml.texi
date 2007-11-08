@@ -1,0 +1,117 @@
+
+@c %start of fragment
+
+@deffn Function gnome-vfs-get-file-info  (text_uri@tie{}@code{mchars}) (info@tie{}@code{<gnome-vfs-file-info*>}) (options@tie{}@code{<gnome-vfs-file-info-options>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Retrieve information about @var{text-uri}. The information will be stored in
+@var{info}.
+
+@table @var
+@item text-uri
+uri of the file for which information will be retrieved.
+
+@item info
+pointer to a @code{<gnome-vfs-file-info>} object that will hold the information
+for the file on return.
+
+@item options
+options for retrieving file information.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-get-file-info-uri  (uri@tie{}@code{<gnome-vfsuri*>}) (info@tie{}@code{<gnome-vfs-file-info*>}) (options@tie{}@code{<gnome-vfs-file-info-options>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Retrieve information about @var{text-uri}. The information will be stored in
+@var{info}.
+
+@table @var
+@item uri
+uri of the file for which information will be retrieved.
+
+@item info
+pointer to a @code{<gnome-vfs-file-info>} object that will hold the information
+for the file on return.
+
+@item options
+options for retrieving file information.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-get-file-info-from-handle  (handle@tie{}@code{<gnome-vfs-handle*>}) (info@tie{}@code{<gnome-vfs-file-info*>}) (options@tie{}@code{<gnome-vfs-file-info-options>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Retrieve information about an open file. The information will be stored in
+@var{info}.
+
+@table @var
+@item handle
+handle of the file for which information must be retrieved.
+
+@item info
+pointer to a @code{<gnome-vfs-file-info>} object that will hold the information
+for the file on return.
+
+@item options
+options for retrieving file information.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-set-file-info-uri  (uri@tie{}@code{<gnome-vfsuri*>}) (info@tie{}@code{<gnome-vfs-file-info*>}) (mask@tie{}@code{<gnome-vfs-set-file-info-mask>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Set file information for @var{uri}; only the information for which the
+corresponding bit in @var{mask} is set is actually modified.
+
+
+
+@table @var
+@item uri
+a uri.
+
+@item info
+information that must be set for the file.
+
+@item mask
+bit mask representing which fields of @var{info} need to be set.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-set-file-info  (text_uri@tie{}@code{mchars}) (info@tie{}@code{<gnome-vfs-file-info*>}) (mask@tie{}@code{<gnome-vfs-set-file-info-mask>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Set file information for @var{uri}; only the information for which the
+corresponding bit in @var{mask} is set is actually modified.
+
+
+
+@table @var
+@item text-uri
+string representing the file location.
+
+@item info
+information that must be set for the file.
+
+@item mask
+bit mask representing which fields of @var{info} need to be set.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node gnome-vfs-utils
+@chapter gnome-vfs-utils
+various utilities functions to manipulate uris
+
+@section Overview
+@section Usage
+@include defuns-gnome-vfs-utils.xml.texi
+
+@c %end of fragment

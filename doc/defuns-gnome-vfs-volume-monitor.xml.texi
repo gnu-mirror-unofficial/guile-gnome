@@ -1,0 +1,95 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-vfs-volume-monitor>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@defop Signal <gnome-vfs-volume-monitor> volume-mounted  (arg0@tie{}@code{<gnome-vfs-volume>})
+This signal is emitted after the @code{<gnome-vfs-volume>}@var{volume} has been
+mounted.
+
+When the @var{volume} is mounted, it is present in the @var{volume-monitor}'s
+list of mounted volumes, which can be queried using
+@code{gnome-vfs-volume-monitor-get-mounted-volumes}.
+
+If the @var{volume} has an associated @code{<gnome-vfs-drive>}, it also appears
+in the drive's list of mounted volumes, which can be queried using
+@code{gnome-vfs-drive-get-mounted-volumes}.
+
+@end defop
+
+@defop Signal <gnome-vfs-volume-monitor> volume-pre-unmount  (arg0@tie{}@code{<gnome-vfs-volume>})
+This signal is emitted when the @code{<gnome-vfs-volume>}@var{volume} is about
+to be unmounted.
+
+When the @var{volume} is unmounted, it is removed from the
+@var{volume-monitor}'s list of mounted volumes, which can be queried using
+@code{gnome-vfs-volume-monitor-get-mounted-volumes}.
+
+If the @var{volume} has an associated @code{<gnome-vfs-drive>}, it is also
+removed from in the drive's list of mounted volumes, which can be queried using
+@code{gnome-vfs-drive-get-mounted-volumes}.
+
+When a client application receives this signal, it must free all resources
+associated with the @var{volume}, for instance cancel all pending file
+operations on the @var{volume}, and cancel all pending file monitors using
+@code{gnome-vfs-monitor-cancel}.
+
+@end defop
+
+@defop Signal <gnome-vfs-volume-monitor> volume-unmounted  (arg0@tie{}@code{<gnome-vfs-volume>})
+This signal is emitted after the @code{<gnome-vfs-volume>}@var{volume} has been
+unmounted.
+
+When the @var{volume} is unmounted, it is removed from the
+@var{volume-monitor}'s list of mounted volumes, which can be queried using
+@code{gnome-vfs-volume-monitor-get-mounted-volumes}.
+
+If the @var{volume} has an associated @code{<gnome-vfs-drive>}, it is also
+removed from in the drive's list of mounted volumes, which can be queried using
+@code{gnome-vfs-drive-get-mounted-volumes}.
+
+@end defop
+
+@defop Signal <gnome-vfs-volume-monitor> drive-connected  (arg0@tie{}@code{<gnome-vfs-drive>})
+This signal is emitted when the @code{<gnome-vfs-drive>}@var{drive} has been
+connected.
+
+When the @var{drive} is connected, it is present in the @var{volume-monitor}'s
+list of connected drives, which can be queried using
+@code{gnome-vfs-volume-monitor-get-connected-drives}.
+
+@end defop
+
+@defop Signal <gnome-vfs-volume-monitor> drive-disconnected  (arg0@tie{}@code{<gnome-vfs-drive>})
+This signal is emitted after the @code{<gnome-vfs-drive>}@var{drive} has been
+disconnected.
+
+When the @var{drive} is disconnected, it is removed from the
+@var{volume-monitor}'s list of connected drives, which can be queried using
+@code{gnome-vfs-volume-monitor-get-connected-drives}.
+
+@end defop
+
+@deffn Function gnome-vfs-get-volume-monitor  @result{}@tie{} (ret@tie{}@code{<gnome-vfs-volume-monitor>})
+Returns a pointer to the @code{<gnome-vfs-volume-monitor>} singleton.
+@code{<gnome-vfs-volume-monitor>} is a singleton, this means it is guaranteed to
+exist and be valid until @code{gnome-vfs-shutdown} is called. Consequently, it
+doesn't need to be refcounted since gnome-vfs will hold a reference to it until
+it is shut down.
+
+@table @var
+@item ret
+a pointer to the @code{<gnome-vfs-volume-monitor>} singleton.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,20 @@
+
+@c %start of fragment
+
+@node Internet connection
+@chapter Internet connection
+Simple TCP/IP connection functions.
+
+@section Overview
+A @code{<gnome-vfs-inet-connection>} represents a TCP/IP connection. You can
+either use @code{<gnome-vfs-inet-connection-create>} which will use the
+@code{<gnome-vfs-resolve>} DNS resolution functions internally or you can do the
+name resolution yourself and use
+@code{<gnome-vfs-inet-connection-create-from-address>} to connect to a specific
+address. After a connection has been established all I/O is done through a
+GnomeVFSSocket or a GnomeVFSSocketBuffer.
+
+@section Usage
+@include defuns-gnome-vfs-inet-connection.xml.texi
+
+@c %end of fragment

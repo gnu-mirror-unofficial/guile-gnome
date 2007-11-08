@@ -1,0 +1,94 @@
+
+@c %start of fragment
+
+@deffn Function gnome-vfs-cancellation-new  @result{}@tie{} (ret@tie{}@code{<gnome-vfs-cancellation*>})
+Create a new @code{<gnome-vfs-cancellation>} object for reporting cancellation
+to a gnome-vfs module.
+
+@table @var
+@item ret
+A pointer to the new GnomeVFSCancellation object.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-cancellation-destroy  (self@tie{}@code{<gnome-vfs-cancellation*>})
+Destroy @var{cancellation}.
+
+@table @var
+@item cancellation
+a @code{<gnome-vfs-cancellation>} object.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-cancellation-cancel  (self@tie{}@code{<gnome-vfs-cancellation*>})
+Send a cancellation request through @var{cancellation}.
+
+If called on a different thread than the one handling idle callbacks, there is a
+small race condition where the operation finished callback will be called even
+if you cancelled the operation. Its the apps responsibility to handle this. See
+@code{gnome-vfs-async-cancel} for more discussion about this.
+
+@table @var
+@item cancellation
+a @code{<gnome-vfs-cancellation>} object.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-cancellation-check  (self@tie{}@code{<gnome-vfs-cancellation*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Check for pending cancellation.
+
+@table @var
+@item cancellation
+a @code{<gnome-vfs-cancellation>} object.
+
+@item ret
+@samp{@code{#t}} if the operation should be interrupted.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-cancellation-ack  (self@tie{}@code{<gnome-vfs-cancellation*>})
+Acknowledge a cancellation. This should be called if
+@code{gnome-vfs-cancellation-check} returns @samp{@code{#t}} or if @code{select}
+reports that input is available on the file descriptor returned by
+@code{gnome-vfs-cancellation-get-fd}.
+
+@table @var
+@item cancellation
+a @code{<gnome-vfs-cancellation>} object.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-cancellation-get-fd  (self@tie{}@code{<gnome-vfs-cancellation*>}) @result{}@tie{} (ret@tie{}@code{int})
+Get a file descriptor -based notificator for @var{cancellation}. When
+@var{cancellation} receives a cancellation request, a character will be made
+available on the returned file descriptor for input.
+
+This is very useful for detecting cancellation during I/O operations: you can
+use the @code{select} call to check for available input/output on the file you
+are reading/writing, and on the notificator's file descriptor at the same time.
+If a data is available on the notificator's file descriptor, you know you have
+to cancel the read/write operation.
+
+@table @var
+@item cancellation
+a @code{<gnome-vfs-cancellation>} object.
+
+@item ret
+the notificator's file descriptor, or -1 if starved of file descriptors.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

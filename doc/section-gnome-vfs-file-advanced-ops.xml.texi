@@ -1,0 +1,17 @@
+
+@c %start of fragment
+
+@node Backend-Specific Operations
+@chapter Backend-Specific Operations
+Execute backend-specific operations
+
+@section Overview
+Advanced file operations allow you to execute backend-specific commands.
+Currently, none of the @code{<gnome-vfs-modules>} shipped with GnomeVFS includes
+useful operations, but they allow sophisticated module-specific code that can
+not be added to GnomeVFS because it would break abstraction.
+
+@section Usage
+@include defuns-gnome-vfs-file-advanced-ops.xml.texi
+
+@c %end of fragment

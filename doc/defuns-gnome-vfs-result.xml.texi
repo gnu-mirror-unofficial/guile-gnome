@@ -1,0 +1,71 @@
+
+@c %start of fragment
+
+@deffn Function gnome-vfs-result-to-string  (res@tie{}@code{<gnome-vfs-result>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Returns a string representing @var{result}, useful for debugging purposes, but
+probably not appropriate for passing to the user.
+
+@table @var
+@item result
+a @code{<gnome-vfs-result>} to convert to a string.
+
+@item ret
+a string representing @var{result}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-result-from-errno-code  (errno_code@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Converts a system errno value to a @code{<gnome-vfs-result>}.
+
+@table @var
+@item errno-code
+integer of the same type as the system "errno".
+
+@item ret
+a @code{<gnome-vfs-result>} equivalent to @var{errno-code}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-result-from-errno  @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Converts the system errno to a @code{<gnome-vfs-result>}.
+
+@table @var
+@item ret
+a @code{<gnome-vfs-result>} equivalent to the current system errno.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-result-from-h-errno  @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Converts the system "h_errno" to a @code{<gnome-vfs-result>} (h_errno represents
+errors accessing and finding internet hosts)
+
+@table @var
+@item ret
+a @code{<gnome-vfs-result>} equivalent to the current system "h_errno".
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-result-from-h-errno-val  (h_errno_code@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Converts the error code @var{h-errno-code} into a @code{<gnome-vfs-result>}.
+
+@table @var
+@item h-errno-code
+an integer representing the same error code as the system h_errno.
+
+@item ret
+The @code{<gnome-vfs-result>} equivalent to the @var{h-errno-code}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

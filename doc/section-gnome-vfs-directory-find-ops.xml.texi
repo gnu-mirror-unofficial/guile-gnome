@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node Locating Standard Directories
+@chapter Locating Standard Directories
+Utilities for locating standard directories such as the desktop and trash
+
+@section Overview
+@section Usage
+@include defuns-gnome-vfs-directory-find-ops.xml.texi
+
+@c %end of fragment

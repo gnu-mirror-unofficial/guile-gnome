@@ -1,0 +1,522 @@
+
+@c %start of fragment
+
+@deffn Function gnome-vfs-uri-new  (text_uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gnome-vfsuri*>})
+Create a new uri from @var{text-uri}. Unsupported and unsafe methods are not
+allowed and will result in @samp{@code{#f}} being returned. URL transforms are
+allowed.
+
+The @var{a} text_uri must be an escaped URI string such as returned by
+@code{gnome-vfs-get-uri-from-local-path}, @code{gnome-vfs-make-uri-from-input},
+or @code{gtk-file-chooser-get-uri}.
+
+@table @var
+@item text-uri
+an escaped string representing a uri.
+
+@item ret
+The new uri.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-resolve-relative  (self@tie{}@code{<gnome-vfsuri*>}) (relative_reference@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gnome-vfsuri*>})
+Create a new uri from @var{relative-reference}, relative to @var{base}. The
+resolution algorithm in some aspects follows
+@uref{http://www.ietf.org/rfc/rfc2396.txt,RFC 2396}, section 5.2, but is not
+identical due to some extra assumptions GnomeVFS makes about URIs.
+
+If @var{relative-reference} begins with a valid scheme identifier followed by
+':', it is assumed to refer to an absolute URI, and a @code{<gnome-vfsuri>} is
+created from it using @code{gnome-vfs-uri-new}.
+
+Otherwise, depending on its precise syntax, it inherits some aspects of the
+parent URI, but the parents' fragment and query components are ignored.
+
+If @var{relative-reference} begins with "//", it only inherits the @var{base}
+scheme, if it begins with '/' (i.e. is an absolute path reference), it inherits
+everything ecxept the @var{base} path. Otherwise, it replaces the part of
+@var{base} after the last '/'.
+
+
+
+@table @var
+@item base
+base uri.
+
+@item relative-reference
+a string representing a possibly relative uri reference.
+
+@item ret
+A @code{<gnome-vfsuri>} referring to @var{relative-reference}, or
+@samp{@code{#f}} if @var{relative-reference} was malformed.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-resolve-symbolic-link  (self@tie{}@code{<gnome-vfsuri*>}) (relative_reference@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gnome-vfsuri*>})
+Create a new uri from @var{symbolic-link}, relative to @var{base}.
+
+If @var{symbolic-link} begins with a '/', it replaces the path of @var{base},
+otherwise it is appended after the last '/' character of @var{base}.
+
+@table @var
+@item base
+base uri.
+
+@item relative-reference
+
+
+@item ret
+A new @code{<gnome-vfsuri>} referring to @var{symbolic-link}.
+
+@end table
+
+Since 2.16
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-append-string  (self@tie{}@code{<gnome-vfsuri*>}) (uri_fragment@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gnome-vfsuri*>})
+Create a new uri obtained by appending @var{uri-fragment} to @var{uri}. This
+will take care of adding an appropriate directory separator between the end of
+@var{uri} and the start of @var{uri-fragment} if necessary.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item uri-fragment
+a piece of a uri (ie a fully escaped partial path).
+
+@item ret
+The new uri obtained by combining @var{uri} and @var{uri-fragment}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-append-path  (self@tie{}@code{<gnome-vfsuri*>}) (path@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gnome-vfsuri*>})
+Create a new uri obtained by appending @var{path} to @var{uri}. This will take
+care of adding an appropriate directory separator between the end of @var{uri}
+and the start of @var{path} if necessary as well as escaping @var{path} as
+necessary.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item path
+a non-escaped file path.
+
+@item ret
+The new uri obtained by combining @var{uri} and @var{path}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-append-file-name  (self@tie{}@code{<gnome-vfsuri*>}) (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gnome-vfsuri*>})
+Create a new uri obtained by appending @var{file-name} to @var{uri}. This will
+take care of adding an appropriate directory separator between the end of
+@var{uri} and the start of @var{file-name} if necessary. @var{file-name} might,
+for instance, be the result of a call to @code{g-dir-read-name}.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item filename
+any "regular" file name (can include #, /, etc) in the file system encoding.
+This is not an escaped URI.
+
+@item ret
+The new uri obtained by combining @var{uri} and @var{path}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-to-string  (self@tie{}@code{<gnome-vfsuri*>}) (hide_options@tie{}@code{<gnome-vfsuri-hide-options>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Translate @var{uri} into a printable string. The string will not contain the uri
+elements specified by @var{hide-options}.
+
+A file: URI on Win32 might look like file:///x:/foo/bar.txt. Note that the part
+after file:// is not a legal file name, you need to remove the / in front of the
+drive letter. This function does that automatically if @var{hide-options}
+specifies that the toplevel method, user name, password, host name and host port
+should be hidden.
+
+On the other hand, a file: URI for a UNC path looks like
+file:////server/share/foo/bar.txt, and in that case the part after file:// is
+the correct file name.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item hide-options
+bitmask specifying what uri elements (e.g. password, user name etc.) should not
+be represented in the returned string.
+
+@item ret
+a malloc'd printable string representing @var{uri}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-dup  (self@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfsuri*>})
+Duplicate @var{uri}.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item ret
+a pointer to a new uri that is exactly the same as @var{uri}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-is-local  (self@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Check if @var{uri} is a local URI. Note that the return value of this function
+entirely depends on the @code{<gnome-vfs-method>} associated with the URI. It is
+up to the method author to distinguish between remote URIs add URIs referring to
+entities on the local computer.
+
+Warning, this can be slow, as it does i/o to detect things like NFS mounts.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item ret
+@samp{@code{#t}} if @var{uri} refers to a local entity, @samp{@code{#f}}
+otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-has-parent  (self@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Check if uri has a parent or not.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item ret
+@samp{@code{#t}} if @var{uri} has a parent, @samp{@code{#f}} otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-get-parent  (self@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfsuri*>})
+Retrieve @var{uri}'s parent uri.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item ret
+a pointer to @var{uri}'s parent uri.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-get-toplevel  (self@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-toplevel-uri*>})
+Retrieve the toplevel uri in @var{uri}.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item ret
+a pointer to the toplevel uri object.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-get-host-name  (self@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Retrieve the host name for @var{uri}.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item ret
+a string representing the host name.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-get-scheme  (self@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Retrieve the scheme used for @var{uri}.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item ret
+a string representing the scheme.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-get-host-port  (self@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Retrieve the host port number in @var{uri}.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item ret
+The host port number used by @var{uri}. If the value is zero, the default port
+value for the specified toplevel access method is used.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-get-user-name  (self@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Retrieve the user name in @var{uri}.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item ret
+a string representing the user name in @var{uri}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-get-password  (self@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Retrieve the password for @var{uri}.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item ret
+The password for @var{uri}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-set-host-name  (self@tie{}@code{<gnome-vfsuri*>}) (host_name@tie{}@code{mchars})
+Set @var{host-name} as the host name accessed by @var{uri}.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item host-name
+a string representing a host name.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-set-host-port  (self@tie{}@code{<gnome-vfsuri*>}) (host_port@tie{}@code{unsigned-int})
+Set the host port number in @var{uri}. If @var{host-port} is zero, the default
+port for @var{uri}'s toplevel access method is used.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item host-port
+a TCP/IP port number.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-set-user-name  (self@tie{}@code{<gnome-vfsuri*>}) (user_name@tie{}@code{mchars})
+Set @var{user-name} as the user name for @var{uri}.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item user-name
+a string representing a user name on the host accessed by @var{uri}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-set-password  (self@tie{}@code{<gnome-vfsuri*>}) (password@tie{}@code{mchars})
+Set @var{password} as the password for @var{uri}.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item password
+a password string.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-equal  (self@tie{}@code{<gnome-vfsuri*>}) (b@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Compare @var{a} and @var{b}.
+
+FIXME: This comparison should take into account the possiblity that unreserved
+characters may be escaped. ...or perhaps @code{gnome-vfs-uri-new} should
+unescape unreserved characters?
+
+@table @var
+@item a
+a @code{<gnome-vfsuri>}.
+
+@item b
+a @code{<gnome-vfsuri>}.
+
+@item ret
+@samp{@code{#t}} if @var{a} and @var{b} are equal, @samp{@code{#f}} otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-is-parent  (self@tie{}@code{<gnome-vfsuri*>}) (possible_child@tie{}@code{<gnome-vfsuri*>}) (recursive@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+Check if @var{possible-child} is contained by @var{possible-parent}. If
+@var{recursive} is @samp{@code{#f}}, just try the immediate parent directory,
+else search up through the hierarchy.
+
+@table @var
+@item possible-parent
+a @code{<gnome-vfsuri>}.
+
+@item possible-child
+a @code{<gnome-vfsuri>}.
+
+@item recursive
+a flag to turn recursive check on.
+
+@item ret
+@samp{@code{#t}} if @var{possible-child} is contained in @var{possible-parent}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-get-path  (self@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Retrieve full path name for @var{uri}.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item ret
+a pointer to the full path name in @var{uri}. Notice that the pointer points to
+the path name stored in @var{uri}, so the path name returned must not be
+modified nor freed.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-extract-dirname  (self@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Extract the name of the directory in which the file pointed to by @var{uri} is
+stored as a newly allocated string. The string will end with a
+@samp{GNOME_VFS_URI_PATH_CHR}.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item ret
+a pointer to the newly allocated string representing the parent directory.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-extract-short-name  (self@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Retrieve base file name for @var{uri}, ignoring any trailing path separators.
+This matches the XPG definition of basename, but not g_basename. This is often
+useful when you want the name of something that's pointed to by a uri, and don't
+care whether the uri has a directory or file form. If @var{uri} points to the
+root of a domain, returns the host name. If there's no host name, returns
+@samp{GNOME_VFS_URI_PATH_STR}.
+
+See also: @code{gnome-vfs-uri-extract-short-path-name}.
+
+@table @var
+@item uri
+a @code{<gnome-vfsuri>}.
+
+@item ret
+a pointer to the newly allocated string representing the unescaped short form of
+the name.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-hequal  (a@tie{}@code{<gconstpointer>}) (b@tie{}@code{<gconstpointer>}) @result{}@tie{} (ret@tie{}@code{int})
+Function intended for use as a hash table "are these two items the same"
+comparison. Useful for creating a hash table of uris.
+
+@table @var
+@item a
+a pointer to a @code{<gnome-vfsuri>}.
+
+@item b
+a pointer to a @code{<gnome-vfsuri>}.
+
+@item ret
+@samp{@code{#t}} if the uris are the same.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-hash  (p@tie{}@code{<gconstpointer>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Creates an integer value from a @code{<gnome-vfsuri>}, appropriate for using as
+the key to a hash table entry.
+
+@table @var
+@item p
+a pointer to a @code{<gnome-vfsuri>}.
+
+@item ret
+a hash key corresponding to @var{p}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-uri-list-parse  (uri_list@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{glist-of})
+Extracts a list of @code{<gnome-vfsuri>} objects from a standard text/uri-list,
+such as one you would get on a drop operation. Use
+@code{gnome-vfs-uri-list-free} when you are done with the list.
+
+@table @var
+@item uri-list
+string consists of @code{<gnome-vfsur-is>} and/or paths seperated by newline
+character.
+
+@item ret
+a @code{<g-list>} of @code{<gnome-vfsur-is>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

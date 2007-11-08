@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GnomeVFSFileSize
+@chapter GnomeVFSFileSize
+Data types used for specifying file sizes and seek positions
+
+@section Overview
+@section Usage
+@include defuns-gnome-vfs-file-size.xml.texi
+
+@c %end of fragment

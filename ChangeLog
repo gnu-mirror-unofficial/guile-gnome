@@ -1,3 +1,10 @@
+2007-11-08  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am:
+	* doc/: Add documentation, generated from upstream gtk-doc.
+	Suboptimal, as it does not talk at all the mapping between
+	gnome-vfs handles and scheme ports.
+
 2007-09-25  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.94 ==

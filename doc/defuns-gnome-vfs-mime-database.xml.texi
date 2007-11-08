@@ -1,0 +1,168 @@
+
+@c %start of fragment
+
+@deffn Function gnome-vfs-mime-get-all-applications  (mime_type@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{glist-of})
+Return an alphabetically sorted list of @code{<gnome-vfs-mime-application>} data
+structures representing all applications in the MIME database registered to
+handle files of MIME type @var{mime-type} (and supertypes).
+
+@table @var
+@item mime-type
+a const char * containing a mime type, e.g. "image/png".
+
+@item ret
+a @code{<g-list>} * where the elements are @code{<gnome-vfs-mime-application>} *
+representing applications that handle MIME type @var{mime-type}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-mime-get-all-components  (mime_type@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@samp{gnome_vfs_mime_get_all_components} is deprecated and should not be used in
+newly-written code.
+
+@table @var
+@item mime-type
+
+
+@item ret
+
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-mime-get-description  (mime_type@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Query the MIME database for a description of the @var{mime-type}.
+
+@table @var
+@item mime-type
+the mime type.
+
+@item ret
+description of MIME type @var{mime-type}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-mime-can-be-executable  (mime_type@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Check whether files of @var{mime-type} might conceivably be executable. Default
+for known types if @samp{@code{#f}}. Default for unknown types is
+@samp{@code{#t}}.
+
+@table @var
+@item mime-type
+a const char * containing a mime type.
+
+@item ret
+@samp{@code{#t}} if files of @var{mime-type} can be executable, @samp{@code{#f}}
+otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-mime-application-launch  (self@tie{}@code{<gnome-vfs-mime-application*>}) (uris@tie{}@code{glist-of}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Launches the given mime application with the given parameters. Command line
+parameters will be expanded as required by the application. The application will
+also be launched in a terminal if that is required. If the application only
+supports one argument per instance then multiple instances of the application
+will be launched.
+
+@table @var
+@item app
+the @code{<gnome-vfs-mime-application>} to launch.
+
+@item uris
+parameters for the @code{<gnome-vfs-mime-application>}.
+
+@item ret
+@samp{GNOME_VFS_OK} if the application was launched.
+@samp{GNOME_VFS_ERROR_NOT_SUPPORTED} if the uri protocol is not supported by the
+application. @samp{GNOME_VFS_ERROR_PARSE} if the application command can not be
+parsed. @samp{GNOME_VFS_ERROR_LAUNCH} if the application command can not be
+launched. @samp{GNOME_VFS_ERROR_INTERNAL} for other internal and GConf errors.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gnome-vfs-mime-application-get-name  (self@tie{}@code{<gnome-vfs-mime-application*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Returns the name of the application @var{app}
+
+@table @var
+@item app
+a @code{<gnome-vfs-mime-application>}.
+
+@item ret
+the name of the application.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gnome-vfs-mime-application-get-icon  (self@tie{}@code{<gnome-vfs-mime-application*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Returns an icon representing the specified application.
+
+@table @var
+@item app
+a @code{<gnome-vfs-mime-application>}.
+
+@item ret
+the filename of the icon usually without path information, e.g.
+"gedit-icon.png", and sometimes does not have an extension, e.g. "gnome-pdf" if
+the icon is supposed to be image type agnostic between icon themes. Icons are
+generic, and not theme specific.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gnome-vfs-mime-application-get-exec  (self@tie{}@code{<gnome-vfs-mime-application*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Returns the program to execute, possibly with arguments and parameter variables,
+as specified by the @uref{http://standards.freedesktop.org/desktop-entry-spec/,
+Desktop Entry Specification}.
+
+@table @var
+@item app
+a @code{<gnome-vfs-mime-application>}.
+
+@item ret
+the command line to execute.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gnome-vfs-mime-application-equal  (self@tie{}@code{<gnome-vfs-mime-application*>}) (app_b@tie{}@code{<gnome-vfs-mime-application*>}) @result{}@tie{} (ret@tie{}@code{bool})
+Compare @var{app-a} and @var{app-b}.
+
+@table @var
+@item app-a
+a @code{<gnome-vfs-mime-application>}.
+
+@item app-b
+a @code{<gnome-vfs-mime-application>}.
+
+@item ret
+@samp{@code{#t}} if @var{app-a} and @var{app-b} are equal, @samp{@code{#f}}
+otherwise.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment
