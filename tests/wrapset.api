@@ -1,0 +1,798 @@
+(module-api
+  (version 1 0)
+  ((gnome gnome-ui)
+   (uses-interfaces (gnome gw libgnomeui))
+   (typed-exports))
+  ((gnome gobject generics)
+   (uses-interfaces)
+   (typed-exports
+     (block generic (<gtype-instance> <top>))
+     (connect
+       generic
+       <top>
+       (<gtype-instance> <symbol> <procedure>))
+     (connect-after
+       generic
+       (<gtype-instance> <symbol> <procedure>))
+     (connected? generic (<gtype-instance> <top>))
+     (create-signal
+       generic
+       (<gtype-class> <symbol> <top> <top>))
+     (disconnect generic (<gtype-instance> <top>))
+     (emit generic
+           (<gtype-instance> <symbol> . <top>))
+     (find-property generic (<gtype-class> <symbol>))
+     (get generic (<gobject> <symbol>))
+     (get-properties generic (<gtype-class>))
+     (get-property-names generic (<gtype-class>))
+     (get-signals generic (<gtype-class>))
+     (invoke generic (<gclosure> . <top>))
+     (set generic
+          (<gobject> <symbol> <top>)
+          (<gtk-alignment> <real> <real> <real> <real>)
+          (<gtk-arrow> <top> <top>)
+          (<gtk-aspect-frame> . <top>)
+          (<gtk-list-store> <gtk-tree-iter> . <top>)
+          (<gtk-tree-store> <gtk-tree-iter> . <top>))
+     (unblock generic (<gtype-instance> <top>))))
+  ((gnome gw generics)
+   (uses-interfaces (gnome gobject generics))
+   (typed-exports
+     (set generic
+          (<gobject> <symbol> <top>)
+          (<gtk-alignment> <real> <real> <real> <real>)
+          (<gtk-arrow> <top> <top>)
+          (<gtk-aspect-frame> . <top>)
+          (<gtk-list-store> <gtk-tree-iter> . <top>)
+          (<gtk-tree-store> <gtk-tree-iter> . <top>))))
+  ((gnome gw libgnomeui)
+   (uses-interfaces (gnome gw generics))
+   (typed-exports
+     (<bonobo-dock*> <gw:wct>)
+     (<bonobo-dock-item*> <gw:wct>)
+     (<gnome-canvas-pixbuf*> <gw:wct>)
+     (<gnome-gdk-pixbuf-async-handle*> <gw:wct>)
+     (<gnome-gdk-pixbuf-done-callback> <gw:wct>)
+     (<gnome-gdk-pixbuf-load-callback> <gw:wct>)
+     (<gnome-icon-lookup-result-flags*> <gw:wct>)
+     (<gnome-interact-function> <gw:wct>)
+     (<gnome-module-info*> <gw:wct>)
+     (<gnome-program*> <gw:wct>)
+     (<gnome-ui-builder-data*> <gw:wct>)
+     (<gnome-ui-info*> <gw:wct>)
+     (<gnome-vfs-file-info*> <gw:wct>)
+     (<gtk-callback-marshal> <gw:wct>)
+     (gnome-accelerators-sync
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-add-dock-item
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-add-docked procedure (arity 0 0 #t))
+     (gnome-app-add-toolbar procedure (arity 0 0 #t))
+     (gnome-app-construct procedure (arity 0 0 #t))
+     (gnome-app-create-menus procedure (arity 0 0 #t))
+     (gnome-app-create-menus-custom
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-create-menus-interp
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-create-menus-with-data
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-create-toolbar
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-create-toolbar-custom
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-create-toolbar-interp
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-create-toolbar-with-data
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-enable-layout-config
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-fill-menu procedure (arity 0 0 #t))
+     (gnome-app-fill-menu-custom
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-fill-menu-with-data
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-fill-toolbar procedure (arity 0 0 #t))
+     (gnome-app-fill-toolbar-custom
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-fill-toolbar-with-data
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-find-menu-pos
+       procedure
+       (arity 2 0 #f))
+     (gnome-app-get-dock procedure (arity 0 0 #t))
+     (gnome-app-get-dock-item-by-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-helper-gettext
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-insert-menus procedure (arity 0 0 #t))
+     (gnome-app-insert-menus-custom
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-insert-menus-interp
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-insert-menus-with-data
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-install-appbar-menu-hints
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-install-menu-hints
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-install-statusbar-menu-hints
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-new procedure (arity 0 0 #t))
+     (gnome-app-remove-menu-range
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-remove-menus procedure (arity 0 0 #t))
+     (gnome-app-set-contents procedure (arity 0 0 #t))
+     (gnome-app-set-menus procedure (arity 0 0 #t))
+     (gnome-app-set-statusbar
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-set-statusbar-custom
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-set-toolbar procedure (arity 0 0 #t))
+     (gnome-app-setup-toolbar
+       procedure
+       (arity 0 0 #t))
+     (gnome-app-ui-configure-configurable
+       procedure
+       (arity 0 0 #t))
+     (gnome-appbar-clear-prompt
+       procedure
+       (arity 0 0 #t))
+     (gnome-appbar-clear-stack
+       procedure
+       (arity 0 0 #t))
+     (gnome-appbar-get-progress
+       procedure
+       (arity 0 0 #t))
+     (gnome-appbar-get-response
+       procedure
+       (arity 0 0 #t))
+     (gnome-appbar-get-status
+       procedure
+       (arity 0 0 #t))
+     (gnome-appbar-new procedure (arity 0 0 #t))
+     (gnome-appbar-pop procedure (arity 0 0 #t))
+     (gnome-appbar-push procedure (arity 0 0 #t))
+     (gnome-appbar-refresh procedure (arity 0 0 #t))
+     (gnome-appbar-set-default
+       procedure
+       (arity 0 0 #t))
+     (gnome-appbar-set-progress-percentage
+       procedure
+       (arity 0 0 #t))
+     (gnome-appbar-set-prompt
+       procedure
+       (arity 0 0 #t))
+     (gnome-appbar-set-status
+       procedure
+       (arity 0 0 #t))
+     (gnome-authentication-manager-dialog-is-visible
+       procedure
+       (arity 0 0 #t))
+     (gnome-authentication-manager-init
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-connect procedure (arity 0 0 #t))
+     (gnome-client-disconnect
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-flush procedure (arity 0 0 #t))
+     (gnome-client-get-config-prefix
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-get-desktop-id
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-get-flags procedure (arity 0 0 #t))
+     (gnome-client-get-global-config-prefix
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-get-id procedure (arity 0 0 #t))
+     (gnome-client-get-previous-id
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-module-info-get
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-new procedure (arity 0 0 #t))
+     (gnome-client-new-without-connection
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-request-interaction
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-request-interaction-interp
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-request-phase-2
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-request-save
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-save-any-dialog
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-save-error-dialog
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-current-directory
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-environment
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-global-config-prefix
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-id procedure (arity 0 0 #t))
+     (gnome-client-set-priority
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-process-id
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-program
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-restart-style
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-user-id
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-construct
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-get-flags
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-get-initial-time
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-get-time
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-new procedure (arity 0 0 #t))
+     (gnome-date-edit-new-flags
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-set-flags
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-set-popup-range
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-set-time
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-append-page
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-construct-with-window
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-insert-page
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-new procedure (arity 0 0 #t))
+     (gnome-druid-new-with-window
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-back procedure (arity 0 0 #t))
+     (gnome-druid-page-cancel
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-edge-construct
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-edge-new
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-edge-new-aa
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-edge-new-with-vals
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-edge-set-bg-color
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-edge-set-logo
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-edge-set-logo-bg-color
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-edge-set-text
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-edge-set-text-color
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-edge-set-textbox-color
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-edge-set-title
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-edge-set-title-color
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-edge-set-top-watermark
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-edge-set-watermark
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-finish
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-new procedure (arity 0 0 #t))
+     (gnome-druid-page-next procedure (arity 0 0 #t))
+     (gnome-druid-page-prepare
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-standard-append-item
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-standard-new
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-standard-new-with-vals
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-standard-set-background
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-standard-set-contents-background
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-standard-set-logo
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-standard-set-logo-background
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-standard-set-title
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-standard-set-title-foreground
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-page-standard-set-top-watermark
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-prepend-page
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-set-buttons-sensitive
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-set-page procedure (arity 0 0 #t))
+     (gnome-druid-set-show-finish
+       procedure
+       (arity 0 0 #t))
+     (gnome-druid-set-show-help
+       procedure
+       (arity 0 0 #t))
+     (gnome-file-entry-construct
+       procedure
+       (arity 0 0 #t))
+     (gnome-file-entry-get-directory-entry
+       procedure
+       (arity 0 0 #t))
+     (gnome-file-entry-get-full-path
+       procedure
+       (arity 0 0 #t))
+     (gnome-file-entry-get-modal
+       procedure
+       (arity 0 0 #t))
+     (gnome-file-entry-gnome-entry
+       procedure
+       (arity 0 0 #t))
+     (gnome-file-entry-gtk-entry
+       procedure
+       (arity 0 0 #t))
+     (gnome-file-entry-new procedure (arity 0 0 #t))
+     (gnome-file-entry-set-default-path
+       procedure
+       (arity 0 0 #t))
+     (gnome-file-entry-set-directory-entry
+       procedure
+       (arity 0 0 #t))
+     (gnome-file-entry-set-filename
+       procedure
+       (arity 0 0 #t))
+     (gnome-file-entry-set-modal
+       procedure
+       (arity 0 0 #t))
+     (gnome-file-entry-set-title
+       procedure
+       (arity 0 0 #t))
+     (gnome-gdk-pixbuf-new-from-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-gdk-pixbuf-new-from-uri-async
+       procedure
+       (arity 0 0 #t))
+     (gnome-gdk-pixbuf-new-from-uri-at-scale
+       procedure
+       (arity 0 0 #t))
+     (gnome-gdk-pixbuf-new-from-uri-cancel
+       procedure
+       (arity 0 0 #t))
+     (gnome-gtk-module-info-get
+       procedure
+       (arity 0 0 #t))
+     (gnome-help-display-desktop-on-screen
+       procedure
+       (arity 5 0 #f))
+     (gnome-help-display-on-screen
+       procedure
+       (arity 3 0 #f))
+     (gnome-help-display-uri-on-screen
+       procedure
+       (arity 2 0 #f))
+     (gnome-help-display-with-doc-id-on-screen
+       procedure
+       (arity 5 0 #f))
+     (gnome-href-get-text procedure (arity 0 0 #t))
+     (gnome-href-get-url procedure (arity 0 0 #t))
+     (gnome-href-new procedure (arity 0 0 #t))
+     (gnome-href-set-text procedure (arity 0 0 #t))
+     (gnome-href-set-url procedure (arity 0 0 #t))
+     (gnome-icon-entry-construct
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-entry-get-filename
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-entry-gnome-entry
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-entry-gnome-file-entry
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-entry-gtk-entry
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-entry-new procedure (arity 0 0 #t))
+     (gnome-icon-entry-pick-dialog
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-entry-set-browse-dialog-title
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-entry-set-filename
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-entry-set-history-id
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-entry-set-icon
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-entry-set-max-saved
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-entry-set-pixmap-subdir
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-append procedure (arity 0 0 #t))
+     (gnome-icon-list-append-pixbuf
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-clear procedure (arity 0 0 #t))
+     (gnome-icon-list-construct
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-find-icon-from-data
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-find-icon-from-filename
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-focus-icon
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-freeze procedure (arity 0 0 #t))
+     (gnome-icon-list-get-icon-at
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-get-icon-data
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-get-icon-filename
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-get-icon-pixbuf-item
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-get-icon-text-item
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-get-items-per-line
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-get-num-icons
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-get-selection
+       procedure
+       (arity 1 0 #f))
+     (gnome-icon-list-get-selection-mode
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-icon-is-visible
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-insert procedure (arity 0 0 #t))
+     (gnome-icon-list-insert-pixbuf
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-moveto procedure (arity 0 0 #t))
+     (gnome-icon-list-new procedure (arity 0 0 #t))
+     (gnome-icon-list-remove procedure (arity 0 0 #t))
+     (gnome-icon-list-select-all
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-select-icon
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-set-col-spacing
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-set-hadjustment
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-set-icon-border
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-set-icon-data
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-set-icon-data-full
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-set-icon-width
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-set-row-spacing
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-set-selection-mode
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-set-separators
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-set-text-spacing
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-set-vadjustment
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-thaw procedure (arity 0 0 #t))
+     (gnome-icon-list-unselect-all
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-list-unselect-icon
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-lookup procedure (arity 0 0 #t))
+     (gnome-icon-lookup-sync procedure (arity 0 0 #t))
+     (gnome-icon-selection-add-defaults
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-selection-add-directory
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-selection-clear
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-selection-get-box
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-selection-get-gil
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-selection-get-icon
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-selection-new
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-selection-select-icon
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-selection-show-icons
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-selection-stop-loading
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-text-item-configure
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-text-item-focus
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-text-item-get-editable
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-text-item-get-text
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-text-item-select
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-text-item-setxy
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-text-item-start-editing
+       procedure
+       (arity 0 0 #t))
+     (gnome-icon-text-item-stop-editing
+       procedure
+       (arity 0 0 #t))
+     (gnome-interaction-key-return
+       procedure
+       (arity 0 0 #t))
+     (gnome-master-client procedure (arity 0 0 #t))
+     (gnome-password-dialog-anon-selected
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-get-domain
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-get-password
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-get-remember
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-get-username
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-new
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-run-and-block
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-domain
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-password
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-readonly-domain
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-readonly-username
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-remember
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-show-domain
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-show-password
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-show-remember
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-show-username
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-show-userpass-buttons
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-username
+       procedure
+       (arity 0 0 #t))
+     (gnome-scores-construct procedure (arity 3 0 #f))
+     (gnome-scores-display procedure (arity 0 0 #t))
+     (gnome-scores-display-with-pixmap
+       procedure
+       (arity 0 0 #t))
+     (gnome-scores-new procedure (arity 2 0 #f))
+     (gnome-scores-set-color procedure (arity 0 0 #t))
+     (gnome-scores-set-colors
+       procedure
+       (arity 0 0 #t))
+     (gnome-scores-set-current-player
+       procedure
+       (arity 0 0 #t))
+     (gnome-scores-set-def-color
+       procedure
+       (arity 0 0 #t))
+     (gnome-scores-set-logo-label
+       procedure
+       (arity 0 0 #t))
+     (gnome-scores-set-logo-label-title
+       procedure
+       (arity 0 0 #t))
+     (gnome-scores-set-logo-pixmap
+       procedure
+       (arity 0 0 #t))
+     (gnome-scores-set-logo-widget
+       procedure
+       (arity 0 0 #t))
+     (gnome-thumbnail-factory-can-thumbnail
+       procedure
+       (arity 0 0 #t))
+     (gnome-thumbnail-factory-create-failed-thumbnail
+       procedure
+       (arity 0 0 #t))
+     (gnome-thumbnail-factory-generate-thumbnail
+       procedure
+       (arity 0 0 #t))
+     (gnome-thumbnail-factory-has-valid-failed-thumbnail
+       procedure
+       (arity 0 0 #t))
+     (gnome-thumbnail-factory-lookup
+       procedure
+       (arity 0 0 #t))
+     (gnome-thumbnail-factory-new
+       procedure
+       (arity 0 0 #t))
+     (gnome-thumbnail-factory-save-thumbnail
+       procedure
+       (arity 0 0 #t))
+     (gnome-thumbnail-has-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-thumbnail-is-valid
+       procedure
+       (arity 0 0 #t))
+     (gnome-thumbnail-md5 procedure (arity 0 0 #t))
+     (gnome-thumbnail-path-for-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-thumbnail-scale-down-pixbuf
+       procedure
+       (arity 0 0 #t))
+     (gnome-url-show-on-screen
+       procedure
+       (arity 2 0 #f))
+     (gnome-window-icon-init procedure (arity 0 0 #t))
+     (gnome-window-icon-set-default-from-file
+       procedure
+       (arity 0 0 #t))
+     (gnome-window-icon-set-from-default
+       procedure
+       (arity 0 0 #t))
+     (gnome-window-icon-set-from-file
+       procedure
+       (arity 0 0 #t))
+     (libgnomeui-module-info-get
+       procedure
+       (arity 0 0 #t)))))
