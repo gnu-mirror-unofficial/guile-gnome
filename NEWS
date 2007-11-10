@@ -1,7 +1,7 @@
 guile-gnome-cairo NEWS --- history of user-visible changes.
 Copyright (C) 2007 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 25 Sep 2007.
+Last updated 10 Nov 2007.
 
 
 guile-gnome-cairo integrates the Guile-Cairo bindings with G-Wrap,
@@ -10,6 +10,12 @@ wrap Cairo types. It is not a cairo wrapper in and of itself.
 
 This file documents the user-visible changes in
 guile-gnome-cairo only.
+
+
+guile-gnome-cairo 2.15.95 - Andy Wingo, 2007-11-10
+==================================================
+
+* New platform release, no change.
 
 
 guile-gnome-cairo 2.15.94 - Andy Wingo, 2007-09-25
