@@ -1,5 +1,9 @@
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.95 ==
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
 	* gnome/canvas.scm: Fix some code that assumed different
 	strategies for exporting generics.
 
