@@ -1,5 +1,9 @@
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.95 ==
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
 	* tests/Makefile.am:
 	* tests/wrapset.api:
 	* tests/wrapset.scm: Add API regression test suite.
