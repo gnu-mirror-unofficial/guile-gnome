@@ -1,0 +1,748 @@
+(module-api
+  (version 1 0)
+  ((gnome gobject generics)
+   (uses-interfaces)
+   (typed-exports
+     (block generic (<gtype-instance> <top>))
+     (connect
+       generic
+       <top>
+       (<gtype-instance> <symbol> <procedure>))
+     (connect-after
+       generic
+       (<gtype-instance> <symbol> <procedure>))
+     (connected? generic (<gtype-instance> <top>))
+     (create-signal
+       generic
+       (<gtype-class> <symbol> <top> <top>))
+     (disconnect generic (<gtype-instance> <top>))
+     (emit generic
+           (<gtype-instance> <symbol> . <top>))
+     (find-property generic (<gtype-class> <symbol>))
+     (get generic (<gobject> <symbol>))
+     (get-properties generic (<gtype-class>))
+     (get-property-names generic (<gtype-class>))
+     (get-signals generic (<gtype-class>))
+     (invoke generic (<gclosure> . <top>))
+     (set generic (<gobject> <symbol> <top>))
+     (unblock generic (<gtype-instance> <top>))))
+  ((gnome gw generics)
+   (uses-interfaces (gnome gobject generics))
+   (typed-exports))
+  ((gnome gw gnome-vfs)
+   (uses-interfaces (gnome gw generics))
+   (typed-exports
+     (<char**> <gw:wct>)
+     (<g-destroy-notify> <gw:wct>)
+     (<g-hash-table**> <gw:wct>)
+     (<gconstpointer> <gw:wct>)
+     (<gnome-vfs-address**> <gw:wct>)
+     (<gnome-vfs-address*> <gw:wct>)
+     (<gnome-vfs-async-find-directory-callback>
+       <gw:wct>)
+     (<gnome-vfs-async-get-file-info-callback>
+       <gw:wct>)
+     (<gnome-vfs-async-handle**> <gw:wct>)
+     (<gnome-vfs-async-xfer-progress-callback>
+       <gw:wct>)
+     (<gnome-vfs-cancellation*> <gw:wct>)
+     (<gnome-vfs-context*> <gw:wct>)
+     (<gnome-vfs-directory-handle*> <gw:wct>)
+     (<gnome-vfs-directory-visit-func> <gw:wct>)
+     (<gnome-vfs-file-info*> <gw:wct>)
+     (<gnome-vfs-file-size*> <gw:wct>)
+     (<gnome-vfs-find-directory-result*> <gw:wct>)
+     (<gnome-vfs-get-file-info-result*> <gw:wct>)
+     (<gnome-vfs-handle**> <gw:wct>)
+     (<gnome-vfs-handle*> <gw:wct>)
+     (<gnome-vfs-mime-application*> <gw:wct>)
+     (<gnome-vfs-module-callback> <gw:wct>)
+     (<gnome-vfs-monitor-callback> <gw:wct>)
+     (<gnome-vfs-monitor-handle**> <gw:wct>)
+     (<gnome-vfs-monitor-handle*> <gw:wct>)
+     (<gnome-vfs-resolve-handle**> <gw:wct>)
+     (<gnome-vfs-resolve-handle*> <gw:wct>)
+     (<gnome-vfs-toplevel-uri*> <gw:wct>)
+     (<gnome-vfs-volume-op-callback> <gw:wct>)
+     (<gnome-vfs-xfer-progress-callback> <gw:wct>)
+     (<gnome-vfsdnssd-browse-callback> <gw:wct>)
+     (<gnome-vfsdnssd-browse-handle**> <gw:wct>)
+     (<gnome-vfsdnssd-browse-handle*> <gw:wct>)
+     (<gnome-vfsdnssd-resolve-callback> <gw:wct>)
+     (<gnome-vfsdnssd-resolve-handle**> <gw:wct>)
+     (<gnome-vfsdnssd-resolve-handle*> <gw:wct>)
+     (<gnome-vfsdnssd-service**> <gw:wct>)
+     (<gnome-vfsmime-monitor*> <gw:wct>)
+     (<gnome-vfsuri**> <gw:wct>)
+     (<gnome-vfsuri*> <gw:wct>)
+     (<gpointer> <gw:wct>)
+     (gnome-vfs-ace-add-perm procedure (arity 0 0 #t))
+     (gnome-vfs-ace-check-perm
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-ace-copy-perms
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-ace-del-perm procedure (arity 0 0 #t))
+     (gnome-vfs-ace-equal procedure (arity 0 0 #t))
+     (gnome-vfs-ace-get-id procedure (arity 0 0 #t))
+     (gnome-vfs-ace-get-inherit
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-ace-get-kind procedure (arity 0 0 #t))
+     (gnome-vfs-ace-get-negative
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-ace-new procedure (arity 2 1 #f))
+     (gnome-vfs-ace-set-id procedure (arity 0 0 #t))
+     (gnome-vfs-ace-set-inherit
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-ace-set-kind procedure (arity 0 0 #t))
+     (gnome-vfs-ace-set-negative
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-acl-clear procedure (arity 0 0 #t))
+     (gnome-vfs-acl-get-ace-list
+       procedure
+       (arity 1 0 #f))
+     (gnome-vfs-acl-kind-to-string
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-acl-new procedure (arity 0 0 #t))
+     (gnome-vfs-acl-perm-to-string
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-acl-set procedure (arity 0 0 #t))
+     (gnome-vfs-acl-unset procedure (arity 0 0 #t))
+     (gnome-vfs-address-dup procedure (arity 0 0 #t))
+     (gnome-vfs-address-equal
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-address-get-family-type
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-address-get-ipv4
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-address-match
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-address-new-from-ipv4
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-address-new-from-string
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-address-to-string
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-async-find-directory
+       procedure
+       (arity 9 0 #f))
+     (gnome-vfs-async-get-file-info
+       procedure
+       (arity 6 0 #f))
+     (gnome-vfs-async-xfer procedure (arity 9 0 #t))
+     (gnome-vfs-cancellation-ack
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-cancellation-cancel
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-cancellation-check
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-cancellation-destroy
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-cancellation-get-fd
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-cancellation-new
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-check-same-fs
+       procedure
+       (arity 2 0 #f))
+     (gnome-vfs-check-same-fs-uris
+       procedure
+       (arity 2 0 #f))
+     (gnome-vfs-close procedure (arity 0 0 #t))
+     (gnome-vfs-connect-to-server
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-context-check-cancellation-current
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-context-get-cancellation
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-context-new procedure (arity 0 0 #t))
+     (gnome-vfs-context-peek-current
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-create procedure (arity 0 0 #t))
+     (gnome-vfs-create-symbolic-link
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-create-uri procedure (arity 0 0 #t))
+     (gnome-vfs-directory-close
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-directory-open
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-directory-open-from-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-directory-read-next
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-directory-visit
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-directory-visit-files
+       procedure
+       (arity 6 0 #f))
+     (gnome-vfs-directory-visit-files-at-uri
+       procedure
+       (arity 6 0 #f))
+     (gnome-vfs-directory-visit-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-dns-sd-browse
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-dns-sd-browse-sync
+       procedure
+       (arity 4 0 #f))
+     (gnome-vfs-dns-sd-cancel-resolve
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-dns-sd-resolve
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-dns-sd-resolve-sync
+       procedure
+       (arity 7 0 #f))
+     (gnome-vfs-dns-sd-stop-browse
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-drive-compare
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-drive-eject procedure (arity 0 0 #t))
+     (gnome-vfs-drive-get-activation-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-drive-get-device-path
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-drive-get-device-type
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-drive-get-display-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-drive-get-hal-udi
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-drive-get-icon
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-drive-get-id procedure (arity 0 0 #t))
+     (gnome-vfs-drive-get-mounted-volumes
+       procedure
+       (arity 1 0 #f))
+     (gnome-vfs-drive-is-connected
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-drive-is-mounted
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-drive-is-user-visible
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-drive-mount procedure (arity 0 0 #t))
+     (gnome-vfs-drive-needs-eject
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-drive-unmount
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-escape-host-and-path-string
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-escape-path-string
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-escape-set procedure (arity 0 0 #t))
+     (gnome-vfs-escape-slashes
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-escape-string
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-expand-initial-tilde
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-file-control procedure (arity 0 0 #t))
+     (gnome-vfs-file-info-clear
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-file-info-dup
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-file-info-get-mime-type
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-file-info-matches
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-file-info-new
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-find-directory
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-find-directory-result-dup
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-forget-cache procedure (arity 0 0 #t))
+     (gnome-vfs-format-file-size-for-display
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-format-uri-for-display
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-default-browse-domains
+       procedure
+       (arity 0 0 #f))
+     (gnome-vfs-get-file-info
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-file-info-from-handle
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-file-info-result-dup
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-file-info-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-file-mime-type
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-file-mime-type-fast
+       procedure
+       (arity 1 1 #f))
+     (gnome-vfs-get-local-path-from-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-mime-type
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-mime-type-common
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-mime-type-for-data
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-mime-type-for-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-mime-type-for-name-and-data
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-mime-type-from-file-data
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-mime-type-from-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-slow-mime-type
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-supertype-from-mime-type
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-uri-from-local-path
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-uri-scheme
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-volume-free-space
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-get-volume-monitor
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-icon-path-from-filename
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-init procedure (arity 0 0 #t))
+     (gnome-vfs-initialized procedure (arity 0 0 #t))
+     (gnome-vfs-is-executable-command-string
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-is-primary-thread
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-make-directory
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-make-directory-for-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-make-path-name-canonical
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-make-uri-canonical
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-make-uri-canonical-strip-fragment
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-make-uri-from-input
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-make-uri-from-input-with-dirs
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-make-uri-from-input-with-trailing-ws
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-make-uri-from-shell-arg
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-application-equal
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-application-get-binary-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-application-get-desktop-file-path
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-application-get-desktop-id
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-application-get-exec
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-application-get-generic-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-application-get-icon
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-application-get-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-application-get-startup-wm-class
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-application-launch
+       procedure
+       (arity 2 0 #f))
+     (gnome-vfs-mime-application-launch-with-env
+       procedure
+       (arity 3 0 #f))
+     (gnome-vfs-mime-application-new-from-desktop-id
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-application-requires-terminal
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-application-supports-startup-notification
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-application-supports-uris
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-can-be-executable
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-get-all-applications
+       procedure
+       (arity 1 0 #f))
+     (gnome-vfs-mime-get-all-applications-for-uri
+       procedure
+       (arity 2 0 #f))
+     (gnome-vfs-mime-get-all-components
+       procedure
+       (arity 1 0 #f))
+     (gnome-vfs-mime-get-default-application
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-get-default-application-for-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-get-description
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-info-cache-reload
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-monitor-get
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-reload procedure (arity 0 0 #t))
+     (gnome-vfs-mime-shutdown
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-type-from-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-type-from-name-or-default
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-type-get-equivalence
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-type-is-equal
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-mime-type-is-supertype
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-module-callback-pop
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-module-callback-push
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-module-callback-set-default
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-monitor-add procedure (arity 0 0 #t))
+     (gnome-vfs-monitor-cancel
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-move procedure (arity 0 0 #t))
+     (gnome-vfs-move-uri procedure (arity 0 0 #t))
+     (gnome-vfs-open procedure (arity 0 0 #t))
+     (gnome-vfs-open-fd procedure (arity 0 0 #t))
+     (gnome-vfs-open-uri procedure (arity 0 0 #t))
+     (gnome-vfs-read procedure (arity 0 0 #t))
+     (gnome-vfs-read-entire-file
+       procedure
+       (arity 2 0 #f))
+     (gnome-vfs-remove-directory
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-remove-directory-from-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-resolve procedure (arity 0 0 #t))
+     (gnome-vfs-resolve-next-address
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-resolve-reset-to-beginning
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-result-from-errno
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-result-from-errno-code
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-result-from-h-errno
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-result-from-h-errno-val
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-result-to-string
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-seek procedure (arity 0 0 #t))
+     (gnome-vfs-set-file-info
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-set-file-info-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-shutdown procedure (arity 0 0 #t))
+     (gnome-vfs-tell procedure (arity 0 0 #t))
+     (gnome-vfs-truncate procedure (arity 0 0 #t))
+     (gnome-vfs-truncate-handle
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-truncate-uri procedure (arity 0 0 #t))
+     (gnome-vfs-unescape-string
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-unescape-string-for-display
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-unlink procedure (arity 0 0 #t))
+     (gnome-vfs-unlink-from-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-append-file-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-append-path
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-append-string
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-dup procedure (arity 0 0 #t))
+     (gnome-vfs-uri-equal procedure (arity 0 0 #t))
+     (gnome-vfs-uri-exists procedure (arity 0 0 #t))
+     (gnome-vfs-uri-extract-dirname
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-extract-short-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-extract-short-path-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-get-fragment-identifier
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-get-host-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-get-host-port
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-get-parent
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-get-password
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-get-path procedure (arity 0 0 #t))
+     (gnome-vfs-uri-get-scheme
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-get-toplevel
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-get-user-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-has-parent
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-hash procedure (arity 0 0 #t))
+     (gnome-vfs-uri-hequal procedure (arity 0 0 #t))
+     (gnome-vfs-uri-is-local procedure (arity 0 0 #t))
+     (gnome-vfs-uri-is-parent
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-list-parse
+       procedure
+       (arity 1 0 #f))
+     (gnome-vfs-uri-make-full-from-relative
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-new procedure (arity 0 0 #t))
+     (gnome-vfs-uri-resolve-relative
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-resolve-symbolic-link
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-set-host-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-set-host-port
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-set-password
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-set-user-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uri-to-string
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-uris-match procedure (arity 0 0 #t))
+     (gnome-vfs-url-show procedure (arity 0 0 #t))
+     (gnome-vfs-url-show-with-env
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-compare
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-eject procedure (arity 0 0 #t))
+     (gnome-vfs-volume-get-activation-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-get-device-path
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-get-device-type
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-get-display-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-get-drive
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-get-filesystem-type
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-get-hal-udi
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-get-icon
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-get-id
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-get-volume-type
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-handles-trash
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-is-mounted
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-is-read-only
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-is-user-visible
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-monitor-get-connected-drives
+       procedure
+       (arity 1 0 #f))
+     (gnome-vfs-volume-monitor-get-drive-by-id
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-monitor-get-mounted-volumes
+       procedure
+       (arity 1 0 #f))
+     (gnome-vfs-volume-monitor-get-volume-by-id
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-monitor-get-volume-for-path
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-volume-unmount
+       procedure
+       (arity 0 0 #t))
+     (gnome-vfs-write procedure (arity 0 0 #t))
+     (gnome-vfs-xfer-delete-list
+       procedure
+       (arity 5 0 #f))
+     (gnome-vfs-xfer-uri procedure (arity 0 0 #t))
+     (gnome-vfs-xfer-uri-list
+       procedure
+       (arity 7 0 #f))
+     (port->handle procedure (arity 0 0 #t))))
+  ((gnome vfs)
+   (uses-interfaces (gnome gw gnome-vfs))
+   (typed-exports)))
