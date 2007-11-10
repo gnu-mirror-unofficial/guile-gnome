@@ -104,7 +104,8 @@
   #:use-module (sxml xpath)
   #:use-module (sxml transform)
   #:use-module (ice-9 regex)
-  #:use-module ((srfi srfi-1) #:select (append-map))
+  #:use-module ((srfi srfi-1) #:select (append-map
+                                        lset-difference))
   #:use-module (srfi srfi-13)
 
   #:use-module (texinfo)
@@ -120,7 +121,8 @@
   #:use-module (gnome gobject utils)
 
   #:export (gtk-doc->texi-stubs
-            gtk-doc->texi-defuns))
+            gtk-doc->texi-defuns
+            check-documentation-coverage))
 
 (define (attr-ref attrs name . default)
   (or (and=> (assq name (cdr attrs)) cadr)
@@ -711,3 +713,40 @@ procedures, e.g. @code{(cairo)}."
            (lambda ()
              (display docs)))))
      files)))
+
+(define (extract-defs stexi)
+  (let ((commands (fold (lambda (def rest)
+                          (if (string-prefix? "def" (symbol->string (car def)))
+                              (cons (car def) rest)
+                              rest))
+                        '() texi-command-specs)))
+    (fold (lambda (x rest)
+            (if (and (pair? x) (memq (car x) commands))
+                (cons x rest)
+                rest))
+          '() stexi)))
+
+(define (check-documentation-coverage modules texi)
+  "Check the coverage of generated documentation.
+
+@var{modules} is a list of module names, and @var{texi} is a path to
+a texinfo file. The set of exports of @var{modules} is checked against
+the set of procedures defined in @var{texi}, resulting in a calculation
+of documentation coverage, and the output of any missing documentation
+to the current output port."
+  (let* ((defs (extract-defs
+                (call-with-input-file texi texi->stexi)))
+         (def-names (map def-name defs))
+         (exports (append-map
+                   (lambda (mod)
+                     (module-map (lambda (k v) k)
+                                 (resolve-interface mod)))
+                   modules))
+         (undocumented (lset-difference eq? exports def-names)))
+    (format #t "~A symbols exported\n" (length exports))
+    (format #t "~A symbols documented\n" (length def-names))
+    (format #t "~A symbols undocumented\n" (length undocumented))
+    (for-each
+     (lambda (sym)
+       (format #t "  ~A\n" sym))
+     undocumented)))

@@ -1,3 +1,11 @@
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gtk-doc.scm (extract-defs)
+	(check-documentation-coverage): New export,
+	check-documentation-coverage, which looks at a texinfo file and a
+	set of modules to determine which exports of the modules are
+	undocumented.
+
 2007-11-01  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gtk-doc.scm (gobject-class-stexi-docs): Put
