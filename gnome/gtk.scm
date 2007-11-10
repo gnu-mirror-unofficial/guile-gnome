@@ -141,15 +141,7 @@
 
 (use-modules (gnome gw support modules))
 
-;; re-export everything you need to have a nice gtk session...
-
-(re-export-modules (gnome glib)
-                   (gnome gobject)
-                   (gnome gobject generics)
-                   (gnome gw atk)
-                   (gnome gw pango)
-                   (gnome gw gdk)
-                   (gnome gw gtk)
-                   (oop goops))
+(re-export-modules (gnome gw gdk)
+                   (gnome gw gtk))
 
 (progress "]\n")

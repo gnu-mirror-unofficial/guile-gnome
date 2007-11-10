@@ -1,0 +1,1 @@
+SUBDIRS=gdk gtk

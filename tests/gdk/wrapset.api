@@ -1,0 +1,2426 @@
+(module-api
+  (version 1 0)
+  ((gnome gobject generics)
+   (uses-interfaces)
+   (typed-exports
+     (block generic (<gtype-instance> <top>))
+     (connect
+       generic
+       <top>
+       (<gtype-instance> <symbol> <procedure>))
+     (connect-after
+       generic
+       (<gtype-instance> <symbol> <procedure>))
+     (connected? generic (<gtype-instance> <top>))
+     (create-signal
+       generic
+       (<gtype-class> <symbol> <top> <top>))
+     (disconnect generic (<gtype-instance> <top>))
+     (emit generic
+           (<gtype-instance> <symbol> . <top>))
+     (find-property generic (<gtype-class> <symbol>))
+     (get generic (<gobject> <symbol>))
+     (get-properties generic (<gtype-class>))
+     (get-property-names generic (<gtype-class>))
+     (get-signals generic (<gtype-class>))
+     (invoke generic (<gclosure> . <top>))
+     (set generic (<gobject> <symbol> <top>))
+     (unblock generic (<gtype-instance> <top>))))
+  ((gnome gtk gdk-event)
+   (uses-interfaces)
+   (typed-exports
+     (gdk-event-button:button
+       procedure
+       (arity 1 0 #f))
+     (gdk-event-button:modifiers
+       procedure
+       (arity 1 0 #f))
+     (gdk-event-button:time procedure (arity 1 0 #f))
+     (gdk-event-button:x procedure (arity 1 0 #f))
+     (gdk-event-button:x-root
+       procedure
+       (arity 1 0 #f))
+     (gdk-event-button:y procedure (arity 1 0 #f))
+     (gdk-event-button:y-root
+       procedure
+       (arity 1 0 #f))
+     (gdk-event-expose:area procedure (arity 1 0 #f))
+     (gdk-event-key:keyval procedure (arity 1 0 #f))
+     (gdk-event-key:modifiers
+       procedure
+       (arity 1 0 #f))
+     (gdk-event-motion:modifiers
+       procedure
+       (arity 1 0 #f))
+     (gdk-event-motion:x procedure (arity 1 0 #f))
+     (gdk-event-motion:y procedure (arity 1 0 #f))
+     (gdk-event-selection:selection
+       procedure
+       (arity 1 0 #f))
+     (gdk-event-window-state:changed-mask
+       procedure
+       (arity 1 0 #f))
+     (gdk-event-window-state:new-window-state
+       procedure
+       (arity 1 0 #f))
+     (gdk-event:type procedure (arity 1 0 #f))
+     (gdk:0 <integer>)
+     (gdk:1 <integer>)
+     (gdk:2 <integer>)
+     (gdk:3 <integer>)
+     (gdk:3270-AltCursor <integer>)
+     (gdk:3270-Attn <integer>)
+     (gdk:3270-BackTab <integer>)
+     (gdk:3270-ChangeScreen <integer>)
+     (gdk:3270-Copy <integer>)
+     (gdk:3270-CursorBlink <integer>)
+     (gdk:3270-CursorSelect <integer>)
+     (gdk:3270-DeleteWord <integer>)
+     (gdk:3270-Duplicate <integer>)
+     (gdk:3270-Enter <integer>)
+     (gdk:3270-EraseEOF <integer>)
+     (gdk:3270-EraseInput <integer>)
+     (gdk:3270-ExSelect <integer>)
+     (gdk:3270-FieldMark <integer>)
+     (gdk:3270-Ident <integer>)
+     (gdk:3270-Jump <integer>)
+     (gdk:3270-KeyClick <integer>)
+     (gdk:3270-Left2 <integer>)
+     (gdk:3270-PA1 <integer>)
+     (gdk:3270-PA2 <integer>)
+     (gdk:3270-PA3 <integer>)
+     (gdk:3270-Play <integer>)
+     (gdk:3270-PrintScreen <integer>)
+     (gdk:3270-Quit <integer>)
+     (gdk:3270-Record <integer>)
+     (gdk:3270-Reset <integer>)
+     (gdk:3270-Right2 <integer>)
+     (gdk:3270-Rule <integer>)
+     (gdk:3270-Setup <integer>)
+     (gdk:3270-Test <integer>)
+     (gdk:4 <integer>)
+     (gdk:5 <integer>)
+     (gdk:6 <integer>)
+     (gdk:7 <integer>)
+     (gdk:8 <integer>)
+     (gdk:9 <integer>)
+     (gdk:A <integer>)
+     (gdk:AE <integer>)
+     (gdk:Aacute <integer>)
+     (gdk:Abreve <integer>)
+     (gdk:AccessX-Enable <integer>)
+     (gdk:AccessX-Feedback-Enable <integer>)
+     (gdk:Acircumflex <integer>)
+     (gdk:Adiaeresis <integer>)
+     (gdk:Agrave <integer>)
+     (gdk:Alt-L <integer>)
+     (gdk:Alt-R <integer>)
+     (gdk:Amacron <integer>)
+     (gdk:Aogonek <integer>)
+     (gdk:Arabic-ain <integer>)
+     (gdk:Arabic-alef <integer>)
+     (gdk:Arabic-alefmaksura <integer>)
+     (gdk:Arabic-beh <integer>)
+     (gdk:Arabic-comma <integer>)
+     (gdk:Arabic-dad <integer>)
+     (gdk:Arabic-dal <integer>)
+     (gdk:Arabic-damma <integer>)
+     (gdk:Arabic-dammatan <integer>)
+     (gdk:Arabic-fatha <integer>)
+     (gdk:Arabic-fathatan <integer>)
+     (gdk:Arabic-feh <integer>)
+     (gdk:Arabic-ghain <integer>)
+     (gdk:Arabic-ha <integer>)
+     (gdk:Arabic-hah <integer>)
+     (gdk:Arabic-hamza <integer>)
+     (gdk:Arabic-hamzaonalef <integer>)
+     (gdk:Arabic-hamzaonwaw <integer>)
+     (gdk:Arabic-hamzaonyeh <integer>)
+     (gdk:Arabic-hamzaunderalef <integer>)
+     (gdk:Arabic-heh <integer>)
+     (gdk:Arabic-jeem <integer>)
+     (gdk:Arabic-kaf <integer>)
+     (gdk:Arabic-kasra <integer>)
+     (gdk:Arabic-kasratan <integer>)
+     (gdk:Arabic-khah <integer>)
+     (gdk:Arabic-lam <integer>)
+     (gdk:Arabic-maddaonalef <integer>)
+     (gdk:Arabic-meem <integer>)
+     (gdk:Arabic-noon <integer>)
+     (gdk:Arabic-qaf <integer>)
+     (gdk:Arabic-question-mark <integer>)
+     (gdk:Arabic-ra <integer>)
+     (gdk:Arabic-sad <integer>)
+     (gdk:Arabic-seen <integer>)
+     (gdk:Arabic-semicolon <integer>)
+     (gdk:Arabic-shadda <integer>)
+     (gdk:Arabic-sheen <integer>)
+     (gdk:Arabic-sukun <integer>)
+     (gdk:Arabic-switch <integer>)
+     (gdk:Arabic-tah <integer>)
+     (gdk:Arabic-tatweel <integer>)
+     (gdk:Arabic-teh <integer>)
+     (gdk:Arabic-tehmarbuta <integer>)
+     (gdk:Arabic-thal <integer>)
+     (gdk:Arabic-theh <integer>)
+     (gdk:Arabic-waw <integer>)
+     (gdk:Arabic-yeh <integer>)
+     (gdk:Arabic-zah <integer>)
+     (gdk:Arabic-zain <integer>)
+     (gdk:Aring <integer>)
+     (gdk:Atilde <integer>)
+     (gdk:AudibleBell-Enable <integer>)
+     (gdk:B <integer>)
+     (gdk:BackSpace <integer>)
+     (gdk:Begin <integer>)
+     (gdk:BounceKeys-Enable <integer>)
+     (gdk:Break <integer>)
+     (gdk:Byelorussian-SHORTU <integer>)
+     (gdk:Byelorussian-shortu <integer>)
+     (gdk:C <integer>)
+     (gdk:Cabovedot <integer>)
+     (gdk:Cacute <integer>)
+     (gdk:Cancel <integer>)
+     (gdk:Caps-Lock <integer>)
+     (gdk:Ccaron <integer>)
+     (gdk:Ccedilla <integer>)
+     (gdk:Ccircumflex <integer>)
+     (gdk:Clear <integer>)
+     (gdk:Codeinput <integer>)
+     (gdk:ColonSign <integer>)
+     (gdk:Control-L <integer>)
+     (gdk:Control-R <integer>)
+     (gdk:CruzeiroSign <integer>)
+     (gdk:Cyrillic-A <integer>)
+     (gdk:Cyrillic-BE <integer>)
+     (gdk:Cyrillic-CHE <integer>)
+     (gdk:Cyrillic-DE <integer>)
+     (gdk:Cyrillic-DZHE <integer>)
+     (gdk:Cyrillic-E <integer>)
+     (gdk:Cyrillic-EF <integer>)
+     (gdk:Cyrillic-EL <integer>)
+     (gdk:Cyrillic-EM <integer>)
+     (gdk:Cyrillic-EN <integer>)
+     (gdk:Cyrillic-ER <integer>)
+     (gdk:Cyrillic-ES <integer>)
+     (gdk:Cyrillic-GHE <integer>)
+     (gdk:Cyrillic-HA <integer>)
+     (gdk:Cyrillic-HARDSIGN <integer>)
+     (gdk:Cyrillic-I <integer>)
+     (gdk:Cyrillic-IE <integer>)
+     (gdk:Cyrillic-IO <integer>)
+     (gdk:Cyrillic-JE <integer>)
+     (gdk:Cyrillic-KA <integer>)
+     (gdk:Cyrillic-LJE <integer>)
+     (gdk:Cyrillic-NJE <integer>)
+     (gdk:Cyrillic-O <integer>)
+     (gdk:Cyrillic-PE <integer>)
+     (gdk:Cyrillic-SHA <integer>)
+     (gdk:Cyrillic-SHCHA <integer>)
+     (gdk:Cyrillic-SHORTI <integer>)
+     (gdk:Cyrillic-SOFTSIGN <integer>)
+     (gdk:Cyrillic-TE <integer>)
+     (gdk:Cyrillic-TSE <integer>)
+     (gdk:Cyrillic-U <integer>)
+     (gdk:Cyrillic-VE <integer>)
+     (gdk:Cyrillic-YA <integer>)
+     (gdk:Cyrillic-YERU <integer>)
+     (gdk:Cyrillic-YU <integer>)
+     (gdk:Cyrillic-ZE <integer>)
+     (gdk:Cyrillic-ZHE <integer>)
+     (gdk:Cyrillic-a <integer>)
+     (gdk:Cyrillic-be <integer>)
+     (gdk:Cyrillic-che <integer>)
+     (gdk:Cyrillic-de <integer>)
+     (gdk:Cyrillic-dzhe <integer>)
+     (gdk:Cyrillic-e <integer>)
+     (gdk:Cyrillic-ef <integer>)
+     (gdk:Cyrillic-el <integer>)
+     (gdk:Cyrillic-em <integer>)
+     (gdk:Cyrillic-en <integer>)
+     (gdk:Cyrillic-er <integer>)
+     (gdk:Cyrillic-es <integer>)
+     (gdk:Cyrillic-ghe <integer>)
+     (gdk:Cyrillic-ha <integer>)
+     (gdk:Cyrillic-hardsign <integer>)
+     (gdk:Cyrillic-i <integer>)
+     (gdk:Cyrillic-ie <integer>)
+     (gdk:Cyrillic-io <integer>)
+     (gdk:Cyrillic-je <integer>)
+     (gdk:Cyrillic-ka <integer>)
+     (gdk:Cyrillic-lje <integer>)
+     (gdk:Cyrillic-nje <integer>)
+     (gdk:Cyrillic-o <integer>)
+     (gdk:Cyrillic-pe <integer>)
+     (gdk:Cyrillic-sha <integer>)
+     (gdk:Cyrillic-shcha <integer>)
+     (gdk:Cyrillic-shorti <integer>)
+     (gdk:Cyrillic-softsign <integer>)
+     (gdk:Cyrillic-te <integer>)
+     (gdk:Cyrillic-tse <integer>)
+     (gdk:Cyrillic-u <integer>)
+     (gdk:Cyrillic-ve <integer>)
+     (gdk:Cyrillic-ya <integer>)
+     (gdk:Cyrillic-yeru <integer>)
+     (gdk:Cyrillic-yu <integer>)
+     (gdk:Cyrillic-ze <integer>)
+     (gdk:Cyrillic-zhe <integer>)
+     (gdk:D <integer>)
+     (gdk:Dcaron <integer>)
+     (gdk:Delete <integer>)
+     (gdk:DongSign <integer>)
+     (gdk:Down <integer>)
+     (gdk:Dstroke <integer>)
+     (gdk:E <integer>)
+     (gdk:ENG <integer>)
+     (gdk:ETH <integer>)
+     (gdk:Eabovedot <integer>)
+     (gdk:Eacute <integer>)
+     (gdk:Ecaron <integer>)
+     (gdk:Ecircumflex <integer>)
+     (gdk:EcuSign <integer>)
+     (gdk:Ediaeresis <integer>)
+     (gdk:Egrave <integer>)
+     (gdk:Eisu-Shift <integer>)
+     (gdk:Eisu-toggle <integer>)
+     (gdk:Emacron <integer>)
+     (gdk:End <integer>)
+     (gdk:Eogonek <integer>)
+     (gdk:Escape <integer>)
+     (gdk:Eth <integer>)
+     (gdk:EuroSign <integer>)
+     (gdk:Execute <integer>)
+     (gdk:F <integer>)
+     (gdk:F1 <integer>)
+     (gdk:F10 <integer>)
+     (gdk:F11 <integer>)
+     (gdk:F12 <integer>)
+     (gdk:F13 <integer>)
+     (gdk:F14 <integer>)
+     (gdk:F15 <integer>)
+     (gdk:F16 <integer>)
+     (gdk:F17 <integer>)
+     (gdk:F18 <integer>)
+     (gdk:F19 <integer>)
+     (gdk:F2 <integer>)
+     (gdk:F20 <integer>)
+     (gdk:F21 <integer>)
+     (gdk:F22 <integer>)
+     (gdk:F23 <integer>)
+     (gdk:F24 <integer>)
+     (gdk:F25 <integer>)
+     (gdk:F26 <integer>)
+     (gdk:F27 <integer>)
+     (gdk:F28 <integer>)
+     (gdk:F29 <integer>)
+     (gdk:F3 <integer>)
+     (gdk:F30 <integer>)
+     (gdk:F31 <integer>)
+     (gdk:F32 <integer>)
+     (gdk:F33 <integer>)
+     (gdk:F34 <integer>)
+     (gdk:F35 <integer>)
+     (gdk:F4 <integer>)
+     (gdk:F5 <integer>)
+     (gdk:F6 <integer>)
+     (gdk:F7 <integer>)
+     (gdk:F8 <integer>)
+     (gdk:F9 <integer>)
+     (gdk:FFrancSign <integer>)
+     (gdk:Find <integer>)
+     (gdk:First-Virtual-Screen <integer>)
+     (gdk:G <integer>)
+     (gdk:Gabovedot <integer>)
+     (gdk:Gbreve <integer>)
+     (gdk:Gcedilla <integer>)
+     (gdk:Gcircumflex <integer>)
+     (gdk:Greek-ALPHA <integer>)
+     (gdk:Greek-ALPHAaccent <integer>)
+     (gdk:Greek-BETA <integer>)
+     (gdk:Greek-CHI <integer>)
+     (gdk:Greek-DELTA <integer>)
+     (gdk:Greek-EPSILON <integer>)
+     (gdk:Greek-EPSILONaccent <integer>)
+     (gdk:Greek-ETA <integer>)
+     (gdk:Greek-ETAaccent <integer>)
+     (gdk:Greek-GAMMA <integer>)
+     (gdk:Greek-IOTA <integer>)
+     (gdk:Greek-IOTAaccent <integer>)
+     (gdk:Greek-IOTAdiaeresis <integer>)
+     (gdk:Greek-KAPPA <integer>)
+     (gdk:Greek-LAMBDA <integer>)
+     (gdk:Greek-LAMDA <integer>)
+     (gdk:Greek-MU <integer>)
+     (gdk:Greek-NU <integer>)
+     (gdk:Greek-OMEGA <integer>)
+     (gdk:Greek-OMEGAaccent <integer>)
+     (gdk:Greek-OMICRON <integer>)
+     (gdk:Greek-OMICRONaccent <integer>)
+     (gdk:Greek-PHI <integer>)
+     (gdk:Greek-PI <integer>)
+     (gdk:Greek-PSI <integer>)
+     (gdk:Greek-RHO <integer>)
+     (gdk:Greek-SIGMA <integer>)
+     (gdk:Greek-TAU <integer>)
+     (gdk:Greek-THETA <integer>)
+     (gdk:Greek-UPSILON <integer>)
+     (gdk:Greek-UPSILONaccent <integer>)
+     (gdk:Greek-UPSILONdieresis <integer>)
+     (gdk:Greek-XI <integer>)
+     (gdk:Greek-ZETA <integer>)
+     (gdk:Greek-accentdieresis <integer>)
+     (gdk:Greek-alpha <integer>)
+     (gdk:Greek-alphaaccent <integer>)
+     (gdk:Greek-beta <integer>)
+     (gdk:Greek-chi <integer>)
+     (gdk:Greek-delta <integer>)
+     (gdk:Greek-epsilon <integer>)
+     (gdk:Greek-epsilonaccent <integer>)
+     (gdk:Greek-eta <integer>)
+     (gdk:Greek-etaaccent <integer>)
+     (gdk:Greek-finalsmallsigma <integer>)
+     (gdk:Greek-gamma <integer>)
+     (gdk:Greek-horizbar <integer>)
+     (gdk:Greek-iota <integer>)
+     (gdk:Greek-iotaaccent <integer>)
+     (gdk:Greek-iotaaccentdieresis <integer>)
+     (gdk:Greek-iotadieresis <integer>)
+     (gdk:Greek-kappa <integer>)
+     (gdk:Greek-lambda <integer>)
+     (gdk:Greek-lamda <integer>)
+     (gdk:Greek-mu <integer>)
+     (gdk:Greek-nu <integer>)
+     (gdk:Greek-omega <integer>)
+     (gdk:Greek-omegaaccent <integer>)
+     (gdk:Greek-omicron <integer>)
+     (gdk:Greek-omicronaccent <integer>)
+     (gdk:Greek-phi <integer>)
+     (gdk:Greek-pi <integer>)
+     (gdk:Greek-psi <integer>)
+     (gdk:Greek-rho <integer>)
+     (gdk:Greek-sigma <integer>)
+     (gdk:Greek-switch <integer>)
+     (gdk:Greek-tau <integer>)
+     (gdk:Greek-theta <integer>)
+     (gdk:Greek-upsilon <integer>)
+     (gdk:Greek-upsilonaccent <integer>)
+     (gdk:Greek-upsilonaccentdieresis <integer>)
+     (gdk:Greek-upsilondieresis <integer>)
+     (gdk:Greek-xi <integer>)
+     (gdk:Greek-zeta <integer>)
+     (gdk:H <integer>)
+     (gdk:Hangul <integer>)
+     (gdk:Hangul-A <integer>)
+     (gdk:Hangul-AE <integer>)
+     (gdk:Hangul-AraeA <integer>)
+     (gdk:Hangul-AraeAE <integer>)
+     (gdk:Hangul-Banja <integer>)
+     (gdk:Hangul-Cieuc <integer>)
+     (gdk:Hangul-Codeinput <integer>)
+     (gdk:Hangul-Dikeud <integer>)
+     (gdk:Hangul-E <integer>)
+     (gdk:Hangul-EO <integer>)
+     (gdk:Hangul-EU <integer>)
+     (gdk:Hangul-End <integer>)
+     (gdk:Hangul-Hanja <integer>)
+     (gdk:Hangul-Hieuh <integer>)
+     (gdk:Hangul-I <integer>)
+     (gdk:Hangul-Ieung <integer>)
+     (gdk:Hangul-J-Cieuc <integer>)
+     (gdk:Hangul-J-Dikeud <integer>)
+     (gdk:Hangul-J-Hieuh <integer>)
+     (gdk:Hangul-J-Ieung <integer>)
+     (gdk:Hangul-J-Jieuj <integer>)
+     (gdk:Hangul-J-Khieuq <integer>)
+     (gdk:Hangul-J-Kiyeog <integer>)
+     (gdk:Hangul-J-KiyeogSios <integer>)
+     (gdk:Hangul-J-KkogjiDalrinIeung <integer>)
+     (gdk:Hangul-J-Mieum <integer>)
+     (gdk:Hangul-J-Nieun <integer>)
+     (gdk:Hangul-J-NieunHieuh <integer>)
+     (gdk:Hangul-J-NieunJieuj <integer>)
+     (gdk:Hangul-J-PanSios <integer>)
+     (gdk:Hangul-J-Phieuf <integer>)
+     (gdk:Hangul-J-Pieub <integer>)
+     (gdk:Hangul-J-PieubSios <integer>)
+     (gdk:Hangul-J-Rieul <integer>)
+     (gdk:Hangul-J-RieulHieuh <integer>)
+     (gdk:Hangul-J-RieulKiyeog <integer>)
+     (gdk:Hangul-J-RieulMieum <integer>)
+     (gdk:Hangul-J-RieulPhieuf <integer>)
+     (gdk:Hangul-J-RieulPieub <integer>)
+     (gdk:Hangul-J-RieulSios <integer>)
+     (gdk:Hangul-J-RieulTieut <integer>)
+     (gdk:Hangul-J-Sios <integer>)
+     (gdk:Hangul-J-SsangKiyeog <integer>)
+     (gdk:Hangul-J-SsangSios <integer>)
+     (gdk:Hangul-J-Tieut <integer>)
+     (gdk:Hangul-J-YeorinHieuh <integer>)
+     (gdk:Hangul-Jamo <integer>)
+     (gdk:Hangul-Jeonja <integer>)
+     (gdk:Hangul-Jieuj <integer>)
+     (gdk:Hangul-Khieuq <integer>)
+     (gdk:Hangul-Kiyeog <integer>)
+     (gdk:Hangul-KiyeogSios <integer>)
+     (gdk:Hangul-KkogjiDalrinIeung <integer>)
+     (gdk:Hangul-Mieum <integer>)
+     (gdk:Hangul-MultipleCandidate <integer>)
+     (gdk:Hangul-Nieun <integer>)
+     (gdk:Hangul-NieunHieuh <integer>)
+     (gdk:Hangul-NieunJieuj <integer>)
+     (gdk:Hangul-O <integer>)
+     (gdk:Hangul-OE <integer>)
+     (gdk:Hangul-PanSios <integer>)
+     (gdk:Hangul-Phieuf <integer>)
+     (gdk:Hangul-Pieub <integer>)
+     (gdk:Hangul-PieubSios <integer>)
+     (gdk:Hangul-PostHanja <integer>)
+     (gdk:Hangul-PreHanja <integer>)
+     (gdk:Hangul-PreviousCandidate <integer>)
+     (gdk:Hangul-Rieul <integer>)
+     (gdk:Hangul-RieulHieuh <integer>)
+     (gdk:Hangul-RieulKiyeog <integer>)
+     (gdk:Hangul-RieulMieum <integer>)
+     (gdk:Hangul-RieulPhieuf <integer>)
+     (gdk:Hangul-RieulPieub <integer>)
+     (gdk:Hangul-RieulSios <integer>)
+     (gdk:Hangul-RieulTieut <integer>)
+     (gdk:Hangul-RieulYeorinHieuh <integer>)
+     (gdk:Hangul-Romaja <integer>)
+     (gdk:Hangul-SingleCandidate <integer>)
+     (gdk:Hangul-Sios <integer>)
+     (gdk:Hangul-Special <integer>)
+     (gdk:Hangul-SsangDikeud <integer>)
+     (gdk:Hangul-SsangJieuj <integer>)
+     (gdk:Hangul-SsangKiyeog <integer>)
+     (gdk:Hangul-SsangPieub <integer>)
+     (gdk:Hangul-SsangSios <integer>)
+     (gdk:Hangul-Start <integer>)
+     (gdk:Hangul-SunkyeongeumMieum <integer>)
+     (gdk:Hangul-SunkyeongeumPhieuf <integer>)
+     (gdk:Hangul-SunkyeongeumPieub <integer>)
+     (gdk:Hangul-Tieut <integer>)
+     (gdk:Hangul-U <integer>)
+     (gdk:Hangul-WA <integer>)
+     (gdk:Hangul-WAE <integer>)
+     (gdk:Hangul-WE <integer>)
+     (gdk:Hangul-WEO <integer>)
+     (gdk:Hangul-WI <integer>)
+     (gdk:Hangul-YA <integer>)
+     (gdk:Hangul-YAE <integer>)
+     (gdk:Hangul-YE <integer>)
+     (gdk:Hangul-YEO <integer>)
+     (gdk:Hangul-YI <integer>)
+     (gdk:Hangul-YO <integer>)
+     (gdk:Hangul-YU <integer>)
+     (gdk:Hangul-YeorinHieuh <integer>)
+     (gdk:Hangul-switch <integer>)
+     (gdk:Hankaku <integer>)
+     (gdk:Hcircumflex <integer>)
+     (gdk:Hebrew-switch <integer>)
+     (gdk:Help <integer>)
+     (gdk:Henkan <integer>)
+     (gdk:Henkan-Mode <integer>)
+     (gdk:Hiragana <integer>)
+     (gdk:Hiragana-Katakana <integer>)
+     (gdk:Home <integer>)
+     (gdk:Hstroke <integer>)
+     (gdk:Hyper-L <integer>)
+     (gdk:Hyper-R <integer>)
+     (gdk:I <integer>)
+     (gdk:ISO-Center-Object <integer>)
+     (gdk:ISO-Continuous-Underline <integer>)
+     (gdk:ISO-Discontinuous-Underline <integer>)
+     (gdk:ISO-Emphasize <integer>)
+     (gdk:ISO-Enter <integer>)
+     (gdk:ISO-Fast-Cursor-Down <integer>)
+     (gdk:ISO-Fast-Cursor-Left <integer>)
+     (gdk:ISO-Fast-Cursor-Right <integer>)
+     (gdk:ISO-Fast-Cursor-Up <integer>)
+     (gdk:ISO-First-Group <integer>)
+     (gdk:ISO-First-Group-Lock <integer>)
+     (gdk:ISO-Group-Latch <integer>)
+     (gdk:ISO-Group-Lock <integer>)
+     (gdk:ISO-Group-Shift <integer>)
+     (gdk:ISO-Last-Group <integer>)
+     (gdk:ISO-Last-Group-Lock <integer>)
+     (gdk:ISO-Left-Tab <integer>)
+     (gdk:ISO-Level2-Latch <integer>)
+     (gdk:ISO-Level3-Latch <integer>)
+     (gdk:ISO-Level3-Lock <integer>)
+     (gdk:ISO-Level3-Shift <integer>)
+     (gdk:ISO-Lock <integer>)
+     (gdk:ISO-Move-Line-Down <integer>)
+     (gdk:ISO-Move-Line-Up <integer>)
+     (gdk:ISO-Next-Group <integer>)
+     (gdk:ISO-Next-Group-Lock <integer>)
+     (gdk:ISO-Partial-Line-Down <integer>)
+     (gdk:ISO-Partial-Line-Up <integer>)
+     (gdk:ISO-Partial-Space-Left <integer>)
+     (gdk:ISO-Partial-Space-Right <integer>)
+     (gdk:ISO-Prev-Group <integer>)
+     (gdk:ISO-Prev-Group-Lock <integer>)
+     (gdk:ISO-Release-Both-Margins <integer>)
+     (gdk:ISO-Release-Margin-Left <integer>)
+     (gdk:ISO-Release-Margin-Right <integer>)
+     (gdk:ISO-Set-Margin-Left <integer>)
+     (gdk:ISO-Set-Margin-Right <integer>)
+     (gdk:Iabovedot <integer>)
+     (gdk:Iacute <integer>)
+     (gdk:Icircumflex <integer>)
+     (gdk:Idiaeresis <integer>)
+     (gdk:Igrave <integer>)
+     (gdk:Imacron <integer>)
+     (gdk:Insert <integer>)
+     (gdk:Iogonek <integer>)
+     (gdk:Itilde <integer>)
+     (gdk:J <integer>)
+     (gdk:Jcircumflex <integer>)
+     (gdk:K <integer>)
+     (gdk:KP-0 <integer>)
+     (gdk:KP-1 <integer>)
+     (gdk:KP-2 <integer>)
+     (gdk:KP-3 <integer>)
+     (gdk:KP-4 <integer>)
+     (gdk:KP-5 <integer>)
+     (gdk:KP-6 <integer>)
+     (gdk:KP-7 <integer>)
+     (gdk:KP-8 <integer>)
+     (gdk:KP-9 <integer>)
+     (gdk:KP-Add <integer>)
+     (gdk:KP-Begin <integer>)
+     (gdk:KP-Decimal <integer>)
+     (gdk:KP-Delete <integer>)
+     (gdk:KP-Divide <integer>)
+     (gdk:KP-Down <integer>)
+     (gdk:KP-End <integer>)
+     (gdk:KP-Enter <integer>)
+     (gdk:KP-Equal <integer>)
+     (gdk:KP-F1 <integer>)
+     (gdk:KP-F2 <integer>)
+     (gdk:KP-F3 <integer>)
+     (gdk:KP-F4 <integer>)
+     (gdk:KP-Home <integer>)
+     (gdk:KP-Insert <integer>)
+     (gdk:KP-Left <integer>)
+     (gdk:KP-Multiply <integer>)
+     (gdk:KP-Next <integer>)
+     (gdk:KP-Page-Down <integer>)
+     (gdk:KP-Page-Up <integer>)
+     (gdk:KP-Prior <integer>)
+     (gdk:KP-Right <integer>)
+     (gdk:KP-Separator <integer>)
+     (gdk:KP-Space <integer>)
+     (gdk:KP-Subtract <integer>)
+     (gdk:KP-Tab <integer>)
+     (gdk:KP-Up <integer>)
+     (gdk:Kana-Lock <integer>)
+     (gdk:Kana-Shift <integer>)
+     (gdk:Kanji <integer>)
+     (gdk:Kanji-Bangou <integer>)
+     (gdk:Katakana <integer>)
+     (gdk:Kcedilla <integer>)
+     (gdk:Korean-Won <integer>)
+     (gdk:L <integer>)
+     (gdk:L1 <integer>)
+     (gdk:L10 <integer>)
+     (gdk:L2 <integer>)
+     (gdk:L3 <integer>)
+     (gdk:L4 <integer>)
+     (gdk:L5 <integer>)
+     (gdk:L6 <integer>)
+     (gdk:L7 <integer>)
+     (gdk:L8 <integer>)
+     (gdk:L9 <integer>)
+     (gdk:Lacute <integer>)
+     (gdk:Last-Virtual-Screen <integer>)
+     (gdk:Lcaron <integer>)
+     (gdk:Lcedilla <integer>)
+     (gdk:Left <integer>)
+     (gdk:Linefeed <integer>)
+     (gdk:LiraSign <integer>)
+     (gdk:Lstroke <integer>)
+     (gdk:M <integer>)
+     (gdk:Macedonia-DSE <integer>)
+     (gdk:Macedonia-GJE <integer>)
+     (gdk:Macedonia-KJE <integer>)
+     (gdk:Macedonia-dse <integer>)
+     (gdk:Macedonia-gje <integer>)
+     (gdk:Macedonia-kje <integer>)
+     (gdk:Mae-Koho <integer>)
+     (gdk:Massyo <integer>)
+     (gdk:Menu <integer>)
+     (gdk:Meta-L <integer>)
+     (gdk:Meta-R <integer>)
+     (gdk:MillSign <integer>)
+     (gdk:Mode-switch <integer>)
+     (gdk:MouseKeys-Accel-Enable <integer>)
+     (gdk:MouseKeys-Enable <integer>)
+     (gdk:Muhenkan <integer>)
+     (gdk:Multi-key <integer>)
+     (gdk:MultipleCandidate <integer>)
+     (gdk:N <integer>)
+     (gdk:Nacute <integer>)
+     (gdk:NairaSign <integer>)
+     (gdk:Ncaron <integer>)
+     (gdk:Ncedilla <integer>)
+     (gdk:NewSheqelSign <integer>)
+     (gdk:Next <integer>)
+     (gdk:Next-Virtual-Screen <integer>)
+     (gdk:Ntilde <integer>)
+     (gdk:Num-Lock <integer>)
+     (gdk:O <integer>)
+     (gdk:OE <integer>)
+     (gdk:Oacute <integer>)
+     (gdk:Ocircumflex <integer>)
+     (gdk:Odiaeresis <integer>)
+     (gdk:Odoubleacute <integer>)
+     (gdk:Ograve <integer>)
+     (gdk:Omacron <integer>)
+     (gdk:Ooblique <integer>)
+     (gdk:Otilde <integer>)
+     (gdk:Overlay1-Enable <integer>)
+     (gdk:Overlay2-Enable <integer>)
+     (gdk:P <integer>)
+     (gdk:Page-Down <integer>)
+     (gdk:Page-Up <integer>)
+     (gdk:Pause <integer>)
+     (gdk:PesetaSign <integer>)
+     (gdk:Pointer-Accelerate <integer>)
+     (gdk:Pointer-Button-Dflt <integer>)
+     (gdk:Pointer-Button1 <integer>)
+     (gdk:Pointer-Button2 <integer>)
+     (gdk:Pointer-Button3 <integer>)
+     (gdk:Pointer-Button4 <integer>)
+     (gdk:Pointer-Button5 <integer>)
+     (gdk:Pointer-DblClick-Dflt <integer>)
+     (gdk:Pointer-DblClick1 <integer>)
+     (gdk:Pointer-DblClick2 <integer>)
+     (gdk:Pointer-DblClick3 <integer>)
+     (gdk:Pointer-DblClick4 <integer>)
+     (gdk:Pointer-DblClick5 <integer>)
+     (gdk:Pointer-DfltBtnNext <integer>)
+     (gdk:Pointer-DfltBtnPrev <integer>)
+     (gdk:Pointer-Down <integer>)
+     (gdk:Pointer-DownLeft <integer>)
+     (gdk:Pointer-DownRight <integer>)
+     (gdk:Pointer-Drag-Dflt <integer>)
+     (gdk:Pointer-Drag1 <integer>)
+     (gdk:Pointer-Drag2 <integer>)
+     (gdk:Pointer-Drag3 <integer>)
+     (gdk:Pointer-Drag4 <integer>)
+     (gdk:Pointer-Drag5 <integer>)
+     (gdk:Pointer-EnableKeys <integer>)
+     (gdk:Pointer-Left <integer>)
+     (gdk:Pointer-Right <integer>)
+     (gdk:Pointer-Up <integer>)
+     (gdk:Pointer-UpLeft <integer>)
+     (gdk:Pointer-UpRight <integer>)
+     (gdk:Prev-Virtual-Screen <integer>)
+     (gdk:PreviousCandidate <integer>)
+     (gdk:Print <integer>)
+     (gdk:Prior <integer>)
+     (gdk:Q <integer>)
+     (gdk:R <integer>)
+     (gdk:R1 <integer>)
+     (gdk:R10 <integer>)
+     (gdk:R11 <integer>)
+     (gdk:R12 <integer>)
+     (gdk:R13 <integer>)
+     (gdk:R14 <integer>)
+     (gdk:R15 <integer>)
+     (gdk:R2 <integer>)
+     (gdk:R3 <integer>)
+     (gdk:R4 <integer>)
+     (gdk:R5 <integer>)
+     (gdk:R6 <integer>)
+     (gdk:R7 <integer>)
+     (gdk:R8 <integer>)
+     (gdk:R9 <integer>)
+     (gdk:Racute <integer>)
+     (gdk:Rcaron <integer>)
+     (gdk:Rcedilla <integer>)
+     (gdk:Redo <integer>)
+     (gdk:RepeatKeys-Enable <integer>)
+     (gdk:Return <integer>)
+     (gdk:Right <integer>)
+     (gdk:Romaji <integer>)
+     (gdk:RupeeSign <integer>)
+     (gdk:S <integer>)
+     (gdk:Sacute <integer>)
+     (gdk:Scaron <integer>)
+     (gdk:Scedilla <integer>)
+     (gdk:Scircumflex <integer>)
+     (gdk:Scroll-Lock <integer>)
+     (gdk:Select <integer>)
+     (gdk:Serbian-DJE <integer>)
+     (gdk:Serbian-DZE <integer>)
+     (gdk:Serbian-JE <integer>)
+     (gdk:Serbian-LJE <integer>)
+     (gdk:Serbian-NJE <integer>)
+     (gdk:Serbian-TSHE <integer>)
+     (gdk:Serbian-dje <integer>)
+     (gdk:Serbian-dze <integer>)
+     (gdk:Serbian-je <integer>)
+     (gdk:Serbian-lje <integer>)
+     (gdk:Serbian-nje <integer>)
+     (gdk:Serbian-tshe <integer>)
+     (gdk:Shift-L <integer>)
+     (gdk:Shift-Lock <integer>)
+     (gdk:Shift-R <integer>)
+     (gdk:SingleCandidate <integer>)
+     (gdk:SlowKeys-Enable <integer>)
+     (gdk:StickyKeys-Enable <integer>)
+     (gdk:Super-L <integer>)
+     (gdk:Super-R <integer>)
+     (gdk:Sys-Req <integer>)
+     (gdk:T <integer>)
+     (gdk:THORN <integer>)
+     (gdk:Tab <integer>)
+     (gdk:Tcaron <integer>)
+     (gdk:Tcedilla <integer>)
+     (gdk:Terminate-Server <integer>)
+     (gdk:Thai-baht <integer>)
+     (gdk:Thai-bobaimai <integer>)
+     (gdk:Thai-chochan <integer>)
+     (gdk:Thai-chochang <integer>)
+     (gdk:Thai-choching <integer>)
+     (gdk:Thai-chochoe <integer>)
+     (gdk:Thai-dochada <integer>)
+     (gdk:Thai-dodek <integer>)
+     (gdk:Thai-fofa <integer>)
+     (gdk:Thai-fofan <integer>)
+     (gdk:Thai-hohip <integer>)
+     (gdk:Thai-honokhuk <integer>)
+     (gdk:Thai-khokhai <integer>)
+     (gdk:Thai-khokhon <integer>)
+     (gdk:Thai-khokhuat <integer>)
+     (gdk:Thai-khokhwai <integer>)
+     (gdk:Thai-khorakhang <integer>)
+     (gdk:Thai-kokai <integer>)
+     (gdk:Thai-lakkhangyao <integer>)
+     (gdk:Thai-lekchet <integer>)
+     (gdk:Thai-lekha <integer>)
+     (gdk:Thai-lekhok <integer>)
+     (gdk:Thai-lekkao <integer>)
+     (gdk:Thai-leknung <integer>)
+     (gdk:Thai-lekpaet <integer>)
+     (gdk:Thai-leksam <integer>)
+     (gdk:Thai-leksi <integer>)
+     (gdk:Thai-leksong <integer>)
+     (gdk:Thai-leksun <integer>)
+     (gdk:Thai-lochula <integer>)
+     (gdk:Thai-loling <integer>)
+     (gdk:Thai-lu <integer>)
+     (gdk:Thai-maichattawa <integer>)
+     (gdk:Thai-maiek <integer>)
+     (gdk:Thai-maihanakat <integer>)
+     (gdk:Thai-maihanakat-maitho <integer>)
+     (gdk:Thai-maitaikhu <integer>)
+     (gdk:Thai-maitho <integer>)
+     (gdk:Thai-maitri <integer>)
+     (gdk:Thai-maiyamok <integer>)
+     (gdk:Thai-moma <integer>)
+     (gdk:Thai-ngongu <integer>)
+     (gdk:Thai-nikhahit <integer>)
+     (gdk:Thai-nonen <integer>)
+     (gdk:Thai-nonu <integer>)
+     (gdk:Thai-oang <integer>)
+     (gdk:Thai-paiyannoi <integer>)
+     (gdk:Thai-phinthu <integer>)
+     (gdk:Thai-phophan <integer>)
+     (gdk:Thai-phophung <integer>)
+     (gdk:Thai-phosamphao <integer>)
+     (gdk:Thai-popla <integer>)
+     (gdk:Thai-rorua <integer>)
+     (gdk:Thai-ru <integer>)
+     (gdk:Thai-saraa <integer>)
+     (gdk:Thai-saraaa <integer>)
+     (gdk:Thai-saraae <integer>)
+     (gdk:Thai-saraaimaimalai <integer>)
+     (gdk:Thai-saraaimaimuan <integer>)
+     (gdk:Thai-saraam <integer>)
+     (gdk:Thai-sarae <integer>)
+     (gdk:Thai-sarai <integer>)
+     (gdk:Thai-saraii <integer>)
+     (gdk:Thai-sarao <integer>)
+     (gdk:Thai-sarau <integer>)
+     (gdk:Thai-saraue <integer>)
+     (gdk:Thai-sarauee <integer>)
+     (gdk:Thai-sarauu <integer>)
+     (gdk:Thai-sorusi <integer>)
+     (gdk:Thai-sosala <integer>)
+     (gdk:Thai-soso <integer>)
+     (gdk:Thai-sosua <integer>)
+     (gdk:Thai-thanthakhat <integer>)
+     (gdk:Thai-thonangmontho <integer>)
+     (gdk:Thai-thophuthao <integer>)
+     (gdk:Thai-thothahan <integer>)
+     (gdk:Thai-thothan <integer>)
+     (gdk:Thai-thothong <integer>)
+     (gdk:Thai-thothung <integer>)
+     (gdk:Thai-topatak <integer>)
+     (gdk:Thai-totao <integer>)
+     (gdk:Thai-wowaen <integer>)
+     (gdk:Thai-yoyak <integer>)
+     (gdk:Thai-yoying <integer>)
+     (gdk:Thorn <integer>)
+     (gdk:Touroku <integer>)
+     (gdk:Tslash <integer>)
+     (gdk:U <integer>)
+     (gdk:Uacute <integer>)
+     (gdk:Ubreve <integer>)
+     (gdk:Ucircumflex <integer>)
+     (gdk:Udiaeresis <integer>)
+     (gdk:Udoubleacute <integer>)
+     (gdk:Ugrave <integer>)
+     (gdk:Ukrainian-I <integer>)
+     (gdk:Ukrainian-IE <integer>)
+     (gdk:Ukrainian-YI <integer>)
+     (gdk:Ukrainian-i <integer>)
+     (gdk:Ukrainian-ie <integer>)
+     (gdk:Ukrainian-yi <integer>)
+     (gdk:Ukranian-I <integer>)
+     (gdk:Ukranian-JE <integer>)
+     (gdk:Ukranian-YI <integer>)
+     (gdk:Ukranian-i <integer>)
+     (gdk:Ukranian-je <integer>)
+     (gdk:Ukranian-yi <integer>)
+     (gdk:Umacron <integer>)
+     (gdk:Undo <integer>)
+     (gdk:Uogonek <integer>)
+     (gdk:Up <integer>)
+     (gdk:Uring <integer>)
+     (gdk:Utilde <integer>)
+     (gdk:V <integer>)
+     (gdk:VoidSymbol <integer>)
+     (gdk:W <integer>)
+     (gdk:WonSign <integer>)
+     (gdk:X <integer>)
+     (gdk:Y <integer>)
+     (gdk:Yacute <integer>)
+     (gdk:Ydiaeresis <integer>)
+     (gdk:Z <integer>)
+     (gdk:Zabovedot <integer>)
+     (gdk:Zacute <integer>)
+     (gdk:Zcaron <integer>)
+     (gdk:Zen-Koho <integer>)
+     (gdk:Zenkaku <integer>)
+     (gdk:Zenkaku-Hankaku <integer>)
+     (gdk:a <integer>)
+     (gdk:aacute <integer>)
+     (gdk:abovedot <integer>)
+     (gdk:abreve <integer>)
+     (gdk:acircumflex <integer>)
+     (gdk:acute <integer>)
+     (gdk:adiaeresis <integer>)
+     (gdk:ae <integer>)
+     (gdk:agrave <integer>)
+     (gdk:amacron <integer>)
+     (gdk:ampersand <integer>)
+     (gdk:aogonek <integer>)
+     (gdk:apostrophe <integer>)
+     (gdk:approximate <integer>)
+     (gdk:aring <integer>)
+     (gdk:asciicircum <integer>)
+     (gdk:asciitilde <integer>)
+     (gdk:asterisk <integer>)
+     (gdk:at <integer>)
+     (gdk:atilde <integer>)
+     (gdk:b <integer>)
+     (gdk:backslash <integer>)
+     (gdk:ballotcross <integer>)
+     (gdk:bar <integer>)
+     (gdk:blank <integer>)
+     (gdk:botintegral <integer>)
+     (gdk:botleftparens <integer>)
+     (gdk:botleftsqbracket <integer>)
+     (gdk:botleftsummation <integer>)
+     (gdk:botrightparens <integer>)
+     (gdk:botrightsqbracket <integer>)
+     (gdk:botrightsummation <integer>)
+     (gdk:bott <integer>)
+     (gdk:botvertsummationconnector <integer>)
+     (gdk:braceleft <integer>)
+     (gdk:braceright <integer>)
+     (gdk:bracketleft <integer>)
+     (gdk:bracketright <integer>)
+     (gdk:breve <integer>)
+     (gdk:brokenbar <integer>)
+     (gdk:c <integer>)
+     (gdk:cabovedot <integer>)
+     (gdk:cacute <integer>)
+     (gdk:careof <integer>)
+     (gdk:caret <integer>)
+     (gdk:caron <integer>)
+     (gdk:ccaron <integer>)
+     (gdk:ccedilla <integer>)
+     (gdk:ccircumflex <integer>)
+     (gdk:cedilla <integer>)
+     (gdk:cent <integer>)
+     (gdk:checkerboard <integer>)
+     (gdk:checkmark <integer>)
+     (gdk:circle <integer>)
+     (gdk:club <integer>)
+     (gdk:colon <integer>)
+     (gdk:comma <integer>)
+     (gdk:copyright <integer>)
+     (gdk:cr <integer>)
+     (gdk:crossinglines <integer>)
+     (gdk:currency <integer>)
+     (gdk:cursor <integer>)
+     (gdk:d <integer>)
+     (gdk:dagger <integer>)
+     (gdk:dcaron <integer>)
+     (gdk:dead-abovedot <integer>)
+     (gdk:dead-abovering <integer>)
+     (gdk:dead-acute <integer>)
+     (gdk:dead-belowdot <integer>)
+     (gdk:dead-breve <integer>)
+     (gdk:dead-caron <integer>)
+     (gdk:dead-cedilla <integer>)
+     (gdk:dead-circumflex <integer>)
+     (gdk:dead-diaeresis <integer>)
+     (gdk:dead-doubleacute <integer>)
+     (gdk:dead-grave <integer>)
+     (gdk:dead-iota <integer>)
+     (gdk:dead-macron <integer>)
+     (gdk:dead-ogonek <integer>)
+     (gdk:dead-semivoiced-sound <integer>)
+     (gdk:dead-tilde <integer>)
+     (gdk:dead-voiced-sound <integer>)
+     (gdk:decimalpoint <integer>)
+     (gdk:degree <integer>)
+     (gdk:diaeresis <integer>)
+     (gdk:diamond <integer>)
+     (gdk:digitspace <integer>)
+     (gdk:division <integer>)
+     (gdk:dollar <integer>)
+     (gdk:doubbaselinedot <integer>)
+     (gdk:doubleacute <integer>)
+     (gdk:doubledagger <integer>)
+     (gdk:doublelowquotemark <integer>)
+     (gdk:downarrow <integer>)
+     (gdk:downcaret <integer>)
+     (gdk:downshoe <integer>)
+     (gdk:downstile <integer>)
+     (gdk:downtack <integer>)
+     (gdk:dstroke <integer>)
+     (gdk:e <integer>)
+     (gdk:eabovedot <integer>)
+     (gdk:eacute <integer>)
+     (gdk:ecaron <integer>)
+     (gdk:ecircumflex <integer>)
+     (gdk:ediaeresis <integer>)
+     (gdk:egrave <integer>)
+     (gdk:ellipsis <integer>)
+     (gdk:em3space <integer>)
+     (gdk:em4space <integer>)
+     (gdk:emacron <integer>)
+     (gdk:emdash <integer>)
+     (gdk:emfilledcircle <integer>)
+     (gdk:emfilledrect <integer>)
+     (gdk:emopencircle <integer>)
+     (gdk:emopenrectangle <integer>)
+     (gdk:emspace <integer>)
+     (gdk:endash <integer>)
+     (gdk:enfilledcircbullet <integer>)
+     (gdk:enfilledsqbullet <integer>)
+     (gdk:eng <integer>)
+     (gdk:enopencircbullet <integer>)
+     (gdk:enopensquarebullet <integer>)
+     (gdk:enspace <integer>)
+     (gdk:eogonek <integer>)
+     (gdk:equal <integer>)
+     (gdk:eth <integer>)
+     (gdk:exclam <integer>)
+     (gdk:exclamdown <integer>)
+     (gdk:f <integer>)
+     (gdk:femalesymbol <integer>)
+     (gdk:ff <integer>)
+     (gdk:figdash <integer>)
+     (gdk:filledlefttribullet <integer>)
+     (gdk:filledrectbullet <integer>)
+     (gdk:filledrighttribullet <integer>)
+     (gdk:filledtribulletdown <integer>)
+     (gdk:filledtribulletup <integer>)
+     (gdk:fiveeighths <integer>)
+     (gdk:fivesixths <integer>)
+     (gdk:fourfifths <integer>)
+     (gdk:function <integer>)
+     (gdk:g <integer>)
+     (gdk:gabovedot <integer>)
+     (gdk:gbreve <integer>)
+     (gdk:gcedilla <integer>)
+     (gdk:gcircumflex <integer>)
+     (gdk:grave <integer>)
+     (gdk:greater <integer>)
+     (gdk:greaterthanequal <integer>)
+     (gdk:guillemotleft <integer>)
+     (gdk:guillemotright <integer>)
+     (gdk:h <integer>)
+     (gdk:hairspace <integer>)
+     (gdk:hcircumflex <integer>)
+     (gdk:heart <integer>)
+     (gdk:hebrew-aleph <integer>)
+     (gdk:hebrew-ayin <integer>)
+     (gdk:hebrew-bet <integer>)
+     (gdk:hebrew-beth <integer>)
+     (gdk:hebrew-chet <integer>)
+     (gdk:hebrew-dalet <integer>)
+     (gdk:hebrew-daleth <integer>)
+     (gdk:hebrew-doublelowline <integer>)
+     (gdk:hebrew-finalkaph <integer>)
+     (gdk:hebrew-finalmem <integer>)
+     (gdk:hebrew-finalnun <integer>)
+     (gdk:hebrew-finalpe <integer>)
+     (gdk:hebrew-finalzade <integer>)
+     (gdk:hebrew-finalzadi <integer>)
+     (gdk:hebrew-gimel <integer>)
+     (gdk:hebrew-gimmel <integer>)
+     (gdk:hebrew-he <integer>)
+     (gdk:hebrew-het <integer>)
+     (gdk:hebrew-kaph <integer>)
+     (gdk:hebrew-kuf <integer>)
+     (gdk:hebrew-lamed <integer>)
+     (gdk:hebrew-mem <integer>)
+     (gdk:hebrew-nun <integer>)
+     (gdk:hebrew-pe <integer>)
+     (gdk:hebrew-qoph <integer>)
+     (gdk:hebrew-resh <integer>)
+     (gdk:hebrew-samech <integer>)
+     (gdk:hebrew-samekh <integer>)
+     (gdk:hebrew-shin <integer>)
+     (gdk:hebrew-taf <integer>)
+     (gdk:hebrew-taw <integer>)
+     (gdk:hebrew-tet <integer>)
+     (gdk:hebrew-teth <integer>)
+     (gdk:hebrew-waw <integer>)
+     (gdk:hebrew-yod <integer>)
+     (gdk:hebrew-zade <integer>)
+     (gdk:hebrew-zadi <integer>)
+     (gdk:hebrew-zain <integer>)
+     (gdk:hebrew-zayin <integer>)
+     (gdk:hexagram <integer>)
+     (gdk:horizconnector <integer>)
+     (gdk:horizlinescan1 <integer>)
+     (gdk:horizlinescan3 <integer>)
+     (gdk:horizlinescan5 <integer>)
+     (gdk:horizlinescan7 <integer>)
+     (gdk:horizlinescan9 <integer>)
+     (gdk:hstroke <integer>)
+     (gdk:ht <integer>)
+     (gdk:hyphen <integer>)
+     (gdk:i <integer>)
+     (gdk:iacute <integer>)
+     (gdk:icircumflex <integer>)
+     (gdk:identical <integer>)
+     (gdk:idiaeresis <integer>)
+     (gdk:idotless <integer>)
+     (gdk:ifonlyif <integer>)
+     (gdk:igrave <integer>)
+     (gdk:imacron <integer>)
+     (gdk:implies <integer>)
+     (gdk:includedin <integer>)
+     (gdk:includes <integer>)
+     (gdk:infinity <integer>)
+     (gdk:integral <integer>)
+     (gdk:intersection <integer>)
+     (gdk:iogonek <integer>)
+     (gdk:itilde <integer>)
+     (gdk:j <integer>)
+     (gdk:jcircumflex <integer>)
+     (gdk:jot <integer>)
+     (gdk:k <integer>)
+     (gdk:kana-A <integer>)
+     (gdk:kana-CHI <integer>)
+     (gdk:kana-E <integer>)
+     (gdk:kana-FU <integer>)
+     (gdk:kana-HA <integer>)
+     (gdk:kana-HE <integer>)
+     (gdk:kana-HI <integer>)
+     (gdk:kana-HO <integer>)
+     (gdk:kana-HU <integer>)
+     (gdk:kana-I <integer>)
+     (gdk:kana-KA <integer>)
+     (gdk:kana-KE <integer>)
+     (gdk:kana-KI <integer>)
+     (gdk:kana-KO <integer>)
+     (gdk:kana-KU <integer>)
+     (gdk:kana-MA <integer>)
+     (gdk:kana-ME <integer>)
+     (gdk:kana-MI <integer>)
+     (gdk:kana-MO <integer>)
+     (gdk:kana-MU <integer>)
+     (gdk:kana-N <integer>)
+     (gdk:kana-NA <integer>)
+     (gdk:kana-NE <integer>)
+     (gdk:kana-NI <integer>)
+     (gdk:kana-NO <integer>)
+     (gdk:kana-NU <integer>)
+     (gdk:kana-O <integer>)
+     (gdk:kana-RA <integer>)
+     (gdk:kana-RE <integer>)
+     (gdk:kana-RI <integer>)
+     (gdk:kana-RO <integer>)
+     (gdk:kana-RU <integer>)
+     (gdk:kana-SA <integer>)
+     (gdk:kana-SE <integer>)
+     (gdk:kana-SHI <integer>)
+     (gdk:kana-SO <integer>)
+     (gdk:kana-SU <integer>)
+     (gdk:kana-TA <integer>)
+     (gdk:kana-TE <integer>)
+     (gdk:kana-TI <integer>)
+     (gdk:kana-TO <integer>)
+     (gdk:kana-TSU <integer>)
+     (gdk:kana-TU <integer>)
+     (gdk:kana-U <integer>)
+     (gdk:kana-WA <integer>)
+     (gdk:kana-WO <integer>)
+     (gdk:kana-YA <integer>)
+     (gdk:kana-YO <integer>)
+     (gdk:kana-YU <integer>)
+     (gdk:kana-a <integer>)
+     (gdk:kana-closingbracket <integer>)
+     (gdk:kana-comma <integer>)
+     (gdk:kana-conjunctive <integer>)
+     (gdk:kana-e <integer>)
+     (gdk:kana-fullstop <integer>)
+     (gdk:kana-i <integer>)
+     (gdk:kana-middledot <integer>)
+     (gdk:kana-o <integer>)
+     (gdk:kana-openingbracket <integer>)
+     (gdk:kana-switch <integer>)
+     (gdk:kana-tsu <integer>)
+     (gdk:kana-tu <integer>)
+     (gdk:kana-u <integer>)
+     (gdk:kana-ya <integer>)
+     (gdk:kana-yo <integer>)
+     (gdk:kana-yu <integer>)
+     (gdk:kappa <integer>)
+     (gdk:kcedilla <integer>)
+     (gdk:kra <integer>)
+     (gdk:l <integer>)
+     (gdk:lacute <integer>)
+     (gdk:latincross <integer>)
+     (gdk:lcaron <integer>)
+     (gdk:lcedilla <integer>)
+     (gdk:leftanglebracket <integer>)
+     (gdk:leftarrow <integer>)
+     (gdk:leftcaret <integer>)
+     (gdk:leftdoublequotemark <integer>)
+     (gdk:leftmiddlecurlybrace <integer>)
+     (gdk:leftopentriangle <integer>)
+     (gdk:leftpointer <integer>)
+     (gdk:leftradical <integer>)
+     (gdk:leftshoe <integer>)
+     (gdk:leftsinglequotemark <integer>)
+     (gdk:leftt <integer>)
+     (gdk:lefttack <integer>)
+     (gdk:less <integer>)
+     (gdk:lessthanequal <integer>)
+     (gdk:lf <integer>)
+     (gdk:logicaland <integer>)
+     (gdk:logicalor <integer>)
+     (gdk:lowleftcorner <integer>)
+     (gdk:lowrightcorner <integer>)
+     (gdk:lstroke <integer>)
+     (gdk:m <integer>)
+     (gdk:macron <integer>)
+     (gdk:malesymbol <integer>)
+     (gdk:maltesecross <integer>)
+     (gdk:marker <integer>)
+     (gdk:masculine <integer>)
+     (gdk:minus <integer>)
+     (gdk:minutes <integer>)
+     (gdk:mu <integer>)
+     (gdk:multiply <integer>)
+     (gdk:musicalflat <integer>)
+     (gdk:musicalsharp <integer>)
+     (gdk:n <integer>)
+     (gdk:nabla <integer>)
+     (gdk:nacute <integer>)
+     (gdk:ncaron <integer>)
+     (gdk:ncedilla <integer>)
+     (gdk:nl <integer>)
+     (gdk:nobreakspace <integer>)
+     (gdk:notequal <integer>)
+     (gdk:notsign <integer>)
+     (gdk:ntilde <integer>)
+     (gdk:numbersign <integer>)
+     (gdk:numerosign <integer>)
+     (gdk:o <integer>)
+     (gdk:oacute <integer>)
+     (gdk:ocircumflex <integer>)
+     (gdk:odiaeresis <integer>)
+     (gdk:odoubleacute <integer>)
+     (gdk:oe <integer>)
+     (gdk:ogonek <integer>)
+     (gdk:ograve <integer>)
+     (gdk:omacron <integer>)
+     (gdk:oneeighth <integer>)
+     (gdk:onefifth <integer>)
+     (gdk:onehalf <integer>)
+     (gdk:onequarter <integer>)
+     (gdk:onesixth <integer>)
+     (gdk:onesuperior <integer>)
+     (gdk:onethird <integer>)
+     (gdk:openrectbullet <integer>)
+     (gdk:openstar <integer>)
+     (gdk:opentribulletdown <integer>)
+     (gdk:opentribulletup <integer>)
+     (gdk:ordfeminine <integer>)
+     (gdk:oslash <integer>)
+     (gdk:otilde <integer>)
+     (gdk:overbar <integer>)
+     (gdk:overline <integer>)
+     (gdk:p <integer>)
+     (gdk:paragraph <integer>)
+     (gdk:parenleft <integer>)
+     (gdk:parenright <integer>)
+     (gdk:partialderivative <integer>)
+     (gdk:percent <integer>)
+     (gdk:period <integer>)
+     (gdk:periodcentered <integer>)
+     (gdk:phonographcopyright <integer>)
+     (gdk:plus <integer>)
+     (gdk:plusminus <integer>)
+     (gdk:prescription <integer>)
+     (gdk:prolongedsound <integer>)
+     (gdk:punctspace <integer>)
+     (gdk:q <integer>)
+     (gdk:quad <integer>)
+     (gdk:question <integer>)
+     (gdk:questiondown <integer>)
+     (gdk:quotedbl <integer>)
+     (gdk:quoteleft <integer>)
+     (gdk:quoteright <integer>)
+     (gdk:r <integer>)
+     (gdk:racute <integer>)
+     (gdk:radical <integer>)
+     (gdk:rcaron <integer>)
+     (gdk:rcedilla <integer>)
+     (gdk:registered <integer>)
+     (gdk:rightanglebracket <integer>)
+     (gdk:rightarrow <integer>)
+     (gdk:rightcaret <integer>)
+     (gdk:rightdoublequotemark <integer>)
+     (gdk:rightmiddlecurlybrace <integer>)
+     (gdk:rightmiddlesummation <integer>)
+     (gdk:rightopentriangle <integer>)
+     (gdk:rightpointer <integer>)
+     (gdk:rightshoe <integer>)
+     (gdk:rightsinglequotemark <integer>)
+     (gdk:rightt <integer>)
+     (gdk:righttack <integer>)
+     (gdk:s <integer>)
+     (gdk:sacute <integer>)
+     (gdk:scaron <integer>)
+     (gdk:scedilla <integer>)
+     (gdk:scircumflex <integer>)
+     (gdk:script-switch <integer>)
+     (gdk:seconds <integer>)
+     (gdk:section <integer>)
+     (gdk:semicolon <integer>)
+     (gdk:semivoicedsound <integer>)
+     (gdk:seveneighths <integer>)
+     (gdk:signaturemark <integer>)
+     (gdk:signifblank <integer>)
+     (gdk:similarequal <integer>)
+     (gdk:singlelowquotemark <integer>)
+     (gdk:slash <integer>)
+     (gdk:soliddiamond <integer>)
+     (gdk:space <integer>)
+     (gdk:ssharp <integer>)
+     (gdk:sterling <integer>)
+     (gdk:t <integer>)
+     (gdk:tcaron <integer>)
+     (gdk:tcedilla <integer>)
+     (gdk:telephone <integer>)
+     (gdk:telephonerecorder <integer>)
+     (gdk:therefore <integer>)
+     (gdk:thinspace <integer>)
+     (gdk:thorn <integer>)
+     (gdk:threeeighths <integer>)
+     (gdk:threefifths <integer>)
+     (gdk:threequarters <integer>)
+     (gdk:threesuperior <integer>)
+     (gdk:topintegral <integer>)
+     (gdk:topleftparens <integer>)
+     (gdk:topleftradical <integer>)
+     (gdk:topleftsqbracket <integer>)
+     (gdk:topleftsummation <integer>)
+     (gdk:toprightparens <integer>)
+     (gdk:toprightsqbracket <integer>)
+     (gdk:toprightsummation <integer>)
+     (gdk:topt <integer>)
+     (gdk:topvertsummationconnector <integer>)
+     (gdk:trademark <integer>)
+     (gdk:trademarkincircle <integer>)
+     (gdk:tslash <integer>)
+     (gdk:twofifths <integer>)
+     (gdk:twosuperior <integer>)
+     (gdk:twothirds <integer>)
+     (gdk:u <integer>)
+     (gdk:uacute <integer>)
+     (gdk:ubreve <integer>)
+     (gdk:ucircumflex <integer>)
+     (gdk:udiaeresis <integer>)
+     (gdk:udoubleacute <integer>)
+     (gdk:ugrave <integer>)
+     (gdk:umacron <integer>)
+     (gdk:underbar <integer>)
+     (gdk:underscore <integer>)
+     (gdk:union <integer>)
+     (gdk:uogonek <integer>)
+     (gdk:uparrow <integer>)
+     (gdk:upcaret <integer>)
+     (gdk:upleftcorner <integer>)
+     (gdk:uprightcorner <integer>)
+     (gdk:upshoe <integer>)
+     (gdk:upstile <integer>)
+     (gdk:uptack <integer>)
+     (gdk:uring <integer>)
+     (gdk:utilde <integer>)
+     (gdk:v <integer>)
+     (gdk:variation <integer>)
+     (gdk:vertbar <integer>)
+     (gdk:vertconnector <integer>)
+     (gdk:voicedsound <integer>)
+     (gdk:vt <integer>)
+     (gdk:w <integer>)
+     (gdk:x <integer>)
+     (gdk:y <integer>)
+     (gdk:yacute <integer>)
+     (gdk:ydiaeresis <integer>)
+     (gdk:yen <integer>)
+     (gdk:z <integer>)
+     (gdk:zabovedot <integer>)
+     (gdk:zacute <integer>)
+     (gdk:zcaron <integer>)))
+  ((gnome gw gdk)
+   (uses-interfaces (gnome gw generics))
+   (typed-exports
+     (<gdk-atom*> <gw:wct>)
+     (<gdk-atom> <gw:wct>)
+     (<gdk-bitmap**> <gw:wct>)
+     (<gdk-bitmap*> <gw:wct>)
+     (<gdk-device*> <gw:wct>)
+     (<gdk-display-manager*> <gw:wct>)
+     (<gdk-drag-protocol*> <gw:wct>)
+     (<gdk-drawable**> <gw:wct>)
+     (<gdk-event-func> <gw:wct>)
+     (<gdk-filter-func> <gw:wct>)
+     (<gdk-gc-values*> <gw:wct>)
+     (<gdk-geometry*> <gw:wct>)
+     (<gdk-keymap-key**> <gw:wct>)
+     (<gdk-keymap-key*> <gw:wct>)
+     (<gdk-modifier-type*> <gw:wct>)
+     (<gdk-pixbuf-destroy-notify> <gw:wct>)
+     (<gdk-pixbuf-format*> <gw:wct>)
+     (<gdk-pixbuf-save-func> <gw:wct>)
+     (<gdk-pixbuf-simple-anim*> <gw:wct>)
+     (<gdk-pixmap**> <gw:wct>)
+     (<gdk-pixmap*> <gw:wct>)
+     (<gdk-point*> <gw:wct>)
+     (<gdk-pointer-hooks*> <gw:wct>)
+     (<gdk-rectangle**> <gw:wct>)
+     (<gdk-region*> <gw:wct>)
+     (<gdk-rgb-cmap*> <gw:wct>)
+     (<gdk-screen**> <gw:wct>)
+     (<gdk-segment*> <gw:wct>)
+     (<gdk-time-coord***> <gw:wct>)
+     (<gdk-visual*> <gw:wct>)
+     (<gdk-visual-type**> <gw:wct>)
+     (<gdk-wchar*> <gw:wct>)
+     (<gdk-window**> <gw:wct>)
+     (<gdk-window*> <gw:wct>)
+     (<gdk-window-attr*> <gw:wct>)
+     (<gdk-wm-decoration*> <gw:wct>)
+     (<gint8*> <gw:wct>)
+     (<guint**> <gw:wct>)
+     (<guint8*> <gw:wct>)
+     (gdk-add-client-message-filter
+       procedure
+       (arity 0 0 #t))
+     (gdk-atom-intern procedure (arity 0 0 #t))
+     (gdk-atom-name procedure (arity 0 0 #t))
+     (gdk-beep procedure (arity 0 0 #t))
+     (gdk-bitmap-create-from-data
+       procedure
+       (arity 0 0 #t))
+     (gdk-cairo-create procedure (arity 1 0 #f))
+     (gdk-cairo-rectangle procedure (arity 2 0 #f))
+     (gdk-cairo-region procedure (arity 2 0 #f))
+     (gdk-cairo-set-source-color
+       procedure
+       (arity 2 0 #f))
+     (gdk-cairo-set-source-pixbuf
+       procedure
+       (arity 4 0 #f))
+     (gdk-cairo-set-source-pixmap
+       procedure
+       (arity 4 0 #f))
+     (gdk-char-height procedure (arity 0 0 #t))
+     (gdk-char-measure procedure (arity 0 0 #t))
+     (gdk-char-width procedure (arity 0 0 #t))
+     (gdk-char-width-wc procedure (arity 0 0 #t))
+     (gdk-color-alloc procedure (arity 0 0 #t))
+     (gdk-color-black procedure (arity 0 0 #t))
+     (gdk-color-change procedure (arity 0 0 #t))
+     (gdk-color-parse procedure (arity 0 0 #t))
+     (gdk-color-white procedure (arity 0 0 #t))
+     (gdk-cursor-get-display procedure (arity 0 0 #t))
+     (gdk-cursor-get-image procedure (arity 0 0 #t))
+     (gdk-cursor-new procedure (arity 0 0 #t))
+     (gdk-cursor-new-for-display
+       procedure
+       (arity 0 0 #t))
+     (gdk-cursor-new-from-name
+       procedure
+       (arity 0 0 #t))
+     (gdk-cursor-new-from-pixbuf
+       procedure
+       (arity 0 0 #t))
+     (gdk-cursor-new-from-pixmap
+       procedure
+       (arity 0 0 #t))
+     (gdk-device-get-axis procedure (arity 2 0 #f))
+     (gdk-device-get-core-pointer
+       procedure
+       (arity 0 0 #t))
+     (gdk-device-get-history procedure (arity 5 0 #f))
+     (gdk-device-get-state procedure (arity 3 0 #f))
+     (gdk-device-set-axis-use
+       procedure
+       (arity 0 0 #t))
+     (gdk-device-set-key procedure (arity 0 0 #t))
+     (gdk-device-set-mode procedure (arity 0 0 #t))
+     (gdk-device-set-source procedure (arity 0 0 #t))
+     (gdk-devices-list procedure (arity 0 0 #f))
+     (gdk-display-beep procedure (arity 0 0 #t))
+     (gdk-display-close procedure (arity 0 0 #t))
+     (gdk-display-flush procedure (arity 0 0 #t))
+     (gdk-display-get-core-pointer
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-get-default
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-get-default-cursor-size
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-get-default-group
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-get-default-screen
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-get-event procedure (arity 0 0 #t))
+     (gdk-display-get-maximal-cursor-size
+       procedure
+       (arity 1 0 #f))
+     (gdk-display-get-n-screens
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-get-name procedure (arity 0 0 #t))
+     (gdk-display-get-pointer
+       procedure
+       (arity 3 0 #f))
+     (gdk-display-get-screen procedure (arity 0 0 #t))
+     (gdk-display-get-window-at-pointer
+       procedure
+       (arity 1 0 #f))
+     (gdk-display-keyboard-ungrab
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-list-devices
+       procedure
+       (arity 1 0 #f))
+     (gdk-display-manager-get
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-manager-get-default-display
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-manager-list-displays
+       procedure
+       (arity 1 0 #f))
+     (gdk-display-manager-set-default-display
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-open procedure (arity 0 0 #t))
+     (gdk-display-peek-event procedure (arity 0 0 #t))
+     (gdk-display-pointer-is-grabbed
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-pointer-ungrab
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-put-event procedure (arity 0 0 #t))
+     (gdk-display-request-selection-notification
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-set-double-click-distance
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-set-double-click-time
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-supports-clipboard-persistence
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-supports-cursor-alpha
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-supports-cursor-color
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-supports-input-shapes
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-supports-selection-notification
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-supports-shapes
+       procedure
+       (arity 0 0 #t))
+     (gdk-display-sync procedure (arity 0 0 #t))
+     (gdk-display-warp-pointer
+       procedure
+       (arity 0 0 #t))
+     (gdk-drag-abort procedure (arity 0 0 #t))
+     (gdk-drag-context-new procedure (arity 0 0 #t))
+     (gdk-drag-drop procedure (arity 0 0 #t))
+     (gdk-drag-drop-succeeded
+       procedure
+       (arity 0 0 #t))
+     (gdk-drag-find-window procedure (arity 0 0 #t))
+     (gdk-drag-find-window-for-screen
+       procedure
+       (arity 0 0 #t))
+     (gdk-drag-get-protocol procedure (arity 0 0 #t))
+     (gdk-drag-get-protocol-for-display
+       procedure
+       (arity 0 0 #t))
+     (gdk-drag-get-selection procedure (arity 0 0 #t))
+     (gdk-drag-motion procedure (arity 0 0 #t))
+     (gdk-drag-status procedure (arity 0 0 #t))
+     (gdk-draw-arc procedure (arity 0 0 #t))
+     (gdk-draw-drawable procedure (arity 0 0 #t))
+     (gdk-draw-glyphs procedure (arity 0 0 #t))
+     (gdk-draw-glyphs-transformed
+       procedure
+       (arity 0 0 #t))
+     (gdk-draw-gray-image procedure (arity 0 0 #t))
+     (gdk-draw-image procedure (arity 0 0 #t))
+     (gdk-draw-indexed-image procedure (arity 0 0 #t))
+     (gdk-draw-layout procedure (arity 0 0 #t))
+     (gdk-draw-layout-line procedure (arity 0 0 #t))
+     (gdk-draw-layout-line-with-colors
+       procedure
+       (arity 0 0 #t))
+     (gdk-draw-layout-with-colors
+       procedure
+       (arity 0 0 #t))
+     (gdk-draw-line procedure (arity 0 0 #t))
+     (gdk-draw-lines procedure (arity 0 0 #t))
+     (gdk-draw-pixbuf procedure (arity 0 0 #t))
+     (gdk-draw-point procedure (arity 0 0 #t))
+     (gdk-draw-points procedure (arity 0 0 #t))
+     (gdk-draw-polygon procedure (arity 0 0 #t))
+     (gdk-draw-rectangle procedure (arity 0 0 #t))
+     (gdk-draw-rgb-32-image procedure (arity 0 0 #t))
+     (gdk-draw-rgb-image procedure (arity 0 0 #t))
+     (gdk-draw-segments procedure (arity 0 0 #t))
+     (gdk-draw-string procedure (arity 0 0 #t))
+     (gdk-draw-text procedure (arity 0 0 #t))
+     (gdk-draw-text-wc procedure (arity 0 0 #t))
+     (gdk-drawable-copy-to-image
+       procedure
+       (arity 0 0 #t))
+     (gdk-drawable-get-clip-region
+       procedure
+       (arity 0 0 #t))
+     (gdk-drawable-get-colormap
+       procedure
+       (arity 0 0 #t))
+     (gdk-drawable-get-data procedure (arity 0 0 #t))
+     (gdk-drawable-get-depth procedure (arity 0 0 #t))
+     (gdk-drawable-get-display
+       procedure
+       (arity 0 0 #t))
+     (gdk-drawable-get-image procedure (arity 0 0 #t))
+     (gdk-drawable-get-screen
+       procedure
+       (arity 0 0 #t))
+     (gdk-drawable-get-size procedure (arity 1 0 #f))
+     (gdk-drawable-get-visible-region
+       procedure
+       (arity 0 0 #t))
+     (gdk-drawable-get-visual
+       procedure
+       (arity 0 0 #t))
+     (gdk-drawable-set-colormap
+       procedure
+       (arity 0 0 #t))
+     (gdk-drawable-set-data procedure (arity 0 0 #t))
+     (gdk-drop-finish procedure (arity 0 0 #t))
+     (gdk-drop-reply procedure (arity 0 0 #t))
+     (gdk-error-trap-pop procedure (arity 0 0 #t))
+     (gdk-error-trap-push procedure (arity 0 0 #t))
+     (gdk-event->vector procedure (arity 0 0 #t))
+     (gdk-event-get procedure (arity 0 0 #t))
+     (gdk-event-get-axis procedure (arity 2 0 #f))
+     (gdk-event-get-coords procedure (arity 1 0 #f))
+     (gdk-event-get-graphics-expose
+       procedure
+       (arity 0 0 #t))
+     (gdk-event-get-root-coords
+       procedure
+       (arity 1 0 #f))
+     (gdk-event-get-screen procedure (arity 0 0 #t))
+     (gdk-event-get-state procedure (arity 0 0 #t))
+     (gdk-event-get-time procedure (arity 0 0 #t))
+     (gdk-event-handler-set procedure (arity 0 0 #t))
+     (gdk-event-peek procedure (arity 0 0 #t))
+     (gdk-event-put procedure (arity 0 0 #t))
+     (gdk-events-pending procedure (arity 0 0 #t))
+     (gdk-exit procedure (arity 0 0 #t))
+     (gdk-flush procedure (arity 0 0 #t))
+     (gdk-font-from-description
+       procedure
+       (arity 0 0 #t))
+     (gdk-font-id procedure (arity 0 0 #t))
+     (gdk-font-load procedure (arity 0 0 #t))
+     (gdk-fontset-load procedure (arity 0 0 #t))
+     (gdk-gc-get-colormap procedure (arity 0 0 #t))
+     (gdk-gc-get-screen procedure (arity 0 0 #t))
+     (gdk-gc-get-values procedure (arity 0 0 #t))
+     (gdk-gc-new procedure (arity 0 0 #t))
+     (gdk-gc-new-with-values procedure (arity 0 0 #t))
+     (gdk-gc-offset procedure (arity 0 0 #t))
+     (gdk-gc-set-background procedure (arity 0 0 #t))
+     (gdk-gc-set-clip-mask procedure (arity 0 0 #t))
+     (gdk-gc-set-clip-origin procedure (arity 0 0 #t))
+     (gdk-gc-set-clip-rectangle
+       procedure
+       (arity 0 0 #t))
+     (gdk-gc-set-clip-region procedure (arity 0 0 #t))
+     (gdk-gc-set-colormap procedure (arity 0 0 #t))
+     (gdk-gc-set-dashes procedure (arity 0 0 #t))
+     (gdk-gc-set-exposures procedure (arity 0 0 #t))
+     (gdk-gc-set-fill procedure (arity 0 0 #t))
+     (gdk-gc-set-font procedure (arity 0 0 #t))
+     (gdk-gc-set-foreground procedure (arity 0 0 #t))
+     (gdk-gc-set-function procedure (arity 0 0 #t))
+     (gdk-gc-set-line-attributes
+       procedure
+       (arity 0 0 #t))
+     (gdk-gc-set-rgb-bg-color
+       procedure
+       (arity 0 0 #t))
+     (gdk-gc-set-rgb-fg-color
+       procedure
+       (arity 0 0 #t))
+     (gdk-gc-set-stipple procedure (arity 0 0 #t))
+     (gdk-gc-set-subwindow procedure (arity 0 0 #t))
+     (gdk-gc-set-tile procedure (arity 0 0 #t))
+     (gdk-gc-set-ts-origin procedure (arity 0 0 #t))
+     (gdk-gc-set-values procedure (arity 0 0 #t))
+     (gdk-get-default-root-window
+       procedure
+       (arity 0 0 #t))
+     (gdk-get-display procedure (arity 0 0 #t))
+     (gdk-get-display-arg-name
+       procedure
+       (arity 0 0 #t))
+     (gdk-get-program-class procedure (arity 0 0 #t))
+     (gdk-get-show-events procedure (arity 0 0 #t))
+     (gdk-get-use-xshm procedure (arity 0 0 #t))
+     (gdk-image-get procedure (arity 0 0 #t))
+     (gdk-image-get-colormap procedure (arity 0 0 #t))
+     (gdk-image-get-pixel procedure (arity 0 0 #t))
+     (gdk-image-new procedure (arity 0 0 #t))
+     (gdk-image-put-pixel procedure (arity 0 0 #t))
+     (gdk-image-set-colormap procedure (arity 0 0 #t))
+     (gdk-input-set-extension-events
+       procedure
+       (arity 0 0 #t))
+     (gdk-keyboard-grab procedure (arity 0 0 #t))
+     (gdk-keyboard-ungrab procedure (arity 0 0 #t))
+     (gdk-keymap-get-default procedure (arity 0 0 #t))
+     (gdk-keymap-get-direction
+       procedure
+       (arity 0 0 #t))
+     (gdk-keymap-get-entries-for-keycode
+       procedure
+       (arity 4 0 #f))
+     (gdk-keymap-get-entries-for-keyval
+       procedure
+       (arity 3 0 #f))
+     (gdk-keymap-get-for-display
+       procedure
+       (arity 0 0 #t))
+     (gdk-keymap-lookup-key procedure (arity 0 0 #t))
+     (gdk-keymap-translate-keyboard-state
+       procedure
+       (arity 5 0 #f))
+     (gdk-keyval-convert-case
+       procedure
+       (arity 1 0 #f))
+     (gdk-keyval-from-name procedure (arity 0 0 #t))
+     (gdk-keyval-is-lower procedure (arity 0 0 #t))
+     (gdk-keyval-is-upper procedure (arity 0 0 #t))
+     (gdk-keyval-name procedure (arity 0 0 #t))
+     (gdk-keyval-to-lower procedure (arity 0 0 #t))
+     (gdk-keyval-to-unicode procedure (arity 0 0 #t))
+     (gdk-keyval-to-upper procedure (arity 0 0 #t))
+     (gdk-list-visuals procedure (arity 0 0 #f))
+     (gdk-mbstowcs procedure (arity 0 0 #t))
+     (gdk-notify-startup-complete
+       procedure
+       (arity 0 0 #t))
+     (gdk-pango-attr-embossed-new
+       procedure
+       (arity 0 0 #t))
+     (gdk-pango-attr-stipple-new
+       procedure
+       (arity 0 0 #t))
+     (gdk-pango-context-get procedure (arity 0 0 #t))
+     (gdk-pango-context-get-for-screen
+       procedure
+       (arity 0 0 #t))
+     (gdk-pango-context-set-colormap
+       procedure
+       (arity 0 0 #t))
+     (gdk-pango-renderer-get-default
+       procedure
+       (arity 0 0 #t))
+     (gdk-pango-renderer-new procedure (arity 0 0 #t))
+     (gdk-pango-renderer-set-drawable
+       procedure
+       (arity 0 0 #t))
+     (gdk-pango-renderer-set-gc
+       procedure
+       (arity 0 0 #t))
+     (gdk-pango-renderer-set-override-color
+       procedure
+       (arity 0 0 #t))
+     (gdk-pango-renderer-set-stipple
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-add-alpha procedure (arity 0 0 #t))
+     (gdk-pixbuf-animation-get-height
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-animation-get-iter
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-animation-get-static-image
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-animation-get-width
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-animation-is-static-image
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-animation-iter-advance
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-animation-iter-get-delay-time
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-animation-iter-get-pixbuf
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-animation-iter-on-currently-loading-frame
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-animation-new-from-file
+       procedure
+       (arity 1 0 #f))
+     (gdk-pixbuf-composite procedure (arity 0 0 #t))
+     (gdk-pixbuf-composite-color
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-composite-color-simple
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-copy-area procedure (arity 0 0 #t))
+     (gdk-pixbuf-error-quark procedure (arity 0 0 #t))
+     (gdk-pixbuf-fill procedure (arity 0 0 #t))
+     (gdk-pixbuf-flip procedure (arity 0 0 #t))
+     (gdk-pixbuf-get-bits-per-sample
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-get-colorspace
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-get-formats procedure (arity 0 0 #f))
+     (gdk-pixbuf-get-from-drawable
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-get-from-image
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-get-has-alpha
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-get-height procedure (arity 0 0 #t))
+     (gdk-pixbuf-get-n-channels
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-get-option procedure (arity 0 0 #t))
+     (gdk-pixbuf-get-pixels procedure (arity 0 0 #t))
+     (gdk-pixbuf-get-rowstride
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-get-width procedure (arity 0 0 #t))
+     (gdk-pixbuf-loader-close
+       procedure
+       (arity 1 0 #f))
+     (gdk-pixbuf-loader-get-animation
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-loader-get-format
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-loader-get-pixbuf
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-loader-new procedure (arity 0 0 #t))
+     (gdk-pixbuf-loader-new-with-mime-type
+       procedure
+       (arity 1 0 #f))
+     (gdk-pixbuf-loader-new-with-type
+       procedure
+       (arity 1 0 #f))
+     (gdk-pixbuf-loader-set-size
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-loader-write
+       procedure
+       (arity 3 0 #f))
+     (gdk-pixbuf-new procedure (arity 0 0 #t))
+     (gdk-pixbuf-new-from-data
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-new-from-file
+       procedure
+       (arity 1 0 #f))
+     (gdk-pixbuf-new-from-file-at-scale
+       procedure
+       (arity 4 0 #f))
+     (gdk-pixbuf-new-from-file-at-size
+       procedure
+       (arity 3 0 #f))
+     (gdk-pixbuf-new-from-inline
+       procedure
+       (arity 3 0 #f))
+     (gdk-pixbuf-new-from-xpm-data
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-new-subpixbuf
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-render-pixmap-and-mask
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-render-threshold-alpha
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-render-to-drawable
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-render-to-drawable-alpha
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-rotate-simple
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-saturate-and-pixelate
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-save-to-bufferv
+       procedure
+       (arity 4 0 #f))
+     (gdk-pixbuf-save-to-callbackv
+       procedure
+       (arity 6 0 #f))
+     (gdk-pixbuf-save-to-port
+       procedure
+       (arity 4 0 #f))
+     (gdk-pixbuf-savev procedure (arity 5 0 #f))
+     (gdk-pixbuf-scale procedure (arity 0 0 #t))
+     (gdk-pixbuf-scale-simple
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-simple-anim-add-frame
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixbuf-simple-anim-new
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixmap-colormap-create-from-xpm
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixmap-colormap-create-from-xpm-d
+       procedure
+       (arity 4 0 #f))
+     (gdk-pixmap-create-from-data
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixmap-create-from-xpm
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixmap-create-from-xpm-d
+       procedure
+       (arity 3 0 #f))
+     (gdk-pixmap-foreign-new-for-display
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixmap-foreign-new-for-screen
+       procedure
+       (arity 0 0 #t))
+     (gdk-pixmap-lookup procedure (arity 0 0 #t))
+     (gdk-pixmap-new procedure (arity 0 0 #t))
+     (gdk-pointer-grab procedure (arity 0 0 #t))
+     (gdk-pointer-is-grabbed procedure (arity 0 0 #t))
+     (gdk-pointer-ungrab procedure (arity 0 0 #t))
+     (gdk-property-change procedure (arity 0 0 #t))
+     (gdk-property-delete procedure (arity 0 0 #t))
+     (gdk-property-get procedure (arity 8 0 #f))
+     (gdk-query-depths procedure (arity 1 0 #f))
+     (gdk-query-visual-types procedure (arity 1 0 #f))
+     (gdk-rectangle-intersect
+       procedure
+       (arity 0 0 #t))
+     (gdk-rectangle-union procedure (arity 0 0 #t))
+     (gdk-region-destroy procedure (arity 0 0 #t))
+     (gdk-region-empty procedure (arity 0 0 #t))
+     (gdk-region-equal procedure (arity 0 0 #t))
+     (gdk-region-get-clipbox procedure (arity 0 0 #t))
+     (gdk-region-get-rectangles
+       procedure
+       (arity 2 0 #f))
+     (gdk-region-intersect procedure (arity 0 0 #t))
+     (gdk-region-new procedure (arity 0 0 #t))
+     (gdk-region-offset procedure (arity 0 0 #t))
+     (gdk-region-point-in procedure (arity 0 0 #t))
+     (gdk-region-polygon procedure (arity 0 0 #t))
+     (gdk-region-rect-in procedure (arity 0 0 #t))
+     (gdk-region-rectangle procedure (arity 0 0 #t))
+     (gdk-region-shrink procedure (arity 0 0 #t))
+     (gdk-region-subtract procedure (arity 0 0 #t))
+     (gdk-region-union procedure (arity 0 0 #t))
+     (gdk-region-union-with-rect
+       procedure
+       (arity 0 0 #t))
+     (gdk-region-xor procedure (arity 0 0 #t))
+     (gdk-rgb-cmap-new procedure (arity 1 0 #f))
+     (gdk-rgb-colormap-ditherable
+       procedure
+       (arity 0 0 #t))
+     (gdk-rgb-ditherable procedure (arity 0 0 #t))
+     (gdk-rgb-find-color procedure (arity 0 0 #t))
+     (gdk-rgb-gc-set-background
+       procedure
+       (arity 0 0 #t))
+     (gdk-rgb-gc-set-foreground
+       procedure
+       (arity 0 0 #t))
+     (gdk-rgb-get-colormap procedure (arity 0 0 #t))
+     (gdk-rgb-get-visual procedure (arity 0 0 #t))
+     (gdk-rgb-init procedure (arity 0 0 #t))
+     (gdk-rgb-set-install procedure (arity 0 0 #t))
+     (gdk-rgb-set-min-colors procedure (arity 0 0 #t))
+     (gdk-rgb-set-verbose procedure (arity 0 0 #t))
+     (gdk-rgb-xpixel-from-rgb
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-broadcast-client-message
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-active-window
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-default procedure (arity 0 0 #t))
+     (gdk-screen-get-default-colormap
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-display procedure (arity 0 0 #t))
+     (gdk-screen-get-font-options
+       procedure
+       (arity 1 0 #f))
+     (gdk-screen-get-height procedure (arity 0 0 #t))
+     (gdk-screen-get-height-mm
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-monitor-at-point
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-monitor-at-window
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-monitor-geometry
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-n-monitors
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-number procedure (arity 0 0 #t))
+     (gdk-screen-get-resolution
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-rgb-colormap
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-rgb-visual
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-rgba-colormap
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-rgba-visual
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-root-window
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-setting procedure (arity 0 0 #t))
+     (gdk-screen-get-system-colormap
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-system-visual
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-toplevel-windows
+       procedure
+       (arity 1 0 #f))
+     (gdk-screen-get-width procedure (arity 0 0 #t))
+     (gdk-screen-get-width-mm
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-get-window-stack
+       procedure
+       (arity 1 0 #f))
+     (gdk-screen-height procedure (arity 0 0 #t))
+     (gdk-screen-height-mm procedure (arity 0 0 #t))
+     (gdk-screen-is-composited
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-list-visuals
+       procedure
+       (arity 1 0 #f))
+     (gdk-screen-make-display-name
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-set-default-colormap
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-set-font-options
+       procedure
+       (arity 2 0 #f))
+     (gdk-screen-set-resolution
+       procedure
+       (arity 0 0 #t))
+     (gdk-screen-width procedure (arity 0 0 #t))
+     (gdk-screen-width-mm procedure (arity 0 0 #t))
+     (gdk-selection-convert procedure (arity 0 0 #t))
+     (gdk-selection-owner-get
+       procedure
+       (arity 0 0 #t))
+     (gdk-selection-owner-get-for-display
+       procedure
+       (arity 0 0 #t))
+     (gdk-selection-owner-set
+       procedure
+       (arity 0 0 #t))
+     (gdk-selection-owner-set-for-display
+       procedure
+       (arity 0 0 #t))
+     (gdk-selection-property-get
+       procedure
+       (arity 3 0 #f))
+     (gdk-selection-send-notify
+       procedure
+       (arity 0 0 #t))
+     (gdk-selection-send-notify-for-display
+       procedure
+       (arity 0 0 #t))
+     (gdk-set-double-click-time
+       procedure
+       (arity 0 0 #t))
+     (gdk-set-locale procedure (arity 0 0 #t))
+     (gdk-set-pointer-hooks procedure (arity 0 0 #t))
+     (gdk-set-program-class procedure (arity 0 0 #t))
+     (gdk-set-show-events procedure (arity 0 0 #t))
+     (gdk-set-sm-client-id procedure (arity 0 0 #t))
+     (gdk-set-use-xshm procedure (arity 0 0 #t))
+     (gdk-setting-get procedure (arity 0 0 #t))
+     (gdk-spawn-command-line-on-screen
+       procedure
+       (arity 2 0 #f))
+     (gdk-string-extents procedure (arity 2 0 #f))
+     (gdk-string-height procedure (arity 0 0 #t))
+     (gdk-string-measure procedure (arity 0 0 #t))
+     (gdk-string-width procedure (arity 0 0 #t))
+     (gdk-text-extents procedure (arity 3 0 #f))
+     (gdk-text-extents-wc procedure (arity 3 0 #f))
+     (gdk-text-height procedure (arity 0 0 #t))
+     (gdk-text-measure procedure (arity 0 0 #t))
+     (gdk-text-width procedure (arity 0 0 #t))
+     (gdk-text-width-wc procedure (arity 0 0 #t))
+     (gdk-threads-enter procedure (arity 0 0 #t))
+     (gdk-threads-init procedure (arity 0 0 #t))
+     (gdk-threads-leave procedure (arity 0 0 #t))
+     (gdk-unicode-to-keyval procedure (arity 0 0 #t))
+     (gdk-visual-get-best procedure (arity 0 0 #t))
+     (gdk-visual-get-best-depth
+       procedure
+       (arity 0 0 #t))
+     (gdk-visual-get-best-type
+       procedure
+       (arity 0 0 #t))
+     (gdk-visual-get-best-with-both
+       procedure
+       (arity 0 0 #t))
+     (gdk-visual-get-best-with-depth
+       procedure
+       (arity 0 0 #t))
+     (gdk-visual-get-best-with-type
+       procedure
+       (arity 0 0 #t))
+     (gdk-visual-get-screen procedure (arity 0 0 #t))
+     (gdk-visual-get-system procedure (arity 0 0 #t))
+     (gdk-window-add-filter procedure (arity 0 0 #t))
+     (gdk-window-at-pointer procedure (arity 0 0 #f))
+     (gdk-window-begin-move-drag
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-begin-paint-rect
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-begin-paint-region
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-begin-resize-drag
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-clear procedure (arity 0 0 #t))
+     (gdk-window-clear-area procedure (arity 0 0 #t))
+     (gdk-window-clear-area-e
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-configure-finished
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-constrain-size
+       procedure
+       (arity 4 0 #f))
+     (gdk-window-deiconify procedure (arity 0 0 #t))
+     (gdk-window-destroy procedure (arity 0 0 #t))
+     (gdk-window-enable-synchronized-configure
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-end-paint procedure (arity 0 0 #t))
+     (gdk-window-focus procedure (arity 0 0 #t))
+     (gdk-window-foreign-new-for-display
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-freeze-updates
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-fullscreen procedure (arity 0 0 #t))
+     (gdk-window-get-children
+       procedure
+       (arity 1 0 #f))
+     (gdk-window-get-decorations
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-get-deskrelative-origin
+       procedure
+       (arity 1 0 #f))
+     (gdk-window-get-events procedure (arity 0 0 #t))
+     (gdk-window-get-frame-extents
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-get-geometry
+       procedure
+       (arity 1 0 #f))
+     (gdk-window-get-group procedure (arity 0 0 #t))
+     (gdk-window-get-internal-paint-info
+       procedure
+       (arity 2 0 #f))
+     (gdk-window-get-origin procedure (arity 1 0 #f))
+     (gdk-window-get-parent procedure (arity 0 0 #t))
+     (gdk-window-get-pointer procedure (arity 2 0 #f))
+     (gdk-window-get-position
+       procedure
+       (arity 1 0 #f))
+     (gdk-window-get-root-origin
+       procedure
+       (arity 1 0 #f))
+     (gdk-window-get-state procedure (arity 0 0 #t))
+     (gdk-window-get-toplevel
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-get-toplevels
+       procedure
+       (arity 0 0 #f))
+     (gdk-window-get-type-hint
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-get-update-area
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-get-window-type
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-hide procedure (arity 0 0 #t))
+     (gdk-window-iconify procedure (arity 0 0 #t))
+     (gdk-window-input-shape-combine-mask
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-input-shape-combine-region
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-invalidate-rect
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-invalidate-region
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-is-viewable procedure (arity 0 0 #t))
+     (gdk-window-is-visible procedure (arity 0 0 #t))
+     (gdk-window-lookup procedure (arity 0 0 #t))
+     (gdk-window-lower procedure (arity 0 0 #t))
+     (gdk-window-maximize procedure (arity 0 0 #t))
+     (gdk-window-merge-child-input-shapes
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-merge-child-shapes
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-move procedure (arity 0 0 #t))
+     (gdk-window-move-region procedure (arity 0 0 #t))
+     (gdk-window-move-resize procedure (arity 0 0 #t))
+     (gdk-window-new procedure (arity 0 0 #t))
+     (gdk-window-process-all-updates
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-process-updates
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-raise procedure (arity 0 0 #t))
+     (gdk-window-register-dnd
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-remove-filter
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-reparent procedure (arity 0 0 #t))
+     (gdk-window-resize procedure (arity 0 0 #t))
+     (gdk-window-scroll procedure (arity 0 0 #t))
+     (gdk-window-set-accept-focus
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-back-pixmap
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-background
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-child-input-shapes
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-child-shapes
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-cursor procedure (arity 0 0 #t))
+     (gdk-window-set-debug-updates
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-decorations
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-events procedure (arity 0 0 #t))
+     (gdk-window-set-focus-on-map
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-functions
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-geometry-hints
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-group procedure (arity 0 0 #t))
+     (gdk-window-set-hints procedure (arity 0 0 #t))
+     (gdk-window-set-icon procedure (arity 0 0 #t))
+     (gdk-window-set-icon-list
+       procedure
+       (arity 2 0 #f))
+     (gdk-window-set-icon-name
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-keep-above
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-keep-below
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-modal-hint
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-override-redirect
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-role procedure (arity 0 0 #t))
+     (gdk-window-set-skip-pager-hint
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-skip-taskbar-hint
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-static-gravities
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-title procedure (arity 0 0 #t))
+     (gdk-window-set-transient-for
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-type-hint
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-urgency-hint
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-set-user-data
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-shape-combine-mask
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-shape-combine-region
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-show procedure (arity 0 0 #t))
+     (gdk-window-show-unraised
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-stick procedure (arity 0 0 #t))
+     (gdk-window-thaw-updates
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-unfullscreen
+       procedure
+       (arity 0 0 #t))
+     (gdk-window-unmaximize procedure (arity 0 0 #t))
+     (gdk-window-unstick procedure (arity 0 0 #t))
+     (gdk-window-withdraw procedure (arity 0 0 #t))))
+  ((gnome gw generics)
+   (uses-interfaces (gnome gobject generics))
+   (typed-exports)))

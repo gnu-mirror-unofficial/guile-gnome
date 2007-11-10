@@ -1,3 +1,21 @@
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk.scm: Only re-export the wrapset modules, gdk and gtk.
+	This could break current code, will need to be very vocal about
+	this change. We probably shouldn't even re-export gdk.
+
+	* gnome/gtk/gdk-event.scm: Export symbols explicity instead of
+	using the re-export-self trick. This way we don't export guile,
+	(oop goops), etc.
+
+	* tests/Makefile.am:
+	* tests/gtk/Makefile.am:
+	* tests/gtk/wrapset.api:
+	* tests/gtk/wrapset.scm:
+	* tests/gdk/Makefile.am:
+	* tests/gdk/wrapset.api:
+	* tests/gdk/wrapset.scm: Add API regression test suite.
+
 2007-09-25  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.94 ==
