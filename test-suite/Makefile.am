@@ -30,9 +30,17 @@ CLEANFILES = $(wildcard gnome-*.log test-*.log) 		\
              $(wildcard gw-test-gobject.* gw-test-glib.*) 	\
 	     guile-gobject.log
 
+wrapset_stem = glib
+
+top_module_name = (gnome $(wrapset_stem))
+gw_module_name = (gnome gw $(wrapset_stem))
+extra_module_names =
+wrapset_modules = ($(top_module_name) $(gw_module_name) $(extra_module_names))
 TESTS_ENVIRONMENT=\
 	API_FILE=$(srcdir)/gobject.api \
 	DOC_SCM=$(srcdir)/../doc/gobject/guile-gnome-gobject.scm \
+	WRAPSET_MODULES="$(wrapset_modules)" \
+	WRAPSET_API_FILE=$(srcdir)/wrapset.api \
 	$(top_builddir)/dev-environ guile --debug -e main -s
 
 script := '(load (getenv "DOC_SCM"))\
@@ -46,13 +54,19 @@ gobject.api.update:
 	  $(shell DOC_SCM=$(srcdir)/../doc/gobject/guile-gnome-gobject.scm \
 	     guile -c $(script)) > $(srcdir)/gobject.api
 
+wrapset.api.update:
+	WRAPSET_MODULES="$(wrapset_modules)" \
+	WRAPSET_API_FILE=$(srcdir)/wrapset.api \
+	$(top_builddir)/dev-environ guile --debug -e update-api -s $(srcdir)/wrapset.scm
+
 %.check: %
 	$(TESTS_ENVIRONMENT) $(srcdir)/$*
 
 EXTRA_DIST+=gobject.api api.scm
 
 TESTS = guile-gobject-test \
-	api.scm
+	api.scm \
+	wrapset.scm
 
 gw-test-%.scm gw-test-%.c: gw-test-%-spec.scm
 	echo GLP=$(GUILE_LOAD_PATH)

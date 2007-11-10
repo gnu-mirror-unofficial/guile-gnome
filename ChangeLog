@@ -1,5 +1,13 @@
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
+	* test-suite/Makefile.am: Add makefile foo for the wrapset api
+	check.
+
+	* test-suite/wrapset.scm: New check for api stability in the
+	g-wrap-generated glib wrapset.
+
+	* test-suite/wrapset.api: New file, defines the glib API.
+
 	* gnome/gw/support/gtk-doc.scm (extract-defs)
 	(check-documentation-coverage): New export,
 	check-documentation-coverage, which looks at a texinfo file and a

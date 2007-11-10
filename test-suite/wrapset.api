@@ -1,0 +1,510 @@
+(module-api
+  (version 1 0)
+  ((gnome glib)
+   (uses-interfaces (gnome gw glib))
+   (typed-exports
+     (g-error-code procedure (arity 1 0 #f))
+     (g-error-domain procedure (arity 1 0 #f))
+     (g-error-message procedure (arity 1 0 #f))
+     (g-idle-add procedure (arity 1 0 #f))
+     (g-main-loop-console-repl
+       procedure
+       (arity 0 0 #f))
+     (g-source-set-closure procedure (arity 0 0 #t))
+     (g-timeout-add procedure (arity 2 0 #f))))
+  ((gnome gobject generics)
+   (uses-interfaces)
+   (typed-exports
+     (block generic (<gtype-instance> <top>))
+     (connect
+       generic
+       <top>
+       (<gtype-instance> <symbol> <procedure>))
+     (connect-after
+       generic
+       (<gtype-instance> <symbol> <procedure>))
+     (connected? generic (<gtype-instance> <top>))
+     (create-signal
+       generic
+       (<gtype-class> <symbol> <top> <top>))
+     (disconnect generic (<gtype-instance> <top>))
+     (emit generic
+           (<gtype-instance> <symbol> . <top>))
+     (find-property generic (<gtype-class> <symbol>))
+     (get generic (<gobject> <symbol>))
+     (get-properties generic (<gtype-class>))
+     (get-property-names generic (<gtype-class>))
+     (get-signals generic (<gtype-class>))
+     (invoke generic (<gclosure> . <top>))
+     (set generic (<gobject> <symbol> <top>))
+     (unblock generic (<gtype-instance> <top>))))
+  ((gnome gw generics)
+   (uses-interfaces (gnome gobject generics))
+   (typed-exports))
+  ((gnome gw glib)
+   (uses-interfaces (gnome gw generics))
+   (typed-exports
+     (<g-bookmark-file*> <gw:wct>)
+     (<g-main-context*> <gw:wct>)
+     (<g-main-loop*> <gw:wct>)
+     (<g-poll-fd*> <gw:wct>)
+     (<g-source*> <gw:wct>)
+     (<g-source-funcs*> <gw:wct>)
+     (<g-string*> <gw:wct>)
+     (<g-time-val*> <gw:wct>)
+     (<gchar**> <gw:wct>)
+     (<gio-channel*> <gw:wct>)
+     (<gpointer*> <gw:wct>)
+     (<guchar*> <gw:wct>)
+     (<gunichar*> <gw:wct>)
+     (<gunichar2*> <gw:wct>)
+     (enum-<g-bookmark-file-error>-val->int
+       procedure
+       (arity 1 0 #f))
+     (enum-<g-bookmark-file-error>-val->sym
+       procedure
+       (arity 2 0 #f))
+     (enum-<g-file-error>-val->int
+       procedure
+       (arity 1 0 #f))
+     (enum-<g-file-error>-val->sym
+       procedure
+       (arity 2 0 #f))
+     (enum-<g-file-test>-val->int
+       procedure
+       (arity 1 0 #f))
+     (enum-<g-file-test>-val->sym
+       procedure
+       (arity 2 0 #f))
+     (enum-<g-normalize-mode>-val->int
+       procedure
+       (arity 1 0 #f))
+     (enum-<g-normalize-mode>-val->sym
+       procedure
+       (arity 2 0 #f))
+     (enum-<g-seek-type>-val->int
+       procedure
+       (arity 1 0 #f))
+     (enum-<g-seek-type>-val->sym
+       procedure
+       (arity 2 0 #f))
+     (enum-<g-unicode-break-type>-val->int
+       procedure
+       (arity 1 0 #f))
+     (enum-<g-unicode-break-type>-val->sym
+       procedure
+       (arity 2 0 #f))
+     (enum-<g-unicode-type>-val->int
+       procedure
+       (arity 1 0 #f))
+     (enum-<g-unicode-type>-val->sym
+       procedure
+       (arity 2 0 #f))
+     (enum-<gio-channel-error>-val->int
+       procedure
+       (arity 1 0 #f))
+     (enum-<gio-channel-error>-val->sym
+       procedure
+       (arity 2 0 #f))
+     (enum-<gio-condition>-val->int
+       procedure
+       (arity 1 0 #f))
+     (enum-<gio-condition>-val->sym
+       procedure
+       (arity 2 0 #f))
+     (enum-<gio-error>-val->int
+       procedure
+       (arity 1 0 #f))
+     (enum-<gio-error>-val->sym
+       procedure
+       (arity 2 0 #f))
+     (enum-<gio-flags>-val->int
+       procedure
+       (arity 1 0 #f))
+     (enum-<gio-flags>-val->sym
+       procedure
+       (arity 2 0 #f))
+     (enum-<gio-status>-val->int
+       procedure
+       (arity 1 0 #f))
+     (enum-<gio-status>-val->sym
+       procedure
+       (arity 2 0 #f))
+     (g-base64-decode procedure (arity 1 0 #f))
+     (g-base64-encode procedure (arity 0 0 #t))
+     (g-basename procedure (arity 0 0 #t))
+     (g-bookmark-file-add-application
+       procedure
+       (arity 0 0 #t))
+     (g-bookmark-file-add-group
+       procedure
+       (arity 0 0 #t))
+     (g-bookmark-file-error-quark
+       procedure
+       (arity 0 0 #t))
+     (g-bookmark-file-free procedure (arity 0 0 #t))
+     (g-bookmark-file-get-added
+       procedure
+       (arity 2 0 #f))
+     (g-bookmark-file-get-app-info
+       procedure
+       (arity 3 0 #f))
+     (g-bookmark-file-get-applications
+       procedure
+       (arity 2 0 #f))
+     (g-bookmark-file-get-description
+       procedure
+       (arity 2 0 #f))
+     (g-bookmark-file-get-groups
+       procedure
+       (arity 2 0 #f))
+     (g-bookmark-file-get-icon
+       procedure
+       (arity 2 0 #f))
+     (g-bookmark-file-get-is-private
+       procedure
+       (arity 2 0 #f))
+     (g-bookmark-file-get-mime-type
+       procedure
+       (arity 2 0 #f))
+     (g-bookmark-file-get-modified
+       procedure
+       (arity 2 0 #f))
+     (g-bookmark-file-get-size
+       procedure
+       (arity 0 0 #t))
+     (g-bookmark-file-get-title
+       procedure
+       (arity 2 0 #f))
+     (g-bookmark-file-get-uris
+       procedure
+       (arity 1 0 #f))
+     (g-bookmark-file-get-visited
+       procedure
+       (arity 2 0 #f))
+     (g-bookmark-file-has-application
+       procedure
+       (arity 3 0 #f))
+     (g-bookmark-file-has-group
+       procedure
+       (arity 3 0 #f))
+     (g-bookmark-file-has-item
+       procedure
+       (arity 0 0 #t))
+     (g-bookmark-file-load-from-data
+       procedure
+       (arity 3 0 #f))
+     (g-bookmark-file-load-from-data-dirs
+       procedure
+       (arity 2 0 #f))
+     (g-bookmark-file-load-from-file
+       procedure
+       (arity 2 0 #f))
+     (g-bookmark-file-move-item
+       procedure
+       (arity 3 0 #f))
+     (g-bookmark-file-new procedure (arity 0 0 #t))
+     (g-bookmark-file-remove-application
+       procedure
+       (arity 3 0 #f))
+     (g-bookmark-file-remove-group
+       procedure
+       (arity 3 0 #f))
+     (g-bookmark-file-remove-item
+       procedure
+       (arity 2 0 #f))
+     (g-bookmark-file-set-added
+       procedure
+       (arity 0 0 #t))
+     (g-bookmark-file-set-app-info
+       procedure
+       (arity 6 0 #f))
+     (g-bookmark-file-set-description
+       procedure
+       (arity 0 0 #t))
+     (g-bookmark-file-set-groups
+       procedure
+       (arity 0 0 #t))
+     (g-bookmark-file-set-icon
+       procedure
+       (arity 0 0 #t))
+     (g-bookmark-file-set-is-private
+       procedure
+       (arity 0 0 #t))
+     (g-bookmark-file-set-mime-type
+       procedure
+       (arity 0 0 #t))
+     (g-bookmark-file-set-modified
+       procedure
+       (arity 0 0 #t))
+     (g-bookmark-file-set-title
+       procedure
+       (arity 0 0 #t))
+     (g-bookmark-file-set-visited
+       procedure
+       (arity 0 0 #t))
+     (g-bookmark-file-to-data
+       procedure
+       (arity 1 0 #f))
+     (g-bookmark-file-to-file
+       procedure
+       (arity 2 0 #f))
+     (g-child-watch-source-new
+       procedure
+       (arity 0 0 #t))
+     (g-file-error-from-errno
+       procedure
+       (arity 0 0 #t))
+     (g-file-error-quark procedure (arity 0 0 #t))
+     (g-file-get-contents procedure (arity 1 0 #f))
+     (g-file-open-tmp procedure (arity 1 0 #f))
+     (g-file-read-link procedure (arity 1 0 #f))
+     (g-file-test procedure (arity 0 0 #t))
+     (g-filename-display-basename
+       procedure
+       (arity 0 0 #t))
+     (g-filename-display-name
+       procedure
+       (arity 0 0 #t))
+     (g-filename-from-uri procedure (arity 1 0 #f))
+     (g-filename-from-utf8 procedure (arity 2 0 #f))
+     (g-filename-to-uri procedure (arity 2 0 #f))
+     (g-filename-to-utf8 procedure (arity 2 0 #f))
+     (g-find-program-in-path procedure (arity 0 0 #t))
+     (g-get-application-name procedure (arity 0 0 #t))
+     (g-get-current-dir procedure (arity 0 0 #t))
+     (g-get-current-time procedure (arity 0 0 #t))
+     (g-get-home-dir procedure (arity 0 0 #t))
+     (g-get-host-name procedure (arity 0 0 #t))
+     (g-get-prgname procedure (arity 0 0 #t))
+     (g-get-real-name procedure (arity 0 0 #t))
+     (g-get-tmp-dir procedure (arity 0 0 #t))
+     (g-get-user-cache-dir procedure (arity 0 0 #t))
+     (g-get-user-config-dir procedure (arity 0 0 #t))
+     (g-get-user-data-dir procedure (arity 0 0 #t))
+     (g-get-user-name procedure (arity 0 0 #t))
+     (g-getenv procedure (arity 0 0 #t))
+     (g-idle-source-new procedure (arity 0 0 #t))
+     (g-io-add-watch procedure (arity 0 0 #t))
+     (g-io-channel-close procedure (arity 0 0 #t))
+     (g-io-channel-error-from-errno
+       procedure
+       (arity 0 0 #t))
+     (g-io-channel-error-quark
+       procedure
+       (arity 0 0 #t))
+     (g-io-channel-flush procedure (arity 1 0 #f))
+     (g-io-channel-get-buffer-condition
+       procedure
+       (arity 0 0 #t))
+     (g-io-channel-get-buffer-size
+       procedure
+       (arity 0 0 #t))
+     (g-io-channel-get-buffered
+       procedure
+       (arity 0 0 #t))
+     (g-io-channel-get-close-on-unref
+       procedure
+       (arity 0 0 #t))
+     (g-io-channel-get-encoding
+       procedure
+       (arity 0 0 #t))
+     (g-io-channel-get-flags procedure (arity 0 0 #t))
+     (g-io-channel-get-line-term
+       procedure
+       (arity 1 0 #f))
+     (g-io-channel-init procedure (arity 0 0 #t))
+     (g-io-channel-new-file procedure (arity 1 1 #f))
+     (g-io-channel-read procedure (arity 3 0 #f))
+     (g-io-channel-read-chars
+       procedure
+       (arity 3 0 #f))
+     (g-io-channel-read-line procedure (arity 1 0 #f))
+     (g-io-channel-read-line-string
+       procedure
+       (arity 2 0 #f))
+     (g-io-channel-read-to-end
+       procedure
+       (arity 1 0 #f))
+     (g-io-channel-read-unichar
+       procedure
+       (arity 1 0 #f))
+     (g-io-channel-ref procedure (arity 0 0 #t))
+     (g-io-channel-seek procedure (arity 0 0 #t))
+     (g-io-channel-seek-position
+       procedure
+       (arity 2 1 #f))
+     (g-io-channel-set-buffer-size
+       procedure
+       (arity 0 0 #t))
+     (g-io-channel-set-buffered
+       procedure
+       (arity 0 0 #t))
+     (g-io-channel-set-close-on-unref
+       procedure
+       (arity 0 0 #t))
+     (g-io-channel-set-encoding
+       procedure
+       (arity 2 0 #f))
+     (g-io-channel-set-flags procedure (arity 2 0 #f))
+     (g-io-channel-set-line-term
+       procedure
+       (arity 0 0 #t))
+     (g-io-channel-shutdown procedure (arity 2 0 #f))
+     (g-io-channel-unix-get-fd
+       procedure
+       (arity 0 0 #t))
+     (g-io-channel-unix-new procedure (arity 0 0 #t))
+     (g-io-channel-unref procedure (arity 0 0 #t))
+     (g-io-channel-write procedure (arity 3 0 #f))
+     (g-io-channel-write-chars
+       procedure
+       (arity 3 0 #f))
+     (g-io-channel-write-unichar
+       procedure
+       (arity 2 0 #f))
+     (g-io-create-watch procedure (arity 0 0 #t))
+     (g-locale-from-utf8 procedure (arity 2 0 #f))
+     (g-locale-to-utf8 procedure (arity 2 0 #f))
+     (g-main-context-acquire procedure (arity 0 0 #t))
+     (g-main-context-add-poll
+       procedure
+       (arity 2 1 #f))
+     (g-main-context-check procedure (arity 0 0 #t))
+     (g-main-context-default procedure (arity 0 0 #t))
+     (g-main-context-dispatch
+       procedure
+       (arity 0 0 #t))
+     (g-main-context-find-source-by-id
+       procedure
+       (arity 0 0 #t))
+     (g-main-context-is-owner
+       procedure
+       (arity 0 0 #t))
+     (g-main-context-iteration
+       procedure
+       (arity 1 1 #f))
+     (g-main-context-new procedure (arity 0 0 #t))
+     (g-main-context-pending procedure (arity 0 0 #t))
+     (g-main-context-prepare procedure (arity 1 0 #f))
+     (g-main-context-query procedure (arity 4 0 #f))
+     (g-main-context-ref procedure (arity 0 0 #t))
+     (g-main-context-release procedure (arity 0 0 #t))
+     (g-main-context-remove-poll
+       procedure
+       (arity 0 0 #t))
+     (g-main-context-unref procedure (arity 0 0 #t))
+     (g-main-context-wakeup procedure (arity 0 0 #t))
+     (g-main-current-source procedure (arity 0 0 #t))
+     (g-main-depth procedure (arity 0 0 #t))
+     (g-main-loop-get-context
+       procedure
+       (arity 0 0 #t))
+     (g-main-loop-is-running procedure (arity 0 0 #t))
+     (g-main-loop-new procedure (arity 0 2 #f))
+     (g-main-loop-quit procedure (arity 0 0 #t))
+     (g-main-loop-ref procedure (arity 0 0 #t))
+     (g-main-loop-run procedure (arity 0 0 #t))
+     (g-main-loop-unref procedure (arity 0 0 #t))
+     (g-mkstemp procedure (arity 0 0 #t))
+     (g-nullify-pointer procedure (arity 0 0 #t))
+     (g-path-get-basename procedure (arity 0 0 #t))
+     (g-path-get-dirname procedure (arity 0 0 #t))
+     (g-path-is-absolute procedure (arity 0 0 #t))
+     (g-path-skip-root procedure (arity 0 0 #t))
+     (g-quark-from-string procedure (arity 0 0 #t))
+     (g-quark-to-string procedure (arity 0 0 #t))
+     (g-quark-try-string procedure (arity 0 0 #t))
+     (g-set-application-name procedure (arity 0 0 #t))
+     (g-set-prgname procedure (arity 0 0 #t))
+     (g-setenv procedure (arity 0 0 #t))
+     (g-shell-quote procedure (arity 0 0 #t))
+     (g-shell-unquote procedure (arity 1 0 #f))
+     (g-source-add-poll procedure (arity 0 0 #t))
+     (g-source-attach procedure (arity 1 1 #f))
+     (g-source-destroy procedure (arity 0 0 #t))
+     (g-source-get-can-recurse
+       procedure
+       (arity 0 0 #t))
+     (g-source-get-context procedure (arity 0 0 #t))
+     (g-source-get-current-time
+       procedure
+       (arity 0 0 #t))
+     (g-source-get-id procedure (arity 0 0 #t))
+     (g-source-get-priority procedure (arity 0 0 #t))
+     (g-source-is-destroyed procedure (arity 0 0 #t))
+     (g-source-new procedure (arity 0 0 #t))
+     (g-source-ref procedure (arity 0 0 #t))
+     (g-source-remove procedure (arity 0 0 #t))
+     (g-source-remove-poll procedure (arity 0 0 #t))
+     (g-source-set-can-recurse
+       procedure
+       (arity 0 0 #t))
+     (g-source-set-priority procedure (arity 0 0 #t))
+     (g-source-unref procedure (arity 0 0 #t))
+     (g-string-get-str procedure (arity 0 0 #t))
+     (g-string-new procedure (arity 0 1 #f))
+     (g-timeout-source-new procedure (arity 0 0 #t))
+     (g-ucs4-to-utf16 procedure (arity 2 0 #f))
+     (g-ucs4-to-utf8 procedure (arity 2 0 #f))
+     (g-unichar-break-type procedure (arity 0 0 #t))
+     (g-unichar-digit-value procedure (arity 0 0 #t))
+     (g-unichar-get-mirror-char
+       procedure
+       (arity 1 0 #f))
+     (g-unichar-isalnum procedure (arity 0 0 #t))
+     (g-unichar-isalpha procedure (arity 0 0 #t))
+     (g-unichar-iscntrl procedure (arity 0 0 #t))
+     (g-unichar-isdefined procedure (arity 0 0 #t))
+     (g-unichar-isdigit procedure (arity 0 0 #t))
+     (g-unichar-isgraph procedure (arity 0 0 #t))
+     (g-unichar-islower procedure (arity 0 0 #t))
+     (g-unichar-isprint procedure (arity 0 0 #t))
+     (g-unichar-ispunct procedure (arity 0 0 #t))
+     (g-unichar-isspace procedure (arity 0 0 #t))
+     (g-unichar-istitle procedure (arity 0 0 #t))
+     (g-unichar-isupper procedure (arity 0 0 #t))
+     (g-unichar-iswide procedure (arity 0 0 #t))
+     (g-unichar-iswide-cjk procedure (arity 0 0 #t))
+     (g-unichar-isxdigit procedure (arity 0 0 #t))
+     (g-unichar-to-utf8 procedure (arity 0 0 #t))
+     (g-unichar-tolower procedure (arity 0 0 #t))
+     (g-unichar-totitle procedure (arity 0 0 #t))
+     (g-unichar-toupper procedure (arity 0 0 #t))
+     (g-unichar-type procedure (arity 0 0 #t))
+     (g-unichar-validate procedure (arity 0 0 #t))
+     (g-unichar-xdigit-value procedure (arity 0 0 #t))
+     (g-unsetenv procedure (arity 0 0 #t))
+     (g-utf16-to-ucs4 procedure (arity 2 0 #f))
+     (g-utf16-to-utf8 procedure (arity 2 0 #f))
+     (g-utf8-casefold procedure (arity 0 0 #t))
+     (g-utf8-collate procedure (arity 0 0 #t))
+     (g-utf8-collate-key procedure (arity 0 0 #t))
+     (g-utf8-collate-key-for-filename
+       procedure
+       (arity 0 0 #t))
+     (g-utf8-find-next-char procedure (arity 0 0 #t))
+     (g-utf8-find-prev-char procedure (arity 0 0 #t))
+     (g-utf8-get-char procedure (arity 0 0 #t))
+     (g-utf8-get-char-validated
+       procedure
+       (arity 0 0 #t))
+     (g-utf8-normalize procedure (arity 0 0 #t))
+     (g-utf8-offset-to-pointer
+       procedure
+       (arity 0 0 #t))
+     (g-utf8-pointer-to-offset
+       procedure
+       (arity 0 0 #t))
+     (g-utf8-prev-char procedure (arity 0 0 #t))
+     (g-utf8-strchr procedure (arity 0 0 #t))
+     (g-utf8-strdown procedure (arity 0 0 #t))
+     (g-utf8-strlen procedure (arity 0 0 #t))
+     (g-utf8-strncpy procedure (arity 0 0 #t))
+     (g-utf8-strrchr procedure (arity 0 0 #t))
+     (g-utf8-strreverse procedure (arity 0 0 #t))
+     (g-utf8-strup procedure (arity 0 0 #t))
+     (g-utf8-to-ucs4 procedure (arity 2 0 #f))
+     (g-utf8-to-ucs4-fast procedure (arity 2 0 #f))
+     (g-utf8-to-utf16 procedure (arity 2 0 #f))
+     (g-utf8-validate procedure (arity 0 0 #t)))))
