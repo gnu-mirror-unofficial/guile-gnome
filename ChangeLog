@@ -1,5 +1,9 @@
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.95 ==
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
 	* package.ac: 
 	* gnome/gw/Makefile.am: Actually link against pangocairo libs,
 	without which (gnome gw pangocairo) won't even load.
