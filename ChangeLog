@@ -1,5 +1,9 @@
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.95 ==
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
 	* gnome/gtk.scm: Only re-export the wrapset modules, gdk and gtk.
 	This could break current code, will need to be very vocal about
 	this change. We probably shouldn't even re-export gdk.

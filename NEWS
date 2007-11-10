@@ -1,12 +1,25 @@
 guile-gnome-gtk NEWS --- history of user-visible changes.
 Copyright (C) 2004,2005,2006,2007 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 25 Sep 2007.
+Last updated 10 Nov 2007.
 
 
 guile-gnome-gtk is a Guile binding for GTK+ and GDK. It is part of GNU
 guile-gnome. This file documents the user-visible changes in
 guile-gnome-gtk only.
+
+
+guile-gnome-gtk 2.15.95 - Andy Wingo, 2007-11-10
+================================================
+
+* Incompatible change: (gnome gtk) only exports GDK and GTK functions
+
+(gnome gtk) used to re-export (oop goops), (gnome gobject), and a number
+of other modules. This was changed so that we could guarantee a stable
+interface for (gnome gtk); if you want other modules, you should
+explicitly require them.
+
+* Added API regression test suite.
 
 
 guile-gnome-gtk 2.15.94 - Andy Wingo, 2007-09-25
