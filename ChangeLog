@@ -5,6 +5,7 @@
 	check-documentation-coverage, which looks at a texinfo file and a
 	set of modules to determine which exports of the modules are
 	undocumented.
+	(check-documentation-coverage): Sort the undocumented symbol list.
 
 2007-11-01  Andy Wingo  <wingo@pobox.com>
 

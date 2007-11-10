@@ -714,6 +714,13 @@ procedures, e.g. @code{(cairo)}."
              (display docs)))))
      files)))
 
+(define (symbolcomp pred)
+  (lambda (a b)
+    (pred (symbol->string a) (symbol->string b))))
+
+(define symbol<?
+  (symbolcomp string<?))
+
 (define (extract-defs stexi)
   (let ((commands (fold (lambda (def rest)
                           (if (string-prefix? "def" (symbol->string (car def)))
@@ -749,4 +756,4 @@ to the current output port."
     (for-each
      (lambda (sym)
        (format #t "  ~A\n" sym))
-     undocumented)))
+     (sort undocumented symbol<?))))
