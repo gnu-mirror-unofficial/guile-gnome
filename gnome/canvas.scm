@@ -25,10 +25,11 @@
 ;;; Code:
 
 (define-module (gnome canvas)
+  #:use-module (oop goops)
+  #:use-module (gnome gobject)
   #:use-module (gnome gw canvas)
+  #:use-module (gnome gw generics)
   #:use-module (gnome gw support modules))
-
-(use-modules (gnome gw canvas))
 
 (define-class <gnome-canvas-path-def> (<gobject>)
   ;;(closure #:init-value (gnome-canvas-path-def-new)
@@ -47,9 +48,6 @@
 (define-method (reset (this <gnome-canvas-path-def>))
   (gnome-canvas-path-def-reset (get-def this)))
 
-(define -set-path-def set-path-def)
-(define -get-path-def get-path-def)
-
 (define-method (set-path-def (this <gnome-canvas-shape>)
 			     (def <gnome-canvas-path-def>))
   (-set-path-def this (get-def def)))
@@ -59,8 +57,7 @@
 
 (export <gnome-canvas-path-def>
 	get-def set-def
-	moveto curveto lineto closepath reset
-	set-path-def get-path-def)
+	moveto curveto lineto closepath)
 
 (re-export-modules (gnome gw canvas))
 

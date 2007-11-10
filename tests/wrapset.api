@@ -1,0 +1,312 @@
+(module-api
+  (version 1 0)
+  ((gnome canvas)
+   (uses-interfaces (gnome gw canvas))
+   (typed-exports
+     (<gnome-canvas-path-def> class)
+     (closepath generic (<gnome-canvas-path-def>))
+     (curveto
+       generic
+       (<gnome-canvas-path-def>
+         <top>
+         <top>
+         <top>
+         <top>
+         <top>
+         <top>))
+     (get-def generic (<gnome-canvas-path-def>))
+     (lineto
+       generic
+       (<gnome-canvas-path-def> <top> <top>))
+     (moveto
+       generic
+       (<gnome-canvas-path-def> <top> <top>))
+     (set-def generic (<gnome-canvas-path-def> <top>))))
+  ((gnome gobject generics)
+   (uses-interfaces)
+   (typed-exports
+     (block generic (<gtype-instance> <top>))
+     (connect
+       generic
+       <top>
+       (<gtype-instance> <symbol> <procedure>))
+     (connect-after
+       generic
+       (<gtype-instance> <symbol> <procedure>))
+     (connected? generic (<gtype-instance> <top>))
+     (create-signal
+       generic
+       (<gtype-class> <symbol> <top> <top>))
+     (disconnect generic (<gtype-instance> <top>))
+     (emit generic
+           (<gtype-instance> <symbol> . <top>))
+     (find-property generic (<gtype-class> <symbol>))
+     (get generic (<gobject> <symbol>))
+     (get-properties generic (<gtype-class>))
+     (get-property-names generic (<gtype-class>))
+     (get-signals generic (<gtype-class>))
+     (invoke generic (<gclosure> . <top>))
+     (set generic (<gobject> <symbol> <top>))
+     (unblock generic (<gtype-instance> <top>))))
+  ((gnome gw canvas)
+   (uses-interfaces (gnome gw generics))
+   (typed-exports
+     (<art-bpath*> <gw:wct>)
+     (<art-point*> <gw:wct>)
+     (<art-svp*> <gw:wct>)
+     (<gnome-canvas-buf*> <gw:wct>)
+     (<gnome-canvas-path-def*> <gw:wct>)
+     (<gnome-canvas-shape> class)
+     (gnome-canvas-buf-ensure-buf
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-c2w procedure (arity 3 0 #f))
+     (gnome-canvas-get-butt-points
+       procedure
+       (arity 6 0 #f))
+     (gnome-canvas-get-center-scroll-region
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-get-color procedure (arity 0 0 #t))
+     (gnome-canvas-get-color-pixel
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-get-dither
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-get-item-at
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-get-miter-points
+       procedure
+       (arity 7 0 #f))
+     (gnome-canvas-get-scroll-offsets
+       procedure
+       (arity 1 0 #f))
+     (gnome-canvas-get-scroll-region
+       procedure
+       (arity 1 0 #f))
+     (gnome-canvas-item-affine-absolute
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-item-affine-relative
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-item-get-bounds
+       procedure
+       (arity 1 0 #f))
+     (gnome-canvas-item-grab procedure (arity 0 0 #t))
+     (gnome-canvas-item-grab-focus
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-item-hide procedure (arity 0 0 #t))
+     (gnome-canvas-item-i2w procedure (arity 1 0 #f))
+     (gnome-canvas-item-lower
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-item-lower-to-bottom
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-item-move procedure (arity 0 0 #t))
+     (gnome-canvas-item-raise
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-item-raise-to-top
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-item-reparent
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-item-request-redraw-svp
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-item-request-update
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-item-reset-bounds
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-item-show procedure (arity 0 0 #t))
+     (gnome-canvas-item-ungrab
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-item-w2i procedure (arity 1 0 #f))
+     (gnome-canvas-new procedure (arity 0 0 #t))
+     (gnome-canvas-new-aa procedure (arity 0 0 #t))
+     (gnome-canvas-path-def-all-closed
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-all-open
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-any-closed
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-any-open
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-bpath
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-close-all
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-closed-parts
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-closepath
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-closepath-current
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-concat
+       procedure
+       (arity 1 0 #f))
+     (gnome-canvas-path-def-currentpoint
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-curveto
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-duplicate
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-ensure-space
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-finish
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-first-bpath
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-has-currentpoint
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-is-empty
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-last-bpath
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-length
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-lineto
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-lineto-moving
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-moveto
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-new
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-new-from-bpath
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-new-from-foreign-bpath
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-new-from-static-bpath
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-new-sized
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-open-parts
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-reset
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-path-def-split
+       procedure
+       (arity 1 0 #f))
+     (gnome-canvas-points-new
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-polygon-to-point
+       procedure
+       (arity 3 0 #f))
+     (gnome-canvas-render-svp
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-request-redraw
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-rich-text-copy-clipboard
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-rich-text-cut-clipboard
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-rich-text-get-buffer
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-rich-text-get-iter-at-location
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-rich-text-get-iter-location
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-rich-text-paste-clipboard
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-rich-text-set-buffer
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-root procedure (arity 0 0 #t))
+     (gnome-canvas-scroll-to procedure (arity 0 0 #t))
+     (gnome-canvas-set-center-scroll-region
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-set-dither
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-set-pixels-per-unit
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-set-scroll-region
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-set-stipple-origin
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-shape-get-path-def
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-shape-set-path-def
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-update-bbox
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-update-now
+       procedure
+       (arity 0 0 #t))
+     (gnome-canvas-w2c procedure (arity 3 0 #f))
+     (gnome-canvas-w2c-d procedure (arity 3 0 #f))
+     (gnome-canvas-window-to-world
+       procedure
+       (arity 3 0 #f))
+     (gnome-canvas-world-to-window
+       procedure
+       (arity 3 0 #f))
+     (guile-gnome-canvas-points-copy
+       procedure
+       (arity 0 0 #t))))
+  ((gnome gw generics)
+   (uses-interfaces (gnome gobject generics))
+   (typed-exports
+     (get-path-def generic (<gnome-canvas-shape>))
+     (reset generic
+            (<gnome-canvas-path-def>)
+            (<gtk-curve>))
+     (set-path-def
+       generic
+       (<gnome-canvas-shape> <gnome-canvas-path-def>)
+       (<gnome-canvas-shape> <top>)))))

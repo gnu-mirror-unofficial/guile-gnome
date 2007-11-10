@@ -1,3 +1,12 @@
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/canvas.scm: Fix some code that assumed different
+	strategies for exporting generics.
+
+	* tests/Makefile.am:
+	* tests/wrapset.api:
+	* tests/wrapset.scm: Add API regression test suite.
+
 2007-11-01  Andy Wingo  <wingo@pobox.com>
 
 	* Makefile.am:
