@@ -1,3 +1,17 @@
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: 
+	* gnome/gw/Makefile.am: Actually link against pangocairo libs,
+	without which (gnome gw pangocairo) won't even load.
+
+	* tests/Makefile.am:
+	* tests/pango/Makefile.am:
+	* tests/pango/wrapset.api:
+	* tests/pango/wrapset.scm:
+	* tests/pangocairo/Makefile.am:
+	* tests/pangocairo/wrapset.api:
+	* tests/pangocairo/wrapset.scm: Add API regression test suite.
+
 2007-09-25  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.94 ==
