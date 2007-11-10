@@ -6,6 +6,8 @@
 	set of modules to determine which exports of the modules are
 	undocumented.
 	(check-documentation-coverage): Sort the undocumented symbol list.
+	(check-documentation-coverage): Don't error out if a module cannot
+	be resolved.
 
 2007-11-01  Andy Wingo  <wingo@pobox.com>
 

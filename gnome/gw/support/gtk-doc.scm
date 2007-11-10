@@ -746,8 +746,11 @@ to the current output port."
          (def-names (map def-name defs))
          (exports (append-map
                    (lambda (mod)
-                     (module-map (lambda (k v) k)
-                                 (resolve-interface mod)))
+                     (or
+                      (false-if-exception
+                       (module-map (lambda (k v) k)
+                                   (resolve-interface mod)))
+                      (begin (warn "Module does not exist:" mod) '())))
                    modules))
          (undocumented (lset-difference eq? exports def-names)))
     (format #t "~A symbols exported\n" (length exports))
