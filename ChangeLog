@@ -1,5 +1,13 @@
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.95 ==
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.15.95.
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
 	* test-suite/Makefile.am: Add makefile foo for the wrapset api
 	check.
 

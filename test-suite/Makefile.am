@@ -62,7 +62,7 @@ wrapset.api.update:
 %.check: %
 	$(TESTS_ENVIRONMENT) $(srcdir)/$*
 
-EXTRA_DIST+=gobject.api api.scm
+EXTRA_DIST+=gobject.api api.scm wrapset.api wrapset.scm
 
 TESTS = guile-gobject-test \
 	api.scm \
