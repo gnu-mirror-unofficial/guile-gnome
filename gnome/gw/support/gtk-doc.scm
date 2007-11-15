@@ -146,7 +146,8 @@
    (num . "&#x0023;")
    (times . "✕")
    (ldquo . "“")
-   (rdquo . "”")))
+   (rdquo . "”")
+   (hash . "#")))
 
 (define (docbook->sdocbook docbook-fragment)
   "Parse a docbook file @var{docbook-fragment} into SXML. Simply calls
@@ -636,14 +637,21 @@ created using @code{gtk-doc->texi-defuns}."
         ,@(doc-properties class))
       ,@(class-signal-stexi-docs class sdocbook))))
 
+(define (make-type-docs? class-name wrapset)
+  ;; does the type (1) exist and (2) define an export?
+  (fold-types (lambda (x y)
+                (or y (and (eq? (name x) class-name)
+                           (or (not (slot-exists? x 'define-class?))
+                               (slot-ref x 'define-class?)))))
+              #f wrapset))
+
 (define (gtk-doc-sdocbook->class-list/g-wrap sdocbook process-def wrapset)
   (reverse
    (sdocbook-fold-structs
     (lambda (cname seed)
       (let ((class-name (gtype-name->class-name cname)))
         (cond
-         ((fold-types (lambda (x y) (or y (eq? (name x) class-name)))
-                      #f wrapset)
+         ((make-type-docs? class-name wrapset)
           (append (reverse
                    (gobject-class-stexi-docs (module wrapset) class-name
                                              sdocbook))

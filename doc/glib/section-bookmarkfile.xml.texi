@@ -15,7 +15,7 @@ Specification}.
 
 The syntax of the bookmark files is described in detail inside the Desktop
 Bookmark Specification, here is a quick summary: bookmark files use a sub-class
-of the @uref{,XML Bookmark Exchange Language} specification, consisting of valid
+of the XML Bookmark Exchange Language specification, consisting of valid
 UTF-8 encoded XML, under the @samp{xbel} root element; each bookmark is stored
 inside a @samp{bookmark} element, using its URI: no relative paths can be used
 inside a bookmark file. The bookmark may have a user defined title and

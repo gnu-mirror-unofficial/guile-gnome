@@ -1,3 +1,11 @@
+2007-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gtk-doc.scm (lambda): Fix some texi because the
+	upstream xml is bad.
+	(make-type-docs?, gtk-doc-sdocbook->class-list/g-wrap): Don't
+	generate docs for types that g-wrap does not define, fixes e.g.
+	<gst-element-class>.
+
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.95 ==
