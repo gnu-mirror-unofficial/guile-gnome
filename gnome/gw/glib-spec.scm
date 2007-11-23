@@ -146,6 +146,20 @@
   (add-type! ws (make <gerror-type> #:name '<GError>))
   (add-type-alias! ws "GError**" '<GError>)
 
+  (wrap-freeable-pointer! ws "GBookmarkFile*"
+                          "g_bookmark_file_free")
+
+  (wrap-refcounted-pointer! ws "GIOChannel*"
+                            "g_io_channel_ref" "g_io_channel_unref")
+  (wrap-refcounted-pointer! ws "GMainLoop*"
+                            "g_main_loop_ref" "g_main_loop_unref")
+  (wrap-refcounted-pointer! ws "GMainContext*"
+                            "g_main_context_ref" "g_main_context_unref")
+  (wrap-refcounted-pointer! ws "GSource*"
+                            "g_source_ref" "g_source_unref")
+
+  (wrap-opaque-pointer! ws "GString*")
+
   (load-defs-with-overrides ws "gnome/defs/glib.defs"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

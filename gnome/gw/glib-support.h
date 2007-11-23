@@ -31,9 +31,46 @@
 G_BEGIN_DECLS
 
 void scm_init_glib (void);
+size_t _wrap_g_bookmark_file_free (void *wcp);
+gboolean _wrap_g_bookmark_file_load_from_data (GBookmarkFile *bookmark,
+                                               const char *data,
+                                               GError **error);
+char* _wrap_g_bookmark_file_to_data (GBookmarkFile *bookmark, GError **error);
+SCM _wrap_g_bookmark_file_get_uris (GBookmarkFile *bookmark);
+SCM _wrap_g_bookmark_file_get_groups (GBookmarkFile *bookmark, const char *uri,
+                                      GError **error);
+SCM _wrap_g_bookmark_file_get_applications (GBookmarkFile *bookmark,
+                                            const char *uri,
+                                            GError **error);
+gchar* _wrap_g_convert (const gchar* str, const gchar* to_codeset,
+                        const gchar* from_codeset, GError** error);
+gchar* _wrap_g_convert_with_fallback (const gchar* str, const gchar* to_codeset,
+                                      const gchar* from_codeset, gchar* fallback,
+                                      GError** error);
 void _wrap_g_main_loop_run (GMainLoop *loop);
 SCM  _wrap_g_string_get_str (GString *str);
 guint _wrap_g_io_add_watch (GIOChannel *channel, GIOCondition condition, SCM func);
+gunichar
+_wrap_g_utf8_get_char (const gchar *p);
+const char* _wrap_g_utf8_find_next_char (const gchar *p);
+long _wrap_g_utf8_strlen (const gchar *p);
+const char* _wrap_g_utf8_strchr (const gchar *p, gunichar c);
+const char* _wrap_g_utf8_strrchr (const gchar *p, gunichar c);
+char* _wrap_g_utf8_strreverse (const gchar *p);
+gboolean _wrap_g_utf8_validate (const gchar *p);
+char* _wrap_g_utf8_strup (const gchar *p);
+char* _wrap_g_utf8_strdown (const gchar *p);
+char* _wrap_g_utf8_casefold (const gchar *p);
+char* _wrap_g_utf8_normalize (const gchar *p, GNormalizeMode mode);
+char* _wrap_g_utf8_collate_key (const gchar *p);
+char* _wrap_g_utf8_collate_key_for_filename (const gchar *p);
+char* _wrap_g_unichar_to_utf8 (gunichar c);
+gunichar2* _wrap_g_utf8_to_utf16 (const gchar *str, GError **error);
+gunichar* _wrap_g_utf8_to_ucs4 (const gchar *str, GError **error);
+gunichar* _wrap_g_utf16_to_ucs4 (const gunichar2* str, GError **error);
+gchar* _wrap_g_utf16_to_utf8 (const gunichar2* str, GError **error);
+gunichar2* _wrap_g_ucs4_to_utf16 (const gunichar* str, GError **error);
+gchar* _wrap_g_ucs4_to_utf8 (const gunichar* str, GError **error);
 
 G_END_DECLS
 

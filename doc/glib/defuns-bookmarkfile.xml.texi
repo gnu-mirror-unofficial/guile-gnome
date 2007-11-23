@@ -17,19 +17,6 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-free  (bookmark@tie{}@code{<g-bookmark-file*>})
-Frees a @code{<g-bookmark-file>}.
-
-@table @var
-@item bookmark
-a @code{<g-bookmark-file>}
-
-@end table
-
-Since 2.12
-
-@end deffn
-
 @deffn Function g-bookmark-file-load-from-file  (bookmark@tie{}@code{<g-bookmark-file*>}) (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Loads a desktop bookmark file into an empty @code{<g-bookmark-file>} structure.
 If the file could not be loaded then @var{error} is set to either a
@@ -54,7 +41,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-load-from-data  (bookmark@tie{}@code{<g-bookmark-file*>}) (data@tie{}@code{mchars}) (length@tie{}@code{size_t}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function g-bookmark-file-load-from-data  (bookmark@tie{}@code{<g-bookmark-file*>}) (data@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Loads a bookmark file from memory into an empty @code{<g-bookmark-file>}
 structure. If the object cannot be created then @var{error} is set to a
 @code{<g-bookmark-file-error>}.
@@ -111,7 +98,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-to-data  (bookmark@tie{}@code{<g-bookmark-file*>}) @result{}@tie{} (ret@tie{}@code{mchars}) (length@tie{}@code{size_t})
+@deffn Function g-bookmark-file-to-data  (bookmark@tie{}@code{<g-bookmark-file*>}) @result{}@tie{} (ret@tie{}@code{mchars})
 This function outputs @var{bookmark} as a string.
 
 @table @var
@@ -250,7 +237,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-uris  (bookmark@tie{}@code{<g-bookmark-file*>}) @result{}@tie{} (ret@tie{}@code{<gchar**>}) (length@tie{}@code{size_t})
+@deffn Function g-bookmark-file-get-uris  (bookmark@tie{}@code{<g-bookmark-file*>}) @result{}@tie{} (ret@tie{}@code{scm})
 Returns all URIs of the bookmarks in the bookmark file @var{bookmark}. The array
 of returned URIs will be @samp{@code{#f}}-terminated, so @var{length} may
 optionally be @samp{@code{#f}}.
@@ -488,7 +475,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-groups  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gchar**>}) (length@tie{}@code{size_t})
+@deffn Function g-bookmark-file-get-groups  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{scm})
 Retrieves the list of group names of the bookmark for @var{uri}.
 
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
@@ -520,7 +507,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-applications  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gchar**>}) (length@tie{}@code{size_t})
+@deffn Function g-bookmark-file-get-applications  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{scm})
 Retrieves the names of the applications that have registered the bookmark for
 @var{uri}.
 
@@ -722,31 +709,6 @@ a valid URI
 
 @item added
 a timestamp or -1 to use the current time
-
-@end table
-
-Since 2.12
-
-@end deffn
-
-@deffn Function g-bookmark-file-set-groups  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (groups@tie{}@code{<gchar**>}) (length@tie{}@code{size_t})
-Sets a list of group names for the item with URI @var{uri}. Each previously set
-group name list is removed.
-
-If @var{uri} cannot be found then an item for it is created.
-
-@table @var
-@item bookmark
-a @code{<g-bookmark-file>}
-
-@item uri
-an item's URI
-
-@item groups
-an array of group names, or @samp{@code{#f}} to remove all groups
-
-@item length
-number of group name values in @var{groups}
 
 @end table
 

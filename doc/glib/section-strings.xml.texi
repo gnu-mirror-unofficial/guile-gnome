@@ -11,6 +11,11 @@ automatically as text is appended or inserted. Also, it stores the length of the
 string, so can be used for binary data with embedded nul bytes.
 
 @section Usage
+
 @include defuns-strings.xml.texi
+
+@deffn Function g-string-get-str  (string@tie{}@code{<g-string*>}) @result{}@tie{}(chars @code{mchars})
+Retrieves the contents of @var{string} as a Scheme string.
+@end deffn
 
 @c %end of fragment

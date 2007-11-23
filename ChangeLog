@@ -1,3 +1,60 @@
+2007-11-23  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/wrapset.api: Update for the changes resulting from
+	the API review. Neat!
+
+	* bin/Makefile.am: Rework; in the future perhaps we will not make
+	a local guile-gnome binary.
+
+	* gnome/overrides/glib.defs: Add lots of custom function wrapper
+	definitions, backed by code in glib-support. Ignore a number of
+	other functions of dubious utility, or that cannot be wrapped
+	safely in scheme.
+
+	* gnome/gw/support/gobject.scm (<gobject-opaque-pointer>): Pull in
+	Guile's wct implementation, as it is not public, and does some
+	things that we don't want to do (e.g. defining the wct classes as
+	variables, that is useless.)
+	(wrap-opaque-pointer!): Use <gobject-opaque-pointer>.
+	(<gobject-freeable-pointer>): New class, a pointer that has a free
+	function.
+	(wrap-freeable-pointer!): New public function.
+	(<gobject-ref-pointer>): New class, a pointer that can be reffed
+	or unreffed.
+	(wrap-refcounted-pointer!): New function.
+
+	* gnome/gw/glib-support.h: 
+	* gnome/gw/glib-support.c: Expand, providing better scheme
+	wrappers for a number of functions.
+
+	* gnome/gw/glib-spec.scm (initialize): Wrap a number of types as
+	freeable or refcounted pointers.
+
+	* doc/glib/section-strings.xml.texi (Strings): Add docs for
+	g-string-get-str.
+
+	* doc/glib/overrides.texi: Added some overrides.
+
+	* doc/glib/defuns-unicode.xml.texi: 
+	* doc/glib/defuns-misc_utils.xml.texi: 
+	* doc/glib/defuns-main.xml.texi: 
+	* doc/glib/defuns-iochannels.xml.texi: 
+	* doc/glib/defuns-fileutils.xml.texi: 
+	* doc/glib/defuns-conversions.xml.texi: 
+	* doc/glib/defuns-bookmarkfile.xml.texi: Regenerated with all of
+	the wrapset changes.
+
+	* doc/gobject/Makefile.am:
+	* doc/gobject/guile-gnome-gobject.texi: Added to bzr, because I
+	can't figure out how to get automake to deal with it otherwise.
+	Not such a bad idea though to have this in VC.
+
+	* doc/glib/Makefile.am (docbook_xml): 
+	* doc/glib/guile-gnome-glib.texi (Base64 Encoding):
+	* doc/glib/defuns-base64.xml.texi:
+	* doc/glib/section-base64.xml.texi: Removed, the base64 functions
+	were removed.
+
 2007-11-15  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gtk-doc.scm (lambda): Fix some texi because the

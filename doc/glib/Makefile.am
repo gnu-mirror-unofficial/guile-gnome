@@ -7,8 +7,7 @@ include $(top_srcdir)/generate-docs.mk
 # docbook_xml_files = $(wildcard ~/src/gnome2/glib/docs/reference/glib/xml/*.xml)
 
 # A hand-culled list of modules that we wrap.
-docbook_xml = base64.xml \
-	bookmarkfile.xml \
+docbook_xml = bookmarkfile.xml \
 	conversions.xml \
 	fileutils.xml \
 	iochannels.xml \

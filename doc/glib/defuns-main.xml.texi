@@ -21,32 +21,6 @@ a new @code{<g-main-loop>}.
 
 @end deffn
 
-@deffn Function g-main-loop-ref  (loop@tie{}@code{<g-main-loop*>}) @result{}@tie{} (ret@tie{}@code{<g-main-loop*>})
-Increases the reference count on a @code{<g-main-loop>} object by one.
-
-@table @var
-@item loop
-a @code{<g-main-loop>}
-
-@item ret
-@var{loop}
-
-@end table
-
-@end deffn
-
-@deffn Function g-main-loop-unref  (loop@tie{}@code{<g-main-loop*>})
-Decreases the reference count on a @code{<g-main-loop>} object by one. If the
-result is zero, free the loop and free all associated memory.
-
-@table @var
-@item loop
-a @code{<g-main-loop>}
-
-@end table
-
-@end deffn
-
 @deffn Function g-main-loop-run  (self@tie{}@code{<g-main-loop*>})
 Runs a main loop until @code{g-main-loop-quit} is called on the loop. If this is
 called for the thread of the loop's @code{<g-main-context>}, it will process
@@ -107,32 +81,6 @@ Creates a new @code{<g-main-context>} strcuture
 @table @var
 @item ret
 the new @code{<g-main-context>}
-
-@end table
-
-@end deffn
-
-@deffn Function g-main-context-ref  (context@tie{}@code{<g-main-context*>}) @result{}@tie{} (ret@tie{}@code{<g-main-context*>})
-Increases the reference count on a @code{<g-main-context>} object by one.
-
-@table @var
-@item context
-a @code{<g-main-context>}
-
-@item ret
-the @var{context} that was passed in (since 2.6)
-
-@end table
-
-@end deffn
-
-@deffn Function g-main-context-unref  (context@tie{}@code{<g-main-context*>})
-Decreases the reference count on a @code{<g-main-context>} object by one. If the
-result is zero, free the context and free all associated memory.
-
-@table @var
-@item context
-a @code{<g-main-context>}
 
 @end table
 
@@ -292,146 +240,25 @@ location to store priority of highest priority source already ready.
 
 @end deffn
 
-@deffn Function g-main-context-query  (context@tie{}@code{<g-main-context*>}) (max_priority@tie{}@code{int}) (fds@tie{}@code{<g-poll-fd*>}) (n_fds@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int}) (timeout_@tie{}@code{int})
-Determines information necessary to poll this main loop.
-
-@table @var
-@item context
-a @code{<g-main-context>}
-
-@item max-priority
-maximum priority source to check
-
-@item timeout
-location to store timeout to be used in polling
-
-@item fds
-location to store @code{<g-poll-fd>} records that need to be polled.
-
-@item n-fds
-length of @var{fds}.
-
-@item ret
-the number of records actually stored in @var{fds}, or, if more than @var{n-fds}
-records need to be stored, the number of records that need to be stored.
-
-@end table
-
-@end deffn
-
-@deffn Function g-main-context-check  (context@tie{}@code{<g-main-context*>}) (max_priority@tie{}@code{int}) (fds@tie{}@code{<g-poll-fd*>}) (n_fds@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
-Passes the results of polling back to the main loop.
-
-@table @var
-@item context
-a @code{<g-main-context>}
-
-@item max-priority
-the maximum numerical priority of sources to check
-
-@item fds
-array of @code{<g-poll-fd>}'s that was passed to the last call to
-@code{g-main-context-query}
-
-@item n-fds
-return value of @code{g-main-context-query}
-
-@item ret
-@samp{@code{#t}} if some sources are ready to be dispatched.
-
-@end table
-
-@end deffn
-
-@deffn Function g-main-context-dispatch  (context@tie{}@code{<g-main-context*>})
-Dispatches all pending sources.
-
-@table @var
-@item context
-a @code{<g-main-context>}
-
-@end table
-
-@end deffn
-
-@deffn Function g-main-context-add-poll  (self@tie{}@code{<g-main-context*>}) (fd@tie{}@code{<g-poll-fd*>}) (priority@tie{}@code{int})
-Adds a file descriptor to the set of file descriptors polled for this context.
-This will very seldomly be used directly. Instead a typical event source will
-use @code{g-source-add-poll} instead.
-
-@table @var
-@item context
-a @code{<g-main-context>} (or @samp{@code{#f}} for the default context)
-
-@item fd
-a @code{<g-poll-fd>} structure holding information about a file descriptor to
-watch.
-
-@item priority
-the priority for this file descriptor which should be the same as the priority
-used for @code{g-source-attach} to ensure that the file descriptor is polled
-whenever the results may be needed.
-
-@end table
-
-@end deffn
-
-@deffn Function g-main-context-remove-poll  (context@tie{}@code{<g-main-context*>}) (fd@tie{}@code{<g-poll-fd*>})
-Removes file descriptor from the set of file descriptors to be polled for a
-particular context.
-
-@table @var
-@item context
-a @code{<g-main-context>}
-
-@item fd
-a @code{<g-poll-fd>} descriptor previously added with
-@code{g-main-context-add-poll}
-
-@end table
-
-@end deffn
-
 @deffn Function g-main-depth  @result{}@tie{} (ret@tie{}@code{int})
 Return value: The main loop recursion level in the current thread
 
-@table @var
-@item ret
-the depth of the stack of calls to @code{g-main-context-dispatch} on any
-@code{<g-main-context>} in the current thread. That is, when called from the
-toplevel, it gives 0. When called from within a callback from
-@code{g-main-context-iteration} (or @code{g-main-loop-run}, etc.) it returns 1.
-When called from within a callback to a recursive call to
-@code{g-main-context-iterate}, it returns 2. And so forth. This function is
-useful in a situation like the following: Imagine an extremely simple "garbage
-collected" system. This works from an application, however, if you want to do
-the same thing from a library, it gets more difficult, since you no longer
-control the main loop. You might think you can simply use an idle function to
-make the call to @code{free-allocated-memory}, but that doesn't work, since the
-idle function could be called from a recursive callback. This can be fixed by
-using @code{g-main-depth} There is a temptation to use @code{g-main-depth} to
-solve problems with reentrancy. For instance, while waiting for data to be
-received from the network in response to a menu item, the menu item might be
-selected again. It might seem that one could make the menu item's callback
-return immediately and do nothing if @code{g-main-depth} returns a value greater
-than 1. However, this should be avoided since the user then sees selecting the
-menu item do nothing. Furthermore, you'll find yourself adding these checks all
-over your code, since there are doubtless many, many things that the user could
-do. Instead, you can use the following techniques:
+The value returned is the depth of the stack of calls to
+@code{g-main-context-dispatch} on any @code{<g-main-context>} in the current
+thread. That is, when called from the toplevel, it gives 0. When called from
+within a callback from @code{g-main-context-iteration} (or
+@code{g-main-loop-run}, etc.) it returns 1. When called from within a callback
+to a recursive call to @code{g-main-context-iterate}, it returns 2. And so
+forth.
 
-@end table
-
-@enumerate 
-@item
-@item
-@end enumerate
-
-Use @code{gtk-widget-set-sensitive} or modal dialogs to prevent the user from
+This function is an attractive nuisance, and its use normally indicates a
+misunderstanding of how main loop reentrancy works. Use
+@code{gtk-widget-set-sensitive} or modal dialogs to prevent the user from
 interacting with elements while the main loop is recursing.
 
-Avoid main loop recursion in situations where you can't handle arbitrary
-callbacks. Instead, structure your code so that you simply return to the main
-loop and then get called again when there is more work to do.
+A better idea is to avoid main loop recursion entirely. Instead, structure your
+code so that you simply return to the main loop and then get called again when
+there is more work to do.
 
 @end deffn
 
@@ -511,54 +338,6 @@ the newly-created child watch source
 @end table
 
 Since 2.4
-
-@end deffn
-
-@deffn Function g-source-new  (source_funcs@tie{}@code{<g-source-funcs*>}) (struct_size@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{<g-source*>})
-Creates a new @code{<g-source>} structure. The size is specified to allow
-creating structures derived from @code{<g-source>} that contain additional data.
-The size passed in must be at least @samp{sizeof (GSource)}.
-
-The source will not initially be associated with any @code{<g-main-context>} and
-must be added to one with @code{g-source-attach} before it will be executed.
-
-@table @var
-@item source-funcs
-structure containing functions that implement the sources behavior.
-
-@item struct-size
-size of the @code{<g-source>} structure to create.
-
-@item ret
-the newly-created @code{<g-source>}.
-
-@end table
-
-@end deffn
-
-@deffn Function g-source-ref  (source@tie{}@code{<g-source*>}) @result{}@tie{} (ret@tie{}@code{<g-source*>})
-Increases the reference count on a source by one.
-
-@table @var
-@item source
-a @code{<g-source>}
-
-@item ret
-@var{source}
-
-@end table
-
-@end deffn
-
-@deffn Function g-source-unref  (source@tie{}@code{<g-source*>})
-Decreases the reference count of a source by one. If the resulting reference
-count is zero the source and associated memory will be destroyed.
-
-@table @var
-@item source
-a @code{<g-source>}
-
-@end table
 
 @end deffn
 
@@ -757,57 +536,6 @@ a @code{<g-source>}
 @item ret
 the @code{<g-main-context>} with which the source is associated, or
 @samp{@code{#f}} if the context has not yet been added to a source.
-
-@end table
-
-@end deffn
-
-@deffn Function g-source-add-poll  (source@tie{}@code{<g-source*>}) (fd@tie{}@code{<g-poll-fd*>})
-Adds a file descriptor to the set of file descriptors polled for this source.
-This is usually combined with @code{g-source-new} to add an event source. The
-event source's check function will typically test the @var{revents} field in the
-@code{<g-poll-fd>} struct and return @samp{@code{#t}} if events need to be
-processed.
-
-@table @var
-@item source
-a @code{<g-source>}
-
-@item fd
-a @code{<g-poll-fd>} structure holding information about a file descriptor to
-watch.
-
-@end table
-
-@end deffn
-
-@deffn Function g-source-remove-poll  (source@tie{}@code{<g-source*>}) (fd@tie{}@code{<g-poll-fd*>})
-Removes a file descriptor from the set of file descriptors polled for this
-source.
-
-@table @var
-@item source
-a @code{<g-source>}
-
-@item fd
-a @code{<g-poll-fd>} structure previously passed to @code{g-source-add-poll}.
-
-@end table
-
-@end deffn
-
-@deffn Function g-source-get-current-time  (source@tie{}@code{<g-source*>}) (timeval@tie{}@code{<g-time-val*>})
-Gets the "current time" to be used when checking this source. The advantage of
-calling this function over calling @code{g-get-current-time} directly is that
-when checking multiple sources, GLib can cache a single value instead of having
-to repeatedly get the system time.
-
-@table @var
-@item source
-a @code{<g-source>}
-
-@item timeval
-@code{<g-time-val>} structure in which to store current time.
 
 @end table
 

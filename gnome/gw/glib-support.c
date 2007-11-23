@@ -32,6 +32,95 @@
   scm_error (scm_str2symbol ("gruntime-error"), func_name, format, \
              ##args, SCM_EOL)
 
+size_t
+_wrap_g_bookmark_file_free (void *wcp) 
+{
+    g_bookmark_file_free (wcp);
+    return 0;
+}
+
+gboolean
+_wrap_g_bookmark_file_load_from_data (GBookmarkFile *bookmark, const char *data,
+                                      GError **error)
+{
+    return g_bookmark_file_load_from_data (bookmark, data, strlen (data),
+                                           error);
+}
+
+char*
+_wrap_g_bookmark_file_to_data (GBookmarkFile *bookmark, GError **error)
+{
+    return g_bookmark_file_to_data (bookmark, NULL, error);
+}
+
+SCM
+_wrap_g_bookmark_file_get_uris (GBookmarkFile *bookmark)
+{
+    SCM ret = SCM_EOL;
+    char **strs, *str;
+    gint i = 0;
+    
+    strs = g_bookmark_file_get_uris (bookmark, NULL);
+    for (str = strs[i]; str; i++)
+        ret = scm_cons (scm_from_locale_string (str), ret);
+    g_strfreev (strs);
+
+    return scm_reverse_x (ret, SCM_EOL);
+}
+
+SCM
+_wrap_g_bookmark_file_get_groups (GBookmarkFile *bookmark, const char *uri,
+                                  GError **error)
+{
+    SCM ret = SCM_EOL;
+    char **strs, *str;
+    gint i = 0;
+    
+    strs = g_bookmark_file_get_groups (bookmark, uri, NULL, error);
+    if (strs) {
+        for (str = strs[i]; str; i++)
+            ret = scm_cons (scm_from_locale_string (str), ret);
+        g_strfreev (strs);
+    }
+
+    return scm_reverse_x (ret, SCM_EOL);
+}
+
+SCM
+_wrap_g_bookmark_file_get_applications (GBookmarkFile *bookmark,
+                                        const char *uri,
+                                        GError **error)
+{
+    SCM ret = SCM_EOL;
+    char **strs, *str;
+    gint i = 0;
+    
+    strs = g_bookmark_file_get_applications (bookmark, uri, NULL, error);
+    if (strs) {
+        for (str = strs[i]; str; i++)
+            ret = scm_cons (scm_from_locale_string (str), ret);
+        g_strfreev (strs);
+    }
+
+    return scm_reverse_x (ret, SCM_EOL);
+}
+
+gchar*
+_wrap_g_convert (const gchar* str, const gchar* to_codeset,
+                 const gchar* from_codeset, GError** error)
+{
+    return g_convert (str, -1, to_codeset, from_codeset, NULL, NULL, error);
+}
+
+gchar*
+_wrap_g_convert_with_fallback (const gchar* str, const gchar* to_codeset,
+                               const gchar* from_codeset, gchar* fallback,
+                               GError** error)
+{
+    return g_convert_with_fallback (str, -1, to_codeset, from_codeset,
+                                    fallback, NULL, NULL, error);
+}
+
 static SCM iochannel_type = SCM_BOOL_F;
 
 static gboolean caught_intr = FALSE;
@@ -191,7 +280,7 @@ _wrap_g_io_add_watch (GIOChannel *channel,
     if (SCM_FALSEP (iochannel_type))
         iochannel_type = scm_permanent_object
             (SCM_VARIABLE_REF (scm_c_module_lookup (scm_c_resolve_module ("gnome glib"),
-                                                    "<gio-channel*>")));
+                                                    "<g-iochannel*>")));
 
     SCM_VALIDATE_PROC (3, func);
     return g_io_add_watch (channel,
@@ -200,3 +289,119 @@ _wrap_g_io_add_watch (GIOChannel *channel,
                            SCM_TO_GPOINTER (func));
 }
 #undef FUNC_NAME
+
+gunichar
+_wrap_g_utf8_get_char (const gchar *p) 
+{
+    return g_utf8_get_char_validated (p, -1);
+}
+
+const char*
+_wrap_g_utf8_find_next_char (const gchar *p) 
+{
+    return g_utf8_find_next_char (p, NULL);
+}
+
+long _wrap_g_utf8_strlen (const gchar *p) 
+{
+    return g_utf8_strlen (p, -1);
+}
+
+const char*
+_wrap_g_utf8_strchr (const gchar *p, gunichar c) 
+{
+    return g_utf8_strchr (p, -1, c);
+}
+
+const char*
+_wrap_g_utf8_strrchr (const gchar *p, gunichar c)
+{
+    return g_utf8_strrchr (p, -1, c);
+}
+
+char* _wrap_g_utf8_strreverse (const gchar *p)
+{
+    return g_utf8_strreverse (p, -1);
+}
+
+gboolean _wrap_g_utf8_validate (const gchar *p)
+{
+    return g_utf8_validate (p, -1, NULL);
+}
+
+char* _wrap_g_utf8_strup (const gchar *p)
+{
+    return g_utf8_strup (p, -1);
+}
+
+char* _wrap_g_utf8_strdown (const gchar *p)
+{
+    return g_utf8_strdown (p, -1);
+}
+
+char* _wrap_g_utf8_casefold (const gchar *p)
+{
+    return g_utf8_casefold (p, -1);
+}
+
+char* _wrap_g_utf8_normalize (const gchar *p, GNormalizeMode mode)
+{
+    return g_utf8_normalize (p, -1, mode);
+}
+
+char* _wrap_g_utf8_collate_key (const gchar *p)
+{
+    return g_utf8_collate_key (p, -1);
+}
+
+char* _wrap_g_utf8_collate_key_for_filename (const gchar *p)
+{
+    return g_utf8_collate_key_for_filename (p, -1);
+}
+
+char* _wrap_g_unichar_to_utf8 (gunichar c)
+{
+    char *ret;
+    int n;
+    
+    ret = g_malloc(8);
+    n = g_unichar_to_utf8 (c, ret);
+    ret[n] = '\0';
+    return ret;
+}
+
+gunichar2*
+_wrap_g_utf8_to_utf16 (const gchar *str, GError **error)
+{
+    return g_utf8_to_utf16 (str, -1, NULL, NULL, error);
+}
+
+gunichar*
+_wrap_g_utf8_to_ucs4 (const gchar *str, GError **error)
+{
+    return g_utf8_to_ucs4 (str, -1, NULL, NULL, error);
+}
+
+gunichar*
+_wrap_g_utf16_to_ucs4 (const gunichar2* str, GError **error) 
+{
+    return g_utf16_to_ucs4 (str, -1, NULL, NULL, error);
+}
+
+gchar*
+_wrap_g_utf16_to_utf8 (const gunichar2* str, GError **error)
+{
+    return g_utf16_to_utf8 (str, -1, NULL, NULL, error);
+}
+
+gunichar2*
+_wrap_g_ucs4_to_utf16 (const gunichar* str, GError **error)
+{
+    return g_ucs4_to_utf16 (str, -1, NULL, NULL, error);
+}
+
+gchar*
+_wrap_g_ucs4_to_utf8 (const gunichar* str, GError **error) 
+{
+    return g_ucs4_to_utf8 (str, -1, NULL, NULL, error);
+}

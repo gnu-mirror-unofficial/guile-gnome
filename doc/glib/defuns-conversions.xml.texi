@@ -1,6 +1,62 @@
 
 @c %start of fragment
 
+@deffn Function g-convert  (str@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) (to_codeset@tie{}@code{mchars}) (from_codeset@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars}) (bytes_read@tie{}@code{size_t}) (bytes_written@tie{}@code{size_t})
+Converts a string from one character set to another.
+
+@table @var
+@item str
+the string to convert
+
+@item to-codeset
+name of character set into which to convert @var{str}
+
+@item from-codeset
+character set of @var{str}.
+
+@item ret
+If the conversion was successful, a string. Otherwise an exception will be
+thrown.
+
+@end table
+
+Note that some encodings may allow nul bytes to occur inside strings. In that
+case, the Guile wrapper for this function is unsafe.
+
+@end deffn
+
+@deffn Function g-convert-with-fallback  (str@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) (to_codeset@tie{}@code{mchars}) (from_codeset@tie{}@code{mchars}) (fallback@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars}) (bytes_read@tie{}@code{size_t}) (bytes_written@tie{}@code{size_t})
+Converts a string from one character set to another, possibly including fallback
+sequences for characters not representable in the output. Note that it is not
+guaranteed that the specification for the fallback sequences in @var{fallback}
+will be honored. Some systems may do a approximate conversion from
+@var{from-codeset} to @var{to-codeset} in their @code{iconv} functions, in which
+case GLib will simply return that approximate conversion.
+
+@table @var
+@item str
+the string to convert
+
+@item to-codeset
+name of character set into which to convert @var{str}
+
+@item from-codeset
+character set of @var{str}.
+
+@item fallback
+UTF-8 string to use in place of character not present in the target encoding.
+(The string must be representable in the target encoding). If @samp{@code{#f}},
+characters not in the target encoding will be represented as Unicode escapes
+\uxxxx or \Uxxxxyyyy.
+
+@item ret
+If the conversion was successful, a string. Otherwise an exception will be
+thrown.
+
+@end table
+
+@end deffn
+
 @deffn Function g-locale-to-utf8  (opsysstring@tie{}@code{mchars}) (len@tie{}@code{ssize_t}) @result{}@tie{} (ret@tie{}@code{mchars}) (bytes_read@tie{}@code{size_t}) (bytes_written@tie{}@code{size_t})
 Converts a string which is in the encoding used for strings by the C runtime
 (usually the same as that used by the operating system) in the current locale
@@ -11,26 +67,8 @@ into a UTF-8 string.
 a string in the encoding of the current locale. On Windows this means the system
 codepage.
 
-@item len
-the length of the string, or -1 if the string is nul-terminated.
-
-@item bytes-read
-location to store the number of bytes in the input string that were successfully
-converted, or @samp{@code{#f}}. Even if the conversion was successful, this may
-be less than @var{len} if there were partial characters at the end of the input.
-If the error @code{<g-convert-error-illegal-sequence>} occurs, the value stored
-will the byte offset after the last valid input sequence.
-
-@item bytes-written
-the number of bytes stored in the output buffer (not including the terminating
-nul).
-
-@item error
-location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
-of the errors in @code{<g-convert-error>} may occur.
-
 @item ret
-The converted string, or @samp{@code{#f}} on an error.
+The converted string. If the conversion fails, an exception will be raised.
 
 @end table
 
@@ -44,26 +82,8 @@ UTF-8 string. Note that on Windows GLib uses UTF-8 for filenames.
 @item opsysstring
 a string in the encoding for filenames
 
-@item len
-the length of the string, or -1 if the string is nul-terminated.
-
-@item bytes-read
-location to store the number of bytes in the input string that were successfully
-converted, or @samp{@code{#f}}. Even if the conversion was successful, this may
-be less than @var{len} if there were partial characters at the end of the input.
-If the error @code{<g-convert-error-illegal-sequence>} occurs, the value stored
-will the byte offset after the last valid input sequence.
-
-@item bytes-written
-the number of bytes stored in the output buffer (not including the terminating
-nul).
-
-@item error
-location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
-of the errors in @code{<g-convert-error>} may occur.
-
 @item ret
-The converted string, or @samp{@code{#f}} on an error.
+The converted string. If the conversion fails, an exception will be raised.
 
 @end table
 
@@ -220,26 +240,8 @@ Converts a string from UTF-8 to the encoding used for strings by the C runtime
 @item utf8string
 a UTF-8 encoded string
 
-@item len
-the length of the string, or -1 if the string is nul-terminated.
-
-@item bytes-read
-location to store the number of bytes in the input string that were successfully
-converted, or @samp{@code{#f}}. Even if the conversion was successful, this may
-be less than @var{len} if there were partial characters at the end of the input.
-If the error @code{<g-convert-error-illegal-sequence>} occurs, the value stored
-will the byte offset after the last valid input sequence.
-
-@item bytes-written
-the number of bytes stored in the output buffer (not including the terminating
-nul).
-
-@item error
-location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
-of the errors in @code{<g-convert-error>} may occur.
-
 @item ret
-The converted string, or @samp{@code{#f}} on an error.
+The converted string. If the conversion fails, an exception will be raised.
 
 @end table
 

@@ -26,6 +26,98 @@
 ;;
 ;;; Code:
 
+(define-function g_bookmark_file_load_from_data
+  (c-name "_wrap_g_bookmark_file_load_from_data")
+  (overrides "g_bookmark_file_load_from_data")
+  (return-type "gboolean")
+  (parameters
+    '("GBookmarkFile*" "bookmark")
+    '("const-char*" "data")
+    '("GError**" "error")
+  )
+)
+(define-function g_bookmark_file_to_data
+  (c-name "_wrap_g_bookmark_file_to_data")
+  (overrides "g_bookmark_file_to_data")
+  (return-type "char*")
+  (parameters
+    '("GBookmarkFile*" "bookmark")
+    '("GError**" "error")
+  )
+)
+(define-function g_bookmark_file_get_uris
+  (c-name "_wrap_g_bookmark_file_get_uris")
+  (overrides "g_bookmark_file_get_uris")
+  (return-type "SCM")
+  (parameters
+    '("GBookmarkFile*" "bookmark")
+  )
+)
+(define-function g_bookmark_file_get_groups
+  (c-name "_wrap_g_bookmark_file_get_groups")
+  (overrides "g_bookmark_file_get_groups")
+  (return-type "SCM")
+  (parameters
+    '("GBookmarkFile*" "bookmark")
+    '("const-char*" "uri")
+    '("GError**" "error")
+  )
+)
+(define-function g_bookmark_file_get_applications
+  (c-name "_wrap_g_bookmark_file_get_applications")
+  (overrides "g_bookmark_file_get_applications")
+  (return-type "SCM")
+  (parameters
+    '("GBookmarkFile*" "bookmark")
+    '("const-char*" "uri")
+    '("GError**" "error")
+  )
+)
+(define-function g_convert
+  (c-name "_wrap_g_convert")
+  (overrides "g_convert")
+  (return-type "gchar*")
+  (parameters
+    '("const-gchar*" "str")
+    '("const-gchar*" "to_codeset")
+    '("const-gchar*" "from_codeset")
+    '("GError**" "error")
+  )
+)
+
+(define-function g_convert_with_fallback
+  (c-name "_wrap_g_convert_with_fallback")
+  (overrides "g_convert_with_fallback")
+  (return-type "gchar*")
+  (parameters
+    '("const-gchar*" "str")
+    '("const-gchar*" "to_codeset")
+    '("const-gchar*" "from_codeset")
+    '("gchar*" "fallback")
+    '("GError**" "error")
+  )
+)
+(define-function g_io_channel_new_file
+  (c-name "g_io_channel_new_file")
+  (overrides "g_io_channel_new_file")
+  (caller-owns-return #t)
+  (return-type "GIOChannel*")
+  (parameters
+    '("const-gchar*" "filename")
+    '("const-gchar*" "mode")
+    '("GError**" "error")
+  )
+)
+(define-function g_io_channel_unix_new
+  (c-name "g_io_channel_unix_new")
+  (overrides "g_io_channel_unix_new")
+  (caller-owns-return #t)
+  (return-type "GIOChannel*")
+  (parameters
+    '("int" "fd")
+  )
+)
+
 (define-method iteration
   (of-object "GMainContext")
   (c-name "g_main_context_iteration")
@@ -33,16 +125,6 @@
   (return-type "gboolean")
   (parameters
     '("gboolean" "may_block" (default "TRUE"))
-  )
-)
-(define-method add_poll
-  (of-object "GMainContext")
-  (c-name "g_main_context_add_poll")
-  (overrides "g_main_context_add_poll")
-  (return-type "none")
-  (parameters
-    '("GPollFD*" "fd")
-    '("gint" "priority" (default "G_PRIORITY_DEFAULT"))
   )
 )
 (define-function g_main_loop_new
@@ -120,6 +202,194 @@
     '("GIOCondition" "condition")
     '("SCM" "func")))
 
+(define-function g_utf8_get_char
+  (c-name "_wrap_g_utf8_get_char")
+  (overrides "g_utf8_get_char")
+  (return-type "gunichar")
+  (parameters
+    '("const-gchar*" "p")
+  )
+)
+
+(define-function g_utf8_find_next_char
+  (c-name "_wrap_g_utf8_find_next_char")
+  (overrides "g_utf8_find_next_char")
+  (return-type "const-char*")
+  (parameters
+    '("const-gchar*" "p")
+  )
+)
+
+(define-function g_utf8_strlen
+  (c-name "_wrap_g_utf8_strlen")
+  (overrides "g_utf8_strlen")
+  (return-type "long")
+  (parameters
+    '("const-gchar*" "p")
+  )
+)
+
+(define-function g_utf8_strchr
+  (c-name "_wrap_g_utf8_strchr")
+  (overrides "g_utf8_strchr")
+  (return-type "const-char*")
+  (parameters
+    '("const-gchar*" "p")
+    '("gunichar" "c")
+  )
+)
+
+(define-function g_utf8_strrchr
+  (c-name "_wrap_g_utf8_strrchr")
+  (overrides "g_utf8_strrchr")
+  (return-type "const-char*")
+  (parameters
+    '("const-gchar*" "p")
+    '("gunichar" "c")
+  )
+)
+
+(define-function g_utf8_strreverse
+  (c-name "_wrap_g_utf8_strreverse")
+  (overrides "g_utf8_strreverse")
+  (return-type "char*")
+  (parameters
+    '("const-gchar*" "p")
+  )
+)
+
+(define-function g_utf8_validate
+  (c-name "_wrap_g_utf8_validate")
+  (overrides "g_utf8_validate")
+  (return-type "gboolean")
+  (parameters
+    '("const-gchar*" "p")
+  )
+)
+
+(define-function g_utf8_strup
+  (c-name "_wrap_g_utf8_strup")
+  (overrides "g_utf8_strup")
+  (return-type "char*")
+  (parameters
+    '("const-gchar*" "p")
+  )
+)
+
+(define-function g_utf8_strdown
+  (c-name "_wrap_g_utf8_strdown")
+  (overrides "g_utf8_strdown")
+  (return-type "char*")
+  (parameters
+    '("const-gchar*" "p")
+  )
+)
+
+(define-function g_utf8_casefold
+  (c-name "_wrap_g_utf8_casefold")
+  (overrides "g_utf8_casefold")
+  (return-type "char*")
+  (parameters
+    '("const-gchar*" "p")
+  )
+)
+
+(define-function g_utf8_normalize
+  (c-name "_wrap_g_utf8_normalize")
+  (overrides "g_utf8_normalize")
+  (return-type "char*")
+  (parameters
+    '("const-gchar*" "p")
+    '("GNormalizeMode" "mode")
+  )
+)
+
+(define-function g_utf8_collate_key
+  (c-name "_wrap_g_utf8_collate_key")
+  (overrides "g_utf8_collate_key")
+  (return-type "char*")
+  (parameters
+    '("const-gchar*" "p")
+  )
+)
+
+(define-function g_utf8_collate_key_for_filename
+  (c-name "_wrap_g_utf8_collate_key_for_filename")
+  (overrides "g_utf8_collate_key_for_filename")
+  (return-type "char*")
+  (parameters
+    '("const-gchar*" "p")
+  )
+)
+
+(define-function g_unichar_to_utf8
+  (c-name "_wrap_g_unichar_to_utf8")
+  (overrides "g_unichar_to_utf8")
+  (return-type "char*")
+  (parameters
+    '("gunichar" "c")
+  )
+)
+
+(define-function g_utf8_to_utf16
+  (c-name "_wrap_g_utf8_to_utf16")
+  (overrides "g_utf8_to_utf16")
+  (return-type "gunichar2*")
+  (parameters
+    '("const-gchar*" "str")
+    '("GError**" "error")
+  )
+)
+
+(define-function g_utf8_to_ucs4
+  (c-name "_wrap_g_utf8_to_ucs4")
+  (overrides "g_utf8_to_ucs4")
+  (return-type "gunichar*")
+  (parameters
+    '("const-gchar*" "str")
+    '("GError**" "error")
+  )
+)
+
+(define-function g_utf16_to_ucs4
+  (c-name "_wrap_g_utf16_to_ucs4")
+  (overrides "g_utf16_to_ucs4")
+  (return-type "gunichar*")
+  (parameters
+    '("const-gunichar2*" "str")
+    '("GError**" "error")
+  )
+)
+
+(define-function g_utf16_to_utf8
+  (c-name "_wrap_g_utf16_to_utf8")
+  (overrides "g_utf16_to_utf8")
+  (return-type "gchar*")
+  (parameters
+    '("const-gunichar2*" "str")
+    '("GError**" "error")
+  )
+)
+
+(define-function g_ucs4_to_utf16
+  (c-name "_wrap_g_ucs4_to_utf16")
+  (overrides "g_ucs4_to_utf16")
+  (return-type "gunichar2*")
+  (parameters
+    '("const-gunichar*" "str")
+    '("GError**" "error")
+  )
+)
+
+(define-function g_ucs4_to_utf8
+  (c-name "_wrap_g_ucs4_to_utf8")
+  (overrides "g_ucs4_to_utf8")
+  (return-type "gchar*")
+  (parameters
+    '("const-gunichar*" "str")
+    '("GError**" "error")
+  )
+)
 (ignore-glob  "_*"
               "*_copy"
               "*_newv"
@@ -127,6 +397,9 @@
               "*_setv"
               "*_user_data"
               "*_func"
+              "*_free"
+              "*_ref"
+              "*_unref"
               "*win32*"
 
               "g_array_*"
@@ -134,7 +407,7 @@
               "g_async_queue_*"
               "g_atomic_*"
 
-              "g_base64_*_step"
+              "g_base64*"
               "g_bit_*"
               "g_build_*"
               "g_byte_array_*"
@@ -142,7 +415,6 @@
               "g_cache_*"
               "g_child_watch_add*"
               "g_completion_*"
-              "g_convert*"
 
               "g_datalist_*"
               "g_dataset_*"
@@ -159,6 +431,9 @@
               "g_idle_remove*"
               "g_int_*"
               "g_io_add_watch_full"
+              "g_io_channel_read*"
+              "g_io_channel_write*"
+              "g_io_channel_seek*"
 
               "g_key_file_*"
 
@@ -177,6 +452,7 @@
               "g_option_*"
 
               "g_parse_debug_string"
+              "g_path*"
               "g_pattern_*"
               "g_printf*"
               "g_ptr_array_*"
@@ -209,33 +485,51 @@
 (ignore "alloca"
         "atexit"
         "g_access"
-        "g_allocator_free"
         "g_assert_warning"
         "g_atexit"
+        "g_basename"
         "g_base64_encode_close"
         "g_blow_chunks"
+        "g_bookmark_file_set_groups"
         "g_chdir"
         "g_chmod"
         "g_clear_error"
+        "g_convert_with_iconv"
         "g_creat"
         "g_direct_equal"
         "g_direct_hash"
         "g_error"
+        "g_file_get_contents"
         "g_file_set_contents"
+        "g_file_test"
+        "g_file_open_tmp"
+        "g_file_read_link"
+        "g_find_program_in_path"
         "g_fopen"
         "g_fprintf"
-        "g_free"
         "g_freopen"
+        "g_getenv"
         "g_get_charset"
+        "g_get_current_dir"
         "g_get_filename_charsets"
         "g_get_language_names"
         "g_get_system_data_dirs"
         "g_intern_static_string"
         "g_intern_string"
+        "g_io_channel_init"
+        "g_io_channel_ref"
+        "g_io_channel_unref"
         "g_listenv"
         "g_lstat"
+        "g_nullify_pointer"
+        "g_main_context_query"
+        "g_main_context_check"
+        "g_main_context_dispatch"
+        "g_main_context_add_poll"
+        "g_main_context_remove_poll"
         "g_main_context_wait"
         "g_memdup"
+        "g_mkstemp"
         "g_once_impl"
         "g_open"
         "g_printerr"
@@ -247,12 +541,17 @@
         "g_rename"
         "g_return_if_fail_warning"
         "g_rmdir"
+        "g_setenv"
         "g_set_error"
         "g_set_print_handler"
         "g_set_printerr_handler"
         "g_shell_error_quark"
         "g_shell_parse_argv"
+        "g_source_new"
         "g_source_set_funcs"
+        "g_source_add_poll"
+        "g_source_remove_poll"
+        "g_source_get_current_time"
         "g_spaced_primes_closest"
         "g_sprintf"
         "g_stat"
@@ -260,8 +559,16 @@
         "g_unicode_canonical_decomposition"
         "g_unicode_canonical_ordering"
         "g_unlink"
+        "g_unsetenv"
         "g_uri_list_extract_uris"
         "g_usleep"
+        "g_utf8_get_char_validated"
+        "g_utf8_offset_to_pointer"
+        "g_utf8_pointer_to_offset"
+        "g_utf8_prev_char"
+        "g_utf8_find_prev_char"
+        "g_utf8_strncpy"
+        "g_utf8_to_ucs4_fast"
         "g_vasprintf"
         "g_vfprintf"
         "g_vprintf"

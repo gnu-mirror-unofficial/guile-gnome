@@ -1,0 +1,1946 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename guile-gnome-gobject.info
+@settitle Guile-GNOME: GObject
+@c %**end of header
+
+@copying 
+This manual is for Guile-GNOME: GObject (version 2.15.93, updated 25 August
+2007)
+
+Copyright 2003,2004,2005,2006,2007 Free Software Foundation
+
+@quotation 
+Permission is granted to copy, distribute and/or modify this document under the
+terms of the GNU General Public License, Version 2 or any later version
+published by the Free Software Foundation.
+
+@end quotation
+
+@end copying
+
+@dircategory The Algorithmic Language Scheme
+@direntry 
+* Guile-GNOME: GObject: (guile-gnome-gobject.info).  The GLib object system in Scheme.
+@end direntry
+
+@titlepage 
+@title Guile-GNOME: GObject
+@subtitle version 2.15.93, updated 25 August 2007
+@author Andy Wingo (@email{wingo at pobox.com})
+@author Martin Baulig (@email{baulig at suse.de})
+@page 
+@vskip 0pt plus 1filll
+@insertcopying 
+@end titlepage
+
+@ifnottex 
+@node Top
+@top Guile-GNOME: GObject
+@insertcopying 
+@menu 
+* gnome gobject gtype::  The base of the GObject type system
+* gnome gobject gvalue::  Generic boxed values
+* gnome gobject gparameter::  Parameters with constraints and default values
+* gnome gobject gclosure::  Language-portable closures
+* gnome gobject gsignal::  Using closures as extension points
+* gnome gobject gobject::  GLib's main object implementation
+* gnome gobject generics::  Shorthand for many common GObject operations
+* gnome gobject utils::  Miscellaneous useful functions
+* gnome gw generics::    A home for generated generic functions
+* gnome gw support gobject::  Integration between G-Wrap and GObject types
+* gnome gw support defs::  Create G-Wrap wrapsets from ``defs'' files
+* gnome gw support gtk-doc::  Parse C documentation from gtk-doc into texinfo
+* gnome gw support modules::  Fondling Guile's module system
+
+* Function Index::       
+@end menu
+
+@end ifnottex
+
+@iftex 
+@shortcontents 
+@end iftex
+
+@node gnome gobject gtype
+@chapter (gnome gobject gtype)
+@section Overview
+Base support for the GLib type system.
+
+The GLib runtime type system is broken into a number of modules, of which GType
+is the base. A @code{<gtype>} is a named type that has a number of properties.
+Some types are fundamental and cannot be subclassed, such as integers. Others
+can form the root of complicated object hierarchies, such as @code{<gobject>}.
+
+One can obtain the @code{<gtype>} object for a type if you know its name. For
+example,
+
+@lisp 
+  (gtype-from-name "guint64") @result{} #<gtype guint64>
+ 
+@end lisp
+
+@code{<gtype>} objects are low-level constructs. In Scheme, it is more usual to
+work with GOOPS type objects. Each @code{<gtype>} corresponds to one GOOPS
+object, which may be obtained programmatically using @code{gtype->class}.
+
+A more detailed reference on the GLib type system may be had at
+@uref{http://library.gnome.org/devel/gobject/stable/}.
+
+@section Usage
+@anchor{gnome gobject gtype gtype?}@deffn Primitive gtype? type
+Returns @code{#t} if @var{type} is a GType and @code{#f} if not.
+
+@end deffn
+
+@anchor{gnome gobject gtype gtype-is-a?}@deffn Primitive gtype-is-a? type is_a_type
+Returns @code{#t} if @var{type} is a subtype of @var{is_a_type}.
+
+@end deffn
+
+@anchor{gnome gobject gtype gtype-basic?}@deffn Primitive gtype-basic? type
+Returns @code{#t} if @var{type} is a basic type. Basic types have only one
+possible representation in Scheme. Unless the user means to deal in GValues,
+values of basic types should be manipulated as Scheme values.
+
+@end deffn
+
+@anchor{gnome gobject gtype gtype-classed?}@deffn Primitive gtype-classed? type
+Returns @code{#t} if @var{type} is a classed type.
+
+@end deffn
+
+@anchor{gnome gobject gtype gtype-instantiatable?}@deffn Primitive gtype-instantiatable? type
+Returns @code{#t} if @var{type} is an instantiatable type.
+
+@end deffn
+
+@anchor{gnome gobject gtype gtype-fundamental?}@deffn Primitive gtype-fundamental? type
+Returns @code{#t} if @var{type} is a fundamental type and @code{#f} if not. This
+is the same as @code{(eq? type (gtype->fundamental type))}, but slightly faster.
+
+@end deffn
+
+@anchor{gnome gobject gtype gtype->fundamental}@deffn Primitive gtype->fundamental type
+Returns the fundamental type of @var{type} (possibly @var{type} itself).
+
+@end deffn
+
+@anchor{gnome gobject gtype gtype-parent}@deffn Primitive gtype-parent type
+Returns the parent type of @var{type} (possibly @var{type} itself).
+
+@end deffn
+
+@anchor{gnome gobject gtype gtype-children}@deffn Primitive gtype-children type
+Returns the @code{<gtype>}'s of @var{type}'s direct children, as a list.
+
+@end deffn
+
+@anchor{gnome gobject gtype gtype-interfaces}@deffn Primitive gtype-interfaces type
+Returns the set of @code{<gtype>}'s that @var{type} implements, as a list.
+
+@end deffn
+
+@anchor{gnome gobject gtype gtype-name}@deffn Primitive gtype-name type
+Returns the name of @var{type}.
+
+@end deffn
+
+@anchor{gnome gobject gtype gtype-from-name}@deffn Primitive gtype-from-name name
+Returns the type named @var{name}, or @code{#f} if none exists.
+
+@end deffn
+
+@anchor{gnome gobject gtype gtype-from-instance}@deffn Primitive gtype-from-instance instance
+Returns the type of @var{instance}, which should be a primitive
+@code{<%gtype-instance>}.
+
+@end deffn
+
+@anchor{gnome gobject gtype %gtype-instance-primitive-destroy!}@deffn Primitive %gtype-instance-primitive-destroy! instance
+Release all references that the Scheme wrapper @var{instance} has on the
+underlying C value, and release pointers associated with the C value that point
+back to Scheme.
+
+Normally not necessary. Used by the implementations of some instantiatable types
+that have @code{destroy} methods, notably @code{<gtk-object>}.
+
+@end deffn
+
+@anchor{gnome gobject gtype gtype-instance-primitive->type}@deffn Primitive gtype-instance-primitive->type instance
+Retrieve the @code{<gtype>} object associated with the primitive
+@code{<%gtype-instance>} value, @var{instance}.
+
+@end deffn
+
+@anchor{gnome gobject gtype especify-metaclass!}@deffn Primitive especify-metaclass! class metaclass
+A terrible hack that takes a class @var{class} and sets its metaclass, in-place,
+to @var{metaclass}. @var{metaclass} must be a subclass of @var{class}' existing
+metaclass.
+
+This method is useful if you want to define a method that on a particular
+@code{<gtype-class>}, such as @code{make-instance}. However, it would be cleaner
+to devise a way of making these ``class methods'' without molesting GOOPS in
+this way.
+
+@end deffn
+
+@anchor{gnome gobject gtype <gtype-class>}@deftp Class <gtype-class>
+The metaclass of all GType classes. Ensures that GType classes have @code{gtype}
+and @code{gtype-class} slots, which point to the primitive @code{<gtype>} and
+@code{<%gtype-class>} objects that wrap the C values.
+
+@end deftp
+
+@anchor{gnome gobject gtype <gtype-instance-class>}@deftp Class <gtype-instance-class>
+The metaclass of all instantiatable GType classes.
+
+@end deftp
+
+@anchor{gnome gobject gtype <gtype-instance>}@deftp Class <gtype-instance>
+The root class of all instantiatable GType classes. Adds a slot,
+@code{gtype-instance}, to instances. This slot will point to the primitive
+@code{<%gtype-instance>} object that wraps the C value.
+
+@end deftp
+
+@anchor{gnome gobject gtype gtype->class}@defun gtype->class type
+If there is already a GOOPS class associated with the GType @var{type}, return
+this class.
+
+Otherwise, create a new GOOPS class and bind it to this type. The created class
+is an immortal, persistent object which is bound in some magic way to its GType.
+
+@end defun
+
+@anchor{gnome gobject gtype gtype-class->type}@defun gtype-class->type class
+Returns the @code{<gtype>} associated with a @code{<gtype-class>}.
+
+@end defun
+
+@anchor{gnome gobject gtype %gtype-lookup-class}@deffn Primitive %gtype-lookup-class type
+Returns the @code{<gtype-class>} registered for @var{type}, or @code{#f} if none
+has been registered.
+
+@end deffn
+
+@anchor{gnome gobject gtype %gtype-bind-to-class}@deffn Primitive %gtype-bind-to-class class type
+A low-level procedure to bind the newly-created @code{<gtype-class>} @var{class}
+to @var{type}. Users should not need to call this function.
+
+@end deffn
+
+@anchor{gnome gobject gtype gtype-instance:write}@deffn Generic gtype-instance:write
+Generic function, defined so we can define @code{write} functions for instances
+of @code{<gtype-class>} in Scheme. A bit of a hack.
+
+@end deffn
+
+@deffn Method gtype-instance:write  (@var{class} @code{<gtype-class>}) (@var{obj} @code{<%gtype-instance>}) (@var{file} @code{<top>})
+@end deffn
+
+@anchor{gnome gobject gtype gruntime-error}@defun gruntime-error format-string . args
+Signal a runtime error. The error will be thrown to the key
+@code{gruntime-error}.
+
+@end defun
+
+@anchor{gnome gobject gtype class-name->gtype-name}@defun class-name->gtype-name class-name
+Convert the name of a class into a suitable name for a GType. For example:
+
+@lisp 
+ (class-name->gtype-name '<foo-bar>) @result{} "FooBar"
+@end lisp
+
+@end defun
+
+@anchor{gnome gobject gtype gtype:genum}@defvar gtype:genum
+@end defvar
+
+@anchor{gnome gobject gtype gtype:gflags}@defvar gtype:gflags
+@end defvar
+
+@anchor{gnome gobject gtype gtype:ginterface}@defvar gtype:ginterface
+@end defvar
+
+@anchor{gnome gobject gtype gtype:gobject}@defvar gtype:gobject
+@end defvar
+
+@anchor{gnome gobject gtype gtype:gparam}@defvar gtype:gparam
+@end defvar
+
+@anchor{gnome gobject gtype gtype:void}@defvar gtype:void
+@end defvar
+
+@node gnome gobject gvalue
+@chapter (gnome gobject gvalue)
+@section Overview
+GLib supports generic typed values via its GValue module. These values are
+wrapped in Scheme as instances of @code{<gvalue-class>} classes, such as
+@code{<gint>}, @code{<gfloat>}, etc.
+
+In most cases, use of @code{<gvalue>} are transparent to the Scheme user. Values
+which can be represented directly as Scheme values are normally given to the
+user in their Scheme form, e.g. @code{#\a} instead of @code{#<gvalue <gchar>
+3020c708 a>}. However, when dealing with low-level routines it is sometimes
+necessary to have values in @code{<gvalue>} form. The conversion between the two
+is performed via the @code{scm->gvalue} and @code{gvalue->scm} functions.
+
+The other set of useful procedures exported by this module are those dealing
+with enumerated values and flags. These objects are normally represented on the
+C side with integers, but they have symbolic representations registered in the
+GLib type system.
+
+On the Scheme side, enumerated and flags values are canonically expressed as
+@code{<gvalue>} objects. They can be converted to integers or symbols using the
+conversion procedures exported by this module. It is conventional for Scheme
+procedures that take enumerated values to accept any form for the values, which
+can be canonicalized using @code{(make <your-enum-type> #:value @var{value})},
+where @var{value} can be an integer, a symbol (or symbol list in the case of
+flags), or the string ``nickname'' (or string list) of the enumerated/flags
+value.
+
+@section Usage
+@anchor{gnome gobject gvalue gvalue?}@deffn Primitive gvalue? value
+Returns @code{#t} if @var{value} is a @code{<gvalue>}, @code{#f} otherwise.
+
+@end deffn
+
+@anchor{gnome gobject gvalue gvalue->type}@deffn Primitive gvalue->type value
+Returns the @code{<gtype>} of the value held by @var{value}.
+
+@end deffn
+
+@anchor{gnome gobject gvalue <gboolean>}@deftp Class <gboolean>
+A @code{<gvalue>} class for boolean values.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <gchar>}@deftp Class <gchar>
+A @code{<gvalue>} class for signed 8-bit values.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <guchar>}@deftp Class <guchar>
+A @code{<gvalue>} class for unsigned 8-bit values.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <gint>}@deftp Class <gint>
+A @code{<gvalue>} class for signed 32-bit values.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <guint>}@deftp Class <guint>
+A @code{<gvalue>} class for unsigned 32-bit values.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <glong>}@deftp Class <glong>
+A @code{<gvalue>} class for signed ``long'' (32- or 64-bit) values.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <gulong>}@deftp Class <gulong>
+A @code{<gvalue>} class for unsigned ``long'' (32- or 64-bit) values.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <gint64>}@deftp Class <gint64>
+A @code{<gvalue>} class for signed 64-bit values.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <guint64>}@deftp Class <guint64>
+A @code{<gvalue>} class for unsigned 64-bit values.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <gfloat>}@deftp Class <gfloat>
+A @code{<gvalue>} class for 32-bit floating-point values.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <gdouble>}@deftp Class <gdouble>
+A @code{<gvalue>} class for 64-bit floating-point values.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <gchararray>}@deftp Class <gchararray>
+A @code{<gvalue>} class for arrays of 8-bit values (C strings).
+
+@end deftp
+
+@anchor{gnome gobject gvalue <gboxed>}@deftp Class <gboxed>
+A @code{<gvalue>} class for ``boxed'' types, a way of wrapping generic C
+structures. Use @code{gvalue->type} on an instance of this class to determine
+what type it holds.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <gboxed-scm>}@deftp Class <gboxed-scm>
+A @code{<gboxed>} class for holding arbitrary Scheme objects.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <gvalue-array>}@deftp Class <gvalue-array>
+A @code{<gvalue>} class for arrays of @code{<gvalue>}.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <genum>}@deftp Class <genum>
+A @code{<gvalue>} base class for enumerated values. Users may define new
+enumerated value types via subclssing from @code{<genum>}, passing
+@code{#:vtable @var{table}} as an initarg, where @var{table} should be in a
+format suitable for passing to @code{genum-register-static}.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <gflags>}@deftp Class <gflags>
+A @code{<gvalue>} base class for flag values. Users may define new flag value
+types via subclssing from @code{<gflags>}, passing @code{#:vtable @var{table}}
+as an initarg, where @var{table} should be in a format suitable for passing to
+@code{gflags-register-static}.
+
+@end deftp
+
+@anchor{gnome gobject gvalue genum-register-static}@deffn Primitive genum-register-static name vtable
+Creates and registers a new enumerated type with name @var{name} with the C
+runtime. There must be no type with name @var{name} when this function is
+called.
+
+The new type can be accessed from C either by passing the returned
+@code{<gtype>} object back to a C function or by using @code{g-type-from-name}.
+
+@var{vtable} is a vector describing the new enum type. Each vector element
+describes one enum element and must be a list of 3 elements: the element's nick
+name as a symbol, its name as a string, and its integer value.
+
+@lisp 
+(genum-register-static "Test"
+  #((foo "Foo" 1) (bar "Bar" 2) (baz "Long name of baz" 4)))
+@end lisp
+
+@end deffn
+
+@anchor{gnome gobject gvalue gflags-register-static}@deffn Primitive gflags-register-static name vtable
+Creates and registers a new flags @code{<gtype>} with name var@{name@} with the
+C runtime.
+
+See @code{genum-register-static} for details.
+
+@end deffn
+
+@anchor{gnome gobject gvalue genum-class->value-table}@defun genum-class->value-table class
+Return the vtable of possible values for @var{class}. The same as
+@code{genum-type-get-values}, but operates on classes.
+
+@end defun
+
+@anchor{gnome gobject gvalue gflags-class->value-table}@defun gflags-class->value-table class
+Return the vtable of possible values for @var{class}. The same as
+@code{gflags-type-get-values}, but operates on classes.
+
+@end defun
+
+@anchor{gnome gobject gvalue genum-type-get-values}@deffn Primitive genum-type-get-values type
+Return a vtable of the values supported by the enumerated @code{<gtype>}
+@var{type}. The return value will be in the format described in
+@code{genum-register-static}.
+
+@end deffn
+
+@anchor{gnome gobject gvalue gflags-type-get-values}@deffn Primitive gflags-type-get-values type
+Return a vtable of the values supported by the flag @code{<gtype>} @var{type}.
+The return value will be in the format described in
+@code{gflags-register-static}.
+
+@end deffn
+
+@anchor{gnome gobject gvalue scm->gvalue}@deffn Primitive scm->gvalue type scm
+Convert a Scheme value into a @code{<gvalue>} of type @var{type}. If the
+conversion is not possible, raise a @code{gruntime-error}.
+
+@end deffn
+
+@anchor{gnome gobject gvalue gvalue->scm}@deffn Primitive gvalue->scm value
+Convert a @code{<gvalue>} into it normal scheme representation, for example
+unboxing characters into Scheme characters. Note that the Scheme form for some
+values is the @code{<gvalue>} form, for example with boxed or enumerated values.
+
+@end deffn
+
+@anchor{gnome gobject gvalue genum->symbol}@defun genum->symbol obj
+Convert the enumerated value @var{obj} from a @code{<gvalue>} to its symbol
+representation (its ``nickname'').
+
+@end defun
+
+@anchor{gnome gobject gvalue genum->name}@defun genum->name obj
+Convert the enumerated value @var{obj} from a @code{<gvalue>} to its
+representation as a string (its ``name'').
+
+@end defun
+
+@anchor{gnome gobject gvalue genum->value}@defun genum->value obj
+Convert the enumerated value @var{obj} from a @code{<gvalue>} to its
+representation as an integer.
+
+@end defun
+
+@anchor{gnome gobject gvalue gflags->symbol-list}@defun gflags->symbol-list obj
+Convert the flags value @var{obj} from a @code{<gvalue>} to a list of the
+symbols that it represents.
+
+@end defun
+
+@anchor{gnome gobject gvalue gflags->name-list}@defun gflags->name-list obj
+Convert the flags value @var{obj} from a @code{<gvalue>} to a list of strings,
+the names of the values it represents.
+
+@end defun
+
+@anchor{gnome gobject gvalue gflags->value-list}@defun gflags->value-list obj
+Convert the flags value @var{obj} from a @code{<gvalue>} to a list of integers,
+which when @code{logand}'d together yield the flags' value.
+
+@end defun
+
+@anchor{gnome gobject gvalue gtype:gboolean}@defvar gtype:gboolean
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gboxed}@defvar gtype:gboxed
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gboxed-scm}@defvar gtype:gboxed-scm
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gchar}@defvar gtype:gchar
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gchararray}@defvar gtype:gchararray
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gdouble}@defvar gtype:gdouble
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gfloat}@defvar gtype:gfloat
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gint}@defvar gtype:gint
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gint64}@defvar gtype:gint64
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:glong}@defvar gtype:glong
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gpointer}@defvar gtype:gpointer
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:guchar}@defvar gtype:guchar
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:guint}@defvar gtype:guint
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:guint64}@defvar gtype:guint64
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gulong}@defvar gtype:gulong
+@end defvar
+
+@anchor{gnome gobject gvalue gtype:gvalue-array}@defvar gtype:gvalue-array
+@end defvar
+
+@node gnome gobject gparameter
+@chapter (gnome gobject gparameter)
+@section Overview
+Parameters are constraints for values, both in type and in range. This module
+wraps the parameters code of the GLib type system, defining C classes such that
+parameters may be manipulated and created from Scheme.
+
+As a technical detail, the C structure @code{GParamSpec} is wrapped at two
+levels. One is a mapping of the C structure to a Guile structure. The other is a
+GOOPS representation. The low level is called @code{gparam-struct}, and the high
+level is called @code{<gparam>}. @code{gparam-struct} is a generic container of
+any type. @code{<gparam>} has subclasses for the various kinds of parameter
+types: @code{<gparam-int>}, @code{<gparam-object>}, etc.
+
+@section Usage
+@anchor{gnome gobject gparameter <gparam>}@deftp Class <gparam>
+The base class for GLib parameter objects.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-char>}@deftp Class <gparam-char>
+Parameter for @code{<gchar>} values. 3 arguments: minimum, maximum, and default
+values.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-uchar>}@deftp Class <gparam-uchar>
+Parameter for @code{<guchar>} values. 3 arguments: minimum, maximum, and default
+values.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-boolean>}@deftp Class <gparam-boolean>
+Parameter for @code{<gboolean>} values. 1 argument: default value.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-int>}@deftp Class <gparam-int>
+Parameter for @code{<gint>} values. 3 arguments: minimum, maximum, and default
+values.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-uint>}@deftp Class <gparam-uint>
+Parameter for @code{<guint>} values. 3 arguments: minimum, maximum, and default
+values.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-long>}@deftp Class <gparam-long>
+Parameter for @code{<glong>} values. 3 arguments: minimum, maximum, and default
+values.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-ulong>}@deftp Class <gparam-ulong>
+Parameter for @code{<gulong>} values. 3 arguments: minimum, maximum, and default
+values.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-int64>}@deftp Class <gparam-int64>
+Parameter for @code{<gint64>} values. 3 arguments: minimum, maximum, and default
+values.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-uint64>}@deftp Class <gparam-uint64>
+Parameter for @code{<guint64>} values. 3 arguments: minimum, maximum, and
+default values.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-float>}@deftp Class <gparam-float>
+Parameter for @code{<gfloat>} values. 3 arguments: minimum, maximum, and default
+values.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-double>}@deftp Class <gparam-double>
+Parameter for @code{<gdouble>} values. 3 arguments: minimum, maximum, and
+default values.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-pointer>}@deftp Class <gparam-pointer>
+Parameter for @code{<gpointer>} values. No arguments.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-string>}@deftp Class <gparam-string>
+Parameter for @code{<gchararray>} values. 1 argument: the default value, which
+may be @code{#f}.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-object>}@deftp Class <gparam-object>
+Parameter for @code{<gobject>} values. 1 argument: the @code{<gtype>} of the
+value.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-boxed>}@deftp Class <gparam-boxed>
+Parameter for @code{<gboxed>} values. 1 argument: the @code{<gtype>} of the
+value.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-enum>}@deftp Class <gparam-enum>
+Parameter for @code{<genum>} values. 2 arguments: the @code{<gtype>} of the
+value, and the default value.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-flags>}@deftp Class <gparam-flags>
+Parameter for @code{<gflags>} values. 2 arguments: the @code{<gtype>} of the
+value, and the default value.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-spec-flags>}@deftp Class <gparam-spec-flags>
+A @code{<gflags>} type for the flags allowable on a @code{<gparam>}:
+@code{read}, @code{write}, @code{construct}, @code{construct-only}, and
+@code{lax-validation}.
+
+@end deftp
+
+@anchor{gnome gobject gparameter gparam-struct:name}@defun gparam-struct:name param-struct
+Retrieve the name from a @code{gparam-struct}.
+
+@end defun
+
+@anchor{gnome gobject gparameter gparam-struct:nick}@defun gparam-struct:nick param-struct
+Retrieve the `nickname' from a @code{gparam-struct}.
+
+@end defun
+
+@anchor{gnome gobject gparameter gparam-struct:blurb}@defun gparam-struct:blurb param-struct
+Retrieve the `blurb', a short descriptive string, from a @code{gparam-struct}.
+
+@end defun
+
+@anchor{gnome gobject gparameter gparam-struct:flags}@defun gparam-struct:flags param-struct
+Retrieve the flags from a @code{gparam-struct}.
+
+@end defun
+
+@anchor{gnome gobject gparameter gparam-struct:param-type}@defun gparam-struct:param-type param-struct
+Retrieve the GParam type from a @code{gparam-struct}, for example
+@code{gtype:gparam-uint64}.
+
+@end defun
+
+@anchor{gnome gobject gparameter gparam-struct:value-type}@defun gparam-struct:value-type param-struct
+Retrieve the value type from a @code{gparam-struct}, for example
+@code{gtype:guint64}.
+
+@end defun
+
+@anchor{gnome gobject gparameter gparam-struct:owner-type}@defun gparam-struct:owner-type param-struct
+Retrieve the `owner type' from a @code{gparam-struct}. Appears to be stored into
+GLib param specs, but never used.
+
+@end defun
+
+@anchor{gnome gobject gparameter gparam-struct:args}@defun gparam-struct:args param-struct
+Retrieve the arguments from a @code{gparam-struct}, as a list. The length and
+composition of the arguments depends on the parameter type.
+
+@end defun
+
+@anchor{gnome gobject gparameter gparam->param-struct}@deffn Primitive gparam->param-struct param
+Retrieve the primitive @code{gparam-struct} for the GOOPS parameter object,
+@var{param}.
+
+@end deffn
+
+@anchor{gnome gobject gparameter gparam->value-type}@deffn Primitive gparam->value-type param
+Retrieve the value type of the @code{<gparam>} object @var{param}.
+
+@end deffn
+
+@anchor{gnome gobject gparameter gparameter:uint-max}@defvar gparameter:uint-max
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:int-min}@defvar gparameter:int-min
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:int-max}@defvar gparameter:int-max
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:ulong-max}@defvar gparameter:ulong-max
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:long-min}@defvar gparameter:long-min
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:long-max}@defvar gparameter:long-max
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:uint64-max}@defvar gparameter:uint64-max
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:int64-min}@defvar gparameter:int64-min
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:int64-max}@defvar gparameter:int64-max
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:float-max}@defvar gparameter:float-max
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:float-min}@defvar gparameter:float-min
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:double-max}@defvar gparameter:double-max
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:double-min}@defvar gparameter:double-min
+@end defvar
+
+@anchor{gnome gobject gparameter gparameter:byte-order}@defvar gparameter:byte-order
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-boolean}@defvar gtype:gparam-boolean
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-boxed}@defvar gtype:gparam-boxed
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-char}@defvar gtype:gparam-char
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-double}@defvar gtype:gparam-double
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-enum}@defvar gtype:gparam-enum
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-flags}@defvar gtype:gparam-flags
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-float}@defvar gtype:gparam-float
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-int}@defvar gtype:gparam-int
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-int64}@defvar gtype:gparam-int64
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-long}@defvar gtype:gparam-long
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-object}@defvar gtype:gparam-object
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-pointer}@defvar gtype:gparam-pointer
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-string}@defvar gtype:gparam-string
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-uchar}@defvar gtype:gparam-uchar
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-uint}@defvar gtype:gparam-uint
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-uint64}@defvar gtype:gparam-uint64
+@end defvar
+
+@anchor{gnome gobject gparameter gtype:gparam-ulong}@defvar gtype:gparam-ulong
+@end defvar
+
+@node gnome gobject gclosure
+@chapter (gnome gobject gclosure)
+@section Overview
+The GLib type system supports the creation and invocation of ``closures'',
+objects which can be invoked like procedures. Its infrastructure allows one to
+pass a Scheme function to C, and have C call into Scheme, and vice versa. This
+module exports a GOOPS class wrapping closures on the Scheme level,
+@code{<gclosure>}. @code{<gclosure>} holds a Scheme procedure, the
+@code{<gtype>} of its return value, and a list of the @code{<gtype>}'s of its
+arguments. Closures can be invoked with @code{gclosure-invoke}. For example:
+
+@lisp 
+ (gclosure-invoke (make <gclosure>
+                   #:return-type <gint>
+                   #:param-types (list <gulong>)
+                   #:func (lambda (x) (* x x)))
+                  10)
+ @result{} 100
+ 
+@end lisp
+
+@section Usage
+@anchor{gnome gobject gclosure <gclosure>}@deftp Class <gclosure>
+The Scheme representation of a GLib closure: a typed procedure object that can
+be passed to other languages.
+
+@end deftp
+
+@anchor{gnome gobject gclosure gclosure-invoke}@defun gclosure-invoke closure . args
+Invoke a closure. The arguments @var{args} will be converted to @code{<gvalue>}
+objects of the appropriate type, and the return value will be run through
+@code{gvalue->scm}. For all practical purposes, this function is like
+@code{apply}.
+
+@end defun
+
+@anchor{gnome gobject gclosure gtype:gclosure}@defvar gtype:gclosure
+@end defvar
+
+@node gnome gobject gsignal
+@chapter (gnome gobject gsignal)
+@section Overview
+GSignal is a mechanism by which code, normally written in C, may expose
+extension points to which closures can be connected, much like Guile's hooks.
+Instantiatable types can have signals associated with them; for example,
+@code{<gtk-widget>} has an @code{expose} signal that will be ``fired'' at
+certain well-documented points.
+
+Signals are typed. They specify the types of their return value, and the types
+of their arguments.
+
+This module defines routines for instrospecting, emitting, connecting to,
+disconnecting from, blocking, and unblocking signals. Additionally it defines
+routines to define new signal types on instantiatable types.
+
+@section Usage
+@anchor{gnome gobject gsignal <gsignal>}@defvar <gsignal>
+The structure vtable for @code{<gsignal>} instances.
+
+@end defvar
+
+@anchor{gnome gobject gsignal gsignal:id}@defun gsignal:id signal
+Access the ``id'' of a @code{<gsignal>} structure, an integer.
+
+@end defun
+
+@anchor{gnome gobject gsignal gsignal:name}@defun gsignal:name signal
+Access the name of a @code{<gsignal>} structure, a string.
+
+@end defun
+
+@anchor{gnome gobject gsignal gsignal:interface-type}@defun gsignal:interface-type signal
+Access the type to which a @code{<gsignal>} structure is associated, a
+@code{<gtype>}.
+
+@end defun
+
+@anchor{gnome gobject gsignal gsignal:return-type}@defun gsignal:return-type signal
+Access the return type from a a @code{<gsignal>} structure, a @code{<gtype>}.
+
+@end defun
+
+@anchor{gnome gobject gsignal gsignal:param-types}@defun gsignal:param-types signal
+Access the parameter types from a a @code{<gsignal>} structure, a list of
+@code{<gtype>}.
+
+@end defun
+
+@anchor{gnome gobject gsignal gtype-get-signals}@deffn Primitive gtype-get-signals type
+Returns a vector of signal names belonging to @var{type} and all parent types.
+
+@end deffn
+
+@anchor{gnome gobject gsignal gtype-class-get-signals}@defun gtype-class-get-signals class
+Returns a vector of signals belonging to @var{class} and all parent classes.
+
+@end defun
+
+@anchor{gnome gobject gsignal gtype-class-get-signal-names}@defun gtype-class-get-signal-names class
+Returns a vector of signal names belonging to @var{class} and all parent
+classes.
+
+@end defun
+
+@anchor{gnome gobject gsignal gtype-instance-signal-emit}@defun gtype-instance-signal-emit object name . args
+Emits signal @var{name} with arguments @var{args} on the @code{<gtype-instance>}
+@var{object}. @var{name} should be a symbol.
+
+@end defun
+
+@anchor{gnome gobject gsignal gtype-instance-signal-connect-data}@defun gtype-instance-signal-connect-data object name func after
+Connects @var{func} as handler for the @code{<gtype-instance>} @var{object}'s
+signal @var{name}.
+
+@var{name} should be a symbol. @var{after} is boolean specifying whether the
+handler is run before (@code{#f}) or after (@code{#t}) the signal's default
+handler.
+
+Returns an integer number which can be used as arugment of
+@code{gsignal-handler-block}, @code{gsignal-handler-unblock},
+@code{gsignal-handler-disconnect} and @code{gsignal-handler-connected?}.
+
+@end defun
+
+@anchor{gnome gobject gsignal gtype-instance-signal-connect}@defun gtype-instance-signal-connect object name func
+Convenience function for calling @code{gtype-instance-signal-connect-data} with
+@var{after} = @code{#f}.
+
+@end defun
+
+@anchor{gnome gobject gsignal gtype-instance-signal-connect-after}@defun gtype-instance-signal-connect-after object name func
+Convenience function for calling @code{gtype-instance-signal-connect-data} with
+@var{after} = @code{#t}.
+
+@end defun
+
+@anchor{gnome gobject gsignal gsignal-handler-block}@defun gsignal-handler-block obj id
+Block invocation of the signal handler identified by @var{id} from high-level
+GOOPS object @var{object}.
+
+@end defun
+
+@anchor{gnome gobject gsignal gsignal-handler-unblock}@defun gsignal-handler-unblock obj id
+Unblock invocation of the signal handler identified by @var{id} from high-level
+GOOPS object @var{object}.
+
+@end defun
+
+@anchor{gnome gobject gsignal gsignal-handler-disconnect}@defun gsignal-handler-disconnect obj id
+Disconnect the signal handler identified by @var{id} from high-level GOOPS
+object @var{object}.
+
+@end defun
+
+@anchor{gnome gobject gsignal gsignal-handler-connected?}@defun gsignal-handler-connected? obj id
+Returns @code{#t} if the signal handler identified by @var{id} is connected on
+the high-level GOOPS object @var{object}, or @code{#f} otherwise.
+
+@end defun
+
+@anchor{gnome gobject gsignal gtype-class-create-signal}@defun gtype-class-create-signal class name return-type param-types
+Create a new signal associated with the @code{<gtype-class>} @var{class}.
+
+@var{name} should be a symbol, the name of the signal. @var{return-type} should
+be either a @code{<gtype>} or a @code{<gtype-class>} object. Similarly,
+@var{param-types} should be a list of either @code{<gtype>} or
+@code{<gtype-class>} objects.
+
+In a bit of an odd interface, this function will return a new generic function,
+which will be run as the signal's default handler, whose default method will
+silently return an unspecified value. The user may define new methods on this
+generic to provide alternative default handler implementations.
+
+@end defun
+
+@anchor{gnome gobject gsignal gtype-class-define-signal}@defspec gtype-class-define-signal 
+A macro invoked as:
+
+@lisp 
+ (gtype-class-define-signal @var{class} @var{name} @var{return-type}
+                            . @var{param-types})
+@end lisp
+
+All arguments will be passed to @code{gtype-class-create-signal}.
+
+This form is a macro because it will actually take the generic returned from
+@code{gtype-class-create-signal} and bind it to a name in the toplevel
+environment.
+
+The name of the new generic function is the concatenation of the type name, a
+colon, and the signal name.
+
+For example:
+
+@lisp 
+ (gtype-class-define-signal <foo> 'roswell #f)
+ (define-method (foo:roswell (obj <foo>))
+   *unspecified*)
+
+ (gtype-class-define-signal <foo> 'berlin <glong> <gint>)
+ (define-method (foo:berlin (obj <foo>) (x <number>))
+   85)
+@end lisp
+
+@end defspec
+
+@node gnome gobject gobject
+@chapter (gnome gobject gobject)
+@section Overview
+GObject is what is commonly understood as @emph{the} object system for GLib.
+This is not strictly true. GObject is @emph{one} implementation of an object
+system, built on the other modules: GType, GValue, GParameter, GClosure, and
+GSignal.
+
+Similarly, this Guile module provides integration with the GObject object
+system, built on the Guile modules that support GType, GValue, GParameter,
+GClosure, and GSignal.
+
+The main class exported by this module is @code{<gobject>}. @code{<gobject>}
+classes can be subclassed by the user, which will register new subtypes with the
+GType runtime type system. @code{<gobject>} classes are are also created as
+needed when wrapping GObjects that come from C, for example from a function's
+return value.
+
+Besides supporting derivation, and signals like other @code{<gtype-instance>}
+implementations, @code{<gobject>} has the concept of @dfn{properties}, which are
+@code{<gvalue>}'s associated with the object. The values are constrained by
+@code{<gparam>}'s, which are associated with the object's class. This module
+exports the necessary routines to query, get, and set @code{<gobject>}
+properties.
+
+In addition, this module defines the @code{<ginterface>} base class, whose
+subclasses may be present as mixins of @code{<gobject>} classes. For example:
+
+@lisp 
+ (use-modules (gnome gtk) (oop goops))
+ (class-direct-supers <gtk-widget>) @result{}
+    (#<<gobject-class> <atk-implementor-iface> 3033bad0>
+     #<<gobject-class> <gtk-object> 3034bc90>)
+ 
+@end lisp
+
+In this example, we see that @code{<gtk-widget>} has two superclasses,
+@code{<gtk-object>} and @code{<atk-implementor-iface>}. The second is an
+interface implemented by the @code{<gtk-widget>} class. See
+@code{gtype-interfaces} for more details.
+
+@section Usage
+@anchor{gnome gobject gobject <gobject>}@deftp Class <gobject>
+The base class for GLib's default object system.
+
+@code{<gobject>}'s metaclass understands a new slot option, @code{#:gparam},
+which will export a slot as a @code{<gobject>} property. The default
+implementation will set and access the value from the slot, but you can
+customize this by writing your own methods for @code{gobject:set-property} and
+@code{gobject:get-property}.
+
+In addition, the metaclass also understands @code{#:gsignal} arguments, which
+define signals on the class, and define the generics for the default signal
+handler. See @code{gtype-class-define-signal} for more information.
+
+For example:
+
+@lisp 
+ ;; deriving from <gobject>
+ (define-class <test> (<gobject>)
+  ;; a normal object slot
+  my-data
+
+  ;; an object slot exported as a gobject property
+  (pub-data #:gparam (list <gparam-long> #:name 'test))
+
+  ;; likewise, using non-default parameter settings
+  (foo-data #:gparam (list <gparam-long> #:name 'foo
+                           #:minimum -3 #:maximum 1000
+                           #:default-value 42))
+
+  ;; a signal with no arguments and no return value
+  #:gsignal '(frobate #f)
+
+  ;; a signal with arguments and a return value
+  #:gsignal (list 'frobate <gboolean> <gint> <glong>))
+
+ ;; deriving from <test> -- also inherits properties and signals
+ (define-class <hungry> (<test>))
+@end lisp
+
+@end deftp
+
+@anchor{gnome gobject gobject <ginterface>}@deftp Class <ginterface>
+The base class for GLib's interface types. Not derivable in Scheme.
+
+@end deftp
+
+@anchor{gnome gobject gobject gtype-register-static}@deffn Primitive gtype-register-static name parent_type
+Derive a new type named @var{name} from @var{parent_type}. Returns the new
+@code{<gtype>}. This function is called when deriving from @code{<gobject>};
+users do not normally call this function directly.
+
+@end deffn
+
+@anchor{gnome gobject gobject gobject:get-property}@deffn Generic gobject:get-property
+Called to get a gobject property. Only properties directly belonging to the
+object's class will come through this function; superclasses handle their own
+properties.
+
+Takes two arguments: the object and the property name.
+
+Call @code{(next-method)} in your methods to invoke the default handler
+
+@end deffn
+
+@deffn Method gobject:get-property  (@var{object} @code{<gobject>}) (@var{name} @code{<symbol>})
+The default implementation of @code{gobject:get-property}, which calls
+@code{(slot-ref obj name)}.
+
+@end deffn
+
+@anchor{gnome gobject gobject gobject:set-property}@deffn Generic gobject:set-property
+Called to set a gobject property. Only properties directly belonging to the
+object's class will come through this function; superclasses handle their own
+properties.
+
+Takes three arguments: the object, the property name, and the value.
+
+Call @code{(next-method)} in your methods to invoke the default handler.
+
+@end deffn
+
+@deffn Method gobject:set-property  (@var{object} @code{<gobject>}) (@var{name} @code{<symbol>}) (@var{value} @code{<top>})
+The default implementation of @code{gobject:set-property}, which sets slots on
+the object.
+
+@end deffn
+
+@anchor{gnome gobject gobject make-gobject-instance}@deffn Generic make-gobject-instance
+A generic defined to initialize a newly created @code{<gobject>} instance.
+@code{make-gobject-instance} takes four arguments: the class of the object, its
+@code{<gtype>}, the object itself, and the options, which is a list of keyword
+arguments.
+
+This operation is a generic function so that subclasses can override it, e.g. so
+that @code{<gtk-object>} can implement explicit destruction.
+
+@end deffn
+
+@deffn Method make-gobject-instance  (@var{class} @code{<top>}) (@var{type} @code{<top>}) (@var{object} @code{<top>}) (@var{options} @code{<top>})
+The default implementation of @code{make-gobject-instance}.
+
+@end deffn
+
+@anchor{gnome gobject gobject gobject-class-get-properties}@defun gobject-class-get-properties class
+Returns a vector of properties belonging to @var{class} and all parent classes.
+
+@end defun
+
+@anchor{gnome gobject gobject gobject-class-find-property}@defun gobject-class-find-property class name
+Returns a property named @var{name} (a symbol), belonging to @var{class} or one
+of its parent classes, or @code{#f} if not found.
+
+@end defun
+
+@anchor{gnome gobject gobject gobject-class-get-property-names}@defun gobject-class-get-property-names class
+Returns a vector of property names belonging to @var{class} and all parent
+classes.
+
+@end defun
+
+@anchor{gnome gobject gobject gobject-interface-get-properties}@defun gobject-interface-get-properties class
+Returns a vector of properties belonging to @var{class} and all parent classes.
+
+@end defun
+
+@anchor{gnome gobject gobject gobject-interface-find-property}@defun gobject-interface-find-property class name
+Returns a property named @var{name} (a symbol), belonging to @var{class} or one
+of its parent classes, or @code{#f} if not found.
+
+@end defun
+
+@anchor{gnome gobject gobject gobject-interface-get-property-names}@defun gobject-interface-get-property-names class
+Returns a vector of property names belonging to @var{class} and all parent
+classes.
+
+@end defun
+
+@anchor{gnome gobject gobject gobject-get-property}@defun gobject-get-property object name
+Gets a the property named @var{name} (a symbol) from @var{object}.
+
+@end defun
+
+@anchor{gnome gobject gobject gobject-set-property}@defun gobject-set-property object name init-value
+Sets the property named @var{name} (a symbol) on @var{object} to
+@var{init-value}.
+
+@end defun
+
+@node gnome gobject generics
+@chapter (gnome gobject generics)
+@section Overview
+Generic functions for procedures in the @code{(gnome gobject)} module.
+
+@subsection Mapping class libraries to Scheme
+Guile-GNOME exists to wrap a C library, @code{libgobject}, its types, and the
+set of libraries that based themselves on the GLib types.
+
+Procedure invocation feels very similar in Scheme and in C. For example, the C
+@code{gtk_widget_show (widget)} transliterates almost exactly to the Scheme
+@code{(gtk-widget-show widget)}.
+
+GLib-based libraries are not random collections of functions, however.
+GLib-based libraries also implement classes and methods, insofar that it is
+possible in C. For example, in the above example, @code{show} may be seen to be
+a method on instances of the @code{<gtk-widget>} class.
+
+Indeed, other object-oriented languages such as Python express this pattern
+directly, translating the @code{show} operation as the pleasantly brief
+@code{widget.show()}. However this representation of methods as being bound to
+instances, while common, has a number of drawbacks.
+
+The largest drawback is that the method itself is not bound to a generic
+operation. For example, mapping the @code{show} operation across a set of
+widgets cannot be done with the straightforward @code{map(show, set)}, because
+there is no object for the @code{show} operation. Instead the user must locally
+bind each widget to a variable in order to access a method of the abstract
+@code{show} operation: @code{map(lambda widget: widget.show(), set)}.
+
+Additionally, most languages which express methods as bound to instances only
+select the method via the type of the first (implicit) argument. The rule for
+these lanugages is, ``@code{gtk-widget-show} is an applicable method of the
+@code{show} operation when the first argument to @code{show} is a
+@code{<gtk-widget>}.'' Note the lack of specification for other arguments; the
+same object cannot have two applicable methods of the @code{show} operation. A
+more complete specification would be, ``@code{gtk-widget-show} is an applicable
+method of the @code{show} operation when applied to one argument, a
+@code{<gtk-widget>}.'' It is a fine difference, but sometimes important.
+
+For these and other reasons, the conventional way to implement generic
+operations in Lisp has been to define @dfn{generic functions}, and then
+associate specific methods with those functions. For example, one would write
+the following:
+
+@lisp 
+ ;; defining a generic function, and one method implementation
+ (define-generic show)
+ (define-method (show (widget <gtk-widget>))
+   (gtk-widget-show))
+
+ ;; invoking the generic function
+ (show my-widget)
+ 
+@end lisp
+
+One benefit of this approach is that method definitions can be made far away in
+space and time from type definitions. This leads to a more dynamic environment,
+in which methods can be added to existing types at runtime, which then can apply
+to existing instances.
+
+@subsection The semantics of generic functions in Guile-GNOME
+Naturally, there is an impedance mismatch between the conventions used in the C
+libraries and their Scheme equivalents. Operations in GLib-based libraries do
+not form a coherent whole, in the sense that there is no place that defines the
+meaning of an abstract @code{show} operation. For example,
+@code{gtk-widget-set-state}, which can make a widget become uneditable, and
+@code{gst-element-set-state}, which can start a video player, would both map to
+the generic function @code{set-state}, even though they have nothing to do with
+each other besides their name.
+
+There is no conflict here; the methods apply on disjoint types. However there is
+a problem of modularity, in that @emph{both methods must be defined on the same
+generic function}, so that @code{(set-state foo bar)} picks the correct method,
+depending on the types of @var{foo} and @var{bar}.
+
+This point leads to the conclusion that @emph{generic functions in Guile-GNOME
+have no abstract meaning, apart from their names}. Semantically, generics in
+Guile-GNOME are abbreviations to save typing, not abstract operations with
+defined meanings.
+
+@subsection Practicalities
+This module defines a number of ``abbreviations'', in the form of generic
+functions, for operations on types defined in the @code{(gnome gobject)}
+modules. Generic functions for generated bindings like @code{(gnome gtk)} are
+defined in another module, @code{(gnome gw generics)}, which re-exports the
+public bindings from this module.
+
+@section Usage
+@anchor{gnome gobject generics get}@deffn Generic get
+@end deffn
+
+@deffn Method get  (@var{object} @code{<gobject>}) (@var{name} @code{<symbol>})
+A shorthand for @code{gobject-get-property}.
+
+@end deffn
+
+@anchor{gnome gobject generics set}@deffn Generic set
+@end deffn
+
+@deffn Method set  (@var{object} @code{<gobject>}) (@var{name} @code{<symbol>}) (@var{value} @code{<top>})
+A shorthand for @code{gobject-set-property}.
+
+@end deffn
+
+@anchor{gnome gobject generics emit}@deffn Generic emit
+@end deffn
+
+@deffn Method emit  (@var{object} @code{<gtype-instance>}) (@var{name} @code{<symbol>}) (@var{args} @code{<top>})...
+A shorthand for @code{gtype-instance-signal-emit}.
+
+@end deffn
+
+@anchor{gnome gobject generics connect}@deffn Generic connect
+@end deffn
+
+@deffn Method connect  (@var{object} @code{<gtype-instance>}) (@var{name} @code{<symbol>}) (@var{func} @code{<procedure>})
+A shorthand for @code{gtype-instance-signal-connect}.
+
+@end deffn
+
+@deffn Method connect  (@var{args} @code{<top>})...
+The core Guile implementation of the connect(2) POSIX call
+
+@end deffn
+
+@anchor{gnome gobject generics connect-after}@deffn Generic connect-after
+@end deffn
+
+@deffn Method connect-after  (@var{object} @code{<gtype-instance>}) (@var{name} @code{<symbol>}) (@var{func} @code{<procedure>})
+A shorthand for @code{gtype-instance-signal-connect-after}.
+
+@end deffn
+
+@anchor{gnome gobject generics block}@deffn Generic block
+@end deffn
+
+@deffn Method block  (@var{object} @code{<gtype-instance>}) (@var{id} @code{<top>})
+A shorthand for @code{gsignal-handler-block}.
+
+@end deffn
+
+@anchor{gnome gobject generics unblock}@deffn Generic unblock
+@end deffn
+
+@deffn Method unblock  (@var{object} @code{<gtype-instance>}) (@var{id} @code{<top>})
+A shorthand for @code{gsignal-handler-unblock}.
+
+@end deffn
+
+@anchor{gnome gobject generics disconnect}@deffn Generic disconnect
+@end deffn
+
+@deffn Method disconnect  (@var{object} @code{<gtype-instance>}) (@var{id} @code{<top>})
+A shorthand for @code{gsignal-handler-disconnect}.
+
+@end deffn
+
+@anchor{gnome gobject generics connected?}@deffn Generic connected?
+@end deffn
+
+@deffn Method connected?  (@var{object} @code{<gtype-instance>}) (@var{id} @code{<top>})
+A shorthand for @code{gsignal-handler-connected?}.
+
+@end deffn
+
+@anchor{gnome gobject generics invoke}@deffn Generic invoke
+@end deffn
+
+@deffn Method invoke  (@var{closure} @code{<gclosure>}) (@var{args} @code{<top>})...
+A shorthand for @code{gclosure-invoke}.
+
+@end deffn
+
+@anchor{gnome gobject generics create-signal}@deffn Generic create-signal
+@end deffn
+
+@deffn Method create-signal  (@var{class} @code{<gtype-class>}) (@var{name} @code{<symbol>}) (@var{return-type} @code{<top>}) (@var{param-types} @code{<top>})
+A shorthand for @code{gtype-class-create-signal}.
+
+@end deffn
+
+@anchor{gnome gobject generics get-signals}@deffn Generic get-signals
+@end deffn
+
+@deffn Method get-signals  (@var{class} @code{<gtype-class>})
+A shorthand for @code{gtype-class-get-signals}.
+
+@end deffn
+
+@anchor{gnome gobject generics get-properties}@deffn Generic get-properties
+@end deffn
+
+@deffn Method get-properties  (@var{class} @code{<gtype-class>})
+A shorthand for @code{gobject-class-get-properties}.
+
+@end deffn
+
+@anchor{gnome gobject generics get-property-names}@deffn Generic get-property-names
+@end deffn
+
+@deffn Method get-property-names  (@var{class} @code{<gtype-class>})
+A shorthand for @code{gobject-class-get-property-names}.
+
+@end deffn
+
+@anchor{gnome gobject generics find-property}@deffn Generic find-property
+@end deffn
+
+@deffn Method find-property  (@var{class} @code{<gtype-class>}) (@var{name} @code{<symbol>})
+A shorthand for @code{gobject-class-find-property}.
+
+@end deffn
+
+@node gnome gobject utils
+@chapter (gnome gobject utils)
+@section Overview
+@c 
+Common utility routines.
+
+@section Usage
+@anchor{gnome gobject utils GStudlyCapsExpand}@defun GStudlyCapsExpand nstr
+Expand the StudlyCaps @var{nstr} to a more schemey-form, according to the
+conventions of GLib libraries. For example:
+
+@lisp 
+ (GStudlyCapsExpand "GSource") @result{} g-source
+ (GStudlyCapsExpand "GtkIMContext") @result{} gtk-im-context
+ (GStudlyCapsExpand "GtkHBox") @result{} gtk-hbox
+@end lisp
+
+@end defun
+
+@anchor{gnome gobject utils gtype-name->scheme-name-alist}@defvar gtype-name->scheme-name-alist
+An alist of exceptions to the name transformation algorithm implemented in
+@code{GStudlyCapsExpand}.
+
+@end defvar
+
+@anchor{gnome gobject utils gtype-name->scheme-name}@defun gtype-name->scheme-name type-name
+Transform a name of a @code{<gtype>}, such as "GtkWindow", to a scheme form,
+such as @code{gtk-window}, taking into account the exceptions in
+@code{gtype-name->scheme-name-alist}, and trimming trailing dashes if any.
+
+@end defun
+
+@anchor{gnome gobject utils gtype-name->class-name}@defun gtype-name->class-name type-name
+Transform a name of a @code{<gtype>}, such as "GtkWindow", to a suitable name of
+a Scheme class, such as @code{<gtk-window>}. Uses
+@code{gtype-name->scheme-name}.
+
+@end defun
+
+@anchor{gnome gobject utils gtype-name->method-name}@defun gtype-name->method-name type-name name
+Generate the name of a method given the name of a @code{<gtype>} and the name of
+the operation. For example:
+
+@lisp 
+ (gtype-name->method-name "GtkFoo" "bar") @result{} gtk-foo:bar
+@end lisp
+
+Uses @code{gtype-name->scheme-name}.
+
+@end defun
+
+@anchor{gnome gobject utils re-export-modules}@defspec re-export-modules  . args
+Re-export the public interface of a module or modules. Invoked as
+@code{(re-export-modules (mod1) (mod2)...)}.
+
+@end defspec
+
+@anchor{gnome gobject utils define-macro-with-docs}@defspec define-macro-with-docs form docs . body
+@end defspec
+
+@anchor{gnome gobject utils define-with-docs}@defspec define-with-docs name docs val
+Define @var{name} as @var{val}, documenting the value with @var{docs}.
+
+@end defspec
+
+@anchor{gnome gobject utils define-generic-with-docs}@defspec define-generic-with-docs name documentation
+Define a generic named @var{name}, with documentation @var{documentation}.
+
+@end defspec
+
+@anchor{gnome gobject utils define-class-with-docs}@defspec define-class-with-docs name supers docs . rest
+Define a class named @var{name}, with superclasses @var{supers}, with
+documentation @var{docs}.
+
+@end defspec
+
+@node gnome gw generics
+@chapter (gnome gw generics)
+@section Overview
+This module exists so that all @code{(gnome gw)} modules have a common place to
+put their generic functions. Whenever a wrapset is loaded, it adds method
+definitions to generics defined in this module.
+
+See the documentation for @code{(gnome gobject generics)} for more notes about
+generic functions in Guile-GNOME. This module re-exports bindings from
+@code{(gnome gobject generics)}, so there is no need to import them both.
+
+@section Usage
+@node gnome gw support gobject
+@chapter (gnome gw support gobject)
+@section Overview
+@c 
+G-Wrap support for @code{(gnome gobject)} types. Code in this module is only
+loaded when generating wrapsets; as such, it is not for end users.
+
+@section Usage
+@anchor{gnome gw support gobject <gobject-wrapset-base>}@deftp Class <gobject-wrapset-base>
+The base class for G-Wrap wrapsets that use @code{<gobject>} types.
+
+@end deftp
+
+@anchor{gnome gw support gobject add-type-alias!}@deffn Generic add-type-alias!
+@end deffn
+
+@deffn Method add-type-alias!  (@var{wrapset} @code{<gobject-wrapset-base>}) (@var{alias} @code{<string>}) (@var{name} @code{<symbol>})
+Add a type alias to @var{wrapset}, that the string @var{alias} is associated
+with the type named @var{symbol}. For example, @code{"GtkWindow*"} might be
+associated with a type named @code{<gtk-window>}. See
+@code{lookup-type-by-alias}.
+
+@end deffn
+
+@anchor{gnome gw support gobject lookup-type-by-alias}@deffn Generic lookup-type-by-alias
+@end deffn
+
+@deffn Method lookup-type-by-alias  (@var{wrapset} @code{<gobject-wrapset-base>}) (@var{name} @code{<string>})
+Lookup a type aliased @var{name} in @var{wrapset}, and all wrapsets on which
+@var{wrapset} depends. This interface is used by @code{load-defs} to associate
+G-Wrap types with the strings parsed out of the C header files.
+
+@end deffn
+
+@anchor{gnome gw support gobject add-type-rule!}@deffn Generic add-type-rule!
+@end deffn
+
+@deffn Method add-type-rule!  (@var{self} @code{<gobject-wrapset-base>}) (@var{param-type} @code{<string>}) (@var{typespec} @code{<top>})
+Add a type rule to @var{wrapset}, that the string @var{param-type} maps directly
+to the g-wrap typespec @var{typespec}. For example, @code{"int*"} might map to
+the typespec @code{(int out)}. See @code{find-type-rule}.
+
+@end deffn
+
+@anchor{gnome gw support gobject find-type-rule}@deffn Generic find-type-rule
+@end deffn
+
+@deffn Method find-type-rule  (@var{self} @code{<gobject-wrapset-base>}) (@var{param-type} @code{<string>})
+See if the parameter type @var{param-type} has a type rule present in
+@var{wrapset} or in any wrapset on which @var{wrapset} depends. This interface
+is used by @code{load-defs} to associate G-Wrap typespecs with the strings
+parsed out of the C header files.
+
+@end deffn
+
+@anchor{gnome gw support gobject <gobject-type-base>}@deftp Class <gobject-type-base>
+A base G-Wrap type class for GLib types.
+
+@end deftp
+
+@anchor{gnome gw support gobject <gobject-classed-type>}@deftp Class <gobject-classed-type>
+A base G-Wrap type class for classed GLib types (see @code{gtype-classed?}).
+
+@end deftp
+
+@anchor{gnome gw support gobject gtype-id}@deffn Generic gtype-id
+@end deffn
+
+@deffn Method gtype-id  (@var{o} @code{<gobject-custom-gvalue-type>})
+@end deffn
+
+@deffn Method gtype-id  (@var{o} @code{<gobject-custom-boxed-type>})
+@end deffn
+
+@deffn Method gtype-id  (@var{o} @code{<gobject-class-type>})
+@end deffn
+
+@deffn Method gtype-id  (@var{o} @code{<gobject-flags-type>})
+@end deffn
+
+@deffn Method gtype-id  (@var{o} @code{<gobject-enum-type>})
+@end deffn
+
+@deffn Method gtype-id  (@var{o} @code{<gobject-interface-type>})
+@end deffn
+
+@deffn Method gtype-id  (@var{o} @code{<gobject-pointer-type>})
+@end deffn
+
+@deffn Method gtype-id  (@var{o} @code{<gobject-boxed-type>})
+@end deffn
+
+@deffn Method gtype-id  (@var{o} @code{<gobject-object-type>})
+@end deffn
+
+@deffn Method gtype-id  (@var{o} @code{<gobject-classed-pointer-type>})
+@end deffn
+
+@deffn Method gtype-id  (@var{o} @code{<gobject-classed-type>})
+@end deffn
+
+@anchor{gnome gw support gobject <gobject-classed-pointer-type>}@deftp Class <gobject-classed-pointer-type>
+A base G-Wrap type class for for classed GLib types whose values are pointers.
+
+@end deftp
+
+@anchor{gnome gw support gobject unwrap-null-checked}@deffn Generic unwrap-null-checked
+@end deffn
+
+@deffn Method unwrap-null-checked  (@var{value} @code{<gw-value>}) (@var{status-var} @code{<top>}) (@var{code} @code{<top>})
+Unwrap a value into a C pointer, optionally unwrapping @code{#f} as @code{NULL}.
+
+This function checks the typespec options on @var{value}, which should be a
+@code{<gw-value>}. If the @code{null-ok} option is set (which is only the case
+for value classes with @code{null-ok} in its @code{#:allowed-options}), this
+function generates code that unwraps @code{#f} as @code{NULL}. If @code{null-ok}
+is unset, or the value is not @code{#f}, @var{code} is run instead.
+
+@end deffn
+
+@anchor{gnome gw support gobject wrap-object!}@deffn Generic wrap-object!
+@end deffn
+
+@deffn Method wrap-object!  (@var{ws} @code{<gobject-wrapset-base>}) (@var{args} @code{<top>})...
+Define a wrapper for a specific @code{<gobject>}-derived type in @var{ws}.
+Required keyword arguments are @code{#:ctype} and @code{#:gtype-id}. For
+example,
+
+@lisp 
+ (wrap-object! ws #:ctype "GtkWidget"
+               #:gtype-id "GTK_TYPE_WIDGET")
+@end lisp
+
+Normally only called from @code{load-defs}.
+
+@end deffn
+
+@anchor{gnome gw support gobject wrap-boxed!}@deffn Generic wrap-boxed!
+@end deffn
+
+@deffn Method wrap-boxed!  (@var{ws} @code{<gobject-wrapset-base>}) (@var{args} @code{<top>})...
+Define a wrapper for a specific boxed type in @var{ws}. Required keyword
+arguments are @code{#:ctype} and @code{#:gtype-id}, as in @code{wrap-object!}.
+
+@end deffn
+
+@anchor{gnome gw support gobject wrap-pointer!}@deffn Generic wrap-pointer!
+@end deffn
+
+@deffn Method wrap-pointer!  (@var{ws} @code{<gobject-wrapset-base>}) (@var{args} @code{<top>})...
+Define a wrapper for a specific pointer type in @var{ws}. Required keyword
+arguments are @code{#:ctype} and @code{#:gtype-id}, as in @code{wrap-object!}.
+
+@end deffn
+
+@anchor{gnome gw support gobject wrap-opaque-pointer!}@defun wrap-opaque-pointer! ws ctype
+Define a wrapper for an opaque pointer with the C type @var{ctype}. It will not
+be possible to create these types from Scheme, but they can be received from a
+library, and passed as arguments to other calls into the library.
+
+@end defun
+
+@anchor{gnome gw support gobject wrap-interface!}@deffn Generic wrap-interface!
+@end deffn
+
+@deffn Method wrap-interface!  (@var{ws} @code{<gobject-wrapset-base>}) (@var{args} @code{<top>})...
+Define a wrapper for an interface type in @var{ws}. Required keyword arguments
+are @code{#:ctype} and @code{#:gtype-id}, as in @code{wrap-object!}.
+
+@end deffn
+
+@anchor{gnome gw support gobject wrap-flags!}@deffn Generic wrap-flags!
+@end deffn
+
+@deffn Method wrap-flags!  (@var{ws} @code{<gobject-wrapset-base>}) (@var{args} @code{<top>})...
+Define a wrapper for a flags type in @var{ws}. Required keyword arguments are
+@code{#:ctype} and @code{#:gtype-id} or @code{#:values}, as in
+@code{wrap-enum!}.
+
+@end deffn
+
+@anchor{gnome gw support gobject wrap-gobject-class!}@deffn Generic wrap-gobject-class!
+@end deffn
+
+@deffn Method wrap-gobject-class!  (@var{ws} @code{<gobject-wrapset-base>}) (@var{args} @code{<top>})...
+Define a wrapper for GObject class values @var{ws}. Required keyword arguments
+are @code{#:ctype} and @code{#:gtype-id}, as in @code{wrap-object!}.
+
+@code{#:ctype} should refer to the type of the class and not the instance; e.g.
+@code{"GtkWidgetClass"} and not @code{"GtkWidget"}. This function will not be
+called by @code{load-defs}, and should be invoked manually in a wrapset as
+needed.
+
+@end deffn
+
+@anchor{gnome gw support gobject wrap-custom-boxed!}@defspec wrap-custom-boxed! ctype gtype wrap unwrap
+Wrap a boxed type using custom wrappers and unwrappers.
+
+FIXME: missing a wrapset argument!
+
+@var{ctype} and @var{gtype} are as @code{#:ctype} and @code{#:gtype-id} in
+@code{wrap-object!}. @var{wrap} and @var{unwrap} are G-Wrap forms in which
+@code{scm-var} and @code{c-var} will be bound to the names of the SCM and C
+values, respectively. For example:
+
+@lisp 
+  (wrap-custom-boxed!
+   "GdkRectangle" "GDK_TYPE_RECTANGLE"
+   (list scm-var " = "
+         c-var " ?  scm_gdk_rectangle_to_scm (" c-var ")"
+         " : SCM_BOOL_F;")
+   (list c-var " = scm_scm_to_gdk_rectangle (" scm-var ");"))
+@end lisp
+
+@end defspec
+
+@anchor{gnome gw support gobject wrap-custom-gvalue!}@defspec wrap-custom-gvalue! ctype gtype wrap-func unwrap-func
+Wrap a GValue type using custom wrap and unwrap functions.
+
+FIXME: missing a wrapset argument!
+
+@var{ctype} and @var{gtype} are as @code{#:ctype} and @code{#:gtype-id} in
+@code{wrap-object!}. @var{wrap-func} and @var{unwrap-func} are names of
+functions to convert to and from Scheme values, respectively. For example:
+
+@lisp 
+ (wrap-custom-gvalue! "GstFraction" "GST_TYPE_FRACTION"
+                      "scm_from_gst_fraction"
+                      "scm_to_gst_fraction")
+@end lisp
+
+@end defspec
+
+@node gnome gw support defs
+@chapter (gnome gw support defs)
+@section Overview
+Support for populating G-Wrap wrapsets using information parsed out of
+@code{.defs} files. See the API scanner script, @code{h2defs.py}, included in
+the Guile-GNOME source distribution.
+
+Code in this module is only loaded when generating wrapsets; as such, it is not
+for end users.
+
+@section Usage
+@anchor{gnome gw support defs load-defs}@defun load-defs ws file [overrides = #f]
+Load G-Wrap type and function information from @var{file} into the G-Wrap
+wrapset @var{ws}.
+
+@var{file} should be a relative path, which will be searched in the vicinity of
+Guile's @code{%load-path}. @code{include} directives in the file will be
+searched relative to the absolute path of the file.
+
+The following forms are understood: @code{define-enum}, @code{define-flags},
+@code{define-object}, @code{define-interface}, @code{define-pointer},
+@code{define-boxed}, @code{define-function}, @code{define-method},
+@code{ignore}, @code{ignore-glob}, and @code{ignore-types}.
+
+The optional argument, @var{overrides}, specifies the location of an overrides
+file that will be spliced into the @code{.defs} file at the point of an
+@code{(include overrides)} form.
+
+@end defun
+
+@anchor{gnome gw support defs load-defs-with-overrides}@defun load-defs-with-overrides ws defs
+Equivalent to:
+
+@lisp 
+  (load-defs ws defs
+             (string-append "gnome/overrides/"
+                            (basename defs)))
+@end lisp
+
+@end defun
+
+@node gnome gw support gtk-doc
+@chapter (gnome gw support gtk-doc)
+@section Overview
+This module exports two high-level procedures to transform the Docbook files
+generated by GTK-Doc into texinfo.
+
+@uref{http://www.gtk.org/gtk-doc/,GTK-Doc} is commonly used to document
+GObject-based libraries, such as those that Guile-GNOME wraps. In a typical
+build setup, GTK-Doc generates a reference manual with one XML file per section.
+The routines in this module attempt to recreate those sections, but in Texinfo
+instead of Docbook, and which document the Scheme modules instead of the
+upstream C libraries.
+
+The tricky part of translating GTK-Doc's documentation is not the vocabulary
+(Docbook), but that it documents C functions which have different calling
+conventions than Scheme. For example, a C function might take four
+@code{double*} arguments, but in Scheme the function would return four rational
+values. Given only the C prototype, the code in this module will make an attempt
+to determine what the Scheme function's arguments will be based on some
+heuristics.
+
+In most cases, however, we can do better than heuristics, because we have the
+G-Wrap information that describes the relationship between the C function and
+the Scheme wrapper. In that way we can know exactly what the input and output
+arguments are for a particular function.
+
+The @code{gtk-doc->texi-stubs} function is straightforward. It extracts the
+"header" in a set of GTK-Doc files, translates them into texinfo, writing them
+out one by one to files named @samp{section-@var{foo}.texi}, where @var{foo} is
+the name of the XML file. It is unclear whether it is best to continously
+generate these sections when updating the manuals, or whether this "stub"
+generation should be run only once when the documentation is initially
+generated, and thereafter maintained by hand. Your call!
+
+@code{gtk-doc->texi-defuns} is slightly more complicated, as it you have the
+choice as to whether to use heuristics or the g-wrap method for determining the
+arguments. See its documentation for more information.
+
+Both of these functions are designed to be directly callable from the shell.
+Here is a makefile snippet suitable for using the heuristics method for defuns
+generation:
+
+@example 
+ GTK_DOC_TO_TEXI_STUBS = \
+   '((@@ (gnome gw support gtk-doc) gtk-doc->texi-stubs) \
+   (cdr (program-arguments)))'
+ GTK_DOC_DEFUN_METHOD = heuristics
+ GTK_DOC_DEFUN_ARGS = (your-module-here)
+ GTK_DOC_TO_TEXI_DEFUNS = "(apply (@@ (gnome gw support gtk-doc) \
+    gtk-doc->texi-defuns) (cadr (program-arguments)) \
+    '$(GTK_DOC_DEFUN_METHOD) '($(GTK_DOC_DEFUN_ARGS)) \
+    (cddr (program-arguments)))"
+ GUILE = $(top_builddir)/dev-environ guile
+
+ generate-stubs:
+      $(GUILE) $(GUILE_FLAGS) -c $(GTK_DOC_TO_TEXI_STUBS) \
+         $(docbook_xml_files)
+
+ generate-defuns:
+ 	$(GUILE) $(GUILE_FLAGS) -c $(GTK_DOC_TO_TEXI_DEFUNS) \
+         ./overrides.texi $(docbook_xml_files)
+ 
+@end example
+
+To make the above snippet work, you will have to define
+@code{$(docbook_xml_files)} as the set of docbook XML files to transform. To use
+the G-Wrap method, try the following:
+
+@example 
+ wrapset_module = (gnome gw $(wrapset_stem)-spec)
+ wrapset_name = gnome-$(wrapset_stem)
+ GTK_DOC_DEFUN_METHOD = g-wrap
+ GTK_DOC_DEFUN_ARGS = $(wrapset_module) $(wrapset_name)
+ 
+@end example
+
+Set @code{$(wrapset_stem)} to the stem of the wrapset name, e.g. @code{pango},
+and there you are.
+
+@section Usage
+@anchor{gnome gw support gtk-doc gtk-doc->texi-stubs}@defun gtk-doc->texi-stubs files
+Generate a section overview texinfo file for each docbook XML file in
+@var{files}.
+
+The files will be created in the current directory, as described in the
+documentation for @code{(gnome gw support gtk-doc)}. They will include a file
+named @code{defuns-@var{file}.texi}, which should probably be created using
+@code{gtk-doc->texi-defuns}.
+
+@end defun
+
+@anchor{gnome gw support gtk-doc gtk-doc->texi-defuns}@defun gtk-doc->texi-defuns overrides method args . files
+Generate documentation for the types and functions defined in a set of docbook
+files genearted by GTK-Doc.
+
+@var{overrides} should be a path to a texinfo file from which @code{@@deffn}
+overrides will be taken. @var{method} should be either @code{g-wrap} or
+@code{heuristics}, as discussed in the @code{(gnome gw support gtk-doc)}
+documentation. @var{files} is the list of docbook XML files from which to pull
+function documentation.
+
+@var{args} should be a list, whose form depends on the @var{method}. For
+@code{g-wrap}, it should be two elements, the first the name of a module that,
+when loaded, will load the necessary wrapset into the g-wrap runtime. For
+example, @code{(gnome gw glib-spec)}. The second argument should be the name of
+the wrapset, e.g. @code{gnome-glib}.
+
+If @var{method} is @code{heuristics}, @var{args} should have only one element,
+the name of the module to load to check the existence of procedures, e.g.
+@code{(cairo)}.
+
+@end defun
+
+@node gnome gw support modules
+@chapter (gnome gw support modules)
+@section Overview
+@c 
+Support routines for automatically-generated scheme G-Wrap modules.
+
+@section Usage
+@anchor{gnome gw support modules export-all-lazy!}@defun export-all-lazy! symbols
+Export the @var{symbols} from the current module.
+
+Most generic functions and classes that G-Wrap defines are bound lazily, as
+needed in evaluation. This is done by placing module binder procedures on the
+generated modules. However, if we export all symbols by name, this will force
+the binding eagerly for all values, which is slow.
+
+This procedure exports all bindings named in @var{symbols} that are already
+bound in the current module, and then installs a module binder procedure on the
+public interface, which allows lazy binding to work.
+
+@end defun
+
+@anchor{gnome gw support modules re-export-modules}@defspec re-export-modules  . args
+Re-export the public interface of a module; used like @code{use-modules}.
+
+@end defspec
+
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+@bye

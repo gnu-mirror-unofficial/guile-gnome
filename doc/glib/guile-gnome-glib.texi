@@ -72,7 +72,6 @@ POSSIBILITY OF SUCH DAMAGES.
 
 @insertcopying 
 @menu
-* Base64 Encoding::           Encodes and decode data in Base64 format
 * Bookmark file parser::      Parse files containing bookmarks
 * Character Set Conversion::  Convert strings between different character sets using iconv.
 * File Utilities::            Various file-related functions.
@@ -94,7 +93,6 @@ POSSIBILITY OF SUCH DAMAGES.
 @shortcontents 
 @end iftex
 
-@include section-base64.xml.texi
 @include section-bookmarkfile.xml.texi
 @include section-conversions.xml.texi
 @include section-fileutils.xml.texi

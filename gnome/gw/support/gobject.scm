@@ -63,6 +63,8 @@
             wrap-boxed!
             wrap-pointer!
             wrap-opaque-pointer!
+            wrap-freeable-pointer!
+            wrap-refcounted-pointer!
             wrap-interface!
 
             ;; we extend the one from (g-wrap enumeration)
@@ -575,18 +577,153 @@ p    (list
      "g_value_set_flags ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n")))
 
 
+(define-class <gobject-opaque-pointer> (<gw-wct> <gw-guile-rti-type>)
+  wct-var-name)
+
+(define-method (initialize (wct <gobject-opaque-pointer>) initargs)
+  (next-method)
+  (slot-set! wct 'wct-var-name
+	     (gen-c-tmp (string-append
+			 "wct_info_for"
+			 (any-str->c-sym-str (symbol->string (name wct)))))))
+
+(define-method (wrap-value-cg (wct <gobject-opaque-pointer>)
+			      (value <gw-value>)
+			      status-var
+			      (inlined? <boolean>))
+  (let ((wct-var (slot-ref wct 'wct-var-name))
+	(sv (scm-var value))
+	(cv (var value)))
+    (list
+     "if(" cv " == NULL) " sv " = SCM_BOOL_F;\n"
+     "else {\n"
+     sv " = gw_wcp_assimilate_ptr((void *) " cv ", " wct-var ");\n"
+     "}\n")))
+
+
+(define-method (unwrap-value-cg (wct <gobject-opaque-pointer>)
+				(value <gw-value>)
+				status-var
+				(inlined? <boolean>))
+  (let* ((wct-var (slot-ref wct 'wct-var-name))
+	 (sv (scm-var value))
+	 (c-var (var value))
+	 (unwrap-code
+	  (list "if (gw_wcp_is_of_type_p (" wct-var ", " sv "))\n"
+		"  " c-var " = gw_wcp_get_ptr (" sv ");\n"
+		"else\n"
+		`(gw:error ,status-var type ,(wrapped-var value)))))
+
+    (list
+     (if-typespec-option value 'null-ok
+			 (list "if (SCM_FALSEP (" sv "))\n"
+			       "  " c-var " = NULL;\n"
+			       "else " unwrap-code)
+			 unwrap-code))))
+
+(define-method (initializations-cg (wrapset <gobject-wrapset-base>)
+				   (wct <gobject-opaque-pointer>)
+				   error-var)
+  (let ((wct-var (slot-ref wct 'wct-var-name))
+	(wcp-type-name (symbol->string (name wct)))
+	(wcp-mark (wcp-mark-function wct))
+	(wcp-free (wcp-free-function wct))
+	(wcp-equal? (wcp-equal-predicate wct)))
+  (list
+   (next-method)
+
+   wct-var "= gw_wct_create (\"" wcp-type-name "\", " wcp-equal? ", NULL, "
+   wcp-mark ", " wcp-free ");\n")))
+
+(define (wct-var-decl-cg wct)
+  (list "static SCM "  (slot-ref wct 'wct-var-name) " = SCM_BOOL_F;\n"))
+
+(define-method (global-declarations-cg (wrapset <gobject-wrapset-base>)
+				       (wct <gobject-opaque-pointer>))
+  (wct-var-decl-cg wct))
+
+(define-method (client-global-declarations-cg (wrapset <gobject-wrapset-base>)
+					      (wct <gobject-opaque-pointer>))
+  (wct-var-decl-cg wct))
+
+(define-method (client-initializations-cg (wrapset <gobject-wrapset-base>)
+					  (wct <gobject-opaque-pointer>)
+					  error-var)
+  (let ((wct-var (slot-ref wct 'wct-var-name))
+	(wcp-type-name (symbol->string (name wct))))
+    (list
+     "    " wct-var " = scm_c_eval_string(\"" wcp-type-name "\");\n")))
+
 (define (wrap-opaque-pointer! ws ctype)
   "Define a wrapper for an opaque pointer with the C type @var{ctype}.
 It will not be possible to create these types from Scheme, but they can
 be received from a library, and passed as arguments to other calls into
 the library."
-  ;;(print-info "Opaque" ctype ctype ws) ; FIXME: Write to log file
-  (let ((type (wrap-as-wct!
-               ws
-               #:name (gtype-name->class-name ctype)
-               #:c-type-name ctype
-               #:c-const-type-name (string-append "const " ctype))))
-    (add-type-alias! ws ctype (name type))))
+  (let ((type (make <gobject-opaque-pointer>
+                #:name (gtype-name->class-name ctype)
+                #:c-type-name ctype
+                #:c-const-type-name (string-append "const " ctype))))
+    (add-type! ws type)
+    (add-type-alias! ws ctype (name type))
+    (print-info "Opaque" ctype ctype ws)
+    ;; don't export, unlike wrap-as-wct!
+    type))
+
+
+(define-class <gobject-freeable-pointer> (<gobject-opaque-pointer>)
+  (free-function #:init-keyword #:free-function))
+
+(define-method (global-declarations-cg (wrapset <gobject-wrapset-base>)
+				       (wct <gobject-freeable-pointer>))
+  (list "static size_t " (wcp-free-function wct) " (void *wcp) {\n"
+        (slot-ref wct 'free-function) " (wcp); return 0;\n"
+        "}"
+        (next-method)))
+
+(define (wrap-freeable-pointer! ws ctype free)
+  "foo"
+  (let* ((type (make <gobject-freeable-pointer>
+                 #:name (gtype-name->class-name ctype)
+                 #:c-type-name ctype
+                 #:c-const-type-name (string-append "const " ctype)
+                 #:wcp-free-function (string-append "_wcp_free_" free)
+                 #:free-function free)))
+    (print-info "Freeable" ctype ctype ws)
+    (add-type! ws type)
+    (add-type-alias! ws ctype (name type))
+    type))
+
+
+(define-class <gobject-ref-pointer> (<gobject-freeable-pointer>)
+  (ref-function #:init-keyword #:ref-function))
+
+(define-method (wrap-value-cg (wct <gobject-ref-pointer>)
+			      (value <gw-value>)
+			      status-var
+			      (inlined? <boolean>))
+  ;; potential FIXME, caller-owned unwraps
+  (let ((sv (scm-var value))
+        (cv (var value))
+        (ref (slot-ref wct 'ref-function)))
+    (append
+     (if-typespec-option value 'callee-owned
+                         (list "if (" cv ")\n  " ref " (" cv ");\n")
+                         '())
+     (next-method))))
+
+(define (wrap-refcounted-pointer! ws ctype ref unref)
+  "foo"
+  (let* ((type (make <gobject-ref-pointer>
+                 #:name (gtype-name->class-name ctype)
+                 #:c-type-name ctype
+                 #:c-const-type-name (string-append "const " ctype)
+                 #:wcp-free-function (string-append "_wcp_free_" unref)
+                 #:ref-function ref
+                 #:free-function unref)))
+    (print-info "RefPtr" ctype ctype ws)
+    (add-type! ws type)
+    (add-type-alias! ws ctype (name type))
+    type))
 
 ;; Used for functions that operate on classes, e.g.
 ;; gtk_widget_class_install_style_property,
