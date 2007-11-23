@@ -1,7 +1,20 @@
 
 @c %start of fragment
 
-@deffn Function atk-hypertext-get-link  (self@tie{}@code{<atk-hypertext*>}) (link_index@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-hyperlink>})
+@deftp Class <atk-hypertext>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@defop Signal <atk-hypertext> link-selected  (arg0@tie{}@code{<gint>})
+The "link-selected" signal is emitted by an AtkHyperText object when one of the
+hyperlinks associated with the object is selected.
+
+@end defop
+
+@deffn Function atk-hypertext-get-link  (self@tie{}@code{<atk-hypertext>}) (link_index@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-hyperlink>})
+@deffnx Method get-link
 Gets the link in this hypertext document at index @var{link-index}
 
 @table @var
@@ -18,7 +31,8 @@ the link in this hypertext document at index @var{link-index}
 
 @end deffn
 
-@deffn Function atk-hypertext-get-n-links  (self@tie{}@code{<atk-hypertext*>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function atk-hypertext-get-n-links  (self@tie{}@code{<atk-hypertext>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-n-links
 Gets the number of links within this hypertext document.
 
 @table @var
@@ -32,7 +46,8 @@ the number of links within this hypertext document
 
 @end deffn
 
-@deffn Function atk-hypertext-get-link-index  (self@tie{}@code{<atk-hypertext*>}) (char_index@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function atk-hypertext-get-link-index  (self@tie{}@code{<atk-hypertext>}) (char_index@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-link-index
 Gets the index into the array of hyperlinks that is associated with the
 character specified by @var{char-index}.
 

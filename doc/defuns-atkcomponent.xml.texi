@@ -1,27 +1,20 @@
 
 @c %start of fragment
 
-@deffn Function atk-component-add-focus-handler  (self@tie{}@code{<atk-component*>}) (handler@tie{}@code{<atk-focus-handler>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
-Add the specified handler to the set of functions to be called when this object
-receives focus events (in or out). If the handler is already added it is not
-added again
+@deftp Class <atk-component>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
 
-@table @var
-@item component
-The @code{<atk-component>} to attach the @var{handler} to
+@end deftp
 
-@item handler
-The @code{<atk-focus-handler>} to be attached to @var{component}
+@defop Signal <atk-component> bounds-changed  (arg0@tie{}@code{<atk-rectangle>})
+The 'bounds-changed" signal is emitted when the bposition or size of the a
+component changes.
 
-@item ret
-a handler id which can be used in atk_component_remove_focus_handler or zero if
-the handler was already added.
+@end defop
 
-@end table
-
-@end deffn
-
-@deffn Function atk-component-contains  (self@tie{}@code{<atk-component*>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-component-contains  (self@tie{}@code{<atk-component>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method contains
 Checks whether the specified point is within the extent of the @var{component}.
 
 @table @var
@@ -46,7 +39,8 @@ within the extent of the @var{component} or not
 
 @end deffn
 
-@deffn Function atk-component-get-extents  (self@tie{}@code{<atk-component*>}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function atk-component-get-extents  (self@tie{}@code{<atk-component>}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method get-extents
 Gets the rectangle which gives the extent of the @var{component}.
 
 @table @var
@@ -73,7 +67,8 @@ components top level window
 
 @end deffn
 
-@deffn Function atk-component-get-layer  (self@tie{}@code{<atk-component*>}) @result{}@tie{} (ret@tie{}@code{<atk-layer>})
+@deffn Function atk-component-get-layer  (self@tie{}@code{<atk-component>}) @result{}@tie{} (ret@tie{}@code{<atk-layer>})
+@deffnx Method get-layer
 Gets the layer of the component.
 
 @table @var
@@ -87,7 +82,8 @@ an @code{<atk-layer>} which is the layer of the component
 
 @end deffn
 
-@deffn Function atk-component-get-mdi-zorder  (self@tie{}@code{<atk-component*>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function atk-component-get-mdi-zorder  (self@tie{}@code{<atk-component>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-mdi-zorder
 Gets the zorder of the component. The value G_MININT will be returned if the
 layer of the component is not ATK_LAYER_MDI or ATK_LAYER_WINDOW.
 
@@ -103,7 +99,8 @@ component is shown in relation to other components in the same container.
 
 @end deffn
 
-@deffn Function atk-component-get-position  (self@tie{}@code{<atk-component*>}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffn Function atk-component-get-position  (self@tie{}@code{<atk-component>}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method get-position
 Gets the position of @var{component} in the form of a point specifying
 @var{component}'s top-left corner.
 
@@ -125,7 +122,8 @@ components top level window
 
 @end deffn
 
-@deffn Function atk-component-get-size  (self@tie{}@code{<atk-component*>}) @result{}@tie{} (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function atk-component-get-size  (self@tie{}@code{<atk-component>}) @result{}@tie{} (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method get-size
 Gets the size of the @var{component} in terms of width and height.
 
 @table @var
@@ -142,7 +140,8 @@ address of @code{<gint>} to put height of @var{component}
 
 @end deffn
 
-@deffn Function atk-component-grab-focus  (self@tie{}@code{<atk-component*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-component-grab-focus  (self@tie{}@code{<atk-component>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method grab-focus
 Grabs focus for this @var{component}.
 
 @table @var
@@ -156,22 +155,8 @@ an @code{<atk-component>}
 
 @end deffn
 
-@deffn Function atk-component-remove-focus-handler  (self@tie{}@code{<atk-component*>}) (handler_id@tie{}@code{unsigned-int})
-Remove the handler specified by @var{handler-id} from the list of functions to
-be executed when this object receives focus events (in or out).
-
-@table @var
-@item component
-the @code{<atk-component>} to remove the focus handler from
-
-@item handler-id
-the handler id of the focus handler to be removed from @var{component}
-
-@end table
-
-@end deffn
-
-@deffn Function atk-component-set-extents  (self@tie{}@code{<atk-component*>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-component-set-extents  (self@tie{}@code{<atk-component>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-extents
 Sets the extents of @var{component}.
 
 @table @var
@@ -201,7 +186,8 @@ components top level window
 
 @end deffn
 
-@deffn Function atk-component-set-position  (self@tie{}@code{<atk-component*>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-component-set-position  (self@tie{}@code{<atk-component>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-position
 Sets the postition of @var{component}.
 
 @table @var
@@ -225,7 +211,8 @@ components top level window
 
 @end deffn
 
-@deffn Function atk-component-set-size  (self@tie{}@code{<atk-component*>}) (width@tie{}@code{int}) (height@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-component-set-size  (self@tie{}@code{<atk-component>}) (width@tie{}@code{int}) (height@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-size
 Set the size of the @var{component} in terms of width and height.
 
 @table @var
@@ -245,7 +232,8 @@ height to set for @var{component}
 
 @end deffn
 
-@deffn Function atk-component-get-alpha  (self@tie{}@code{<atk-component*>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function atk-component-get-alpha  (self@tie{}@code{<atk-component>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-alpha
 Returns the alpha value (i.e. the opacity) for this @var{component}, on a scale
 from 0 (fully transparent) to 1.0 (fully opaque).
 

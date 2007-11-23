@@ -25,7 +25,94 @@
 ;;
 ;;; Code:
 
+(define-interface Action
+  (in-module "Atk")
+  (c-name "AtkAction")
+  (gtype-id "ATK_TYPE_ACTION"))
+
+(define-interface Component
+  (in-module "Atk")
+  (c-name "AtkComponent")
+  (gtype-id "ATK_TYPE_COMPONENT"))
+
+(define-interface Document
+  (in-module "Atk")
+  (c-name "AtkDocument")
+  (gtype-id "ATK_TYPE_DOCUMENT"))
+
+(define-interface EditableText
+  (in-module "Atk")
+  (c-name "AtkEditableText")
+  (gtype-id "ATK_TYPE_EDITABLE_TEXT"))
+
+(define-interface HyperlinkImpl
+  (in-module "Atk")
+  (c-name "AtkHyperlinkImpl")
+  (gtype-id "ATK_TYPE_HYPERLINK_IMPL"))
+
+(define-interface Hypertext
+  (in-module "Atk")
+  (c-name "AtkHypertext")
+  (gtype-id "ATK_TYPE_HYPERTEXT"))
+
+(define-interface Image
+  (in-module "Atk")
+  (c-name "AtkImage")
+  (gtype-id "ATK_TYPE_IMAGE"))
+
+(define-interface Implementor
+  (in-module "Atk")
+  (c-name "AtkImplementor")
+  (gtype-id "ATK_TYPE_IMPLEMENTOR"))
+
+(define-interface Selection
+  (in-module "Atk")
+  (c-name "AtkSelection")
+  (gtype-id "ATK_TYPE_SELECTION"))
+
+(define-interface StreamableContent
+  (in-module "Atk")
+  (c-name "AtkStreamableContent")
+  (gtype-id "ATK_TYPE_STREAMABLE_CONTENT"))
+
+(define-interface Table
+  (in-module "Atk")
+  (c-name "AtkTable")
+  (gtype-id "ATK_TYPE_TABLE"))
+
+(define-interface Text
+  (in-module "Atk")
+  (c-name "AtkText")
+  (gtype-id "ATK_TYPE_TEXT"))
+
+(define-interface Value
+  (in-module "Atk")
+  (c-name "AtkValue")
+  (gtype-id "ATK_TYPE_VALUE"))
+
 (ignore "atk_table_get_selected_rows" ; these have gint**
         "atk_table_get_selected_columns"
         "atk_add_key_event_listener" ; a function we don't know about
+        "atk_component_add_focus_handler"
+        "atk_component_remove_focus_handler"
+        "atk_document_get_document"
+        "atk_document_get_attributes"
+        "atk_editable_text_set_run_attributes"
+        "atk_object_initialize"
+        "atk_object_get_attributes"
+        "atk_object_connect_property_change_handler"
+        "atk_object_remove_property_change_handler"
+        "atk_relation_new"
+        "atk_relation_get_target"
+        "atk_state_set_add_states"
+        "atk_state_set_contains_states"
+        "atk_text_get_run_attributes"
+        "atk_text_get_default_attributes"
+        "atk_text_get_bounded_ranges"
+        "atk_text_get_range_extents"
+        "atk_text_free_ranges" ;; tastes like chicken
+        "atk_add_focus_tracker"
+        "atk_focus_tracker_init"
+        "atk_global_event_listener"
+        "atk_add_global_event_listener"
         )

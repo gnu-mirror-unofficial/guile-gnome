@@ -32,31 +32,6 @@
   ((gnome gw atk)
    (uses-interfaces (gnome gw generics))
    (typed-exports
-     (<atk-action*> <gw:wct>)
-     (<atk-attribute-set*> <gw:wct>)
-     (<atk-component*> <gw:wct>)
-     (<atk-document*> <gw:wct>)
-     (<atk-editable-text*> <gw:wct>)
-     (<atk-event-listener-init> <gw:wct>)
-     (<atk-event-listener> <gw:wct>)
-     (<atk-focus-handler> <gw:wct>)
-     (<atk-hyperlink-impl*> <gw:wct>)
-     (<atk-hypertext*> <gw:wct>)
-     (<atk-image*> <gw:wct>)
-     (<atk-implementor*> <gw:wct>)
-     (<atk-object**> <gw:wct>)
-     (<atk-property-change-handler*> <gw:wct>)
-     (<atk-selection*> <gw:wct>)
-     (<atk-state-type*> <gw:wct>)
-     (<atk-streamable-content*> <gw:wct>)
-     (<atk-table*> <gw:wct>)
-     (<atk-text*> <gw:wct>)
-     (<atk-text-range**> <gw:wct>)
-     (<atk-text-rectangle*> <gw:wct>)
-     (<atk-value*> <gw:wct>)
-     (<g-ptr-array*> <gw:wct>)
-     (<g-signal-emission-hook> <gw:wct>)
-     (<gpointer> <gw:wct>)
      (atk-action-do-action procedure (arity 0 0 #t))
      (atk-action-get-description
        procedure
@@ -72,13 +47,6 @@
        (arity 0 0 #t))
      (atk-action-get-name procedure (arity 0 0 #t))
      (atk-action-set-description
-       procedure
-       (arity 0 0 #t))
-     (atk-add-focus-tracker procedure (arity 0 0 #t))
-     (atk-add-global-event-listener
-       procedure
-       (arity 0 0 #t))
-     (atk-component-add-focus-handler
        procedure
        (arity 0 0 #t))
      (atk-component-contains procedure (arity 0 0 #t))
@@ -104,9 +72,6 @@
      (atk-component-ref-accessible-at-point
        procedure
        (arity 0 0 #t))
-     (atk-component-remove-focus-handler
-       procedure
-       (arity 0 0 #t))
      (atk-component-set-extents
        procedure
        (arity 0 0 #t))
@@ -115,12 +80,6 @@
        (arity 0 0 #t))
      (atk-component-set-size procedure (arity 0 0 #t))
      (atk-document-get-attribute-value
-       procedure
-       (arity 0 0 #t))
-     (atk-document-get-attributes
-       procedure
-       (arity 0 0 #t))
-     (atk-document-get-document
        procedure
        (arity 0 0 #t))
      (atk-document-get-document-type
@@ -147,13 +106,9 @@
      (atk-editable-text-paste-text
        procedure
        (arity 0 0 #t))
-     (atk-editable-text-set-run-attributes
-       procedure
-       (arity 0 0 #t))
      (atk-editable-text-set-text-contents
        procedure
        (arity 0 0 #t))
-     (atk-focus-tracker-init procedure (arity 0 0 #t))
      (atk-focus-tracker-notify
        procedure
        (arity 0 0 #t))
@@ -227,9 +182,6 @@
      (atk-object-add-relationship
        procedure
        (arity 0 0 #t))
-     (atk-object-connect-property-change-handler
-       procedure
-       (arity 0 0 #t))
      (atk-object-factory-create-accessible
        procedure
        (arity 0 0 #t))
@@ -237,9 +189,6 @@
        procedure
        (arity 1 0 #f))
      (atk-object-factory-invalidate
-       procedure
-       (arity 0 0 #t))
-     (atk-object-get-attributes
        procedure
        (arity 0 0 #t))
      (atk-object-get-description
@@ -258,7 +207,6 @@
      (atk-object-get-name procedure (arity 0 0 #t))
      (atk-object-get-parent procedure (arity 0 0 #t))
      (atk-object-get-role procedure (arity 0 0 #t))
-     (atk-object-initialize procedure (arity 0 0 #t))
      (atk-object-notify-state-change
        procedure
        (arity 0 0 #t))
@@ -269,9 +217,6 @@
        procedure
        (arity 0 0 #t))
      (atk-object-ref-state-set
-       procedure
-       (arity 0 0 #t))
-     (atk-object-remove-property-change-handler
        procedure
        (arity 0 0 #t))
      (atk-object-remove-relationship
@@ -298,10 +243,6 @@
      (atk-relation-get-relation-type
        procedure
        (arity 0 0 #t))
-     (atk-relation-get-target
-       procedure
-       (arity 0 0 #t))
-     (atk-relation-new procedure (arity 0 0 #t))
      (atk-relation-set-add procedure (arity 0 0 #t))
      (atk-relation-set-add-relation-by-type
        procedure
@@ -369,17 +310,11 @@
      (atk-state-set-add-state
        procedure
        (arity 0 0 #t))
-     (atk-state-set-add-states
-       procedure
-       (arity 0 0 #t))
      (atk-state-set-and-sets procedure (arity 0 0 #t))
      (atk-state-set-clear-states
        procedure
        (arity 0 0 #t))
      (atk-state-set-contains-state
-       procedure
-       (arity 0 0 #t))
-     (atk-state-set-contains-states
        procedure
        (arity 0 0 #t))
      (atk-state-set-is-empty procedure (arity 0 0 #t))
@@ -482,10 +417,6 @@
      (atk-text-attribute-get-value
        procedure
        (arity 0 0 #t))
-     (atk-text-free-ranges procedure (arity 0 0 #t))
-     (atk-text-get-bounded-ranges
-       procedure
-       (arity 0 0 #t))
      (atk-text-get-caret-offset
        procedure
        (arity 0 0 #t))
@@ -498,21 +429,12 @@
      (atk-text-get-character-extents
        procedure
        (arity 3 0 #f))
-     (atk-text-get-default-attributes
-       procedure
-       (arity 0 0 #t))
      (atk-text-get-n-selections
        procedure
        (arity 0 0 #t))
      (atk-text-get-offset-at-point
        procedure
        (arity 0 0 #t))
-     (atk-text-get-range-extents
-       procedure
-       (arity 0 0 #t))
-     (atk-text-get-run-attributes
-       procedure
-       (arity 2 0 #f))
      (atk-text-get-selection procedure (arity 2 0 #f))
      (atk-text-get-text procedure (arity 0 0 #t))
      (atk-text-get-text-after-offset

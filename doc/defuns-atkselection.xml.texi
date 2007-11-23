@@ -1,7 +1,20 @@
 
 @c %start of fragment
 
-@deffn Function atk-selection-add-selection  (self@tie{}@code{<atk-selection*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deftp Class <atk-selection>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@defop Signal <atk-selection> selection-changed 
+The "selection-changed" signal is emitted by an object which implements
+AtkSelection interface when the selection changes.
+
+@end defop
+
+@deffn Function atk-selection-add-selection  (self@tie{}@code{<atk-selection>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method add-selection
 Adds the specified accessible child of the object to the object's selection.
 
 @table @var
@@ -18,7 +31,8 @@ TRUE if success, FALSE otherwise.
 
 @end deffn
 
-@deffn Function atk-selection-clear-selection  (self@tie{}@code{<atk-selection*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-selection-clear-selection  (self@tie{}@code{<atk-selection>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method clear-selection
 Clears the selection in the object so that no children in the object are
 selected.
 
@@ -33,7 +47,8 @@ TRUE if success, FALSE otherwise.
 
 @end deffn
 
-@deffn Function atk-selection-ref-selection  (self@tie{}@code{<atk-selection*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deffn Function atk-selection-ref-selection  (self@tie{}@code{<atk-selection>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deffnx Method ref-selection
 Gets a reference to the accessible object representing the specified selected
 child of the object. Note: callers should not rely on @samp{@code{#f}} or on a
 zero value for indication of whether AtkSelectionIface is implemented, they
@@ -56,7 +71,8 @@ an @code{<atk-object>} representing the selected accessible , or
 
 @end deffn
 
-@deffn Function atk-selection-get-selection-count  (self@tie{}@code{<atk-selection*>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function atk-selection-get-selection-count  (self@tie{}@code{<atk-selection>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-selection-count
 Gets the number of accessible children currently selected. Note: callers should
 not rely on @samp{@code{#f}} or on a zero value for indication of whether
 AtkSelectionIface is implemented, they should use type checking/interface
@@ -74,7 +90,8 @@ not implement this interface.
 
 @end deffn
 
-@deffn Function atk-selection-is-child-selected  (self@tie{}@code{<atk-selection*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-selection-is-child-selected  (self@tie{}@code{<atk-selection>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-child-selected
 Determines if the current child of this object is selected Note: callers should
 not rely on @samp{@code{#f}} or on a zero value for indication of whether
 AtkSelectionIface is implemented, they should use type checking/interface
@@ -95,7 +112,8 @@ does not implement this interface.
 
 @end deffn
 
-@deffn Function atk-selection-remove-selection  (self@tie{}@code{<atk-selection*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-selection-remove-selection  (self@tie{}@code{<atk-selection>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method remove-selection
 Removes the specified child of the object from the object's selection.
 
 @table @var
@@ -113,7 +131,8 @@ TRUE if success, FALSE otherwise.
 
 @end deffn
 
-@deffn Function atk-selection-select-all-selection  (self@tie{}@code{<atk-selection*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-selection-select-all-selection  (self@tie{}@code{<atk-selection>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method select-all-selection
 Causes every child of the object to be selected if the object supports multiple
 selections.
 

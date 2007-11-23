@@ -1,7 +1,42 @@
 
 @c %start of fragment
 
-@deffn Function atk-document-get-document-type  (self@tie{}@code{<atk-document*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deftp Class <atk-document>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@defop Signal <atk-document> load-complete 
+The 'load-complete' signal is emitted when a pending load of a static document
+has completed. This signal is to be expected by ATK clients if and when
+AtkDocument implementors expose ATK_STATE_BUSY. If the state of an AtkObject
+which implements AtkDocument does not include ATK_STATE_BUSY, it should be safe
+for clients to assume that the AtkDocument's static contents are fully loaded
+into the container. (Dynamic document contents should be exposed via other
+signals.)
+
+@end defop
+
+@defop Signal <atk-document> reload 
+The 'reload' signal is emitted when the contents of a document is refreshed from
+its source. Once 'reload' has been emitted, a matching 'load-complete' or
+'load-stopped' signal should follow, which clients may await before
+interrogating ATK for the latest document content.
+
+@end defop
+
+@defop Signal <atk-document> load-stopped 
+The 'load-stopped' signal is emitted when a pending load of document contents is
+cancelled, paused, or otherwise interrupted by the user or application logic. It
+should not however be emitted while waiting for a resource (for instance while
+blocking on a file or network read) unless a user-significant timeout has
+occurred.
+
+@end defop
+
+@deffn Function atk-document-get-document-type  (self@tie{}@code{<atk-document>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-document-type
 Gets a string indicating the document type.
 
 @table @var
@@ -15,22 +50,8 @@ a string indicating the document type
 
 @end deffn
 
-@deffn Function atk-document-get-document  (self@tie{}@code{<atk-document*>}) @result{}@tie{} (ret@tie{}@code{<gpointer>})
-Gets a @samp{gpointer} that points to an instance of the DOM. It is up to the
-caller to check atk_document_get_type to determine how to cast this pointer.
-
-@table @var
-@item document
-a @code{<gobject>} instance that implements AtkDocumentIface
-
-@item ret
-a @samp{gpointer} that points to an instance of the DOM.
-
-@end table
-
-@end deffn
-
-@deffn Function atk-document-get-attribute-value  (self@tie{}@code{<atk-document*>}) (attribute_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function atk-document-get-attribute-value  (self@tie{}@code{<atk-document>}) (attribute_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-attribute-value
 Returns:
 
 @table @var
@@ -51,7 +72,8 @@ Since ATK 1.12
 
 @end deffn
 
-@deffn Function atk-document-set-attribute-value  (self@tie{}@code{<atk-document*>}) (attribute_name@tie{}@code{mchars}) (attribute_value@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-document-set-attribute-value  (self@tie{}@code{<atk-document>}) (attribute_name@tie{}@code{mchars}) (attribute_value@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-attribute-value
 Returns:
 
 @table @var
@@ -76,27 +98,8 @@ Since ATK 1.12
 
 @end deffn
 
-@deffn Function atk-document-get-attributes  (self@tie{}@code{<atk-document*>}) @result{}@tie{} (ret@tie{}@code{<atk-attribute-set*>})
-Gets an AtkAttributeSet which describes document-wide attributes as name-value
-pairs.
-
-Returns:
-
-@table @var
-@item document
-a @code{<gobject>} instance that implements AtkDocumentIface
-
-@item ret
-An AtkAttributeSet containing the explicitly set name-value-pair attributes
-associated with this document as a whole.
-
-@end table
-
-Since ATK 1.12
-
-@end deffn
-
-@deffn Function atk-document-get-locale  (self@tie{}@code{<atk-document*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function atk-document-get-locale  (self@tie{}@code{<atk-document>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-locale
 Gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale of the content
 of this document instance. Individual text substrings or images within this
 document may have a different locale, see atk_text_get_attributes and

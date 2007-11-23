@@ -1,3 +1,16 @@
+2007-11-24  Andy Wingo  <wingo@pobox.com>
+
+	* tests/wrapset.api: API changes. <atk-action> and friends really
+	are there, it's just that apicheck doesn't catch some of the
+	latent types. That should probably be fixed.
+
+	* gnome/overrides/atk.defs: Define a bunch of interfaces. Ignore
+	some functions that we were not wrapping properly.
+
+	* doc/defuns-*.xml.texi: Regenerated.
+
+	* gnome/overrides/atk.defs-type-ignores: Add empty file.
+
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.95 ==

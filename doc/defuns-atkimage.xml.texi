@@ -1,7 +1,14 @@
 
 @c %start of fragment
 
-@deffn Function atk-image-get-image-position  (self@tie{}@code{<atk-image*>}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int})
+@deftp Class <atk-image>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function atk-image-get-image-position  (self@tie{}@code{<atk-image>}) (coord_type@tie{}@code{<atk-coord-type>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method get-image-position
 Gets the position of the image in the form of a point specifying the images
 top-left corner.
 
@@ -25,7 +32,8 @@ components top level window
 
 @end deffn
 
-@deffn Function atk-image-get-image-description  (self@tie{}@code{<atk-image*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function atk-image-get-image-description  (self@tie{}@code{<atk-image>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-image-description
 Get a textual description of this image.
 
 @table @var
@@ -39,7 +47,8 @@ a string representing the image description
 
 @end deffn
 
-@deffn Function atk-image-set-image-description  (self@tie{}@code{<atk-image*>}) (description@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-image-set-image-description  (self@tie{}@code{<atk-image>}) (description@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-image-description
 Sets the textual description for this image.
 
 @table @var
@@ -56,7 +65,8 @@ boolean TRUE, or FALSE if operation could not be completed.
 
 @end deffn
 
-@deffn Function atk-image-get-image-size  (self@tie{}@code{<atk-image*>}) @result{}@tie{} (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function atk-image-get-image-size  (self@tie{}@code{<atk-image>}) @result{}@tie{} (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method get-image-size
 Get the width and height in pixels for the specified image. The values of
 @var{width} and @var{height} are returned as -1 if the values cannot be obtained
 (for instance, if the object is not onscreen).
@@ -75,7 +85,8 @@ filled with the image height, or -1 if the value cannot be obtained.
 
 @end deffn
 
-@deffn Function atk-image-get-image-locale  (self@tie{}@code{<atk-image*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function atk-image-get-image-locale  (self@tie{}@code{<atk-image>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-image-locale
 Since ATK 1.12
 
 @table @var

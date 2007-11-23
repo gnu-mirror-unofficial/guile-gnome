@@ -1,7 +1,56 @@
 
 @c %start of fragment
 
-@deffn Function atk-table-ref-at  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deftp Class <atk-table>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@defop Signal <atk-table> row-inserted  (arg0@tie{}@code{<gint>}) (arg1@tie{}@code{<gint>})
+The "row-inserted" signal is emitted by an object which implements the AtkTable
+interface when a column is inserted.
+
+@end defop
+
+@defop Signal <atk-table> column-inserted  (arg0@tie{}@code{<gint>}) (arg1@tie{}@code{<gint>})
+The "column-inserted" signal is emitted by an object which implements the
+AtkTable interface when a column is inserted.
+
+@end defop
+
+@defop Signal <atk-table> row-deleted  (arg0@tie{}@code{<gint>}) (arg1@tie{}@code{<gint>})
+The "row-deleted" signal is emitted by an object which implements the AtkTable
+interface when a column is inserted.
+
+@end defop
+
+@defop Signal <atk-table> column-deleted  (arg0@tie{}@code{<gint>}) (arg1@tie{}@code{<gint>})
+The "column-deleted" signal is emitted by an object which implements the
+AtkTable interface when a column is deleted.
+
+@end defop
+
+@defop Signal <atk-table> row-reordered 
+The "row-reordered" signal is emitted by an object which implements the AtkTable
+interface when the columns are reordered.
+
+@end defop
+
+@defop Signal <atk-table> column-reordered 
+The "column-reordered" signal is emitted by an object which implements the
+AtkTable interface when the columns are reordered.
+
+@end defop
+
+@defop Signal <atk-table> model-changed 
+The "model-changed" signal is emitted by an object which implements the AtkTable
+interface when the model displayed by the table changes.
+
+@end defop
+
+@deffn Function atk-table-ref-at  (self@tie{}@code{<atk-table>}) (row@tie{}@code{int}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deffnx Method ref-at
 Get a reference to the table cell at @var{row}, @var{column}.
 
 @table @var
@@ -21,7 +70,8 @@ a AtkObject* representing the referred to accessible
 
 @end deffn
 
-@deffn Function atk-table-get-index-at  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function atk-table-get-index-at  (self@tie{}@code{<atk-table>}) (row@tie{}@code{int}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-index-at
 Gets a @code{<gint>} representing the index at the specified @var{row} and
 @var{column}.
 
@@ -44,7 +94,8 @@ implement this interface.
 
 @end deffn
 
-@deffn Function atk-table-get-column-at-index  (self@tie{}@code{<atk-table*>}) (index_@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function atk-table-get-column-at-index  (self@tie{}@code{<atk-table>}) (index_@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-column-at-index
 Gets a @code{<gint>} representing the column at the specified @var{index}.
 
 @table @var
@@ -62,7 +113,8 @@ not implement this interface
 
 @end deffn
 
-@deffn Function atk-table-get-row-at-index  (self@tie{}@code{<atk-table*>}) (index_@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function atk-table-get-row-at-index  (self@tie{}@code{<atk-table>}) (index_@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-row-at-index
 Gets a @code{<gint>} representing the row at the specified @var{index}.
 
 @table @var
@@ -80,7 +132,8 @@ implement this interface
 
 @end deffn
 
-@deffn Function atk-table-get-n-columns  (self@tie{}@code{<atk-table*>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function atk-table-get-n-columns  (self@tie{}@code{<atk-table>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-n-columns
 Gets the number of columns in the table.
 
 @table @var
@@ -95,7 +148,8 @@ interface.
 
 @end deffn
 
-@deffn Function atk-table-get-n-rows  (self@tie{}@code{<atk-table*>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function atk-table-get-n-rows  (self@tie{}@code{<atk-table>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-n-rows
 Gets the number of rows in the table.
 
 @table @var
@@ -110,7 +164,8 @@ interface.
 
 @end deffn
 
-@deffn Function atk-table-get-column-extent-at  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function atk-table-get-column-extent-at  (self@tie{}@code{<atk-table>}) (row@tie{}@code{int}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-column-extent-at
 Gets the number of columns occupied by the accessible object at the specified
 @var{row} and @var{column} in the @var{table}.
 
@@ -132,7 +187,8 @@ not implement this interface.
 
 @end deffn
 
-@deffn Function atk-table-get-row-extent-at  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function atk-table-get-row-extent-at  (self@tie{}@code{<atk-table>}) (row@tie{}@code{int}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-row-extent-at
 Gets the number of rows occupied by the accessible object at a specified
 @var{row} and @var{column} in the @var{table}.
 
@@ -154,7 +210,8 @@ implement this interface.
 
 @end deffn
 
-@deffn Function atk-table-get-caption  (self@tie{}@code{<atk-table*>}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deffn Function atk-table-get-caption  (self@tie{}@code{<atk-table>}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deffnx Method get-caption
 Gets the caption for the @var{table}.
 
 @table @var
@@ -169,7 +226,8 @@ not implement this interface.
 
 @end deffn
 
-@deffn Function atk-table-get-column-description  (self@tie{}@code{<atk-table*>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function atk-table-get-column-description  (self@tie{}@code{<atk-table>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-column-description
 Gets the description text of the specified @var{column} in the table
 
 @table @var
@@ -187,7 +245,8 @@ not implement this interface.
 
 @end deffn
 
-@deffn Function atk-table-get-row-description  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function atk-table-get-row-description  (self@tie{}@code{<atk-table>}) (row@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-row-description
 Gets the description text of the specified row in the table
 
 @table @var
@@ -205,7 +264,8 @@ implement this interface.
 
 @end deffn
 
-@deffn Function atk-table-get-column-header  (self@tie{}@code{<atk-table*>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deffn Function atk-table-get-column-header  (self@tie{}@code{<atk-table>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deffnx Method get-column-header
 Gets the column header of a specified column in an accessible table.
 
 @table @var
@@ -223,7 +283,8 @@ value does not implement this interface.
 
 @end deffn
 
-@deffn Function atk-table-get-row-header  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deffn Function atk-table-get-row-header  (self@tie{}@code{<atk-table>}) (row@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deffnx Method get-row-header
 Gets the row header of a specified row in an accessible table.
 
 @table @var
@@ -241,7 +302,8 @@ does not implement this interface.
 
 @end deffn
 
-@deffn Function atk-table-get-summary  (self@tie{}@code{<atk-table*>}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deffn Function atk-table-get-summary  (self@tie{}@code{<atk-table>}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deffnx Method get-summary
 Gets the summary description of the table.
 
 @table @var
@@ -256,7 +318,8 @@ does not implement this interface.
 
 @end deffn
 
-@deffn Function atk-table-set-caption  (self@tie{}@code{<atk-table*>}) (caption@tie{}@code{<atk-object>})
+@deffn Function atk-table-set-caption  (self@tie{}@code{<atk-table>}) (caption@tie{}@code{<atk-object>})
+@deffnx Method set-caption
 Sets the caption for the table.
 
 @table @var
@@ -270,7 +333,8 @@ a @code{<atk-object>} representing the caption to set for @var{table}
 
 @end deffn
 
-@deffn Function atk-table-set-row-description  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) (description@tie{}@code{mchars})
+@deffn Function atk-table-set-row-description  (self@tie{}@code{<atk-table>}) (row@tie{}@code{int}) (description@tie{}@code{mchars})
+@deffnx Method set-row-description
 Sets the description text for the specified @var{row} of @var{table}.
 
 @table @var
@@ -288,7 +352,8 @@ a @code{<gchar>} representing the description text to set for the specified
 
 @end deffn
 
-@deffn Function atk-table-set-column-description  (self@tie{}@code{<atk-table*>}) (column@tie{}@code{int}) (description@tie{}@code{mchars})
+@deffn Function atk-table-set-column-description  (self@tie{}@code{<atk-table>}) (column@tie{}@code{int}) (description@tie{}@code{mchars})
+@deffnx Method set-column-description
 Sets the description text for the specified @var{column} of the @var{table}.
 
 @table @var
@@ -306,7 +371,8 @@ a @code{<gchar>} representing the description text to set for the specified
 
 @end deffn
 
-@deffn Function atk-table-set-row-header  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) (header@tie{}@code{<atk-object>})
+@deffn Function atk-table-set-row-header  (self@tie{}@code{<atk-table>}) (row@tie{}@code{int}) (header@tie{}@code{<atk-object>})
+@deffnx Method set-row-header
 Sets the specified row header to @var{header}.
 
 @table @var
@@ -323,7 +389,8 @@ an @code{<atk-table>}
 
 @end deffn
 
-@deffn Function atk-table-set-column-header  (self@tie{}@code{<atk-table*>}) (column@tie{}@code{int}) (header@tie{}@code{<atk-object>})
+@deffn Function atk-table-set-column-header  (self@tie{}@code{<atk-table>}) (column@tie{}@code{int}) (header@tie{}@code{<atk-object>})
+@deffnx Method set-column-header
 Sets the specified column header to @var{header}.
 
 @table @var
@@ -340,7 +407,8 @@ an @code{<atk-table>}
 
 @end deffn
 
-@deffn Function atk-table-set-summary  (self@tie{}@code{<atk-table*>}) (accessible@tie{}@code{<atk-object>})
+@deffn Function atk-table-set-summary  (self@tie{}@code{<atk-table>}) (accessible@tie{}@code{<atk-object>})
+@deffnx Method set-summary
 Sets the summary description of the table.
 
 @table @var
@@ -355,7 +423,8 @@ an @code{<atk-object>} representing the summary description to set for
 
 @end deffn
 
-@deffn Function atk-table-is-column-selected  (self@tie{}@code{<atk-table*>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-table-is-column-selected  (self@tie{}@code{<atk-table>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-column-selected
 Gets a boolean value indicating whether the specified @var{column} is selected
 
 @table @var
@@ -373,7 +442,8 @@ implement this interface.
 
 @end deffn
 
-@deffn Function atk-table-is-row-selected  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-table-is-row-selected  (self@tie{}@code{<atk-table>}) (row@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-row-selected
 Gets a boolean value indicating whether the specified @var{row} is selected
 
 @table @var
@@ -391,7 +461,8 @@ this interface.
 
 @end deffn
 
-@deffn Function atk-table-is-selected  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-table-is-selected  (self@tie{}@code{<atk-table>}) (row@tie{}@code{int}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-selected
 Gets a boolean value indicating whether the accessible object at the specified
 @var{row} and @var{column} is selected
 
@@ -413,7 +484,8 @@ implement this interface.
 
 @end deffn
 
-@deffn Function atk-table-add-column-selection  (self@tie{}@code{<atk-table*>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-table-add-column-selection  (self@tie{}@code{<atk-table>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method add-column-selection
 Adds the specified @var{column} to the selection.
 
 @table @var
@@ -431,7 +503,8 @@ or 0 if value does not implement this interface.
 
 @end deffn
 
-@deffn Function atk-table-add-row-selection  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-table-add-row-selection  (self@tie{}@code{<atk-table>}) (row@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method add-row-selection
 Adds the specified @var{row} to the selection.
 
 @table @var
@@ -449,7 +522,8 @@ value does not implement this interface.
 
 @end deffn
 
-@deffn Function atk-table-remove-column-selection  (self@tie{}@code{<atk-table*>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-table-remove-column-selection  (self@tie{}@code{<atk-table>}) (column@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method remove-column-selection
 Adds the specified @var{column} to the selection.
 
 @table @var
@@ -467,7 +541,8 @@ selection, or 0 if value does not implement this interface.
 
 @end deffn
 
-@deffn Function atk-table-remove-row-selection  (self@tie{}@code{<atk-table*>}) (row@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-table-remove-row-selection  (self@tie{}@code{<atk-table>}) (row@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method remove-row-selection
 Removes the specified @var{row} from the selection.
 
 @table @var

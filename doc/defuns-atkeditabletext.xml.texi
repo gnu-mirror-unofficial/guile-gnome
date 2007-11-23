@@ -1,7 +1,14 @@
 
 @c %start of fragment
 
-@deffn Function atk-editable-text-set-text-contents  (self@tie{}@code{<atk-editable-text*>}) (string@tie{}@code{mchars})
+@deftp Class <atk-editable-text>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function atk-editable-text-set-text-contents  (self@tie{}@code{<atk-editable-text>}) (string@tie{}@code{mchars})
+@deffnx Method set-text-contents
 Set text contents of @var{text}.
 
 @table @var
@@ -15,7 +22,8 @@ string to set for text contents of @var{text}
 
 @end deffn
 
-@deffn Function atk-editable-text-insert-text  (self@tie{}@code{<atk-editable-text*>}) (string@tie{}@code{mchars}) (length@tie{}@code{int}) @result{}@tie{} (position@tie{}@code{int})
+@deffn Function atk-editable-text-insert-text  (self@tie{}@code{<atk-editable-text>}) (string@tie{}@code{mchars}) (length@tie{}@code{int}) @result{}@tie{} (position@tie{}@code{int})
+@deffnx Method insert-text
 Insert text at a given position.
 
 @table @var
@@ -36,7 +44,8 @@ the call it points at the position after the newly inserted text.
 
 @end deffn
 
-@deffn Function atk-editable-text-copy-text  (self@tie{}@code{<atk-editable-text*>}) (start_pos@tie{}@code{int}) (end_pos@tie{}@code{int})
+@deffn Function atk-editable-text-copy-text  (self@tie{}@code{<atk-editable-text>}) (start_pos@tie{}@code{int}) (end_pos@tie{}@code{int})
+@deffnx Method copy-text
 Copy text from @var{start-pos} up to, but not including @var{end-pos} to the
 clipboard.
 
@@ -54,7 +63,8 @@ end position
 
 @end deffn
 
-@deffn Function atk-editable-text-cut-text  (self@tie{}@code{<atk-editable-text*>}) (start_pos@tie{}@code{int}) (end_pos@tie{}@code{int})
+@deffn Function atk-editable-text-cut-text  (self@tie{}@code{<atk-editable-text>}) (start_pos@tie{}@code{int}) (end_pos@tie{}@code{int})
+@deffnx Method cut-text
 Copy text from @var{start-pos} up to, but not including @var{end-pos} to the
 clipboard and then delete from the widget.
 
@@ -72,7 +82,8 @@ end position
 
 @end deffn
 
-@deffn Function atk-editable-text-delete-text  (self@tie{}@code{<atk-editable-text*>}) (start_pos@tie{}@code{int}) (end_pos@tie{}@code{int})
+@deffn Function atk-editable-text-delete-text  (self@tie{}@code{<atk-editable-text>}) (start_pos@tie{}@code{int}) (end_pos@tie{}@code{int})
+@deffnx Method delete-text
 Delete text @var{start-pos} up to, but not including @var{end-pos}.
 
 @table @var
@@ -89,7 +100,8 @@ end position
 
 @end deffn
 
-@deffn Function atk-editable-text-paste-text  (self@tie{}@code{<atk-editable-text*>}) (position@tie{}@code{int})
+@deffn Function atk-editable-text-paste-text  (self@tie{}@code{<atk-editable-text>}) (position@tie{}@code{int})
+@deffnx Method paste-text
 Paste text from clipboard to specified @var{position}.
 
 @table @var

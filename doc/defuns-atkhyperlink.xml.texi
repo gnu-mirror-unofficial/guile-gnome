@@ -6,10 +6,18 @@ This @code{<gobject>} class defines the following properties:
 
 @table @code
 @item selected-link
-Specifies whether the AtkHyperlink object is selected@item number-of-anchors
-The number of anchors associated with the AtkHyperlink object@item start-index
-The start index of the AtkHyperlink object@item end-index
-The end index of the AtkHyperlink object@end table
+Specifies whether the AtkHyperlink object is selected
+
+@item number-of-anchors
+The number of anchors associated with the AtkHyperlink object
+
+@item start-index
+The start index of the AtkHyperlink object
+
+@item end-index
+The end index of the AtkHyperlink object
+
+@end table
 
 @end deftp
 

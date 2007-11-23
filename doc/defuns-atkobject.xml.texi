@@ -6,21 +6,52 @@ This @code{<gobject>} class defines the following properties:
 
 @table @code
 @item accessible-name
-Object instance's name formatted for assistive technology access@item accessible-description
-Description of an object, formatted for assistive technology access@item accessible-parent
-Is used to notify that the parent has changed@item accessible-value
-Is used to notify that the value has changed@item accessible-role
-The accessible role of this object@item accessible-component-layer
-The accessible layer of this object@item accessible-component-mdi-zorder
-The accessible MDI value of this object@item accessible-table-caption
-Is used to notify that the table caption has changed; this property should not be used. accessible-table-caption-object should be used instead@item accessible-table-column-description
-Is used to notify that the table column description has changed@item accessible-table-column-header
-Is used to notify that the table column header has changed@item accessible-table-row-description
-Is used to notify that the table row description has changed@item accessible-table-row-header
-Is used to notify that the table row header has changed@item accessible-table-summary
-Is used to notify that the table summary has changed@item accessible-table-caption-object
-Is used to notify that the table caption has changed@item accessible-hypertext-nlinks
-The number of links which the current AtkHypertext has@end table
+Object instance's name formatted for assistive technology access
+
+@item accessible-description
+Description of an object, formatted for assistive technology access
+
+@item accessible-parent
+Is used to notify that the parent has changed
+
+@item accessible-value
+Is used to notify that the value has changed
+
+@item accessible-role
+The accessible role of this object
+
+@item accessible-component-layer
+The accessible layer of this object
+
+@item accessible-component-mdi-zorder
+The accessible MDI value of this object
+
+@item accessible-table-caption
+Is used to notify that the table caption has changed; this property should not
+be used. accessible-table-caption-object should be used instead
+
+@item accessible-table-column-description
+Is used to notify that the table column description has changed
+
+@item accessible-table-column-header
+Is used to notify that the table column header has changed
+
+@item accessible-table-row-description
+Is used to notify that the table row description has changed
+
+@item accessible-table-row-header
+Is used to notify that the table row header has changed
+
+@item accessible-table-summary
+Is used to notify that the table summary has changed
+
+@item accessible-table-caption-object
+Is used to notify that the table caption has changed
+
+@item accessible-hypertext-nlinks
+The number of links which the current AtkHypertext has
+
+@end table
 
 @end deftp
 
@@ -61,7 +92,14 @@ focus changes.
 
 @end defop
 
-@deffn Function atk-implementor-ref-accessible  (self@tie{}@code{<atk-implementor*>}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deftp Class <atk-implementor>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function atk-implementor-ref-accessible  (self@tie{}@code{<atk-implementor>}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deffnx Method ref-accessible
 Gets a reference to an object's @code{<atk-object>} implementation, if the
 object implements @code{<atk-object-iface>}
 
@@ -326,25 +364,6 @@ a gboolean which indicates whether the state is being set on or off
 
 @end deffn
 
-@deffn Function atk-object-initialize  (self@tie{}@code{<atk-object>}) (data@tie{}@code{<gpointer>})
-@deffnx Method initialize
-This function is called when implementing subclasses of @code{<atk-object>}. It
-does initialization required for the new object. It is intended that this
-function should called only in the ...@code{-new} functions used to create an
-instance of a subclass of @code{<atk-object>}
-
-@table @var
-@item accessible
-a @code{<atk-object>}
-
-@item data
-a @code{<gpointer>} which identifies the object for which the AtkObject was
-created.
-
-@end table
-
-@end deffn
-
 @deffn Function atk-object-add-relationship  (self@tie{}@code{<atk-object>}) (relationship@tie{}@code{<atk-relation-type>}) (target@tie{}@code{<atk-object>}) @result{}@tie{} (ret@tie{}@code{bool})
 @deffnx Method add-relationship
 Adds a relationship of the specified type with the specified target.
@@ -384,31 +403,6 @@ The @code{<atk-object>} which is the target of the relation to be removed.
 TRUE if the relationship is removed.
 
 @end table
-
-@end deffn
-
-@deffn Function atk-object-get-attributes  (self@tie{}@code{<atk-object>}) @result{}@tie{} (ret@tie{}@code{<atk-attribute-set*>})
-@deffnx Method get-attributes
-Get a list of properties applied to this object as a whole, as an
-@code{<atk-attribute-set>} consisting of name-value pairs. As such these
-attributes may be considered weakly-typed properties or annotations, as distinct
-from strongly-typed object data available via other get/set methods. Not all
-objects have explicit "name-value pair" @code{<atk-attribute-set>} properties.
-
-Returns:
-
-@table @var
-@item accessible
-An @code{<atk-object>}.
-
-@item ret
-an @code{<atk-attribute-set>} consisting of all explicit properties/annotations
-applied to the object, or an empty set if the object has no name-value pair
-attributes assigned to it.
-
-@end table
-
-Since ATK 1.12
 
 @end deffn
 

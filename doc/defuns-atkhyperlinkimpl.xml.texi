@@ -1,7 +1,14 @@
 
 @c %start of fragment
 
-@deffn Function atk-hyperlink-impl-get-hyperlink  (self@tie{}@code{<atk-hyperlink-impl*>}) @result{}@tie{} (ret@tie{}@code{<atk-hyperlink>})
+@deftp Class <atk-hyperlink-impl>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function atk-hyperlink-impl-get-hyperlink  (self@tie{}@code{<atk-hyperlink-impl>}) @result{}@tie{} (ret@tie{}@code{<atk-hyperlink>})
+@deffnx Method get-hyperlink
 Gets the hyperlink associated with this object.
 
 @table @var

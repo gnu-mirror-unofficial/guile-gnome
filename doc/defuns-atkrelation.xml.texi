@@ -6,8 +6,12 @@ This @code{<gobject>} class defines the following properties:
 
 @table @code
 @item relation-type
-The type of the relation@item target
-An array of the targets for the relation@end table
+The type of the relation
+
+@item target
+An array of the targets for the relation
+
+@end table
 
 @end deftp
 
@@ -54,26 +58,6 @@ name, or @code{<atk-relation-null>} if no matching relation type is found.
 
 @end deffn
 
-@deffn Function atk-relation-new  (targets@tie{}@code{<atk-object**>}) (n_targets@tie{}@code{int}) (relationship@tie{}@code{<atk-relation-type>}) @result{}@tie{} (ret@tie{}@code{<atk-relation>})
-Create a new relation for the specified key and the specified list of targets.
-
-@table @var
-@item targets
-an array of pointers to @code{<atk-objects>}
-
-@item n-targets
-number of @code{<atk-objects>} pointed to by @var{targets}
-
-@item relationship
-an @code{<atk-relation-type>} with which to create the new @code{<atk-relation>}
-
-@item ret
-a pointer to a new @code{<atk-relation>}
-
-@end table
-
-@end deffn
-
 @deffn Function atk-relation-get-relation-type  (self@tie{}@code{<atk-relation>}) @result{}@tie{} (ret@tie{}@code{<atk-relation-type>})
 @deffnx Method get-relation-type
 Gets the type of @var{relation}
@@ -84,21 +68,6 @@ an @code{<atk-relation>}
 
 @item ret
 the type of @var{relation}
-
-@end table
-
-@end deffn
-
-@deffn Function atk-relation-get-target  (self@tie{}@code{<atk-relation>}) @result{}@tie{} (ret@tie{}@code{<g-ptr-array*>})
-@deffnx Method get-target
-Gets the target list of @var{relation}
-
-@table @var
-@item relation
-an @code{<atk-relation>}
-
-@item ret
-the target list of @var{relation}
 
 @end table
 

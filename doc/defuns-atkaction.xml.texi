@@ -1,7 +1,14 @@
 
 @c %start of fragment
 
-@deffn Function atk-action-do-action  (self@tie{}@code{<atk-action*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deftp Class <atk-action>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
+@deffn Function atk-action-do-action  (self@tie{}@code{<atk-action>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method do-action
 Perform the specified action on the object.
 
 @table @var
@@ -18,7 +25,8 @@ the action index corresponding to the action to be performed
 
 @end deffn
 
-@deffn Function atk-action-get-n-actions  (self@tie{}@code{<atk-action*>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function atk-action-get-n-actions  (self@tie{}@code{<atk-action>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-n-actions
 Gets the number of accessible actions available on the object. If there are more
 than one, the first one is considered the "default" action of the object.
 
@@ -33,7 +41,8 @@ a the number of actions, or 0 if @var{action} does not implement this interface.
 
 @end deffn
 
-@deffn Function atk-action-get-description  (self@tie{}@code{<atk-action*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function atk-action-get-description  (self@tie{}@code{<atk-action>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-description
 Returns a description of the specified action of the object.
 
 @table @var
@@ -51,7 +60,8 @@ this interface.
 
 @end deffn
 
-@deffn Function atk-action-get-name  (self@tie{}@code{<atk-action*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function atk-action-get-name  (self@tie{}@code{<atk-action>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-name
 Returns the name of the specified action of the object.
 
 @table @var
@@ -69,7 +79,8 @@ interface.
 
 @end deffn
 
-@deffn Function atk-action-get-localized-name  (self@tie{}@code{<atk-action*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function atk-action-get-localized-name  (self@tie{}@code{<atk-action>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-localized-name
 Returns the localized name of the specified action of the object.
 
 @table @var
@@ -87,7 +98,8 @@ interface.
 
 @end deffn
 
-@deffn Function atk-action-get-keybinding  (self@tie{}@code{<atk-action*>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function atk-action-get-keybinding  (self@tie{}@code{<atk-action>}) (i@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-keybinding
 Returns a keybinding associated with this action, if one exists.
 
 @table @var
@@ -105,7 +117,8 @@ keybinding for this action.
 
 @end deffn
 
-@deffn Function atk-action-set-description  (self@tie{}@code{<atk-action*>}) (i@tie{}@code{int}) (desc@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function atk-action-set-description  (self@tie{}@code{<atk-action>}) (i@tie{}@code{int}) (desc@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-description
 Sets a description of the specified action of the object.
 
 @table @var
