@@ -65,6 +65,7 @@
             wrap-opaque-pointer!
             wrap-freeable-pointer!
             wrap-refcounted-pointer!
+            wrap-structure!
             wrap-interface!
 
             ;; we extend the one from (g-wrap enumeration)
@@ -553,7 +554,7 @@ as in @code{wrap-enum!}."
   (let ((c-var (var value))
         (scm-var (scm-var value))
         (gtype-id (gtype-id type)))
-p    (list
+    (list
      "if (SCM_FALSEP (" scm-var "))\n"
      "  " c-var " = 0;\n"
      "else if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
@@ -725,6 +726,85 @@ the library."
     (add-type-alias! ws ctype (name type))
     type))
 
+
+(define-class-with-docs <gobject-structure-type> (<gw-type>)
+  "foo docs here."
+  (c-type-name #:init-keyword #:c-type-name #:getter c-type-name)
+  (wrap-func #:init-keyword #:wrap-func #:getter wrap-func)
+  (unwrap-func #:init-keyword #:unwrap-func #:getter unwrap-func))
+
+(define-method (check-typespec-options (type <gobject-structure-type>) (options <list>))
+  (let ((remainder options))
+    (define (del*! . syms)
+      (set! remainder (lset-difference eq? remainder syms)))
+    (del*! 'const 'out 'unspecialized)
+    (cond
+     ((and (memq 'caller-owned remainder) (memq 'callee-owned remainder))
+      (raise-bad-typespec type options "both caller and callee owned"))
+     ((not (or (memq 'caller-owned remainder) (memq 'callee-owned remainder)))
+      (raise-bad-typespec type options "must be caller or callee owned"))
+     (else
+      (apply del*! 'caller-owned 'callee-owned 
+             (slot-ref type 'allowed-options))
+      (if (not (null? remainder))
+          (raise-bad-typespec type options
+                              "spurious options in RTI type: ~S" remainder))))))
+
+(define-method (c-type-name (type <gobject-structure-type>)
+                            (typespec <gw-typespec>))
+  (c-type-name type))
+
+(define-method (make-typespec (type <gobject-structure-type>) (options <list>))
+  (next-method type (cons 'unspecialized options)))
+
+(define-method (unwrap-value-cg (type <gobject-structure-type>)
+                                (value <gw-value>)
+                                status-var)
+  (let ((c-var (var value))
+        (scm-var (scm-var value)))
+    (unwrap-null-checked
+     value status-var
+     (list
+      ;; memset c-var to 0 ?
+      (unwrap-func type) " (" scm-var ", &" c-var ");\n"))))
+
+(define-method (call-arg-cg (type <gobject-structure-type>)
+                            (value <gw-value>))
+  (list "&" (var value)))
+
+(define-method (wrap-value-cg (type <gobject-structure-type>)
+                              (value <gw-value>)
+                              status-var)
+  (let ((c-var (var value))
+        (scm-var (scm-var value)))
+    (list
+     scm-var " = " (wrap-func type) " (&" c-var ");\n")))
+
+(define (wrap-structure! ws ctype wrap unwrap)
+  "Define a wrapper for structure values of type @var{ctype}.
+
+@var{wrap} and @var{unwrap} are the names of C functions to convert a C
+structure to Scheme and vice versa, respectively. When in a function
+call, parameters of this type of the form `@var{StructName}*' are
+interpreted as `out' parameters, while `const-@var{StructName}*' are
+treated as `in' parameters.
+
+Note that @var{ctype} should be the type of the structure, not a pointer
+to the structure."
+  (let* ((type (make <gobject-structure-type>
+                 #:name (gtype-name->class-name ctype)
+                 #:c-type-name ctype
+                 #:wrap-func wrap
+                 #:unwrap-func unwrap)))
+    (print-info "Structure" ctype ctype ws)
+    (add-type! ws type)
+    (add-type-rule! ws (string-append ctype "*")
+                    (list (name type) 'caller-owned 'out))
+    (add-type-rule! ws (string-append "const-" ctype "*")
+                    (list (name type) 'callee-owned))
+    type))
+
+
 ;; Used for functions that operate on classes, e.g.
 ;; gtk_widget_class_install_style_property,
 ;; gst_element_class_get_pad_template

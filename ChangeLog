@@ -1,3 +1,14 @@
+2007-11-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (unwrap-value-cg): Fix a typo, my
+	bads yo.
+	(<gobject-structure-type>, check-typespec-options, c-type-name)
+	(make-typespec, unwrap-value-cg, call-arg-cg, wrap-value-cg)
+	(wrap-structure!): New public function, wrap-structure!, which
+	wraps a C structure as a Scheme value. Parameters of the form
+	"StructName*" are interpreted as "out" parameters, while
+	"const-StructName*" are treated as "in" parameters.
+
 2007-11-23  Andy Wingo  <wingo@pobox.com>
 
 	* test-suite/wrapset.api: Update for the changes resulting from
