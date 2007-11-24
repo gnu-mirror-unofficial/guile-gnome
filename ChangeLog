@@ -1,3 +1,17 @@
+2007-11-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/pango.defs: Ignore a few more functions.
+
+	* gnome/gw/pango-spec.scm (initialize): Wrap PangoCoverage as a
+	refcounted pointer. Wrap PangoRectangle as a structure,
+	represented on the Scheme side by a vector of four integers, as
+	with GdkRectangle (but without a GType).
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_pango_la_SOURCES): 
+	* gnome/gw/pango-support.h: 
+	* gnome/gw/pango-support.c: New files, add support code to the
+	wrapper. 
+
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.95 ==

@@ -40,12 +40,19 @@
 (define-method (global-declarations-cg (self <gobject-wrapset-base>))
   (list
    (next-method)
-   "#include <pango/pango.h>\n"))
+   "#include <pango/pango.h>\n"
+   "#include \"pango-support.h\"\n"))
   
 (define-method (initialize (ws <pango-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gw pango) initargs)))
 
   (add-type-alias! ws "PangoGlyph" 'unsigned-int32)
+  (wrap-refcounted-pointer! ws "PangoCoverage*"
+                            "pango_coverage_ref" "pango_coverage_unref")
+
+  (wrap-structure! ws "PangoRectangle"
+                   "scm_pango_rectangle_to_scm"
+                   "scm_scm_to_pango_rectangle")
 
   (load-defs-with-overrides ws "gnome/defs/pango.defs"))
 

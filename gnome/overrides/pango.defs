@@ -153,10 +153,13 @@
   (return-type "GSList*-of-PangoLayoutLine*")
 )
 
-(ignore "pango_context_new"
+(ignore "pango_coverage_to_bytes"
+        "pango_coverage_from_bytes"
+        "pango_context_new"
         "pango_context_set_font_map"
         "pango_font_metrics_new"
         "pango_font_map_get_shape_engine_type"
+        "pango_font_find_shaper"
         "pango_map_get_engines"
         "pango_default_break")
 (ignore-glob "script_engine_*")
