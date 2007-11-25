@@ -1,5 +1,10 @@
 2007-11-25  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/support/defs.scm (type-lookup)
+	(construct-argument-list): Add another arg, #:for-proc, that will
+	be used when we warn about making opaque types.
+	(load-defs): Set #:for-proc on lookup-type.
+
 	* doc/glib/defuns-main.xml.texi: 
 	* doc/glib/defuns-iochannels.xml.texi: 
 	* doc/glib/defuns-bookmarkfile.xml.texi: Regenerated, adds entries

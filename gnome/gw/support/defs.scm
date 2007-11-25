@@ -61,7 +61,7 @@
 ;; wrap the type as an opaque gpointer
 ;;
 ;; return type: g-wrap typespec, as a list of symbols
-(define* (type-lookup ws type return? #:key (ownership #f))
+(define* (type-lookup ws type return? #:key (ownership #f) (for-proc #f))
   (define (scan-for-ownership type k)
     (let ((const? (string-prefix? "const-" type)))
       (k (if const? (substring type 6) type)
@@ -87,7 +87,8 @@
            (k (substring type 0 index)
               const?
               (cons (mklist (type-lookup
-                             ws (substring type (+ index 4)) return?))
+                             ws (substring type (+ index 4)) return?
+                             #:for-proc for-proc))
                     (if (memq 'const options)
                         options
                         (cons (if return? 'caller-owned 'callee-owned)
@@ -97,7 +98,8 @@
 
   (define (return-type-form type const? options)
     (let ((type-obj (or (lookup-type-by-alias ws type)
-                        (wrap-opaque-pointer! ws type))))
+                        (begin (warn "wrapping opaque type for proc" for-proc)
+                               (wrap-opaque-pointer! ws type)))))
       (if (is-a? type-obj <gw-wct>)
           ;; gw:wct does not take caller/callee owned type options
           (cons (name type-obj) (if const? '(const) '()))
@@ -112,7 +114,7 @@
         (return-type-form type const? options))))))
 
 (define-method (construct-argument-list (ws <gobject-wrapset-base>)
-                                        (parameters <list>))
+                                        (parameters <list>) scm-name)
   (define (parse-restargs restargs)
     (partition!
      symbol?
@@ -132,7 +134,7 @@
   
   (define (parse-argument param)
     (let ((looked-up (or (find-type-rule ws (car param))
-                         (type-lookup ws (car param) #f)))
+                         (type-lookup ws (car param) #f #:for-proc scm-name)))
           (arg-name (string->symbol (cadr param))))
       (let-values (((options extras) (parse-restargs (cddr param))))
         `((,@(if (memq 'callee-owned options)
@@ -225,7 +227,7 @@ point of an @code{(include overrides)} form."
     (define (get-generic-name func-name of-object)
       (let* (;; Fixme: do parameter spec creation for gw:wrap-function
              ;; before this, we can then use recursive-type-find
-             (looked-up (type-lookup ws of-object #f))
+             (looked-up (type-lookup ws of-object #f #:for-proc func-name))
              (of-obj (if (list? looked-up) (car looked-up)
                          looked-up))
              (of-obj-str (symbol->string of-obj))
@@ -311,9 +313,10 @@ point of an @code{(include overrides)} form."
             #:returns (type-lookup ws return-type #t
                                    #:ownership (if caller-owns-return
                                                    'caller-owned
-                                                   'callee-owned))
+                                                   'callee-owned)
+                                   #:for-proc scm-name)
             #:c-name c-name
-            #:arguments (construct-argument-list ws parameters)
+            #:arguments (construct-argument-list ws parameters scm-name)
             #:generic-name (and is-method?
                                 (get-generic-name (symbol->string
                                                    scm-name) of-object))
