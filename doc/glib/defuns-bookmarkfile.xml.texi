@@ -1,6 +1,11 @@
 
 @c %start of fragment
 
+@deftp Class <g-bookmark-file>
+Opaque pointer.
+
+@end deftp
+
 @deffn Function g-bookmark-file-new  @result{}@tie{} (ret@tie{}@code{<g-bookmark-file>})
 Creates a new empty @code{<g-bookmark-file>} object.
 

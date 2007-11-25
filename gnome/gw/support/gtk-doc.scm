@@ -607,6 +607,25 @@ created using @code{gtk-doc->texi-defuns}."
          (vector->list (class-slot-ref class 'gsignals))
          '()))))
 
+(define (superclasses class)
+  (define (list-join l infix)
+    "Infixes @var{infix} into list @var{l}."
+    (if (null? l) l
+        (let lp ((in (cdr l)) (out (list (car l))))
+          (cond ((null? in) (reverse out))
+                (else (lp (cdr in) (cons* (car in) infix out)))))))
+  (cond
+   ((is-a? class <class>)
+    `(para
+      "Derives from "
+      ,@(list-join
+         (map (lambda (namesym) `(code ,(symbol->string namesym)))
+              (map class-name (class-direct-supers class)))
+         ", ")
+      "."))
+   (else
+    '(para "Opaque pointer."))))
+
 (define (gobject-class-stexi-docs module-name class-name sdocbook)
   (define (doc-properties class)
     ;; Using undocumented interfaces...
@@ -619,10 +638,10 @@ created using @code{gtk-doc->texi-defuns}."
        ((not props)
         '())
        ((null? props)
-        '((para "This " (code "<gobject>") " class defines no properties, "
+        '((para "This class defines no properties, "
                 "other than those defined by its superclasses.")))
        (else
-        `((para "This " (code "<gobject>") " class defines the following "
+        `((para "This class defines the following "
                 "properties:")
           (table (% (formatter (code)))
                  ,@(map 
@@ -636,6 +655,7 @@ created using @code{gtk-doc->texi-defuns}."
      (v
       `((deftp (% (name ,(symbol->string class-name))
                   (category "Class"))
+          ,(superclasses (variable-ref v))
           ,@(doc-properties (variable-ref v)))
         ,@(class-signal-stexi-docs (variable-ref v) sdocbook)))
      (else
@@ -764,11 +784,17 @@ to the current output port."
                                    (resolve-interface mod)))
                       (begin (warn "Module does not exist:" mod) '())))
                    modules))
-         (undocumented (lset-difference eq? exports def-names)))
+         (undocumented (lset-difference eq? exports def-names))
+         (spurious (lset-difference eq? def-names exports)))
     (format #t "~A symbols exported\n" (length exports))
     (format #t "~A symbols documented\n" (length def-names))
     (format #t "~A symbols undocumented\n" (length undocumented))
     (for-each
      (lambda (sym)
        (format #t "  ~A\n" sym))
-     (sort undocumented symbol<?))))
+     (sort undocumented symbol<?))
+    (format #t "~A symbols spuriously documented\n" (length spurious))
+    (for-each
+     (lambda (sym)
+       (format #t "  ~A\n" sym))
+     (sort spurious symbol<?))))

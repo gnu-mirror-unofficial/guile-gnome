@@ -1,5 +1,23 @@
 2007-11-25  Andy Wingo  <wingo@pobox.com>
 
+	* doc/glib/defuns-main.xml.texi: 
+	* doc/glib/defuns-iochannels.xml.texi: 
+	* doc/glib/defuns-bookmarkfile.xml.texi: Regenerated, adds entries
+	for the opaque types.
+
+	* gnome/gw/support/gtk-doc.scm (superclasses)
+	(gobject-class-stexi-docs): Document superclasses.
+	(check-documentation-coverage): Print out "spurious" symbols,
+	those that we think are documented but are not in the wrapper.
+
+	* gnome/gw/support/gobject.scm (initializations-cg)
+	(wrap-opaque-pointer!): Do define and export the wct variable, as
+	other wrapsets that use this type need to get at the wct. Doh.
+
+	* doc/gobject/guile-gnome-gobject.texi (Top): 
+	* doc/glib/guile-gnome-glib.texi (Top): Remove the concept index,
+	and add a type index.
+
 	* gnome/gw/support/gtk-doc.scm (gobject-class-stexi-docs): Don't
 	error if the class is not defined in the module.
 

@@ -53,6 +53,7 @@ published by the Free Software Foundation.
 * gnome gw support gtk-doc::  Parse C documentation from gtk-doc into texinfo
 * gnome gw support modules::  Fondling Guile's module system
 
+* Type Index::       
 * Function Index::       
 @end menu
 
@@ -1940,6 +1941,9 @@ Re-export the public interface of a module; used like @code{use-modules}.
 
 @end defspec
 
+@node Type Index
+@unnumbered Type Index
+@printindex tp
 @node Function Index
 @unnumbered Function Index
 @printindex fn

@@ -83,7 +83,7 @@ POSSIBILITY OF SUCH DAMAGES.
 * Strings::                   Text buffers which grow automatically as text is added.
 * Unicode Manipulation::      Functions operating on Unicode characters and UTF-8 strings.
 
-* Concept Index::
+* Type Index::
 * Function Index::
 @end menu
 
@@ -104,9 +104,9 @@ POSSIBILITY OF SUCH DAMAGES.
 @include section-strings.xml.texi
 @include section-unicode.xml.texi
 
-@node Concept Index
-@unnumbered Concept Index
-@printindex cp
+@node Type Index
+@unnumbered Type Index
+@printindex tp
 @node Function Index
 @unnumbered Function Index
 @printindex fn

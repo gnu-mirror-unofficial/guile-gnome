@@ -1,6 +1,11 @@
 
 @c %start of fragment
 
+@deftp Class <gio-channel>
+Opaque pointer.
+
+@end deftp
+
 @deffn Function g-io-channel-unix-new  (fd@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gio-channel>})
 Creates a new @code{<gio-channel>} given a file descriptor. On UNIX systems this
 works for plain files, pipes, and sockets.

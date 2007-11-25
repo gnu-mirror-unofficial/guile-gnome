@@ -1,6 +1,21 @@
 
 @c %start of fragment
 
+@deftp Class <g-main-loop>
+Opaque pointer.
+
+@end deftp
+
+@deftp Class <g-main-context>
+Opaque pointer.
+
+@end deftp
+
+@deftp Class <g-source>
+Opaque pointer.
+
+@end deftp
+
 @deffn Function g-main-loop-new  (context@tie{}@code{<g-main-context>}) (is_running@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<g-main-loop>})
 Creates a new @code{<g-main-loop>} structure.
 

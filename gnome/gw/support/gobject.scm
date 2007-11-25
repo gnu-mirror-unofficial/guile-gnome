@@ -634,7 +634,8 @@ as in @code{wrap-enum!}."
    (next-method)
 
    wct-var "= gw_wct_create (\"" wcp-type-name "\", " wcp-equal? ", NULL, "
-   wcp-mark ", " wcp-free ");\n")))
+   wcp-mark ", " wcp-free ");\n"
+   "scm_c_define(\"" wcp-type-name "\", " wct-var ");\n")))
 
 (define (wct-var-decl-cg wct)
   (list "static SCM "  (slot-ref wct 'wct-var-name) " = SCM_BOOL_F;\n"))
@@ -667,6 +668,7 @@ the library."
     (add-type! ws type)
     (add-type-alias! ws ctype (name type))
     (print-info "Opaque" ctype ctype ws)
+    (add-module-export! ws (name type))
     ;; don't export, unlike wrap-as-wct!
     type))
 
