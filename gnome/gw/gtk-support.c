@@ -961,7 +961,7 @@ gtk_style_get_black_gc (GtkStyle *style)
 GdkWindow*
 gtk_widget_get_window (GtkWidget *widget)
 {
-    return widget->window;
+    return GTK_WIDGET_NO_WINDOW (widget) ? NULL : widget->window;
 }
 
 GdkRectangle*

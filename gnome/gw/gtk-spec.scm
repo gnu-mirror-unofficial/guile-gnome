@@ -78,4 +78,11 @@
    ;; unwrap
    (list c-var " = guile_gtk_scm_to_tree_path (" scm-var ");\n"))
 
+  (add-type-alias! ws "GtkAllocation*" '<gdk-rectangle>)
+
+  (wrap-opaque-pointer! ws "GtkBindingSet*")
+  (wrap-freeable-pointer! ws "GtkStockItem"
+                          "gtk_stock_item_free")
+  (wrap-opaque-pointer! ws "GtkRadioGroup*")
+
   (load-defs-with-overrides ws "gnome/defs/gtk.defs"))

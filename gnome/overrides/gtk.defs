@@ -25,16 +25,79 @@
 ;;
 ;;; Code:
 
-(include "gnome/overrides/gtk-customs.defs")
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Types
+(define-boxed Border
+  (c-name "GtkBorder")
+  (gtype-id "GTK_TYPE_BORDER"))
+
+(define-object Clipboard
+  (c-name "GtkClipboard")
+  (gtype-id "GTK_TYPE_CLIPBOARD"))
+
+(define-object CellLayout
+  (c-name "GtkCellLayout")
+  (gtype-id "GTK_TYPE_CELL_LAYOUT"))
+
+(define-object AccelMap
+  (c-name "GtkAccelMap")
+  (gtype-id "GTK_TYPE_ACCEL_MAP"))
+
+(define-boxed TreeRowReference
+  (c-name "GtkTreeRowReference")
+  (gtype-id "GTK_TYPE_TREE_ROW_REFERENCE"))
+
+(define-object FileFilter
+  (c-name "GtkFileFilter")
+  (gtype-id "GTK_TYPE_FILE_FILTER"))
+
+(define-object PrintContext
+  (c-name "GtkPrintContext")
+  (gtype-id "GTK_TYPE_PRINT_CONTEXT"))
+
+(define-object PrintOperationPreview
+  (c-name "GtkPrintOperationPreview")
+  (gtype-id "GTK_TYPE_PRINT_OPERATION_PREVIEW"))
+
+(define-object PrintSettings
+  (c-name "GtkPrintSettings")
+  (gtype-id "GTK_TYPE_PRINT_SETTINGS"))
+
+(define-object PageSetup
+  (c-name "GtkPageSetup")
+  (gtype-id "GTK_TYPE_PAGE_SETUP"))
+
+(define-boxed PaperSize
+  (c-name "GtkPaperSize")
+  (gtype-id "GTK_TYPE_PAPER_SIZE"))
+
+(define-object IMContext
+  (c-name "GtkIMContext")
+  (gtype-id "GTK_TYPE_IM_CONTEXT"))
+
+(define-boxed RecentInfo
+  (c-name "GtkRecentInfo")
+  (gtype-id "GTK_TYPE_RECENT_INFO"))
+
+(define-object RecentChooser
+  (c-name "GtkRecentChooser")
+  (gtype-id "GTK_TYPE_RECENT_CHOOSER"))
+
+(define-object RecentFilter
+  (c-name "GtkRecentFilter")
+  (gtype-id "GTK_TYPE_RECENT_FILTER"))
+
 (define-object GenericTreeModel
   (in-module "GuileGtk")
   (parent "GtkTreeModel")
   (c-name "GuileGtkGenericTreeModel")
   (gtype-id "GUILE_GTK_TYPE_GENERIC_TREE_MODEL"))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Customs
+(include "gnome/overrides/gtk-customs.defs")
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkActionGroup
@@ -240,21 +303,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkMenu
-;; fixme: need a better wrapper for this one
-(define-method popup
-  (of-object "GtkMenu")
-  (c-name "gtk_menu_popup")
-  (overrides "gtk_menu_popup")
-  (return-type "none")
-  (parameters
-    '("GtkWidget*" "parent_menu_shell" (null-ok))
-    '("GtkWidget*" "parent_menu_item" (null-ok))
-    '("GtkMenuPositionFunc" "func" (null-ok))
-    '("gpointer" "data" (null-ok))
-    '("guint" "button")
-    '("guint32" "activate_time")
-  )
-)
 (define-function gtk_menu_get_for_attach_widget
   (c-name "gtk_menu_get_for_attach_widget")
   (overrides "gtk_menu_get_for_attach_widget")
@@ -794,6 +842,7 @@
              "gtk_combo_new" ;; avoid ignoring gtk_combo_box
              "gtk_combo_set_*"
              "gtk_combo_disable_activate"
+             "gtk_list_item_*"
              "gtk_old_editable*"
              "gtk_option_menu*"
              "gtk_pixmap*"
@@ -827,6 +876,7 @@
              "gtk_file_loader_*"
              "gtk_file_folder_*"
              "gtk_file_path*"
+             "gtk_icon_info_*"
              "gtk_button_box_*_size"
              "gtk_button_box_*_ipadding"
              "gtk_signal_*"
@@ -844,7 +894,7 @@
              "gtk_timeout_*"
              "gtk_target_list_*"
              "gtk_tree_path_*"
-             "gtk_binding_*"
+             "gtk_binding*"
              "gtk_object_*"
              "gtk_marshal_*")
 
@@ -895,15 +945,43 @@
         "gtk_get_current_event"
         "gtk_get_event_widget"
 
+        "gtk_about_dialog_set_email_hook"
+        "gtk_about_dialog_set_url_hook"
+
+        "gtk_accel_map_load_scanner"
         "gtk_accel_group_find"
         "gtk_accel_group_query"
+        "gtk_accel_map_lookup_entry"
+        "gtk_accel_map_foreach_unfiltered"
+
+        "gtk_action_group_set_translate_func"
+        "gtk_action_group_add_actions_full"
+        "gtk_action_group_add_toggle_actions_full"
+        "gtk_action_group_add_radio_actions_full"
+
+        "gtk_box_query_child_packing"
 
         "gtk_calendar_display_options"
+
+        "gtk_cell_layout_set_cell_data_func"
 
         ;; hack around g-wrap 1.9.8 problems with RTI; see 6 May 2007
         ;; mail to list
         "gtk_cell_renderer_get_size"
         "gtk_tree_view_column_cell_get_size"
+
+        "gtk_clipboard_set_with_data"
+        "gtk_clipboard_set_with_owner"
+        "gtk_clipboard_request_contents"
+        "gtk_clipboard_request_text"
+        "gtk_clipboard_request_rich_text"
+        "gtk_clipboard_request_image"
+        "gtk_clipboard_request_targets"
+        "gtk_clipboard_wait_for_targets"
+        "gtk_clipboard_set_can_store"
+
+        "gtk_color_selection_palette_from_string"
+        "gtk_color_selection_set_change_palette_with_screen_hook"
 
         ;; don't know why i'm ignoring these, but pygtk does
         "gtk_container_add_child_arg_type"
@@ -914,14 +992,51 @@
         "gtk_container_foreach" ;; use (for-each f (get-children c))
         "gtk_container_add_with_args"
         "gtk_container_addv"
+        "gtk_container_get_property"
+        "gtk_container_set_property"
+        "gtk_container_get_focus_chain"
+        "gtk_container_class_install_child_property"
+        "gtk_container_class_find_child_property"
+        "gtk_container_class_list_child_properties"
+
+        "gtk_curve_get_vector"
+        "gtk_curve_set_vector"
+        "gtk_curve_set_curve_type"
 
         "gtk_dialog_new"
 
         "gtk_entry_new"
+        "gtk_entry_completion_set_match_func"
+
+        "gtk_file_filter_add_custom"
+        "gtk_file_filter_filter"
+
+        "gtk_file_selection_get_selections"
+
+        "gtk_get_option_group"
+
+        "gtk_icon_set_get_sizes"
 
         "gtk_icon_theme_set_search_path" ;; takes array
         "gtk_icon_theme_get_search_path" ;; returns array
+        "gtk_icon_theme_lookup_icon"
         
+        "gtk_icon_view_get_item_at_pos"
+        "gtk_icon_view_get_cursor"
+        "gtk_icon_view_get_visible_range"
+        "gtk_icon_view_get_drag_dest_item"
+        "gtk_icon_view_get_dest_item_at_pos"
+        "gtk_icon_view_enable_model_drag_source"
+        "gtk_icon_view_enable_model_drag_dest"
+
+        "gtk_im_context_get_preedit_string"
+
+        "gtk_image_get_icon_set"
+        "gtk_image_get_image"
+        "gtk_image_get_pixmap"
+        "gtk_image_get_stock"
+        "gtk_image_get_icon_name"
+
         "gtk_list_get_type"
         "gtk_list_new"
         "gtk_list_insert_items"
@@ -950,27 +1065,127 @@
         "gtk_list_end_drag_selection"
 
         "gtk_list_store_set_column_types"
+        "gtk_list_store_newv"
+
+        "gtk_menu_popup"
+        "gtk_menu_attach_to_widget"
+
+        "gtk_notebook_query_tab_label_packing"
 
         "gtk_preview_uninit"
 
+        "gtk_print_settings_get_print_pages"
+        "gtk_print_settings_set_print_pages"
+        "gtk_print_settings_get_page_ranges"
+        "gtk_print_settings_set_page_ranges"
+
+        "gtk_rc_scanner_new"
+        "gtk_rc_parse_color"
+        "gtk_rc_parse_state"
+        "gtk_rc_parse_priority"
+        "gtk_rc_find_pixmap_in_path"
+        "gtk_rc_get_default_files"
+
+        "gtk_recent_chooser_get_uris"
+        "gtk_recent_chooser_set_sort_func"
+
+        "gtk_recent_filter_filter"
+        "gtk_recent_filter_add_custom"
+
+        "gtk_scrolled_window_get_policy"
+
+        "gtk_settings_set_property_value"
+        "gtk_settings_install_property_parser"
+
         "gtk_selection_clear"
         "gtk_selection_request"
+        "gtk_selection_data_get_targets"
+
+        "gtk_status_icon_position_menu"
+        "gtk_status_icon_get_geometry"
+
+        "gtk_stock_set_translate_func"
+
+        "gtk_target_table_new_from_list"
 
         "gtk_text_buffer_create_tag"
+        "gtk_text_buffer_serialize"
+        "gtk_text_buffer_deserialize"
+        "gtk_text_buffer_register_serialize_format"
+        "gtk_text_buffer_unregister_serialize_format"
+        "gtk_text_buffer_register_deserialize_format"
+        "gtk_text_buffer_unregister_deserialize_format"
+        "gtk_text_buffer_get_copy_target_list"
+        "gtk_text_buffer_get_paste_target_list"
+
+        "gtk_text_iter_forward_find_char"
+        "gtk_text_iter_backward_find_char"
 
         "gtk_text_view_new"
 
         "gtk_tooltips_data_get"
+        "gtk_tooltips_get_info_from_tip_window"
 
         "gtk_tree_model_get_iter_from_string"
 
+        "gtk_tree_model_filter_set_modify_func"
+        "gtk_tree_model_filter_set_visible_func"
+
+        "gtk_tree_selection_get_selected_rows"
+        "gtk_tree_selection_get_user_data"
+        "gtk_tree_selection_set_select_function"
+
+        "gtk_tree_sortable_set_sort_func"
+        "gtk_tree_sortable_get_sort_column_id"
+        "gtk_tree_sortable_set_default_sort_func"
+
         "gtk_tree_store_set_column_types"
+        "gtk_tree_store_newv"
+
+        "gtk_tree_view_get_cursor"
+        "gtk_tree_view_get_path_at_pos"
+        "gtk_tree_view_get_cell_area"
+        "gtk_tree_view_get_background_area"
+        "gtk_tree_view_get_visible_rect"
+        "gtk_tree_view_get_visible_range"
+        "gtk_tree_view_get_drag_dest_row"
+        "gtk_tree_view_get_dest_row_at_pos"
+        "gtk_tree_view_set_search_equal_func"
+        "gtk_tree_view_get_search_equal_func"
+        "gtk_tree_view_insert_column_with_data_func"
+        "gtk_tree_view_set_column_drag_function"
+        "gtk_tree_view_map_expanded_rows"
+        "gtk_tree_view_set_destroy_count_func"
+        "gtk_tree_view_enable_model_drag_source"
+        "gtk_tree_view_enable_model_drag_dest"
+
+        "gtk_tree_get_row_drag_data"
+
+        "gtk_ui_manager_add_ui_from_string"
 
         "gtk_widget_destroyed"
         "gtk_widget_new"
+        "gtk_widget_intersect"
+
+        "gtk_widget_class_install_style_property"
+        "gtk_widget_class_install_style_property_parser"
+        "gtk_widget_class_list_style_properties"
+        "gtk_widget_class_find_style_property"
+
+        "gtk_drag_begin"
+        "gtk_drag_dest_find_target"
+        "gtk_drag_dest_get_target_list"
+        "gtk_drag_dest_set_target_list"
+        "gtk_drag_set_source"
+        "gtk_drag_source_set"
+        "gtk_drag_source_get_target_list"
+        "gtk_drag_source_set_target_list"
+        "gtk_selection_add_targets"
 
         "gtk_window_add_embedded_xid"
         "gtk_window_remove_embedded_xid"
+        ;;"gtk_window_get_icon_list"
+        ;;"gtk_window_set_icon_list"
 
         "gtk_check_menu_item_set_show_toggle"
         "gtk_color_selection_set_change_palette_hook"

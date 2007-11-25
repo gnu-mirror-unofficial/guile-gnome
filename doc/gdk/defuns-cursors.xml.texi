@@ -2,6 +2,8 @@
 @c %start of fragment
 
 @deftp Class <gdk-cursor>
+Derives from @code{<gboxed>}.
+
 @end deftp
 
 @deffn Function gdk-cursor-new  (cursor_type@tie{}@code{<gdk-cursor-type>}) @result{}@tie{} (ret@tie{}@code{<gdk-cursor>})
@@ -28,8 +30,7 @@ have a depth of 1 (i.e. each pixel has only 2 values - on or off). The standard
 cursor size is 16 by 16 pixels. You can create a bitmap from inline data as in
 the below example.
 
-
-
+@c (title "Creating a custom cursor")
 @example 
 
 /* This data is in X bitmap format, and can be created with the 'bitmap'
@@ -151,38 +152,75 @@ Since 2.8
 @deffn Function gdk-cursor-new-for-display  (display@tie{}@code{<gdk-display>}) (cursor_type@tie{}@code{<gdk-cursor-type>}) @result{}@tie{} (ret@tie{}@code{<gdk-cursor>})
 Creates a new cursor from the set of builtin cursors. Some useful ones are:
 
+@itemize 
+@item
+@item
+@item
+@item
+@item
+@item
+@item
+@item
+@item
+@item
+@item
+@item
+@item
+@item
+@item
+@item
+@item
+@end itemize
+
+@c (inlinegraphic (@ (format "PNG") (fileref "right_ptr.png")))
 @code{<gdk-right-ptr>} (right-facing arrow)
 
+@c (inlinegraphic (@ (format "PNG") (fileref "crosshair.png")))
 @code{<gdk-crosshair>} (crosshair)
 
-@code{<gdk-xterm>} (I-beam)
+@c (inlinegraphic (@ (format "PNG") (fileref "xterm.png"))) @code{<gdk-xterm>}
+(I-beam)
 
-@code{<gdk-watch>} (busy)
+@c (inlinegraphic (@ (format "PNG") (fileref "watch.png"))) @code{<gdk-watch>}
+(busy)
 
-@code{<gdk-fleur>} (for moving objects)
+@c (inlinegraphic (@ (format "PNG") (fileref "fleur.png"))) @code{<gdk-fleur>}
+(for moving objects)
 
-@code{<gdk-hand1>} (a right-pointing hand)
+@c (inlinegraphic (@ (format "PNG") (fileref "hand1.png"))) @code{<gdk-hand1>}
+(a right-pointing hand)
 
-@code{<gdk-hand2>} (a left-pointing hand)
+@c (inlinegraphic (@ (format "PNG") (fileref "hand2.png"))) @code{<gdk-hand2>}
+(a left-pointing hand)
 
+@c (inlinegraphic (@ (format "PNG") (fileref "left_side.png")))
 @code{<gdk-left-side>} (resize left side)
 
+@c (inlinegraphic (@ (format "PNG") (fileref "right_side.png")))
 @code{<gdk-right-side>} (resize right side)
 
+@c (inlinegraphic (@ (format "PNG") (fileref "top_left_corner.png")))
 @code{<gdk-top-left-corner>} (resize northwest corner)
 
+@c (inlinegraphic (@ (format "PNG") (fileref "top_right_corner.png")))
 @code{<gdk-top-right-corner>} (resize northeast corner)
 
+@c (inlinegraphic (@ (format "PNG") (fileref "bottom_left_corner.png")))
 @code{<gdk-bottom-left-corner>} (resize southwest corner)
 
+@c (inlinegraphic (@ (format "PNG") (fileref "bottom_right_corner.png")))
 @code{<gdk-bottom-right-corner>} (resize southeast corner)
 
+@c (inlinegraphic (@ (format "PNG") (fileref "top_side.png")))
 @code{<gdk-top-side>} (resize top side)
 
+@c (inlinegraphic (@ (format "PNG") (fileref "bottom_side.png")))
 @code{<gdk-bottom-side>} (resize bottom side)
 
+@c (inlinegraphic (@ (format "PNG") (fileref "sb_h_double_arrow.png")))
 @code{<gdk-sb-h-double-arrow>} (move vertical splitter)
 
+@c (inlinegraphic (@ (format "PNG") (fileref "sb_v_double_arrow.png")))
 @code{<gdk-sb-v-double-arrow>} (move horizontal splitter)
 
 To make the cursor invisible, use @code{gdk-cursor-new-from-pixmap} to create a

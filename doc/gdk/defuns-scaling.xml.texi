@@ -140,6 +140,7 @@ at the edges of the source image is replicated to infinity.
 
 (The missing figure, pixbuf-composite-diagram
 
+@c (title "Compositing of pixbufs")
 @table @var
 @item src
 a @code{<gdk-pixbuf>}

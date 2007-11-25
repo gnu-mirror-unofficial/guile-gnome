@@ -2,6 +2,8 @@
 @c %start of fragment
 
 @deftp Class <gdk-keymap>
+Derives from @code{<gobject>}.
+
 This @code{<gobject>} class defines no properties, other than those defined by
 its superclasses.
 
@@ -82,8 +84,6 @@ some keys such as Enter are not affected by the active keyboard group. The
 @var{level} is derived from @var{state}. For convenience, @code{<gdk-event-key>}
 already contains the translated keyval, so this function isn't as useful as you
 might think.
-
-
 
 @var{consumed-modifiers} gives modifiers that should be masked out from
 @var{state} when comparing this key press to a hot key. For instance, on a US

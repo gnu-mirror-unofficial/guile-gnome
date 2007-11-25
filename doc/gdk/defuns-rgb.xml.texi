@@ -237,7 +237,8 @@ The color, represented as a 0xRRGGBB integer value.
 newly-written code.
 
 Finds the X pixel closest in color to the @var{rgb} color specified. This value
-may be used to set the field of a @code{<gdk-color>} struct.
+may be used to set the @c (structfield "pixel") field of a @code{<gdk-color>}
+struct.
 
 @table @var
 @item rgb

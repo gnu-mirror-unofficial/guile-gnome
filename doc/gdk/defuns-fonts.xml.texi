@@ -2,6 +2,8 @@
 @c %start of fragment
 
 @deftp Class <gdk-font>
+Derives from @code{<gboxed>}.
+
 @end deftp
 
 @deffn Function gdk-font-load  (font_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gdk-font>})

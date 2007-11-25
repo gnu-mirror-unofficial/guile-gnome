@@ -1,0 +1,67 @@
+@deffn Function gtk-text-buffer-get-bounds  (self@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (start@tie{}@code{<gtk-text-iter>}) (end@tie{}@code{<gtk-text-iter>}) 
+@deffnx Method get-bounds
+Retrieves the first and last iterators in the buffer, i.e. the entire buffer
+lies within the range [@var{start},@var{end}).
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item start
+iterator to initialize with first position in the buffer
+
+@item end
+iterator to initialize with the end iterator
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-selection-get-selected  (self@tie{}@code{<gtk-tree-selection>}) @result{}@tie{} (model@tie{}@code{<gtk-tree-model>}) (iter@tie{}@code{<gtk-tree-iter>})
+@deffnx Method get-selected
+Retrieve the current selection, if @var{selection} is set to
+@code{<gtk-selection-single>} or @code{<gtk-selection-browse>}.
+
+This function will not work if you use @var{selection} is
+@code{<gtk-selection-multiple>}.
+
+@table @var
+@item selection
+A @code{<gtk-tree-selection>}.
+
+@item model
+A pointer to set to the @code{<gtk-tree-model>}, or NULL.
+
+@item iter
+The @code{<gtk-tree-iter>}, or NULL.
+
+@end table
+
+@end deffn
+
+
+@deffn Function gtk-action-group-add-actions  (self@tie{}@code{<gtk-action-group>}) (entries@tie{}@code{scm})
+@deffnx Method add-actions
+This is a convenience function to create a number of actions and add them to the
+action group.
+
+The "activate" signals of the actions are connected to the callbacks and their
+accel paths are set to @samp{<Actions>//}.
+
+@table @var
+@item action-group
+The action group
+
+@item scm
+An list of actions. The actions are of the form @code{(@var{name}
+@var{stock-id} @code{label} @code{accelerator} @code{tooltip}
+@code{proc}?)}. All values are strings except the @var{proc}, which
+should be a procedure suitable for connecting to the @code{activate}
+signal on the action. @var{stock-id}, @var{label}, @var{accelerator},
+@var{tooltip}, and @var{proc} may be @code{#f}.
+
+@end table
+
+Since 2.4
+
+@end deffn

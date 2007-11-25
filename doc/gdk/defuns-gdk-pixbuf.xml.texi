@@ -2,18 +2,36 @@
 @c %start of fragment
 
 @deftp Class <gdk-pixbuf>
+Derives from @code{<gobject>}.
+
 This @code{<gobject>} class defines the following properties:
 
 @table @code
 @item colorspace
-The colorspace in which the samples are interpreted@item n-channels
-The number of samples per pixel@item has-alpha
-Whether the pixbuf has an alpha channel@item bits-per-sample
-The number of bits per sample@item width
-The number of columns of the pixbuf@item height
-The number of rows of the pixbuf@item rowstride
-The number of bytes between the start of a row and the start of the next row@item pixels
-A pointer to the pixel data of the pixbuf@end table
+The colorspace in which the samples are interpreted
+
+@item n-channels
+The number of samples per pixel
+
+@item has-alpha
+Whether the pixbuf has an alpha channel
+
+@item bits-per-sample
+The number of bits per sample
+
+@item width
+The number of columns of the pixbuf
+
+@item height
+The number of rows of the pixbuf
+
+@item rowstride
+The number of bytes between the start of a row and the start of the next row
+
+@item pixels
+A pointer to the pixel data of the pixbuf
+
+@end table
 
 @end deftp
 

@@ -1463,7 +1463,15 @@ latest position of @var{window}; this may be out-of-sync with the position of
 @code{<gdk-event-configure>}. @code{gdk-window-get-position} in contrast gets
 the position from the most recent configure event.
 
+@cartouche 
 
+If @var{window} is not a toplevel, it is @emph{much} better 
+to call @code{gdk-window-get-position} and @code{gdk-drawable-get-size} instead, 
+because it avoids the roundtrip to the X server and because 
+@code{gdk-drawable-get-size} supports the full 32-bit coordinate space,
+whereas @code{gdk-window-get-geometry} is restricted to the 16-bit
+coordinates of X11.
+@end cartouche
 
 @table @var
 @item window

@@ -2,11 +2,15 @@
 @c %start of fragment
 
 @deftp Class <gdk-pango-renderer>
+Derives from @code{<pango-renderer>}.
+
 This @code{<gobject>} class defines the following properties:
 
 @table @code
 @item screen
-the GdkScreen for the renderer@end table
+the GdkScreen for the renderer
+
+@end table
 
 @end deftp
 
@@ -114,7 +118,7 @@ Since 2.6
 
 @end deffn
 
-@deffn Function gdk-pango-context-get  @result{}@tie{} (ret@tie{}@code{<pango-context*>})
+@deffn Function gdk-pango-context-get  @result{}@tie{} (ret@tie{}@code{<pango-context>})
 Creates a @code{<pango-context>} for the default GDK screen.
 
 The context must be freed when you're finished with it.
@@ -137,7 +141,7 @@ a new @code{<pango-context>} for the default display
 
 @end deffn
 
-@deffn Function gdk-pango-context-get-for-screen  (screen@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<pango-context*>})
+@deffn Function gdk-pango-context-get-for-screen  (screen@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<pango-context>})
 Creates a @code{<pango-context>} for @var{screen}.
 
 The context must be freed when you're finished with it.
@@ -165,7 +169,7 @@ Since 2.2
 
 @end deffn
 
-@deffn Function gdk-pango-context-set-colormap  (context@tie{}@code{<pango-context*>}) (colormap@tie{}@code{<gdk-colormap>})
+@deffn Function gdk-pango-context-set-colormap  (context@tie{}@code{<pango-context>}) (colormap@tie{}@code{<gdk-colormap>})
 @samp{gdk_pango_context_set_colormap} is deprecated and should not be used in
 newly-written code.
 
@@ -184,7 +188,7 @@ a @code{<gdk-colormap>}
 
 @end deffn
 
-@deffn Function gdk-pango-attr-embossed-new  (embossed@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+@deffn Function gdk-pango-attr-embossed-new  (embossed@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<pango-attribute>})
 Creates a new attribute containing a embossed bitmap to be used when rendering
 the text.
 
@@ -199,7 +203,7 @@ new @code{<pango-attribute>}
 
 @end deffn
 
-@deffn Function gdk-pango-attr-stipple-new  (stipple@tie{}@code{<gdk-bitmap*>}) @result{}@tie{} (ret@tie{}@code{<pango-attribute*>})
+@deffn Function gdk-pango-attr-stipple-new  (stipple@tie{}@code{<gdk-bitmap*>}) @result{}@tie{} (ret@tie{}@code{<pango-attribute>})
 Creates a new attribute containing a stipple bitmap to be used when rendering
 the text.
 

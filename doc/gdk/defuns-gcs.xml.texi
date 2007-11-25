@@ -2,6 +2,8 @@
 @c %start of fragment
 
 @deftp Class <gdk-gc>
+Derives from @code{<gobject>}.
+
 This @code{<gobject>} class defines no properties, other than those defined by
 its superclasses.
 
@@ -424,6 +426,21 @@ an array of dash lengths.
 
 @item n
 the number of elements in @var{dash-list}.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-gc-copy  (self@tie{}@code{<gdk-gc>}) (src_gc@tie{}@code{<gdk-gc>})
+@deffnx Method copy
+Copy the set of values from one graphics context onto another graphics context.
+
+@table @var
+@item dst-gc
+the destination graphics context.
+
+@item src-gc
+the source graphics context.
 
 @end table
 

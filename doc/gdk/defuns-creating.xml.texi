@@ -90,9 +90,10 @@ Create a @code{<gdk-pixbuf>} from a flat representation that is suitable for
 storing as inline data in a program. This is useful if you want to ship a
 program with images, but don't want to depend on any external files.
 
-GTK+ ships with a program called which allows for conversion of
-@code{<gdk-pixbufs>} into such a inline representation. In almost all cases, you
-should pass the flag to . A sample invocation would be:
+GTK+ ships with a program called @c (command "gdk-pixbuf-csource") which allows
+for conversion of @code{<gdk-pixbufs>} into such a inline representation. In
+almost all cases, you should pass the @c (option "--raw") flag to @c (command
+"gdk-pixbuf-csource") . A sample invocation would be:
 
 @example 
 
@@ -101,9 +102,9 @@ should pass the flag to . A sample invocation would be:
 
 For the typical case where the inline pixbuf is read-only static data, you don't
 need to copy the pixel data unless you intend to write to it, so you can pass
-@samp{@code{#f}} for @var{copy-pixels}. (If you pass to , a copy will be made
-even if @var{copy-pixels} is @samp{@code{#f}}, so using this option is generally
-a bad idea.)
+@samp{@code{#f}} for @var{copy-pixels}. (If you pass @c (option "--rle") to @c
+(command "gdk-pixbuf-csource") , a copy will be made even if @var{copy-pixels}
+is @samp{@code{#f}}, so using this option is generally a bad idea.)
 
 If you create a pixbuf from const inline data compiled into your program, it's
 probably safe to ignore errors and disable length checks, since things will

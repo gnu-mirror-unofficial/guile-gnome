@@ -2,6 +2,8 @@
 @c %start of fragment
 
 @deftp Class <gdk-drawable>
+Derives from @code{<gobject>}.
+
 This @code{<gobject>} class defines no properties, other than those defined by
 its superclasses.
 
@@ -520,7 +522,7 @@ the glyph string to draw
 
 @end deffn
 
-@deffn Function gdk-draw-glyphs-transformed  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (matrix@tie{}@code{<pango-matrix*>}) (font@tie{}@code{<pango-font>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (glyphs@tie{}@code{<pango-glyph-string>})
+@deffn Function gdk-draw-glyphs-transformed  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (matrix@tie{}@code{<pango-matrix>}) (font@tie{}@code{<pango-font>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (glyphs@tie{}@code{<pango-glyph-string>})
 Renders a @code{<pango-glyph-string>} onto a drawable, possibly transforming the
 layed-out coordinates through a transformation matrix. Note that the
 transformation matrix for @var{font} is not changed, so to produce correct
@@ -559,7 +561,7 @@ Since 2.6
 
 @end deffn
 
-@deffn Function gdk-draw-layout-line  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (line@tie{}@code{<pango-layout-line*>})
+@deffn Function gdk-draw-layout-line  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (line@tie{}@code{<pango-layout-line>})
 Render a @code{<pango-layout-line>} onto an GDK drawable
 
 If the layout's @code{<pango-context>} has a transformation matrix set, then
@@ -586,7 +588,7 @@ a @code{<pango-layout-line>}
 
 @end deffn
 
-@deffn Function gdk-draw-layout-line-with-colors  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (line@tie{}@code{<pango-layout-line*>}) (foreground@tie{}@code{<gdk-color>}) (background@tie{}@code{<gdk-color>})
+@deffn Function gdk-draw-layout-line-with-colors  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (line@tie{}@code{<pango-layout-line>}) (foreground@tie{}@code{<gdk-color>}) (background@tie{}@code{<gdk-color>})
 Render a @code{<pango-layout-line>} onto a @code{<gdk-drawable>}, overriding the
 layout's normal colors with @var{foreground} and/or @var{background}.
 @var{foreground} and @var{background} need not be allocated.
@@ -621,7 +623,7 @@ background override color, or @samp{@code{#f}} for none
 
 @end deffn
 
-@deffn Function gdk-draw-layout  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (layout@tie{}@code{<pango-layout*>})
+@deffn Function gdk-draw-layout  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (layout@tie{}@code{<pango-layout>})
 Render a @code{<pango-layout>} onto a GDK drawable
 
 If the layout's @code{<pango-context>} has a transformation matrix set, then
@@ -651,7 +653,7 @@ a @code{<pango-layout>}
 
 @end deffn
 
-@deffn Function gdk-draw-layout-with-colors  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (layout@tie{}@code{<pango-layout*>}) (foreground@tie{}@code{<gdk-color>}) (background@tie{}@code{<gdk-color>})
+@deffn Function gdk-draw-layout-with-colors  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (layout@tie{}@code{<pango-layout>}) (foreground@tie{}@code{<gdk-color>}) (background@tie{}@code{<gdk-color>})
 Render a @code{<pango-layout>} onto a @code{<gdk-drawable>}, overriding the
 layout's normal colors with @var{foreground} and/or @var{background}.
 @var{foreground} and @var{background} need not be allocated.

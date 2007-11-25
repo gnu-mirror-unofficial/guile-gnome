@@ -71,6 +71,22 @@ a @code{<gdk-event>}.
 
 @end deffn
 
+@deffn Function gdk-event-copy  (self@tie{}@code{<gdk-event>}) @result{}@tie{} (ret@tie{}@code{<gdk-event>})
+Copies a @code{<gdk-event>}, copying or incrementing the reference count of the
+resources associated with it (e.g. @code{<gdk-window>}'s and strings).
+
+@table @var
+@item event
+a @code{<gdk-event>}
+
+@item ret
+a copy of @var{event}. The returned @code{<gdk-event>} should be freed with
+@code{gdk-event-free}.
+
+@end table
+
+@end deffn
+
 @deffn Function gdk-event-get-time  (self@tie{}@code{<gdk-event>}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
 Returns the time stamp from @var{event}, if there is one; otherwise returns
 @code{<gdk-current-time>}. If @var{event} is @samp{@code{#f}}, returns
@@ -195,8 +211,8 @@ are received. See @code{gdk-display-add-client-message-filter}.
 
 @table @var
 @item message-type
-the type of ClientMessage events to receive. This will be checked against the
-field of the XClientMessage event struct.
+the type of ClientMessage events to receive. This will be checked against the @c
+(structfield "message_type") field of the XClientMessage event struct.
 
 @item func
 the function to call to process the event.
@@ -221,8 +237,8 @@ Gets whether event debugging output is enabled.
 
 @deffn Function gdk-set-show-events  (show_events@tie{}@code{bool})
 Sets whether a trace of received events is output. Note that GTK+ must be
-compiled with debugging (that is, configured using the option) to use this
-option.
+compiled with debugging (that is, configured using the @c (option
+"--enable-debug") option) to use this option.
 
 @table @var
 @item show-events

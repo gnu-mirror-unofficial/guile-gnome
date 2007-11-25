@@ -1,3 +1,23 @@
+2007-11-25  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gtk.defs: 
+	* gnome/overrides/gtk-customs.defs: Fix up to define more types,
+	and to ignore functions	that cause wrapping of opaque types.
+
+	* gnome/gw/gtk-support.c (gtk_widget_get_window): More sensible
+	behavior, I think.
+
+	* gnome/gw/gtk-spec.scm (initialize): Wrap some more types.
+
+	* doc/gtk/overrides.texi: Add some overrides.
+
+	* doc/gtk/guile-gnome-gtk.texi (Top): 
+	* doc/gdk/guile-gnome-gdk.texi (Top): Have a type and a function
+	index.
+
+	* doc/gdk/defuns-*.xml.texi: 
+	* doc/gtk/defuns-*.xml.texi: Regenerated.
+
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.95 ==

@@ -165,18 +165,6 @@
     '("gboolean" "obey_child" (default "TRUE"))))
 
 (define-function
-  gtk_binding_entry_add_signall
-  (c-name "gtk_binding_entry_add_signall")
-  (overrides "gtk_binding_entry_add_signall")
-  (return-type "none")
-  (parameters
-    '("GtkBindingSet*" "binding_set")
-    '("guint" "keyval")
-    '("GdkModifierType" "modifiers")
-    '("const-gchar*" "signal_name")
-    '("GSList*-of-GtkBindingArg*" "binding_args")))
-
-(define-function
   gtk_button_new_from_stock
   (c-name "gtk_button_new_from_stock")
   (overrides "gtk_button_new_from_stock")
@@ -517,16 +505,6 @@
       (default "NULL"))))
 
 (define-function
-  gtk_list_store_newv
-  (c-name "gtk_list_store_newv")
-  (overrides "gtk_list_store_newv")
-  (is-constructor-of "GtkListStore")
-  (return-type "GtkListStore*")
-  (parameters
-    '("gint" "n_columns")
-    '("GType*" "types")))
-
-(define-function
   gtk_main_iteration_do
   (c-name "gtk_main_iteration_do")
   (overrides "gtk_main_iteration_do")
@@ -613,13 +591,6 @@
   (parameters
     '("GtkRadioMenuItem*" "group")
     '("const-gchar*" "label")))
-
-(define-function
-  gtk_rc_scanner_new
-  (c-name "gtk_rc_scanner_new")
-  (overrides "gtk_rc_scanner_new")
-  (is-constructor-of "GScanner")
-  (return-type "GScanner*"))
 
 (define-function
   gtk_rc_style_new
@@ -776,16 +747,6 @@
     '("GObject*" "proxy")
     '("GtkTreeModel*" "model")
     '("GtkTreePath*" "path")))
-
-(define-function
-  gtk_tree_store_newv
-  (c-name "gtk_tree_store_newv")
-  (overrides "gtk_tree_store_newv")
-  (is-constructor-of "GtkTreeStore")
-  (return-type "GtkTreeStore*")
-  (parameters
-    '("gint" "n_columns")
-    '("GType*" "types")))
 
 (define-function
   gtk_tree_view_column_new_with_attributes
@@ -1028,18 +989,6 @@
   (parameters '("gfloat" "gamma")))
 
 (define-method
-  drag_begin
-  (of-object "GtkWidget")
-  (c-name "gtk_drag_begin")
-  (overrides "gtk_drag_begin")
-  (return-type "GdkDragContext*")
-  (parameters
-    '("GtkTargetList*" "targets")
-    '("GdkDragAction" "actions")
-    '("gint" "button")
-    '("GdkEvent*" "event")))
-
-(define-method
   drag_check_threshold
   (of-object "GtkWidget")
   (c-name "gtk_drag_check_threshold")
@@ -1052,23 +1001,6 @@
     '("gint" "current_y")))
 
 (define-method
-  drag_dest_find_target
-  (of-object "GtkWidget")
-  (c-name "gtk_drag_dest_find_target")
-  (overrides "gtk_drag_dest_find_target")
-  (return-type "GdkAtom")
-  (parameters
-    '("GdkDragContext*" "context")
-    '("GtkTargetList*" "target_list")))
-
-(define-method
-  drag_dest_get_target_list
-  (of-object "GtkWidget")
-  (c-name "gtk_drag_dest_get_target_list")
-  (overrides "gtk_drag_dest_get_target_list")
-  (return-type "GtkTargetList*"))
-
-(define-method
   drag_dest_set_proxy
   (of-object "GtkWidget")
   (c-name "gtk_drag_dest_set_proxy")
@@ -1078,14 +1010,6 @@
     '("GdkWindow*" "proxy_window")
     '("GdkDragProtocol" "protocol")
     '("gboolean" "use_coordinates")))
-
-(define-method
-  drag_dest_set_target_list
-  (of-object "GtkWidget")
-  (c-name "gtk_drag_dest_set_target_list")
-  (overrides "gtk_drag_dest_set_target_list")
-  (return-type "none")
-  (parameters '("GtkTargetList*" "target_list")))
 
 (define-method
   drag_dest_unset
@@ -1182,18 +1106,6 @@
     '("GtkWidget*" "widget")
     '("gint" "hot_x")
     '("gint" "hot_y")))
-
-(define-method
-  drag_source_set
-  (of-object "GtkWidget")
-  (c-name "gtk_drag_source_set")
-  (overrides "gtk_drag_source_set")
-  (return-type "none")
-  (parameters
-    '("GdkModifierType" "start_button_mask")
-    '("const-GtkTargetEntry*" "targets")
-    '("gint" "n_targets")
-    '("GdkDragAction" "actions")))
 
 (define-method
   drag_source_set_icon
@@ -1846,17 +1758,6 @@
     '("GdkAtom" "target")
     '("guint" "info")))
 
-(define-method
-  selection_add_targets
-  (of-object "GtkWidget")
-  (c-name "gtk_selection_add_targets")
-  (overrides "gtk_selection_add_targets")
-  (return-type "none")
-  (parameters
-    '("GdkAtom" "selection")
-    '("const-GtkTargetEntry*" "targets")
-    '("guint" "ntargets")))
-
 ; (define-method
 ;   selection_clear
 ;   (of-object "GtkWidget")
@@ -2132,16 +2033,6 @@
       (default "NULL"))))
 
 (define-method
-  tree_get_row_drag_data
-  (of-object "GtkSelectionData")
-  (c-name "gtk_tree_get_row_drag_data")
-  (overrides "gtk_tree_get_row_drag_data")
-  (return-type "gboolean")
-  (parameters
-    '("GtkTreeModel**" "tree_model")
-    '("GtkTreePath**" "path")))
-
-(define-method
   copy
   (of-object "GtkTreeIter")
   (c-name "gtk_tree_iter_copy")
@@ -2227,15 +2118,6 @@
   (overrides "gtk_tree_row_reference_get_path")
   (return-type "GtkTreePath*")
   (caller-owns-return #t))
-
-(define-method
-  get_selected_rows
-  (of-object "GtkTreeSelection")
-  (c-name "gtk_tree_selection_get_selected_rows")
-  (overrides
-    "gtk_tree_selection_get_selected_rows")
-  (return-type "GList*-of-GtkTreePath*")
-  (parameters '("GtkTreeModel**" "model")))
 
 (define-method
   tree_set_row_drag_data
@@ -2415,5 +2297,5 @@
   (c-name "gtk_window_set_icon_list")
   (overrides "gtk_window_set_icon_list")
   (return-type "none")
-  (parameters '("GList*-of-GdkPixbuf**" "list")))
+  (parameters '("GList*-of-GdkPixbuf*" "list")))
 

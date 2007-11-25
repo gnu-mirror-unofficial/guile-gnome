@@ -2,6 +2,8 @@
 @c %start of fragment
 
 @deftp Class <gdk-rectangle>
+Derives from @code{<gboxed>}.
+
 @end deftp
 
 @deffn Function gdk-rectangle-intersect  (self@tie{}@code{<gdk-rectangle>}) (src2@tie{}@code{<gdk-rectangle>}) (dest@tie{}@code{<gdk-rectangle>}) @result{}@tie{} (ret@tie{}@code{bool})
@@ -73,6 +75,20 @@ itself.
 
 @item ret
 a new @code{<gdk-region>} based on the given polygon
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-region-copy  (self@tie{}@code{<gdk-region*>}) @result{}@tie{} (ret@tie{}@code{<gdk-region*>})
+Copies @var{region}, creating an identical new region.
+
+@table @var
+@item region
+a @code{<gdk-region>}
+
+@item ret
+a new region identical to @var{region}
 
 @end table
 

@@ -2,6 +2,8 @@
 @c %start of fragment
 
 @deftp Class <gdk-display>
+Derives from @code{<gobject>}.
+
 This @code{<gobject>} class defines no properties, other than those defined by
 its superclasses.
 

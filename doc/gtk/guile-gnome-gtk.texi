@@ -264,9 +264,7 @@ Recently Used Documents
 * GtkRecentChooserWidget:: Displays recently used files
 * GtkRecentFilter:: A filter for selecting a subset of recently used files
 
-Deprecated
-
-* Concept Index::
+* Type Index::
 * Function Index::
 @end menu
 
@@ -468,9 +466,9 @@ Deprecated
 @include section-gtkrecentchooserwidget.xml.texi
 @include section-gtkrecentfilter.xml.texi
 
-@node Concept Index
-@unnumbered Concept Index
-@printindex cp
+@node Type Index
+@unnumbered Type Index
+@printindex tp
 @node Function Index
 @unnumbered Function Index
 @printindex fn

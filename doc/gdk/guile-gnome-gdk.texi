@@ -142,7 +142,7 @@ GDK-Pixbuf
 * X Drawables to Pixbufs:: Getting parts of an X drawable's image data into a pixbuf.
 * XlibRGB:: Rendering RGB buffers to X drawables.
 
-* Concept Index::
+* Type Index::
 * Function Index::
 @end menu
 
@@ -200,9 +200,9 @@ GDK-Pixbuf
 @include section-gdk-pixbuf-xlib-from-drawables.xml.texi
 @include section-gdk-pixbuf-xlib-rgb.xml.texi
 
-@node Concept Index
-@unnumbered Concept Index
-@printindex cp
+@node Type Index
+@unnumbered Type Index
+@printindex tp
 @node Function Index
 @unnumbered Function Index
 @printindex fn
