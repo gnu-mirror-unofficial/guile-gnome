@@ -32,7 +32,6 @@
   ((gnome gw pangocairo)
    (uses-interfaces (gnome gw generics))
    (typed-exports
-     (<pango-cairo-font-map*> <gw:wct>)
      (pango-cairo-context-get-font-options
        procedure
        (arity 1 0 #f))

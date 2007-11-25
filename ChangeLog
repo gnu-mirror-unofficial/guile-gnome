@@ -1,5 +1,9 @@
 2007-11-25  Andy Wingo  <wingo@pobox.com>
 
+	* tests/pango/wrapset.api: 
+	* tests/pangocairo/wrapset.api: Update for changes resulting from
+	API review.
+
 	* doc/pango/defuns-*.xml.texi: 
 	* doc/pangocairo/defuns-*.xml.texi: Regenerated for function
 	removal, type wrapping, and type wrapper name changes.

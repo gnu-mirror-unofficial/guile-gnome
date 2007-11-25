@@ -32,40 +32,6 @@
   ((gnome gw pango)
    (uses-interfaces (gnome gw generics))
    (typed-exports
-     (<char**> <gw:wct>)
-     (<g-destroy-notify> <gw:wct>)
-     (<gint**> <gw:wct>)
-     (<gpointer> <gw:wct>)
-     (<gs-list**> <gw:wct>)
-     (<guchar**> <gw:wct>)
-     (<int**> <gw:wct>)
-     (<pango-analysis*> <gw:wct>)
-     (<pango-attr-data-copy-func> <gw:wct>)
-     (<pango-attr-filter-func> <gw:wct>)
-     (<pango-attr-iterator*> <gw:wct>)
-     (<pango-attr-list**> <gw:wct>)
-     (<pango-attribute*> <gw:wct>)
-     (<pango-context*> <gw:wct>)
-     (<pango-coverage*> <gw:wct>)
-     (<pango-engine-shape*> <gw:wct>)
-     (<pango-font-face***> <gw:wct>)
-     (<pango-font-family***> <gw:wct>)
-     (<pango-fontset*> <gw:wct>)
-     (<pango-glyph-item*> <gw:wct>)
-     (<pango-item*> <gw:wct>)
-     (<pango-language**> <gw:wct>)
-     (<pango-layout*> <gw:wct>)
-     (<pango-layout-iter*> <gw:wct>)
-     (<pango-layout-line*> <gw:wct>)
-     (<pango-layout-run*> <gw:wct>)
-     (<pango-log-attr**> <gw:wct>)
-     (<pango-log-attr*> <gw:wct>)
-     (<pango-matrix*> <gw:wct>)
-     (<pango-rectangle*> <gw:wct>)
-     (<pango-script*> <gw:wct>)
-     (<pango-script-iter*> <gw:wct>)
-     (<pango-tab-align**> <gw:wct>)
-     (<pango-tab-align*> <gw:wct>)
      (pango-attr-background-new
        procedure
        (arity 0 0 #t))
@@ -79,7 +45,7 @@
      (pango-attr-foreground-new
        procedure
        (arity 0 0 #t))
-     (pango-attr-iterator-destroy
+     (pango-attr-iterator-copy
        procedure
        (arity 0 0 #t))
      (pango-attr-iterator-get
@@ -88,9 +54,6 @@
      (pango-attr-iterator-get-attrs
        procedure
        (arity 1 0 #f))
-     (pango-attr-iterator-get-font
-       procedure
-       (arity 0 0 #t))
      (pango-attr-iterator-next
        procedure
        (arity 0 0 #t))
@@ -104,7 +67,7 @@
        procedure
        (arity 0 0 #t))
      (pango-attr-list-change procedure (arity 0 0 #t))
-     (pango-attr-list-filter procedure (arity 0 0 #t))
+     (pango-attr-list-copy procedure (arity 0 0 #t))
      (pango-attr-list-get-iterator
        procedure
        (arity 0 0 #t))
@@ -116,10 +79,7 @@
      (pango-attr-list-splice procedure (arity 0 0 #t))
      (pango-attr-rise-new procedure (arity 0 0 #t))
      (pango-attr-scale-new procedure (arity 0 0 #t))
-     (pango-attr-shape-new procedure (arity 0 0 #t))
-     (pango-attr-shape-new-with-data
-       procedure
-       (arity 0 0 #t))
+     (pango-attr-shape-new procedure (arity 2 0 #f))
      (pango-attr-size-new procedure (arity 0 0 #t))
      (pango-attr-size-new-absolute
        procedure
@@ -143,11 +103,9 @@
        (arity 0 0 #t))
      (pango-attr-variant-new procedure (arity 0 0 #t))
      (pango-attr-weight-new procedure (arity 0 0 #t))
-     (pango-attribute-destroy
-       procedure
-       (arity 0 0 #t))
+     (pango-attribute-copy procedure (arity 0 0 #t))
      (pango-attribute-equal procedure (arity 0 0 #t))
-     (pango-break procedure (arity 0 0 #t))
+     (pango-color-copy procedure (arity 0 0 #t))
      (pango-color-parse procedure (arity 0 0 #t))
      (pango-context-get-base-dir
        procedure
@@ -167,9 +125,6 @@
      (pango-context-get-metrics
        procedure
        (arity 0 0 #t))
-     (pango-context-list-families
-       procedure
-       (arity 2 0 #f))
      (pango-context-load-font
        procedure
        (arity 0 0 #t))
@@ -188,16 +143,11 @@
      (pango-context-set-matrix
        procedure
        (arity 0 0 #t))
-     (pango-coverage-from-bytes
-       procedure
-       (arity 0 0 #t))
+     (pango-coverage-copy procedure (arity 0 0 #t))
      (pango-coverage-get procedure (arity 0 0 #t))
      (pango-coverage-max procedure (arity 0 0 #t))
      (pango-coverage-new procedure (arity 0 0 #t))
      (pango-coverage-set procedure (arity 0 0 #t))
-     (pango-coverage-to-bytes
-       procedure
-       (arity 2 0 #f))
      (pango-find-base-dir procedure (arity 0 0 #t))
      (pango-find-paragraph-boundary
        procedure
@@ -207,6 +157,9 @@
        procedure
        (arity 0 0 #t))
      (pango-font-description-better-match
+       procedure
+       (arity 0 0 #t))
+     (pango-font-description-copy
        procedure
        (arity 0 0 #t))
      (pango-font-description-copy-static
@@ -293,19 +246,12 @@
      (pango-font-face-get-face-name
        procedure
        (arity 0 0 #t))
-     (pango-font-face-list-sizes
-       procedure
-       (arity 2 0 #f))
      (pango-font-family-get-name
        procedure
        (arity 0 0 #t))
      (pango-font-family-is-monospace
        procedure
        (arity 0 0 #t))
-     (pango-font-family-list-faces
-       procedure
-       (arity 2 0 #f))
-     (pango-font-find-shaper procedure (arity 0 0 #t))
      (pango-font-get-coverage
        procedure
        (arity 0 0 #t))
@@ -314,11 +260,8 @@
        (arity 0 0 #t))
      (pango-font-get-glyph-extents
        procedure
-       (arity 0 0 #t))
-     (pango-font-get-metrics procedure (arity 0 0 #t))
-     (pango-font-map-list-families
-       procedure
        (arity 2 0 #f))
+     (pango-font-get-metrics procedure (arity 0 0 #t))
      (pango-font-map-load-font
        procedure
        (arity 0 0 #t))
@@ -349,33 +292,27 @@
      (pango-font-metrics-get-underline-thickness
        procedure
        (arity 0 0 #t))
-     (pango-get-log-attrs procedure (arity 0 0 #t))
      (pango-get-mirror-char procedure (arity 1 0 #f))
-     (pango-glyph-item-apply-attrs
+     (pango-glyph-string-copy
        procedure
-       (arity 3 0 #f))
+       (arity 0 0 #t))
      (pango-glyph-string-extents
        procedure
-       (arity 0 0 #t))
+       (arity 2 0 #f))
      (pango-glyph-string-extents-range
        procedure
-       (arity 0 0 #t))
+       (arity 4 0 #f))
      (pango-glyph-string-get-logical-widths
        procedure
        (arity 4 0 #f))
      (pango-glyph-string-get-width
        procedure
        (arity 0 0 #t))
-     (pango-glyph-string-index-to-x
-       procedure
-       (arity 6 0 #f))
      (pango-glyph-string-new procedure (arity 0 0 #t))
      (pango-glyph-string-set-size
        procedure
        (arity 0 0 #t))
-     (pango-glyph-string-x-to-index
-       procedure
-       (arity 5 0 #f))
+     (pango-item-copy procedure (arity 0 0 #t))
      (pango-item-new procedure (arity 0 0 #t))
      (pango-item-split procedure (arity 0 0 #t))
      (pango-itemize procedure (arity 6 0 #f))
@@ -392,6 +329,7 @@
      (pango-layout-context-changed
        procedure
        (arity 0 0 #t))
+     (pango-layout-copy procedure (arity 0 0 #t))
      (pango-layout-get-alignment
        procedure
        (arity 0 0 #t))
@@ -406,13 +344,13 @@
        (arity 0 0 #t))
      (pango-layout-get-cursor-pos
        procedure
-       (arity 0 0 #t))
+       (arity 2 0 #f))
      (pango-layout-get-ellipsize
        procedure
        (arity 0 0 #t))
      (pango-layout-get-extents
        procedure
-       (arity 0 0 #t))
+       (arity 1 0 #f))
      (pango-layout-get-font-description
        procedure
        (arity 0 0 #t))
@@ -428,12 +366,9 @@
        procedure
        (arity 0 0 #t))
      (pango-layout-get-lines procedure (arity 1 0 #f))
-     (pango-layout-get-log-attrs
-       procedure
-       (arity 2 0 #f))
      (pango-layout-get-pixel-extents
        procedure
-       (arity 0 0 #t))
+       (arity 1 0 #f))
      (pango-layout-get-pixel-size
        procedure
        (arity 1 0 #f))
@@ -453,7 +388,7 @@
        (arity 3 0 #f))
      (pango-layout-index-to-pos
        procedure
-       (arity 0 0 #t))
+       (arity 2 0 #f))
      (pango-layout-iter-at-last-line
        procedure
        (arity 0 0 #t))
@@ -462,31 +397,28 @@
        (arity 0 0 #t))
      (pango-layout-iter-get-char-extents
        procedure
-       (arity 0 0 #t))
+       (arity 1 0 #f))
      (pango-layout-iter-get-cluster-extents
        procedure
-       (arity 0 0 #t))
+       (arity 1 0 #f))
      (pango-layout-iter-get-index
        procedure
        (arity 0 0 #t))
      (pango-layout-iter-get-layout-extents
        procedure
-       (arity 0 0 #t))
+       (arity 1 0 #f))
      (pango-layout-iter-get-line
        procedure
        (arity 0 0 #t))
      (pango-layout-iter-get-line-extents
        procedure
-       (arity 0 0 #t))
+       (arity 1 0 #f))
      (pango-layout-iter-get-line-yrange
        procedure
        (arity 1 0 #f))
-     (pango-layout-iter-get-run
-       procedure
-       (arity 0 0 #t))
      (pango-layout-iter-get-run-extents
        procedure
-       (arity 0 0 #t))
+       (arity 1 0 #f))
      (pango-layout-iter-next-char
        procedure
        (arity 0 0 #t))
@@ -501,13 +433,10 @@
        (arity 0 0 #t))
      (pango-layout-line-get-extents
        procedure
-       (arity 0 0 #t))
+       (arity 1 0 #f))
      (pango-layout-line-get-pixel-extents
        procedure
-       (arity 0 0 #t))
-     (pango-layout-line-get-x-ranges
-       procedure
-       (arity 4 0 #f))
+       (arity 1 0 #f))
      (pango-layout-line-index-to-x
        procedure
        (arity 3 0 #f))
@@ -559,13 +488,13 @@
        procedure
        (arity 3 0 #f))
      (pango-matrix-concat procedure (arity 0 0 #t))
+     (pango-matrix-copy procedure (arity 0 0 #t))
      (pango-matrix-get-font-scale-factor
        procedure
        (arity 0 0 #t))
      (pango-matrix-rotate procedure (arity 0 0 #t))
      (pango-matrix-scale procedure (arity 0 0 #t))
      (pango-matrix-translate procedure (arity 0 0 #t))
-     (pango-parse-markup procedure (arity 5 0 #f))
      (pango-renderer-activate
        procedure
        (arity 0 0 #t))
@@ -615,22 +544,13 @@
      (pango-script-get-sample-language
        procedure
        (arity 0 0 #t))
-     (pango-script-iter-get-range
-       procedure
-       (arity 0 0 #t))
      (pango-script-iter-new procedure (arity 0 0 #t))
      (pango-script-iter-next procedure (arity 0 0 #t))
-     (pango-shape procedure (arity 0 0 #t))
+     (pango-tab-array-copy procedure (arity 0 0 #t))
      (pango-tab-array-get-positions-in-pixels
        procedure
        (arity 0 0 #t))
      (pango-tab-array-get-size
-       procedure
-       (arity 0 0 #t))
-     (pango-tab-array-get-tab
-       procedure
-       (arity 3 0 #f))
-     (pango-tab-array-get-tabs
        procedure
        (arity 0 0 #t))
      (pango-tab-array-new procedure (arity 0 0 #t))
