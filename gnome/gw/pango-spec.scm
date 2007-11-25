@@ -37,7 +37,7 @@
   #:id 'gnome-pango
   #:dependencies '(standard gnome-glib gnome-gobject))
 
-(define-method (global-declarations-cg (self <gobject-wrapset-base>))
+(define-method (global-declarations-cg (self <pango-wrapset>))
   (list
    (next-method)
    "#include <pango/pango.h>\n"

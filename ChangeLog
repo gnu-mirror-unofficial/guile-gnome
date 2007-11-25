@@ -1,5 +1,10 @@
 2007-11-25  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/pango-spec.scm (global-declarations-cg): Fix a typo.
+
+	* doc/pangocairo/guile-gnome-pangocairo.texi (Top): 
+	* doc/pango/guile-gnome-pango.texi (Top): Type and function index.
+
 	* tests/pango/wrapset.api: 
 	* tests/pangocairo/wrapset.api: Update for changes resulting from
 	API review.
