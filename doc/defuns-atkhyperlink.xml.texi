@@ -11,11 +11,11 @@ Specifies whether the AtkHyperlink object is selected
 @item number-of-anchors
 The number of anchors associated with the AtkHyperlink object
 
-@item start-index
-The start index of the AtkHyperlink object
-
 @item end-index
 The end index of the AtkHyperlink object
+
+@item start-index
+The start index of the AtkHyperlink object
 
 @end table
 

@@ -1,3 +1,11 @@
+2007-11-25  Andy Wingo  <wingo@pobox.com>
+
+	* doc/defuns-atkstreamablecontent.xml.texi: Regenerated for
+	<gio-channel> name change.
+
+	* doc/defuns-atkhyperlink.xml.texi: Regenerated, dunno why the
+	docs show a parameter reorder.
+
 2007-11-24  Andy Wingo  <wingo@pobox.com>
 
 	* tests/wrapset.api: API changes. <atk-action> and friends really

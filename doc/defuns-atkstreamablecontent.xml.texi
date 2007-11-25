@@ -7,7 +7,7 @@ its superclasses.
 
 @end deftp
 
-@deffn Function atk-streamable-content-get-stream  (self@tie{}@code{<atk-streamable-content>}) (mime_type@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gio-channel*>})
+@deffn Function atk-streamable-content-get-stream  (self@tie{}@code{<atk-streamable-content>}) (mime_type@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gio-channel>})
 @deffnx Method get-stream
 Gets the content in the specified mime type.
 
