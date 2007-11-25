@@ -118,15 +118,13 @@
      ("GClosure*" <gclosure>)
      ("GParamSpec*" <gparam>)))
   
-  ;; Wrap the pariah function of gobject -- can't be done in C,
-  ;; because <g-source*> is a wcp (well, in fact, it could be done,
-  ;; but it's much easier using G-Wrap --rotty).
+  ;; Wrap the pariah function of gobject.
   (wrap-function!
    ws
    #:name        'g-source-set-closure
    #:returns     'void
    #:c-name      "g_source_set_closure"
-   #:arguments   '((<g-source*> source) ((<gclosure> caller-owned) closure))
+   #:arguments   '((<g-source> source) ((<gclosure> caller-owned) closure))
    #:description "Set the closure for SOURCE to CLOSURE."))
 
 (define-class <gparam-spec-type> (<gobject-type-base>))

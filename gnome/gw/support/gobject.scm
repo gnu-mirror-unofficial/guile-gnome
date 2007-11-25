@@ -685,13 +685,13 @@ the library."
   "foo"
   (let* ((type (make <gobject-freeable-pointer>
                  #:name (gtype-name->class-name ctype)
-                 #:c-type-name ctype
-                 #:c-const-type-name (string-append "const " ctype)
+                 #:c-type-name (string-append ctype "*")
+                 #:c-const-type-name (string-append "const " ctype "*")
                  #:wcp-free-function (string-append "_wcp_free_" free)
                  #:free-function free)))
     (print-info "Freeable" ctype ctype ws)
     (add-type! ws type)
-    (add-type-alias! ws ctype (name type))
+    (add-type-alias! ws (string-append ctype "*") (name type))
     type))
 
 
@@ -716,14 +716,14 @@ the library."
   "foo"
   (let* ((type (make <gobject-ref-pointer>
                  #:name (gtype-name->class-name ctype)
-                 #:c-type-name ctype
-                 #:c-const-type-name (string-append "const " ctype)
+                 #:c-type-name (string-append ctype "*")
+                 #:c-const-type-name (string-append "const " ctype "*")
                  #:wcp-free-function (string-append "_wcp_free_" unref)
                  #:ref-function ref
                  #:free-function unref)))
     (print-info "RefPtr" ctype ctype ws)
     (add-type! ws type)
-    (add-type-alias! ws ctype (name type))
+    (add-type-alias! ws (c-type-name type) (name type))
     type))
 
 

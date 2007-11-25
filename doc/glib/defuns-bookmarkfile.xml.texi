@@ -1,7 +1,7 @@
 
 @c %start of fragment
 
-@deffn Function g-bookmark-file-new  @result{}@tie{} (ret@tie{}@code{<g-bookmark-file*>})
+@deffn Function g-bookmark-file-new  @result{}@tie{} (ret@tie{}@code{<g-bookmark-file>})
 Creates a new empty @code{<g-bookmark-file>} object.
 
 Use @code{g-bookmark-file-load-from-file}, @code{g-bookmark-file-load-from-data}
@@ -17,7 +17,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-load-from-file  (bookmark@tie{}@code{<g-bookmark-file*>}) (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function g-bookmark-file-load-from-file  (bookmark@tie{}@code{<g-bookmark-file>}) (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Loads a desktop bookmark file into an empty @code{<g-bookmark-file>} structure.
 If the file could not be loaded then @var{error} is set to either a
 @code{<g-file-error>} or @code{<g-bookmark-file-error>}.
@@ -41,7 +41,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-load-from-data  (bookmark@tie{}@code{<g-bookmark-file*>}) (data@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function g-bookmark-file-load-from-data  (bookmark@tie{}@code{<g-bookmark-file>}) (data@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Loads a bookmark file from memory into an empty @code{<g-bookmark-file>}
 structure. If the object cannot be created then @var{error} is set to a
 @code{<g-bookmark-file-error>}.
@@ -68,7 +68,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-load-from-data-dirs  (bookmark@tie{}@code{<g-bookmark-file*>}) (file@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool}) (full_path@tie{}@code{mchars})
+@deffn Function g-bookmark-file-load-from-data-dirs  (bookmark@tie{}@code{<g-bookmark-file>}) (file@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool}) (full_path@tie{}@code{mchars})
 This function looks for a desktop bookmark file named @var{file} in the paths
 returned from @code{g-get-user-data-dir} and @code{g-get-system-data-dirs},
 loads the file into @var{bookmark} and returns the file's full path in
@@ -98,7 +98,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-to-data  (bookmark@tie{}@code{<g-bookmark-file*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function g-bookmark-file-to-data  (bookmark@tie{}@code{<g-bookmark-file>}) @result{}@tie{} (ret@tie{}@code{mchars})
 This function outputs @var{bookmark} as a string.
 
 @table @var
@@ -120,7 +120,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-to-file  (bookmark@tie{}@code{<g-bookmark-file*>}) (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function g-bookmark-file-to-file  (bookmark@tie{}@code{<g-bookmark-file>}) (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 This function outputs @var{bookmark} into a file. The write process is
 guaranteed to be atomic by using @code{g-file-set-contents} internally.
 
@@ -143,7 +143,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-has-item  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function g-bookmark-file-has-item  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Looks whether the desktop bookmark has an item with its URI set to @var{uri}.
 
 @table @var
@@ -163,7 +163,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-has-group  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (group@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function g-bookmark-file-has-group  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (group@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Checks whether @var{group} appears in the list of groups to which the bookmark
 for @var{uri} belongs to.
 
@@ -192,7 +192,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-has-application  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function g-bookmark-file-has-application  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Checks whether the bookmark for @var{uri} inside @var{bookmark} has been
 registered by application @var{name}.
 
@@ -221,7 +221,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-size  (bookmark@tie{}@code{<g-bookmark-file*>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function g-bookmark-file-get-size  (bookmark@tie{}@code{<g-bookmark-file>}) @result{}@tie{} (ret@tie{}@code{int})
 Gets the number of bookmarks inside @var{bookmark}.
 
 @table @var
@@ -237,7 +237,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-uris  (bookmark@tie{}@code{<g-bookmark-file*>}) @result{}@tie{} (ret@tie{}@code{scm})
+@deffn Function g-bookmark-file-get-uris  (bookmark@tie{}@code{<g-bookmark-file>}) @result{}@tie{} (ret@tie{}@code{scm})
 Returns all URIs of the bookmarks in the bookmark file @var{bookmark}. The array
 of returned URIs will be @samp{@code{#f}}-terminated, so @var{length} may
 optionally be @samp{@code{#f}}.
@@ -259,7 +259,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-title  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function g-bookmark-file-get-title  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Returns the title of the bookmark for @var{uri}.
 
 If @var{uri} is @samp{@code{#f}}, the title of @var{bookmark} is returned.
@@ -287,7 +287,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-description  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function g-bookmark-file-get-description  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Retrieves the description of the bookmark for @var{uri}.
 
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
@@ -313,7 +313,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-mime-type  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function g-bookmark-file-get-mime-type  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Retrieves the MIME type of the resource pointed by @var{uri}.
 
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
@@ -341,7 +341,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-is-private  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function g-bookmark-file-get-is-private  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Gets whether the private flag of the bookmark for @var{uri} is set.
 
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
@@ -368,7 +368,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-icon  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool}) (href@tie{}@code{mchars}) (mime_type@tie{}@code{mchars})
+@deffn Function g-bookmark-file-get-icon  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool}) (href@tie{}@code{mchars}) (mime_type@tie{}@code{mchars})
 Gets the icon of the bookmark for @var{uri}.
 
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
@@ -400,7 +400,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-added  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{long})
+@deffn Function g-bookmark-file-get-added  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{long})
 Gets the time the bookmark for @var{uri} was added to @var{bookmark}
 
 In the event the URI cannot be found, -1 is returned and @var{error} is set to
@@ -425,7 +425,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-modified  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{long})
+@deffn Function g-bookmark-file-get-modified  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{long})
 Gets the time when the bookmark for @var{uri} was last modified.
 
 In the event the URI cannot be found, -1 is returned and @var{error} is set to
@@ -450,7 +450,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-visited  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{long})
+@deffn Function g-bookmark-file-get-visited  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{long})
 Gets the time the bookmark for @var{uri} was last visited.
 
 In the event the URI cannot be found, -1 is returned and @var{error} is set to
@@ -475,7 +475,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-groups  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{scm})
+@deffn Function g-bookmark-file-get-groups  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{scm})
 Retrieves the list of group names of the bookmark for @var{uri}.
 
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
@@ -507,7 +507,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-applications  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{scm})
+@deffn Function g-bookmark-file-get-applications  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{scm})
 Retrieves the names of the applications that have registered the bookmark for
 @var{uri}.
 
@@ -537,7 +537,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-get-app-info  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool}) (exec@tie{}@code{mchars}) (count@tie{}@code{unsigned-int}) (stamp@tie{}@code{long})
+@deffn Function g-bookmark-file-get-app-info  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool}) (exec@tie{}@code{mchars}) (count@tie{}@code{unsigned-int}) (stamp@tie{}@code{long})
 Gets the registration informations of @var{app-name} for the bookmark for
 @var{uri}. See @code{g-bookmark-file-set-app-info} for more informations about
 the returned data.
@@ -581,7 +581,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-title  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (title@tie{}@code{mchars})
+@deffn Function g-bookmark-file-set-title  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (title@tie{}@code{mchars})
 Sets @var{title} as the title of the bookmark for @var{uri} inside the bookmark
 file @var{bookmark}.
 
@@ -605,7 +605,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-description  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (description@tie{}@code{mchars})
+@deffn Function g-bookmark-file-set-description  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (description@tie{}@code{mchars})
 Sets @var{description} as the description of the bookmark for @var{uri}.
 
 If @var{uri} is @samp{@code{#f}}, the description of @var{bookmark} is set.
@@ -628,7 +628,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-mime-type  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (mime_type@tie{}@code{mchars})
+@deffn Function g-bookmark-file-set-mime-type  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (mime_type@tie{}@code{mchars})
 Sets @var{mime-type} as the MIME type of the bookmark for @var{uri}.
 
 If a bookmark for @var{uri} cannot be found then it is created.
@@ -649,7 +649,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-is-private  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (is_private@tie{}@code{bool})
+@deffn Function g-bookmark-file-set-is-private  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (is_private@tie{}@code{bool})
 Sets the private flag of the bookmark for @var{uri}.
 
 If a bookmark for @var{uri} cannot be found then it is created.
@@ -670,7 +670,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-icon  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (href@tie{}@code{mchars}) (mime_type@tie{}@code{mchars})
+@deffn Function g-bookmark-file-set-icon  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (href@tie{}@code{mchars}) (mime_type@tie{}@code{mchars})
 Sets the icon for the bookmark for @var{uri}. If @var{href} is @samp{@code{#f}},
 unsets the currently set icon.
 
@@ -695,7 +695,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-added  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (added@tie{}@code{long})
+@deffn Function g-bookmark-file-set-added  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (added@tie{}@code{long})
 Sets the time the bookmark for @var{uri} was added into @var{bookmark}.
 
 If no bookmark for @var{uri} is found then it is created.
@@ -716,7 +716,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-modified  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (modified@tie{}@code{long})
+@deffn Function g-bookmark-file-set-modified  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (modified@tie{}@code{long})
 Sets the last time the bookmark for @var{uri} was last modified.
 
 If no bookmark for @var{uri} is found then it is created.
@@ -742,7 +742,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-visited  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (visited@tie{}@code{long})
+@deffn Function g-bookmark-file-set-visited  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (visited@tie{}@code{long})
 Sets the time the bookmark for @var{uri} was last visited.
 
 If no bookmark for @var{uri} is found then it is created.
@@ -769,7 +769,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-set-app-info  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (name@tie{}@code{mchars}) (exec@tie{}@code{mchars}) (count@tie{}@code{int}) (stamp@tie{}@code{long}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function g-bookmark-file-set-app-info  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (name@tie{}@code{mchars}) (exec@tie{}@code{mchars}) (count@tie{}@code{int}) (stamp@tie{}@code{long}) @result{}@tie{} (ret@tie{}@code{bool})
 Sets the meta-data of application @var{name} inside the list of applications
 that have registered a bookmark for @var{uri} inside @var{bookmark}.
 
@@ -826,7 +826,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-add-group  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (group@tie{}@code{mchars})
+@deffn Function g-bookmark-file-add-group  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (group@tie{}@code{mchars})
 Adds @var{group} to the list of groups to which the bookmark for @var{uri}
 belongs to.
 
@@ -848,7 +848,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-add-application  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (name@tie{}@code{mchars}) (exec@tie{}@code{mchars})
+@deffn Function g-bookmark-file-add-application  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (name@tie{}@code{mchars}) (exec@tie{}@code{mchars})
 Adds the application with @var{name} and @var{exec} to the list of applications
 that have registered a bookmark for @var{uri} into @var{bookmark}.
 
@@ -889,7 +889,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-remove-group  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (group@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function g-bookmark-file-remove-group  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (group@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Removes @var{group} from the list of groups to which the bookmark for @var{uri}
 belongs to.
 
@@ -920,7 +920,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-remove-application  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function g-bookmark-file-remove-application  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Removes application registered with @var{name} from the list of applications
 that have registered a bookmark for @var{uri} inside @var{bookmark}.
 
@@ -952,7 +952,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-remove-item  (bookmark@tie{}@code{<g-bookmark-file*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function g-bookmark-file-remove-item  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Removes the bookmark for @var{uri} from the bookmark file @var{bookmark}.
 
 @table @var
@@ -974,7 +974,7 @@ Since 2.12
 
 @end deffn
 
-@deffn Function g-bookmark-file-move-item  (bookmark@tie{}@code{<g-bookmark-file*>}) (old_uri@tie{}@code{mchars}) (new_uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function g-bookmark-file-move-item  (bookmark@tie{}@code{<g-bookmark-file>}) (old_uri@tie{}@code{mchars}) (new_uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Changes the URI of a bookmark item from @var{old-uri} to @var{new-uri}. Any
 existing bookmark for @var{new-uri} will be overwritten. If @var{new-uri} is
 @samp{@code{#f}}, then the bookmark is removed.

@@ -1,7 +1,7 @@
 
 @c %start of fragment
 
-@deffn Function g-io-channel-unix-new  (fd@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gio-channel*>})
+@deffn Function g-io-channel-unix-new  (fd@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gio-channel>})
 Creates a new @code{<gio-channel>} given a file descriptor. On UNIX systems this
 works for plain files, pipes, and sockets.
 
@@ -33,7 +33,7 @@ a new @code{<gio-channel>}.
 
 @end deffn
 
-@deffn Function g-io-channel-unix-get-fd  (channel@tie{}@code{<gio-channel*>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function g-io-channel-unix-get-fd  (channel@tie{}@code{<gio-channel>}) @result{}@tie{} (ret@tie{}@code{int})
 Returns the file descriptor of the @code{<gio-channel>}.
 
 On Windows this function returns the file descriptor or socket of the
@@ -50,7 +50,7 @@ the file descriptor of the @code{<gio-channel>}.
 
 @end deffn
 
-@deffn Function g-io-channel-new-file  (filename@tie{}@code{mchars}) (mode@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gio-channel*>})
+@deffn Function g-io-channel-new-file  (filename@tie{}@code{mchars}) (mode@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gio-channel>})
 Open a file @var{filename} as a @code{<gio-channel>} using mode @var{mode}. This
 channel will be closed when the last reference to it is dropped, so there is no
 need to call @code{g-io-channel-close} (though doing so will not cause problems,
@@ -74,7 +74,7 @@ A @code{<gio-channel>} on success, @samp{@code{#f}} on failure.
 
 @end deffn
 
-@deffn Function g-io-channel-flush  (channel@tie{}@code{<gio-channel*>}) @result{}@tie{} (ret@tie{}@code{<gio-status>})
+@deffn Function g-io-channel-flush  (channel@tie{}@code{<gio-channel>}) @result{}@tie{} (ret@tie{}@code{<gio-status>})
 Flushes the write buffer for the GIOChannel.
 
 @table @var
@@ -92,7 +92,7 @@ the status of the operation: One of @code{<g-io-channel-normal>},
 
 @end deffn
 
-@deffn Function g-io-channel-seek-position  (self@tie{}@code{<gio-channel*>}) (offset@tie{}@code{int64}) (type@tie{}@code{<g-seek-type>}) @result{}@tie{} (ret@tie{}@code{<gio-status>})
+@deffn Function g-io-channel-seek-position  (self@tie{}@code{<gio-channel>}) (offset@tie{}@code{int64}) (type@tie{}@code{<g-seek-type>}) @result{}@tie{} (ret@tie{}@code{<gio-status>})
 Replacement for @code{g-io-channel-seek} with the new API.
 
 @table @var
@@ -117,7 +117,7 @@ the status of the operation.
 
 @end deffn
 
-@deffn Function g-io-channel-shutdown  (channel@tie{}@code{<gio-channel*>}) (flush@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<gio-status>})
+@deffn Function g-io-channel-shutdown  (channel@tie{}@code{<gio-channel>}) (flush@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<gio-status>})
 Close an IO channel. Any pending data to be written will be flushed if
 @var{flush} is @samp{@code{#t}}. The channel will not be freed until the last
 reference is dropped using @code{g-io-channel-unref}.
@@ -153,7 +153,7 @@ a @code{<gio-channel-error>} error number, e.g. @samp{G_IO_CHANNEL_ERROR_INVAL}.
 
 @end deffn
 
-@deffn Function g-io-create-watch  (channel@tie{}@code{<gio-channel*>}) (condition@tie{}@code{<gio-condition>}) @result{}@tie{} (ret@tie{}@code{<g-source*>})
+@deffn Function g-io-create-watch  (channel@tie{}@code{<gio-channel>}) (condition@tie{}@code{<gio-condition>}) @result{}@tie{} (ret@tie{}@code{<g-source>})
 Creates a @code{<g-source>} that's dispatched when @var{condition} is met for
 the given @var{channel}. For example, if condition is @code{<g-io-in>}, the
 source will be dispatched when there's data available for reading.
@@ -179,7 +179,7 @@ a new @code{<g-source>}
 
 @end deffn
 
-@deffn Function g-io-add-watch  (channel@tie{}@code{<gio-channel*>}) (condition@tie{}@code{<gio-condition>}) (func@tie{}@code{scm}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function g-io-add-watch  (channel@tie{}@code{<gio-channel>}) (condition@tie{}@code{<gio-condition>}) (func@tie{}@code{scm}) @result{}@tie{} (ret@tie{}@code{bool})
 Adds the @code{<gio-channel>} into the main event loop with the default
 priority.
 
@@ -203,7 +203,7 @@ the event source id.
 
 @end deffn
 
-@deffn Function g-io-channel-get-buffer-size  (channel@tie{}@code{<gio-channel*>}) @result{}@tie{} (ret@tie{}@code{size_t})
+@deffn Function g-io-channel-get-buffer-size  (channel@tie{}@code{<gio-channel>}) @result{}@tie{} (ret@tie{}@code{size_t})
 Gets the buffer size.
 
 @table @var
@@ -217,7 +217,7 @@ the size of the buffer.
 
 @end deffn
 
-@deffn Function g-io-channel-set-buffer-size  (channel@tie{}@code{<gio-channel*>}) (size@tie{}@code{size_t})
+@deffn Function g-io-channel-set-buffer-size  (channel@tie{}@code{<gio-channel>}) (size@tie{}@code{size_t})
 Sets the buffer size.
 
 @table @var
@@ -231,7 +231,7 @@ the size of the buffer. 0 == pick a good size
 
 @end deffn
 
-@deffn Function g-io-channel-get-buffer-condition  (channel@tie{}@code{<gio-channel*>}) @result{}@tie{} (ret@tie{}@code{<gio-condition>})
+@deffn Function g-io-channel-get-buffer-condition  (channel@tie{}@code{<gio-channel>}) @result{}@tie{} (ret@tie{}@code{<gio-condition>})
 This function returns a @code{<gio-condition>} depending on whether there is
 data to be read/space to write data in the internal buffers in the
 @code{<gio-channel>}. Only the flags @samp{G_IO_IN} and @samp{G_IO_OUT} may be
@@ -248,7 +248,7 @@ A @code{<gio-condition>}
 
 @end deffn
 
-@deffn Function g-io-channel-get-flags  (channel@tie{}@code{<gio-channel*>}) @result{}@tie{} (ret@tie{}@code{<gio-flags>})
+@deffn Function g-io-channel-get-flags  (channel@tie{}@code{<gio-channel>}) @result{}@tie{} (ret@tie{}@code{<gio-flags>})
 Gets the current flags for a @code{<gio-channel>}, including read-only flags
 such as @samp{G_IO_FLAG_IS_READABLE}.
 
@@ -269,7 +269,7 @@ the flags which are set on the channel
 
 @end deffn
 
-@deffn Function g-io-channel-set-flags  (channel@tie{}@code{<gio-channel*>}) (flags@tie{}@code{<gio-flags>}) @result{}@tie{} (ret@tie{}@code{<gio-status>})
+@deffn Function g-io-channel-set-flags  (channel@tie{}@code{<gio-channel>}) (flags@tie{}@code{<gio-flags>}) @result{}@tie{} (ret@tie{}@code{<gio-status>})
 Sets the (writeable) flags in @var{channel} to (@var{flags} &
 @samp{G_IO_CHANNEL_SET_MASK}).
 
@@ -290,7 +290,7 @@ the status of the operation.
 
 @end deffn
 
-@deffn Function g-io-channel-get-line-term  (channel@tie{}@code{<gio-channel*>}) @result{}@tie{} (ret@tie{}@code{mchars}) (length@tie{}@code{int})
+@deffn Function g-io-channel-get-line-term  (channel@tie{}@code{<gio-channel>}) @result{}@tie{} (ret@tie{}@code{mchars}) (length@tie{}@code{int})
 This returns the string that @code{<gio-channel>} uses to determine where in the
 file a line break occurs. A value of @samp{@code{#f}} indicates auto detection.
 
@@ -308,7 +308,7 @@ The line termination string. This value is owned by GLib and must not be freed.
 
 @end deffn
 
-@deffn Function g-io-channel-set-line-term  (channel@tie{}@code{<gio-channel*>}) (line_term@tie{}@code{mchars}) (length@tie{}@code{int})
+@deffn Function g-io-channel-set-line-term  (channel@tie{}@code{<gio-channel>}) (line_term@tie{}@code{mchars}) (length@tie{}@code{int})
 This sets the string that @code{<gio-channel>} uses to determine where in the
 file a line break occurs.
 
@@ -330,7 +330,7 @@ be nul-terminated. This option allows termination strings with embeded nuls.
 
 @end deffn
 
-@deffn Function g-io-channel-get-buffered  (channel@tie{}@code{<gio-channel*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function g-io-channel-get-buffered  (channel@tie{}@code{<gio-channel>}) @result{}@tie{} (ret@tie{}@code{bool})
 Returns whether @var{channel} is buffered.
 
 @table @var
@@ -344,7 +344,7 @@ a @code{<gio-channel>}.
 
 @end deffn
 
-@deffn Function g-io-channel-set-buffered  (channel@tie{}@code{<gio-channel*>}) (buffered@tie{}@code{bool})
+@deffn Function g-io-channel-set-buffered  (channel@tie{}@code{<gio-channel>}) (buffered@tie{}@code{bool})
 The buffering state can only be set if the channel's encoding is
 @samp{@code{#f}}. For any other encoding, the channel must be buffered.
 
@@ -373,7 +373,7 @@ whether to set the channel buffered or unbuffered
 
 @end deffn
 
-@deffn Function g-io-channel-get-encoding  (channel@tie{}@code{<gio-channel*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function g-io-channel-get-encoding  (channel@tie{}@code{<gio-channel>}) @result{}@tie{} (ret@tie{}@code{mchars})
 Gets the encoding for the input/output of the channel. The internal encoding is
 always UTF-8. The encoding @samp{@code{#f}} makes the channel safe for binary
 data.
@@ -390,7 +390,7 @@ freed.
 
 @end deffn
 
-@deffn Function g-io-channel-set-encoding  (channel@tie{}@code{<gio-channel*>}) (encoding@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gio-status>})
+@deffn Function g-io-channel-set-encoding  (channel@tie{}@code{<gio-channel>}) (encoding@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gio-status>})
 Sets the encoding for the input/output of the channel. The internal encoding is
 always UTF-8. The default encoding for the external file is UTF-8.
 
@@ -440,7 +440,7 @@ location to store an error of type @code{<g-convert-error>}.
 
 @end deffn
 
-@deffn Function g-io-channel-close  (channel@tie{}@code{<gio-channel*>})
+@deffn Function g-io-channel-close  (channel@tie{}@code{<gio-channel>})
 @samp{g_io_channel_close} has been deprecated since version 2.2 and should not
 be used in newly-written code. Use @code{g-io-channel-shutdown} instead.
 

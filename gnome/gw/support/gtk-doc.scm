@@ -631,11 +631,15 @@ created using @code{gtk-doc->texi-defuns}."
                                             (gparam-struct:name prop))))
                               (para ,(gparam-struct:blurb prop))))
                     props)))))))
-  (let ((class (module-ref (resolve-interface module-name) class-name)))
-    `((deftp (% (name ,(symbol->string class-name))
-                (category "Class"))
-        ,@(doc-properties class))
-      ,@(class-signal-stexi-docs class sdocbook))))
+  (let ((v (module-variable (resolve-interface module-name) class-name)))
+    (cond
+     (v
+      `((deftp (% (name ,(symbol->string class-name))
+                  (category "Class"))
+          ,@(doc-properties (variable-ref v)))
+        ,@(class-signal-stexi-docs (variable-ref v) sdocbook)))
+     (else
+      '()))))
 
 (define (make-type-docs? class-name wrapset)
   ;; does the type (1) exist and (2) define an export?

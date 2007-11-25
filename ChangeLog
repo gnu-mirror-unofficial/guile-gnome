@@ -1,3 +1,23 @@
+2007-11-25  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gtk-doc.scm (gobject-class-stexi-docs): Don't
+	error if the class is not defined in the module.
+
+	* gnome/gw/support/gobject.scm (wrap-freeable-pointer!)
+	(wrap-refcounted-pointer!): Accept the ctype as the name of the
+	type without a star, so that the type name becomes e.g.
+	<g-main-loop> instead of <g-main-loop*>. This means that only
+	truly opaque pointers will have a * in their names.
+
+	* gnome/gw/gobject-spec.scm (initialize): Specialize on
+	<g-source>, not <g-source*> -- fallout from the changes to
+	gobject.scm.
+
+	* gnome/gw/glib-spec.scm (initialize): Adapt to changes in
+	wrap-freeable-pointer and wrap-refcounted-pointer.
+
+	* doc/glib/defuns-*.xml.texi: Regenerated.
+
 2007-11-24  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/gobject.scm (unwrap-value-cg): Fix a typo, my
