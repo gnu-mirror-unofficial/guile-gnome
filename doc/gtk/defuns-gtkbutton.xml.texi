@@ -2,19 +2,43 @@
 @c %start of fragment
 
 @deftp Class <gtk-button>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-bin>}.
+
+This class defines the following properties:
 
 @table @code
 @item label
-Text of the label widget inside the button, if the button contains a label widget@item image
-Child widget to appear next to the button text@item relief
-The border relief style@item use-underline
-If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key@item use-stock
-If set, the label is used to pick a stock item instead of being displayed@item focus-on-click
-Whether the button grabs focus when it is clicked with the mouse@item xalign
-Horizontal position of child in available space. 0.0 is left aligned, 1.0 is right aligned@item yalign
-Vertical position of child in available space. 0.0 is top aligned, 1.0 is bottom aligned@item image-position
-The position of the image relative to the text@end table
+Text of the label widget inside the button, if the button contains a label
+widget
+
+@item image
+Child widget to appear next to the button text
+
+@item relief
+The border relief style
+
+@item use-underline
+If set, an underline in the text indicates the next character should be used for
+the mnemonic accelerator key
+
+@item use-stock
+If set, the label is used to pick a stock item instead of being displayed
+
+@item focus-on-click
+Whether the button grabs focus when it is clicked with the mouse
+
+@item xalign
+Horizontal position of child in available space. 0.0 is left aligned, 1.0 is
+right aligned
+
+@item yalign
+Vertical position of child in available space. 0.0 is top aligned, 1.0 is bottom
+aligned
+
+@item image-position
+The position of the image relative to the text
+
+@end table
 
 @end deftp
 

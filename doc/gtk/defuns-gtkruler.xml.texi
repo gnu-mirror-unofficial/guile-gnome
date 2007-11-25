@@ -2,15 +2,27 @@
 @c %start of fragment
 
 @deftp Class <gtk-ruler>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-widget>}.
+
+This class defines the following properties:
 
 @table @code
 @item lower
-Lower limit of ruler@item upper
-Upper limit of ruler@item position
-Position of mark on the ruler@item max-size
-Maximum size of the ruler@item metric
-The metric used for the ruler@end table
+Lower limit of ruler
+
+@item upper
+Upper limit of ruler
+
+@item position
+Position of mark on the ruler
+
+@item max-size
+Maximum size of the ruler
+
+@item metric
+The metric used for the ruler
+
+@end table
 
 @end deftp
 

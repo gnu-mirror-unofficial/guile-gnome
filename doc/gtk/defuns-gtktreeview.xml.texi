@@ -2,29 +2,69 @@
 @c %start of fragment
 
 @deftp Class <gtk-tree-view>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-container>}.
+
+This class defines the following properties:
 
 @table @code
 @item model
-The model for the tree view@item hadjustment
-Horizontal Adjustment for the widget@item vadjustment
-Vertical Adjustment for the widget@item headers-visible
-Show the column header buttons@item headers-clickable
-Column headers respond to click events@item expander-column
-Set the column for the expander column@item reorderable
-View is reorderable@item rules-hint
-Set a hint to the theme engine to draw rows in alternating colors@item enable-search
-View allows user to search through columns interactively@item search-column
-Model column to search through when searching through code@item fixed-height-mode
-Speeds up GtkTreeView by assuming that all rows have the same height@item hover-selection
-Whether the selection should follow the pointer@item hover-expand
-Whether rows should be expanded/collapsed when the pointer moves over them@item show-expanders
-View has expanders@item level-indentation
-Extra indentation for each level@item rubber-banding
-Whether to enable selection of multiple items by dragging the mouse pointer@item enable-grid-lines
-Whether grid lines should be drawn in the tree view@item enable-tree-lines
-Whether tree lines should be drawn in the tree view@item tooltip-column
-The column in the model containing the tooltip texts for the rows@end table
+The model for the tree view
+
+@item hadjustment
+Horizontal Adjustment for the widget
+
+@item vadjustment
+Vertical Adjustment for the widget
+
+@item headers-visible
+Show the column header buttons
+
+@item headers-clickable
+Column headers respond to click events
+
+@item expander-column
+Set the column for the expander column
+
+@item reorderable
+View is reorderable
+
+@item rules-hint
+Set a hint to the theme engine to draw rows in alternating colors
+
+@item enable-search
+View allows user to search through columns interactively
+
+@item search-column
+Model column to search through when searching through code
+
+@item fixed-height-mode
+Speeds up GtkTreeView by assuming that all rows have the same height
+
+@item hover-selection
+Whether the selection should follow the pointer
+
+@item hover-expand
+Whether rows should be expanded/collapsed when the pointer moves over them
+
+@item show-expanders
+View has expanders
+
+@item level-indentation
+Extra indentation for each level
+
+@item rubber-banding
+Whether to enable selection of multiple items by dragging the mouse pointer
+
+@item enable-grid-lines
+Whether grid lines should be drawn in the tree view
+
+@item enable-tree-lines
+Whether tree lines should be drawn in the tree view
+
+@item tooltip-column
+The column in the model containing the tooltip texts for the rows
+
+@end table
 
 @end deftp
 
@@ -633,30 +673,6 @@ Since 2.2
 
 @end deffn
 
-@deffn Function gtk-tree-view-get-cursor  (self@tie{}@code{<gtk-tree-view>}) (path@tie{}@code{<gtk-tree-path**>}) (focus_column@tie{}@code{<gtk-tree-view-column**>})
-@deffnx Method get-cursor
-Fills in @var{path} and @var{focus-column} with the current path and focus
-column. If the cursor isn't currently set, then *@var{path} will be
-@samp{@code{#f}}. If no column currently has focus, then *@var{focus-column}
-will be @samp{@code{#f}}.
-
-The returned @code{<gtk-tree-path>} must be freed with @code{gtk-tree-path-free}
-when you are done with it.
-
-@table @var
-@item tree-view
-A @code{<gtk-tree-view>}
-
-@item path
-A pointer to be filled with the current cursor path, or @samp{@code{#f}}
-
-@item focus-column
-A pointer to be filled with the current focus column, or @samp{@code{#f}}
-
-@end table
-
-@end deffn
-
 @deffn Function gtk-tree-view-row-activated  (self@tie{}@code{<gtk-tree-view>}) (path@tie{}@code{<gtk-tree-path>}) (column@tie{}@code{<gtk-tree-view-column>})
 @deffnx Method row-activated
 Activates the cell determined by @var{path} and @var{column}.
@@ -756,24 +772,6 @@ path to a row in the @var{tree-view}
 
 @end deffn
 
-@deffn Function gtk-tree-view-map-expanded-rows  (self@tie{}@code{<gtk-tree-view>}) (func@tie{}@code{<gtk-tree-view-mapping-func>}) (data@tie{}@code{<gpointer>})
-@deffnx Method map-expanded-rows
-Calls @var{func} on all expanded rows.
-
-@table @var
-@item tree-view
-A @code{<gtk-tree-view>}
-
-@item func
-A function to be called
-
-@item data
-User data to be passed to the function.
-
-@end table
-
-@end deffn
-
 @deffn Function gtk-tree-view-row-expanded  (self@tie{}@code{<gtk-tree-view>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{bool})
 @deffnx Method row-expanded
 Returns @samp{@code{#t}} if the node pointed to by @var{path} is expanded in
@@ -830,161 +828,6 @@ a @code{<gtk-tree-view>}
 @samp{@code{#t}} if the tree can be reordered.
 
 @end table
-
-@end deffn
-
-@deffn Function gtk-tree-view-get-path-at-pos  (self@tie{}@code{<gtk-tree-view>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (path@tie{}@code{<gtk-tree-path**>}) (column@tie{}@code{<gtk-tree-view-column**>}) @result{}@tie{} (ret@tie{}@code{bool}) (cell_x@tie{}@code{int}) (cell_y@tie{}@code{int})
-@deffnx Method get-path-at-pos
-Finds the path at the point (@var{x}, @var{y}), relative to widget coordinates.
-That is, @var{x} and @var{y} are relative to an events coordinates. @var{x} and
-@var{y} must come from an event on the @var{tree-view} only where
-@samp{event->window == gtk_tree_view_get_bin ()}. It is primarily for things
-like popup menus. If @var{path} is non-@samp{@code{#f}}, then it will be filled
-with the @code{<gtk-tree-path>} at that point. This path should be freed with
-@code{gtk-tree-path-free}. If @var{column} is non-@samp{@code{#f}}, then it will
-be filled with the column at that point. @var{cell-x} and @var{cell-y} return
-the coordinates relative to the cell background (i.e. the @var{background-area}
-passed to @code{gtk-cell-renderer-render}). This function is only meaningful if
-@var{tree-view} is realized.
-
-@table @var
-@item tree-view
-A @code{<gtk-tree-view>}.
-
-@item x
-The x position to be identified.
-
-@item y
-The y position to be identified.
-
-@item path
-A pointer to a @code{<gtk-tree-path>} pointer to be filled in, or
-@samp{@code{#f}}
-
-@item column
-A pointer to a @code{<gtk-tree-view-column>} pointer to be filled in, or
-@samp{@code{#f}}
-
-@item cell-x
-A pointer where the X coordinate relative to the cell can be placed, or
-@samp{@code{#f}}
-
-@item cell-y
-A pointer where the Y coordinate relative to the cell can be placed, or
-@samp{@code{#f}}
-
-@item ret
-@samp{@code{#t}} if a row exists at that coordinate.
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-tree-view-get-cell-area  (self@tie{}@code{<gtk-tree-view>}) (path@tie{}@code{<gtk-tree-path>}) (column@tie{}@code{<gtk-tree-view-column>}) (rect@tie{}@code{<gdk-rectangle>})
-@deffnx Method get-cell-area
-Fills the bounding rectangle in tree window coordinates for the cell at the row
-specified by @var{path} and the column specified by @var{column}. If @var{path}
-is @samp{@code{#f}}, or points to a path not currently displayed, the @var{y}
-and @var{height} fields of the rectangle will be filled with 0. If @var{column}
-is @samp{@code{#f}}, the @var{x} and @var{width} fields will be filled with 0.
-The sum of all cell rects does not cover the entire tree; there are extra pixels
-in between rows, for example. The returned rectangle is equivalent to the
-@var{cell-area} passed to @code{gtk-cell-renderer-render}. This function is only
-valid if @var{tree-view} is realized.
-
-@table @var
-@item tree-view
-a @code{<gtk-tree-view>}
-
-@item path
-a @code{<gtk-tree-path>} for the row, or @samp{@code{#f}} to get only horizontal
-coordinates
-
-@item column
-a @code{<gtk-tree-view-column>} for the column, or @samp{@code{#f}} to get only
-vertical coordinates
-
-@item rect
-rectangle to fill with cell rect
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-tree-view-get-background-area  (self@tie{}@code{<gtk-tree-view>}) (path@tie{}@code{<gtk-tree-path>}) (column@tie{}@code{<gtk-tree-view-column>}) (rect@tie{}@code{<gdk-rectangle>})
-@deffnx Method get-background-area
-Fills the bounding rectangle in tree window coordinates for the cell at the row
-specified by @var{path} and the column specified by @var{column}. If @var{path}
-is @samp{@code{#f}}, or points to a node not found in the tree, the @var{y} and
-@var{height} fields of the rectangle will be filled with 0. If @var{column} is
-@samp{@code{#f}}, the @var{x} and @var{width} fields will be filled with 0. The
-returned rectangle is equivalent to the @var{background-area} passed to
-@code{gtk-cell-renderer-render}. These background areas tile to cover the entire
-tree window (except for the area used for header buttons). Contrast with the
-@var{cell-area}, returned by @code{gtk-tree-view-get-cell-area}, which returns
-only the cell itself, excluding surrounding borders and the tree expander area.
-
-@table @var
-@item tree-view
-a @code{<gtk-tree-view>}
-
-@item path
-a @code{<gtk-tree-path>} for the row, or @samp{@code{#f}} to get only horizontal
-coordinates
-
-@item column
-a @code{<gtk-tree-view-column>} for the column, or @samp{@code{#f}} to get only
-vertical coordiantes
-
-@item rect
-rectangle to fill with cell background rect
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-tree-view-get-visible-rect  (self@tie{}@code{<gtk-tree-view>}) (visible_rect@tie{}@code{<gdk-rectangle>})
-@deffnx Method get-visible-rect
-Fills @var{visible-rect} with the currently-visible region of the buffer, in
-tree coordinates. Convert to widget coordinates with
-@code{gtk-tree-view-tree-to-widget-coords}. Tree coordinates start at 0,0 for
-row 0 of the tree, and cover the entire scrollable area of the tree.
-
-@table @var
-@item tree-view
-a @code{<gtk-tree-view>}
-
-@item visible-rect
-rectangle to fill
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-tree-view-get-visible-range  (self@tie{}@code{<gtk-tree-view>}) (start_path@tie{}@code{<gtk-tree-path**>}) (end_path@tie{}@code{<gtk-tree-path**>}) @result{}@tie{} (ret@tie{}@code{bool})
-@deffnx Method get-visible-range
-Sets @var{start-path} and @var{end-path} to be the first and last visible path.
-Note that there may be invisible paths in between.
-
-The paths should be freed with @code{gtk-tree-path-free} after use.
-
-@table @var
-@item tree-view
-A @code{<gtk-tree-view>}
-
-@item start-path
-Return location for start of region, or @samp{@code{#f}}.
-
-@item end-path
-Return location for end of region, or @samp{@code{#f}}.
-
-@item ret
-@samp{@code{#t}}, if valid paths were placed in @var{start-path} and
-@var{end-path}.
-
-@end table
-
-Since 2.8
 
 @end deffn
 
@@ -1086,51 +929,6 @@ Specifies whether to drop before, after or into the row
 
 @end deffn
 
-@deffn Function gtk-tree-view-get-drag-dest-row  (self@tie{}@code{<gtk-tree-view>}) (path@tie{}@code{<gtk-tree-path**>}) (pos@tie{}@code{<gtk-tree-view-drop-position*>})
-@deffnx Method get-drag-dest-row
-Gets information about the row that is highlighted for feedback.
-
-@table @var
-@item tree-view
-a @code{<gtk-tree-view>}
-
-@item path
-Return location for the path of the highlighted row, or @samp{@code{#f}}.
-
-@item pos
-Return location for the drop position, or @samp{@code{#f}}
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-tree-view-get-dest-row-at-pos  (self@tie{}@code{<gtk-tree-view>}) (drag_x@tie{}@code{int}) (drag_y@tie{}@code{int}) (path@tie{}@code{<gtk-tree-path**>}) (pos@tie{}@code{<gtk-tree-view-drop-position*>}) @result{}@tie{} (ret@tie{}@code{bool})
-@deffnx Method get-dest-row-at-pos
-Determines the destination row for a given position.
-
-@table @var
-@item tree-view
-a @code{<gtk-tree-view>}
-
-@item drag-x
-the position to determine the destination row for
-
-@item drag-y
-the position to determine the destination row for
-
-@item path
-Return location for the path of the highlighted row, or @samp{@code{#f}}.
-
-@item pos
-Return location for the drop position, or @samp{@code{#f}}
-
-@item ret
-whether there is a row at the given position.
-
-@end table
-
-@end deffn
-
 @deffn Function gtk-tree-view-create-row-drag-icon  (self@tie{}@code{<gtk-tree-view>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixmap*>})
 @deffnx Method create-row-drag-icon
 Creates a @code{<gdk-pixmap>} representation of the row at @var{path}. This
@@ -1217,29 +1015,6 @@ A @code{<gtk-tree-view>}
 
 @item column
 the column of the model to search in, or -1 to disable searching
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-tree-view-set-search-equal-func  (self@tie{}@code{<gtk-tree-view>}) (search_equal_func@tie{}@code{<gtk-tree-view-search-equal-func>}) (search_user_data@tie{}@code{<gpointer>}) (search_destroy@tie{}@code{<gtk-destroy-notify>})
-@deffnx Method set-search-equal-func
-Sets the compare function for the interactive search capabilities; note that
-somewhat like @code{strcmp} returning 0 for equality
-@code{<gtk-tree-view-search-equal-func>} returns @samp{@code{#f}} on matches.
-
-@table @var
-@item tree-view
-A @code{<gtk-tree-view>}
-
-@item search-equal-func
-the compare function to use during the search
-
-@item search-user-data
-user data to pass to @var{search-equal-func}, or @samp{@code{#f}}
-
-@item search-destroy
-Destroy notifier for @var{search-user-data}, or @samp{@code{#f}}
 
 @end table
 

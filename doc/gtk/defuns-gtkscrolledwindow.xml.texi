@@ -2,17 +2,35 @@
 @c %start of fragment
 
 @deftp Class <gtk-scrolled-window>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-bin>}.
+
+This class defines the following properties:
 
 @table @code
 @item hadjustment
-The GtkAdjustment for the horizontal position@item vadjustment
-The GtkAdjustment for the vertical position@item hscrollbar-policy
-When the horizontal scrollbar is displayed@item vscrollbar-policy
-When the vertical scrollbar is displayed@item window-placement
-Where the contents are located with respect to the scrollbars. This property only takes effect if "window-placement-set" is TRUE.@item window-placement-set
-Whether "window-placement" should be used to determine the location of the contents with respect to the scrollbars.@item shadow-type
-Style of bevel around the contents@end table
+The GtkAdjustment for the horizontal position
+
+@item vadjustment
+The GtkAdjustment for the vertical position
+
+@item hscrollbar-policy
+When the horizontal scrollbar is displayed
+
+@item vscrollbar-policy
+When the vertical scrollbar is displayed
+
+@item window-placement
+Where the contents are located with respect to the scrollbars. This property
+only takes effect if "window-placement-set" is TRUE.
+
+@item window-placement-set
+Whether "window-placement" should be used to determine the location of the
+contents with respect to the scrollbars.
+
+@item shadow-type
+Style of bevel around the contents
+
+@end table
 
 @end deftp
 
@@ -236,25 +254,6 @@ a @code{<gtk-scrolled-window>}
 @item ret
 the current placement value. See also @code{gtk-scrolled-window-set-placement}
 and @code{gtk-scrolled-window-unset-placement}.
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-scrolled-window-get-policy  (self@tie{}@code{<gtk-scrolled-window>}) (hscrollbar_policy@tie{}@code{<gtk-policy-type*>}) (vscrollbar_policy@tie{}@code{<gtk-policy-type*>})
-@deffnx Method get-policy
-Retrieves the current policy values for the horizontal and vertical scrollbars.
-See @code{gtk-scrolled-window-set-policy}.
-
-@table @var
-@item scrolled-window
-a @code{<gtk-scrolled-window>}
-
-@item hscrollbar-policy
-location to store the policy for the horizontal scrollbar, or @samp{@code{#f}}.
-
-@item vscrollbar-policy
-location to store the policy for the horizontal scrollbar, or @samp{@code{#f}}.
 
 @end table
 

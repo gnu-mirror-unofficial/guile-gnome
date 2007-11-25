@@ -1,7 +1,14 @@
 
 @c %start of fragment
 
-@deffn Function gtk-file-filter-new  @result{}@tie{} (ret@tie{}@code{<gtk-file-filter*>})
+@deftp Class <gtk-file-filter>
+Derives from @code{<gtk-object>}.
+
+This class defines no properties, other than those defined by its superclasses.
+
+@end deftp
+
+@deffn Function gtk-file-filter-new  @result{}@tie{} (ret@tie{}@code{<gtk-file-filter>})
 Creates a new @code{<gtk-file-filter>} with no rules added to it. Such a filter
 doesn't accept any files, so is not particularly useful until you add rules with
 @code{gtk-file-filter-add-mime-type}, @code{gtk-file-filter-add-pattern}, or
@@ -24,7 +31,8 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gtk-file-filter-set-name  (self@tie{}@code{<gtk-file-filter*>}) (name@tie{}@code{mchars})
+@deffn Function gtk-file-filter-set-name  (self@tie{}@code{<gtk-file-filter>}) (name@tie{}@code{mchars})
+@deffnx Method set-name
 Sets the human-readable name of the filter; this is the string that will be
 displayed in the file selector user interface if there is a selectable list of
 filters.
@@ -43,7 +51,8 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gtk-file-filter-get-name  (self@tie{}@code{<gtk-file-filter*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function gtk-file-filter-get-name  (self@tie{}@code{<gtk-file-filter>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-name
 Gets the human-readable name for the filter. See
 @code{gtk-file-filter-set-name}.
 
@@ -61,7 +70,8 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gtk-file-filter-add-mime-type  (self@tie{}@code{<gtk-file-filter*>}) (mime_type@tie{}@code{mchars})
+@deffn Function gtk-file-filter-add-mime-type  (self@tie{}@code{<gtk-file-filter>}) (mime_type@tie{}@code{mchars})
+@deffnx Method add-mime-type
 Adds a rule allowing a given mime type to @var{filter}.
 
 @table @var
@@ -77,7 +87,8 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gtk-file-filter-add-pattern  (self@tie{}@code{<gtk-file-filter*>}) (pattern@tie{}@code{mchars})
+@deffn Function gtk-file-filter-add-pattern  (self@tie{}@code{<gtk-file-filter>}) (pattern@tie{}@code{mchars})
+@deffnx Method add-pattern
 Adds a rule allowing a shell style glob to a filter.
 
 @table @var
@@ -93,7 +104,8 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gtk-file-filter-add-pixbuf-formats  (self@tie{}@code{<gtk-file-filter*>})
+@deffn Function gtk-file-filter-add-pixbuf-formats  (self@tie{}@code{<gtk-file-filter>})
+@deffnx Method add-pixbuf-formats
 Adds a rule allowing image files in the formats supported by GdkPixbuf.
 
 @table @var
@@ -106,37 +118,8 @@ Since 2.6
 
 @end deffn
 
-@deffn Function gtk-file-filter-add-custom  (self@tie{}@code{<gtk-file-filter*>}) (needed@tie{}@code{<gtk-file-filter-flags>}) (func@tie{}@code{<gtk-file-filter-func>}) (data@tie{}@code{<gpointer>}) (notify@tie{}@code{<g-destroy-notify>})
-Adds rule to a filter that allows files based on a custom callback function. The
-bitfield @var{needed} which is passed in provides information about what sorts
-of information that the filter function needs; this allows GTK+ to avoid
-retrieving expensive information when it isn't needed by the filter.
-
-@table @var
-@item filter
-a @code{<gtk-file-filter>}
-
-@item needed
-bitfield of flags indicating the information that the custom filter function
-needs.
-
-@item func
-callback function; if the function returns @samp{@code{#t}}, then the file will
-be displayed.
-
-@item data
-data to pass to @var{func}
-
-@item notify
-function to call to free @var{data} when it is no longer needed.
-
-@end table
-
-Since 2.4
-
-@end deffn
-
-@deffn Function gtk-file-filter-get-needed  (self@tie{}@code{<gtk-file-filter*>}) @result{}@tie{} (ret@tie{}@code{<gtk-file-filter-flags>})
+@deffn Function gtk-file-filter-get-needed  (self@tie{}@code{<gtk-file-filter>}) @result{}@tie{} (ret@tie{}@code{<gtk-file-filter-flags>})
+@deffnx Method get-needed
 Gets the fields that need to be filled in for the structure passed to
 @code{gtk-file-filter-filter}
 
@@ -150,30 +133,6 @@ a @code{<gtk-file-filter>}
 @item ret
 bitfield of flags indicating needed fields when calling
 @code{gtk-file-filter-filter}
-
-@end table
-
-Since 2.4
-
-@end deffn
-
-@deffn Function gtk-file-filter-filter  (self@tie{}@code{<gtk-file-filter*>}) (filter_info@tie{}@code{<gtk-file-filter-info*>}) @result{}@tie{} (ret@tie{}@code{bool})
-Tests whether a file should be displayed according to @var{filter}. The
-@code{<gtk-file-filter-info>} structure @var{filter-info} should include the
-fields returned from @code{gtk-file-filter-get-needed}.
-
-This function will not typically be used by applications; it is intended
-principally for use in the implementation of @code{<gtk-file-chooser>}.
-
-@table @var
-@item filter
-a @code{<gtk-file-filter>}
-
-@item filter-info
-a @code{<gtk-file-filter-info>} structure containing information about a file.
-
-@item ret
-@samp{@code{#t}} if the file should be displayed
 
 @end table
 

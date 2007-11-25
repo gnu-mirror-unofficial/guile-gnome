@@ -2,24 +2,57 @@
 @c %start of fragment
 
 @deftp Class <gtk-about-dialog>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-dialog>}.
+
+This class defines the following properties:
 
 @table @code
 @item program-name
-The name of the program. If this is not set, it defaults to g_get_application_name()@item version
-The version of the program@item copyright
-Copyright information for the program@item comments
-Comments about the program@item website
-The URL for the link to the website of the program@item website-label
-The label for the link to the website of the program. If this is not set, it defaults to the URL@item license
-The license of the program@item authors
-List of authors of the program@item documenters
-List of people documenting the program@item translator-credits
-Credits to the translators. This string should be marked as translatable@item artists
-List of people who have contributed artwork to the program@item logo
-A logo for the about box. If this is not set, it defaults to gtk_window_get_default_icon_list()@item logo-icon-name
-A named icon to use as the logo for the about box.@item wrap-license
-Whether to wrap the license text.@end table
+The name of the program. If this is not set, it defaults to
+g_get_application_name()
+
+@item version
+The version of the program
+
+@item copyright
+Copyright information for the program
+
+@item comments
+Comments about the program
+
+@item website
+The URL for the link to the website of the program
+
+@item website-label
+The label for the link to the website of the program. If this is not set, it
+defaults to the URL
+
+@item license
+The license of the program
+
+@item authors
+List of authors of the program
+
+@item documenters
+List of people documenting the program
+
+@item translator-credits
+Credits to the translators. This string should be marked as translatable
+
+@item artists
+List of people who have contributed artwork to the program
+
+@item logo
+A logo for the about box. If this is not set, it defaults to
+gtk_window_get_default_icon_list()
+
+@item logo-icon-name
+A named icon to use as the logo for the about box.
+
+@item wrap-license
+Whether to wrap the license text.
+
+@end table
 
 @end deftp
 

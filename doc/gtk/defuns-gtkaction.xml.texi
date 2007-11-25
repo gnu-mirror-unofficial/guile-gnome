@@ -2,24 +2,59 @@
 @c %start of fragment
 
 @deftp Class <gtk-action>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-buildable>}, @code{<gobject>}.
+
+This class defines the following properties:
 
 @table @code
 @item name
-A unique name for the action.@item label
-The label used for menu items and buttons that activate this action.@item short-label
-A shorter label that may be used on toolbar buttons.@item tooltip
-A tooltip for this action.@item stock-id
-The stock icon displayed in widgets representing this action.@item icon-name
-The name of the icon from the icon theme@item visible-horizontal
-Whether the toolbar item is visible when the toolbar is in a horizontal orientation.@item visible-vertical
-Whether the toolbar item is visible when the toolbar is in a vertical orientation.@item visible-overflown
-When TRUE, toolitem proxies for this action are represented in the toolbar overflow menu.@item is-important
-Whether the action is considered important. When TRUE, toolitem proxies for this action show text in GTK_TOOLBAR_BOTH_HORIZ mode.@item hide-if-empty
-When TRUE, empty menu proxies for this action are hidden.@item sensitive
-Whether the action is enabled.@item visible
-Whether the action is visible.@item action-group
-The GtkActionGroup this GtkAction is associated with, or NULL (for internal use).@end table
+A unique name for the action.
+
+@item label
+The label used for menu items and buttons that activate this action.
+
+@item short-label
+A shorter label that may be used on toolbar buttons.
+
+@item tooltip
+A tooltip for this action.
+
+@item stock-id
+The stock icon displayed in widgets representing this action.
+
+@item icon-name
+The name of the icon from the icon theme
+
+@item visible-horizontal
+Whether the toolbar item is visible when the toolbar is in a horizontal
+orientation.
+
+@item visible-vertical
+Whether the toolbar item is visible when the toolbar is in a vertical
+orientation.
+
+@item visible-overflown
+When TRUE, toolitem proxies for this action are represented in the toolbar
+overflow menu.
+
+@item is-important
+Whether the action is considered important. When TRUE, toolitem proxies for this
+action show text in GTK_TOOLBAR_BOTH_HORIZ mode.
+
+@item hide-if-empty
+When TRUE, empty menu proxies for this action are hidden.
+
+@item sensitive
+Whether the action is enabled.
+
+@item visible
+Whether the action is visible.
+
+@item action-group
+The GtkActionGroup this GtkAction is associated with, or NULL (for internal
+use).
+
+@end table
 
 @end deftp
 

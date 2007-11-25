@@ -1,7 +1,14 @@
 
 @c %start of fragment
 
-@deffn Function gtk-recent-filter-new  @result{}@tie{} (ret@tie{}@code{<gtk-recent-filter*>})
+@deftp Class <gtk-recent-filter>
+Derives from @code{<gtk-object>}.
+
+This class defines no properties, other than those defined by its superclasses.
+
+@end deftp
+
+@deffn Function gtk-recent-filter-new  @result{}@tie{} (ret@tie{}@code{<gtk-recent-filter>})
 Creates a new @code{<gtk-recent-filter>} with no rules added to it. Such filter
 does not accept any recently used resources, so is not particularly useful until
 you add rules with @code{gtk-recent-filter-add-pattern},
@@ -25,7 +32,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-filter-get-name  (self@tie{}@code{<gtk-recent-filter*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function gtk-recent-filter-get-name  (self@tie{}@code{<gtk-recent-filter>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-name
 Gets the human-readable name for the filter. See
 @code{gtk-recent-filter-set-name}.
 
@@ -43,7 +51,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-filter-set-name  (self@tie{}@code{<gtk-recent-filter*>}) (name@tie{}@code{mchars})
+@deffn Function gtk-recent-filter-set-name  (self@tie{}@code{<gtk-recent-filter>}) (name@tie{}@code{mchars})
+@deffnx Method set-name
 Sets the human-readable name of the filter; this is the string that will be
 displayed in the recently used resources selector user interface if there is a
 selectable list of filters.
@@ -61,7 +70,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-filter-add-mime-type  (self@tie{}@code{<gtk-recent-filter*>}) (mime_type@tie{}@code{mchars})
+@deffn Function gtk-recent-filter-add-mime-type  (self@tie{}@code{<gtk-recent-filter>}) (mime_type@tie{}@code{mchars})
+@deffnx Method add-mime-type
 Adds a rule that allows resources based on their registered MIME type.
 
 @table @var
@@ -77,7 +87,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-filter-add-pattern  (self@tie{}@code{<gtk-recent-filter*>}) (pattern@tie{}@code{mchars})
+@deffn Function gtk-recent-filter-add-pattern  (self@tie{}@code{<gtk-recent-filter>}) (pattern@tie{}@code{mchars})
+@deffnx Method add-pattern
 Adds a rule that allows resources based on a pattern matching their display
 name.
 
@@ -94,7 +105,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-filter-add-application  (self@tie{}@code{<gtk-recent-filter*>}) (application@tie{}@code{mchars})
+@deffn Function gtk-recent-filter-add-application  (self@tie{}@code{<gtk-recent-filter>}) (application@tie{}@code{mchars})
+@deffnx Method add-application
 Adds a rule that allows resources based on the name of the application that has
 registered them.
 
@@ -111,7 +123,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-filter-add-group  (self@tie{}@code{<gtk-recent-filter*>}) (group@tie{}@code{mchars})
+@deffn Function gtk-recent-filter-add-group  (self@tie{}@code{<gtk-recent-filter>}) (group@tie{}@code{mchars})
+@deffnx Method add-group
 Adds a rule that allows resources based on the name of the group to which they
 belong
 
@@ -128,7 +141,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-filter-add-age  (self@tie{}@code{<gtk-recent-filter*>}) (days@tie{}@code{int})
+@deffn Function gtk-recent-filter-add-age  (self@tie{}@code{<gtk-recent-filter>}) (days@tie{}@code{int})
+@deffnx Method add-age
 Adds a rule that allows resources based on their age - that is, the number of
 days elapsed since they were last modified.
 
@@ -145,37 +159,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-filter-add-custom  (self@tie{}@code{<gtk-recent-filter*>}) (needed@tie{}@code{<gtk-recent-filter-flags>}) (func@tie{}@code{<gtk-recent-filter-func>}) (data@tie{}@code{<gpointer>}) (data_destroy@tie{}@code{<g-destroy-notify>})
-Adds a rule to a filter that allows resources based on a custom callback
-function. The bitfield @var{needed} which is passed in provides information
-about what sorts of information that the filter function needs; this allows GTK+
-to avoid retrieving expensive information when it isn't needed by the filter.
-
-@table @var
-@item filter
-a @code{<gtk-recent-filter>}
-
-@item needed
-bitfield of flags indicating the information that the custom filter function
-needs.
-
-@item func
-callback function; if the function returns @samp{@code{#t}}, then the file will
-be displayed.
-
-@item data
-data to pass to @var{func}
-
-@item data-destroy
-function to call to free @var{data} when it is no longer needed.
-
-@end table
-
-Since 2.10
-
-@end deffn
-
-@deffn Function gtk-recent-filter-get-needed  (self@tie{}@code{<gtk-recent-filter*>}) @result{}@tie{} (ret@tie{}@code{<gtk-recent-filter-flags>})
+@deffn Function gtk-recent-filter-get-needed  (self@tie{}@code{<gtk-recent-filter>}) @result{}@tie{} (ret@tie{}@code{<gtk-recent-filter-flags>})
+@deffnx Method get-needed
 Gets the fields that need to be filled in for the structure passed to
 @code{gtk-recent-filter-filter}
 
@@ -189,31 +174,6 @@ a @code{<gtk-recent-filter>}
 @item ret
 bitfield of flags indicating needed fields when calling
 @code{gtk-recent-filter-filter}
-
-@end table
-
-Since 2.10
-
-@end deffn
-
-@deffn Function gtk-recent-filter-filter  (self@tie{}@code{<gtk-recent-filter*>}) (filter_info@tie{}@code{<gtk-recent-filter-info*>}) @result{}@tie{} (ret@tie{}@code{bool})
-Tests whether a file should be displayed according to @var{filter}. The
-@code{<gtk-recent-filter-info>} structure @var{filter-info} should include the
-fields returned from @code{gtk-recent-filter-get-needed}.
-
-This function will not typically be used by applications; it is intended
-principally for use in the implementation of @code{<gtk-recent-chooser>}.
-
-@table @var
-@item filter
-a @code{<gtk-recent-filter>}
-
-@item filter-info
-a @code{<gtk-recent-filter-info>} structure containing information about a
-recently used resource
-
-@item ret
-@samp{@code{#t}} if the file should be displayed
 
 @end table
 

@@ -2,24 +2,54 @@
 @c %start of fragment
 
 @deftp Class <gtk-cell-renderer>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-object>}.
+
+This class defines the following properties:
 
 @table @code
 @item mode
-Editable mode of the CellRenderer@item visible
-Display the cell@item sensitive
-Display the cell sensitive@item xalign
-The x-align@item yalign
-The y-align@item xpad
-The xpad@item ypad
-The ypad@item width
-The fixed width@item height
-The fixed height@item is-expander
-Row has children@item is-expanded
-Row is an expander row, and is expanded@item cell-background
-Cell background color as a string@item cell-background-gdk
-Cell background color as a GdkColor@item cell-background-set
-Whether this tag affects the cell background color@end table
+Editable mode of the CellRenderer
+
+@item visible
+Display the cell
+
+@item sensitive
+Display the cell sensitive
+
+@item xalign
+The x-align
+
+@item yalign
+The y-align
+
+@item xpad
+The xpad
+
+@item ypad
+The ypad
+
+@item width
+The fixed width
+
+@item height
+The fixed height
+
+@item is-expander
+Row has children
+
+@item is-expanded
+Row is an expander row, and is expanded
+
+@item cell-background
+Cell background color as a string
+
+@item cell-background-gdk
+Cell background color as a GdkColor
+
+@item cell-background-set
+Whether this tag affects the cell background color
+
+@end table
 
 @end deftp
 

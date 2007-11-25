@@ -2,38 +2,98 @@
 @c %start of fragment
 
 @deftp Class <gtk-window>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-bin>}.
+
+This class defines the following properties:
 
 @table @code
 @item type
-The type of the window@item title
-The title of the window@item role
-Unique identifier for the window to be used when restoring a session@item startup-id
-Unique startup identifier for the window used by startup-notification@item allow-shrink
-If TRUE, the window has no mimimum size. Setting this to TRUE is 99% of the time a bad idea@item allow-grow
-If TRUE, users can expand the window beyond its minimum size@item resizable
-If TRUE, users can resize the window@item modal
-If TRUE, the window is modal (other windows are not usable while this one is up)@item window-position
-The initial position of the window@item default-width
-The default width of the window, used when initially showing the window@item default-height
-The default height of the window, used when initially showing the window@item destroy-with-parent
-If this window should be destroyed when the parent is destroyed@item icon
-Icon for this window@item icon-name
-Name of the themed icon for this window@item screen
-The screen where this window will be displayed@item type-hint
-Hint to help the desktop environment understand what kind of window this is and how to treat it.@item skip-taskbar-hint
-TRUE if the window should not be in the task bar.@item skip-pager-hint
-TRUE if the window should not be in the pager.@item urgency-hint
-TRUE if the window should be brought to the user's attention.@item accept-focus
-TRUE if the window should receive the input focus.@item focus-on-map
-TRUE if the window should receive the input focus when mapped.@item decorated
-Whether the window should be decorated by the window manager@item deletable
-Whether the window frame should have a close button@item gravity
-The window gravity of the window@item transient-for
-The transient parent of the dialog@item opacity
-The opacity of the window, from 0 to 1@item is-active
-Whether the toplevel is the current active window@item has-toplevel-focus
-Whether the input focus is within this GtkWindow@end table
+The type of the window
+
+@item title
+The title of the window
+
+@item role
+Unique identifier for the window to be used when restoring a session
+
+@item startup-id
+Unique startup identifier for the window used by startup-notification
+
+@item allow-shrink
+If TRUE, the window has no mimimum size. Setting this to TRUE is 99% of the time
+a bad idea
+
+@item allow-grow
+If TRUE, users can expand the window beyond its minimum size
+
+@item resizable
+If TRUE, users can resize the window
+
+@item modal
+If TRUE, the window is modal (other windows are not usable while this one is up)
+
+@item window-position
+The initial position of the window
+
+@item default-width
+The default width of the window, used when initially showing the window
+
+@item default-height
+The default height of the window, used when initially showing the window
+
+@item destroy-with-parent
+If this window should be destroyed when the parent is destroyed
+
+@item icon
+Icon for this window
+
+@item icon-name
+Name of the themed icon for this window
+
+@item screen
+The screen where this window will be displayed
+
+@item type-hint
+Hint to help the desktop environment understand what kind of window this is and
+how to treat it.
+
+@item skip-taskbar-hint
+TRUE if the window should not be in the task bar.
+
+@item skip-pager-hint
+TRUE if the window should not be in the pager.
+
+@item urgency-hint
+TRUE if the window should be brought to the user's attention.
+
+@item accept-focus
+TRUE if the window should receive the input focus.
+
+@item focus-on-map
+TRUE if the window should receive the input focus when mapped.
+
+@item decorated
+Whether the window should be decorated by the window manager
+
+@item deletable
+Whether the window frame should have a close button
+
+@item gravity
+The window gravity of the window
+
+@item transient-for
+The transient parent of the dialog
+
+@item opacity
+The opacity of the window, from 0 to 1
+
+@item is-active
+Whether the toplevel is the current active window
+
+@item has-toplevel-focus
+Whether the input focus is within this GtkWindow
+
+@end table
 
 @end deftp
 

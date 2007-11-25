@@ -2,25 +2,59 @@
 @c %start of fragment
 
 @deftp Class <gtk-entry>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-editable>}, @code{<gtk-cell-editable>},
+@code{<gtk-widget>}.
+
+This class defines the following properties:
 
 @table @code
 @item cursor-position
-The current position of the insertion cursor in chars@item selection-bound
-The position of the opposite end of the selection from the cursor in chars@item editable
-Whether the entry contents can be edited@item max-length
-Maximum number of characters for this entry. Zero if no maximum@item visibility
-FALSE displays the "invisible char" instead of the actual text (password mode)@item has-frame
-FALSE removes outside bevel from entry@item inner-border
-Border between text and frame. Overrides the inner-border style property@item invisible-char
-The character to use when masking entry contents (in "password mode")@item activates-default
-Whether to activate the default widget (such as the default button in a dialog) when Enter is pressed@item width-chars
-Number of characters to leave space for in the entry@item scroll-offset
-Number of pixels of the entry scrolled off the screen to the left@item text
-The contents of the entry@item xalign
-The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts.@item truncate-multiline
-Whether to truncate multiline pastes to one line.@item shadow-type
-Which kind of shadow to draw around the entry when has-frame is set@end table
+The current position of the insertion cursor in chars
+
+@item selection-bound
+The position of the opposite end of the selection from the cursor in chars
+
+@item editable
+Whether the entry contents can be edited
+
+@item max-length
+Maximum number of characters for this entry. Zero if no maximum
+
+@item visibility
+FALSE displays the "invisible char" instead of the actual text (password mode)
+
+@item has-frame
+FALSE removes outside bevel from entry
+
+@item inner-border
+Border between text and frame. Overrides the inner-border style property
+
+@item invisible-char
+The character to use when masking entry contents (in "password mode")
+
+@item activates-default
+Whether to activate the default widget (such as the default button in a dialog)
+when Enter is pressed
+
+@item width-chars
+Number of characters to leave space for in the entry
+
+@item scroll-offset
+Number of pixels of the entry scrolled off the screen to the left
+
+@item text
+The contents of the entry
+
+@item xalign
+The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts.
+
+@item truncate-multiline
+Whether to truncate multiline pastes to one line.
+
+@item shadow-type
+Which kind of shadow to draw around the entry when has-frame is set
+
+@end table
 
 @end deftp
 
@@ -174,7 +208,7 @@ whether the entry has a beveled frame
 
 @end deffn
 
-@deffn Function gtk-entry-get-inner-border  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (ret@tie{}@code{<gtk-border*>})
+@deffn Function gtk-entry-get-inner-border  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (ret@tie{}@code{<gtk-border>})
 @deffnx Method get-inner-border
 This function returns the entry's inner-border property. See
 @code{gtk-entry-set-inner-border} for more information.
@@ -244,7 +278,7 @@ new value
 
 @end deffn
 
-@deffn Function gtk-entry-set-inner-border  (self@tie{}@code{<gtk-entry>}) (border@tie{}@code{<gtk-border*>})
+@deffn Function gtk-entry-set-inner-border  (self@tie{}@code{<gtk-entry>}) (border@tie{}@code{<gtk-border>})
 @deffnx Method set-inner-border
 Sets @samp{entry}'s inner-border property to @samp{border}, or clears it if
 @samp{@code{#f}} is passed. The inner-border is the area around the entry's
@@ -339,7 +373,7 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gtk-entry-get-layout  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (ret@tie{}@code{<pango-layout*>})
+@deffn Function gtk-entry-get-layout  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (ret@tie{}@code{<pango-layout>})
 @deffnx Method get-layout
 Gets the @code{<pango-layout>} used to display the entry. The layout is useful
 to e.g. convert text positions to pixel positions, in combination with

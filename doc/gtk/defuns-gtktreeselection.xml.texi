@@ -2,8 +2,9 @@
 @c %start of fragment
 
 @deftp Class <gtk-tree-selection>
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+Derives from @code{<gobject>}.
+
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
 
@@ -47,21 +48,6 @@ the current selection mode
 
 @end deffn
 
-@deffn Function gtk-tree-selection-get-user-data  (self@tie{}@code{<gtk-tree-selection>}) @result{}@tie{} (ret@tie{}@code{<gpointer>})
-@deffnx Method get-user-data
-Returns the user data for the selection function.
-
-@table @var
-@item selection
-A @code{<gtk-tree-selection>}.
-
-@item ret
-The user data.
-
-@end table
-
-@end deffn
-
 @deffn Function gtk-tree-selection-get-tree-view  (self@tie{}@code{<gtk-tree-selection>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-view>})
 @deffnx Method get-tree-view
 Returns the tree view associated with @var{selection}.
@@ -77,13 +63,14 @@ A @code{<gtk-tree-view>}
 
 @end deffn
 
-@deffn Function gtk-tree-selection-get-selected  (self@tie{}@code{<gtk-tree-selection>}) @result{}@tie{} (ret@tie{}@code{scm})
+@deffn Function gtk-tree-selection-get-selected  (self@tie{}@code{<gtk-tree-selection>}) @result{}@tie{} (model@tie{}@code{<gtk-tree-model>}) (iter@tie{}@code{<gtk-tree-iter>})
 @deffnx Method get-selected
-Sets @var{iter} to the currently selected node if @var{selection} is set to
-@code{<gtk-selection-single>} or @code{<gtk-selection-browse>}. @var{iter} may
-be NULL if you just want to test if @var{selection} has any selected nodes.
-@var{model} is filled with the current model as a convenience. This function
-will not work if you use @var{selection} is @code{<gtk-selection-multiple>}.
+@deffnx Method get-selected 
+Retrieve the current selection, if @var{selection} is set to
+@code{<gtk-selection-single>} or @code{<gtk-selection-browse>}.
+
+This function will not work if you use @var{selection} is
+@code{<gtk-selection-multiple>}.
 
 @table @var
 @item selection
@@ -94,9 +81,6 @@ A pointer to set to the @code{<gtk-tree-model>}, or NULL.
 
 @item iter
 The @code{<gtk-tree-iter>}, or NULL.
-
-@item ret
-TRUE, if there is a selected node.
 
 @end table
 

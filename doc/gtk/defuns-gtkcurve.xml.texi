@@ -2,15 +2,27 @@
 @c %start of fragment
 
 @deftp Class <gtk-curve>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-drawing-area>}.
+
+This class defines the following properties:
 
 @table @code
 @item curve-type
-Is this curve linear, spline interpolated, or free-form@item min-x
-Minimum possible value for X@item max-x
-Maximum possible X value@item min-y
-Minimum possible value for Y@item max-y
-Maximum possible value for Y@end table
+Is this curve linear, spline interpolated, or free-form
+
+@item min-x
+Minimum possible value for X
+
+@item max-x
+Maximum possible X value
+
+@item min-y
+Minimum possible value for Y
+
+@item max-y
+Maximum possible value for Y
+
+@end table
 
 @end deftp
 
@@ -85,60 +97,6 @@ the minimum y value.
 
 @item max-y
 the maximum y value.
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-curve-get-vector  (self@tie{}@code{<gtk-curve>}) (veclen@tie{}@code{int}) (vector@tie{}@code{<gfloat*>})
-@deffnx Method get-vector
-Returns a vector of points representing the curve.
-
-@table @var
-@item curve
-a @code{<gtk-curve>}.
-
-@item veclen
-the number of points to calculate.
-
-@item vector
-returns the points.
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-curve-set-vector  (self@tie{}@code{<gtk-curve>}) (veclen@tie{}@code{int}) (vector@tie{}@code{<gfloat*>})
-@deffnx Method set-vector
-Sets the vector of points on the curve. The curve type is set to
-@samp{GTK_CURVE_TYPE_FREE}.
-
-@table @var
-@item curve
-a @code{<gtk-curve>}.
-
-@item veclen
-the number of points.
-
-@item vector
-the points on the curve.
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-curve-set-curve-type  (self@tie{}@code{<gtk-curve>}) (type@tie{}@code{<gtk-curve-type>})
-@deffnx Method set-curve-type
-Sets the type of the curve. The curve will remain unchanged except when changing
-from a free curve to a linear or spline curve, in which case the curve will be
-changed as little as possible.
-
-@table @var
-@item curve
-a @code{<gtk-curve>}.
-
-@item type
-the type of the curve.
 
 @end table
 

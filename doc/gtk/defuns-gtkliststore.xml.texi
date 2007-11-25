@@ -2,8 +2,11 @@
 @c %start of fragment
 
 @deftp Class <gtk-list-store>
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+Derives from @code{<gtk-buildable>}, @code{<gtk-tree-model>},
+@code{<gtk-tree-drag-source>}, @code{<gtk-tree-drag-dest>},
+@code{<gtk-tree-sortable>}, @code{<gobject>}.
+
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
 
@@ -22,23 +25,6 @@ number of columns in the list store
 
 @item ...
 all @code{<g-type>} types for the columns, from first to last
-
-@item ret
-a new @code{<gtk-list-store>}
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-list-store-newv  (n_columns@tie{}@code{int}) (types@tie{}@code{<g-type*>}) @result{}@tie{} (ret@tie{}@code{<gtk-list-store>})
-Non-vararg creation function. Used primarily by language bindings.
-
-@table @var
-@item n-columns
-number of columns in the list store
-
-@item types
-an array of @code{<g-type>} types for the columns, from first to last
 
 @item ret
 a new @code{<gtk-list-store>}
@@ -205,7 +191,8 @@ a @code{<gtk-list-store>}.
 
 @deffn Function gtk-list-store-iter-is-valid  (self@tie{}@code{<gtk-list-store>}) (iter@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
 @deffnx Method iter-is-valid
-
+@c (warning "This function is slow. Only use it for debugging and/or testing
+purposes.")
 
 Checks if the given iter is a valid iter for this @code{<gtk-list-store>}.
 

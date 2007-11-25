@@ -1,7 +1,67 @@
 
 @c %start of fragment
 
-@deffn Function gtk-recent-chooser-set-show-private  (self@tie{}@code{<gtk-recent-chooser*>}) (show_private@tie{}@code{bool})
+@deftp Class <gtk-recent-chooser>
+Derives from @code{<ginterface>}.
+
+This class defines the following properties:
+
+@table @code
+@item filter
+The current filter for selecting which resources are displayed
+
+@item recent-manager
+The RecentManager object to use
+
+@item show-icons
+Whether there should be an icon near the item
+
+@item local-only
+Whether the selected resource(s) should be limited to local file: URIs
+
+@item show-not-found
+Whether the items pointing to unavailable resources should be displayed
+
+@item show-private
+Whether the private items should be displayed
+
+@item show-tips
+Whether there should be a tooltip on the item
+
+@item sort-type
+The sorting order of the items displayed
+
+@item limit
+The maximum number of items to be displayed
+
+@item select-multiple
+Whether to allow multiple items to be selected
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-recent-chooser> selection-changed 
+This signal is emitted when there is a change in the set of selected recently
+used resources. This can happen when a user modifies the selection with the
+mouse or the keyboard, or when explicitely calling functions to change the
+selection.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-recent-chooser> item-activated 
+This signal is emitted when the user "activates" a recent item in the recent
+chooser. This can happen by double-clicking on an item in the recently used
+resources list, or by pressing @c (keycap "Enter") .
+
+Since 2.10
+
+@end defop
+
+@deffn Function gtk-recent-chooser-set-show-private  (self@tie{}@code{<gtk-recent-chooser>}) (show_private@tie{}@code{bool})
+@deffnx Method set-show-private
 Whether to show recently used resources marked registered as private.
 
 @table @var
@@ -17,7 +77,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-get-show-private  (self@tie{}@code{<gtk-recent-chooser*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gtk-recent-chooser-get-show-private  (self@tie{}@code{<gtk-recent-chooser>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-show-private
 Returns whether @var{chooser} should display recently used resources registered
 as private.
 
@@ -35,7 +96,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-set-show-icons  (self@tie{}@code{<gtk-recent-chooser*>}) (show_icons@tie{}@code{bool})
+@deffn Function gtk-recent-chooser-set-show-icons  (self@tie{}@code{<gtk-recent-chooser>}) (show_icons@tie{}@code{bool})
+@deffnx Method set-show-icons
 Sets whether @var{chooser} should show an icon near the resource when displaying
 it.
 
@@ -52,7 +114,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-get-show-icons  (self@tie{}@code{<gtk-recent-chooser*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gtk-recent-chooser-get-show-icons  (self@tie{}@code{<gtk-recent-chooser>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-show-icons
 Retrieves whether @var{chooser} should show an icon near the resource.
 
 @table @var
@@ -68,7 +131,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-set-local-only  (self@tie{}@code{<gtk-recent-chooser*>}) (local_only@tie{}@code{bool})
+@deffn Function gtk-recent-chooser-set-local-only  (self@tie{}@code{<gtk-recent-chooser>}) (local_only@tie{}@code{bool})
+@deffnx Method set-local-only
 Sets whether only local resources, that is resources using the file:// URI
 scheme, should be shown in the recently used resources selector. If
 @var{local-only} is @samp{@code{#t}} (the default) then the shown resources are
@@ -87,7 +151,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-get-local-only  (self@tie{}@code{<gtk-recent-chooser*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gtk-recent-chooser-get-local-only  (self@tie{}@code{<gtk-recent-chooser>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-local-only
 Gets whether only local resources should be shown in the recently used resources
 selector. See @code{gtk-recent-chooser-set-local-only}
 
@@ -104,7 +169,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-set-limit  (self@tie{}@code{<gtk-recent-chooser*>}) (limit@tie{}@code{int})
+@deffn Function gtk-recent-chooser-set-limit  (self@tie{}@code{<gtk-recent-chooser>}) (limit@tie{}@code{int})
+@deffnx Method set-limit
 Sets the number of items that should be returned by
 @code{gtk-recent-chooser-get-items} and @code{gtk-recent-chooser-get-uris}.
 
@@ -121,7 +187,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-get-limit  (self@tie{}@code{<gtk-recent-chooser*>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function gtk-recent-chooser-get-limit  (self@tie{}@code{<gtk-recent-chooser>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-limit
 Gets the number of items returned by @code{gtk-recent-chooser-get-items} and
 @code{gtk-recent-chooser-get-uris}.
 
@@ -138,7 +205,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-set-show-tips  (self@tie{}@code{<gtk-recent-chooser*>}) (show_tips@tie{}@code{bool})
+@deffn Function gtk-recent-chooser-set-show-tips  (self@tie{}@code{<gtk-recent-chooser>}) (show_tips@tie{}@code{bool})
+@deffnx Method set-show-tips
 Sets whether to show a tooltips on the widget.
 
 @table @var
@@ -154,7 +222,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-get-show-tips  (self@tie{}@code{<gtk-recent-chooser*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gtk-recent-chooser-get-show-tips  (self@tie{}@code{<gtk-recent-chooser>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-show-tips
 Gets whether @var{chooser} should display tooltips.
 
 @table @var
@@ -171,7 +240,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-set-show-numbers  (self@tie{}@code{<gtk-recent-chooser*>}) (show_numbers@tie{}@code{bool})
+@deffn Function gtk-recent-chooser-set-show-numbers  (self@tie{}@code{<gtk-recent-chooser>}) (show_numbers@tie{}@code{bool})
+@deffnx Method set-show-numbers
 Whether to show recently used resources prepended by a unique number.
 
 Do not use this function: use @code{gtk-recent-chooser-menu-set-show-numbers}
@@ -190,7 +260,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-get-show-numbers  (self@tie{}@code{<gtk-recent-chooser*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gtk-recent-chooser-get-show-numbers  (self@tie{}@code{<gtk-recent-chooser>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-show-numbers
 Returns whether @var{chooser} should display recently used resources prepended
 by a unique number.
 
@@ -211,7 +282,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-set-sort-type  (self@tie{}@code{<gtk-recent-chooser*>}) (sort_type@tie{}@code{<gtk-recent-sort-type>})
+@deffn Function gtk-recent-chooser-set-sort-type  (self@tie{}@code{<gtk-recent-chooser>}) (sort_type@tie{}@code{<gtk-recent-sort-type>})
+@deffnx Method set-sort-type
 Changes the sorting order of the recently used resources list displayed by
 @var{chooser}.
 
@@ -228,7 +300,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-get-sort-type  (self@tie{}@code{<gtk-recent-chooser*>}) @result{}@tie{} (ret@tie{}@code{<gtk-recent-sort-type>})
+@deffn Function gtk-recent-chooser-get-sort-type  (self@tie{}@code{<gtk-recent-chooser>}) @result{}@tie{} (ret@tie{}@code{<gtk-recent-sort-type>})
+@deffnx Method get-sort-type
 Gets the value set by @code{gtk-recent-chooser-set-sort-type}.
 
 @table @var
@@ -244,36 +317,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-set-sort-func  (self@tie{}@code{<gtk-recent-chooser*>}) (sort_func@tie{}@code{<gtk-recent-sort-func>}) (sort_data@tie{}@code{<gpointer>}) (data_destroy@tie{}@code{<g-destroy-notify>})
-Sets the comparison function used when sorting to be @var{sort-func}. If the
-@var{chooser} has the sort type set to @code{<gtk-recent-sort-custom>} then the
-chooser will sort using this function.
-
-To the comparison function will be passed two @code{<gtk-recent-info>} structs
-and @var{sort-data}; @var{sort-func} should return a positive integer if the
-first item comes before the second, zero if the two items are equal and a
-negative integer if the first item comes after the second.
-
-@table @var
-@item chooser
-a @code{<gtk-recent-chooser>}
-
-@item sort-func
-the comparison function
-
-@item sort-data
-user data to pass to @var{sort-func}, or @samp{@code{#f}}
-
-@item data-destroy
-destroy notifier for @var{sort-data}, or @samp{@code{#f}}
-
-@end table
-
-Since 2.10
-
-@end deffn
-
-@deffn Function gtk-recent-chooser-set-current-uri  (self@tie{}@code{<gtk-recent-chooser*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gtk-recent-chooser-set-current-uri  (self@tie{}@code{<gtk-recent-chooser>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-current-uri
 Sets @var{uri} as the current URI for @var{chooser}.
 
 @table @var
@@ -295,7 +340,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-get-current-uri  (self@tie{}@code{<gtk-recent-chooser*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function gtk-recent-chooser-get-current-uri  (self@tie{}@code{<gtk-recent-chooser>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-current-uri
 Gets the URI currently selected by @var{chooser}.
 
 @table @var
@@ -311,7 +357,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-get-current-item  (self@tie{}@code{<gtk-recent-chooser*>}) @result{}@tie{} (ret@tie{}@code{<gtk-recent-info*>})
+@deffn Function gtk-recent-chooser-get-current-item  (self@tie{}@code{<gtk-recent-chooser>}) @result{}@tie{} (ret@tie{}@code{<gtk-recent-info>})
+@deffnx Method get-current-item
 Gets the @code{<gtk-recent-info>} currently selected by @var{chooser}.
 
 @table @var
@@ -328,7 +375,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-select-uri  (self@tie{}@code{<gtk-recent-chooser*>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gtk-recent-chooser-select-uri  (self@tie{}@code{<gtk-recent-chooser>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method select-uri
 Selects @var{uri} inside @var{chooser}.
 
 @table @var
@@ -350,7 +398,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-unselect-uri  (self@tie{}@code{<gtk-recent-chooser*>}) (uri@tie{}@code{mchars})
+@deffn Function gtk-recent-chooser-unselect-uri  (self@tie{}@code{<gtk-recent-chooser>}) (uri@tie{}@code{mchars})
+@deffnx Method unselect-uri
 Unselects @var{uri} inside @var{chooser}.
 
 @table @var
@@ -366,7 +415,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-select-all  (self@tie{}@code{<gtk-recent-chooser*>})
+@deffn Function gtk-recent-chooser-select-all  (self@tie{}@code{<gtk-recent-chooser>})
+@deffnx Method select-all
 Selects all the items inside @var{chooser}, if the @var{chooser} supports
 multiple selection.
 
@@ -380,7 +430,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-unselect-all  (self@tie{}@code{<gtk-recent-chooser*>})
+@deffn Function gtk-recent-chooser-unselect-all  (self@tie{}@code{<gtk-recent-chooser>})
+@deffnx Method unselect-all
 Unselects all the items inside @var{chooser}.
 
 @table @var
@@ -393,7 +444,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-get-items  (self@tie{}@code{<gtk-recent-chooser*>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffn Function gtk-recent-chooser-get-items  (self@tie{}@code{<gtk-recent-chooser>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method get-items
 Gets the list of recently used resources in form of @code{<gtk-recent-info>}
 objects.
 
@@ -415,33 +467,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-get-uris  (self@tie{}@code{<gtk-recent-chooser*>}) @result{}@tie{} (ret@tie{}@code{<gchar**>}) (length@tie{}@code{size_t})
-Gets the URI of the recently used resources.
-
-The return value of this function is affected by the "sort-type" and "limit"
-properties of @var{chooser}.
-
-Since the returned array is @samp{@code{#f}} terminated, @var{length} may be
-@samp{@code{#f}}.
-
-@table @var
-@item chooser
-a @code{<gtk-recent-chooser>}
-
-@item length
-return location for a the length of the URI list, or @samp{@code{#f}}
-
-@item ret
-A newly allocated, @samp{@code{#f}} terminated array of strings. Use
-@code{g-strfreev} to free it.
-
-@end table
-
-Since 2.10
-
-@end deffn
-
-@deffn Function gtk-recent-chooser-add-filter  (self@tie{}@code{<gtk-recent-chooser*>}) (filter@tie{}@code{<gtk-recent-filter*>})
+@deffn Function gtk-recent-chooser-add-filter  (self@tie{}@code{<gtk-recent-chooser>}) (filter@tie{}@code{<gtk-recent-filter>})
+@deffnx Method add-filter
 Adds @var{filter} to the list of @code{<gtk-recent-filter>} objects held by
 @var{chooser}.
 
@@ -461,7 +488,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-remove-filter  (self@tie{}@code{<gtk-recent-chooser*>}) (filter@tie{}@code{<gtk-recent-filter*>})
+@deffn Function gtk-recent-chooser-remove-filter  (self@tie{}@code{<gtk-recent-chooser>}) (filter@tie{}@code{<gtk-recent-filter>})
+@deffnx Method remove-filter
 Removes @var{filter} from the list of @code{<gtk-recent-filter>} objects held by
 @var{chooser}.
 
@@ -478,7 +506,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-list-filters  (self@tie{}@code{<gtk-recent-chooser*>}) @result{}@tie{} (ret@tie{}@code{gslist-of})
+@deffn Function gtk-recent-chooser-list-filters  (self@tie{}@code{<gtk-recent-chooser>}) @result{}@tie{} (ret@tie{}@code{gslist-of})
+@deffnx Method list-filters
 Gets the @code{<gtk-recent-filter>} objects held by @var{chooser}.
 
 @table @var
@@ -495,7 +524,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-set-filter  (self@tie{}@code{<gtk-recent-chooser*>}) (filter@tie{}@code{<gtk-recent-filter*>})
+@deffn Function gtk-recent-chooser-set-filter  (self@tie{}@code{<gtk-recent-chooser>}) (filter@tie{}@code{<gtk-recent-filter>})
+@deffnx Method set-filter
 Sets @var{filter} as the current @code{<gtk-recent-filter>} object used by
 @var{chooser} to affect the displayed recently used resources.
 
@@ -512,7 +542,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-recent-chooser-get-filter  (self@tie{}@code{<gtk-recent-chooser*>}) @result{}@tie{} (ret@tie{}@code{<gtk-recent-filter*>})
+@deffn Function gtk-recent-chooser-get-filter  (self@tie{}@code{<gtk-recent-chooser>}) @result{}@tie{} (ret@tie{}@code{<gtk-recent-filter>})
+@deffnx Method get-filter
 Gets the @code{<gtk-recent-filter>} object currently used by @var{chooser} to
 affect the display of the recently used resources.
 

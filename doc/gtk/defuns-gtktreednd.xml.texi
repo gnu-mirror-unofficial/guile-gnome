@@ -2,14 +2,16 @@
 @c %start of fragment
 
 @deftp Class <gtk-tree-drag-source>
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+Derives from @code{<ginterface>}.
+
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
 
 @deftp Class <gtk-tree-drag-dest>
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+Derives from @code{<ginterface>}.
+
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
 
@@ -74,34 +76,6 @@ a row in @var{tree-model}
 @item ret
 @samp{@code{#t}} if the @code{<gtk-selection-data>} had the proper target type
 to allow us to set a tree row
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-tree-get-row-drag-data  (self@tie{}@code{<gtk-selection-data>}) (tree_model@tie{}@code{<gtk-tree-model**>}) (path@tie{}@code{<gtk-tree-path**>}) @result{}@tie{} (ret@tie{}@code{bool})
-Obtains a @var{tree-model} and @var{path} from selection data of target type
-@samp{GTK_TREE_MODEL_ROW}. Normally called from a drag_data_received handler.
-This function can only be used if @var{selection-data} originates from the same
-process that's calling this function, because a pointer to the tree model is
-being passed around. If you aren't in the same process, then you'll get memory
-corruption. In the @code{<gtk-tree-drag-dest>} drag_data_received handler, you
-can assume that selection data of type @samp{GTK_TREE_MODEL_ROW} is in from the
-current process. The returned path must be freed with @code{gtk-tree-path-free}.
-
-@table @var
-@item selection-data
-a @code{<gtk-selection-data>}
-
-@item tree-model
-a @code{<gtk-tree-model>}
-
-@item path
-row in @var{tree-model}
-
-@item ret
-@samp{@code{#t}} if @var{selection-data} had target type
-@samp{GTK_TREE_MODEL_ROW} and is otherwise valid
 
 @end table
 

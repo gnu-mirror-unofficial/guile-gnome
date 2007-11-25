@@ -2,6 +2,8 @@
 @c %start of fragment
 
 @deftp Class <gtk-text-iter>
+Derives from @code{<gboxed>}.
+
 @end deftp
 
 @deffn Function gtk-text-iter-get-buffer  (self@tie{}@code{<gtk-text-iter>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-buffer>})
@@ -1112,56 +1114,6 @@ a @code{<gtk-text-tag>}, or @samp{@code{#f}}
 
 @item ret
 whether we found a tag toggle after @var{iter}
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-text-iter-forward-find-char  (self@tie{}@code{<gtk-text-iter>}) (pred@tie{}@code{<gtk-text-char-predicate>}) (user_data@tie{}@code{<gpointer>}) (limit@tie{}@code{<gtk-text-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
-Advances @var{iter}, calling @var{pred} on each character. If @var{pred} returns
-@samp{@code{#t}}, returns @samp{@code{#t}} and stops scanning. If @var{pred}
-never returns @samp{@code{#t}}, @var{iter} is set to @var{limit} if @var{limit}
-is non-@samp{@code{#f}}, otherwise to the end iterator.
-
-@table @var
-@item iter
-a @code{<gtk-text-iter>}
-
-@item pred
-a function to be called on each character
-
-@item user-data
-user data for @var{pred}
-
-@item limit
-search limit, or @samp{@code{#f}} for none
-
-@item ret
-whether a match was found
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-text-iter-backward-find-char  (self@tie{}@code{<gtk-text-iter>}) (pred@tie{}@code{<gtk-text-char-predicate>}) (user_data@tie{}@code{<gpointer>}) (limit@tie{}@code{<gtk-text-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
-Same as @code{gtk-text-iter-forward-find-char}, but goes backward from
-@var{iter}.
-
-@table @var
-@item iter
-a @code{<gtk-text-iter>}
-
-@item pred
-function to be called on each character
-
-@item user-data
-user data for @var{pred}
-
-@item limit
-search limit, or @samp{@code{#f}} for none
-
-@item ret
-whether a match was found
 
 @end table
 

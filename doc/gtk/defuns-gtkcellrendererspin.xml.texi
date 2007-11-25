@@ -2,13 +2,21 @@
 @c %start of fragment
 
 @deftp Class <gtk-cell-renderer-spin>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-cell-renderer-text>}.
+
+This class defines the following properties:
 
 @table @code
 @item adjustment
-The adjustment that holds the value of the spinbutton.@item climb-rate
-The acceleration rate when you hold down a button@item digits
-The number of decimal places to display@end table
+The adjustment that holds the value of the spinbutton.
+
+@item climb-rate
+The acceleration rate when you hold down a button
+
+@item digits
+The number of decimal places to display
+
+@end table
 
 @end deftp
 

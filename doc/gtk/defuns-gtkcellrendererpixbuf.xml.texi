@@ -2,18 +2,36 @@
 @c %start of fragment
 
 @deftp Class <gtk-cell-renderer-pixbuf>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-cell-renderer>}.
+
+This class defines the following properties:
 
 @table @code
 @item pixbuf
-The pixbuf to render@item pixbuf-expander-open
-Pixbuf for open expander@item pixbuf-expander-closed
-Pixbuf for closed expander@item stock-id
-The stock ID of the stock icon to render@item stock-size
-The GtkIconSize value that specifies the size of the rendered icon@item stock-detail
-Render detail to pass to the theme engine@item follow-state
-Whether the rendered pixbuf should be colorized according to the state@item icon-name
-The name of the icon from the icon theme@end table
+The pixbuf to render
+
+@item pixbuf-expander-open
+Pixbuf for open expander
+
+@item pixbuf-expander-closed
+Pixbuf for closed expander
+
+@item stock-id
+The stock ID of the stock icon to render
+
+@item stock-size
+The GtkIconSize value that specifies the size of the rendered icon
+
+@item stock-detail
+Render detail to pass to the theme engine
+
+@item follow-state
+Whether the rendered pixbuf should be colorized according to the state
+
+@item icon-name
+The name of the icon from the icon theme
+
+@end table
 
 @end deftp
 

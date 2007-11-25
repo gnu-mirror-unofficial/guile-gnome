@@ -2,13 +2,21 @@
 @c %start of fragment
 
 @deftp Class <gtk-action-group>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-buildable>}, @code{<gobject>}.
+
+This class defines the following properties:
 
 @table @code
 @item name
-A name for the action group.@item sensitive
-Whether the action group is enabled.@item visible
-Whether the action group is visible.@end table
+A name for the action group.
+
+@item sensitive
+Whether the action group is enabled.
+
+@item visible
+Whether the action group is visible.
+
+@end table
 
 @end deftp
 
@@ -252,43 +260,14 @@ accel paths are set to @samp{<Actions>//}.
 
 @table @var
 @item action-group
-the action group
+The action group
 
-@item entries
-an array of action descriptions
-
-@item n-entries
-the number of entries
-
-@item user-data
-data to pass to the action callbacks
-
-@end table
-
-Since 2.4
-
-@end deffn
-
-@deffn Function gtk-action-group-add-actions-full  (self@tie{}@code{<gtk-action-group>}) (entries@tie{}@code{<gtk-action-entry*>}) (n_entries@tie{}@code{unsigned-int}) (user_data@tie{}@code{<gpointer>}) (destroy@tie{}@code{<g-destroy-notify>})
-@deffnx Method add-actions-full
-This variant of @code{gtk-action-group-add-actions} adds a
-@code{<g-destroy-notify>} callback for @var{user-data}.
-
-@table @var
-@item action-group
-the action group
-
-@item entries
-an array of action descriptions
-
-@item n-entries
-the number of entries
-
-@item user-data
-data to pass to the action callbacks
-
-@item destroy
-destroy notification callback for @var{user-data}
+@item scm
+An list of actions. The actions are of the form @code{(@var{name} @var{stock-id}
+@code{label} @code{accelerator} @code{tooltip} @code{proc}?)}. All values are
+strings except the @var{proc}, which should be a procedure suitable for
+connecting to the @code{activate} signal on the action. @var{stock-id},
+@var{label}, @var{accelerator}, @var{tooltip}, and @var{proc} may be @code{#f}.
 
 @end table
 
@@ -302,7 +281,7 @@ This is a convenience function to create a number of toggle actions and add them
 to the action group.
 
 The "activate" signals of the actions are connected to the callbacks and their
-accel paths are set to @samp{<Actions>//}.
+accel paths are set to @samp{<Actions>}
 
 @table @var
 @item action-group
@@ -330,7 +309,7 @@ the action group.
 
 The "changed" signal of the first radio action is connected to the
 @var{on-change} callback and the accel paths of the actions are set to
-@samp{<Actions>//}.
+@samp{<Actions>}.
 
 @table @var
 @item action-group
@@ -351,34 +330,6 @@ the callback to connect to the changed signal
 
 @item user-data
 data to pass to the action callbacks
-
-@end table
-
-Since 2.4
-
-@end deffn
-
-@deffn Function gtk-action-group-set-translate-func  (self@tie{}@code{<gtk-action-group>}) (func@tie{}@code{<gtk-translate-func>}) (data@tie{}@code{<gpointer>}) (notify@tie{}@code{<gtk-destroy-notify>})
-@deffnx Method set-translate-func
-Sets a function to be used for translating the @var{label} and @var{tooltip} of
-@code{<gtk-action-group-entry>}s added by @code{gtk-action-group-add-actions}.
-
-If you're using @code{gettext}, it is enough to set the translation domain with
-@code{gtk-action-group-set-translation-domain}.
-
-@table @var
-@item action-group
-a @code{<gtk-action-group>}
-
-@item func
-a @code{<gtk-translate-func>}
-
-@item data
-data to be passed to @var{func} and @var{notify}
-
-@item notify
-a @code{<gtk-destroy-notify>} function to be called when @var{action-group} is
-destroyed and when the translation function is changed again
 
 @end table
 

@@ -1,7 +1,12 @@
 
 @c %start of fragment
 
-@deffn Function gtk-paper-size-new  (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-paper-size*>})
+@deftp Class <gtk-paper-size>
+Derives from @code{<gboxed>}.
+
+@end deftp
+
+@deffn Function gtk-paper-size-new  (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-paper-size>})
 Creates a new @code{<gtk-paper-size>} object by parsing a PWG 5101.1-2002 PWG
 paper name.
 
@@ -21,7 +26,7 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-paper-size-new-from-ppd  (ppd_name@tie{}@code{mchars}) (ppd_display_name@tie{}@code{mchars}) (width@tie{}@code{double}) (height@tie{}@code{double}) @result{}@tie{} (ret@tie{}@code{<gtk-paper-size*>})
+@deffn Function gtk-paper-size-new-from-ppd  (ppd_name@tie{}@code{mchars}) (ppd_display_name@tie{}@code{mchars}) (width@tie{}@code{double}) (height@tie{}@code{double}) @result{}@tie{} (ret@tie{}@code{<gtk-paper-size>})
 Creates a new @code{<gtk-paper-size>} object by using PPD information.
 
 If @var{ppd-name} is not a recognized PPD paper name, @var{ppd-display-name},
@@ -50,7 +55,7 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-paper-size-new-custom  (name@tie{}@code{mchars}) (display_name@tie{}@code{mchars}) (width@tie{}@code{double}) (height@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{<gtk-paper-size*>})
+@deffn Function gtk-paper-size-new-custom  (name@tie{}@code{mchars}) (display_name@tie{}@code{mchars}) (width@tie{}@code{double}) (height@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{<gtk-paper-size>})
 Creates a new @code{<gtk-paper-size>} object with the given parameters.
 
 @table @var
@@ -78,7 +83,7 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-paper-size-is-equal  (self@tie{}@code{<gtk-paper-size*>}) (size2@tie{}@code{<gtk-paper-size*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gtk-paper-size-is-equal  (self@tie{}@code{<gtk-paper-size>}) (size2@tie{}@code{<gtk-paper-size>}) @result{}@tie{} (ret@tie{}@code{bool})
 Compares two @code{<gtk-paper-size>} objects.
 
 @table @var
@@ -97,7 +102,7 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-paper-size-get-name  (self@tie{}@code{<gtk-paper-size*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function gtk-paper-size-get-name  (self@tie{}@code{<gtk-paper-size>}) @result{}@tie{} (ret@tie{}@code{mchars})
 Gets the name of the @code{<gtk-paper-size>}.
 
 @table @var
@@ -113,7 +118,7 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-paper-size-get-display-name  (self@tie{}@code{<gtk-paper-size*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function gtk-paper-size-get-display-name  (self@tie{}@code{<gtk-paper-size>}) @result{}@tie{} (ret@tie{}@code{mchars})
 Gets the human-readable name of the @code{<gtk-paper-size>}.
 
 @table @var
@@ -129,7 +134,7 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-paper-size-get-ppd-name  (self@tie{}@code{<gtk-paper-size*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function gtk-paper-size-get-ppd-name  (self@tie{}@code{<gtk-paper-size>}) @result{}@tie{} (ret@tie{}@code{mchars})
 Gets the PPD name of the @code{<gtk-paper-size>}, which may be @samp{@code{#f}}.
 
 @table @var
@@ -145,7 +150,7 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-paper-size-get-width  (self@tie{}@code{<gtk-paper-size*>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function gtk-paper-size-get-width  (self@tie{}@code{<gtk-paper-size>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
 Gets the paper width of the @code{<gtk-paper-size>}, in units of @var{unit}.
 
 @table @var
@@ -164,7 +169,7 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-paper-size-get-height  (self@tie{}@code{<gtk-paper-size*>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function gtk-paper-size-get-height  (self@tie{}@code{<gtk-paper-size>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
 Gets the paper height of the @code{<gtk-paper-size>}, in units of @var{unit}.
 
 @table @var
@@ -183,7 +188,7 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-paper-size-is-custom  (self@tie{}@code{<gtk-paper-size*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gtk-paper-size-is-custom  (self@tie{}@code{<gtk-paper-size>}) @result{}@tie{} (ret@tie{}@code{bool})
 Returns @samp{@code{#t}} if @var{size} is not a standard paper size.
 
 @table @var
@@ -197,7 +202,7 @@ whether @var{size} is a custom paper size.
 
 @end deffn
 
-@deffn Function gtk-paper-size-set-size  (self@tie{}@code{<gtk-paper-size*>}) (width@tie{}@code{double}) (height@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>})
+@deffn Function gtk-paper-size-set-size  (self@tie{}@code{<gtk-paper-size>}) (width@tie{}@code{double}) (height@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>})
 Changes the dimensions of a @var{size} to @var{width} x @var{height}.
 
 @table @var

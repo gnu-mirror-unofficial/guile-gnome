@@ -2,17 +2,34 @@
 @c %start of fragment
 
 @deftp Class <gtk-calendar>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-widget>}.
+
+This class defines the following properties:
 
 @table @code
 @item year
-The selected year@item month
-The selected month (as a number between 0 and 11)@item day
-The selected day (as a number between 1 and 31, or 0 to unselect the currently selected day)@item show-heading
-If TRUE, a heading is displayed@item show-day-names
-If TRUE, day names are displayed@item no-month-change
-If TRUE, the selected month cannot be changed@item show-week-numbers
-If TRUE, week numbers are displayed@end table
+The selected year
+
+@item month
+The selected month (as a number between 0 and 11)
+
+@item day
+The selected day (as a number between 1 and 31, or 0 to unselect the currently
+selected day)
+
+@item show-heading
+If TRUE, a heading is displayed
+
+@item show-day-names
+If TRUE, day names are displayed
+
+@item no-month-change
+If TRUE, the selected month cannot be changed
+
+@item show-week-numbers
+If TRUE, week numbers are displayed
+
+@end table
 
 @end deftp
 

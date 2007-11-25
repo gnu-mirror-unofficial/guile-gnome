@@ -2,12 +2,18 @@
 @c %start of fragment
 
 @deftp Class <gtk-menu>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-menu-shell>}.
+
+This class defines the following properties:
 
 @table @code
 @item tearoff-state
-A boolean that indicates whether the menu is torn-off@item tearoff-title
-A title that may be displayed by the window manager when this menu is torn-off@end table
+A boolean that indicates whether the menu is torn-off
+
+@item tearoff-title
+A title that may be displayed by the window manager when this menu is torn-off
+
+@end table
 
 @end deftp
 
@@ -93,49 +99,6 @@ The row number to attach the bottom of the item to.
 @end table
 
 Since 2.4
-
-@end deffn
-
-@deffn Function gtk-menu-popup  (self@tie{}@code{<gtk-menu>}) (parent_menu_shell@tie{}@code{<gtk-widget>}) (parent_menu_item@tie{}@code{<gtk-widget>}) (func@tie{}@code{<gtk-menu-position-func>}) (data@tie{}@code{<gpointer>}) (button@tie{}@code{unsigned-int}) (activate_time@tie{}@code{unsigned-int32})
-@deffnx Method popup
-Displays a menu and makes it available for selection. Applications can use this
-function to display context-sensitive menus, and will typically supply
-@samp{@code{#f}} for the @var{parent-menu-shell}, @var{parent-menu-item},
-@var{func} and @var{data} parameters. The default menu positioning function will
-position the menu at the current mouse cursor position.
-
-The @var{button} parameter should be the mouse button pressed to initiate the
-menu popup. If the menu popup was initiated by something other than a mouse
-button press, such as a mouse button release or a keypress, @var{button} should
-be 0.
-
-The @var{activate-time} parameter should be the time stamp of the event that
-initiated the popup. If such an event is not available, use
-@code{gtk-get-current-event-time} instead.
-
-@table @var
-@item menu
-a @code{<gtk-menu>}.
-
-@item parent-menu-shell
-the menu shell containing the triggering menu item, or @samp{@code{#f}}
-
-@item parent-menu-item
-the menu item whose activation triggered the popup, or @samp{@code{#f}}
-
-@item func
-a user supplied function used to position the menu, or @samp{@code{#f}}
-
-@item data
-user supplied data to be passed to @var{func}.
-
-@item button
-the mouse button which was pressed to initiate the event.
-
-@item activate-time
-the time at which the activation event occurred.
-
-@end table
 
 @end deffn
 
@@ -319,26 +282,6 @@ a @code{<gtk-menu>}.
 
 @item torn-off
 If @samp{@code{#t}}, menu is displayed as a tearoff menu.
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-menu-attach-to-widget  (self@tie{}@code{<gtk-menu>}) (attach_widget@tie{}@code{<gtk-widget>}) (detacher@tie{}@code{<gtk-menu-detach-func>})
-@deffnx Method attach-to-widget
-Attaches the menu to the widget and provides a callback function that will be
-invoked when the menu calls @code{gtk-menu-detach} during its destruction.
-
-@table @var
-@item menu
-a @code{<gtk-menu>}.
-
-@item attach-widget
-the @code{<gtk-widget>} that the menu will be attached to.
-
-@item detacher
-the user supplied callback function that will be called when the menu calls
-@code{gtk-menu-detach}.
 
 @end table
 

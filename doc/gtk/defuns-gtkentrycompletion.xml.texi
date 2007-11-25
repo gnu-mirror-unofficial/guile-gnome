@@ -2,18 +2,36 @@
 @c %start of fragment
 
 @deftp Class <gtk-entry-completion>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-buildable>}, @code{<gtk-cell-layout>}, @code{<gobject>}.
+
+This class defines the following properties:
 
 @table @code
 @item model
-The model to find matches in@item minimum-key-length
-Minimum length of the search key in order to look up matches@item text-column
-The column of the model containing the strings.@item inline-completion
-Whether the common prefix should be inserted automatically@item popup-completion
-Whether the completions should be shown in a popup window@item popup-set-width
-If TRUE, the popup window will have the same size as the entry@item popup-single-match
-If TRUE, the popup window will appear for a single match.@item inline-selection
-Your description here@end table
+The model to find matches in
+
+@item minimum-key-length
+Minimum length of the search key in order to look up matches
+
+@item text-column
+The column of the model containing the strings.
+
+@item inline-completion
+Whether the common prefix should be inserted automatically
+
+@item popup-completion
+Whether the completions should be shown in a popup window
+
+@item popup-set-width
+If TRUE, the popup window will have the same size as the entry
+
+@item popup-single-match
+If TRUE, the popup window will appear for a single match.
+
+@item inline-selection
+Your description here
+
+@end table
 
 @end deftp
 
@@ -111,31 +129,6 @@ A @code{<gtk-entry-completion>}.
 
 @item ret
 A @code{<gtk-tree-model>}, or @samp{@code{#f}} if none is currently being used.
-
-@end table
-
-Since 2.4
-
-@end deffn
-
-@deffn Function gtk-entry-completion-set-match-func  (self@tie{}@code{<gtk-entry-completion>}) (func@tie{}@code{<gtk-entry-completion-match-func>}) (func_data@tie{}@code{<gpointer>}) (func_notify@tie{}@code{<g-destroy-notify>})
-@deffnx Method set-match-func
-Sets the match function for @var{completion} to be @var{func}. The match
-function is used to determine if a row should or should not be in the completion
-list.
-
-@table @var
-@item completion
-A @code{<gtk-entry-completion>}.
-
-@item func
-The @code{<gtk-entry-completion-match-func>} to use.
-
-@item func-data
-The user data for @var{func}.
-
-@item func-notify
-Destroy notifier for @var{func-data}.
 
 @end table
 

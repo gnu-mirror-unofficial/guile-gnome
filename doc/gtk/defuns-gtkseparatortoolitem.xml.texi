@@ -2,11 +2,15 @@
 @c %start of fragment
 
 @deftp Class <gtk-separator-tool-item>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-tool-item>}.
+
+This class defines the following properties:
 
 @table @code
 @item draw
-Whether the separator is drawn, or just blank@end table
+Whether the separator is drawn, or just blank
+
+@end table
 
 @end deftp
 

@@ -2,18 +2,40 @@
 @c %start of fragment
 
 @deftp Class <gtk-alignment>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-bin>}.
+
+This class defines the following properties:
 
 @table @code
 @item xalign
-Horizontal position of child in available space. 0.0 is left aligned, 1.0 is right aligned@item yalign
-Vertical position of child in available space. 0.0 is top aligned, 1.0 is bottom aligned@item xscale
-If available horizontal space is bigger than needed for the child, how much of it to use for the child. 0.0 means none, 1.0 means all@item yscale
-If available vertical space is bigger than needed for the child, how much of it to use for the child. 0.0 means none, 1.0 means all@item top-padding
-The padding to insert at the top of the widget.@item bottom-padding
-The padding to insert at the bottom of the widget.@item left-padding
-The padding to insert at the left of the widget.@item right-padding
-The padding to insert at the right of the widget.@end table
+Horizontal position of child in available space. 0.0 is left aligned, 1.0 is
+right aligned
+
+@item yalign
+Vertical position of child in available space. 0.0 is top aligned, 1.0 is bottom
+aligned
+
+@item xscale
+If available horizontal space is bigger than needed for the child, how much of
+it to use for the child. 0.0 means none, 1.0 means all
+
+@item yscale
+If available vertical space is bigger than needed for the child, how much of it
+to use for the child. 0.0 means none, 1.0 means all
+
+@item top-padding
+The padding to insert at the top of the widget.
+
+@item bottom-padding
+The padding to insert at the bottom of the widget.
+
+@item left-padding
+The padding to insert at the left of the widget.
+
+@item right-padding
+The padding to insert at the right of the widget.
+
+@end table
 
 @end deftp
 

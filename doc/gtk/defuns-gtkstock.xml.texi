@@ -1,6 +1,11 @@
 
 @c %start of fragment
 
+@deftp Class <gtk-stock-item>
+Opaque pointer.
+
+@end deftp
+
 @deffn Function gtk-stock-add  (items@tie{}@code{scm})
 Registers each of the stock items in @var{items}. If an item already exists with
 the same stock ID as one of the @var{items}, the old item gets replaced. The
@@ -19,7 +24,7 @@ number of @code{<gtk-stock-item>} in @var{items}
 
 @end deffn
 
-@deffn Function gtk-stock-add-static  (items@tie{}@code{<gtk-stock-item*>}) (n_items@tie{}@code{unsigned-int})
+@deffn Function gtk-stock-add-static  (items@tie{}@code{<gtk-stock-item>}) (n_items@tie{}@code{unsigned-int})
 Same as @code{gtk-stock-add}, but doesn't copy @var{items}, so @var{items} must
 persist until application exit.
 
@@ -34,7 +39,7 @@ number of items
 
 @end deffn
 
-@deffn Function gtk-stock-item-copy  (self@tie{}@code{<gtk-stock-item*>}) @result{}@tie{} (ret@tie{}@code{<gtk-stock-item*>})
+@deffn Function gtk-stock-item-copy  (self@tie{}@code{<gtk-stock-item>}) @result{}@tie{} (ret@tie{}@code{<gtk-stock-item>})
 Copies a stock item, mostly useful for language bindings and not in
 applications.
 
@@ -78,30 +83,6 @@ stock item to initialize with values
 @samp{@code{#t}} if @var{item} was initialized
 
 @end table
-
-@end deffn
-
-@deffn Function gtk-stock-set-translate-func  (domain@tie{}@code{mchars}) (func@tie{}@code{<gtk-translate-func>}) (data@tie{}@code{<gpointer>}) (notify@tie{}@code{<gtk-destroy-notify>})
-Sets a function to be used for translating the @var{label} of a stock item.
-
-If no function is registered for a translation domain, @code{dgettext} is used.
-
-@table @var
-@item domain
-the translation domain for which @var{func} shall be used
-
-@item func
-a @code{<gtk-translate-func>}
-
-@item data
-data to pass to @var{func}
-
-@item notify
-a @code{<gtk-destroy-notify>} that is called when @var{data} is no longer needed
-
-@end table
-
-Since 2.8
 
 @end deffn
 

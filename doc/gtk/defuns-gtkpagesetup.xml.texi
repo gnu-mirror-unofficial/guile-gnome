@@ -1,7 +1,14 @@
 
 @c %start of fragment
 
-@deffn Function gtk-page-setup-new  @result{}@tie{} (ret@tie{}@code{<gtk-page-setup*>})
+@deftp Class <gtk-page-setup>
+Derives from @code{<gobject>}.
+
+This class defines no properties, other than those defined by its superclasses.
+
+@end deftp
+
+@deffn Function gtk-page-setup-new  @result{}@tie{} (ret@tie{}@code{<gtk-page-setup>})
 Creates a new @code{<gtk-page-setup>}.
 
 @table @var
@@ -14,7 +21,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-get-orientation  (self@tie{}@code{<gtk-page-setup*>}) @result{}@tie{} (ret@tie{}@code{<gtk-page-orientation>})
+@deffn Function gtk-page-setup-get-orientation  (self@tie{}@code{<gtk-page-setup>}) @result{}@tie{} (ret@tie{}@code{<gtk-page-orientation>})
+@deffnx Method get-orientation
 Gets the page orientation of the @code{<gtk-page-setup>}.
 
 @table @var
@@ -30,7 +38,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-set-orientation  (self@tie{}@code{<gtk-page-setup*>}) (orientation@tie{}@code{<gtk-page-orientation>})
+@deffn Function gtk-page-setup-set-orientation  (self@tie{}@code{<gtk-page-setup>}) (orientation@tie{}@code{<gtk-page-orientation>})
+@deffnx Method set-orientation
 Sets the page orientation of the @code{<gtk-page-setup>}.
 
 @table @var
@@ -46,7 +55,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-get-paper-size  (self@tie{}@code{<gtk-page-setup*>}) @result{}@tie{} (ret@tie{}@code{<gtk-paper-size*>})
+@deffn Function gtk-page-setup-get-paper-size  (self@tie{}@code{<gtk-page-setup>}) @result{}@tie{} (ret@tie{}@code{<gtk-paper-size>})
+@deffnx Method get-paper-size
 Gets the paper size of the @code{<gtk-page-setup>}.
 
 @table @var
@@ -62,7 +72,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-set-paper-size  (self@tie{}@code{<gtk-page-setup*>}) (size@tie{}@code{<gtk-paper-size*>})
+@deffn Function gtk-page-setup-set-paper-size  (self@tie{}@code{<gtk-page-setup>}) (size@tie{}@code{<gtk-paper-size>})
+@deffnx Method set-paper-size
 Sets the paper size of the @code{<gtk-page-setup>} without changing the margins.
 See @code{gtk-page-setup-set-paper-size-and-default-margins}.
 
@@ -79,7 +90,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-get-top-margin  (self@tie{}@code{<gtk-page-setup*>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function gtk-page-setup-get-top-margin  (self@tie{}@code{<gtk-page-setup>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-top-margin
 Gets the top margin in units of @var{unit}.
 
 @table @var
@@ -98,7 +110,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-set-top-margin  (self@tie{}@code{<gtk-page-setup*>}) (margin@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>})
+@deffn Function gtk-page-setup-set-top-margin  (self@tie{}@code{<gtk-page-setup>}) (margin@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>})
+@deffnx Method set-top-margin
 Sets the top margin of the @code{<gtk-page-setup>}.
 
 @table @var
@@ -117,7 +130,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-get-bottom-margin  (self@tie{}@code{<gtk-page-setup*>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function gtk-page-setup-get-bottom-margin  (self@tie{}@code{<gtk-page-setup>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-bottom-margin
 Gets the bottom margin in units of @var{unit}.
 
 @table @var
@@ -136,7 +150,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-set-bottom-margin  (self@tie{}@code{<gtk-page-setup*>}) (margin@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>})
+@deffn Function gtk-page-setup-set-bottom-margin  (self@tie{}@code{<gtk-page-setup>}) (margin@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>})
+@deffnx Method set-bottom-margin
 Sets the bottom margin of the @code{<gtk-page-setup>}.
 
 @table @var
@@ -155,7 +170,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-get-left-margin  (self@tie{}@code{<gtk-page-setup*>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function gtk-page-setup-get-left-margin  (self@tie{}@code{<gtk-page-setup>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-left-margin
 Gets the left margin in units of @var{unit}.
 
 @table @var
@@ -174,7 +190,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-set-left-margin  (self@tie{}@code{<gtk-page-setup*>}) (margin@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>})
+@deffn Function gtk-page-setup-set-left-margin  (self@tie{}@code{<gtk-page-setup>}) (margin@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>})
+@deffnx Method set-left-margin
 Sets the left margin of the @code{<gtk-page-setup>}.
 
 @table @var
@@ -193,7 +210,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-get-right-margin  (self@tie{}@code{<gtk-page-setup*>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function gtk-page-setup-get-right-margin  (self@tie{}@code{<gtk-page-setup>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-right-margin
 Gets the right margin in units of @var{unit}.
 
 @table @var
@@ -212,7 +230,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-set-right-margin  (self@tie{}@code{<gtk-page-setup*>}) (margin@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>})
+@deffn Function gtk-page-setup-set-right-margin  (self@tie{}@code{<gtk-page-setup>}) (margin@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>})
+@deffnx Method set-right-margin
 Sets the right margin of the @code{<gtk-page-setup>}.
 
 @table @var
@@ -231,7 +250,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-get-paper-width  (self@tie{}@code{<gtk-page-setup*>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function gtk-page-setup-get-paper-width  (self@tie{}@code{<gtk-page-setup>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-paper-width
 Returns the paper width in units of @var{unit}.
 
 Note that this function takes orientation, but not margins into consideration.
@@ -253,7 +273,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-get-paper-height  (self@tie{}@code{<gtk-page-setup*>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function gtk-page-setup-get-paper-height  (self@tie{}@code{<gtk-page-setup>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-paper-height
 Returns the paper height in units of @var{unit}.
 
 Note that this function takes orientation, but not margins into consideration.
@@ -275,7 +296,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-get-page-width  (self@tie{}@code{<gtk-page-setup*>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function gtk-page-setup-get-page-width  (self@tie{}@code{<gtk-page-setup>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-page-width
 Returns the page width in units of @var{unit}.
 
 Note that this function takes orientation and margins into consideration. See
@@ -297,7 +319,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-page-setup-get-page-height  (self@tie{}@code{<gtk-page-setup*>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function gtk-page-setup-get-page-height  (self@tie{}@code{<gtk-page-setup>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-page-height
 Returns the page height in units of @var{unit}.
 
 Note that this function takes orientation and margins into consideration. See

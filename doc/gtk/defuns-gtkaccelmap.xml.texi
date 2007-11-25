@@ -1,6 +1,22 @@
 
 @c %start of fragment
 
+@deftp Class <gtk-accel-map>
+Derives from @code{<gobject>}.
+
+This class defines no properties, other than those defined by its superclasses.
+
+@end deftp
+
+@defop Signal <gtk-accel-map> changed  (arg0@tie{}@code{<gchararray>}) (arg1@tie{}@code{<guint>}) (arg2@tie{}@code{<gdk-modifier-type>})
+Notifies of a change in the global accelerator map. The path is also used as the
+detail for the signal, so it is possible to connect to changed::@c (replaceable
+"accel_path") .
+
+Since 2.4
+
+@end defop
+
 @deffn Function gtk-accel-map-add-entry  (accel_path@tie{}@code{mchars}) (accel_key@tie{}@code{unsigned-int}) (accel_mods@tie{}@code{<gdk-modifier-type>})
 Registers a new accelerator with the global accelerator map. This function
 should only be called once per @var{accel-path} with the canonical
@@ -25,23 +41,6 @@ the accelerator key
 
 @item accel-mods
 the accelerator modifiers
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-accel-map-lookup-entry  (accel_path@tie{}@code{mchars}) (key@tie{}@code{<gtk-accel-key*>}) @result{}@tie{} (ret@tie{}@code{bool})
-Looks up the accelerator entry for @var{accel-path} and fills in @var{key}.
-
-@table @var
-@item accel-path
-a valid accelerator path
-
-@item key
-the accelerator key to be filled in (optional)
-
-@item ret
-@samp{@code{#t}} if @var{accel-path} is known, @samp{@code{#f}} otherwise
 
 @end table
 
@@ -127,17 +126,6 @@ a valid writable file descriptor
 
 @end deffn
 
-@deffn Function gtk-accel-map-load-scanner  (scanner@tie{}@code{<g-scanner*>})
-@code{<g-scanner>} variant of @code{gtk-accel-map-load}.
-
-@table @var
-@item scanner
-a @code{<g-scanner>} which has already been provided with an input file
-
-@end table
-
-@end deffn
-
 @deffn Function gtk-accel-map-add-filter  (filter_pattern@tie{}@code{mchars})
 Adds a filter to the global list of accel path filters.
 
@@ -155,25 +143,7 @@ a pattern (see @code{<g-pattern-spec>})
 
 @end deffn
 
-@deffn Function gtk-accel-map-foreach-unfiltered  (data@tie{}@code{<gpointer>}) (foreach_func@tie{}@code{<gtk-accel-map-foreach>})
-Loops over all entries in the accelerator map, and execute @var{foreach-func} on
-each. The signature of @var{foreach-func} is that of
-@code{<gtk-accel-map-foreach>}, the @var{changed} parameter indicates whether
-this accelerator was changed during runtime (thus, would need saving during an
-accelerator map dump).
-
-@table @var
-@item data
-data to be passed into @var{foreach-func}
-
-@item foreach-func
-function to be executed for each accel map entry
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-accel-map-get  @result{}@tie{} (ret@tie{}@code{<gtk-accel-map*>})
+@deffn Function gtk-accel-map-get  @result{}@tie{} (ret@tie{}@code{<gtk-accel-map>})
 Gets the singleton global @code{<gtk-accel-map>} object. This object is useful
 only for notification of changes to the accelerator map via the ::changed
 signal; it isn't a parameter to the other accelerator map functions.

@@ -2,11 +2,16 @@
 @c %start of fragment
 
 @deftp Class <gtk-tree-model-sort>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-tree-model>}, @code{<gtk-tree-drag-source>},
+@code{<gtk-tree-sortable>}, @code{<gobject>}.
+
+This class defines the following properties:
 
 @table @code
 @item model
-The model for the TreeModelSort to sort@end table
+The model for the TreeModelSort to sort
+
+@end table
 
 @end deftp
 
@@ -59,7 +64,7 @@ A @code{<gtk-tree-model-sort>}
 
 @deffn Function gtk-tree-model-sort-iter-is-valid  (self@tie{}@code{<gtk-tree-model-sort>}) (iter@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
 @deffnx Method iter-is-valid
-
+@c (warning)
 
 This function is slow. Only use it for debugging and/or testing purposes.
 

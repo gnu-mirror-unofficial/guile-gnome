@@ -2,8 +2,9 @@
 @c %start of fragment
 
 @deftp Class <gtk-tree-model>
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+Derives from @code{<ginterface>}.
+
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
 
@@ -49,9 +50,18 @@ since this is implemented by removing and then reinserting the row.
 @end defop
 
 @deftp Class <gtk-tree-iter>
+Derives from @code{<gboxed>}.
+
 @end deftp
 
 @deftp Class <gtk-tree-path>
+Derives from @code{<gboxed>}.
+
+@end deftp
+
+@deftp Class <gtk-tree-row-reference>
+Derives from @code{<gboxed>}.
+
 @end deftp
 
 @deffn Function gtk-tree-path-new-from-string  (path@tie{}@code{mchars}) (path@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-path>})
@@ -114,7 +124,7 @@ A new @code{<gtk-tree-path>}.
 
 @end deffn
 
-@deffn Function gtk-tree-row-reference-new  (model@tie{}@code{<gtk-tree-model>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-row-reference*>})
+@deffn Function gtk-tree-row-reference-new  (model@tie{}@code{<gtk-tree-model>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-row-reference>})
 Creates a row reference based on @var{path}. This reference will keep pointing
 to the node pointed to by @var{path}, so long as it exists. It listens to all
 signals emitted by @var{model}, and updates its path appropriately. If
@@ -134,7 +144,7 @@ A newly allocated @code{<gtk-tree-row-reference>}, or @samp{@code{#f}}
 
 @end deffn
 
-@deffn Function gtk-tree-row-reference-new-proxy  (proxy@tie{}@code{<gobject>}) (model@tie{}@code{<gtk-tree-model>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-row-reference*>})
+@deffn Function gtk-tree-row-reference-new-proxy  (proxy@tie{}@code{<gobject>}) (model@tie{}@code{<gtk-tree-model>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-row-reference>})
 You do not need to use this function. Creates a row reference based on
 @var{path}. This reference will keep pointing to the node pointed to by
 @var{path}, so long as it exists. If @var{path} isn't a valid path in
@@ -172,7 +182,7 @@ A newly allocated @code{<gtk-tree-row-reference>}, or @samp{@code{#f}}
 
 @end deffn
 
-@deffn Function gtk-tree-row-reference-get-model  (self@tie{}@code{<gtk-tree-row-reference*>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-model>})
+@deffn Function gtk-tree-row-reference-get-model  (self@tie{}@code{<gtk-tree-row-reference>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-model>})
 Returns the model that the row reference is monitoring.
 
 @table @var
@@ -188,7 +198,7 @@ Since 2.8
 
 @end deffn
 
-@deffn Function gtk-tree-row-reference-get-path  (self@tie{}@code{<gtk-tree-row-reference*>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-path>})
+@deffn Function gtk-tree-row-reference-get-path  (self@tie{}@code{<gtk-tree-row-reference>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-path>})
 Returns a path that the row reference currently points to, or @samp{@code{#f}}
 if the path pointed to is no longer valid.
 
@@ -203,7 +213,7 @@ A current path, or @samp{@code{#f}}.
 
 @end deffn
 
-@deffn Function gtk-tree-row-reference-valid  (self@tie{}@code{<gtk-tree-row-reference*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gtk-tree-row-reference-valid  (self@tie{}@code{<gtk-tree-row-reference>}) @result{}@tie{} (ret@tie{}@code{bool})
 Returns @samp{@code{#t}} if the @var{reference} is non-@samp{@code{#f}} and
 refers to a current valid path.
 

@@ -2,19 +2,11 @@
 @c %start of fragment
 
 @deftp Class <gtk-rc-style>
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+Derives from @code{<gobject>}.
+
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
-
-@deffn Function gtk-rc-scanner-new  @result{}@tie{} (ret@tie{}@code{<g-scanner*>})
-@table @var
-@item ret
-
-
-@end table
-
-@end deffn
 
 @deffn Function gtk-rc-get-style  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gtk-style>})
 Finds all matching RC styles for a given widget, composites them together, and
@@ -165,82 +157,12 @@ the current directory.
 
 @end deffn
 
-@deffn Function gtk-rc-get-default-files  @result{}@tie{} (ret@tie{}@code{<gchar**>})
-Retrieves the current list of RC files that will be parsed at the end of
-@code{gtk-init}.
-
-@table @var
-@item ret
-A @samp{@code{#f}}-terminated array of filenames. This memory is owned by GTK+
-and must not be freed by the application. If you want to store this information,
-you should make a copy.
-
-@end table
-
-@end deffn
-
 @deffn Function gtk-rc-set-default-files  @result{}@tie{} (filenames@tie{}@code{mchars})
 Sets the list of files that GTK+ will read at the end of @code{gtk-init}.
 
 @table @var
 @item filenames
 A @samp{@code{#f}}-terminated list of filenames.
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-rc-parse-color  (scanner@tie{}@code{<g-scanner*>}) (color@tie{}@code{<gdk-color>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
-Parses a color in the format expected in a RC file.
-
-@table @var
-@item scanner
-a @code{<gtk-scanner>}
-
-@item color
-a pointer to a @code{<gtk-color>} structure in which to store the result
-
-@item ret
-@samp{G_TOKEN_NONE} if parsing succeeded, otherwise the token that was expected
-but not found.
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-rc-parse-state  (scanner@tie{}@code{<g-scanner*>}) (state@tie{}@code{<gtk-state-type*>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
-Parses a @code{<gtk-state-type>} variable from the format expected in a RC file.
-
-@table @var
-@item scanner
-a @code{<gtk-scanner>} (must be initialized for parsing an RC file)
-
-@item state
-A pointer to a @code{<gtk-state-type>} variable in which to store the result.
-
-@item ret
-@samp{G_TOKEN_NONE} if parsing succeeded, otherwise the token that was expected
-but not found.
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-rc-parse-priority  (scanner@tie{}@code{<g-scanner*>}) (priority@tie{}@code{<gtk-path-priority-type*>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
-Parses a @code{<gtk-path-priority-type>} variable from the format expected in a
-RC file.
-
-@table @var
-@item scanner
-a @code{<gtk-scanner>} (must be initialized for parsing an RC file)
-
-@item priority
-A pointer to @code{<gtk-path-priority-type>} variable in which to store the
-result.
-
-@item ret
-@samp{G_TOKEN_NONE} if parsing succeeded, otherwise the token that was expected
-but not found.
 
 @end table
 
@@ -257,29 +179,6 @@ name of a theme engine
 @item ret
 The filename, if found (must be freed with @code{g-free}), otherwise
 @samp{@code{#f}}.
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-rc-find-pixmap-in-path  (settings@tie{}@code{<gtk-settings>}) (scanner@tie{}@code{<g-scanner*>}) (pixmap_file@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
-Looks up a file in pixmap path for the specified @code{<gtk-settings>}. If the
-file is not found, it outputs a warning message using @code{g-warning} and
-returns @samp{@code{#f}}.
-
-@table @var
-@item settings
-a @code{<gtk-settings>}
-
-@item scanner
-Scanner used to get line number information for the warning message, or
-@samp{@code{#f}}
-
-@item pixmap-file
-name of the pixmap file to locate.
-
-@item ret
-the filename.
 
 @end table
 

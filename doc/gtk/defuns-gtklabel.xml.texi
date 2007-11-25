@@ -2,28 +2,71 @@
 @c %start of fragment
 
 @deftp Class <gtk-label>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-misc>}.
+
+This class defines the following properties:
 
 @table @code
 @item label
-The text of the label@item attributes
-A list of style attributes to apply to the text of the label@item use-markup
-The text of the label includes XML markup. See pango_parse_markup()@item use-underline
-If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key@item justify
-The alignment of the lines in the text of the label relative to each other. This does NOT affect the alignment of the label within its allocation. See GtkMisc::xalign for that@item pattern
-A string with _ characters in positions correspond to characters in the text to underline@item wrap
-If set, wrap lines if the text becomes too wide@item wrap-mode
-If wrap is set, controls how linewrapping is done@item selectable
-Whether the label text can be selected with the mouse@item mnemonic-keyval
-The mnemonic accelerator key for this label@item mnemonic-widget
-The widget to be activated when the label's mnemonic key is pressed@item cursor-position
-The current position of the insertion cursor in chars@item selection-bound
-The position of the opposite end of the selection from the cursor in chars@item ellipsize
-The preferred place to ellipsize the string, if the label does not have enough room to display the entire string@item width-chars
-The desired width of the label, in characters@item single-line-mode
-Whether the label is in single line mode@item angle
-Angle at which the label is rotated@item max-width-chars
-The desired maximum width of the label, in characters@end table
+The text of the label
+
+@item attributes
+A list of style attributes to apply to the text of the label
+
+@item use-markup
+The text of the label includes XML markup. See pango_parse_markup()
+
+@item use-underline
+If set, an underline in the text indicates the next character should be used for
+the mnemonic accelerator key
+
+@item justify
+The alignment of the lines in the text of the label relative to each other. This
+does NOT affect the alignment of the label within its allocation. See
+GtkMisc::xalign for that
+
+@item pattern
+A string with _ characters in positions correspond to characters in the text to
+underline
+
+@item wrap
+If set, wrap lines if the text becomes too wide
+
+@item wrap-mode
+If wrap is set, controls how linewrapping is done
+
+@item selectable
+Whether the label text can be selected with the mouse
+
+@item mnemonic-keyval
+The mnemonic accelerator key for this label
+
+@item mnemonic-widget
+The widget to be activated when the label's mnemonic key is pressed
+
+@item cursor-position
+The current position of the insertion cursor in chars
+
+@item selection-bound
+The position of the opposite end of the selection from the cursor in chars
+
+@item ellipsize
+The preferred place to ellipsize the string, if the label does not have enough
+room to display the entire string
+
+@item width-chars
+The desired width of the label, in characters
+
+@item single-line-mode
+Whether the label is in single line mode
+
+@item angle
+Angle at which the label is rotated
+
+@item max-width-chars
+The desired maximum width of the label, in characters
+
+@end table
 
 @end deftp
 
@@ -555,7 +598,7 @@ modified or freed.
 
 @end deffn
 
-@deffn Function gtk-label-get-layout  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{<pango-layout*>})
+@deffn Function gtk-label-get-layout  (self@tie{}@code{<gtk-label>}) @result{}@tie{} (ret@tie{}@code{<pango-layout>})
 @deffnx Method get-layout
 Gets the @code{<pango-layout>} used to display the label. The layout is useful
 to e.g. convert text positions to pixel positions, in combination with

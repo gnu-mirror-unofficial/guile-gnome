@@ -2,14 +2,24 @@
 @c %start of fragment
 
 @deftp Class <gtk-paned>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-container>}.
+
+This class defines the following properties:
 
 @table @code
 @item position
-Position of paned separator in pixels (0 means all the way to the left/top)@item position-set
-TRUE if the Position property should be used@item min-position
-Smallest possible value for the "position" property@item max-position
-Largest possible value for the "position" property@end table
+Position of paned separator in pixels (0 means all the way to the left/top)
+
+@item position-set
+TRUE if the Position property should be used
+
+@item min-position
+Smallest possible value for the "position" property
+
+@item max-position
+Largest possible value for the "position" property
+
+@end table
 
 @end deftp
 

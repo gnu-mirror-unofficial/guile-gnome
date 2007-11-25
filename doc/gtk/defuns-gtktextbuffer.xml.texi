@@ -2,16 +2,31 @@
 @c %start of fragment
 
 @deftp Class <gtk-text-buffer>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gobject>}.
+
+This class defines the following properties:
 
 @table @code
 @item tag-table
-Text Tag Table@item text
-Current text of the buffer@item has-selection
-Whether the buffer has some text currently selected@item cursor-position
-The position of the insert mark (as offset from the beginning of the buffer)@item copy-target-list
-The list of targets this buffer supports for clipboard copying and DND source@item paste-target-list
-The list of targets this buffer supports for clipboard pasting and DND destination@end table
+Text Tag Table
+
+@item text
+Current text of the buffer
+
+@item has-selection
+Whether the buffer has some text currently selected
+
+@item cursor-position
+The position of the insert mark (as offset from the beginning of the buffer)
+
+@item copy-target-list
+The list of targets this buffer supports for clipboard copying and DND source
+
+@item paste-target-list
+The list of targets this buffer supports for clipboard pasting and DND
+destination
+
+@end table
 
 @end deftp
 
@@ -1024,8 +1039,9 @@ iterator to initialize
 
 @end deffn
 
-@deffn Function gtk-text-buffer-get-bounds  (self@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (ret@tie{}@code{scm})
+@deffn Function gtk-text-buffer-get-bounds  (self@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (start@tie{}@code{<gtk-text-iter>}) (end@tie{}@code{<gtk-text-iter>}) 
 @deffnx Method get-bounds
+@deffnx Method get-bounds 
 Retrieves the first and last iterators in the buffer, i.e. the entire buffer
 lies within the range [@var{start},@var{end}).
 
@@ -1103,7 +1119,7 @@ whether there was a non-empty selection to delete
 
 @end deffn
 
-@deffn Function gtk-text-buffer-paste-clipboard  (self@tie{}@code{<gtk-text-buffer>}) (clipboard@tie{}@code{<gtk-clipboard*>}) (override_location@tie{}@code{<gtk-text-iter>}) (default_editable@tie{}@code{bool})
+@deffn Function gtk-text-buffer-paste-clipboard  (self@tie{}@code{<gtk-text-buffer>}) (clipboard@tie{}@code{<gtk-clipboard>}) (override_location@tie{}@code{<gtk-text-iter>}) (default_editable@tie{}@code{bool})
 @deffnx Method paste-clipboard
 Pastes the contents of a clipboard at the insertion point, or at
 @var{override-location}. (Note: pasting is asynchronous, that is, we'll ask for
@@ -1127,7 +1143,7 @@ whether the buffer is editable by default
 
 @end deffn
 
-@deffn Function gtk-text-buffer-copy-clipboard  (self@tie{}@code{<gtk-text-buffer>}) (clipboard@tie{}@code{<gtk-clipboard*>})
+@deffn Function gtk-text-buffer-copy-clipboard  (self@tie{}@code{<gtk-text-buffer>}) (clipboard@tie{}@code{<gtk-clipboard>})
 @deffnx Method copy-clipboard
 Copies the currently-selected text to a clipboard.
 
@@ -1142,7 +1158,7 @@ the @code{<gtk-clipboard>} object to copy to.
 
 @end deffn
 
-@deffn Function gtk-text-buffer-cut-clipboard  (self@tie{}@code{<gtk-text-buffer>}) (clipboard@tie{}@code{<gtk-clipboard*>}) (default_editable@tie{}@code{bool})
+@deffn Function gtk-text-buffer-cut-clipboard  (self@tie{}@code{<gtk-text-buffer>}) (clipboard@tie{}@code{<gtk-clipboard>}) (default_editable@tie{}@code{bool})
 @deffnx Method cut-clipboard
 Copies the currently-selected text to a clipboard, then deletes said text if
 it's editable.
@@ -1197,83 +1213,6 @@ that function for a full explanation.
 a @code{<gtk-text-buffer>}
 
 @end table
-
-@end deffn
-
-@deffn Function gtk-text-buffer-deserialize  (self@tie{}@code{<gtk-text-buffer>}) (content_buffer@tie{}@code{<gtk-text-buffer>}) (format@tie{}@code{<gdk-atom>}) (iter@tie{}@code{<gtk-text-iter>}) (data@tie{}@code{<guint8*>}) (length@tie{}@code{size_t}) @result{}@tie{} (ret@tie{}@code{bool})
-@deffnx Method deserialize
-This function deserializes rich text in format @samp{format} and inserts it at
-@samp{iter}.
-
-@samp{format}s to be used must be registered using
-@code{gtk-text-buffer-register-deserialize-format} or
-@code{gtk-text-buffer-register-deserialize-tagset} beforehand.
-
-@table @var
-@item register-buffer
-the @code{<gtk-text-buffer>}@samp{format} is registered with
-
-@item content-buffer
-the @code{<gtk-text-buffer>} to deserialize into
-
-@item format
-the rich text format to use for deserializing
-
-@item iter
-insertion point for the deserialized text
-
-@item data
-data to deserialize
-
-@item length
-length of @samp{data}
-
-@item error
-return loaction for a @code{<g-error>}
-
-@item ret
-@samp{@code{#t}} on success, @samp{@code{#f}} otherwise.
-
-@end table
-
-Since 2.10
-
-@end deffn
-
-@deffn Function gtk-text-buffer-serialize  (self@tie{}@code{<gtk-text-buffer>}) (content_buffer@tie{}@code{<gtk-text-buffer>}) (format@tie{}@code{<gdk-atom>}) (start@tie{}@code{<gtk-text-iter>}) (end@tie{}@code{<gtk-text-iter>}) @result{}@tie{} (ret@tie{}@code{<guint8*>}) (length@tie{}@code{size_t})
-@deffnx Method serialize
-This function serializes the portion of text between @samp{start} and @samp{end}
-in the rich text format represented by @samp{format}.
-
-@samp{format}s to be used must be registered using
-@code{gtk-text-buffer-register-serialize-format} or
-@code{gtk-text-buffer-register-serialize-tagset} beforehand.
-
-@table @var
-@item register-buffer
-the @code{<gtk-text-buffer>}@samp{format} is registered with
-
-@item content-buffer
-the @code{<gtk-text-buffer>} to serialize
-
-@item format
-the rich text format to use for serializing
-
-@item start
-start of block of text to serialize
-
-@item end
-end of block of test to serialize
-
-@item length
-return location for the length of the serialized data
-
-@item ret
-the serialized data, encoded as @samp{format}
-
-@end table
-
-Since 2.10
 
 @end deffn
 

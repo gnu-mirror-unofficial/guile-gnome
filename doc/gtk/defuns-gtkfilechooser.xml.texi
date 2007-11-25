@@ -2,21 +2,46 @@
 @c %start of fragment
 
 @deftp Class <gtk-file-chooser>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<ginterface>}.
+
+This class defines the following properties:
 
 @table @code
+@item do-overwrite-confirmation
+Whether a file chooser in save mode will present an overwrite confirmation
+dialog if necessary.
+
 @item extra-widget
-Application supplied widget for extra options.@item preview-widget
-Application supplied widget for custom previews.@item action
-The type of operation that the file selector is performing@item file-system-backend
-Name of file system backend to use@item preview-widget-active
-Whether the application supplied widget for custom previews should be shown.@item filter
-The current filter for selecting which files are displayed@item show-hidden
-Whether the hidden files and folders should be displayed@item use-preview-label
-Whether to display a stock label with the name of the previewed file.@item do-overwrite-confirmation
-Whether a file chooser in save mode will present an overwrite confirmation dialog if necessary.@item local-only
-Whether the selected file(s) should be limited to local file: URLs@item select-multiple
-Whether to allow multiple files to be selected@end table
+Application supplied widget for extra options.
+
+@item action
+The type of operation that the file selector is performing
+
+@item local-only
+Whether the selected file(s) should be limited to local file: URLs
+
+@item preview-widget-active
+Whether the application supplied widget for custom previews should be shown.
+
+@item filter
+The current filter for selecting which files are displayed
+
+@item use-preview-label
+Whether to display a stock label with the name of the previewed file.
+
+@item file-system-backend
+Name of file system backend to use
+
+@item show-hidden
+Whether the hidden files and folders should be displayed
+
+@item select-multiple
+Whether to allow multiple files to be selected
+
+@item preview-widget
+Application supplied widget for custom previews.
+
+@end table
 
 @end deftp
 
@@ -82,7 +107,8 @@ See also: @code{gtk-file-chooser-set-preview-widget},
 
 @defop Signal <gtk-file-chooser> file-activated 
 This signal is emitted when the user "activates" a file in the file chooser.
-This can happen by double-clicking on a file in the file list, or by pressing .
+This can happen by double-clicking on a file in the file list, or by pressing @c
+(keycap "Enter") .
 
 Normally you do not need to connect to this signal. It is used internally by
 @code{<gtk-file-chooser-dialog>} to know when to activate the default button in
@@ -103,7 +129,8 @@ only gets emitted when the file chooser is in
 Most applications just need to turn on the do-overwrite-confirmation property
 (or call the @code{gtk-file-chooser-set-do-overwrite-confirmation} function),
 and they will automatically get a stock confirmation dialog. Applications which
-need to customize this behavior should do that, and also connect to the signal.
+need to customize this behavior should do that, and also connect to the
+@code{confirm-overwrite} signal.
 
 A signal handler for this signal must return a
 @code{<gtk-file-chooser-confirmation>} value, which indicates the action to
@@ -293,12 +320,12 @@ followed by @code{gtk-file-chooser-select-filename}.
 Note that the file must exist, or nothing will be done except for the directory
 change.
 
-If you are implementing a dialog, you should use this function if you already
-have a file name to which the user may save; for example, when the user opens an
-existing file and then does on it. If you don't have a file name already
-&#x2014; for example, if the user just created a new file and is saving it for
-the first time, do not call this function. Instead, use something similar to
-this:
+If you are implementing a @c (guimenuitem "File/Save As...") dialog, you should
+use this function if you already have a file name to which the user may save;
+for example, when the user opens an existing file and then does @c (guimenuitem
+"File/Save As...") on it. If you don't have a file name already &#x2014; for
+example, if the user just created a new file and is saving it for the first
+time, do not call this function. Instead, use something similar to this:
 
 @example 
 
@@ -511,12 +538,13 @@ equivalent to a sequence of @code{gtk-file-chooser-unselect-all} followed by
 @code{gtk-file-chooser-select-uri}.
 
 Note that the URI must exist, or nothing will be done except for the directory
-change. If you are implementing a dialog, you should use this function if you
-already have a file name to which the user may save; for example, when the user
-opens an existing file and then does on it. If you don't have a file name
-already &#x2014; for example, if the user just created a new file and is saving
-it for the first time, do not call this function. Instead, use something similar
-to this:
+change. If you are implementing a @c (guimenuitem "File/Save As...") dialog, you
+should use this function if you already have a file name to which the user may
+save; for example, when the user opens an existing file and then does @c
+(guimenuitem "File/Save As...") on it. If you don't have a file name already
+&#x2014; for example, if the user just created a new file and is saving it for
+the first time, do not call this function. Instead, use something similar to
+this:
 
 @example 
 
@@ -710,7 +738,7 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gtk-file-chooser-add-filter  (self@tie{}@code{<gtk-file-chooser>}) (filter@tie{}@code{<gtk-file-filter*>})
+@deffn Function gtk-file-chooser-add-filter  (self@tie{}@code{<gtk-file-chooser>}) (filter@tie{}@code{<gtk-file-filter>})
 @deffnx Method add-filter
 Adds @var{filter} to the list of filters that the user can select between. When
 a filter is selected, only files that are passed by that filter are displayed.
@@ -731,7 +759,7 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gtk-file-chooser-remove-filter  (self@tie{}@code{<gtk-file-chooser>}) (filter@tie{}@code{<gtk-file-filter*>})
+@deffn Function gtk-file-chooser-remove-filter  (self@tie{}@code{<gtk-file-chooser>}) (filter@tie{}@code{<gtk-file-filter>})
 @deffnx Method remove-filter
 Removes @var{filter} from the list of filters that the user can select between.
 
@@ -768,7 +796,7 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gtk-file-chooser-set-filter  (self@tie{}@code{<gtk-file-chooser>}) (filter@tie{}@code{<gtk-file-filter*>})
+@deffn Function gtk-file-chooser-set-filter  (self@tie{}@code{<gtk-file-chooser>}) (filter@tie{}@code{<gtk-file-filter>})
 @deffnx Method set-filter
 Sets the current filter; only the files that pass the filter will be displayed.
 If the user-selectable list of filters is non-empty, then the filter should be
@@ -789,7 +817,7 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gtk-file-chooser-get-filter  (self@tie{}@code{<gtk-file-chooser>}) @result{}@tie{} (ret@tie{}@code{<gtk-file-filter*>})
+@deffn Function gtk-file-chooser-get-filter  (self@tie{}@code{<gtk-file-chooser>}) @result{}@tie{} (ret@tie{}@code{<gtk-file-filter>})
 @deffnx Method get-filter
 Gets the current filter; see @code{gtk-file-chooser-set-filter}.
 

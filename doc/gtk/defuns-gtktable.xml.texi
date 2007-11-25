@@ -2,15 +2,27 @@
 @c %start of fragment
 
 @deftp Class <gtk-table>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-container>}.
+
+This class defines the following properties:
 
 @table @code
 @item n-rows
-The number of rows in the table@item n-columns
-The number of columns in the table@item column-spacing
-The amount of space between two consecutive columns@item row-spacing
-The amount of space between two consecutive rows@item homogeneous
-If TRUE, the table cells are all the same width/height@end table
+The number of rows in the table
+
+@item n-columns
+The number of columns in the table
+
+@item column-spacing
+The amount of space between two consecutive columns
+
+@item row-spacing
+The amount of space between two consecutive rows
+
+@item homogeneous
+If TRUE, the table cells are all the same width/height
+
+@end table
 
 @end deftp
 

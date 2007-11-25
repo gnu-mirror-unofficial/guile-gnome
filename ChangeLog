@@ -1,5 +1,7 @@
 2007-11-25  Andy Wingo  <wingo@pobox.com>
 
+	* doc/gtk/defuns-*.xml.texi: Really regenerated.
+	
 	* gnome/overrides/gtk.defs: 
 	* gnome/overrides/gtk-customs.defs: Fix up to define more types,
 	and to ignore functions	that cause wrapping of opaque types.

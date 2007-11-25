@@ -2,20 +2,43 @@
 @c %start of fragment
 
 @deftp Class <gtk-combo-box>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-cell-layout>}, @code{<gtk-cell-editable>},
+@code{<gtk-bin>}.
+
+This class defines the following properties:
 
 @table @code
 @item model
-The model for the combo box@item wrap-width
-Wrap width for laying out the items in a grid@item row-span-column
-TreeModel column containing the row span values@item column-span-column
-TreeModel column containing the column span values@item active
-The item which is currently active@item add-tearoffs
-Whether dropdowns should have a tearoff menu item@item tearoff-title
-A title that may be displayed by the window manager when the popup is torn-off@item has-frame
-Whether the combo box draws a frame around the child@item focus-on-click
-Whether the combo box grabs focus when it is clicked with the mouse@item popup-shown
-Whether the combo's dropdown is shown@end table
+The model for the combo box
+
+@item wrap-width
+Wrap width for laying out the items in a grid
+
+@item row-span-column
+TreeModel column containing the row span values
+
+@item column-span-column
+TreeModel column containing the column span values
+
+@item active
+The item which is currently active
+
+@item add-tearoffs
+Whether dropdowns should have a tearoff menu item
+
+@item tearoff-title
+A title that may be displayed by the window manager when the popup is torn-off
+
+@item has-frame
+Whether the combo box draws a frame around the child
+
+@item focus-on-click
+Whether the combo box grabs focus when it is clicked with the mouse
+
+@item popup-shown
+Whether the combo's dropdown is shown
+
+@end table
 
 @end deftp
 

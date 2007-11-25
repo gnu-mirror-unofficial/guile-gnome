@@ -2,11 +2,15 @@
 @c %start of fragment
 
 @deftp Class <gtk-radio-tool-button>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-toggle-tool-button>}.
+
+This class defines the following properties:
 
 @table @code
 @item group
-The radio tool button whose group this button belongs to.@end table
+The radio tool button whose group this button belongs to.
+
+@end table
 
 @end deftp
 

@@ -1,7 +1,15 @@
 
 @c %start of fragment
 
-@deffn Function gtk-print-context-get-cairo-context  (self@tie{}@code{<gtk-print-context*>}) @result{}@tie{} (ret@tie{}@code{cairo-t})
+@deftp Class <gtk-print-context>
+Derives from @code{<gobject>}.
+
+This class defines no properties, other than those defined by its superclasses.
+
+@end deftp
+
+@deffn Function gtk-print-context-get-cairo-context  (self@tie{}@code{<gtk-print-context>}) @result{}@tie{} (ret@tie{}@code{cairo-t})
+@deffnx Method get-cairo-context
 Obtains the cairo context that is associated with the
 @code{<gtk-print-context>}.
 
@@ -18,7 +26,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-print-context-set-cairo-context  (self@tie{}@code{<gtk-print-context*>}) (cr@tie{}@code{cairo-t}) (dpi_x@tie{}@code{double}) (dpi_y@tie{}@code{double})
+@deffn Function gtk-print-context-set-cairo-context  (self@tie{}@code{<gtk-print-context>}) (cr@tie{}@code{cairo-t}) (dpi_x@tie{}@code{double}) (dpi_y@tie{}@code{double})
+@deffnx Method set-cairo-context
 Sets a new cairo context on a print context.
 
 This function is intended to be used when implementing an internal print
@@ -44,7 +53,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-print-context-get-page-setup  (self@tie{}@code{<gtk-print-context*>}) @result{}@tie{} (ret@tie{}@code{<gtk-page-setup*>})
+@deffn Function gtk-print-context-get-page-setup  (self@tie{}@code{<gtk-print-context>}) @result{}@tie{} (ret@tie{}@code{<gtk-page-setup>})
+@deffnx Method get-page-setup
 Obtains the @code{<gtk-page-setup>} that determines the page dimensions of the
 @code{<gtk-print-context>}.
 
@@ -61,7 +71,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-print-context-get-width  (self@tie{}@code{<gtk-print-context*>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function gtk-print-context-get-width  (self@tie{}@code{<gtk-print-context>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-width
 Obtains the width of the @code{<gtk-print-context>}, in pixels.
 
 @table @var
@@ -77,7 +88,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-print-context-get-height  (self@tie{}@code{<gtk-print-context*>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function gtk-print-context-get-height  (self@tie{}@code{<gtk-print-context>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-height
 Obtains the height of the @code{<gtk-print-context>}, in pixels.
 
 @table @var
@@ -93,7 +105,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-print-context-get-dpi-x  (self@tie{}@code{<gtk-print-context*>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function gtk-print-context-get-dpi-x  (self@tie{}@code{<gtk-print-context>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-dpi-x
 Obtains the horizontal resolution of the @code{<gtk-print-context>}, in dots per
 inch.
 
@@ -110,7 +123,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-print-context-get-dpi-y  (self@tie{}@code{<gtk-print-context*>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function gtk-print-context-get-dpi-y  (self@tie{}@code{<gtk-print-context>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-dpi-y
 Obtains the vertical resolution of the @code{<gtk-print-context>}, in dots per
 inch.
 
@@ -127,7 +141,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gtk-print-context-get-pango-fontmap  (self@tie{}@code{<gtk-print-context*>}) @result{}@tie{} (ret@tie{}@code{<pango-font-map>})
+@deffn Function gtk-print-context-get-pango-fontmap  (self@tie{}@code{<gtk-print-context>}) @result{}@tie{} (ret@tie{}@code{<pango-font-map>})
+@deffnx Method get-pango-fontmap
 Returns a @code{<pango-font-map>} that is suitable for use with the
 @code{<gtk-print-context>}.
 

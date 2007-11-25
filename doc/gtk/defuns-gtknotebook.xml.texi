@@ -2,22 +2,49 @@
 @c %start of fragment
 
 @deftp Class <gtk-notebook>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-container>}.
+
+This class defines the following properties:
 
 @table @code
 @item tab-pos
-Which side of the notebook holds the tabs@item show-tabs
-Whether tabs should be shown or not@item show-border
-Whether the border should be shown or not@item scrollable
-If TRUE, scroll arrows are added if there are too many tabs to fit@item tab-border
-Width of the border around the tab labels@item tab-hborder
-Width of the horizontal border of tab labels@item tab-vborder
-Width of the vertical border of tab labels@item page
-The index of the current page@item enable-popup
-If TRUE, pressing the right mouse button on the notebook pops up a menu that you can use to go to a page@item group-id
-Group ID for tabs drag and drop@item group
-Group for tabs drag and drop@item homogeneous
-Whether tabs should have homogeneous sizes@end table
+Which side of the notebook holds the tabs
+
+@item show-tabs
+Whether tabs should be shown or not
+
+@item show-border
+Whether the border should be shown or not
+
+@item scrollable
+If TRUE, scroll arrows are added if there are too many tabs to fit
+
+@item tab-border
+Width of the border around the tab labels
+
+@item tab-hborder
+Width of the horizontal border of tab labels
+
+@item tab-vborder
+Width of the vertical border of tab labels
+
+@item page
+The index of the current page
+
+@item enable-popup
+If TRUE, pressing the right mouse button on the notebook pops up a menu that you
+can use to go to a page
+
+@item group-id
+Group ID for tabs drag and drop
+
+@item group
+Group for tabs drag and drop
+
+@item homogeneous
+Whether tabs should have homogeneous sizes
+
+@end table
 
 @end deftp
 

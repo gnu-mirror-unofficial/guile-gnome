@@ -2,18 +2,38 @@
 @c %start of fragment
 
 @deftp Class <gtk-range>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-widget>}.
+
+This class defines the following properties:
 
 @table @code
 @item update-policy
-How the range should be updated on the screen@item adjustment
-The GtkAdjustment that contains the current value of this range object@item inverted
-Invert direction slider moves to increase range value@item lower-stepper-sensitivity
-The sensitivity policy for the stepper that points to the adjustment's lower side@item upper-stepper-sensitivity
-The sensitivity policy for the stepper that points to the adjustment's upper side@item show-fill-level
-Whether to display a fill level indicator graphics on trough.@item restrict-to-fill-level
-Whether to restrict the upper boundary to the fill level.@item fill-level
-The fill level.@end table
+How the range should be updated on the screen
+
+@item adjustment
+The GtkAdjustment that contains the current value of this range object
+
+@item inverted
+Invert direction slider moves to increase range value
+
+@item lower-stepper-sensitivity
+The sensitivity policy for the stepper that points to the adjustment's lower
+side
+
+@item upper-stepper-sensitivity
+The sensitivity policy for the stepper that points to the adjustment's upper
+side
+
+@item show-fill-level
+Whether to display a fill level indicator graphics on trough.
+
+@item restrict-to-fill-level
+Whether to restrict the upper boundary to the fill level.
+
+@item fill-level
+The fill level.
+
+@end table
 
 @end deftp
 

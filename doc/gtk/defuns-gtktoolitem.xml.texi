@@ -2,13 +2,24 @@
 @c %start of fragment
 
 @deftp Class <gtk-tool-item>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-bin>}.
+
+This class defines the following properties:
 
 @table @code
 @item visible-horizontal
-Whether the toolbar item is visible when the toolbar is in a horizontal orientation.@item visible-vertical
-Whether the toolbar item is visible when the toolbar is in a vertical orientation.@item is-important
-Whether the toolbar item is considered important. When TRUE, toolbar buttons show text in GTK_TOOLBAR_BOTH_HORIZ mode@end table
+Whether the toolbar item is visible when the toolbar is in a horizontal
+orientation.
+
+@item visible-vertical
+Whether the toolbar item is visible when the toolbar is in a vertical
+orientation.
+
+@item is-important
+Whether the toolbar item is considered important. When TRUE, toolbar buttons
+show text in GTK_TOOLBAR_BOTH_HORIZ mode
+
+@end table
 
 @end deftp
 
@@ -16,6 +27,21 @@ Whether the toolbar item is considered important. When TRUE, toolbar buttons sho
 This signal is emitted when the toolbar needs information from @var{tool-item}
 about whether the item should appear in the toolbar overflow menu. In response
 the tool item should either
+
+@itemize 
+@item
+ call @code{gtk-tool-item-set-proxy-menu-item} with a @samp{@code{#f}}
+pointer and return @samp{@code{#t}} to indicate that the item should not appear
+in the overflow menu
+@item
+ call @code{gtk-tool-item-set-proxy-menu-item} with a new menu
+item and return @samp{@code{#t}}, or 
+@item
+ return @samp{@code{#f}} to indicate that the signal was not
+handled by the item. This means that
+the item will not appear in the overflow menu unless a later handler
+installs a menu item.
+@end itemize
 
 The toolbar may cache the result of this signal. When the tool item changes how
 it will respond to this signal it must call @code{gtk-tool-item-rebuild-menu} to
@@ -28,6 +54,13 @@ This signal is emitted when some property of the toolbar that the item is a
 child of changes. For custom subclasses of @code{<gtk-tool-item>}, the default
 handler of this signal use the functions to find out what the toolbar should
 look like and change themselves accordingly.
+
+@itemize 
+@item
+@code{gtk-toolbar-get-orientation}@item
+@code{gtk-toolbar-get-style}@item
+@code{gtk-toolbar-get-icon-size}@item
+@code{gtk-toolbar-get-relief-style}@end itemize
 
 @end defop
 
@@ -310,6 +343,20 @@ GtkToolItem::toolbar_reconfigured signal to find out in what style the toolbar
 is displayed and change themselves accordingly
 
 Possibilities are:
+
+@itemize 
+@item
+ GTK_TOOLBAR_BOTH, meaning the tool item should show
+both an icon and a label, stacked vertically @item
+ GTK_TOOLBAR_ICONS, meaning the toolbar shows
+only icons @item
+ GTK_TOOLBAR_TEXT, meaning the tool item should only
+show text@item
+ GTK_TOOLBAR_BOTH_HORIZ, meaning the tool item should show
+both an icon and a label, arranged horizontally (however, note the 
+@code{<gtk-tool-button::has-text-horizontally>} that makes tool buttons not
+show labels when the toolbar style is GTK_TOOLBAR_BOTH_HORIZ.
+@end itemize
 
 @table @var
 @item tool-item

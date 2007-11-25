@@ -2,20 +2,45 @@
 @c %start of fragment
 
 @deftp Class <gtk-progress-bar>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-progress>}.
+
+This class defines the following properties:
 
 @table @code
 @item fraction
-The fraction of total work that has been completed@item pulse-step
-The fraction of total progress to move the bouncing block when pulsed@item orientation
-Orientation and growth direction of the progress bar@item text
-Text to be displayed in the progress bar@item ellipsize
-The preferred place to ellipsize the string, if the progress bar does not have enough room to display the entire string, if at all.@item adjustment
-The GtkAdjustment connected to the progress bar (Deprecated)@item bar-style
-Specifies the visual style of the bar in percentage mode (Deprecated)@item activity-step
-The increment used for each iteration in activity mode (Deprecated)@item activity-blocks
-The number of blocks which can fit in the progress bar area in activity mode (Deprecated)@item discrete-blocks
-The number of discrete blocks in a progress bar (when shown in the discrete style)@end table
+The fraction of total work that has been completed
+
+@item pulse-step
+The fraction of total progress to move the bouncing block when pulsed
+
+@item orientation
+Orientation and growth direction of the progress bar
+
+@item text
+Text to be displayed in the progress bar
+
+@item ellipsize
+The preferred place to ellipsize the string, if the progress bar does not have
+enough room to display the entire string, if at all.
+
+@item adjustment
+The GtkAdjustment connected to the progress bar (Deprecated)
+
+@item bar-style
+Specifies the visual style of the bar in percentage mode (Deprecated)
+
+@item activity-step
+The increment used for each iteration in activity mode (Deprecated)
+
+@item activity-blocks
+The number of blocks which can fit in the progress bar area in activity mode
+(Deprecated)
+
+@item discrete-blocks
+The number of discrete blocks in a progress bar (when shown in the discrete
+style)
+
+@end table
 
 @end deftp
 

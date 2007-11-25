@@ -41,7 +41,6 @@ The @code{<gtk-tree-iter>}, or NULL.
 
 
 @deffn Function gtk-action-group-add-actions  (self@tie{}@code{<gtk-action-group>}) (entries@tie{}@code{scm})
-@deffnx Method add-actions
 This is a convenience function to create a number of actions and add them to the
 action group.
 

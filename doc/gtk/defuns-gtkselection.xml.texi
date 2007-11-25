@@ -1,27 +1,6 @@
 
 @c %start of fragment
 
-@deffn Function gtk-target-table-new-from-list  (list@tie{}@code{<gtk-target-list*>}) @result{}@tie{} (ret@tie{}@code{<gtk-target-entry*>}) (n_targets@tie{}@code{int})
-This function creates an @code{<gtk-target-entry>} array that contains the same
-targets as the passed @samp{list}. The returned table is newly allocated and
-should be freed using @code{gtk-target-table-free} when no longer needed.
-
-@table @var
-@item list
-a @code{<gtk-target-list>}
-
-@item n-targets
-return location for the number ot targets in the table
-
-@item ret
-the new table.
-
-@end table
-
-Since 2.10
-
-@end deffn
-
 @deffn Function gtk-selection-owner-set  (self@tie{}@code{<gtk-widget>}) (selection@tie{}@code{<gdk-atom>}) (time@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Claims ownership of a given selection for a particular widget, or, if
 @var{widget} is @samp{@code{#f}}, release ownership of the selection.
@@ -85,27 +64,6 @@ target to add.
 
 @item info
 A unsigned integer which will be passed back to the application.
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-selection-add-targets  (self@tie{}@code{<gtk-widget>}) (selection@tie{}@code{<gdk-atom>}) (targets@tie{}@code{<gtk-target-entry*>}) (ntargets@tie{}@code{unsigned-int})
-Prepends a table of targets to the list of supported targets for a given widget
-and selection.
-
-@table @var
-@item widget
-a @code{<gtk-widget>}
-
-@item selection
-the selection
-
-@item targets
-a table of targets to add
-
-@item ntargets
-number of entries in @var{targets}
 
 @end table
 
@@ -251,30 +209,6 @@ freed with @code{g-object-unref}.
 @end table
 
 Since 2.6
-
-@end deffn
-
-@deffn Function gtk-selection-data-get-targets  (self@tie{}@code{<gtk-selection-data>}) (targets@tie{}@code{<gdk-atom**>}) @result{}@tie{} (ret@tie{}@code{bool}) (n_atoms@tie{}@code{int})
-Gets the contents of @var{selection-data} as an array of targets. This can be
-used to interpret the results of getting the standard TARGETS target that is
-always supplied for any selection.
-
-@table @var
-@item selection-data
-a @code{<gtk-selection-data>} object
-
-@item targets
-location to store an array of targets. The result stored here must be freed with
-@code{g-free}.
-
-@item n-atoms
-location to store number of items in @var{targets}.
-
-@item ret
-@samp{@code{#t}} if @var{selection-data} contains a valid array of targets,
-otherwise @samp{@code{#f}}.
-
-@end table
 
 @end deffn
 

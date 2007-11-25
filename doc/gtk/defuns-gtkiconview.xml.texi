@@ -2,24 +2,54 @@
 @c %start of fragment
 
 @deftp Class <gtk-icon-view>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-cell-layout>}, @code{<gtk-container>}.
+
+This class defines the following properties:
 
 @table @code
 @item pixbuf-column
-Model column used to retrieve the icon pixbuf from@item text-column
-Model column used to retrieve the text from@item markup-column
-Model column used to retrieve the text if using Pango markup@item selection-mode
-The selection mode@item orientation
-How the text and icon of each item are positioned relative to each other@item model
-The model for the icon view@item columns
-Number of columns to display@item item-width
-The width used for each item@item spacing
-Space which is inserted between cells of an item@item row-spacing
-Space which is inserted between grid rows@item column-spacing
-Space which is inserted between grid columns@item margin
-Space which is inserted at the edges of the icon view@item reorderable
-View is reorderable@item tooltip-column
-The column in the model containing the tooltip texts for the items@end table
+Model column used to retrieve the icon pixbuf from
+
+@item text-column
+Model column used to retrieve the text from
+
+@item markup-column
+Model column used to retrieve the text if using Pango markup
+
+@item selection-mode
+The selection mode
+
+@item orientation
+How the text and icon of each item are positioned relative to each other
+
+@item model
+The model for the icon view
+
+@item columns
+Number of columns to display
+
+@item item-width
+The width used for each item
+
+@item spacing
+Space which is inserted between cells of an item
+
+@item row-spacing
+Space which is inserted between grid rows
+
+@item column-spacing
+Space which is inserted between grid columns
+
+@item margin
+Space which is inserted at the edges of the icon view
+
+@item reorderable
+View is reorderable
+
+@item tooltip-column
+The column in the model containing the tooltip texts for the items
+
+@end table
 
 @end deftp
 
@@ -249,39 +279,6 @@ Since 2.6
 
 @end deffn
 
-@deffn Function gtk-icon-view-get-item-at-pos  (self@tie{}@code{<gtk-icon-view>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (path@tie{}@code{<gtk-tree-path**>}) (cell@tie{}@code{<gtk-cell-renderer**>}) @result{}@tie{} (ret@tie{}@code{bool})
-@deffnx Method get-item-at-pos
-Finds the path at the point (@var{x}, @var{y}), relative to widget coordinates.
-In contrast to @code{gtk-icon-view-get-path-at-pos}, this function also obtains
-the cell at the specified position. The returned path should be freed with
-@code{gtk-tree-path-free}.
-
-@table @var
-@item icon-view
-A @code{<gtk-icon-view>}.
-
-@item x
-The x position to be identified
-
-@item y
-The y position to be identified
-
-@item path
-Return location for the path, or @samp{@code{#f}}
-
-@item cell
-Return location for the renderer responsible for the cell at (@var{x}, @var{y}),
-or @samp{@code{#f}}
-
-@item ret
-@samp{@code{#t}} if an item exists at the specified position
-
-@end table
-
-Since 2.8
-
-@end deffn
-
 @deffn Function gtk-icon-view-set-cursor  (self@tie{}@code{<gtk-icon-view>}) (path@tie{}@code{<gtk-tree-path>}) (cell@tie{}@code{<gtk-cell-renderer>}) (start_editing@tie{}@code{bool})
 @deffnx Method set-cursor
 Sets the current keyboard focus to be at @var{path}, and selects it. This is
@@ -306,34 +303,6 @@ One of the cell renderers of @var{icon-view}, or @samp{@code{#f}}
 
 @item start-editing
 @samp{@code{#t}} if the specified cell should start being edited.
-
-@end table
-
-Since 2.8
-
-@end deffn
-
-@deffn Function gtk-icon-view-get-cursor  (self@tie{}@code{<gtk-icon-view>}) (path@tie{}@code{<gtk-tree-path**>}) (cell@tie{}@code{<gtk-cell-renderer**>}) @result{}@tie{} (ret@tie{}@code{bool})
-@deffnx Method get-cursor
-Fills in @var{path} and @var{cell} with the current cursor path and cell. If the
-cursor isn't currently set, then *@var{path} will be @samp{@code{#f}}. If no
-cell currently has focus, then *@var{cell} will be @samp{@code{#f}}.
-
-The returned @code{<gtk-tree-path>} must be freed with
-@code{gtk-tree-path-free}.
-
-@table @var
-@item icon-view
-A @code{<gtk-icon-view>}
-
-@item path
-Return location for the current cursor path, or @samp{@code{#f}}
-
-@item cell
-Return location the current focus cell, or @samp{@code{#f}}
-
-@item ret
-@samp{@code{#t}} if the cursor is set.
 
 @end table
 
@@ -793,33 +762,6 @@ Since 2.8
 
 @end deffn
 
-@deffn Function gtk-icon-view-get-visible-range  (self@tie{}@code{<gtk-icon-view>}) (start_path@tie{}@code{<gtk-tree-path**>}) (end_path@tie{}@code{<gtk-tree-path**>}) @result{}@tie{} (ret@tie{}@code{bool})
-@deffnx Method get-visible-range
-Sets @var{start-path} and @var{end-path} to be the first and last visible path.
-Note that there may be invisible paths in between.
-
-Both paths should be freed with @code{gtk-tree-path-free} after use.
-
-@table @var
-@item icon-view
-A @code{<gtk-icon-view>}
-
-@item start-path
-Return location for start of region, or @samp{@code{#f}}
-
-@item end-path
-Return location for end of region, or @samp{@code{#f}}
-
-@item ret
-@samp{@code{#t}}, if valid paths were placed in @var{start-path} and
-@var{end-path}
-
-@end table
-
-Since 2.8
-
-@end deffn
-
 @deffn Function gtk-icon-view-unset-model-drag-dest  (self@tie{}@code{<gtk-icon-view>})
 @deffnx Method unset-model-drag-dest
 Undoes the effect of @code{gtk-icon-view-enable-model-drag-dest}.
@@ -892,55 +834,6 @@ The path of the item to highlight, or @samp{@code{#f}}.
 
 @item pos
 Specifies where to drop, relative to the item
-
-@end table
-
-Since 2.8
-
-@end deffn
-
-@deffn Function gtk-icon-view-get-drag-dest-item  (self@tie{}@code{<gtk-icon-view>}) (path@tie{}@code{<gtk-tree-path**>}) (pos@tie{}@code{<gtk-icon-view-drop-position*>})
-@deffnx Method get-drag-dest-item
-Gets information about the item that is highlighted for feedback.
-
-@table @var
-@item icon-view
-a @code{<gtk-icon-view>}
-
-@item path
-Return location for the path of the highlighted item, or @samp{@code{#f}}.
-
-@item pos
-Return location for the drop position, or @samp{@code{#f}}
-
-@end table
-
-Since 2.8
-
-@end deffn
-
-@deffn Function gtk-icon-view-get-dest-item-at-pos  (self@tie{}@code{<gtk-icon-view>}) (drag_x@tie{}@code{int}) (drag_y@tie{}@code{int}) (path@tie{}@code{<gtk-tree-path**>}) (pos@tie{}@code{<gtk-icon-view-drop-position*>}) @result{}@tie{} (ret@tie{}@code{bool})
-@deffnx Method get-dest-item-at-pos
-Determines the destination item for a given position.
-
-@table @var
-@item icon-view
-a @code{<gtk-icon-view>}
-
-@item drag-x
-the position to determine the destination item for
-
-@item drag-y
-the position to determine the destination item for
-
-@item path
-Return location for the path of the item, or @samp{@code{#f}}.
-
-@item pos
-Return location for the drop position, or @samp{@code{#f}}
-
-@item ret
-whether there is an item at the given position.
 
 @end table
 

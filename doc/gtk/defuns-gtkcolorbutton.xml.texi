@@ -2,14 +2,24 @@
 @c %start of fragment
 
 @deftp Class <gtk-color-button>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-button>}.
+
+This class defines the following properties:
 
 @table @code
 @item use-alpha
-Whether or not to give the color an alpha value@item title
-The title of the color selection dialog@item color
-The selected color@item alpha
-The selected opacity value (0 fully transparent, 65535 fully opaque)@end table
+Whether or not to give the color an alpha value
+
+@item title
+The title of the color selection dialog
+
+@item color
+The selected color
+
+@item alpha
+The selected opacity value (0 fully transparent, 65535 fully opaque)
+
+@end table
 
 @end deftp
 

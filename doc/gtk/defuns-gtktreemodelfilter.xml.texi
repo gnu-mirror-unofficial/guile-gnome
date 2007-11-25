@@ -2,12 +2,19 @@
 @c %start of fragment
 
 @deftp Class <gtk-tree-model-filter>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gtk-tree-model>}, @code{<gtk-tree-drag-source>},
+@code{<gobject>}.
+
+This class defines the following properties:
 
 @table @code
 @item child-model
-The model for the filtermodel to filter@item virtual-root
-The virtual root (relative to the child model) for this filtermodel@end table
+The model for the filtermodel to filter
+
+@item virtual-root
+The virtual root (relative to the child model) for this filtermodel
+
+@end table
 
 @end deftp
 

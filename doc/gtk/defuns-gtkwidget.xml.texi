@@ -2,31 +2,79 @@
 @c %start of fragment
 
 @deftp Class <gtk-widget>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<atk-implementor-iface>}, @code{<gtk-buildable>},
+@code{<gtk-object>}.
+
+This class defines the following properties:
 
 @table @code
 @item name
-The name of the widget@item parent
-The parent widget of this widget. Must be a Container widget@item width-request
-Override for width request of the widget, or -1 if natural request should be used@item height-request
-Override for height request of the widget, or -1 if natural request should be used@item visible
-Whether the widget is visible@item sensitive
-Whether the widget responds to input@item app-paintable
-Whether the application will paint directly on the widget@item can-focus
-Whether the widget can accept the input focus@item has-focus
-Whether the widget has the input focus@item is-focus
-Whether the widget is the focus widget within the toplevel@item can-default
-Whether the widget can be the default widget@item has-default
-Whether the widget is the default widget@item receives-default
-If TRUE, the widget will receive the default action when it is focused@item composite-child
-Whether the widget is part of a composite widget@item style
-The style of the widget, which contains information about how it will look (colors etc)@item events
-The event mask that decides what kind of GdkEvents this widget gets@item extension-events
-The mask that decides what kind of extension events this widget gets@item no-show-all
-Whether gtk_widget_show_all() should not affect this widget@item has-tooltip
-Whether this widget has a tooltip@item tooltip-markup
-The contents of the tooltip for this widget@item tooltip-text
-The contents of the tooltip for this widget@end table
+The name of the widget
+
+@item parent
+The parent widget of this widget. Must be a Container widget
+
+@item width-request
+Override for width request of the widget, or -1 if natural request should be
+used
+
+@item height-request
+Override for height request of the widget, or -1 if natural request should be
+used
+
+@item visible
+Whether the widget is visible
+
+@item sensitive
+Whether the widget responds to input
+
+@item app-paintable
+Whether the application will paint directly on the widget
+
+@item can-focus
+Whether the widget can accept the input focus
+
+@item has-focus
+Whether the widget has the input focus
+
+@item is-focus
+Whether the widget is the focus widget within the toplevel
+
+@item can-default
+Whether the widget can be the default widget
+
+@item has-default
+Whether the widget is the default widget
+
+@item receives-default
+If TRUE, the widget will receive the default action when it is focused
+
+@item composite-child
+Whether the widget is part of a composite widget
+
+@item style
+The style of the widget, which contains information about how it will look
+(colors etc)
+
+@item events
+The event mask that decides what kind of GdkEvents this widget gets
+
+@item extension-events
+The mask that decides what kind of extension events this widget gets
+
+@item no-show-all
+Whether gtk_widget_show_all() should not affect this widget
+
+@item has-tooltip
+Whether this widget has a tooltip
+
+@item tooltip-markup
+The contents of the tooltip for this widget
+
+@item tooltip-text
+The contents of the tooltip for this widget
+
+@end table
 
 @end deftp
 
@@ -457,9 +505,13 @@ handling for determining whether an accelerator can be activated.
 @end defop
 
 @deftp Class <gtk-requisition>
+Derives from @code{<gboxed>}.
+
 @end deftp
 
 @deftp Class <gtk-selection-data>
+Derives from @code{<gboxed>}.
+
 @end deftp
 
 @deffn Function gtk-widget-destroy  (self@tie{}@code{<gtk-widget>})
@@ -742,7 +794,7 @@ a @code{<gtk-requisition>} to be filled in
 
 @end deffn
 
-@deffn Function gtk-widget-size-allocate  (self@tie{}@code{<gtk-widget>}) (allocation@tie{}@code{<gtk-allocation*>})
+@deffn Function gtk-widget-size-allocate  (self@tie{}@code{<gtk-widget>}) (allocation@tie{}@code{<gdk-rectangle>})
 @deffnx Method size-allocate
 This function is only used by @code{<gtk-container>} subclasses, to assign a
 size and position to their child widgets.
@@ -946,30 +998,6 @@ a @code{<gtk-widget>}
 
 @item new-parent
 a @code{<gtk-container>} to move the widget into
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-widget-intersect  (self@tie{}@code{<gtk-widget>}) (area@tie{}@code{<gdk-rectangle>}) (intersection@tie{}@code{<gdk-rectangle>}) @result{}@tie{} (ret@tie{}@code{bool})
-@deffnx Method intersect
-Computes the intersection of a @var{widget}'s area and @var{area}, storing the
-intersection in @var{intersection}, and returns @samp{@code{#t}} if there was an
-intersection. @var{intersection} may be @samp{@code{#f}} if you're only
-interested in whether there was an intersection.
-
-@table @var
-@item widget
-a @code{<gtk-widget>}
-
-@item area
-a rectangle
-
-@item intersection
-rectangle to store intersection of @var{widget} and @var{area}
-
-@item ret
-@samp{@code{#t}} if there was an intersection
 
 @end table
 
@@ -1927,7 +1955,7 @@ calls to @code{gtk-widget-modify-font}.
 
 @end deffn
 
-@deffn Function gtk-widget-create-pango-context  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<pango-context*>})
+@deffn Function gtk-widget-create-pango-context  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<pango-context>})
 @deffnx Method create-pango-context
 Creates a new @code{<pango-context>} with the appropriate font map, font
 description, and base direction for drawing text for this widget. See also
@@ -1944,7 +1972,7 @@ the new @code{<pango-context>}
 
 @end deffn
 
-@deffn Function gtk-widget-get-pango-context  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<pango-context*>})
+@deffn Function gtk-widget-get-pango-context  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<pango-context>})
 @deffnx Method get-pango-context
 Gets a @code{<pango-context>} with the appropriate font map, font description,
 and base direction for this widget. Unlike the context returned by
@@ -1969,7 +1997,7 @@ the @code{<pango-context>} for the widget.
 
 @end deffn
 
-@deffn Function gtk-widget-create-pango-layout  (self@tie{}@code{<gtk-widget>}) (text@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<pango-layout*>})
+@deffn Function gtk-widget-create-pango-layout  (self@tie{}@code{<gtk-widget>}) (text@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<pango-layout>})
 @deffnx Method create-pango-layout
 Creates a new @code{<pango-layout>} with the appropriate font map, font
 description, and base direction for drawing text for this widget.
@@ -2484,7 +2512,7 @@ the relevant @code{<gtk-settings>} object
 
 @end deffn
 
-@deffn Function gtk-widget-get-clipboard  (self@tie{}@code{<gtk-widget>}) (selection@tie{}@code{<gdk-atom>}) @result{}@tie{} (ret@tie{}@code{<gtk-clipboard*>})
+@deffn Function gtk-widget-get-clipboard  (self@tie{}@code{<gtk-widget>}) (selection@tie{}@code{<gdk-atom>}) @result{}@tie{} (ret@tie{}@code{<gtk-clipboard>})
 @deffnx Method get-clipboard
 Returns the clipboard object for the given selection to be used with
 @var{widget}. @var{widget} must have a @code{<gdk-display>} associated with it,

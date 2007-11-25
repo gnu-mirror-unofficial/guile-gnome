@@ -2,12 +2,18 @@
 @c %start of fragment
 
 @deftp Class <gtk-text-mark>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gobject>}.
+
+This class defines the following properties:
 
 @table @code
 @item name
-Mark name@item left-gravity
-Whether the mark has left gravity@end table
+Mark name
+
+@item left-gravity
+Whether the mark has left gravity
+
+@end table
 
 @end deftp
 

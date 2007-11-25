@@ -2,21 +2,45 @@
 @c %start of fragment
 
 @deftp Class <gtk-status-icon>
-This @code{<gobject>} class defines the following properties:
+Derives from @code{<gobject>}.
+
+This class defines the following properties:
 
 @table @code
 @item pixbuf
-A GdkPixbuf to display@item file
-Filename to load and display@item stock
-Stock ID for a stock image to display@item icon-name
-The name of the icon from the icon theme@item storage-type
-The representation being used for image data@item size
-The size of the icon@item screen
-The screen where this status icon will be displayed@item visible
-Whether or not the status icon is visible@item orientation
-The orientation of the tray@item embedded
-Whether or not the status icon is embedded@item blinking
-Whether or not the status icon is blinking@end table
+A GdkPixbuf to display
+
+@item file
+Filename to load and display
+
+@item stock
+Stock ID for a stock image to display
+
+@item icon-name
+The name of the icon from the icon theme
+
+@item storage-type
+The representation being used for image data
+
+@item size
+The size of the icon
+
+@item screen
+The screen where this status icon will be displayed
+
+@item visible
+Whether or not the status icon is visible
+
+@item orientation
+The orientation of the tray
+
+@item embedded
+Whether or not the status icon is embedded
+
+@item blinking
+Whether or not the status icon is blinking
+
+@end table
 
 @end deftp
 
@@ -407,70 +431,6 @@ a @code{<gtk-status-icon>}
 
 @item ret
 @samp{@code{#t}} if the status icon is embedded in a notification area.
-
-@end table
-
-Since 2.10
-
-@end deffn
-
-@deffn Function gtk-status-icon-position-menu  (menu@tie{}@code{<gtk-menu>}) (user_data@tie{}@code{<gpointer>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int}) (push_in@tie{}@code{bool})
-Menu positioning function to use with @code{gtk-menu-popup} to position
-@var{menu} aligned to the status icon @var{user-data}.
-
-@table @var
-@item menu
-the @code{<gtk-menu>}
-
-@item x
-return location for the x position
-
-@item y
-return location for the y position
-
-@item push-in
-return location for whether the menu should be pushed in to be completely inside
-the screen instead of just clamped to the size to the screen.
-
-@item user-data
-the status icon to position the menu on
-
-@end table
-
-Since 2.10
-
-@end deffn
-
-@deffn Function gtk-status-icon-get-geometry  (self@tie{}@code{<gtk-status-icon>}) (screen@tie{}@code{<gdk-screen**>}) (area@tie{}@code{<gdk-rectangle>}) (orientation@tie{}@code{<gtk-orientation*>}) @result{}@tie{} (ret@tie{}@code{bool})
-@deffnx Method get-geometry
-Obtains information about the location of the status icon on screen. This
-information can be used to e.g. position popups like notification bubbles.
-
-See @code{gtk-status-icon-position-menu} for a more convenient alternative for
-positioning menus.
-
-Note that some platforms do not allow GTK+ to provide this information, and even
-on platforms that do allow it, the information is not reliable unless the status
-icon is embedded in a notification area, see @code{gtk-status-icon-is-embedded}.
-
-@table @var
-@item status-icon
-a @code{<gtk-status-icon>}
-
-@item screen
-return location for the screen, or @samp{@code{#f}} if the information is not
-needed
-
-@item area
-return location for the area occupied by the status icon, or @samp{@code{#f}}
-
-@item orientation
-return location for the orientation of the panel in which the status icon is
-embedded, or @samp{@code{#f}}. A panel at the top or bottom of the screen is
-horizontal, a panel at the left or right is vertical.
-
-@item ret
-@samp{@code{#t}} if the location information has been filled in
 
 @end table
 
