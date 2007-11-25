@@ -1,5 +1,8 @@
 2007-11-25  Andy Wingo  <wingo@pobox.com>
 
+	* doc/guile-gnome-atk.texi (Top): Update to have type and function
+	indexes.
+
 	* doc/defuns-atkstreamablecontent.xml.texi: Regenerated for
 	<gio-channel> name change.
 

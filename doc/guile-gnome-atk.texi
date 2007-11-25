@@ -103,7 +103,7 @@ later version published by the Free Software Foundation.
                            and components which display or select a
                            value from a bounded range of values.
 
-* Concept Index::
+* Type Index::
 * Function Index::
 @end menu
 
@@ -140,9 +140,9 @@ later version published by the Free Software Foundation.
 @include section-atkvalue.xml.texi
 
 
-@node Concept Index
-@unnumbered Concept Index
-@printindex cp
+@node Type Index
+@unnumbered Type Index
+@printindex tp
 @node Function Index
 @unnumbered Function Index
 @printindex fn
