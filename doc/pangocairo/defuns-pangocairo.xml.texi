@@ -1,6 +1,12 @@
 
 @c %start of fragment
 
+@deftp Class <pango-cairo-font-map>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
 @deffn Function pango-cairo-font-map-new  @result{}@tie{} (ret@tie{}@code{<pango-font-map>})
 Creates a new @code{<pango-cairo-font-map>} object; a fontmap is used to cache
 information about available fonts, and holds certain global parameters such as
@@ -37,7 +43,8 @@ Since 1.10
 
 @end deffn
 
-@deffn Function pango-cairo-font-map-set-resolution  (self@tie{}@code{<pango-cairo-font-map*>}) (dpi@tie{}@code{double})
+@deffn Function pango-cairo-font-map-set-resolution  (self@tie{}@code{<pango-cairo-font-map>}) (dpi@tie{}@code{double})
+@deffnx Method set-resolution
 Sets the resolution for the fontmap. This is a scale factor between points
 specified in a @code{<pango-font-description>} and Cairo units. The default
 value is 96, meaning that a 10 point font will be 13 units high. (10 * 96. / 72.
@@ -57,7 +64,8 @@ Since 1.10
 
 @end deffn
 
-@deffn Function pango-cairo-font-map-get-resolution  (self@tie{}@code{<pango-cairo-font-map*>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function pango-cairo-font-map-get-resolution  (self@tie{}@code{<pango-cairo-font-map>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-resolution
 Gets the resolution for the fontmap. See
 @code{pango-cairo-font-map-set-resolution}
 
@@ -74,7 +82,8 @@ Since 1.10
 
 @end deffn
 
-@deffn Function pango-cairo-font-map-create-context  (self@tie{}@code{<pango-cairo-font-map*>}) @result{}@tie{} (ret@tie{}@code{<pango-context*>})
+@deffn Function pango-cairo-font-map-create-context  (self@tie{}@code{<pango-cairo-font-map>}) @result{}@tie{} (ret@tie{}@code{<pango-context>})
+@deffnx Method create-context
 Create a @code{<pango-context>} for the given fontmap.
 
 @table @var
@@ -90,7 +99,7 @@ Since 1.10
 
 @end deffn
 
-@deffn Function pango-cairo-context-set-resolution  (context@tie{}@code{<pango-context*>}) (dpi@tie{}@code{double})
+@deffn Function pango-cairo-context-set-resolution  (context@tie{}@code{<pango-context>}) (dpi@tie{}@code{double})
 Sets the resolution for the context. This is a scale factor between points
 specified in a @code{<pango-font-description>} and Cairo units. The default
 value is 96, meaning that a 10 point font will be 13 units high. (10 * 96. / 72.
@@ -111,7 +120,7 @@ Since 1.10
 
 @end deffn
 
-@deffn Function pango-cairo-context-get-resolution  (context@tie{}@code{<pango-context*>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffn Function pango-cairo-context-get-resolution  (context@tie{}@code{<pango-context>}) @result{}@tie{} (ret@tie{}@code{double})
 Gets the resolution for the context. See
 @code{pango-cairo-context-set-resolution}
 
@@ -129,7 +138,7 @@ Since 1.10
 
 @end deffn
 
-@deffn Function pango-cairo-update-context  (cr@tie{}@code{cairo-t}) (context@tie{}@code{<pango-context*>})
+@deffn Function pango-cairo-update-context  (cr@tie{}@code{cairo-t}) (context@tie{}@code{<pango-context>})
 Updates a @code{<pango-context>} previously created for use with Cairo to match
 the current transformation and target surface of a Cairo context. If any layouts
 have been created for the context, it's necessary to call
@@ -148,7 +157,7 @@ Since 1.10
 
 @end deffn
 
-@deffn Function pango-cairo-create-layout  (cr@tie{}@code{cairo-t}) @result{}@tie{} (ret@tie{}@code{<pango-layout*>})
+@deffn Function pango-cairo-create-layout  (cr@tie{}@code{cairo-t}) @result{}@tie{} (ret@tie{}@code{<pango-layout>})
 Creates a layout object set up to match the current transformation and target
 surface of the Cairo context. This layout can then be used for text measurement
 with functions like @code{pango-layout-get-size} or drawing with functions like
@@ -173,7 +182,7 @@ Since 1.10
 
 @end deffn
 
-@deffn Function pango-cairo-update-layout  (cr@tie{}@code{cairo-t}) (layout@tie{}@code{<pango-layout*>})
+@deffn Function pango-cairo-update-layout  (cr@tie{}@code{cairo-t}) (layout@tie{}@code{<pango-layout>})
 Updates the private @code{<pango-context>} of a @code{<pango-layout>} created
 with @code{pango-cairo-create-layout} to match the current transformation and
 target surface of a Cairo context.
@@ -212,7 +221,7 @@ Since 1.10
 
 @end deffn
 
-@deffn Function pango-cairo-show-layout-line  (cr@tie{}@code{cairo-t}) (line@tie{}@code{<pango-layout-line*>})
+@deffn Function pango-cairo-show-layout-line  (cr@tie{}@code{cairo-t}) (line@tie{}@code{<pango-layout-line>})
 Draws a @code{<pango-layout-line>} in the specified cairo context. The origin of
 the glyphs (the left edge of the line) will be drawn at the current point of the
 cairo context.
@@ -230,7 +239,7 @@ Since 1.10
 
 @end deffn
 
-@deffn Function pango-cairo-show-layout  (cr@tie{}@code{cairo-t}) (layout@tie{}@code{<pango-layout*>})
+@deffn Function pango-cairo-show-layout  (cr@tie{}@code{cairo-t}) (layout@tie{}@code{<pango-layout>})
 Draws a @code{<pango-layout-line>} in the specified cairo context. The top-left
 corner of the @code{<pango-layout>} will be drawn at the current point of the
 cairo context.
@@ -297,7 +306,7 @@ Since 1.10
 
 @end deffn
 
-@deffn Function pango-cairo-layout-line-path  (cr@tie{}@code{cairo-t}) (line@tie{}@code{<pango-layout-line*>})
+@deffn Function pango-cairo-layout-line-path  (cr@tie{}@code{cairo-t}) (line@tie{}@code{<pango-layout-line>})
 Adds the text in @code{<pango-layout-line>} to the current path in the specified
 cairo context. The origin of the glyphs (the left edge of the line) will be at
 the current point of the cairo context.
@@ -315,7 +324,7 @@ Since 1.10
 
 @end deffn
 
-@deffn Function pango-cairo-layout-path  (cr@tie{}@code{cairo-t}) (layout@tie{}@code{<pango-layout*>})
+@deffn Function pango-cairo-layout-path  (cr@tie{}@code{cairo-t}) (layout@tie{}@code{<pango-layout>})
 Adds the text in a @code{<pango-layout>} to the current path in the specified
 cairo context. The top-left corner of the @code{<pango-layout>} will be at the
 current point of the cairo context.

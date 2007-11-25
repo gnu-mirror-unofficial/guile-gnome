@@ -7,7 +7,7 @@ its superclasses.
 
 @end deftp
 
-@deffn Function pango-renderer-draw-layout  (self@tie{}@code{<pango-renderer>}) (layout@tie{}@code{<pango-layout*>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffn Function pango-renderer-draw-layout  (self@tie{}@code{<pango-renderer>}) (layout@tie{}@code{<pango-layout>}) (x@tie{}@code{int}) (y@tie{}@code{int})
 @deffnx Method draw-layout
 Draws @var{layout} with the specified @code{<pango-renderer>}.
 
@@ -30,7 +30,7 @@ Since 1.8
 
 @end deffn
 
-@deffn Function pango-renderer-draw-layout-line  (self@tie{}@code{<pango-renderer>}) (line@tie{}@code{<pango-layout-line*>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffn Function pango-renderer-draw-layout-line  (self@tie{}@code{<pango-renderer>}) (line@tie{}@code{<pango-layout-line>}) (x@tie{}@code{int}) (y@tie{}@code{int})
 @deffnx Method draw-layout-line
 Draws @var{line} with the specified @code{<pango-renderer>}.
 
@@ -310,7 +310,7 @@ Since 1.8
 
 @end deffn
 
-@deffn Function pango-renderer-set-matrix  (self@tie{}@code{<pango-renderer>}) (matrix@tie{}@code{<pango-matrix*>})
+@deffn Function pango-renderer-set-matrix  (self@tie{}@code{<pango-renderer>}) (matrix@tie{}@code{<pango-matrix>})
 @deffnx Method set-matrix
 Sets the transformation matrix that will be applied when rendering.
 
@@ -328,7 +328,7 @@ Since 1.8
 
 @end deffn
 
-@deffn Function pango-renderer-get-matrix  (self@tie{}@code{<pango-renderer>}) @result{}@tie{} (ret@tie{}@code{<pango-matrix*>})
+@deffn Function pango-renderer-get-matrix  (self@tie{}@code{<pango-renderer>}) @result{}@tie{} (ret@tie{}@code{<pango-matrix>})
 @deffnx Method get-matrix
 Gets the transformation matrix that will be applied when rendering. See
 @code{pango-renderer-set-matrix}.

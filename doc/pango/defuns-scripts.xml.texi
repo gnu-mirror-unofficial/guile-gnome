@@ -74,7 +74,7 @@ Since 1.4
 
 @end deffn
 
-@deffn Function pango-script-iter-new  (text@tie{}@code{mchars}) (length@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<pango-script-iter*>})
+@deffn Function pango-script-iter-new  (text@tie{}@code{mchars}) (length@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<pango-script-iter>})
 Create a new @code{<pango-script-iter>}, used to break a string of Unicode into
 runs by text. No copy is made of @var{text}, so the caller needs to make sure it
 remains valid until the iterator is freed with @code{pango-script-iter-free}.x
@@ -97,31 +97,7 @@ Since 1.4
 
 @end deffn
 
-@deffn Function pango-script-iter-get-range  (self@tie{}@code{<pango-script-iter*>}) (start@tie{}@code{<char**>}) (end@tie{}@code{<char**>}) (script@tie{}@code{<pango-script*>})
-Gets information about the range to which @var{iter} currently points. The range
-is the set of locations p where *start <= p < *end. (That is, it doesn't include
-the character stored at *end)
-
-@table @var
-@item iter
-a @code{<pango-script-iter>}
-
-@item start
-location to store start position of the range, or @samp{@code{#f}}
-
-@item end
-location to store end position of the range, or @samp{@code{#f}}
-
-@item script
-location to store script for range, or @samp{@code{#f}}
-
-@end table
-
-Since 1.4
-
-@end deffn
-
-@deffn Function pango-script-iter-next  (self@tie{}@code{<pango-script-iter*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function pango-script-iter-next  (self@tie{}@code{<pango-script-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
 Advances a @code{<pango-script-iter>} to the next range. If @var{iter} is
 already at the end, it is left unchanged and @samp{@code{#f}} is returned.
 

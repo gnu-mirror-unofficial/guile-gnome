@@ -25,3 +25,6 @@
 ;;
 ;;; Code:
 
+(define-object CairoFontMap
+  (c-name "PangoCairoFontMap")
+  (gtype-id "PANGO_TYPE_CAIRO_FONT_MAP"))

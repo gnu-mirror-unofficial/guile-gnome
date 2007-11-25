@@ -34,6 +34,14 @@
   (release-func "pango_attr_list_unref")
 )
 
+(define-boxed Matrix
+  (in-module "Pango")
+  (c-name "PangoMatrix")
+  (gtype-id "PANGO_TYPE_MATRIX")
+  (copy-func "pango_matrix_copy")
+  (release-func "pango_matrix_free")
+)
+
 (define-boxed Color
   (in-module "Pango")
   (c-name "PangoColor")
@@ -90,6 +98,30 @@
   (release-func "pango_tab_array_free")
 )
 
+(define-object Layout
+  (c-name "PangoLayout")
+  (gtype-id "PANGO_TYPE_LAYOUT"))
+
+(define-boxed LayoutLine
+  (c-name "PangoLayoutLine")
+  (gtype-id "PANGO_TYPE_LAYOUT_LINE"))
+
+(define-boxed LayoutIter
+  (c-name "PangoLayoutIter")
+  (gtype-id "PANGO_TYPE_LAYOUT_ITER"))
+
+(define-boxed Item
+  (c-name "PangoItem")
+  (gtype-id "PANGO_TYPE_ITEM"))
+
+(define-object Context
+  (c-name "PangoContext")
+  (gtype-id "PANGO_TYPE_CONTEXT"))
+
+(define-object Fontset
+  (c-name "PangoFontset")
+  (gtype-id "PANGO_TYPE_FONTSET"))
+
 (define-method get_attrs
   (of-object "PangoAttrIterator")
   (c-name "pango_attr_iterator_get_attrs")
@@ -135,17 +167,6 @@
   )
 )
 
-(define-method apply_attrs
-  (of-object "PangoGlyphItem")
-  (c-name "pango_glyph_item_apply_attrs")
-  (overrides "pango_glyph_item_apply_attrs")
-  (return-type "GSList*-of-PangoGlyphItem*")
-  (parameters
-    '("const-char*" "text")
-    '("PangoAttrList*" "list")
-  )
-)
-
 (define-method get_lines
   (of-object "PangoLayout")
   (c-name "pango_layout_get_lines")
@@ -153,14 +174,35 @@
   (return-type "GSList*-of-PangoLayoutLine*")
 )
 
-(ignore "pango_coverage_to_bytes"
+(ignore "pango_attr_shape_new_with_data"
+        "pango_attr_iterator_get_font"
+        "pango_attr_list_filter"
+        "pango_coverage_to_bytes"
         "pango_coverage_from_bytes"
         "pango_context_new"
         "pango_context_set_font_map"
+        "pango_context_list_families"
+        "pango_break" ;; these three would be nice
+        "pango_get_log_attrs"
+        "pango_shape"
+        "pango_glyph_item_apply_attrs"
+        "pango_glyph_string_x_to_index"
+        "pango_glyph_string_index_to_x"
         "pango_font_metrics_new"
         "pango_font_map_get_shape_engine_type"
+        "pango_font_family_list_faces"
+        "pango_font_face_list_sizes"
+        "pango_font_map_list_families"
         "pango_font_find_shaper"
+        "pango_layout_get_log_attrs"
+        "pango_layout_iter_get_run"
+        "pango_layout_line_get_x_ranges"
+        "pango_parse_markup"
+        "pango_tab_array_get_tab"
+        "pango_tab_array_get_tabs"
+        "pango_script_iter_get_range"
         "pango_map_get_engines"
         "pango_default_break")
-(ignore-glob "script_engine_*")
+(ignore-glob "script_engine_*"
+             "*_destroy")
 

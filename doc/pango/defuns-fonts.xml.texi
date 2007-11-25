@@ -31,12 +31,33 @@ its superclasses.
 
 @end deftp
 
+@deftp Class <pango-fontset>
+This @code{<gobject>} class defines no properties, other than those defined by
+its superclasses.
+
+@end deftp
+
 @deffn Function pango-font-description-new  @result{}@tie{} (ret@tie{}@code{<pango-font-description>})
 Creates a new font description structure with all fields unset.
 
 @table @var
 @item ret
 the newly allocated @code{<pango-font-description>}, which should be freed using
+@code{pango-font-description-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-copy  (self@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{<pango-font-description>})
+Make a copy of a @code{<pango-font-description>}.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item ret
+the newly allocated @code{<pango-font-description>}, which should be freed with
 @code{pango-font-description-free}.
 
 @end table
@@ -438,28 +459,6 @@ the descent, in Pango units. (1 point == @samp{PANGO_SCALE} Pango units.)
 
 @end deffn
 
-@deffn Function pango-font-find-shaper  (self@tie{}@code{<pango-font>}) (language@tie{}@code{<pango-language>}) (ch@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{<pango-engine-shape*>})
-@deffnx Method find-shaper
-Finds the best matching shaper for a font for a particular language tag and
-character point.
-
-@table @var
-@item font
-a @code{<pango-font>}
-
-@item language
-the language tag
-
-@item ch
-a Unicode character.
-
-@item ret
-the best matching shaper.
-
-@end table
-
-@end deffn
-
 @deffn Function pango-font-describe  (self@tie{}@code{<pango-font>}) @result{}@tie{} (ret@tie{}@code{<pango-font-description>})
 @deffnx Method describe
 Returns a description of the font, with font size set in points. Use
@@ -477,7 +476,7 @@ a newly-allocated @code{<pango-font-description>} object.
 
 @end deffn
 
-@deffn Function pango-font-get-coverage  (self@tie{}@code{<pango-font>}) (language@tie{}@code{<pango-language>}) @result{}@tie{} (ret@tie{}@code{<pango-coverage*>})
+@deffn Function pango-font-get-coverage  (self@tie{}@code{<pango-font>}) (language@tie{}@code{<pango-language>}) @result{}@tie{} (ret@tie{}@code{<pango-coverage>})
 @deffnx Method get-coverage
 Computes the coverage map for a given font and language tag.
 
@@ -495,7 +494,7 @@ a newly-allocated @code{<pango-coverage>} object.
 
 @end deffn
 
-@deffn Function pango-font-get-glyph-extents  (self@tie{}@code{<pango-font>}) (glyph@tie{}@code{unsigned-int32}) (ink_rect@tie{}@code{<pango-rectangle*>}) (logical_rect@tie{}@code{<pango-rectangle*>})
+@deffn Function pango-font-get-glyph-extents  (self@tie{}@code{<pango-font>}) (glyph@tie{}@code{unsigned-int32}) @result{}@tie{} (ink_rect@tie{}@code{<pango-rectangle>}) (logical_rect@tie{}@code{<pango-rectangle>})
 @deffnx Method get-glyph-extents
 Gets the logical and ink extents of a glyph within a font. The coordinate system
 for each rectangle has its origin at the base line and horizontal origin of the
@@ -609,27 +608,6 @@ Since 1.4
 
 @end deffn
 
-@deffn Function pango-font-family-list-faces  (self@tie{}@code{<pango-font-family>}) (faces@tie{}@code{<pango-font-face***>}) @result{}@tie{} (n_faces@tie{}@code{int})
-@deffnx Method list-faces
-Lists the different font faces that make up @var{family}. The faces in a family
-share a common design, but differ in slant, weight, width and other aspects.
-
-@table @var
-@item family
-a @code{<pango-font-family>}
-
-@item faces
-location to store an array of pointers to @code{<pango-font-face>} objects, or
-@samp{@code{#f}}. This array should be freed with @code{g-free} when it is no
-longer needed.
-
-@item n-faces
-location to store number of elements in @var{faces}.
-
-@end table
-
-@end deffn
-
 @deffn Function pango-font-face-get-face-name  (self@tie{}@code{<pango-font-face>}) @result{}@tie{} (ret@tie{}@code{mchars})
 @deffnx Method get-face-name
 Gets a name representing the style of this face among the different faces in the
@@ -645,30 +623,6 @@ the face name for the face. This string is owned by the face object and must not
 be modified or freed.
 
 @end table
-
-@end deffn
-
-@deffn Function pango-font-face-list-sizes  (self@tie{}@code{<pango-font-face>}) (sizes@tie{}@code{<int**>}) @result{}@tie{} (n_sizes@tie{}@code{int})
-@deffnx Method list-sizes
-List the available sizes for a font. This is only applicable to bitmap fonts.
-For scalable fonts, stores @samp{@code{#f}} at the location pointed to by
-@var{sizes} and 0 at the location pointed to by @var{n-sizes}. The sizes
-returned are in Pango units and are sorted in ascending order.
-
-@table @var
-@item face
-a @code{<pango-font-face>}.
-
-@item sizes
-location to store a pointer to an array of int. This array should be freed with
-@code{g-free}.
-
-@item n-sizes
-location to store the number of elements in @var{sizes}
-
-@end table
-
-Since 1.4
 
 @end deffn
 
@@ -691,7 +645,7 @@ result.
 
 @end deffn
 
-@deffn Function pango-font-map-load-font  (self@tie{}@code{<pango-font-map>}) (context@tie{}@code{<pango-context*>}) (desc@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{<pango-font>})
+@deffn Function pango-font-map-load-font  (self@tie{}@code{<pango-font-map>}) (context@tie{}@code{<pango-context>}) (desc@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{<pango-font>})
 @deffnx Method load-font
 Load the font in the fontmap that is the closest match for @var{desc}.
 
@@ -712,7 +666,7 @@ the font loaded, or @samp{@code{#f}} if no font matched.
 
 @end deffn
 
-@deffn Function pango-font-map-load-fontset  (self@tie{}@code{<pango-font-map>}) (context@tie{}@code{<pango-context*>}) (desc@tie{}@code{<pango-font-description>}) (language@tie{}@code{<pango-language>}) @result{}@tie{} (ret@tie{}@code{<pango-fontset*>})
+@deffn Function pango-font-map-load-fontset  (self@tie{}@code{<pango-font-map>}) (context@tie{}@code{<pango-context>}) (desc@tie{}@code{<pango-font-description>}) (language@tie{}@code{<pango-language>}) @result{}@tie{} (ret@tie{}@code{<pango-fontset>})
 @deffnx Method load-fontset
 Load a set of fonts in the fontmap that can be used to render a font matching
 @var{desc}.
@@ -732,25 +686,6 @@ a @code{<pango-language>} the fonts will be used for
 
 @item ret
 the fontset, or @samp{@code{#f}} if no font matched.
-
-@end table
-
-@end deffn
-
-@deffn Function pango-font-map-list-families  (self@tie{}@code{<pango-font-map>}) (families@tie{}@code{<pango-font-family***>}) @result{}@tie{} (n_families@tie{}@code{int})
-@deffnx Method list-families
-List all families for a fontmap.
-
-@table @var
-@item fontmap
-a @code{<pango-font-map>}
-
-@item families
-location to store a pointer to an array of @code{<pango-font-family>} *. This
-array should be freed with @code{g-free}.
-
-@item n-families
-location to store the number of elements in @var{families}
 
 @end table
 

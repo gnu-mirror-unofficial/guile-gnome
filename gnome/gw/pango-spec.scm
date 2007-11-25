@@ -47,12 +47,19 @@
   (next-method ws (cons #:module (cons '(gnome gw pango) initargs)))
 
   (add-type-alias! ws "PangoGlyph" 'unsigned-int32)
-  (wrap-refcounted-pointer! ws "PangoCoverage*"
+  (wrap-refcounted-pointer! ws "PangoCoverage"
                             "pango_coverage_ref" "pango_coverage_unref")
 
   (wrap-structure! ws "PangoRectangle"
                    "scm_pango_rectangle_to_scm"
                    "scm_scm_to_pango_rectangle")
+
+  (wrap-freeable-pointer! ws "PangoAttrIterator"
+                          "pango_attr_iterator_destroy")
+  (wrap-freeable-pointer! ws "PangoScriptIter"
+                          "pango_script_iter_free")
+  (wrap-freeable-pointer! ws "PangoAttribute"
+                          "pango_attribute_destroy")
 
   (load-defs-with-overrides ws "gnome/defs/pango.defs"))
 
