@@ -1,3 +1,8 @@
+2007-11-30  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/libgnomecanvas.defs: Mark GnomeCanvasPathDef as
+	a boxed, and ignore functions dealing in libart types.
+
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.95 ==

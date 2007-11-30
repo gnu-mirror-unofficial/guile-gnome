@@ -21,6 +21,10 @@
 ;;;; Boston, MA  02111-1307,  USA       gnu@gnu.org
 
 
+(define-boxed PathDef
+  (c-name "GnomeCanvasPathDef")
+  (gtype-id "GNOME_TYPE_CANVAS_PATH_DEF"))
+
 ;; I'm not sure this wrapping for affine funtctions is the Right Way,
 ;; but it works.  Maybe we should have a plain affine maker: double[6]
 ;; list_to_affine (SCM) or have affine_absolute take a SCM list
@@ -133,10 +137,23 @@
  "gnome_canvas_item_construct"  ;; use of va-list
  
  ;; ignore functions that deal in libart types
+ "gnome_canvas_path_def_bpath"
+ "gnome_canvas_path_def_currentpoint"
+ "gnome_canvas_path_def_last_bpath"
+ "gnome_canvas_path_def_first_bpath"
+
  "gnome_canvas_cap_gdk_to_art"
  "gnome_canvas_join_gdk_to_art"
  "gnome_canvas_request_redraw_svp"
  "gnome_canvas_request_redraw_uta"
+
+ "gnome_canvas_path_def_new_from_bpath" ; ArtBpath*
+ "gnome_canvas_path_def_new_from_static_bpath" ; ArtBpath*
+ "gnome_canvas_path_def_new_from_foreign_bpath" ; ArtBpath*
+ "gnome_canvas_item_request_redraw_svp" ; ArtSVP*
+ "gnome_canvas_buf_ensure_buf" ; GnomeCanvasBuf*
+
+ "gnome_canvas_render_svp"
 
  "gnome_canvas_item_i2c_affine"
  "gnome_canvas_item_i2w_affine"
