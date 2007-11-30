@@ -1,3 +1,18 @@
+2007-11-30  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gtk.defs: Add more ignores.
+
+	* gnome/overrides/gdk.defs-type-ignores: Ignore GdkDrawable, we do
+	some special things for that in gdk-spec.scm.
+
+	* gnome/overrides/gdk.defs: Wrap some more types, ignore many
+	functions, sort the ignore list.
+
+	* gnome/overrides/gdk-pixbuf.defs: Wrap another type, ignore some
+	more functions.
+
+	* gnome/gw/gdk-spec.scm (initialize): Wrap some more types.
+
 2007-11-25  Andy Wingo  <wingo@pobox.com>
 
 	* doc/gtk/defuns-*.xml.texi: Really regenerated.

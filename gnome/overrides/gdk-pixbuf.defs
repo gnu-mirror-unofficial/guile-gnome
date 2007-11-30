@@ -32,6 +32,11 @@
   (gtype-id "GDK_TYPE_PIXBUF")
 )
 
+(define-object PixbufSimpleAnim
+  (c-name "GdkPixbufSimpleAnim")
+  (gtype-id "GDK_TYPE_PIXBUF_SIMPLE_ANIM")
+)
+
 (define-function gdk_pixbuf_get_formats
   (c-name "gdk_pixbuf_get_formats")
   (overrides "gdk_pixbuf_get_formats")
@@ -59,5 +64,17 @@
               "*_valist"
               "*_setv")
 
-(ignore "gdk_pixbuf_non_anim_new"
-        "gdk_pixbuf_set_option")
+(ignore "gdk_pixbuf_get_pixels"
+        "gdk_pixbuf_new_from_data"
+        "gdk_pixbuf_new_from_inline"
+        "gdk_pixbuf_new_from_xpm_data"
+        "gdk_pixbuf_save_to_callbackv"
+        "gdk_pixbuf_save_to_bufferv"
+        "gdk_pixbuf_savev"
+        "gdk_pixbuf_loader_write"
+        "gdk_pixbuf_non_anim_new"
+        "gdk_pixbuf_set_option"
+
+        "gdk_pixbuf_animation_get_iter" ; GTimeVal*
+        "gdk_pixbuf_animation_iter_advance" ; GTimeVal*
+        )

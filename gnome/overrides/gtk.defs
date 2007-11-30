@@ -945,6 +945,15 @@
         "gtk_get_current_event"
         "gtk_get_event_widget"
 
+        "gtk_gc_get" ; GdkGCValues*
+        "gtk_paint_polygon" ; GdkPoint*
+        "gtk_accelerator_parse" ; GdkModifierType*
+        "gtk_get_current_event_state" ; GdkModifierType*
+        "gtk_selection_data_set" ; guchar*
+        "gtk_selection_data_get_text" ; guchar*
+        "gtk_type_class" ; gpointer
+        "gtk_window_set_geometry_hints" ; GdkGeometry*
+
         "gtk_about_dialog_set_email_hook"
         "gtk_about_dialog_set_url_hook"
 
@@ -979,6 +988,7 @@
         "gtk_clipboard_request_targets"
         "gtk_clipboard_wait_for_targets"
         "gtk_clipboard_set_can_store"
+        "gtk_clipboard_wait_for_rich_text"
 
         "gtk_color_selection_palette_from_string"
         "gtk_color_selection_set_change_palette_with_screen_hook"
@@ -1107,6 +1117,10 @@
         "gtk_stock_set_translate_func"
 
         "gtk_target_table_new_from_list"
+        "gtk_targets_include_text"
+        "gtk_targets_include_rich_text"
+        "gtk_targets_include_image"
+        "gtk_targets_include_uri"
 
         "gtk_text_buffer_create_tag"
         "gtk_text_buffer_serialize"
@@ -1117,6 +1131,8 @@
         "gtk_text_buffer_unregister_deserialize_format"
         "gtk_text_buffer_get_copy_target_list"
         "gtk_text_buffer_get_paste_target_list"
+        "gtk_text_buffer_get_serialize_formats"
+        "gtk_text_buffer_get_deserialize_formats"
 
         "gtk_text_iter_forward_find_char"
         "gtk_text_iter_backward_find_char"

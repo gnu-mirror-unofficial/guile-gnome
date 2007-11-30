@@ -132,5 +132,14 @@
    ;; unwrap
    (list c-var " = scm_scm_to_gdk_color (" scm-var ");\n"))
 
+  (wrap-opaque-pointer! ws "GdkPixbufFormat*")
+  (wrap-opaque-pointer! ws "GdkAtom")
+  (add-type-rule! ws "GdkAtom*" '(<gdk-atom> out))
+  (wrap-freeable-pointer! ws "GdkRegion" "gdk_region_destroy")
+
+  (wrap-object! ws #:ctype "GdkDrawable" #:gtype-id "GDK_TYPE_DRAWABLE")
+  (add-type-alias! ws "GdkDrawable*" '<gdk-drawable>)
+  (add-type-alias! ws "GdkBitmap*" '<gdk-drawable>)
+
   (load-defs-with-overrides ws "gnome/defs/gdk-pixbuf.defs")
   (load-defs-with-overrides ws "gnome/defs/gdk.defs"))
