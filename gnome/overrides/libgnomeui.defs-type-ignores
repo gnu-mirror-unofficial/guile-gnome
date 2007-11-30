@@ -1,16 +1,25 @@
 ;; -*- scheme -*-
 
-(define-object AppBar
-  (in-module "Gnome")
-  (parent "GtkHBox")
-  (c-name "GnomeAppBar")
-  (gtype-id "GNOME_TYPE_APPBAR")
-)
-
-(ignore-types "GnomeColorPicker"
+(ignore-types "GnomeAbout"
+              "GnomeApp"
+              "GnomeAppBar"
+              "GnomeColorPicker"
               "GnomeDialog"
+              "GnomeDruid"
+              "GnomeDruidPage"
+              "GnomeDruidPageEdge"
+              "GnomeEdgePosition"
+              "GnomeDruidPageStandard"
               "GnomeEntry"
               "GnomeIconData"
+              "GnomeIconEntry"
+              "GnomeIconTextItem"
+              "GnomeIconList"
+              "GnomeIconTheme"
+              "GnomeIconSelection"
+              "GnomeIconData"
+              "GnomeHRef"
+              "GnomeFileEntry"
               "GnomeFontPicker"
               "GnomeMDI"
               "GnomeMDIChild"
@@ -20,8 +29,9 @@
               "GnomePropertyBox"
               "GnomeFontPickerMode"
               "GnomeMDIMode"
+              "GnomeScores"
               "GnomeThemeFileParseError"
-              "GnomeAppBar")
-
+              "GnomeThumbnailSize"
+              "GnomeThumbnailFactory")
 
 

@@ -29,13 +29,15 @@
   #:use-module (gnome gw support g-wrap)
   #:use-module (gnome gw gobject-spec)
   #:use-module (gnome gw gtk-spec)
+  #:use-module (gnome gw libgnome-spec)
   #:use-module (gnome gw support gobject)
   #:use-module (gnome gw support defs))
 
 (define-class <gnome-ui-wrapset> (<gobject-wrapset-base>)
   #:id 'gnome-libgnomeui
   #:dependencies '(standard gnome-glib gnome-gobject
-                   gnome-atk gnome-gdk gnome-pango gnome-gtk))
+                            gnome-atk gnome-gdk gnome-pango gnome-gtk
+                            gnome-libgnome))
 
 (define-method (initialize (ws <gnome-ui-wrapset>) initargs)
   (next-method ws (append '(#:module (gnome gw libgnomeui)) initargs))

@@ -25,13 +25,6 @@
 ;;
 ;;; Code:
 
-(define-method get_selection
-  (of-object "GnomeIconList")
-  (c-name "gnome_icon_list_get_selection")
-  (overrides "gnome_icon_list_get_selection")
-  (return-type "GList*-of-gint")
-)
-
 (ignore-glob  "*_get_type"
               "_*"
               "*_ref"
@@ -47,43 +40,43 @@
 ;; Ignore deprecated API
 
 (ignore-glob  "gnome_color_picker_*"
+              "gnome_app_*"
+              "gnome_appbar_*"
               "gnome_mdi*"
               "gnome_dialog*"
+              "gnome_druid_*"
               "gnome_message_box*"
               "gnome_property_box*"
+              "gnome_file_entry*"
               "gnome_ok*"
               "gnome_warning*"
               "gnome_error*"
+              "gnome_icon_*"
               "gnome_question*"
-              "gnome_href_*_label"
+              "gnome_href_*"
               "gnome_request*"
               "gnome_entry_*"
               "gnome_font_picker_*"
               "gnome_icon_theme_*"
               "gnome_pixmap_*"
+              "gnome_scores_*"
               "*_command" ;; can't handle the argv
               "*_search_path" ;; can't deal with argv
               "gnome_theme_file*"
               "gnome_popup_menu_*"
               "gnome_window_icon_set_*from_file_list" ;; char**
+              "gnome_window_icon_*"
+              "gnome_thumbnail_*"
               )
 
-(ignore "gnome_app_message"
-        "gnome_app_flash"
-        "gnome_app_error"
-        "gnome_app_warning"
-        "gnome_app_question"
-        "gnome_app_question_modal"
-        "gnome_app_ok_cancel"
-        "gnome_app_ok_cancel_modal"
-        "gnome_app_request_string"
-        "gnome_app_request_password"
-        "gnome_app_progress_timeout"
-        "gnome_app_progress_manual"
-        "gnome_app_set_progress"
-        "gnome_app_progress_done"
+(ignore "gnome_client_disable_master_connection"
 
-        "gnome_client_disable_master_connection"
+        "gnome_accelerators_sync"
+
+        "gnome_client_module_info_get"
+        "gnome_client_request_interaction"
+        "gnome_client_request_interaction_interp"
+        "gnome_interaction_key_return"
 
         "gnome_date_edit_get_date"
 
@@ -101,6 +94,12 @@
 
         "gnome_init_with_popt_table"
         
+        "libgnomeui_module_info_get" ; GnomeModuleInfo*
+        "gnome_gtk_module_info_get" ; GnomeModuleInfo*
+        "gnome_gdk_pixbuf_new_from_uri_async" ; GnomeGdkPixbufAsyncHandle*
+        "gnome_gdk_pixbuf_new_from_uri_cancel" ; GnomeGdkPixbufAsyncHandle*
+
+
         "gnome_about_new" ;; can't handle char**
         "gnome_about_construct" ;; not needed
 
