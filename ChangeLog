@@ -1,3 +1,10 @@
+2007-11-30  Andy Wingo  <wingo@pobox.com>
+
+	* doc/guile-gnome-gnome-vfs.texi (Top): Add type index.
+
+	* gnome/overrides/gnome-vfs.defs: Ignore all functions that deal
+	in opaque types.
+
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.95 ==

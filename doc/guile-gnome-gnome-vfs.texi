@@ -100,7 +100,7 @@ MIME Registry
 * MIME Database:: functions for getting information about applications and components associated
 * gnome-vfs-mime-monitor:: 
 
-* Concept Index::
+* Type Index::
 * Function Index::
 @end menu
 
@@ -150,9 +150,9 @@ MIME Registry
 @include section-gnome-vfs-mime-database.xml.texi
 @include section-gnome-vfs-mime-monitor.xml.texi
 
-@node Concept Index
-@unnumbered Concept Index
-@printindex cp
+@node Type Index
+@unnumbered Type Index
+@printindex tp
 @node Function Index
 @unnumbered Function Index
 @printindex fn

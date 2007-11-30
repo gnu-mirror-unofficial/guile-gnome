@@ -47,6 +47,17 @@
                   #:wrapped "Custom"))
   (add-type-alias! ws "GnomeVFSResult" '<gnome-vfs-result>)
 
+  (wrap-refcounted-pointer! ws "GnomeVFSURI"
+                            "gnome_vfs_uri_ref"
+                            "gnome_vfs_uri_unref")
+
+  (wrap-refcounted-pointer! ws "GnomeVFSFileInfo"
+                            "gnome_vfs_file_info_ref"
+                            "gnome_vfs_file_info_unref")
+
+  (wrap-freeable-pointer! ws "GnomeVFSMimeApplication"
+                          "gnome_vfs_mime_application_free")
+
   ;; these are platform-dependent -- FIXME.
   (add-type-alias! ws "GnomeVFSFileSize" 'unsigned-int64)
   (add-type-alias! ws "GnomeVFSFileOffset" 'int64)
