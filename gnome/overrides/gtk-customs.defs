@@ -277,17 +277,6 @@
       (default "NULL"))))
 
 (define-function
-  gtk_gc_get
-  (c-name "gtk_gc_get")
-  (overrides "gtk_gc_get")
-  (return-type "GdkGC*")
-  (parameters
-    '("gint" "depth")
-    '("GdkColormap*" "colormap")
-    '("GdkGCValues*" "values")
-    '("GdkGCValuesMask" "values_mask")))
-
-(define-function
   gtk_hbox_new
   (c-name "gtk_hbox_new")
   (overrides "gtk_hbox_new")
@@ -1566,23 +1555,6 @@
     '("gint" "y")
     '("gint" "width")
     '("gint" "height")))
-
-(define-method
-  paint_polygon
-  (of-object "GtkStyle")
-  (c-name "gtk_paint_polygon")
-  (overrides "gtk_paint_polygon")
-  (return-type "none")
-  (parameters
-    '("GdkWindow*" "window")
-    '("GtkStateType" "state_type")
-    '("GtkShadowType" "shadow_type")
-    '("GdkRectangle*" "area" (null-ok))
-    '("GtkWidget*" "widget" (null-ok))
-    '("const-gchar*" "detail" (null-ok))
-    '("GdkPoint*" "points")
-    '("gint" "npoints")
-    '("gboolean" "fill")))
 
 (define-method
   paint_resize_grip

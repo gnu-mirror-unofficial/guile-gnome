@@ -1,5 +1,10 @@
 2007-11-30  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/overrides/gtk.defs: Combine and sort ignore list.
+
+	* gnome/overrides/gtk-customs.defs: Remove gtk_gc_get and
+	gtk_paint_polygon wrappers, which referenced opaque types.
+
 	* gnome/overrides/gtk.defs: Add more ignores.
 
 	* gnome/overrides/gdk.defs-type-ignores: Ignore GdkDrawable, we do
