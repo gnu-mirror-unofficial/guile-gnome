@@ -1,3 +1,8 @@
+2007-11-30  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (type-lookup): Ignore functions that
+	would force opaque types to be wrapped.
+
 2007-11-25  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/defs.scm (type-lookup)

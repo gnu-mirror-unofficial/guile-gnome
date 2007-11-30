@@ -98,8 +98,8 @@
 
   (define (return-type-form type const? options)
     (let ((type-obj (or (lookup-type-by-alias ws type)
-                        (begin (warn "wrapping opaque type for proc" for-proc)
-                               (wrap-opaque-pointer! ws type)))))
+                        (begin (warn "opaque type for proc" for-proc type)
+                               (throw 'ignored)))))
       (if (is-a? type-obj <gw-wct>)
           ;; gw:wct does not take caller/callee owned type options
           (cons (name type-obj) (if const? '(const) '()))
