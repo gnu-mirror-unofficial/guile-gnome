@@ -1,5 +1,8 @@
 2007-11-30  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/libgnome-spec.scm (client-global-declarations-cg):
+	Don't add gnome-support.h to client decls.
+
 	* gnome/overrides/libgnome.defs: Ignore some more functions.
 
 	* doc/guile-gnome-libgnome.texi (Top): Type and function index.

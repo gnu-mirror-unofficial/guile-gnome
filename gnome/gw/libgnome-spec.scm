@@ -49,5 +49,4 @@
 (define-method (client-global-declarations-cg (self <libgnome-wrapset>))
   (list (next-method)
         "#include <libgnome/libgnome.h>\n"
-        "#include <libgnome/libgnometypebuiltins.h>\n"
-        "#include \"gnome-support.h\"\n"))
+        "#include <libgnome/libgnometypebuiltins.h>\n"))
