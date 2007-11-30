@@ -1,5 +1,11 @@
 2007-11-30  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/overrides/gdk.defs (gdk_draw_text, gdk_exit)
+	(gdk_rectangle_intersect, gdk_rectangle_union)
+	(gdk_region_get_clipbox, gdk_rgb_find_color, gdk_setting_get)
+	(gdk_text_extents, gdk_window_get_frame_extents): Ignore more
+	functions from the API review.
+
 	* gnome/overrides/gtk.defs: Combine and sort ignore list.
 
 	* gnome/overrides/gtk-customs.defs: Remove gtk_gc_get and

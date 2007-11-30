@@ -204,6 +204,7 @@
  "gdk_draw_rgb_image" ; guchar*
  "gdk_draw_rgb_image_dithalign"
  "gdk_draw_segments"
+ "gdk_draw_text"
  "gdk_draw_text_wc"
  "gdk_draw_trapezoids"
  "gdk_drawable_get_data"
@@ -215,6 +216,7 @@
  "gdk_event_send_client_message_for_display"
  "gdk_event_send_clientmessage_toall"
  "gdk_event_set_screen"
+ "gdk_exit"
  "gdk_font_equal"
  "gdk_font_from_description_for_display"
  "gdk_font_get_display"
@@ -255,16 +257,22 @@
  "gdk_property_get" ; guchar**
  "gdk_query_depths" ; gint**
  "gdk_query_visual_types" ; GdkVisualType**
+ "gdk_rectangle_intersect"
+ "gdk_rectangle_union"
  "gdk_region_get_rectangles" ; GdkRectangle**
+ "gdk_region_get_clipbox"
  "gdk_region_polygon"
  "gdk_rgb_cmap_new" ; GdkRgbCmap*
+ "gdk_rgb_find_color"
  "gdk_selection_property_get" ; guchar**
  "gdk_set_pointer_hooks" ; GdkPointerHooks*
+ "gdk_setting_get"
  "gdk_spawn_on_screen"
  "gdk_spawn_on_screen_with_pipes"
  "gdk_string_to_compound_text"
  "gdk_string_to_compound_text_for_display"
  "gdk_synthesize_window_state"
+ "gdk_text_extents"
  "gdk_text_extents_wc" ; GdkWChar*
  "gdk_text_property_to_text_list"
  "gdk_text_property_to_text_list_for_display"
@@ -280,6 +288,7 @@
  "gdk_window_constrain_size" ; GdkGeometry*
  "gdk_window_destroy_notify"
  "gdk_window_get_decorations" ; GdkWMDecoration*
+ "gdk_window_get_frame_extents"
  "gdk_window_get_internal_paint_info" ; GdkDrawable**
  "gdk_window_get_pointer" ; GdkModifierType*
  "gdk_window_get_user_data"
