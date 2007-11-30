@@ -1,3 +1,7 @@
+2007-11-30  Andy Wingo  <wingo@pobox.com>
+
+	* doc/guile-gnome-libglade.texi (Top): Add type index.
+
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.95 ==
