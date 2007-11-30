@@ -47,24 +47,38 @@
 
 
 
-(ignore-glob  "gnome_config*" ;; gah, this is a mess
-              "gnome_execute_async*" ;; can't handle the argv[]
-              "*_vector" ;; vectors need special loving
-              "gnome_triggers_v*" ;; can't handle the argv[]
-              "gnome_program_init*" ;; taken care of already
+(ignore-glob  "gnome_config*"
+              "gnome_execute_*"
+              "gnome_i18n_*"
+              "*_vector"
+              "gnome_triggers_v*"
+              "gnome_program_init*"
+              "gnome_score*"
               )
 
-(ignore "g_extension_pointer"
-        "gnome_bonobo_module_info_get"
-        "gnome_help_display_desktop_with_env"
-        "gnome_help_display_uri_with_env"
-        "gnome_help_display_with_doc_id_and_env"
-        "gnome_help_error_quark"
-        "gnome_i18n_get_language_list"
-        "gnome_program_module_load"
-        "gnome_score_init"
-        "gnome_sound_connection_get"
-        "gnome_url_error_quark"
-        "gnome_url_show_with_env"
-        "gnome_win32_get_prefixes"
-        "libgnome_module_info_get")
+(ignore
+ "g_extension_pointer"
+ "gnome_bonobo_module_info_get"
+ "gnome_clearenv"
+ "gnome_help_display_desktop_with_env"
+ "gnome_help_display_uri_with_env"
+ "gnome_help_display_with_doc_id_and_env"
+ "gnome_help_error_quark"
+ "gnome_program_install_property" ; GnomeProgramClass*
+ "gnome_program_locate_file"
+ "gnome_program_module_load"
+ "gnome_program_module_register" ; GnomeModuleInfo*
+ "gnome_program_module_registered" ; GnomeModuleInfo*
+ "gnome_program_parse_args"
+ "gnome_program_postinit"
+ "gnome_program_preinit" ; poptContext
+ "gnome_score_init"
+ "gnome_setenv"
+ "gnome_sound_connection_get"
+ "gnome_unsetenv"
+ "gnome_url_error_quark"
+ "gnome_url_show_with_env"
+ "gnome_util_user_shell"
+ "gnome_win32_get_prefixes"
+ "libgnome_module_info_get"
+ )
