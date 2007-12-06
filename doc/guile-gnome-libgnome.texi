@@ -60,6 +60,8 @@ later version published by the Free Software Foundation.
 * libgnometypebuiltins:: Some type macros defined by libgnome.
 * libgnome:: 
 
+* Undocumented::        Undocumented functions.
+
 * Type Index::
 * Function Index::
 @end menu
@@ -85,6 +87,8 @@ later version published by the Free Software Foundation.
 @include section-gnome-util.xml.texi
 @include section-libgnometypebuiltins.xml.texi
 @include section-libgnome.xml.texi
+
+@include undocumented.texi
 
 @node Type Index
 @unnumbered Type Index

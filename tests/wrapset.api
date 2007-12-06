@@ -37,27 +37,6 @@
    (uses-interfaces (gnome gw generics))
    (typed-exports
      (%gnome-program-init procedure (arity 0 0 #t))
-     (<char**> <gw:wct>)
-     (<g-object-get-property-func> <gw:wct>)
-     (<g-object-set-property-func> <gw:wct>)
-     (<gchar***> <gw:wct>)
-     (<gfloat**> <gw:wct>)
-     (<gnome-module-info*> <gw:wct>)
-     (<gnome-program-class*> <gw:wct>)
-     (<gs-list**> <gw:wct>)
-     (<popt-context> <gw:wct>)
-     (<time-t**> <gw:wct>)
-     (gnome-clearenv procedure (arity 0 0 #t))
-     (gnome-execute-shell procedure (arity 0 0 #t))
-     (gnome-execute-shell-fds
-       procedure
-       (arity 0 0 #t))
-     (gnome-execute-terminal-shell
-       procedure
-       (arity 0 0 #t))
-     (gnome-execute-terminal-shell-fds
-       procedure
-       (arity 0 0 #t))
      (gnome-gconf-get-app-settings-relative
        procedure
        (arity 0 0 #t))
@@ -72,12 +51,6 @@
      (gnome-help-display-with-doc-id
        procedure
        (arity 4 0 #f))
-     (gnome-i18n-pop-c-numeric-locale
-       procedure
-       (arity 0 0 #t))
-     (gnome-i18n-push-c-numeric-locale
-       procedure
-       (arity 0 0 #t))
      (gnome-program-get procedure (arity 0 0 #t))
      (gnome-program-get-app-id
        procedure
@@ -88,35 +61,12 @@
      (gnome-program-get-human-readable-name
        procedure
        (arity 0 0 #t))
-     (gnome-program-install-property
-       procedure
-       (arity 0 0 #t))
-     (gnome-program-locate-file
-       procedure
-       (arity 0 0 #t))
-     (gnome-program-module-register
-       procedure
-       (arity 0 0 #t))
-     (gnome-program-module-registered
-       procedure
-       (arity 0 0 #t))
-     (gnome-program-parse-args
-       procedure
-       (arity 0 0 #t))
-     (gnome-program-postinit procedure (arity 0 0 #t))
-     (gnome-program-preinit procedure (arity 0 0 #t))
-     (gnome-score-get-notable
-       procedure
-       (arity 0 0 #t))
-     (gnome-score-log procedure (arity 0 0 #t))
-     (gnome-setenv procedure (arity 0 0 #t))
      (gnome-sound-init procedure (arity 0 0 #t))
      (gnome-sound-play procedure (arity 0 0 #t))
      (gnome-sound-sample-load
        procedure
        (arity 0 0 #t))
      (gnome-sound-shutdown procedure (arity 0 0 #t))
-     (gnome-unsetenv procedure (arity 0 0 #t))
      (gnome-url-show procedure (arity 1 0 #f))
      (gnome-user-accels-dir-get
        procedure
@@ -124,5 +74,4 @@
      (gnome-user-dir-get procedure (arity 0 0 #t))
      (gnome-user-private-dir-get
        procedure
-       (arity 0 0 #t))
-     (gnome-util-user-shell procedure (arity 0 0 #t)))))
+       (arity 0 0 #t)))))
