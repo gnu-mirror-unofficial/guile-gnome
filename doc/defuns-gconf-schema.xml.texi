@@ -2,6 +2,8 @@
 @c %start of fragment
 
 @deftp Class <g-conf-schema>
+Derives from @code{<gboxed>}.
+
 @end deftp
 
 @deffn Function gconf-schema-new  @result{}@tie{} (ret@tie{}@code{<g-conf-schema>})

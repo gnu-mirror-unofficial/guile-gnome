@@ -19,24 +19,6 @@ a new @code{<g-conf-client>}. @code{g-object-unref} when you're done.
 
 @end deffn
 
-@deffn Function gconf-client-get-for-engine  (engine@tie{}@code{<g-conf-engine*>}) @result{}@tie{} (ret@tie{}@code{<g-conf-client>})
-Creates a new @code{<g-conf-client>} with a specific @code{<g-conf-engine>}.
-Only specialized configuration-related programs should need to call this
-function. The returned @code{<g-conf-client>} should be unref'd when you're done
-with @code{g-object-unref}. Remember to avoid using the @code{<g-conf-engine>}
-directly once you have a @code{<g-conf-client>} wrapper.
-
-@table @var
-@item engine
-the @code{<g-conf-engine>} to use.
-
-@item ret
-a new @code{<g-conf-client>}.
-
-@end table
-
-@end deffn
-
 @deffn Function gconf-client-add-dir  (self@tie{}@code{<g-conf-client>}) (dir@tie{}@code{mchars}) (preload@tie{}@code{<g-conf-client-preload-type>})
 Add a directory to the list of directories the @code{<g-conf-client>} will
 watch. Any changes to keys below this directory will cause the "value_changed"
@@ -60,7 +42,8 @@ directory to add to the list.
 degree of preload.
 
 @item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
+the return location for an allocated @code{<g-error>}, or @code{@code{#f}} to
+ignore errors.
 
 @end table
 
@@ -82,7 +65,8 @@ a @code{<g-conf-client>}.
 directory to remove.
 
 @item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
+the return location for an allocated @code{<g-error>}, or @code{@code{#f}} to
+ignore errors.
 
 @end table
 
@@ -126,10 +110,11 @@ user data to pass to @var{func}.
 
 @item destroy-notify
 function to call on @var{user-data} when the notify is removed or the
-@code{<g-conf-client>} is destroyed, or for none.
+@code{<g-conf-client>} is destroyed, or @code{@code{#f}} for none.
 
 @item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
+the return location for an allocated @code{<g-error>}, or @code{@code{#f}} to
+ignore errors.
 
 @item ret
 a connection ID for removing the notification.
@@ -216,7 +201,8 @@ directory to preload.
 degree of preload.
 
 @item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
+the return location for an allocated @code{<g-error>}, or @code{@code{#f}} to
+ignore errors.
 
 @end table
 
@@ -238,7 +224,8 @@ key to set.
 new value.
 
 @item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
+the return location for an allocated @code{<g-error>}, or @code{@code{#f}} to
+ignore errors.
 
 @end table
 
@@ -256,10 +243,12 @@ a @code{<g-conf-client>}.
 key to get.
 
 @item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
+the return location for an allocated @code{<g-error>}, or @code{@code{#f}} to
+ignore errors.
 
 @item ret
-newly-allocated @code{<g-conf-value>}, or if unset and no default exists.
+newly-allocated @code{<g-conf-value>}, or @code{@code{#f}} if unset and no
+default exists.
 
 @end table
 
@@ -277,38 +266,12 @@ a @code{<g-conf-client>}.
 key to get.
 
 @item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
+the return location for an allocated @code{<g-error>}, or @code{@code{#f}} to
+ignore errors.
 
 @item ret
-newly-allocated @code{<g-conf-value>}, or if unset (even if a default exists).
-
-@end table
-
-@end deffn
-
-@deffn Function gconf-client-get-entry  (self@tie{}@code{<g-conf-client>}) (key@tie{}@code{mchars}) (locale@tie{}@code{mchars}) (use_schema_default@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<g-conf-entry*>})
-Obtains the full @code{<g-conf-entry>} for a value. Just like
-@code{gconf-engine-get-entry}, but uses @code{<g-conf-client>} caching and
-error-handling features.
-
-@table @var
-@item client
-a @code{<g-conf-client>}.
-
-@item key
-key to get.
-
-@item locale
-preferred locale (as in the locale-related environment variables).
-
-@item use-schema-default
-indicates whether to look for a default value when the key is unset.
-
-@item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
-
-@item ret
-a @code{<g-conf-entry>}.
+newly-allocated @code{<g-conf-value>}, or @code{@code{#f}} if unset (even if a
+default exists).
 
 @end table
 
@@ -329,10 +292,11 @@ a @code{<g-conf-client>}.
 key to unset.
 
 @item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
+the return location for an allocated @code{<g-error>}, or @code{@code{#f}} to
+ignore errors.
 
 @item ret
-on success, on error.
+@code{@code{#t}} on success, @code{@code{#f}} on error.
 
 @end table
 
@@ -355,41 +319,15 @@ a key or directory name to be unset.
 change how the unset is done.
 
 @item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
+the return location for an allocated @code{<g-error>}, or @code{@code{#f}} to
+ignore errors.
 
 @item ret
-on success, on error.
+@code{@code{#t}} on success, @code{@code{#f}} on error.
 
 @end table
 
 Since 2.4.
-
-@end deffn
-
-@deffn Function gconf-client-all-entries  (self@tie{}@code{<g-conf-client>}) (dir@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{gslist-of})
-Lists the key-value pairs in @var{dir}. Does not list subdirectories; for that
-use @code{gconf-client-all-dirs}. The returned list contains
-@code{<g-conf-entry>} objects. A @code{<g-conf-entry>} contains an
-@emph{absolute} key and a value. The list is not recursive, it contains only the
-immediate children of @var{dir}. To free the returned list,
-@code{gconf-entry-free} each list element, then @code{g-slist-free} the list
-itself. Just like @code{gconf-engine-all-entries}, but uses
-@code{<g-conf-client>} caching and error-handling features.
-
-@table @var
-@item client
-a @code{<g-conf-client>}.
-
-@item dir
-directory to list.
-
-@item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
-
-@item ret
-List of @code{<g-conf-entry>}.
-
-@end table
 
 @end deffn
 
@@ -408,7 +346,8 @@ a @code{<g-conf-client>}.
 directory to get subdirectories from.
 
 @item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
+the return location for an allocated @code{<g-error>}, or @code{@code{#f}} to
+ignore errors.
 
 @item ret
 List of allocated subdirectory names.
@@ -418,27 +357,29 @@ List of allocated subdirectory names.
 @end deffn
 
 @deffn Function gconf-client-suggest-sync  (self@tie{}@code{<g-conf-client>})
-Suggests to that you've just finished a block of changes, and it would be an
-optimal time to sync to permanent storage. This is only a suggestion; and will
-eventually sync even if you don't call @code{gconf-engine-suggest-sync}. This
-function is just a "hint" provided to to maximize efficiency and minimize data
-loss. Just like @code{gconf-engine-suggest-sync}.
+Suggests to @cite{gconfd} that you've just finished a block of changes, and it
+would be an optimal time to sync to permanent storage. This is only a
+suggestion; and @cite{gconfd} will eventually sync even if you don't call
+@code{gconf-engine-suggest-sync}. This function is just a "hint" provided to
+@cite{gconfd} to maximize efficiency and minimize data loss. Just like
+@code{gconf-engine-suggest-sync}.
 
 @table @var
 @item client
 a @code{<g-conf-client>}.
 
 @item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
+the return location for an allocated @code{<g-error>}, or @code{@code{#f}} to
+ignore errors.
 
 @end table
 
 @end deffn
 
 @deffn Function gconf-client-dir-exists  (self@tie{}@code{<g-conf-client>}) (dir@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
-Queries whether the directory @var{dir} exists in the GConf database. Returns or
-. Just like @code{gconf-engine-dir-exists}, but uses @code{<g-conf-client>}
-caching and error-handling features.
+Queries whether the directory @var{dir} exists in the GConf database. Returns
+@code{@code{#t}} or @code{@code{#f}}. Just like @code{gconf-engine-dir-exists},
+but uses @code{<g-conf-client>} caching and error-handling features.
 
 @table @var
 @item client
@@ -448,10 +389,11 @@ a @code{<g-conf-client>}.
 directory to check for
 
 @item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
+the return location for an allocated @code{<g-error>}, or @code{@code{#f}} to
+ignore errors.
 
 @item ret
-or .
+@code{@code{#t}} or @code{@code{#f}}.
 
 @end table
 
@@ -468,38 +410,12 @@ a @code{<g-conf-client>}.
 the value to be changed.
 
 @item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
+the return location for an allocated @code{<g-error>}, or @code{@code{#f}} to
+ignore errors.
 
 @item ret
-if the key is writable, if the key is read only.
-
-@end table
-
-@end deffn
-
-@deffn Function gconf-client-error  (self@tie{}@code{<g-conf-client>}) (error@tie{}@code{<g-error*>})
-Emits the "error" signal. Rarely useful.
-
-@table @var
-@item client
-a @code{<g-conf-client>}.
-
-@item error
-error to pass to signal handlers.
-
-@end table
-
-@end deffn
-
-@deffn Function gconf-client-unreturned-error  (self@tie{}@code{<g-conf-client>}) (error@tie{}@code{<g-error*>})
-Emits the "unreturned_error" signal. Rarely useful.
-
-@table @var
-@item client
-a @code{<g-conf-client>}.
-
-@item error
-error to pass to signal handlers.
+@code{@code{#t}} if the key is writable, @code{@code{#f}} if the key is read
+only.
 
 @end table
 
@@ -517,58 +433,6 @@ key to pass to signal handlers.
 
 @item value
 value of @var{key} to pass to signal handlers.
-
-@end table
-
-@end deffn
-
-@deffn Function gconf-client-commit-change-set  (self@tie{}@code{<g-conf-client>}) (cs@tie{}@code{<g-conf-change-set*>}) (remove_committed@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
-Applies the changes in the change set to the @code{<g-conf-client>} passed as
-the first argument. If @var{remove-committed} is , then any
-successfully-committed changes are removed from the change set. If
-@var{remove-committed} is , the @code{<g-conf-change-set>} is left unmodified.
-
-If any set or unset operation results in an error, then processing terminates
-and the error is returned in @var{err} (unless @var{err} was ). If
-@var{remove-committed} was , then all the changes committed before the error
-occurred will have been removed from the set. If any error occurs, is returned.
-
-@table @var
-@item client
-a @code{<g-conf-client>}.
-
-@item cs
-a @code{<g-conf-change-set>}.
-
-@item remove-committed
-whether to remove successfully-committed changes from the set.
-
-@item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
-
-@item ret
-on success, if an error occurs.
-
-@end table
-
-@end deffn
-
-@deffn Function gconf-client-reverse-change-set  (self@tie{}@code{<g-conf-client>}) (cs@tie{}@code{<g-conf-change-set*>}) @result{}@tie{} (ret@tie{}@code{<g-conf-change-set*>})
-Creates a change set that would reverse @var{cs}. That is, for each change in
-@var{cs}, save the current state of that key in the returned change set.
-
-@table @var
-@item client
-a @code{<g-conf-client>}.
-
-@item cs
-change set to create the reverse of.
-
-@item err
-the return location for an allocated @code{<g-error>}, or to ignore errors.
-
-@item ret
-a new change set that would restore the current state of each key in @var{cs}.
 
 @end table
 

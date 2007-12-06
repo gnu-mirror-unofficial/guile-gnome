@@ -1,17 +1,5 @@
 
 @c %start of fragment
 
-@deffn Function gconf-error-quark  @result{}@tie{} (ret@tie{}@code{unsigned-int})
-Converts the string 'gconf-error-quark' to a @code{<g-quark>} and returns the
-value.
-
-@table @var
-@item ret
-the @code{<g-quark>} representing the string.
-
-@end table
-
-@end deffn
-
 
 @c %end of fragment

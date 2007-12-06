@@ -53,6 +53,8 @@ later version published by the Free Software Foundation.
 * GConfSchema:: 
 * GConfValue GConfEntry GConfMetaInfo:: 
 
+* Undocumented::        Undocumented functions.
+
 * Type Index::
 * Function Index::
 @end menu
@@ -73,6 +75,8 @@ later version published by the Free Software Foundation.
 @include section-gconf-error.xml.texi
 @include section-gconf-schema.xml.texi
 @include section-gconf-value.xml.texi
+
+@include undocumented.texi
 
 
 @node Type Index

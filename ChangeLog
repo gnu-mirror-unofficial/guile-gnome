@@ -1,5 +1,10 @@
 2007-12-06  Andy Wingo  <wingo@pobox.com>
 
+	* doc/guile-gnome-gconf.texi (Top): 
+	* doc/undocumented.texi: Add section for undocumented exports.
+
+	* doc/defuns-*.texi: Regenerated.
+
 	* tests/wrapset.api: Update.
 
 	* gnome/overrides/gconf.defs: Ignore functions that operate on
