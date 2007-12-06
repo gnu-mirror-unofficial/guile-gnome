@@ -53,7 +53,7 @@ later version published by the Free Software Foundation.
 * GConfSchema:: 
 * GConfValue GConfEntry GConfMetaInfo:: 
 
-* Concept Index::
+* Type Index::
 * Function Index::
 @end menu
 
@@ -75,9 +75,9 @@ later version published by the Free Software Foundation.
 @include section-gconf-value.xml.texi
 
 
-@node Concept Index
-@unnumbered Concept Index
-@printindex cp
+@node Type Index
+@unnumbered Type Index
+@printindex tp
 @node Function Index
 @unnumbered Function Index
 @printindex fn

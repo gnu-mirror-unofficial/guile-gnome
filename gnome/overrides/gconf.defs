@@ -40,43 +40,10 @@
    '("SCM" "proc")
    '("GError**" "err")))
 
-(define-method all_entries
-  (of-object "GConfClient")
-  (c-name "gconf_client_all_entries")
-  (overrides "gconf_client_all_entries")
-  (return-type "GSList*-of-GConfEntry*")
-  (parameters
-    '("const-gchar*" "dir")
-    '("GError**" "err")
-  )
-)
-
 (define-method all_dirs
   (of-object "GConfClient")
   (c-name "gconf_client_all_dirs")
   (overrides "gconf_client_all_dirs")
-  (return-type "GSList*-of-gchar*")
-  (parameters
-    '("const-gchar*" "dir")
-    '("GError**" "err")
-  )
-)
-
-(define-method all_entries
-  (of-object "GConfEngine")
-  (c-name "gconf_engine_all_entries") 
-  (overrides "gconf_engine_all_entries") 
-  (return-type "GSList*-of-GConfEntry*")
-  (parameters
-    '("const-gchar*" "dir")
-    '("GError**" "err")
-  )
-)
-
-(define-method all_dirs
-  (of-object "GConfEngine")
-  (c-name "gconf_engine_all_dirs")
-  (overrides "gconf_engine_all_dirs")
   (return-type "GSList*-of-gchar*")
   (parameters
     '("const-gchar*" "dir")
@@ -99,7 +66,10 @@
              "*_get_schema"
              "*_get_list"
              "*_get_pair"
-
+             "gconf_value_*"
+             "gconf_entry_*"
+             "gconf_engine_*"
+             "gconf_change_set_*"
              "gconf_listeners_*")
 
 
@@ -115,7 +85,29 @@
               "*_foreach"
               "*_valist")
 
-(ignore "gconf_engine_get_for_addresses"
+(ignore
+ "gconf_init"
+ "gconf_is_initialized"
+ "gconf_error_quark"
+ "gconf_debug_shutdown"
+ "gconf_client_all_entries" ; GConfEntry*
+ "gconf_client_get_for_engine" ; GConfEngine*
+ "gconf_client_set_global_default_error_handler" ; GConfClientErrorHandlerFunc
+ "gconf_client_get_entry" ; GConfEntry*
+ "gconf_client_error" ; GError*
+ "gconf_client_unreturned_error" ; GError*
+ "gconf_client_commit_change_set" ; GConfChangeSet*
+ "gconf_client_reverse_change_set" ; GConfChangeSet*
+ "gconf_string_to_enum" ; GConfEnumStringPair*
+ "gconf_enum_to_string" ; GConfEnumStringPair*
+ "gconf_meta_info_get_mod_user" ; GConfMetaInfo*
+ "gconf_meta_info_mod_time" ; GConfMetaInfo*
+ "gconf_meta_info_new" ; GConfMetaInfo*
+ "gconf_meta_info_set_mod_user" ; GConfMetaInfo*
+ "gconf_meta_info_set_mod_time" ; GConfMetaInfo*
+
+
+ "gconf_engine_get_for_addresses"
         "gconf_engine_get_local_for_addresses"
         "gconf_engine_change_set_from_currentv"
         "gconf_engine_notify_add"

@@ -32,52 +32,14 @@
   ((gnome gw gconf)
    (uses-interfaces (gnome gw generics))
    (typed-exports
-     (<char**> <gw:wct>)
-     (<g-conf-change-set*> <gw:wct>)
-     (<g-conf-client-error-handler-func> <gw:wct>)
-     (<g-conf-engine*> <gw:wct>)
-     (<g-conf-entry*> <gw:wct>)
-     (<g-conf-enum-string-pair*> <gw:wct>)
-     (<g-conf-meta-info*> <gw:wct>)
-     (<g-conf-value**> <gw:wct>)
-     (<g-destroy-notify> <gw:wct>)
-     (<g-error*> <gw:wct>)
-     (<gpointer> <gw:wct>)
-     (gconf-change-set-check-value
-       procedure
-       (arity 0 0 #t))
-     (gconf-change-set-clear procedure (arity 0 0 #t))
-     (gconf-change-set-get-user-data
-       procedure
-       (arity 0 0 #t))
-     (gconf-change-set-new procedure (arity 0 0 #t))
-     (gconf-change-set-remove
-       procedure
-       (arity 0 0 #t))
-     (gconf-change-set-set procedure (arity 0 0 #t))
-     (gconf-change-set-set-nocopy
-       procedure
-       (arity 0 0 #t))
-     (gconf-change-set-set-user-data
-       procedure
-       (arity 0 0 #t))
-     (gconf-change-set-size procedure (arity 0 0 #t))
-     (gconf-change-set-unset procedure (arity 0 0 #t))
      (gconf-client-add-dir procedure (arity 3 0 #f))
      (gconf-client-all-dirs procedure (arity 2 0 #f))
-     (gconf-client-all-entries
-       procedure
-       (arity 2 0 #f))
      (gconf-client-clear-cache
        procedure
        (arity 0 0 #t))
-     (gconf-client-commit-change-set
-       procedure
-       (arity 3 0 #f))
      (gconf-client-dir-exists
        procedure
        (arity 2 0 #f))
-     (gconf-client-error procedure (arity 0 0 #t))
      (gconf-client-get procedure (arity 2 0 #f))
      (gconf-client-get-default
        procedure
@@ -85,10 +47,6 @@
      (gconf-client-get-default-from-schema
        procedure
        (arity 2 0 #f))
-     (gconf-client-get-entry procedure (arity 4 0 #f))
-     (gconf-client-get-for-engine
-       procedure
-       (arity 0 0 #t))
      (gconf-client-get-without-default
        procedure
        (arity 2 0 #f))
@@ -109,22 +67,13 @@
      (gconf-client-remove-dir
        procedure
        (arity 2 0 #f))
-     (gconf-client-reverse-change-set
-       procedure
-       (arity 2 0 #f))
      (gconf-client-set procedure (arity 3 0 #f))
      (gconf-client-set-error-handling
-       procedure
-       (arity 0 0 #t))
-     (gconf-client-set-global-default-error-handler
        procedure
        (arity 0 0 #t))
      (gconf-client-suggest-sync
        procedure
        (arity 1 0 #f))
-     (gconf-client-unreturned-error
-       procedure
-       (arity 0 0 #t))
      (gconf-client-unset procedure (arity 2 0 #f))
      (gconf-client-value-changed
        procedure
@@ -132,109 +81,8 @@
      (gconf-concat-dir-and-key
        procedure
        (arity 0 0 #t))
-     (gconf-debug-shutdown procedure (arity 0 0 #t))
-     (gconf-engine-all-dirs procedure (arity 2 0 #f))
-     (gconf-engine-all-entries
-       procedure
-       (arity 2 0 #f))
-     (gconf-engine-associate-schema
-       procedure
-       (arity 3 0 #f))
-     (gconf-engine-commit-change-set
-       procedure
-       (arity 3 0 #f))
-     (gconf-engine-dir-exists
-       procedure
-       (arity 2 0 #f))
-     (gconf-engine-get procedure (arity 2 0 #f))
-     (gconf-engine-get-default
-       procedure
-       (arity 0 0 #t))
-     (gconf-engine-get-default-from-schema
-       procedure
-       (arity 2 0 #f))
-     (gconf-engine-get-entry procedure (arity 4 0 #f))
-     (gconf-engine-get-for-address
-       procedure
-       (arity 1 0 #f))
-     (gconf-engine-get-user-data
-       procedure
-       (arity 0 0 #t))
-     (gconf-engine-get-with-locale
-       procedure
-       (arity 3 0 #f))
-     (gconf-engine-get-without-default
-       procedure
-       (arity 2 0 #f))
-     (gconf-engine-key-is-writable
-       procedure
-       (arity 2 0 #f))
-     (gconf-engine-notify-remove
-       procedure
-       (arity 0 0 #t))
-     (gconf-engine-remove-dir
-       procedure
-       (arity 2 0 #f))
-     (gconf-engine-reverse-change-set
-       procedure
-       (arity 2 0 #f))
-     (gconf-engine-set procedure (arity 3 0 #f))
-     (gconf-engine-set-user-data
-       procedure
-       (arity 0 0 #t))
-     (gconf-engine-suggest-sync
-       procedure
-       (arity 1 0 #f))
-     (gconf-engine-unset procedure (arity 2 0 #f))
-     (gconf-entry-equal procedure (arity 0 0 #t))
-     (gconf-entry-get-is-default
-       procedure
-       (arity 0 0 #t))
-     (gconf-entry-get-is-writable
-       procedure
-       (arity 0 0 #t))
-     (gconf-entry-get-key procedure (arity 0 0 #t))
-     (gconf-entry-get-schema-name
-       procedure
-       (arity 0 0 #t))
-     (gconf-entry-get-value procedure (arity 0 0 #t))
-     (gconf-entry-new procedure (arity 0 0 #t))
-     (gconf-entry-new-nocopy procedure (arity 0 0 #t))
-     (gconf-entry-set-is-default
-       procedure
-       (arity 0 0 #t))
-     (gconf-entry-set-is-writable
-       procedure
-       (arity 0 0 #t))
-     (gconf-entry-set-schema-name
-       procedure
-       (arity 0 0 #t))
-     (gconf-entry-set-value procedure (arity 0 0 #t))
-     (gconf-entry-set-value-nocopy
-       procedure
-       (arity 0 0 #t))
-     (gconf-entry-steal-value
-       procedure
-       (arity 0 0 #t))
-     (gconf-enum-to-string procedure (arity 0 0 #t))
-     (gconf-error-quark procedure (arity 0 0 #t))
      (gconf-escape-key procedure (arity 0 0 #t))
-     (gconf-init procedure (arity 2 0 #f))
-     (gconf-is-initialized procedure (arity 0 0 #t))
      (gconf-key-is-below procedure (arity 0 0 #t))
-     (gconf-meta-info-get-mod-user
-       procedure
-       (arity 0 0 #t))
-     (gconf-meta-info-mod-time
-       procedure
-       (arity 0 0 #t))
-     (gconf-meta-info-new procedure (arity 0 0 #t))
-     (gconf-meta-info-set-mod-time
-       procedure
-       (arity 0 0 #t))
-     (gconf-meta-info-set-mod-user
-       procedure
-       (arity 0 0 #t))
      (gconf-schema-get-car-type
        procedure
        (arity 0 0 #t))
@@ -284,35 +132,9 @@
        procedure
        (arity 0 0 #t))
      (gconf-schema-set-type procedure (arity 0 0 #t))
-     (gconf-string-to-enum procedure (arity 2 0 #f))
      (gconf-unescape-key procedure (arity 0 0 #t))
      (gconf-unique-key procedure (arity 0 0 #t))
-     (gconf-valid-key procedure (arity 1 0 #f))
-     (gconf-value-compare procedure (arity 0 0 #t))
-     (gconf-value-get-car procedure (arity 0 0 #t))
-     (gconf-value-get-cdr procedure (arity 0 0 #t))
-     (gconf-value-get-list-type
-       procedure
-       (arity 0 0 #t))
-     (gconf-value-new procedure (arity 0 0 #t))
-     (gconf-value-new-from-string
-       procedure
-       (arity 2 0 #f))
-     (gconf-value-set-car procedure (arity 0 0 #t))
-     (gconf-value-set-car-nocopy
-       procedure
-       (arity 0 0 #t))
-     (gconf-value-set-cdr procedure (arity 0 0 #t))
-     (gconf-value-set-cdr-nocopy
-       procedure
-       (arity 0 0 #t))
-     (gconf-value-set-list-type
-       procedure
-       (arity 0 0 #t))
-     (gconf-value-set-schema-nocopy
-       procedure
-       (arity 0 0 #t))
-     (gconf-value-to-string procedure (arity 0 0 #t))))
+     (gconf-valid-key procedure (arity 1 0 #f))))
   ((gnome gw generics)
    (uses-interfaces (gnome gobject generics))
    (typed-exports)))
