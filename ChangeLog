@@ -1,3 +1,10 @@
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* README: Update to say that we have no public API.
+
+	* gnome/Makefile.am: 
+	* gnome/cairo.scm: Removed, we provide no public API.
+
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.95 ==
