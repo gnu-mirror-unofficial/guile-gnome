@@ -1,0 +1,13 @@
+
+@c %start of fragment
+
+@node Undocumented
+@chapter Undocumented
+The following symbols, if any, have not been properly documented.
+
+@section (gnome gw libglade)
+@defvar glade-xml-relative-file
+@end defvar
+
+
+@c %end of fragment

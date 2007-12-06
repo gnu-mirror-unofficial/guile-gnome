@@ -51,6 +51,8 @@ Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 * GladeXML::             Allows dynamic loading of user interfaces
                          from XML descriptions.
 
+* Undocumented::         Undocumented functions.
+
 * Type Index::
 * Function Index::
 @end menu
@@ -63,6 +65,8 @@ Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 
 @include overview.texi
 @include section-glade-xml.xml.texi
+
+@include undocumented.texi
 
 @node Type Index
 @unnumbered Type Index

@@ -1,3 +1,12 @@
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* tests/wrapset.api: Regenerate.
+
+	* doc/defuns-*.texi: Regenerated.
+
+	* doc/guile-gnome-libglade.texi (Top): 
+	* doc/undocumented.texi: New section for undocumented exports.
+
 2007-11-30  Andy Wingo  <wingo@pobox.com>
 
 	* doc/guile-gnome-libglade.texi (Top): Add type index.

@@ -7,6 +7,7 @@ docbook_xml_wildcard = ~/src/gnome2/libglade/doc/xml/glade-xml.xml
 docbook_xml_files = $(wildcard $(docbook_xml_wildcard))
 
 wrapset_stem = libglade
+GTK_DOC_COVERAGE_MODULES = (gnome glade) (gnome gw $(wrapset_stem))
 
 EXTRA_DIST = overrides.texi
 
