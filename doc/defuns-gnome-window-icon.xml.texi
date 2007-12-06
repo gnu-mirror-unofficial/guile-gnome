@@ -1,45 +1,5 @@
 
 @c %start of fragment
 
-@deffn Function gnome-window-icon-set-from-default  (w@tie{}@code{<gtk-window>})
-@samp{gnome_window_icon_set_from_default} is deprecated and should not be used
-in newly-written code.
-
-Makes the @code{<gtk-window>}@var{w} use the default icon.
-
-@table @var
-@item w
-the @code{<gtk-widget>} to set the icon on
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-window-icon-set-from-file  (w@tie{}@code{<gtk-window>}) (filename@tie{}@code{mchars})
-@samp{gnome_window_icon_set_from_file} is deprecated and should not be used in
-newly-written code.
-
-Makes the @code{<gtk-window>}@var{w} use the icon in @var{filename}.
-
-@table @var
-@item w
-the @code{<gtk-widget>} to set the icon on
-
-@item filename
-the name of the file to load
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-window-icon-init 
-@samp{gnome_window_icon_init} is deprecated and should not be used in
-newly-written code.
-
-Initialize the gnome window icon by checking the GNOME_DESKTOP_ICON environment
-variable. This function is automatically called by the gnome_init process.
-
-@end deffn
-
 
 @c %end of fragment

@@ -1,37 +1,5 @@
 
 @c %start of fragment
 
-@deftp Class <gnome-about>
-This @code{<gobject>} class defines the following properties:
-
-@table @code
-@item name
-The name of the program
-
-@item version
-The version of the program
-
-@item copyright
-Copyright information for the program
-
-@item comments
-Comments about the program
-
-@item authors
-List of authors of the programs
-
-@item documenters
-List of people documenting the program
-
-@item translator-credits
-Credits to the translators. This string should be marked as translatable
-
-@item logo
-A logo for the about box
-
-@end table
-
-@end deftp
-
 
 @c %end of fragment

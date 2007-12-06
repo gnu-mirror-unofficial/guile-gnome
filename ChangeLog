@@ -1,3 +1,13 @@
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* tests/wrapset.api: Regnerated for massive API removal on
+	previous commit.
+
+	* doc/defuns-*.texi: Regenerated.
+
+	* doc/guile-gnome-libgnomeui.texi (Top): 
+	* doc/undocumented.texi: New section for undocumented exports.
+
 2007-11-30  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/overrides/libgnomeui.defs: Ignore lots of code which is

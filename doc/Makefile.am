@@ -26,6 +26,8 @@ docbook_xml_files = $(filter-out $(docbook_xml_ignore_files), $(wildcard $(docbo
 
 wrapset_stem = libgnomeui
 
+GTK_DOC_COVERAGE_MODULES = (gnome gnome-ui) (gnome gw $(wrapset_stem))
+
 EXTRA_DIST = overrides.texi
 
 info_TEXINFOS=guile-gnome-libgnomeui.texi

@@ -2,8 +2,9 @@
 @c %start of fragment
 
 @deftp Class <gnome-client>
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+Derives from @code{<gtk-object>}.
+
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
 
@@ -78,15 +79,6 @@ Pointer to GNOME session client object.
 @item ret
 Config prefix. The returned string belongs to libgnomeui library and should NOT
 be freed by the caller.
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-client-module-info-get  @result{}@tie{} (ret@tie{}@code{<gnome-module-info*>})
-@table @var
-@item ret
-
 
 @end table
 
@@ -440,52 +432,6 @@ A @code{<gnome-client>} instance.
 
 @item ret
 Session ID of GNOME desktop instance, or @samp{@code{#f}} if none.
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-client-request-interaction  (self@tie{}@code{<gnome-client>}) (dialog_type@tie{}@code{<gnome-dialog-type>}) (function@tie{}@code{<gnome-interact-function>}) (data@tie{}@code{<gpointer>})
-@deffnx Method request-interaction
-Use the following functions, if you want to interact with the user during a
-"save_yourself" handler without being restricted to using the dialog based
-commands @code{gnome-client-save-any-dialog} or
-@code{gnome-client-save-error-dialog}. Note, however, that overriding the
-session manager specified preference in this way (by using arbitrary dialog
-boxes) is not very nice.
-
-If and when the session manager decides that it's the app's turn to interact
-then 'func' will be called with the specified arguments and a unique
-'GnomeInteractionKey'. The session manager will block other clients from
-interacting until this key is returned with @code{gnome-interaction-key-return}.
-
-@table @var
-@item client
-A @code{<gnome-client>} object.
-
-@item dialog-type
-The type of dialog to create.
-
-@item function
-Callback to invoke to perform the interaction.
-
-@item data
-Callback data.
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-interaction-key-return  (key@tie{}@code{int}) (cancel_shutdown@tie{}@code{bool})
-Used in interaction callback to tell the session manager you are done
-interacting.
-
-@table @var
-@item key
-Key passed to interaction callback
-
-@item cancel-shutdown
-If @samp{@code{#t}}, cancel the shutdown
 
 @end table
 
