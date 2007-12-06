@@ -1,3 +1,10 @@
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* doc/guile-gnome-atk.texi (Top): 
+	* doc/undocumented.texi: Add section for undocumented exports.
+
+	* doc/defuns-*.texi: Regenerated.
+	
 2007-11-25  Andy Wingo  <wingo@pobox.com>
 
 	* doc/guile-gnome-atk.texi (Top): Update to have type and function

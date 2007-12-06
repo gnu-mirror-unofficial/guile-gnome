@@ -103,6 +103,8 @@ later version published by the Free Software Foundation.
                            and components which display or select a
                            value from a bounded range of values.
 
+* Undocumented::           Undocumented functions.
+
 * Type Index::
 * Function Index::
 @end menu
@@ -139,6 +141,7 @@ later version published by the Free Software Foundation.
 @include section-atkutil.xml.texi
 @include section-atkvalue.xml.texi
 
+@include undocumented.texi
 
 @node Type Index
 @unnumbered Type Index

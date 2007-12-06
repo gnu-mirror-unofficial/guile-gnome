@@ -1,0 +1,34 @@
+
+@c %start of fragment
+
+@node Undocumented
+@chapter Undocumented
+The following symbols, if any, have not been properly documented.
+
+@section (gnome gw atk)
+@defvar atk-component-ref-accessible-at-point
+@end defvar
+
+@defvar atk-object-factory-create-accessible
+@end defvar
+
+@defun atk-object-factory-get-accessible-type 
+@end defun
+
+@defvar atk-object-get-n-accessible-children
+@end defvar
+
+@defvar atk-relation-set-add-relation-by-type
+@end defvar
+
+@defvar atk-relation-set-get-relation-by-type
+@end defvar
+
+@defvar atk-streamable-content-get-mime-type
+@end defvar
+
+@defvar atk-streamable-content-get-n-mime-types
+@end defvar
+
+
+@c %end of fragment
