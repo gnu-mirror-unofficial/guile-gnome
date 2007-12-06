@@ -1,5 +1,10 @@
 2007-12-06  Andy Wingo  <wingo@pobox.com>
 
+	* Makefile.am: 
+	* tests/Makefile.am: 
+	* tests/wrapset.scm: 
+	* tests/wrapset.api: Add API regression tests.
+
 	* gnome/corba/Makefile.am: 
 	* Makefile.am: 
 	* doc/make-texinfo.scm: 
