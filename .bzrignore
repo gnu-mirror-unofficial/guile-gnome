@@ -12,3 +12,5 @@ gnome/corba/guile-gnome-corba-primitives.x
 gnome/corba/guile-gnome-corba-types.x
 gnome/corba/guile-gnome-corba.x
 gnome/gw/corba.scm
+guile-gnome-corba.info
+texinfo.tex

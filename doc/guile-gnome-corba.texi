@@ -1,0 +1,238 @@
+
+
+initializing corba primitives... done.
+
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename guile-gnome-corba.info
+@settitle Guile-GNOME: CORBA
+@c %**end of header
+
+@copying 
+This manual is for Guile-GNOME: CORBA (version 2.15.96, updated 6 December 2007)
+
+Copyright 2001,2003,2004 Free Software Foundation
+
+@quotation 
+Permission is granted to copy, distribute and/or modify this document under the
+terms of the GNU General Public License, Version 2 or any later version
+published by the Free Software Foundation.
+
+@end quotation
+
+@end copying
+
+@dircategory The Algorithmic Language Scheme
+@direntry 
+* Guile-GNOME: CORBA: (guile-gnome-corba.info).  Remote objects with CORBA in Scheme.
+@end direntry
+
+@titlepage 
+@title Guile-GNOME: CORBA
+@subtitle version 2.15.96, updated 6 December 2007
+@author Andy Wingo (@email{wingo at pobox.com})
+@author Martin Baulig (@email{baulig at suse.de})
+@page 
+@vskip 0pt plus 1filll
+@insertcopying 
+@end titlepage
+
+@ifnottex 
+@node Top
+@top Guile-GNOME: CORBA
+@insertcopying 
+@menu 
+* gnome corba::          The CORBA wrapper
+* gnome corba primitives::  Primitive functions
+* gnome corba types::    Primtive types
+
+* Function Index::       
+@end menu
+
+@end ifnottex
+
+@iftex 
+@shortcontents 
+@end iftex
+
+@node gnome corba
+@chapter (gnome corba)
+@section Overview
+A CORBA wrapper for Guile.
+
+@section Usage
+@anchor{gnome corba <CORBA:Object>}@deftp Class <CORBA:Object>
+@end deftp
+
+@anchor{gnome corba <PortableServer-ServantBase>}@deftp Class <PortableServer-ServantBase>
+@end deftp
+
+@anchor{gnome corba corba-record-type-vtable}@defvar corba-record-type-vtable
+@end defvar
+
+@anchor{gnome corba bonobo-get-object}@deffn Primitive bonobo-get-object moniker class
+@end deffn
+
+@anchor{gnome corba bonobo-object-query-interface}@deffn Primitive bonobo-object-query-interface object class
+@end deffn
+
+@anchor{gnome corba corba-servant->reference}@deffn Primitive corba-servant->reference servant
+@end deffn
+
+@anchor{gnome corba corba-record-accessor}@defun corba-record-accessor rtd field-name
+@end defun
+
+@anchor{gnome corba corba-record-constructor}@defun corba-record-constructor rtd . opt
+@end defun
+
+@anchor{gnome corba corba-record-constructor-from-struct}@defun corba-record-constructor-from-struct rtd
+@end defun
+
+@anchor{gnome corba corba-record-modifier}@defun corba-record-modifier rtd field-name
+@end defun
+
+@anchor{gnome corba corba-record-predicate}@defun corba-record-predicate rtd
+@end defun
+
+@anchor{gnome corba corba-record-type-descriptor}@defun corba-record-type-descriptor obj
+@end defun
+
+@anchor{gnome corba corba-record-type-fields}@defun corba-record-type-fields obj
+@end defun
+
+@anchor{gnome corba corba-record-type?}@defun corba-record-type? obj
+@end defun
+
+@anchor{gnome corba corba-record-typecode}@defun corba-record-typecode obj
+@end defun
+
+@anchor{gnome corba corba-record?}@defun corba-record? obj
+@end defun
+
+@anchor{gnome corba corba-sequence->list}@defun corba-sequence->list sequence
+@end defun
+
+@anchor{gnome corba corba-struct->record}@defun corba-struct->record struct
+@end defun
+
+@anchor{gnome corba gnome-corba-error}@defun gnome-corba-error format-string . args
+@end defun
+
+@anchor{gnome corba make-corba-record-type}@defun make-corba-record-type typecode . opt
+@end defun
+
+@node gnome corba primitives
+@chapter (gnome corba primitives)
+@section Overview
+A CORBA wrapper for Guile.
+
+@section Usage
+@anchor{gnome corba primitives <CORBA:Object>}@deftp Class <CORBA:Object>
+@end deftp
+
+@anchor{gnome corba primitives <PortableServer-ServantBase>}@deftp Class <PortableServer-ServantBase>
+@end deftp
+
+@anchor{gnome corba primitives corba-primitive-find-poa-class}@deffn Primitive corba-primitive-find-poa-class class
+@end deffn
+
+@anchor{gnome corba primitives corba-primitive-invoke-method}@deffn Primitive corba-primitive-invoke-method method_name imethod class args
+@end deffn
+
+@anchor{gnome corba primitives corba-primitive-main}@deffn Primitive corba-primitive-main 
+@end deffn
+
+@anchor{gnome corba primitives corba-primitive-make-poa-instance}@deffn Primitive corba-primitive-make-poa-instance class
+@end deffn
+
+@anchor{gnome corba primitives corba-primitive-open-module}@deffn Primitive corba-primitive-open-module name
+@end deffn
+
+@anchor{gnome corba primitives corba-primitive-register-interface}@deffn Primitive corba-primitive-register-interface name
+@end deffn
+
+@anchor{gnome corba primitives corba-primitive-typecode->class}@deffn Primitive corba-primitive-typecode->class type
+@end deffn
+
+@anchor{gnome corba primitives corba-typecode-primitive->name}@deffn Primitive corba-typecode-primitive->name typecode
+@end deffn
+
+@anchor{gnome corba primitives corba-typecode-primitive?}@deffn Primitive corba-typecode-primitive? typecode
+@end deffn
+
+@node gnome corba types
+@chapter (gnome corba types)
+@section Overview
+A CORBA wrapper for Guile.
+
+@section Usage
+@anchor{gnome corba types %corba-sequence-vtable}@defvar %corba-sequence-vtable
+@end defvar
+
+@anchor{gnome corba types %corba-sequence-vtable-offset-printer}@defvar %corba-sequence-vtable-offset-printer
+@end defvar
+
+@anchor{gnome corba types %corba-sequence-vtable-offset-user}@defvar %corba-sequence-vtable-offset-user
+@end defvar
+
+@anchor{gnome corba types %corba-struct-vtable}@defvar %corba-struct-vtable
+@end defvar
+
+@anchor{gnome corba types %corba-struct-vtable-offset-printer}@defvar %corba-struct-vtable-offset-printer
+@end defvar
+
+@anchor{gnome corba types %corba-struct-vtable-offset-user}@defvar %corba-struct-vtable-offset-user
+@end defvar
+
+@anchor{gnome corba types corba-object-class->typecode}@deffn Primitive corba-object-class->typecode class
+@end deffn
+
+@anchor{gnome corba types corba-sequence-length}@deffn Primitive corba-sequence-length corba_sequence
+@end deffn
+
+@anchor{gnome corba types corba-sequence-ref}@deffn Primitive corba-sequence-ref corba_sequence index
+@end deffn
+
+@anchor{gnome corba types corba-sequence-set!}@deffn Primitive corba-sequence-set! corba_sequence index value
+@end deffn
+
+@anchor{gnome corba types corba-sequence-set-length!}@deffn Primitive corba-sequence-set-length! corba_sequence length
+@end deffn
+
+@anchor{gnome corba types corba-sequence-type}@deffn Primitive corba-sequence-type corba_sequence
+@end deffn
+
+@anchor{gnome corba types corba-struct-fields}@deffn Primitive corba-struct-fields typecode
+@end deffn
+
+@anchor{gnome corba types corba-struct-is-a?}@deffn Primitive corba-struct-is-a? corba_struct typecode
+@end deffn
+
+@anchor{gnome corba types corba-struct-ref}@deffn Primitive corba-struct-ref corba_struct index
+@end deffn
+
+@anchor{gnome corba types corba-struct-set!}@deffn Primitive corba-struct-set! corba_struct index value
+@end deffn
+
+@anchor{gnome corba types corba-struct-type}@deffn Primitive corba-struct-type corba_struct
+@end deffn
+
+@anchor{gnome corba types corba-struct?}@deffn Primitive corba-struct? corba_struct
+@end deffn
+
+@anchor{gnome corba types corba-typecode->gtype}@deffn Primitive corba-typecode->gtype typecode
+@end deffn
+
+@anchor{gnome corba types make-corba-sequence}@deffn Primitive make-corba-sequence typecode num_tail_elts init_smob
+@end deffn
+
+@anchor{gnome corba types make-corba-struct}@deffn Primitive make-corba-struct typecode num_tail_elts init_struct
+@end deffn
+
+@anchor{gnome corba types gnome-corba-error}@defun gnome-corba-error format-string . args
+@end defun
+
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+@bye

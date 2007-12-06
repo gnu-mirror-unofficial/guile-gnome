@@ -1,3 +1,13 @@
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/corba/Makefile.am: 
+	* Makefile.am: 
+	* doc/make-texinfo.scm: 
+	* doc/guile-gnome-corba.texi: 
+	* doc/guile-gnome-corba.scm: 
+	* doc/Makefile.am: Add docs and infrastructure for generating
+	docs. Pretty paltry right now, though.
+
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.95 ==

@@ -31,19 +31,13 @@ module_DATA = primitives.scm types.scm
 GUILE_SNARF_CFLAGS += $(GUILE_GLIB_CFLAGS) $(CORBA_CFLAGS)
 
 DOT_X_FILES = $(C_FILES:.c=.x)
-DOT_DOC_FILES = $(C_FILES:.c=.doc)
+DOT_DOC_FILES = guile-gnome-corba.doc \
+	  guile-gnome-corba-types.doc \
+	  guile-gnome-corba-primitives.doc
 
-guile-gnome-corba.texi: $(DOT_DOC_FILES)
-	cat $(DOT_DOC_FILES) | guile-snarf-docs-texi > $@ \
-	|| { rm $@; false; }
+BUILT_SOURCES = $(DOT_X_FILES) $(DOT_DOC_FILES)
 
-guile-gnome-corba-procedures.txt: guile-gnome-corba.texi
-	rm -f $@
-	makeinfo --force -o $@ $< || test -f $@
-
-BUILT_SOURCES = $(DOT_X_FILES)
-
-CLEANFILES = $(DOT_X_FILES)
+CLEANFILES = $(DOT_X_FILES) $(DOT_DOC_FILES)
 
 #guilegnome_DATA = guile-gnome-corba-procedures.txt
 
