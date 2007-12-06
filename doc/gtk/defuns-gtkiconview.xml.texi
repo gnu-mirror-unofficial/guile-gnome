@@ -841,7 +841,7 @@ Since 2.8
 
 @end deffn
 
-@deffn Function gtk-icon-view-create-drag-icon  (self@tie{}@code{<gtk-icon-view>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixmap*>})
+@deffn Function gtk-icon-view-create-drag-icon  (self@tie{}@code{<gtk-icon-view>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixmap>})
 @deffnx Method create-drag-icon
 Creates a @code{<gdk-pixmap>} representation of the item at @var{path}. This
 image is used for a drag icon.

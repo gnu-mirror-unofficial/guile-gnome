@@ -115,77 +115,6 @@ the descent of the string.
 
 @end deffn
 
-@deffn Function gdk-text-extents  (font@tie{}@code{<gdk-font>}) (text@tie{}@code{mchars}) (text_length@tie{}@code{int}) @result{}@tie{} (lbearing@tie{}@code{int}) (rbearing@tie{}@code{int}) (width@tie{}@code{int}) (ascent@tie{}@code{int}) (descent@tie{}@code{int})
-@samp{gdk_text_extents} is deprecated and should not be used in newly-written
-code.
-
-Gets the metrics of a string.
-
-@table @var
-@item font
-a @code{<gdk-font>}
-
-@item text
-the text to measure
-
-@item text-length
-the length of the text in bytes. (If the font is a 16-bit font, this is twice
-the length of the text in characters.)
-
-@item lbearing
-the left bearing of the string.
-
-@item rbearing
-the right bearing of the string.
-
-@item width
-the width of the string.
-
-@item ascent
-the ascent of the string.
-
-@item descent
-the descent of the string.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-text-extents-wc  (font@tie{}@code{<gdk-font>}) (text@tie{}@code{<gdk-wchar*>}) (text_length@tie{}@code{int}) @result{}@tie{} (lbearing@tie{}@code{int}) (rbearing@tie{}@code{int}) (width@tie{}@code{int}) (ascent@tie{}@code{int}) (descent@tie{}@code{int})
-@samp{gdk_text_extents_wc} is deprecated and should not be used in newly-written
-code.
-
-Gets the metrics of a string of wide characters.
-
-@table @var
-@item font
-a @code{<gdk-font>}
-
-@item text
-the text to measure.
-
-@item text-length
-the length of the text in character.
-
-@item lbearing
-the left bearing of the string.
-
-@item rbearing
-the right bearing of the string.
-
-@item width
-the width of the string.
-
-@item ascent
-the ascent of the string.
-
-@item descent
-the descent of the string.
-
-@end table
-
-@end deffn
-
 @deffn Function gdk-string-width  (font@tie{}@code{<gdk-font>}) (string@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{int})
 @samp{gdk_string_width} is deprecated and should not be used in newly-written
 code.
@@ -223,29 +152,6 @@ the text to measure.
 
 @item text-length
 the length of the text in bytes.
-
-@item ret
-the width of the string in pixels.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-text-width-wc  (font@tie{}@code{<gdk-font>}) (text@tie{}@code{<gdk-wchar*>}) (text_length@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
-@samp{gdk_text_width_wc} is deprecated and should not be used in newly-written
-code.
-
-Determines the width of a given wide-character string.
-
-@table @var
-@item font
-a @code{<gdk-font>}
-
-@item text
-the text to measure.
-
-@item text-length
-the length of the text in characters.
 
 @item ret
 the width of the string in pixels.
@@ -429,30 +335,6 @@ the character to measure.
 
 @item ret
 the height of the character in pixels.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-mbstowcs  (dest@tie{}@code{<gdk-wchar*>}) (src@tie{}@code{mchars}) (dest_max@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
-@samp{gdk_mbstowcs} is deprecated and should not be used in newly-written code.
-
-Converts a multi-byte string to a wide character string. (The function name
-comes from an acronym of 'Multi-Byte String TO Wide Character String').
-
-@table @var
-@item dest
-the space to place the converted wide character string into.
-
-@item src
-the multi-byte string to convert, which must be nul-terminated.
-
-@item dest-max
-the maximum number of wide characters to place in @var{dest}.
-
-@item ret
-the number of wide characters written into @var{dest}, or -1 if the conversion
-failed.
 
 @end table
 

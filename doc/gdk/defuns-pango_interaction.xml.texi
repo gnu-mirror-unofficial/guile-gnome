@@ -4,7 +4,7 @@
 @deftp Class <gdk-pango-renderer>
 Derives from @code{<pango-renderer>}.
 
-This @code{<gobject>} class defines the following properties:
+This class defines the following properties:
 
 @table @code
 @item screen
@@ -93,7 +93,7 @@ Since 2.6
 
 @end deffn
 
-@deffn Function gdk-pango-renderer-set-stipple  (self@tie{}@code{<gdk-pango-renderer>}) (part@tie{}@code{<pango-render-part>}) (stipple@tie{}@code{<gdk-bitmap*>})
+@deffn Function gdk-pango-renderer-set-stipple  (self@tie{}@code{<gdk-pango-renderer>}) (part@tie{}@code{<pango-render-part>}) (stipple@tie{}@code{<gdk-drawable>})
 @deffnx Method set-stipple
 Sets the stipple for one render part (foreground, background, underline, etc.)
 Note that this is overwritten when iterating through the individual styled runs
@@ -203,7 +203,7 @@ new @code{<pango-attribute>}
 
 @end deffn
 
-@deffn Function gdk-pango-attr-stipple-new  (stipple@tie{}@code{<gdk-bitmap*>}) @result{}@tie{} (ret@tie{}@code{<pango-attribute>})
+@deffn Function gdk-pango-attr-stipple-new  (stipple@tie{}@code{<gdk-drawable>}) @result{}@tie{} (ret@tie{}@code{<pango-attribute>})
 Creates a new attribute containing a stipple bitmap to be used when rendering
 the text.
 

@@ -58,7 +58,7 @@ Since 2.8
 
 @end deffn
 
-@deffn Function gdk-cairo-set-source-pixmap  (cr@tie{}@code{cairo-t}) (pixmap@tie{}@code{<gdk-pixmap*>}) (pixmap_x@tie{}@code{double}) (pixmap_y@tie{}@code{double})
+@deffn Function gdk-cairo-set-source-pixmap  (cr@tie{}@code{cairo-t}) (pixmap@tie{}@code{<gdk-pixmap>}) (pixmap_x@tie{}@code{double}) (pixmap_y@tie{}@code{double})
 Sets the given pixmap as the source pattern for the Cairo context. The pattern
 has an extend mode of @samp{CAIRO_EXTEND_NONE} and is aligned so that the origin
 of @var{pixbuf} is @var{pixbuf-x}, @var{pixbuf-y}
@@ -98,7 +98,7 @@ Since 2.8
 
 @end deffn
 
-@deffn Function gdk-cairo-region  (cr@tie{}@code{cairo-t}) (region@tie{}@code{<gdk-region*>})
+@deffn Function gdk-cairo-region  (cr@tie{}@code{cairo-t}) (region@tie{}@code{<gdk-region>})
 Adds the given region to the current path of @var{cr}.
 
 @table @var

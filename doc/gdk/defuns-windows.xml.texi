@@ -1,31 +1,8 @@
 
 @c %start of fragment
 
-@deffn Function gdk-window-new  (self@tie{}@code{<gdk-window*>}) (attributes@tie{}@code{<gdk-window-attr*>}) (attributes_mask@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>})
-Creates a new @code{<gdk-window>} using the attributes from @var{attributes}.
-See @code{<gdk-window-attr>} and @code{<gdk-window-attributes-type>} for more
-details. Note: to use this on displays other than the default display,
-@var{parent} must be specified.
-
-@table @var
-@item parent
-a @code{<gdk-window>}, or @samp{@code{#f}} to create the window as a child of
-the default root window for the default display.
-
-@item attributes
-attributes of the new window
-
-@item attributes-mask
-mask indicating which fields in @var{attributes} are valid
-
-@item ret
-the new @code{<gdk-window>}
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-window-destroy  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-destroy  (self@tie{}@code{<gdk-window>})
+@deffnx Method destroy
 Destroys the window system resources associated with @var{window} and decrements
 @var{window}'s reference count. The window system resources for all children of
 @var{window} are also destroyed, but the children's reference counts are not
@@ -42,7 +19,8 @@ a @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-get-window-type  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{<gdk-window-type>})
+@deffn Function gdk-window-get-window-type  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{<gdk-window-type>})
+@deffnx Method get-window-type
 Gets the type of the window. See @code{<gdk-window-type>}.
 
 @table @var
@@ -56,7 +34,7 @@ type of window
 
 @end deffn
 
-@deffn Function gdk-window-at-pointer  @result{}@tie{} (ret@tie{}@code{<gdk-window*>}) (win_x@tie{}@code{int}) (win_y@tie{}@code{int})
+@deffn Function gdk-window-at-pointer  @result{}@tie{} (ret@tie{}@code{<gdk-window>}) (win_x@tie{}@code{int}) (win_y@tie{}@code{int})
 Obtains the window underneath the mouse pointer, returning the location of that
 window in @var{win-x}, @var{win-y}. Returns @samp{@code{#f}} if the window under
 the mouse pointer is not known to GDK (if the window belongs to another
@@ -80,7 +58,8 @@ window under the mouse pointer
 
 @end deffn
 
-@deffn Function gdk-window-show  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-show  (self@tie{}@code{<gdk-window>})
+@deffnx Method show
 Like @code{gdk-window-show-unraised}, but also raises the window to the top of
 the window stack (moves the window to the front of the Z-order).
 
@@ -98,7 +77,8 @@ a @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-show-unraised  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-show-unraised  (self@tie{}@code{<gdk-window>})
+@deffnx Method show-unraised
 Shows a @code{<gdk-window>} onscreen, but does not modify its stacking order. In
 contrast, @code{gdk-window-show} will raise the window to the top of the window
 stack.
@@ -115,7 +95,8 @@ a @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-hide  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-hide  (self@tie{}@code{<gdk-window>})
+@deffnx Method hide
 For toplevel windows, withdraws them, so they will no longer be known to the
 window manager; for all windows, unmaps them, so they won't be displayed.
 Normally done automatically as part of @code{gtk-widget-hide}.
@@ -128,7 +109,8 @@ a @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-is-visible  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gdk-window-is-visible  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-visible
 Checks whether the window has been mapped (with @code{gdk-window-show} or
 @code{gdk-window-show-unraised}).
 
@@ -143,7 +125,8 @@ a @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-is-viewable  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gdk-window-is-viewable  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-viewable
 Check if the window and all ancestors of the window are mapped. (This is not
 necessarily "viewable" in the X sense, since we only check as far as we have GDK
 window parents, not to the root window.)
@@ -159,7 +142,8 @@ a @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-get-state  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{<gdk-window-state>})
+@deffn Function gdk-window-get-state  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{<gdk-window-state>})
+@deffnx Method get-state
 Gets the bitwise OR of the currently active window state flags, from the
 @code{<gdk-window-state>} enumeration.
 
@@ -174,7 +158,8 @@ window state bitfield
 
 @end deffn
 
-@deffn Function gdk-window-withdraw  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-withdraw  (self@tie{}@code{<gdk-window>})
+@deffnx Method withdraw
 Withdraws a window (unmaps it and asks the window manager to forget about it).
 This function is not really useful as @code{gdk-window-hide} automatically
 withdraws toplevel windows before hiding them.
@@ -187,7 +172,8 @@ a toplevel @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-iconify  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-iconify  (self@tie{}@code{<gdk-window>})
+@deffnx Method iconify
 Asks to iconify (minimize) @var{window}. The window manager may choose to ignore
 the request, but normally will honor it. Using @code{gtk-window-iconify} is
 preferred, if you have a @code{<gtk-window>} widget.
@@ -202,7 +188,8 @@ a toplevel @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-deiconify  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-deiconify  (self@tie{}@code{<gdk-window>})
+@deffnx Method deiconify
 Attempt to deiconify (unminimize) @var{window}. On X11 the window manager may
 choose to ignore the request to deiconify. When using GTK+, use
 @code{gtk-window-deiconify} instead of the @code{<gdk-window>} variant. Or
@@ -217,7 +204,8 @@ a toplevel @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-stick  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-stick  (self@tie{}@code{<gdk-window>})
+@deffnx Method stick
 "Pins" a window such that it's on all workspaces and does not scroll with
 viewports, for window managers that have scrollable viewports. (When using
 @code{<gtk-window>}, @code{gtk-window-stick} may be more useful.)
@@ -235,7 +223,8 @@ a toplevel @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-unstick  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-unstick  (self@tie{}@code{<gdk-window>})
+@deffnx Method unstick
 Reverse operation for @code{gdk-window-stick}; see @code{gdk-window-stick}, and
 @code{gtk-window-unstick}.
 
@@ -247,7 +236,8 @@ a toplevel @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-maximize  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-maximize  (self@tie{}@code{<gdk-window>})
+@deffnx Method maximize
 Maximizes the window. If the window was already maximized, then this function
 does nothing.
 
@@ -267,7 +257,8 @@ a toplevel @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-unmaximize  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-unmaximize  (self@tie{}@code{<gdk-window>})
+@deffnx Method unmaximize
 Unmaximizes the window. If the window wasn't maximized, then this function does
 nothing.
 
@@ -287,7 +278,8 @@ a toplevel @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-fullscreen  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-fullscreen  (self@tie{}@code{<gdk-window>})
+@deffnx Method fullscreen
 Moves the window into fullscreen mode. This means the window covers the entire
 screen and is above any panels or task bars.
 
@@ -310,7 +302,8 @@ Since 2.2
 
 @end deffn
 
-@deffn Function gdk-window-unfullscreen  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-unfullscreen  (self@tie{}@code{<gdk-window>})
+@deffnx Method unfullscreen
 Moves the window out of fullscreen mode. If the window was not fullscreen, does
 nothing.
 
@@ -331,7 +324,8 @@ Since 2.2
 
 @end deffn
 
-@deffn Function gdk-window-set-keep-above  (self@tie{}@code{<gdk-window*>}) (setting@tie{}@code{bool})
+@deffn Function gdk-window-set-keep-above  (self@tie{}@code{<gdk-window>}) (setting@tie{}@code{bool})
+@deffnx Method set-keep-above
 Set if @var{window} must be kept above other windows. If the window was already
 above, then this function does nothing.
 
@@ -354,7 +348,8 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gdk-window-set-keep-below  (self@tie{}@code{<gdk-window*>}) (setting@tie{}@code{bool})
+@deffn Function gdk-window-set-keep-below  (self@tie{}@code{<gdk-window>}) (setting@tie{}@code{bool})
+@deffnx Method set-keep-below
 Set if @var{window} must be kept below other windows. If the window was already
 below, then this function does nothing.
 
@@ -377,7 +372,8 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gdk-window-move  (self@tie{}@code{<gdk-window*>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffn Function gdk-window-move  (self@tie{}@code{<gdk-window>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method move
 Repositions a window relative to its parent window. For toplevel windows, window
 managers may ignore or modify the move; you should probably use
 @code{gtk-window-move} on a @code{<gtk-window>} widget anyway, instead of using
@@ -400,7 +396,8 @@ Y coordinate relative to window's parent
 
 @end deffn
 
-@deffn Function gdk-window-resize  (self@tie{}@code{<gdk-window*>}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function gdk-window-resize  (self@tie{}@code{<gdk-window>}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method resize
 Resizes @var{window}; for toplevel windows, asks the window manager to resize
 the window. The window manager may not allow the resize. When using GTK+, use
 @code{gtk-window-resize} instead of this low-level GDK function.
@@ -424,7 +421,8 @@ new height of the window
 
 @end deffn
 
-@deffn Function gdk-window-move-resize  (self@tie{}@code{<gdk-window*>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function gdk-window-move-resize  (self@tie{}@code{<gdk-window>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method move-resize
 Equivalent to calling @code{gdk-window-move} and @code{gdk-window-resize},
 except that both operations are performed at once, avoiding strange visual
 effects. (i.e. the user may be able to see the window first move, then resize,
@@ -450,7 +448,8 @@ new height
 
 @end deffn
 
-@deffn Function gdk-window-scroll  (self@tie{}@code{<gdk-window*>}) (dx@tie{}@code{int}) (dy@tie{}@code{int})
+@deffn Function gdk-window-scroll  (self@tie{}@code{<gdk-window>}) (dx@tie{}@code{int}) (dy@tie{}@code{int})
+@deffnx Method scroll
 Scroll the contents of @var{window}, both pixels and children, by the given
 amount. @var{window} itself does not move. Portions of the window that the
 scroll operation brings in from offscreen areas are invalidated. The invalidated
@@ -474,7 +473,8 @@ Amount to scroll in the Y direction
 
 @end deffn
 
-@deffn Function gdk-window-move-region  (self@tie{}@code{<gdk-window*>}) (region@tie{}@code{<gdk-region*>}) (dx@tie{}@code{int}) (dy@tie{}@code{int})
+@deffn Function gdk-window-move-region  (self@tie{}@code{<gdk-window>}) (region@tie{}@code{<gdk-region>}) (dx@tie{}@code{int}) (dy@tie{}@code{int})
+@deffnx Method move-region
 Move the part of @var{window} indicated by @var{region} by @var{dy} pixels in
 the Y direction and @var{dx} pixels in the X direction. The portions of
 @var{region} that not covered by the new position of @var{region} are
@@ -501,7 +501,8 @@ Since 2.8
 
 @end deffn
 
-@deffn Function gdk-window-reparent  (self@tie{}@code{<gdk-window*>}) (new_parent@tie{}@code{<gdk-window*>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffn Function gdk-window-reparent  (self@tie{}@code{<gdk-window>}) (new_parent@tie{}@code{<gdk-window>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method reparent
 Reparents @var{window} into the given @var{new-parent}. The window being
 reparented will be unmapped as a side effect.
 
@@ -522,7 +523,8 @@ Y location inside the new parent
 
 @end deffn
 
-@deffn Function gdk-window-clear  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-clear  (self@tie{}@code{<gdk-window>})
+@deffnx Method clear
 Clears an entire @var{window} to the background color or background pixmap.
 
 @table @var
@@ -533,7 +535,8 @@ a @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-clear-area  (self@tie{}@code{<gdk-window*>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function gdk-window-clear-area  (self@tie{}@code{<gdk-window>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method clear-area
 Clears an area of @var{window} to the background color or background pixmap.
 
 @table @var
@@ -556,7 +559,8 @@ height of rectangle to clear
 
 @end deffn
 
-@deffn Function gdk-window-clear-area-e  (self@tie{}@code{<gdk-window*>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function gdk-window-clear-area-e  (self@tie{}@code{<gdk-window>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method clear-area-e
 Like @code{gdk-window-clear-area}, but also generates an expose event for the
 cleared area.
 
@@ -583,7 +587,8 @@ height of rectangle to clear
 
 @end deffn
 
-@deffn Function gdk-window-raise  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-raise  (self@tie{}@code{<gdk-window>})
+@deffnx Method raise
 Raises @var{window} to the top of the Z-order (stacking order), so that other
 windows with the same parent window appear below @var{window}. This is true
 whether or not the windows are visible.
@@ -600,7 +605,8 @@ a @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-lower  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-lower  (self@tie{}@code{<gdk-window>})
+@deffnx Method lower
 Lowers @var{window} to the bottom of the Z-order (stacking order), so that other
 windows with the same parent window appear above @var{window}. This is true
 whether or not the other windows are visible.
@@ -620,7 +626,8 @@ a @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-focus  (self@tie{}@code{<gdk-window*>}) (timestamp@tie{}@code{unsigned-int32})
+@deffn Function gdk-window-focus  (self@tie{}@code{<gdk-window>}) (timestamp@tie{}@code{unsigned-int32})
+@deffnx Method focus
 Sets keyboard focus to @var{window}. In most cases, @code{gtk-window-present}
 should be used on a @code{<gtk-window>}, rather than calling this function.
 
@@ -635,7 +642,8 @@ timestamp of the event triggering the window focus
 
 @end deffn
 
-@deffn Function gdk-window-register-dnd  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-register-dnd  (self@tie{}@code{<gdk-window>})
+@deffnx Method register-dnd
 Registers a window as a potential drop destination.
 
 @table @var
@@ -646,7 +654,8 @@ a @code{<gdk-window>}.
 
 @end deffn
 
-@deffn Function gdk-window-begin-resize-drag  (self@tie{}@code{<gdk-window*>}) (edge@tie{}@code{<gdk-window-edge>}) (button@tie{}@code{int}) (root_x@tie{}@code{int}) (root_y@tie{}@code{int}) (timestamp@tie{}@code{unsigned-int32})
+@deffn Function gdk-window-begin-resize-drag  (self@tie{}@code{<gdk-window>}) (edge@tie{}@code{<gdk-window-edge>}) (button@tie{}@code{int}) (root_x@tie{}@code{int}) (root_y@tie{}@code{int}) (timestamp@tie{}@code{unsigned-int32})
+@deffnx Method begin-resize-drag
 Begins a window resize operation (for a toplevel window). You might use this
 function to implement a "window resize grip," for example; in fact
 @code{<gtk-statusbar>} uses it. The function works best with window managers
@@ -677,7 +686,8 @@ timestamp of mouse click that began the drag (use @code{gdk-event-get-time})
 
 @end deffn
 
-@deffn Function gdk-window-begin-move-drag  (self@tie{}@code{<gdk-window*>}) (button@tie{}@code{int}) (root_x@tie{}@code{int}) (root_y@tie{}@code{int}) (timestamp@tie{}@code{unsigned-int32})
+@deffn Function gdk-window-begin-move-drag  (self@tie{}@code{<gdk-window>}) (button@tie{}@code{int}) (root_x@tie{}@code{int}) (root_y@tie{}@code{int}) (timestamp@tie{}@code{unsigned-int32})
+@deffnx Method begin-move-drag
 Begins a window move operation (for a toplevel window). You might use this
 function to implement a "window move grip," for example. The function works best
 with window managers that support the
@@ -704,34 +714,8 @@ timestamp of mouse click that began the drag
 
 @end deffn
 
-@deffn Function gdk-window-constrain-size  (geometry@tie{}@code{<gdk-geometry*>}) (flags@tie{}@code{unsigned-int}) (width@tie{}@code{int}) (height@tie{}@code{int}) @result{}@tie{} (new_width@tie{}@code{int}) (new_height@tie{}@code{int})
-Constrains a desired width and height according to a set of geometry hints (such
-as minimum and maximum size).
-
-@table @var
-@item geometry
-a @code{<gdk-geometry>} structure
-
-@item flags
-a mask indicating what portions of @var{geometry} are set
-
-@item width
-desired width of window
-
-@item height
-desired height of the window
-
-@item new-width
-location to store resulting width
-
-@item new-height
-location to store resulting height
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-window-begin-paint-rect  (self@tie{}@code{<gdk-window*>}) (rectangle@tie{}@code{<gdk-rectangle>})
+@deffn Function gdk-window-begin-paint-rect  (self@tie{}@code{<gdk-window>}) (rectangle@tie{}@code{<gdk-rectangle>})
+@deffnx Method begin-paint-rect
 A convenience wrapper around @code{gdk-window-begin-paint-region} which creates
 a rectangular region for you. See @code{gdk-window-begin-paint-region} for
 details.
@@ -747,7 +731,8 @@ rectangle you intend to draw to
 
 @end deffn
 
-@deffn Function gdk-window-begin-paint-region  (self@tie{}@code{<gdk-window*>}) (region@tie{}@code{<gdk-region*>})
+@deffn Function gdk-window-begin-paint-region  (self@tie{}@code{<gdk-window>}) (region@tie{}@code{<gdk-region>})
+@deffnx Method begin-paint-region
 Indicates that you are beginning the process of redrawing @var{region}. A
 backing store (offscreen buffer) large enough to contain @var{region} will be
 created. The backing store will be initialized with the background color or
@@ -795,7 +780,8 @@ region you intend to draw to
 
 @end deffn
 
-@deffn Function gdk-window-end-paint  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-end-paint  (self@tie{}@code{<gdk-window>})
+@deffnx Method end-paint
 Indicates that the backing store created by the most recent call to
 @code{gdk-window-begin-paint-region} should be copied onscreen and deleted,
 leaving the next-most-recent backing store or no backing store at all as the
@@ -811,7 +797,8 @@ a @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-invalidate-rect  (self@tie{}@code{<gdk-window*>}) (rect@tie{}@code{<gdk-rectangle>}) (invalidate_children@tie{}@code{bool})
+@deffn Function gdk-window-invalidate-rect  (self@tie{}@code{<gdk-window>}) (rect@tie{}@code{<gdk-rectangle>}) (invalidate_children@tie{}@code{bool})
+@deffnx Method invalidate-rect
 A convenience wrapper around @code{gdk-window-invalidate-region} which
 invalidates a rectangular region. See @code{gdk-window-invalidate-region} for
 details.
@@ -830,7 +817,8 @@ whether to also invalidate child windows
 
 @end deffn
 
-@deffn Function gdk-window-invalidate-region  (self@tie{}@code{<gdk-window*>}) (region@tie{}@code{<gdk-region*>}) (invalidate_children@tie{}@code{bool})
+@deffn Function gdk-window-invalidate-region  (self@tie{}@code{<gdk-window>}) (region@tie{}@code{<gdk-region>}) (invalidate_children@tie{}@code{bool})
+@deffnx Method invalidate-region
 Adds @var{region} to the update area for @var{window}. The update area is the
 region that needs to be redrawn, or "dirty region." The call
 @code{gdk-window-process-updates} sends one or more expose events to the window,
@@ -862,7 +850,8 @@ a @code{<gdk-region>}
 
 @end deffn
 
-@deffn Function gdk-window-get-update-area  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{<gdk-region*>})
+@deffn Function gdk-window-get-update-area  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{<gdk-region>})
+@deffnx Method get-update-area
 Transfers ownership of the update area from @var{window} to the caller of the
 function. That is, after calling this function, @var{window} will no longer have
 an invalid/dirty region; the update area is removed from @var{window} and handed
@@ -881,7 +870,8 @@ the update area for @var{window}
 
 @end deffn
 
-@deffn Function gdk-window-freeze-updates  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-freeze-updates  (self@tie{}@code{<gdk-window>})
+@deffnx Method freeze-updates
 Temporarily freezes a window such that it won't receive expose events. The
 window will begin receiving expose events again when
 @code{gdk-window-thaw-updates} is called. If @code{gdk-window-freeze-updates}
@@ -896,7 +886,8 @@ a @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-thaw-updates  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-thaw-updates  (self@tie{}@code{<gdk-window>})
+@deffnx Method thaw-updates
 Thaws a window frozen with @code{gdk-window-freeze-updates}.
 
 @table @var
@@ -913,7 +904,8 @@ Calls @code{gdk-window-process-updates} for all windows (see
 
 @end deffn
 
-@deffn Function gdk-window-process-updates  (self@tie{}@code{<gdk-window*>}) (update_children@tie{}@code{bool})
+@deffn Function gdk-window-process-updates  (self@tie{}@code{<gdk-window>}) (update_children@tie{}@code{bool})
+@deffnx Method process-updates
 Sends one or more expose events to @var{window}. The areas in each expose event
 will cover the entire update area for the window (see
 @code{gdk-window-invalidate-region} for details). Normally GDK calls
@@ -960,37 +952,8 @@ use this function to enable updates sometime after application startup time.
 
 @end deffn
 
-@deffn Function gdk-window-get-internal-paint-info  (self@tie{}@code{<gdk-window*>}) (real_drawable@tie{}@code{<gdk-drawable**>}) @result{}@tie{} (x_offset@tie{}@code{int}) (y_offset@tie{}@code{int})
-If you bypass the GDK layer and use windowing system primitives to draw directly
-onto a @code{<gdk-window>}, then you need to deal with two details: there may be
-an offset between GDK coordinates and windowing system coordinates, and GDK may
-have redirected drawing to a offscreen pixmap as the result of a
-@code{gdk-window-begin-paint-region} calls. This function allows retrieving the
-information you need to compensate for these effects.
-
-This function exposes details of the GDK implementation, and is thus likely to
-change in future releases of GDK.
-
-@table @var
-@item window
-a @code{<gdk-window>}
-
-@item real-drawable
-location to store the drawable to which drawing should be done.
-
-@item x-offset
-location to store the X offset between coordinates in @var{window}, and the
-underlying window system primitive coordinates for *@var{real-drawable}.
-
-@item y-offset
-location to store the Y offset between coordinates in @var{window}, and the
-underlying window system primitive coordinates for *@var{real-drawable}.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-window-configure-finished  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-configure-finished  (self@tie{}@code{<gdk-window>})
+@deffnx Method configure-finished
 Signal to the window system that the application has finished handling Configure
 events it has received. Window Managers can use this to better synchronize the
 frame repaint with the application. GTK+ applications will automatically call
@@ -1009,27 +972,8 @@ Since 2.6
 
 @end deffn
 
-@deffn Function gdk-window-set-user-data  (self@tie{}@code{<gdk-window*>}) (user_data@tie{}@code{<gpointer>})
-For most purposes this function is deprecated in favor of
-@code{g-object-set-data}. However, for historical reasons GTK+ stores the
-@code{<gtk-widget>} that owns a @code{<gdk-window>} as user data on the
-@code{<gdk-window>}. So, custom widget implementations should use this function
-for that. If GTK+ receives an event for a @code{<gdk-window>}, and the user data
-for the window is non-@samp{@code{#f}}, GTK+ will assume the user data is a
-@code{<gtk-widget>}, and forward the event to that widget.
-
-@table @var
-@item window
-a @code{<gdk-window>}
-
-@item user-data
-user data
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-window-set-override-redirect  (self@tie{}@code{<gdk-window*>}) (override_redirect@tie{}@code{bool})
+@deffn Function gdk-window-set-override-redirect  (self@tie{}@code{<gdk-window>}) (override_redirect@tie{}@code{bool})
+@deffnx Method set-override-redirect
 An override redirect window is not under the control of the window manager. This
 means it won't have a titlebar, won't be minimizable, etc. - it will be entirely
 under the control of the application. The window manager can't see the override
@@ -1050,7 +994,8 @@ a toplevel @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-set-accept-focus  (self@tie{}@code{<gdk-window*>}) (accept_focus@tie{}@code{bool})
+@deffn Function gdk-window-set-accept-focus  (self@tie{}@code{<gdk-window>}) (accept_focus@tie{}@code{bool})
+@deffnx Method set-accept-focus
 Setting @var{accept-focus} to @samp{@code{#f}} hints the desktop environment
 that the window doesn't want to receive input focus.
 
@@ -1070,7 +1015,8 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gdk-window-set-focus-on-map  (self@tie{}@code{<gdk-window*>}) (focus_on_map@tie{}@code{bool})
+@deffn Function gdk-window-set-focus-on-map  (self@tie{}@code{<gdk-window>}) (focus_on_map@tie{}@code{bool})
+@deffnx Method set-focus-on-map
 Setting @var{focus-on-map} to @samp{@code{#f}} hints the desktop environment
 that the window doesn't want to receive input focus when it is mapped.
 focus_on_map should be turned off for windows that aren't triggered
@@ -1093,45 +1039,8 @@ Since 2.6
 
 @end deffn
 
-@deffn Function gdk-window-add-filter  (self@tie{}@code{<gdk-window*>}) (function@tie{}@code{<gdk-filter-func>}) (data@tie{}@code{<gpointer>})
-Adds an event filter to @var{window}, allowing you to intercept events before
-they reach GDK. This is a low-level operation and makes it easy to break GDK
-and/or GTK+, so you have to know what you're doing. Pass @samp{@code{#f}} for
-@var{window} to get all events for all windows, instead of events for a specific
-window.
-
-@table @var
-@item window
-a @code{<gdk-window>}
-
-@item function
-filter callback
-
-@item data
-data to pass to filter callback
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-window-remove-filter  (self@tie{}@code{<gdk-window*>}) (function@tie{}@code{<gdk-filter-func>}) (data@tie{}@code{<gpointer>})
-Remove a filter previously added with @code{gdk-window-add-filter}.
-
-@table @var
-@item window
-a @code{<gdk-window>}
-
-@item function
-previously-added filter function
-
-@item data
-user data for previously-added filter function
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-window-shape-combine-mask  (self@tie{}@code{<gdk-window*>}) (mask@tie{}@code{<gdk-bitmap*>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffn Function gdk-window-shape-combine-mask  (self@tie{}@code{<gdk-window>}) (mask@tie{}@code{<gdk-drawable>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method shape-combine-mask
 Applies a shape mask to @var{window}. Pixels in @var{window} corresponding to
 set bits in the @var{mask} will be visible; pixels in @var{window} corresponding
 to unset bits in the @var{mask} will be transparent. This gives a
@@ -1166,7 +1075,8 @@ Y position of shape mask with respect to @var{window}
 
 @end deffn
 
-@deffn Function gdk-window-shape-combine-region  (self@tie{}@code{<gdk-window*>}) (shape_region@tie{}@code{<gdk-region*>}) (offset_x@tie{}@code{int}) (offset_y@tie{}@code{int})
+@deffn Function gdk-window-shape-combine-region  (self@tie{}@code{<gdk-window>}) (shape_region@tie{}@code{<gdk-region>}) (offset_x@tie{}@code{int}) (offset_y@tie{}@code{int})
+@deffnx Method shape-combine-region
 Makes pixels in @var{window} outside @var{shape-region} be transparent, so that
 the window may be nonrectangular. See also @code{gdk-window-shape-combine-mask}
 to use a bitmap as the mask.
@@ -1201,7 +1111,8 @@ Y position of @var{shape-region} in @var{window} coordinates
 
 @end deffn
 
-@deffn Function gdk-window-set-child-shapes  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-set-child-shapes  (self@tie{}@code{<gdk-window>})
+@deffnx Method set-child-shapes
 Sets the shape mask of @var{window} to the union of shape masks for all children
 of @var{window}, ignoring the shape mask of @var{window} itself. Contrast with
 @code{gdk-window-merge-child-shapes} which includes the shape mask of
@@ -1215,7 +1126,8 @@ a @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-merge-child-shapes  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-merge-child-shapes  (self@tie{}@code{<gdk-window>})
+@deffnx Method merge-child-shapes
 Merges the shape masks for any child windows into the shape mask for
 @var{window}. i.e. the union of all masks for @var{window} and its children will
 become the new mask for @var{window}. See @code{gdk-window-shape-combine-mask}.
@@ -1231,7 +1143,8 @@ a @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-input-shape-combine-mask  (self@tie{}@code{<gdk-window*>}) (mask@tie{}@code{<gdk-bitmap*>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffn Function gdk-window-input-shape-combine-mask  (self@tie{}@code{<gdk-window>}) (mask@tie{}@code{<gdk-drawable>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method input-shape-combine-mask
 Like @code{gdk-window-shape-combine-mask}, but the shape applies only to event
 handling. Mouse events which happen while the pointer position corresponds to an
 unset bit in the mask will be passed on the window below @var{window}.
@@ -1264,7 +1177,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gdk-window-set-child-input-shapes  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-set-child-input-shapes  (self@tie{}@code{<gdk-window>})
+@deffnx Method set-child-input-shapes
 Sets the input shape mask of @var{window} to the union of input shape masks for
 all children of @var{window}, ignoring the input shape mask of @var{window}
 itself. Contrast with @code{gdk-window-merge-child-input-shapes} which includes
@@ -1280,7 +1194,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gdk-window-merge-child-input-shapes  (self@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-merge-child-input-shapes  (self@tie{}@code{<gdk-window>})
+@deffnx Method merge-child-input-shapes
 Merges the input shape masks for any child windows into the input shape mask for
 @var{window}. i.e. the union of all input masks for @var{window} and its
 children will become the new input mask for @var{window}. See
@@ -1299,7 +1214,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gdk-window-set-static-gravities  (self@tie{}@code{<gdk-window*>}) (use_static@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gdk-window-set-static-gravities  (self@tie{}@code{<gdk-window>}) (use_static@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-static-gravities
 Set the bit gravity of the given window to static, and flag it so all children
 get static subwindow gravity. This is used if you are implementing scary
 features that involve deep knowledge of the windowing system. Don't worry about
@@ -1319,7 +1235,8 @@ a @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-set-hints  (self@tie{}@code{<gdk-window*>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (min_width@tie{}@code{int}) (min_height@tie{}@code{int}) (max_width@tie{}@code{int}) (max_height@tie{}@code{int}) (flags@tie{}@code{int})
+@deffn Function gdk-window-set-hints  (self@tie{}@code{<gdk-window>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (min_width@tie{}@code{int}) (min_height@tie{}@code{int}) (max_width@tie{}@code{int}) (max_height@tie{}@code{int}) (flags@tie{}@code{int})
+@deffnx Method set-hints
 @samp{gdk_window_set_hints} is deprecated and should not be used in
 newly-written code.
 
@@ -1359,7 +1276,8 @@ logical OR of GDK_HINT_POS, GDK_HINT_MIN_SIZE, and/or GDK_HINT_MAX_SIZE
 
 @end deffn
 
-@deffn Function gdk-window-set-title  (self@tie{}@code{<gdk-window*>}) (title@tie{}@code{mchars})
+@deffn Function gdk-window-set-title  (self@tie{}@code{<gdk-window>}) (title@tie{}@code{mchars})
+@deffnx Method set-title
 Sets the title of a toplevel window, to be displayed in the titlebar. If you
 haven't explicitly set the icon name for the window (using
 @code{gdk-window-set-icon-name}), the icon name will be set to @var{title} as
@@ -1377,7 +1295,8 @@ title of @var{window}
 
 @end deffn
 
-@deffn Function gdk-window-set-background  (self@tie{}@code{<gdk-window*>}) (color@tie{}@code{<gdk-color>})
+@deffn Function gdk-window-set-background  (self@tie{}@code{<gdk-window>}) (color@tie{}@code{<gdk-color>})
+@deffnx Method set-background
 Sets the background color of @var{window}. (However, when using GTK+, set the
 background of a widget with @code{gtk-widget-modify-bg} - if you're an
 application - or @code{gtk-style-set-background} - if you're implementing a
@@ -1399,7 +1318,8 @@ an allocated @code{<gdk-color>}
 
 @end deffn
 
-@deffn Function gdk-window-set-back-pixmap  (self@tie{}@code{<gdk-window*>}) (pixmap@tie{}@code{<gdk-pixmap*>}) (parent_relative@tie{}@code{bool})
+@deffn Function gdk-window-set-back-pixmap  (self@tie{}@code{<gdk-window>}) (pixmap@tie{}@code{<gdk-pixmap>}) (parent_relative@tie{}@code{bool})
+@deffnx Method set-back-pixmap
 Sets the background pixmap of @var{window}. May also be used to set a background
 of "None" on @var{window}, by setting a background pixmap of @samp{@code{#f}}. A
 background pixmap will be tiled, positioning the first tile at the origin of
@@ -1429,7 +1349,8 @@ whether the tiling origin is at the origin of @var{window}'s parent
 
 @end deffn
 
-@deffn Function gdk-window-set-cursor  (self@tie{}@code{<gdk-window*>}) (cursor@tie{}@code{<gdk-cursor>})
+@deffn Function gdk-window-set-cursor  (self@tie{}@code{<gdk-window>}) (cursor@tie{}@code{<gdk-cursor>})
+@deffnx Method set-cursor
 Sets the mouse pointer for a @code{<gdk-window>}. Use @code{gdk-cursor-new} or
 @code{gdk-cursor-new-from-pixmap} to create the cursor. To make the cursor
 invisible, use @code{gdk-cursor-new-from-pixmap} to create a cursor with no
@@ -1448,7 +1369,8 @@ a cursor
 
 @end deffn
 
-@deffn Function gdk-window-get-geometry  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (depth@tie{}@code{int})
+@deffn Function gdk-window-get-geometry  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (depth@tie{}@code{int})
+@deffnx Method get-geometry
 Any of the return location arguments to this function may be @samp{@code{#f}},
 if you aren't interested in getting the value of that field.
 
@@ -1496,41 +1418,8 @@ return location for bit depth of window
 
 @end deffn
 
-@deffn Function gdk-window-set-geometry-hints  (self@tie{}@code{<gdk-window*>}) (geometry@tie{}@code{<gdk-geometry*>}) (geom_mask@tie{}@code{<gdk-window-hints>})
-Sets the geometry hints for @var{window}. Hints flagged in @var{geom-mask} are
-set, hints not flagged in @var{geom-mask} are unset. To unset all hints, use a
-@var{geom-mask} of 0 and a @var{geometry} of @samp{@code{#f}}.
-
-This function provides hints to the windowing system about acceptable sizes for
-a toplevel window. The purpose of this is to constrain user resizing, but the
-windowing system will typically (but is not required to) also constrain the
-current size of the window to the provided values and constrain programatic
-resizing via @code{gdk-window-resize} or @code{gdk-window-move-resize}.
-
-Note that on X11, this effect has no effect on windows of type
-@samp{GDK_WINDOW_TEMP} or windows where override redirect has been turned on via
-@code{gdk-window-set-override-redirect} since these windows are not resizable by
-the user.
-
-Since you can't count on the windowing system doing the constraints for
-programmatic resizes, you should generally call @code{gdk-window-constrain-size}
-yourself to determine appropriate sizes.
-
-@table @var
-@item window
-a toplevel @code{<gdk-window>}
-
-@item geometry
-geometry hints
-
-@item geom-mask
-bitmask indicating fields of @var{geometry} to pay attention to
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-window-set-icon-list  (self@tie{}@code{<gdk-window*>}) (pixbufs@tie{}@code{glist-of})
+@deffn Function gdk-window-set-icon-list  (self@tie{}@code{<gdk-window>}) (pixbufs@tie{}@code{glist-of})
+@deffnx Method set-icon-list
 Sets a list of icons for the window. One of these will be used to represent the
 window when it has been iconified. The icon is usually shown in an icon box or
 some sort of task bar. Which icon size is shown depends on the window manager.
@@ -1549,7 +1438,8 @@ A list of pixbufs, of different sizes.
 
 @end deffn
 
-@deffn Function gdk-window-set-modal-hint  (self@tie{}@code{<gdk-window*>}) (modal@tie{}@code{bool})
+@deffn Function gdk-window-set-modal-hint  (self@tie{}@code{<gdk-window>}) (modal@tie{}@code{bool})
+@deffnx Method set-modal-hint
 The application can use this hint to tell the window manager that a certain
 window has modal behaviour. The window manager can use this information to
 handle modal windows in a special way.
@@ -1568,7 +1458,8 @@ A toplevel @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-set-type-hint  (self@tie{}@code{<gdk-window*>}) (hint@tie{}@code{<gdk-window-type-hint>})
+@deffn Function gdk-window-set-type-hint  (self@tie{}@code{<gdk-window>}) (hint@tie{}@code{<gdk-window-type-hint>})
+@deffnx Method set-type-hint
 The application can use this call to provide a hint to the window manager about
 the functionality of a window. The window manager can use this information when
 determining the decoration and behaviour of the window.
@@ -1586,7 +1477,8 @@ A hint of the function this window will have
 
 @end deffn
 
-@deffn Function gdk-window-get-type-hint  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{<gdk-window-type-hint>})
+@deffn Function gdk-window-get-type-hint  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{<gdk-window-type-hint>})
+@deffnx Method get-type-hint
 This function returns the type hint set for a window.
 
 @table @var
@@ -1602,7 +1494,8 @@ Since 2.10
 
 @end deffn
 
-@deffn Function gdk-window-set-skip-taskbar-hint  (self@tie{}@code{<gdk-window*>}) (skips_taskbar@tie{}@code{bool})
+@deffn Function gdk-window-set-skip-taskbar-hint  (self@tie{}@code{<gdk-window>}) (skips_taskbar@tie{}@code{bool})
+@deffnx Method set-skip-taskbar-hint
 Toggles whether a window should appear in a task list or window list. If a
 window's semantic type as specified with @code{gdk-window-set-type-hint} already
 fully describes the window, this function should @emph{not} be called in
@@ -1622,7 +1515,8 @@ Since 2.2
 
 @end deffn
 
-@deffn Function gdk-window-set-skip-pager-hint  (self@tie{}@code{<gdk-window*>}) (skips_pager@tie{}@code{bool})
+@deffn Function gdk-window-set-skip-pager-hint  (self@tie{}@code{<gdk-window>}) (skips_pager@tie{}@code{bool})
+@deffnx Method set-skip-pager-hint
 Toggles whether a window should appear in a pager (workspace switcher, or other
 desktop utility program that displays a small thumbnail representation of the
 windows on the desktop). If a window's semantic type as specified with
@@ -1643,7 +1537,8 @@ Since 2.2
 
 @end deffn
 
-@deffn Function gdk-window-set-urgency-hint  (self@tie{}@code{<gdk-window*>}) (urgent@tie{}@code{bool})
+@deffn Function gdk-window-set-urgency-hint  (self@tie{}@code{<gdk-window>}) (urgent@tie{}@code{bool})
+@deffnx Method set-urgency-hint
 Toggles whether a window needs the user's urgent attention.
 
 @table @var
@@ -1659,7 +1554,8 @@ Since 2.8
 
 @end deffn
 
-@deffn Function gdk-window-get-position  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffn Function gdk-window-get-position  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method get-position
 Obtains the position of the window as reported in the most-recently-processed
 @code{<gdk-event-configure>}. Contrast with @code{gdk-window-get-geometry} which
 queries the X server for the current window position, regardless of which events
@@ -1681,7 +1577,8 @@ Y coordinate of window
 
 @end deffn
 
-@deffn Function gdk-window-get-root-origin  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffn Function gdk-window-get-root-origin  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method get-root-origin
 Obtains the top-left corner of the window manager frame in root window
 coordinates.
 
@@ -1699,24 +1596,8 @@ return location for Y position of window frame
 
 @end deffn
 
-@deffn Function gdk-window-get-frame-extents  (self@tie{}@code{<gdk-window*>}) (rect@tie{}@code{<gdk-rectangle>})
-Obtains the bounding box of the window, including window manager
-titlebar/borders if any. The frame position is given in root window coordinates.
-To get the position of the window itself (rather than the frame) in root window
-coordinates, use @code{gdk-window-get-origin}.
-
-@table @var
-@item window
-a toplevel @code{<gdk-window>}
-
-@item rect
-rectangle to fill with bounding box of the window frame
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-window-get-origin  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{int}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffn Function gdk-window-get-origin  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{int}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method get-origin
 Obtains the position of a window in root window coordinates. (Compare with
 @code{gdk-window-get-position} and @code{gdk-window-get-geometry} which return
 the position of a window relative to its parent window.)
@@ -1738,7 +1619,8 @@ not meaningful, ignore
 
 @end deffn
 
-@deffn Function gdk-window-get-deskrelative-origin  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{bool}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffn Function gdk-window-get-deskrelative-origin  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{bool}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method get-deskrelative-origin
 @samp{gdk_window_get_deskrelative_origin} is deprecated and should not be used
 in newly-written code.
 
@@ -1765,32 +1647,8 @@ not meaningful
 
 @end deffn
 
-@deffn Function gdk-window-get-pointer  (self@tie{}@code{<gdk-window*>}) (mask@tie{}@code{<gdk-modifier-type*>}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>}) (x@tie{}@code{int}) (y@tie{}@code{int})
-Obtains the current pointer position and modifier state. The position is given
-in coordinates relative to the upper left corner of @var{window}.
-
-@table @var
-@item window
-a @code{<gdk-window>}
-
-@item x
-return location for X coordinate of pointer
-
-@item y
-return location for Y coordinate of pointer
-
-@item mask
-return location for modifier mask
-
-@item ret
-the window containing the pointer (as with @code{gdk-window-at-pointer}), or
-@samp{@code{#f}} if the window containing the pointer isn't known to GDK
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-window-get-parent  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-get-parent  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{<gdk-window>})
+@deffnx Method get-parent
 Obtains the parent of @var{window}, as known to GDK. Does not query the X
 server; thus this returns the parent as passed to @code{gdk-window-new}, not the
 actual parent. This should never matter unless you're using Xlib calls mixed
@@ -1808,7 +1666,8 @@ parent of @var{window}
 
 @end deffn
 
-@deffn Function gdk-window-get-toplevel  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-get-toplevel  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{<gdk-window>})
+@deffnx Method get-toplevel
 Gets the toplevel window that's an ancestor of @var{window}.
 
 @table @var
@@ -1822,7 +1681,8 @@ the toplevel window containing @var{window}
 
 @end deffn
 
-@deffn Function gdk-window-get-children  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffn Function gdk-window-get-children  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method get-children
 Gets the list of children of @var{window} known to GDK. This function only
 returns children created via GDK, so for example it's useless when used with the
 root window; it only returns windows an application created itself.
@@ -1840,7 +1700,8 @@ list of child windows inside @var{window}
 
 @end deffn
 
-@deffn Function gdk-window-get-events  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{<gdk-event-mask>})
+@deffn Function gdk-window-get-events  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{<gdk-event-mask>})
+@deffnx Method get-events
 Gets the event mask for @var{window}. See @code{gdk-window-set-events}.
 
 @table @var
@@ -1854,7 +1715,8 @@ event mask for @var{window}
 
 @end deffn
 
-@deffn Function gdk-window-set-events  (self@tie{}@code{<gdk-window*>}) (event_mask@tie{}@code{<gdk-event-mask>})
+@deffn Function gdk-window-set-events  (self@tie{}@code{<gdk-window>}) (event_mask@tie{}@code{<gdk-event-mask>})
+@deffnx Method set-events
 The event mask for a window determines which events will be reported for that
 window. For example, an event mask including @code{<gdk-button-press-mask>}
 means the window should report button press events. The event mask is the
@@ -1871,7 +1733,8 @@ event mask for @var{window}
 
 @end deffn
 
-@deffn Function gdk-window-set-icon  (self@tie{}@code{<gdk-window*>}) (icon_window@tie{}@code{<gdk-window*>}) (pixmap@tie{}@code{<gdk-pixmap*>}) (mask@tie{}@code{<gdk-bitmap*>})
+@deffn Function gdk-window-set-icon  (self@tie{}@code{<gdk-window>}) (icon_window@tie{}@code{<gdk-window>}) (pixmap@tie{}@code{<gdk-pixmap>}) (mask@tie{}@code{<gdk-drawable>})
+@deffnx Method set-icon
 Sets the icon of @var{window} as a pixmap or window. If using GTK+, investigate
 @code{gtk-window-set-default-icon-list} first, and then
 @code{gtk-window-set-icon-list} and @code{gtk-window-set-icon}. If those don't
@@ -1896,7 +1759,8 @@ a 1-bit pixmap (@code{<gdk-bitmap>}) to use as mask for @var{pixmap}, or
 
 @end deffn
 
-@deffn Function gdk-window-set-icon-name  (self@tie{}@code{<gdk-window*>}) (name@tie{}@code{mchars})
+@deffn Function gdk-window-set-icon-name  (self@tie{}@code{<gdk-window>}) (name@tie{}@code{mchars})
+@deffnx Method set-icon-name
 Windows may have a name used while minimized, distinct from the name they
 display in their titlebar. Most of the time this is a bad idea from a user
 interface standpoint. But you can set such a name with this function, if you
@@ -1913,7 +1777,8 @@ name of window while iconified (minimized)
 
 @end deffn
 
-@deffn Function gdk-window-set-transient-for  (self@tie{}@code{<gdk-window*>}) (parent@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-set-transient-for  (self@tie{}@code{<gdk-window>}) (parent@tie{}@code{<gdk-window>})
+@deffnx Method set-transient-for
 Indicates to the window manager that @var{window} is a transient dialog
 associated with the application window @var{parent}. This allows the window
 manager to do things like center @var{window} on @var{parent} and keep
@@ -1933,7 +1798,8 @@ another toplevel @code{<gdk-window>}
 
 @end deffn
 
-@deffn Function gdk-window-set-role  (self@tie{}@code{<gdk-window*>}) (role@tie{}@code{mchars})
+@deffn Function gdk-window-set-role  (self@tie{}@code{<gdk-window>}) (role@tie{}@code{mchars})
+@deffnx Method set-role
 When using GTK+, typically you should use @code{gtk-window-set-role} instead of
 this low-level function.
 
@@ -1957,7 +1823,8 @@ a string indicating its role
 
 @end deffn
 
-@deffn Function gdk-window-set-group  (self@tie{}@code{<gdk-window*>}) (leader@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-set-group  (self@tie{}@code{<gdk-window>}) (leader@tie{}@code{<gdk-window>})
+@deffnx Method set-group
 Sets the group leader window for @var{window}. By default, GDK sets the group
 leader for all toplevel windows to a global window implicitly created by GDK.
 With this function you can override this default.
@@ -1980,7 +1847,8 @@ window
 
 @end deffn
 
-@deffn Function gdk-window-get-group  (self@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>})
+@deffn Function gdk-window-get-group  (self@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{<gdk-window>})
+@deffnx Method get-group
 Returns the group leader window for @var{window}. See
 @code{gdk-window-set-group}.
 
@@ -1997,7 +1865,8 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gdk-window-set-decorations  (self@tie{}@code{<gdk-window*>}) (decorations@tie{}@code{<gdk-wm-decoration>})
+@deffn Function gdk-window-set-decorations  (self@tie{}@code{<gdk-window>}) (decorations@tie{}@code{<gdk-wm-decoration>})
+@deffnx Method set-decorations
 "Decorations" are the features the window manager adds to a toplevel
 @code{<gdk-window>}. This function sets the traditional Motif window manager
 hints that tell the window manager which decorations you would like your window
@@ -2024,25 +1893,8 @@ decoration hint mask
 
 @end deffn
 
-@deffn Function gdk-window-get-decorations  (self@tie{}@code{<gdk-window*>}) (decorations@tie{}@code{<gdk-wm-decoration*>}) @result{}@tie{} (ret@tie{}@code{bool})
-Returns the decorations set on the GdkWindow with
-@code{<gdk-window-set-decorations>}
-
-@table @var
-@item window
-The toplevel @code{<gdk-window>} to get the decorations from
-
-@item decorations
-The window decorations will be written here
-
-@item ret
-TRUE if the window has decorations set, FALSE otherwise.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-window-set-functions  (self@tie{}@code{<gdk-window*>}) (functions@tie{}@code{<gdk-wm-function>})
+@deffn Function gdk-window-set-functions  (self@tie{}@code{<gdk-window>}) (functions@tie{}@code{<gdk-wm-function>})
+@deffnx Method set-functions
 Sets hints about the window management functions to make available via buttons
 on the window frame.
 
@@ -2083,33 +1935,13 @@ list of toplevel windows, free with @code{g-list-free}
 
 @end deffn
 
-@deffn Function gdk-get-default-root-window  @result{}@tie{} (ret@tie{}@code{<gdk-window*>})
+@deffn Function gdk-get-default-root-window  @result{}@tie{} (ret@tie{}@code{<gdk-window>})
 Obtains the root window (parent all other windows are inside) for the default
 display and screen.
 
 @table @var
 @item ret
 the default root window
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-set-pointer-hooks  (new_hooks@tie{}@code{<gdk-pointer-hooks*>}) @result{}@tie{} (ret@tie{}@code{<gdk-pointer-hooks*>})
-This function allows for hooking into the operation of getting the current
-location of the pointer. This is only useful for such low-level tools as an
-event recorder. Applications should never have any reason to use this facility.
-
-This function is not multihead safe. For multihead operation, see
-@code{gdk-display-set-pointer-hooks}.
-
-@table @var
-@item new-hooks
-a table of pointers to functions for getting quantities related to the current
-pointer position, or @samp{@code{#f}} to restore the default table.
-
-@item ret
-the previous pointer hook table
 
 @end table
 

@@ -1,3 +1,17 @@
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* tests/gdk/wrapset.api:
+	* tests/gtk/wrapset.api: Updated for recent API review.
+
+	* doc/gdk/defuns-*.texi: Regenerated.
+	* doc/gtk/defuns-*.texi: Regenerated.
+
+	* doc/gtk/guile-gnome-gtk.texi (Top): 
+	* doc/gdk/guile-gnome-gdk.texi (Top): 
+	* doc/gtk/undocumented.texi: 
+	* doc/gdk/undocumented.texi: Add sections for undocumented
+	exports.
+
 2007-11-30  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/overrides/gdk.defs (gdk_draw_text, gdk_exit)

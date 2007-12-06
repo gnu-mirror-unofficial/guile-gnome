@@ -4,16 +4,21 @@
 @deftp Class <gdk-pixbuf-animation>
 Derives from @code{<gobject>}.
 
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
 
 @deftp Class <gdk-pixbuf-animation-iter>
 Derives from @code{<gobject>}.
 
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+This class defines no properties, other than those defined by its superclasses.
+
+@end deftp
+
+@deftp Class <gdk-pixbuf-simple-anim>
+Derives from @code{<gdk-pixbuf-animation>}.
+
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
 
@@ -70,90 +75,7 @@ Height of the bounding box of the animation.
 
 @end deffn
 
-@deffn Function gdk-pixbuf-animation-get-iter  (self@tie{}@code{<gdk-pixbuf-animation>}) (start_time@tie{}@code{<g-time-val*>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf-animation-iter>})
-@deffnx Method get-iter
-Get an iterator for displaying an animation. The iterator provides the frames
-that should be displayed at a given time. It should be freed after use with
-@code{g-object-unref}.
-
-@var{start-time} would normally come from @code{g-get-current-time}, and marks
-the beginning of animation playback. After creating an iterator, you should
-immediately display the pixbuf returned by
-@code{gdk-pixbuf-animation-iter-get-pixbuf}. Then, you should install a timeout
-(with @code{g-timeout-add}) or by some other mechanism ensure that you'll update
-the image after @code{gdk-pixbuf-animation-iter-get-delay-time} milliseconds.
-Each time the image is updated, you should reinstall the timeout with the new,
-possibly-changed delay time.
-
-As a shortcut, if @var{start-time} is @samp{@code{#f}}, the result of
-@code{g-get-current-time} will be used automatically.
-
-To update the image (i.e. possibly change the result of
-@code{gdk-pixbuf-animation-iter-get-pixbuf} to a new frame of the animation),
-call @code{gdk-pixbuf-animation-iter-advance}.
-
-If you're using @code{<gdk-pixbuf-loader>}, in addition to updating the image
-after the delay time, you should also update it whenever you receive the
-area_updated signal and
-@code{gdk-pixbuf-animation-iter-on-currently-loading-frame} returns
-@samp{@code{#t}}. In this case, the frame currently being fed into the loader
-has received new data, so needs to be refreshed. The delay time for a frame may
-also be modified after an area_updated signal, for example if the delay time for
-a frame is encoded in the data after the frame itself. So your timeout should be
-reinstalled after any area_updated signal.
-
-A delay time of -1 is possible, indicating "infinite."
-
-@table @var
-@item animation
-a @code{<gdk-pixbuf-animation>}
-
-@item start-time
-time when the animation starts playing
-
-@item ret
-an iterator to move over the animation
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-pixbuf-animation-iter-advance  (self@tie{}@code{<gdk-pixbuf-animation-iter>}) (current_time@tie{}@code{<g-time-val*>}) @result{}@tie{} (ret@tie{}@code{bool})
-@deffnx Method advance
-Possibly advances an animation to a new frame. Chooses the frame based on the
-start time passed to @code{gdk-pixbuf-animation-get-iter}.
-
-@var{current-time} would normally come from @code{g-get-current-time}, and must
-be greater than or equal to the time passed to
-@code{gdk-pixbuf-animation-get-iter}, and must increase or remain unchanged each
-time @code{gdk-pixbuf-animation-iter-get-pixbuf} is called. That is, you can't
-go backward in time; animations only play forward.
-
-As a shortcut, pass @samp{@code{#f}} for the current time and
-@code{g-get-current-time} will be invoked on your behalf. So you only need to
-explicitly pass @var{current-time} if you're doing something odd like playing
-the animation at double speed.
-
-If this function returns @samp{@code{#f}}, there's no need to update the
-animation display, assuming the display had been rendered prior to advancing; if
-@samp{@code{#t}}, you need to call @code{gdk-animation-iter-get-pixbuf} and
-update the display with the new pixbuf.
-
-@table @var
-@item iter
-a @code{<gdk-pixbuf-animation-iter>}
-
-@item current-time
-current time
-
-@item ret
-@samp{@code{#t}} if the image may need updating
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-pixbuf-simple-anim-new  (width@tie{}@code{int}) (height@tie{}@code{int}) (rate@tie{}@code{float}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf-simple-anim*>})
+@deffn Function gdk-pixbuf-simple-anim-new  (width@tie{}@code{int}) (height@tie{}@code{int}) (rate@tie{}@code{float}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf-simple-anim>})
 Creates a new, empty animation.
 
 @table @var
@@ -175,7 +97,8 @@ Since 2.8
 
 @end deffn
 
-@deffn Function gdk-pixbuf-simple-anim-add-frame  (self@tie{}@code{<gdk-pixbuf-simple-anim*>}) (pixbuf@tie{}@code{<gdk-pixbuf>})
+@deffn Function gdk-pixbuf-simple-anim-add-frame  (self@tie{}@code{<gdk-pixbuf-simple-anim>}) (pixbuf@tie{}@code{<gdk-pixbuf>})
+@deffnx Method add-frame
 Adds a new frame to @var{animation}. The @var{pixbuf} must have the dimensions
 specified when the animation was constructed.
 

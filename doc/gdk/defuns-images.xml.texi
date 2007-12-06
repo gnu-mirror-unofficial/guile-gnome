@@ -4,12 +4,11 @@
 @deftp Class <gdk-image>
 Derives from @code{<gobject>}.
 
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
 
-@deffn Function gdk-image-new  (type@tie{}@code{<gdk-image-type>}) (visual@tie{}@code{<gdk-visual*>}) (width@tie{}@code{int}) (height@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-image>})
+@deffn Function gdk-image-new  (type@tie{}@code{<gdk-image-type>}) (visual@tie{}@code{<gdk-visual>}) (width@tie{}@code{int}) (height@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-image>})
 Creates a new @code{<gdk-image>}.
 
 @table @var

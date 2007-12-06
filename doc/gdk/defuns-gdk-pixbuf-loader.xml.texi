@@ -4,8 +4,7 @@
 @deftp Class <gdk-pixbuf-loader>
 Derives from @code{<gobject>}.
 
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
 
@@ -94,36 +93,6 @@ GdkPixbuf and should not be freed.
 @end table
 
 Since 2.2
-
-@end deffn
-
-@deffn Function gdk-pixbuf-loader-write  (self@tie{}@code{<gdk-pixbuf-loader>}) (buf@tie{}@code{<guchar*>}) (count@tie{}@code{size_t}) @result{}@tie{} (ret@tie{}@code{bool})
-@deffnx Method write
-This will cause a pixbuf loader to parse the next @var{count} bytes of an image.
-It will return @samp{@code{#t}} if the data was loaded successfully, and
-@samp{@code{#f}} if an error occurred. In the latter case, the loader will be
-closed, and will not accept further writes. If @samp{@code{#f}} is returned,
-@var{error} will be set to an error from the @code{<gdk-pixbuf-error>} or
-@code{<g-file-error>} domains.
-
-@table @var
-@item loader
-A pixbuf loader.
-
-@item buf
-Pointer to image data.
-
-@item count
-Length of the @var{buf} buffer in bytes.
-
-@item error
-return location for errors
-
-@item ret
-@samp{@code{#t}} if the write was successful, or @samp{@code{#f}} if the loader
-cannot parse the buffer.
-
-@end table
 
 @end deffn
 

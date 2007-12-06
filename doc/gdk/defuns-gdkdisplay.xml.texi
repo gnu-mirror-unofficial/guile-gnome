@@ -4,8 +4,7 @@
 @deftp Class <gdk-display>
 Derives from @code{<gobject>}.
 
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
 
@@ -344,34 +343,7 @@ Since 2.2
 
 @end deffn
 
-@deffn Function gdk-display-get-pointer  (self@tie{}@code{<gdk-display>}) (screen@tie{}@code{<gdk-screen**>}) (mask@tie{}@code{<gdk-modifier-type*>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int})
-@deffnx Method get-pointer
-Gets the current location of the pointer and the current modifier mask for a
-given display.
-
-@table @var
-@item display
-a @code{<gdk-display>}
-
-@item screen
-location to store the screen that the cursor is on, or @samp{@code{#f}}.
-
-@item x
-location to store root window X coordinate of pointer, or @samp{@code{#f}}.
-
-@item y
-location to store root window Y coordinate of pointer, or @samp{@code{#f}}.
-
-@item mask
-location to store current modifier mask, or @samp{@code{#f}}
-
-@end table
-
-Since 2.2
-
-@end deffn
-
-@deffn Function gdk-display-get-window-at-pointer  (self@tie{}@code{<gdk-display>}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>}) (win_x@tie{}@code{int}) (win_y@tie{}@code{int})
+@deffn Function gdk-display-get-window-at-pointer  (self@tie{}@code{<gdk-display>}) @result{}@tie{} (ret@tie{}@code{<gdk-window>}) (win_x@tie{}@code{int}) (win_y@tie{}@code{int})
 @deffnx Method get-window-at-pointer
 Obtains the window underneath the mouse pointer, returning the location of that
 window in @var{win-x}, @var{win-y} for @var{screen}. Returns @samp{@code{#f}} if
@@ -500,7 +472,7 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gdk-display-get-default-group  (self@tie{}@code{<gdk-display>}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>})
+@deffn Function gdk-display-get-default-group  (self@tie{}@code{<gdk-display>}) @result{}@tie{} (ret@tie{}@code{<gdk-window>})
 @deffnx Method get-default-group
 Returns the default group leader window for all toplevel windows on
 @var{display}. This window is implicitly created by GDK. See

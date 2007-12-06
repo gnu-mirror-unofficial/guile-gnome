@@ -1,7 +1,7 @@
 
 @c %start of fragment
 
-@deffn Function gdk-selection-owner-set  (owner@tie{}@code{<gdk-window*>}) (selection@tie{}@code{<gdk-atom>}) (time_@tie{}@code{unsigned-int32}) (send_event@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gdk-selection-owner-set  (owner@tie{}@code{<gdk-window>}) (selection@tie{}@code{<gdk-atom>}) (time_@tie{}@code{unsigned-int32}) (send_event@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
 Sets the owner of the given selection.
 
 @table @var
@@ -29,7 +29,7 @@ otherwise @samp{@code{#f}}.
 
 @end deffn
 
-@deffn Function gdk-selection-owner-set-for-display  (display@tie{}@code{<gdk-display>}) (owner@tie{}@code{<gdk-window*>}) (selection@tie{}@code{<gdk-atom>}) (time_@tie{}@code{unsigned-int32}) (send_event@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gdk-selection-owner-set-for-display  (display@tie{}@code{<gdk-display>}) (owner@tie{}@code{<gdk-window>}) (selection@tie{}@code{<gdk-atom>}) (time_@tie{}@code{unsigned-int32}) (send_event@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
 Sets the @code{<gdk-window>}@var{owner} as the current owner of the selection
 @var{selection}.
 
@@ -63,7 +63,7 @@ Since 2.2
 
 @end deffn
 
-@deffn Function gdk-selection-owner-get  (selection@tie{}@code{<gdk-atom>}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>})
+@deffn Function gdk-selection-owner-get  (selection@tie{}@code{<gdk-atom>}) @result{}@tie{} (ret@tie{}@code{<gdk-window>})
 Determines the owner of the given selection.
 
 @table @var
@@ -81,7 +81,7 @@ window will never be created by this call.
 
 @end deffn
 
-@deffn Function gdk-selection-owner-get-for-display  (display@tie{}@code{<gdk-display>}) (selection@tie{}@code{<gdk-atom>}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>})
+@deffn Function gdk-selection-owner-get-for-display  (display@tie{}@code{<gdk-display>}) (selection@tie{}@code{<gdk-atom>}) @result{}@tie{} (ret@tie{}@code{<gdk-window>})
 Determine the owner of the given selection.
 
 Note that the return value may be owned by a different process if a foreign
@@ -106,7 +106,7 @@ Since 2.2
 
 @end deffn
 
-@deffn Function gdk-selection-convert  (requestor@tie{}@code{<gdk-window*>}) (selection@tie{}@code{<gdk-atom>}) (target@tie{}@code{<gdk-atom>}) (time_@tie{}@code{unsigned-int32})
+@deffn Function gdk-selection-convert  (requestor@tie{}@code{<gdk-window>}) (selection@tie{}@code{<gdk-atom>}) (target@tie{}@code{<gdk-atom>}) (time_@tie{}@code{unsigned-int32})
 Retrieves the contents of a selection in a given form.
 
 @table @var
@@ -123,36 +123,6 @@ the form in which to retrieve the selection.
 the timestamp to use when retrieving the selection. The selection owner may
 refuse the request if it did not own the selection at the time indicated by the
 timestamp.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-selection-property-get  (requestor@tie{}@code{<gdk-window*>}) (data@tie{}@code{<guchar**>}) (prop_type@tie{}@code{<gdk-atom*>}) @result{}@tie{} (ret@tie{}@code{bool}) (prop_format@tie{}@code{int})
-Retrieves selection data that was stored by the selection data in response to a
-call to @code{gdk-selection-convert}. This function will not be used by
-applications, who should use the @code{<gtk-clipboard>} API instead.
-
-@table @var
-@item requestor
-the window on which the data is stored
-
-@item data
-location to store a pointer to the retrieved data. If the retrieval failed,
-@samp{@code{#f}} we be stored here, otherwise, it will be non-@samp{@code{#f}}
-and the returned data should be freed with @code{g-free} when you are finished
-using it. The length of the allocated memory is one more than the length of the
-returned data, and the final byte will always be zero, to ensure nul-termination
-of strings.
-
-@item prop-type
-location to store the type of the property.
-
-@item prop-format
-location to store the format of the property.
-
-@item ret
-the length of the retrieved data.
 
 @end table
 

@@ -24,7 +24,7 @@ a new @code{<gdk-cursor>}
 
 @end deffn
 
-@deffn Function gdk-cursor-new-from-pixmap  (source@tie{}@code{<gdk-pixmap*>}) (mask@tie{}@code{<gdk-pixmap*>}) (fg@tie{}@code{<gdk-color>}) (bg@tie{}@code{<gdk-color>}) (x@tie{}@code{int}) (y@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-cursor>})
+@deffn Function gdk-cursor-new-from-pixmap  (source@tie{}@code{<gdk-pixmap>}) (mask@tie{}@code{<gdk-pixmap>}) (fg@tie{}@code{<gdk-color>}) (bg@tie{}@code{<gdk-color>}) (x@tie{}@code{int}) (y@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-cursor>})
 Creates a new cursor from a given pixmap and mask. Both the pixmap and mask must
 have a depth of 1 (i.e. each pixel has only 2 values - on or off). The standard
 cursor size is 16 by 16 pixels. You can create a bitmap from inline data as in

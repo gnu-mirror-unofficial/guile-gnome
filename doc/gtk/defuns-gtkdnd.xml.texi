@@ -27,7 +27,7 @@ a bitmask of possible actions for a drop onto this widget.
 
 @end deffn
 
-@deffn Function gtk-drag-dest-set-proxy  (self@tie{}@code{<gtk-widget>}) (proxy_window@tie{}@code{<gdk-window*>}) (protocol@tie{}@code{<gdk-drag-protocol>}) (use_coordinates@tie{}@code{bool})
+@deffn Function gtk-drag-dest-set-proxy  (self@tie{}@code{<gtk-widget>}) (proxy_window@tie{}@code{<gdk-window>}) (protocol@tie{}@code{<gdk-drag-protocol>}) (use_coordinates@tie{}@code{bool})
 Sets this widget as a proxy for drops to another window.
 
 @table @var
@@ -256,7 +256,7 @@ the Y offset within @var{widget} of the hotspot.
 
 @end deffn
 
-@deffn Function gtk-drag-set-icon-pixmap  (self@tie{}@code{<gdk-drag-context>}) (colormap@tie{}@code{<gdk-colormap>}) (pixmap@tie{}@code{<gdk-pixmap*>}) (mask@tie{}@code{<gdk-bitmap*>}) (hot_x@tie{}@code{int}) (hot_y@tie{}@code{int})
+@deffn Function gtk-drag-set-icon-pixmap  (self@tie{}@code{<gdk-drag-context>}) (colormap@tie{}@code{<gdk-colormap>}) (pixmap@tie{}@code{<gdk-pixmap>}) (mask@tie{}@code{<gdk-drawable>}) (hot_x@tie{}@code{int}) (hot_y@tie{}@code{int})
 Sets @var{pixmap} as the icon for a given drag. GTK+ retains references for the
 arguments, and will release them when they are no longer needed. In general,
 @code{gtk-drag-set-icon-pixbuf} will be more convenient to use.
@@ -394,7 +394,7 @@ current Y coordinate
 
 @end deffn
 
-@deffn Function gtk-drag-source-set-icon  (self@tie{}@code{<gtk-widget>}) (colormap@tie{}@code{<gdk-colormap>}) (pixmap@tie{}@code{<gdk-pixmap*>}) (mask@tie{}@code{<gdk-bitmap*>})
+@deffn Function gtk-drag-source-set-icon  (self@tie{}@code{<gtk-widget>}) (colormap@tie{}@code{<gdk-colormap>}) (pixmap@tie{}@code{<gdk-pixmap>}) (mask@tie{}@code{<gdk-drawable>})
 Sets the icon that will be used for drags from a particular widget from a
 pixmap/mask. GTK+ retains references for the arguments, and will release them
 when they are no longer needed. Use @code{gtk-drag-source-set-icon-pixbuf}

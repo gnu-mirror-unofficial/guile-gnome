@@ -57,7 +57,7 @@ a new @code{<gtk-style>}.
 
 @end deffn
 
-@deffn Function gtk-style-attach  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{<gtk-style>})
+@deffn Function gtk-style-attach  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{<gtk-style>})
 @deffnx Method attach
 Attaches a style to a window; this process allocates the colors and creates the
 GC's for the style - it specializes it to a particular visual and colormap. The
@@ -96,7 +96,7 @@ a @code{<gtk-style>}
 
 @end deffn
 
-@deffn Function gtk-style-set-background  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>})
+@deffn Function gtk-style-set-background  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>})
 @deffnx Method set-background
 Sets the background of @var{window} to the background color or pixmap specified
 by @var{style} for the given state.
@@ -115,7 +115,7 @@ a state
 
 @end deffn
 
-@deffn Function gtk-style-apply-default-background  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (set_bg@tie{}@code{bool}) (state_type@tie{}@code{<gtk-state-type>}) (area@tie{}@code{<gdk-rectangle>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function gtk-style-apply-default-background  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (set_bg@tie{}@code{bool}) (state_type@tie{}@code{<gtk-state-type>}) (area@tie{}@code{<gdk-rectangle>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
 @deffnx Method apply-default-background
 @table @var
 @item style
@@ -226,7 +226,7 @@ a newly-created @code{<gdk-pixbuf>} containing the rendered icon
 
 @end deffn
 
-@deffn Function gtk-paint-arrow  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (arrow_type@tie{}@code{<gtk-arrow-type>}) (fill@tie{}@code{bool}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function gtk-paint-arrow  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (arrow_type@tie{}@code{<gtk-arrow-type>}) (fill@tie{}@code{bool}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
 Draws an arrow in the given rectangle on @var{window} using the given
 parameters. @var{arrow-type} determines the direction of the arrow.
 
@@ -274,7 +274,7 @@ height of the rectangle to draw the arrow in
 
 @end deffn
 
-@deffn Function gtk-paint-box  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function gtk-paint-box  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
 Draws a box on @var{window} with the given parameters.
 
 @table @var
@@ -315,7 +315,7 @@ the height of the box
 
 @end deffn
 
-@deffn Function gtk-paint-box-gap  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (gap_side@tie{}@code{<gtk-position-type>}) (gap_x@tie{}@code{int}) (gap_width@tie{}@code{int})
+@deffn Function gtk-paint-box-gap  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (gap_side@tie{}@code{<gtk-position-type>}) (gap_x@tie{}@code{int}) (gap_width@tie{}@code{int})
 Draws a box in @var{window} using the given style and state and shadow type,
 leaving a gap in one side.
 
@@ -366,7 +366,7 @@ width of the gap
 
 @end deffn
 
-@deffn Function gtk-paint-check  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function gtk-paint-check  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
 Draws a check button indicator in the given rectangle on @var{window} with the
 given parameters.
 
@@ -408,7 +408,7 @@ the height of the rectangle to draw the check in
 
 @end deffn
 
-@deffn Function gtk-paint-diamond  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function gtk-paint-diamond  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
 Draws a diamond in the given rectangle on @var{window} using the given
 parameters.
 
@@ -450,7 +450,7 @@ height of the rectangle to draw the diamond in
 
 @end deffn
 
-@deffn Function gtk-paint-extension  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (gap_side@tie{}@code{<gtk-position-type>})
+@deffn Function gtk-paint-extension  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (gap_side@tie{}@code{<gtk-position-type>})
 Draws an extension, i.e. a notebook tab.
 
 @table @var
@@ -494,7 +494,7 @@ the side on to which the extension is attached
 
 @end deffn
 
-@deffn Function gtk-paint-flat-box  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function gtk-paint-flat-box  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
 Draws a flat box on @var{window} with the given parameters.
 
 @table @var
@@ -535,7 +535,7 @@ the height of the box
 
 @end deffn
 
-@deffn Function gtk-paint-focus  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function gtk-paint-focus  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
 Draws a focus indicator around the given rectangle on @var{window} using the
 given style.
 
@@ -574,7 +574,7 @@ the height of the rectangle around which to draw a focus indicator
 
 @end deffn
 
-@deffn Function gtk-paint-handle  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (orientation@tie{}@code{<gtk-orientation>})
+@deffn Function gtk-paint-handle  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (orientation@tie{}@code{<gtk-orientation>})
 Draws a handle as used in @code{<gtk-handle-box>} and @code{<gtk-paned>}.
 
 @table @var
@@ -618,7 +618,7 @@ the orientation of the handle
 
 @end deffn
 
-@deffn Function gtk-paint-hline  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x1@tie{}@code{int}) (x2@tie{}@code{int}) (y@tie{}@code{int})
+@deffn Function gtk-paint-hline  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x1@tie{}@code{int}) (x2@tie{}@code{int}) (y@tie{}@code{int})
 Draws a horizontal line from (@var{x1}, @var{y}) to (@var{x2}, @var{y}) in
 @var{window} using the given style and state.
 
@@ -655,7 +655,7 @@ the y coordinate
 
 @end deffn
 
-@deffn Function gtk-paint-option  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function gtk-paint-option  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
 Draws a radio button indicator in the given rectangle on @var{window} with the
 given parameters.
 
@@ -697,45 +697,7 @@ the height of the rectangle to draw the option in
 
 @end deffn
 
-@deffn Function gtk-paint-polygon  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (points@tie{}@code{<gdk-point*>}) (npoints@tie{}@code{int}) (fill@tie{}@code{bool})
-Draws a polygon on @var{window} with the given parameters.
-
-@table @var
-@item style
-a @code{<gtk-style>}
-
-@item window
-a @code{<gdk-window>}
-
-@item state-type
-a state
-
-@item shadow-type
-type of shadow to draw
-
-@item area
-clip rectangle, or @samp{@code{#f}} if the output should not be clipped
-
-@item widget
-the widget (may be @samp{@code{#f}})
-
-@item detail
-a style detail (may be @samp{@code{#f}})
-
-@item points
-an array of @code{<gdk-point>}s
-
-@item npoints
-length of @var{points}
-
-@item fill
-@samp{@code{#t}} if the polygon should be filled
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-paint-shadow  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function gtk-paint-shadow  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
 Draws a shadow around the given rectangle in @var{window} using the given style
 and state and shadow type.
 
@@ -777,7 +739,7 @@ width of the rectangle
 
 @end deffn
 
-@deffn Function gtk-paint-shadow-gap  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (gap_side@tie{}@code{<gtk-position-type>}) (gap_x@tie{}@code{int}) (gap_width@tie{}@code{int})
+@deffn Function gtk-paint-shadow-gap  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (gap_side@tie{}@code{<gtk-position-type>}) (gap_x@tie{}@code{int}) (gap_width@tie{}@code{int})
 Draws a shadow around the given rectangle in @var{window} using the given style
 and state and shadow type, leaving a gap in one side.
 
@@ -828,7 +790,7 @@ width of the gap
 
 @end deffn
 
-@deffn Function gtk-paint-slider  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (orientation@tie{}@code{<gtk-orientation>})
+@deffn Function gtk-paint-slider  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (orientation@tie{}@code{<gtk-orientation>})
 Draws a slider in the given rectangle on @var{window} using the given style and
 orientation.
 
@@ -873,7 +835,7 @@ the orientation to be used
 
 @end deffn
 
-@deffn Function gtk-paint-tab  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function gtk-paint-tab  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (shadow_type@tie{}@code{<gtk-shadow-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
 Draws an option menu tab (i.e. the up and down pointing arrows) in the given
 rectangle on @var{window} using the given parameters.
 
@@ -915,7 +877,7 @@ the height of the rectangle to draw the tab in
 
 @end deffn
 
-@deffn Function gtk-paint-vline  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (y1@tie{}@code{int}) (y2@tie{}@code{int}) (x@tie{}@code{int})
+@deffn Function gtk-paint-vline  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (y1@tie{}@code{int}) (y2@tie{}@code{int}) (x@tie{}@code{int})
 Draws a vertical line from (@var{x}, @var{y1}) to (@var{x}, @var{y2}) in
 @var{window} using the given style and state.
 
@@ -952,7 +914,7 @@ the x coordinate
 
 @end deffn
 
-@deffn Function gtk-paint-expander  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (expander_style@tie{}@code{<gtk-expander-style>})
+@deffn Function gtk-paint-expander  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (expander_style@tie{}@code{<gtk-expander-style>})
 Draws an expander as used in @code{<gtk-tree-view>}. @var{x} and @var{y} specify
 the center the expander. The size of the expander is determined by the
 "expander-size" style property of @var{widget}. (If widget is not specified or
@@ -995,7 +957,7 @@ expanded, or in an intermediate state.
 
 @end deffn
 
-@deffn Function gtk-paint-layout  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (use_text@tie{}@code{bool}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (layout@tie{}@code{<pango-layout>})
+@deffn Function gtk-paint-layout  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (use_text@tie{}@code{bool}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (x@tie{}@code{int}) (y@tie{}@code{int}) (layout@tie{}@code{<pango-layout>})
 Draws a layout on @var{window} using the given parameters.
 
 @table @var
@@ -1033,7 +995,7 @@ the layout to draw
 
 @end deffn
 
-@deffn Function gtk-paint-resize-grip  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window*>}) (state_type@tie{}@code{<gtk-state-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (edge@tie{}@code{<gdk-window-edge>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffn Function gtk-paint-resize-grip  (self@tie{}@code{<gtk-style>}) (window@tie{}@code{<gdk-window>}) (state_type@tie{}@code{<gtk-state-type>}) (area@tie{}@code{<gdk-rectangle>}) (widget@tie{}@code{<gtk-widget>}) (detail@tie{}@code{mchars}) (edge@tie{}@code{<gdk-window-edge>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
 Draws a resize grip in the given rectangle on @var{window} using the given
 parameters.
 

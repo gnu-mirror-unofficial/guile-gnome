@@ -1,21 +1,5 @@
 
 @c %start of fragment
 
-@deffn Function gtk-type-class  (type@tie{}@code{<gtype>}) @result{}@tie{} (ret@tie{}@code{<gpointer>})
-Returns a pointer pointing to the class of @var{type} or @samp{@code{#f}} if
-there was any trouble identifying @var{type}. Initializes the class if
-necessary.
-
-@table @var
-@item type
-a @code{<gtk-type>}.
-
-@item ret
-pointer to the class.
-
-@end table
-
-@end deffn
-
 
 @c %end of fragment

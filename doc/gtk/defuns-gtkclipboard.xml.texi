@@ -226,37 +226,6 @@ Since 2.6
 
 @end deffn
 
-@deffn Function gtk-clipboard-wait-for-rich-text  (self@tie{}@code{<gtk-clipboard>}) (buffer@tie{}@code{<gtk-text-buffer>}) (format@tie{}@code{<gdk-atom*>}) @result{}@tie{} (ret@tie{}@code{<guint8*>}) (length@tie{}@code{size_t})
-@deffnx Method wait-for-rich-text
-Requests the contents of the clipboard as rich text. This function waits for the
-data to be received using the main loop, so events, timeouts, etc, may be
-dispatched during the wait.
-
-@table @var
-@item clipboard
-a @code{<gtk-clipboard>}
-
-@item buffer
-a @code{<gtk-text-buffer>}
-
-@item format
-return location for the format of the returned data
-
-@item length
-return location for the length of the returned data
-
-@item ret
-a newly-allocated binary block of data which must be freed with @code{g-free},
-or @samp{@code{#f}} if retrieving the selection data failed. (This could happen
-for various reasons, in particular if the clipboard was empty or if the contents
-of the clipboard could not be converted into text form.)
-
-@end table
-
-Since 2.10
-
-@end deffn
-
 @deffn Function gtk-clipboard-store  (self@tie{}@code{<gtk-clipboard>})
 @deffnx Method store
 Stores the current clipboard data somewhere so that it will stay around after

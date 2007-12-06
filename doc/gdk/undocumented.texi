@@ -1,0 +1,70 @@
+
+@c %start of fragment
+
+@node Undocumented
+@chapter Undocumented
+The following symbols, if any, have not been properly documented.
+
+@section (gnome gw gdk)
+@defvar <gdk-pixbuf-format*>
+@end defvar
+
+@defvar gdk-display-manager-get-default-display
+@end defvar
+
+@defvar gdk-display-manager-set-default-display
+@end defvar
+
+@defvar gdk-display-request-selection-notification
+@end defvar
+
+@defvar gdk-display-set-double-click-distance
+@end defvar
+
+@defvar gdk-display-supports-clipboard-persistence
+@end defvar
+
+@defvar gdk-display-supports-selection-notification
+@end defvar
+
+@defvar gdk-event->vector
+@end defvar
+
+@defvar gdk-pango-renderer-set-override-color
+@end defvar
+
+@defvar gdk-pixbuf-animation-get-static-image
+@end defvar
+
+@defvar gdk-pixbuf-animation-is-static-image
+@end defvar
+
+@defvar gdk-pixbuf-animation-iter-get-delay-time
+@end defvar
+
+@defvar gdk-pixbuf-animation-iter-get-pixbuf
+@end defvar
+
+@defvar gdk-pixbuf-animation-iter-on-currently-loading-frame
+@end defvar
+
+@defvar gdk-pixbuf-error-quark
+@end defvar
+
+@defun gdk-pixbuf-loader-new-with-mime-type 
+@end defun
+
+@defun gdk-pixbuf-save-to-port 
+@end defun
+
+@defvar gdk-selection-send-notify-for-display
+@end defvar
+
+@defvar gdk-window-enable-synchronized-configure
+@end defvar
+
+@defvar gdk-window-input-shape-combine-region
+@end defvar
+
+
+@c %end of fragment

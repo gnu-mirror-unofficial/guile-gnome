@@ -59,24 +59,6 @@ the client id assigned by the session manager when the connection was opened, or
 
 @end deffn
 
-@deffn Function gdk-exit  (error_code@tie{}@code{int})
-@samp{gdk_exit} is deprecated and should not be used in newly-written code.
-
-Exits the application using the @code{@code{exit}} system call.
-
-This routine is provided mainly for backwards compatibility, since it used to
-perform tasks necessary to exit the application cleanly. Those tasks are now
-performed in a function which is automatically called on exit (via the use of
-@code{g-atexit}).
-
-@table @var
-@item error-code
-the error code to pass to the @code{@code{exit}} call.
-
-@end table
-
-@end deffn
-
 @deffn Function gdk-notify-startup-complete 
 Indicates to the GUI environment that the application has finished loading. If
 the applications opens windows, this function is normally called after opening
@@ -182,7 +164,7 @@ correct.
 
 @end deffn
 
-@deffn Function gdk-pointer-grab  (window@tie{}@code{<gdk-window*>}) (owner_events@tie{}@code{bool}) (event_mask@tie{}@code{<gdk-event-mask>}) (confine_to@tie{}@code{<gdk-window*>}) (cursor@tie{}@code{<gdk-cursor>}) (time_@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{<gdk-grab-status>})
+@deffn Function gdk-pointer-grab  (window@tie{}@code{<gdk-window>}) (owner_events@tie{}@code{bool}) (event_mask@tie{}@code{<gdk-event-mask>}) (confine_to@tie{}@code{<gdk-window>}) (cursor@tie{}@code{<gdk-cursor>}) (time_@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{<gdk-grab-status>})
 Grabs the pointer (usually a mouse) so that all events are passed to this
 application until the pointer is ungrabbed with @code{gdk-pointer-ungrab}, or
 the grab window becomes unviewable. This overrides any previous pointer grab by
@@ -285,7 +267,7 @@ double click time in milliseconds (thousandths of a second)
 
 @end deffn
 
-@deffn Function gdk-keyboard-grab  (window@tie{}@code{<gdk-window*>}) (owner_events@tie{}@code{bool}) (time_@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{<gdk-grab-status>})
+@deffn Function gdk-keyboard-grab  (window@tie{}@code{<gdk-window>}) (owner_events@tie{}@code{bool}) (time_@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{<gdk-grab-status>})
 Grabs the keyboard so that all events are passed to this application until the
 keyboard is ungrabbed with @code{gdk-keyboard-ungrab}. This overrides any
 previous keyboard grab by this client.

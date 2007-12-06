@@ -4,8 +4,7 @@
 @deftp Class <gdk-gc>
 Derives from @code{<gobject>}.
 
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
 
@@ -16,27 +15,6 @@ Create a new graphics context with default values.
 @item drawable
 a @code{<gdk-drawable>}. The created GC must always be used with drawables of
 the same depth as this one.
-
-@item ret
-the new graphics context.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-gc-new-with-values  (drawable@tie{}@code{<gdk-drawable>}) (values@tie{}@code{<gdk-gc-values*>}) (values_mask@tie{}@code{<gdk-gc-values-mask>}) @result{}@tie{} (ret@tie{}@code{<gdk-gc>})
-Create a new GC with the given initial values.
-
-@table @var
-@item drawable
-a @code{<gdk-drawable>}. The created GC must always be used with drawables of
-the same depth as this one.
-
-@item values
-a structure containing initial values for the GC.
-
-@item values-mask
-a bit mask indicating which fields in @var{values} are set.
 
 @item ret
 the new graphics context.
@@ -59,44 +37,6 @@ the @code{<gdk-screen>} for @var{gc}.
 @end table
 
 Since 2.2
-
-@end deffn
-
-@deffn Function gdk-gc-set-values  (self@tie{}@code{<gdk-gc>}) (values@tie{}@code{<gdk-gc-values*>}) (values_mask@tie{}@code{<gdk-gc-values-mask>})
-@deffnx Method set-values
-Sets attributes of a graphics context in bulk. For each flag set in
-@var{values-mask}, the corresponding field will be read from @var{values} and
-set as the new value for @var{gc}. If you're only setting a few values on
-@var{gc}, calling individual "setter" functions is likely more convenient.
-
-@table @var
-@item gc
-a @code{<gdk-gc>}
-
-@item values
-struct containing the new values
-
-@item values-mask
-mask indicating which struct fields are to be used
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-gc-get-values  (self@tie{}@code{<gdk-gc>}) (values@tie{}@code{<gdk-gc-values*>})
-@deffnx Method get-values
-Retrieves the current values from a graphics context. Note that only the pixel
-values of the @var{values->foreground} and @var{values->background} are filled,
-use @code{gdk-colormap-query-color} to obtain the rgb values if you need them.
-
-@table @var
-@item gc
-a @code{<gdk-gc>}.
-
-@item values
-the @code{<gdk-gc-values>} structure in which to store the results.
-
-@end table
 
 @end deffn
 
@@ -227,7 +167,7 @@ the new fill mode.
 
 @end deffn
 
-@deffn Function gdk-gc-set-tile  (self@tie{}@code{<gdk-gc>}) (tile@tie{}@code{<gdk-pixmap*>})
+@deffn Function gdk-gc-set-tile  (self@tie{}@code{<gdk-gc>}) (tile@tie{}@code{<gdk-pixmap>})
 @deffnx Method set-tile
 Set a tile pixmap for a graphics context. This will only be used if the fill
 mode is @samp{GDK_TILED}.
@@ -243,7 +183,7 @@ the new tile pixmap.
 
 @end deffn
 
-@deffn Function gdk-gc-set-stipple  (self@tie{}@code{<gdk-gc>}) (stipple@tie{}@code{<gdk-pixmap*>})
+@deffn Function gdk-gc-set-stipple  (self@tie{}@code{<gdk-gc>}) (stipple@tie{}@code{<gdk-pixmap>})
 @deffnx Method set-stipple
 Set the stipple bitmap for a graphics context. The stipple will only be used if
 the fill mode is @samp{GDK_STIPPLED} or @samp{GDK_OPAQUE_STIPPLED}.
@@ -298,7 +238,7 @@ the y-coordinate of the origin.
 
 @end deffn
 
-@deffn Function gdk-gc-set-clip-mask  (self@tie{}@code{<gdk-gc>}) (mask@tie{}@code{<gdk-bitmap*>})
+@deffn Function gdk-gc-set-clip-mask  (self@tie{}@code{<gdk-gc>}) (mask@tie{}@code{<gdk-drawable>})
 @deffnx Method set-clip-mask
 Sets the clip mask for a graphics context from a bitmap. The clip mask is
 interpreted relative to the clip origin. (See @code{gdk-gc-set-clip-origin}).
@@ -330,7 +270,7 @@ the rectangle to clip to.
 
 @end deffn
 
-@deffn Function gdk-gc-set-clip-region  (self@tie{}@code{<gdk-gc>}) (region@tie{}@code{<gdk-region*>})
+@deffn Function gdk-gc-set-clip-region  (self@tie{}@code{<gdk-gc>}) (region@tie{}@code{<gdk-region>})
 @deffnx Method set-clip-region
 Sets the clip mask for a graphics context from a region structure. The clip mask
 is interpreted relative to the clip origin. (See @code{gdk-gc-set-clip-origin}).
@@ -399,33 +339,6 @@ the manner in which the ends of lines are drawn.
 
 @item join-style
 the in which lines are joined together.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-gc-set-dashes  (self@tie{}@code{<gdk-gc>}) (dash_offset@tie{}@code{int}) (dash_list@tie{}@code{<gint8*>}) (n@tie{}@code{int})
-@deffnx Method set-dashes
-Sets the way dashed-lines are drawn. Lines will be drawn with alternating on and
-off segments of the lengths specified in @var{dash-list}. The manner in which
-the on and off segments are drawn is determined by the @var{line-style} value of
-the GC. (This can be changed with @code{gdk-gc-set-line-attributes}.)
-
-The @var{dash-offset} defines the phase of the pattern, specifying how many
-pixels into the dash-list the pattern should actually begin.
-
-@table @var
-@item gc
-a @code{<gdk-gc>}.
-
-@item dash-offset
-the phase of the dash pattern.
-
-@item dash-list
-an array of dash lengths.
-
-@item n
-the number of elements in @var{dash-list}.
 
 @end table
 

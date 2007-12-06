@@ -142,6 +142,8 @@ GDK-Pixbuf
 * X Drawables to Pixbufs:: Getting parts of an X drawable's image data into a pixbuf.
 * XlibRGB:: Rendering RGB buffers to X drawables.
 
+* Undocumented::      Undocumented functions.
+
 * Type Index::
 * Function Index::
 @end menu
@@ -199,6 +201,8 @@ GDK-Pixbuf
 @include section-gdk-pixbuf-xlib-rendering.xml.texi
 @include section-gdk-pixbuf-xlib-from-drawables.xml.texi
 @include section-gdk-pixbuf-xlib-rgb.xml.texi
+
+@include undocumented.texi
 
 @node Type Index
 @unnumbered Type Index

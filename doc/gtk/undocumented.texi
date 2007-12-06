@@ -1,0 +1,1457 @@
+
+@c %start of fragment
+
+@node Undocumented
+@chapter Undocumented
+The following symbols, if any, have not been properly documented.
+
+@section (gnome gtk)
+@deftp Class <guile-gtk-tree-model>
+@end deftp
+
+@deffn Generic create-tag
+@end deffn
+
+@deffn Method create-tag  (@var{buffer} @code{<gtk-text-buffer>}) (@var{tag-name} @code{<top>}) (@var{properties} @code{<top>})...
+@end deffn
+
+@defun gtk-stock-id nick
+@end defun
+
+@defun gtk-text-buffer-create-tag buffer tag-name . properties
+@end defun
+
+@defun gtk-tree-or-list-store-set store iter . args
+@end defun
+
+@deffn Generic on-get-column-type
+@end deffn
+
+@deffn Method on-get-column-type  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{index} @code{<top>})
+@end deffn
+
+@deffn Generic on-get-flags
+@end deffn
+
+@deffn Method on-get-flags  (@var{obj} @code{<guile-gtk-generic-tree-model>})
+@end deffn
+
+@deffn Generic on-get-iter
+@end deffn
+
+@deffn Method on-get-iter  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{path} @code{<top>})
+@end deffn
+
+@deffn Generic on-get-n-columns
+@end deffn
+
+@deffn Method on-get-n-columns  (@var{obj} @code{<guile-gtk-generic-tree-model>})
+@end deffn
+
+@deffn Generic on-get-path
+@end deffn
+
+@deffn Method on-get-path  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{iter} @code{<top>})
+@end deffn
+
+@deffn Generic on-get-value
+@end deffn
+
+@deffn Method on-get-value  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{iter} @code{<top>}) (@var{index} @code{<top>})
+@end deffn
+
+@deffn Generic on-iter-children
+@end deffn
+
+@deffn Method on-iter-children  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{parent} @code{<top>})
+@end deffn
+
+@deffn Generic on-iter-has-child
+@end deffn
+
+@deffn Method on-iter-has-child  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{iter} @code{<top>})
+@end deffn
+
+@deffn Generic on-iter-n-children
+@end deffn
+
+@deffn Method on-iter-n-children  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{iter} @code{<top>})
+@end deffn
+
+@deffn Generic on-iter-next
+@end deffn
+
+@deffn Method on-iter-next  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{iter} @code{<top>})
+@end deffn
+
+@deffn Generic on-iter-nth-child
+@end deffn
+
+@deffn Method on-iter-nth-child  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{parent} @code{<top>}) (@var{n} @code{<top>})
+@end deffn
+
+@deffn Generic on-iter-parent
+@end deffn
+
+@deffn Method on-iter-parent  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{iter} @code{<top>})
+@end deffn
+
+@section (gnome gw gtk)
+@defun %gtk-message-dialog-new 
+@end defun
+
+@defvar <gtk-binding-set*>
+@end defvar
+
+@defvar <gtk-radio-group*>
+@end defvar
+
+@deftp Class <guile-gtk-generic-tree-model>
+@end deftp
+
+@defvar gtk-accel-group-activate
+@end defvar
+
+@defvar gtk-accel-group-connect
+@end defvar
+
+@defvar gtk-accel-group-connect-by-path
+@end defvar
+
+@defvar gtk-accel-group-disconnect
+@end defvar
+
+@defvar gtk-accel-group-disconnect-key
+@end defvar
+
+@defvar gtk-accel-group-from-accel-closure
+@end defvar
+
+@defvar gtk-accel-group-lock
+@end defvar
+
+@defvar gtk-accel-group-new
+@end defvar
+
+@defvar gtk-accel-group-unlock
+@end defvar
+
+@defvar gtk-accel-groups-activate
+@end defvar
+
+@defun gtk-accel-groups-from-object 
+@end defun
+
+@defvar gtk-accel-map-add-entry
+@end defvar
+
+@defvar gtk-accel-map-add-filter
+@end defvar
+
+@defvar gtk-accel-map-change-entry
+@end defvar
+
+@defvar gtk-accel-map-get
+@end defvar
+
+@defvar gtk-accel-map-load
+@end defvar
+
+@defvar gtk-accel-map-load-fd
+@end defvar
+
+@defvar gtk-accel-map-lock-path
+@end defvar
+
+@defvar gtk-accel-map-save
+@end defvar
+
+@defvar gtk-accel-map-save-fd
+@end defvar
+
+@defvar gtk-accel-map-unlock-path
+@end defvar
+
+@defvar gtk-accelerator-get-default-mod-mask
+@end defvar
+
+@defvar gtk-accelerator-get-label
+@end defvar
+
+@defvar gtk-accelerator-name
+@end defvar
+
+@defvar gtk-accelerator-set-default-mod-mask
+@end defvar
+
+@defvar gtk-accelerator-valid
+@end defvar
+
+@defvar gtk-accessible-connect-widget-destroyed
+@end defvar
+
+@defvar gtk-action-group-add-action-with-accel
+@end defvar
+
+@defvar gtk-action-group-set-translation-domain
+@end defvar
+
+@defvar gtk-border-copy
+@end defvar
+
+@defvar gtk-border-free
+@end defvar
+
+@defvar gtk-calendar-get-display-options
+@end defvar
+
+@defvar gtk-cell-renderer-text-set-fixed-height-from-font
+@end defvar
+
+@defvar gtk-check-menu-item-get-draw-as-radio
+@end defvar
+
+@defvar gtk-check-menu-item-get-inconsistent
+@end defvar
+
+@defvar gtk-check-menu-item-new-with-mnemonic
+@end defvar
+
+@defvar gtk-check-menu-item-set-draw-as-radio
+@end defvar
+
+@defvar gtk-check-menu-item-set-inconsistent
+@end defvar
+
+@defvar gtk-check-version
+@end defvar
+
+@defvar gtk-clipboard-clear
+@end defvar
+
+@defvar gtk-clipboard-get
+@end defvar
+
+@defvar gtk-clipboard-get-display
+@end defvar
+
+@defvar gtk-clipboard-get-for-display
+@end defvar
+
+@defvar gtk-clipboard-get-owner
+@end defvar
+
+@defvar gtk-clipboard-set-image
+@end defvar
+
+@defvar gtk-clipboard-set-text
+@end defvar
+
+@defvar gtk-clipboard-store
+@end defvar
+
+@defvar gtk-clipboard-wait-for-contents
+@end defvar
+
+@defvar gtk-clipboard-wait-for-image
+@end defvar
+
+@defvar gtk-clipboard-wait-for-text
+@end defvar
+
+@defvar gtk-clipboard-wait-is-image-available
+@end defvar
+
+@defvar gtk-clipboard-wait-is-rich-text-available
+@end defvar
+
+@defvar gtk-clipboard-wait-is-target-available
+@end defvar
+
+@defvar gtk-clipboard-wait-is-text-available
+@end defvar
+
+@defvar gtk-color-selection-dialog-get-cancel-button
+@end defvar
+
+@defvar gtk-color-selection-dialog-get-colorsel
+@end defvar
+
+@defvar gtk-color-selection-dialog-get-help-button
+@end defvar
+
+@defvar gtk-color-selection-dialog-get-ok-button
+@end defvar
+
+@defvar gtk-color-selection-get-current-alpha
+@end defvar
+
+@defvar gtk-color-selection-get-current-color
+@end defvar
+
+@defvar gtk-color-selection-get-has-opacity-control
+@end defvar
+
+@defvar gtk-color-selection-get-previous-alpha
+@end defvar
+
+@defvar gtk-color-selection-get-previous-color
+@end defvar
+
+@defvar gtk-color-selection-palette-to-string
+@end defvar
+
+@defvar gtk-color-selection-set-current-alpha
+@end defvar
+
+@defvar gtk-color-selection-set-current-color
+@end defvar
+
+@defvar gtk-color-selection-set-has-opacity-control
+@end defvar
+
+@defvar gtk-color-selection-set-previous-alpha
+@end defvar
+
+@defvar gtk-color-selection-set-previous-color
+@end defvar
+
+@defvar gtk-combo-box-get-column-span-column
+@end defvar
+
+@defvar gtk-combo-box-set-column-span-column
+@end defvar
+
+@defvar gtk-container-set-reallocate-redraws
+@end defvar
+
+@defvar gtk-dialog-get-action-area
+@end defvar
+
+@defvar gtk-dialog-get-vbox
+@end defvar
+
+@defvar gtk-disable-setlocale
+@end defvar
+
+@defvar gtk-drag-check-threshold
+@end defvar
+
+@defvar gtk-drag-dest-add-image-targets
+@end defvar
+
+@defvar gtk-drag-dest-add-text-targets
+@end defvar
+
+@defvar gtk-drag-dest-add-uri-targets
+@end defvar
+
+@defvar gtk-drag-dest-get-track-motion
+@end defvar
+
+@defun gtk-drag-dest-set 
+@end defun
+
+@defvar gtk-drag-dest-set-proxy
+@end defvar
+
+@defvar gtk-drag-dest-set-track-motion
+@end defvar
+
+@defvar gtk-drag-dest-unset
+@end defvar
+
+@defun gtk-drag-finish 
+@end defun
+
+@defun gtk-drag-get-data 
+@end defun
+
+@defvar gtk-drag-get-source-widget
+@end defvar
+
+@defvar gtk-drag-highlight
+@end defvar
+
+@defvar gtk-drag-set-icon-default
+@end defvar
+
+@defvar gtk-drag-set-icon-name
+@end defvar
+
+@defvar gtk-drag-set-icon-pixbuf
+@end defvar
+
+@defvar gtk-drag-set-icon-pixmap
+@end defvar
+
+@defvar gtk-drag-set-icon-stock
+@end defvar
+
+@defvar gtk-drag-set-icon-widget
+@end defvar
+
+@defvar gtk-drag-source-add-image-targets
+@end defvar
+
+@defvar gtk-drag-source-add-text-targets
+@end defvar
+
+@defvar gtk-drag-source-add-uri-targets
+@end defvar
+
+@defun gtk-drag-source-set-icon 
+@end defun
+
+@defvar gtk-drag-source-set-icon-name
+@end defvar
+
+@defvar gtk-drag-source-set-icon-pixbuf
+@end defvar
+
+@defvar gtk-drag-source-set-icon-stock
+@end defvar
+
+@defvar gtk-drag-source-unset
+@end defvar
+
+@defvar gtk-drag-unhighlight
+@end defvar
+
+@defvar gtk-draw-insertion-cursor
+@end defvar
+
+@defvar gtk-entry-completion-get-inline-completion
+@end defvar
+
+@defvar gtk-entry-completion-get-minimum-key-length
+@end defvar
+
+@defvar gtk-entry-completion-get-popup-completion
+@end defvar
+
+@defvar gtk-entry-completion-get-popup-set-width
+@end defvar
+
+@defvar gtk-entry-completion-get-popup-single-match
+@end defvar
+
+@defvar gtk-entry-completion-get-text-column
+@end defvar
+
+@defvar gtk-entry-completion-insert-action-markup
+@end defvar
+
+@defvar gtk-entry-completion-insert-action-text
+@end defvar
+
+@defvar gtk-entry-completion-set-inline-completion
+@end defvar
+
+@defvar gtk-entry-completion-set-minimum-key-length
+@end defvar
+
+@defvar gtk-entry-completion-set-popup-completion
+@end defvar
+
+@defvar gtk-entry-completion-set-popup-set-width
+@end defvar
+
+@defvar gtk-entry-completion-set-popup-single-match
+@end defvar
+
+@defvar gtk-entry-completion-set-text-column
+@end defvar
+
+@defvar gtk-entry-layout-index-to-text-index
+@end defvar
+
+@defvar gtk-entry-text-index-to-layout-index
+@end defvar
+
+@defvar gtk-events-pending
+@end defvar
+
+@defvar gtk-false
+@end defvar
+
+@defun gtk-file-chooser-add-shortcut-folder 
+@end defun
+
+@defun gtk-file-chooser-add-shortcut-folder-uri 
+@end defun
+
+@defvar gtk-file-chooser-button-get-focus-on-click
+@end defvar
+
+@defvar gtk-file-chooser-button-get-width-chars
+@end defvar
+
+@defvar gtk-file-chooser-button-new-with-backend
+@end defvar
+
+@defvar gtk-file-chooser-button-new-with-dialog
+@end defvar
+
+@defvar gtk-file-chooser-button-set-focus-on-click
+@end defvar
+
+@defvar gtk-file-chooser-button-set-width-chars
+@end defvar
+
+@defvar gtk-file-chooser-error-quark
+@end defvar
+
+@defvar gtk-file-chooser-get-current-folder-uri
+@end defvar
+
+@defvar gtk-file-chooser-get-do-overwrite-confirmation
+@end defvar
+
+@defvar gtk-file-chooser-get-preview-filename
+@end defvar
+
+@defvar gtk-file-chooser-get-preview-widget-active
+@end defvar
+
+@defvar gtk-file-chooser-get-select-multiple
+@end defvar
+
+@defvar gtk-file-chooser-get-use-preview-label
+@end defvar
+
+@defun gtk-file-chooser-list-shortcut-folder-uris 
+@end defun
+
+@defun gtk-file-chooser-list-shortcut-folders 
+@end defun
+
+@defun gtk-file-chooser-remove-shortcut-folder 
+@end defun
+
+@defun gtk-file-chooser-remove-shortcut-folder-uri 
+@end defun
+
+@defvar gtk-file-chooser-set-current-folder-uri
+@end defvar
+
+@defvar gtk-file-chooser-set-do-overwrite-confirmation
+@end defvar
+
+@defvar gtk-file-chooser-set-preview-widget-active
+@end defvar
+
+@defvar gtk-file-chooser-set-select-multiple
+@end defvar
+
+@defvar gtk-file-chooser-set-use-preview-label
+@end defvar
+
+@defvar gtk-file-chooser-widget-new-with-backend
+@end defvar
+
+@defvar gtk-file-selection-get-select-multiple
+@end defvar
+
+@defvar gtk-file-selection-hide-fileop-buttons
+@end defvar
+
+@defvar gtk-file-selection-set-select-multiple
+@end defvar
+
+@defvar gtk-file-selection-show-fileop-buttons
+@end defvar
+
+@defvar gtk-file-selection:cancel-button
+@end defvar
+
+@defvar gtk-file-selection:ok-button
+@end defvar
+
+@defvar gtk-font-selection-dialog-get-font-name
+@end defvar
+
+@defvar gtk-font-selection-dialog-get-preview-text
+@end defvar
+
+@defvar gtk-font-selection-dialog-set-font-name
+@end defvar
+
+@defvar gtk-font-selection-dialog-set-preview-text
+@end defvar
+
+@defvar gtk-get-current-event-time
+@end defvar
+
+@defvar gtk-get-default-language
+@end defvar
+
+@defvar gtk-grab-add
+@end defvar
+
+@defvar gtk-grab-get-current
+@end defvar
+
+@defvar gtk-grab-remove
+@end defvar
+
+@defvar gtk-icon-factory-add
+@end defvar
+
+@defvar gtk-icon-factory-add-default
+@end defvar
+
+@defvar gtk-icon-factory-lookup
+@end defvar
+
+@defvar gtk-icon-factory-lookup-default
+@end defvar
+
+@defvar gtk-icon-factory-new
+@end defvar
+
+@defvar gtk-icon-factory-remove-default
+@end defvar
+
+@defvar gtk-icon-set-add-source
+@end defvar
+
+@defvar gtk-icon-set-copy
+@end defvar
+
+@defvar gtk-icon-set-new
+@end defvar
+
+@defvar gtk-icon-set-new-from-pixbuf
+@end defvar
+
+@defvar gtk-icon-set-render-icon
+@end defvar
+
+@defvar gtk-icon-size-from-name
+@end defvar
+
+@defvar gtk-icon-size-get-name
+@end defvar
+
+@defun gtk-icon-size-lookup 
+@end defun
+
+@defun gtk-icon-size-lookup-for-settings 
+@end defun
+
+@defvar gtk-icon-size-register
+@end defvar
+
+@defvar gtk-icon-size-register-alias
+@end defvar
+
+@defvar gtk-icon-source-copy
+@end defvar
+
+@defvar gtk-icon-source-get-direction
+@end defvar
+
+@defvar gtk-icon-source-get-direction-wildcarded
+@end defvar
+
+@defvar gtk-icon-source-get-filename
+@end defvar
+
+@defvar gtk-icon-source-get-icon-name
+@end defvar
+
+@defvar gtk-icon-source-get-pixbuf
+@end defvar
+
+@defvar gtk-icon-source-get-size
+@end defvar
+
+@defvar gtk-icon-source-get-size-wildcarded
+@end defvar
+
+@defvar gtk-icon-source-get-state
+@end defvar
+
+@defvar gtk-icon-source-get-state-wildcarded
+@end defvar
+
+@defvar gtk-icon-source-new
+@end defvar
+
+@defvar gtk-icon-source-set-direction
+@end defvar
+
+@defvar gtk-icon-source-set-direction-wildcarded
+@end defvar
+
+@defvar gtk-icon-source-set-filename
+@end defvar
+
+@defvar gtk-icon-source-set-icon-name
+@end defvar
+
+@defvar gtk-icon-source-set-pixbuf
+@end defvar
+
+@defvar gtk-icon-source-set-size
+@end defvar
+
+@defvar gtk-icon-source-set-size-wildcarded
+@end defvar
+
+@defvar gtk-icon-source-set-state
+@end defvar
+
+@defvar gtk-icon-source-set-state-wildcarded
+@end defvar
+
+@defvar gtk-icon-theme-add-builtin-icon
+@end defvar
+
+@defvar gtk-icon-theme-append-search-path
+@end defvar
+
+@defvar gtk-icon-theme-error-quark
+@end defvar
+
+@defvar gtk-icon-theme-get-default
+@end defvar
+
+@defvar gtk-icon-theme-get-example-icon-name
+@end defvar
+
+@defvar gtk-icon-theme-get-for-screen
+@end defvar
+
+@defvar gtk-icon-theme-has-icon
+@end defvar
+
+@defun gtk-icon-theme-list-icons 
+@end defun
+
+@defun gtk-icon-theme-load-icon 
+@end defun
+
+@defvar gtk-icon-theme-new
+@end defvar
+
+@defvar gtk-icon-theme-prepend-search-path
+@end defvar
+
+@defvar gtk-icon-theme-rescan-if-needed
+@end defvar
+
+@defvar gtk-icon-theme-set-custom-theme
+@end defvar
+
+@defvar gtk-icon-theme-set-screen
+@end defvar
+
+@defvar gtk-icon-view-unset-model-drag-source
+@end defvar
+
+@defvar gtk-im-multicontext-append-menuitems
+@end defvar
+
+@defvar gtk-image-menu-item-new-with-mnemonic
+@end defvar
+
+@defvar gtk-main
+@end defvar
+
+@defvar gtk-main-do-event
+@end defvar
+
+@defvar gtk-main-iteration
+@end defvar
+
+@defun gtk-main-iteration-do 
+@end defun
+
+@defvar gtk-main-level
+@end defvar
+
+@defvar gtk-main-quit
+@end defvar
+
+@defvar gtk-menu-bar-get-child-pack-direction
+@end defvar
+
+@defvar gtk-menu-bar-set-child-pack-direction
+@end defvar
+
+@defvar gtk-menu-tool-button-set-arrow-tooltip
+@end defvar
+
+@defvar gtk-page-setup-set-paper-size-and-default-margins
+@end defvar
+
+@defvar gtk-paint-arrow
+@end defvar
+
+@defvar gtk-paint-box
+@end defvar
+
+@defvar gtk-paint-box-gap
+@end defvar
+
+@defvar gtk-paint-check
+@end defvar
+
+@defvar gtk-paint-diamond
+@end defvar
+
+@defvar gtk-paint-expander
+@end defvar
+
+@defvar gtk-paint-extension
+@end defvar
+
+@defvar gtk-paint-flat-box
+@end defvar
+
+@defvar gtk-paint-focus
+@end defvar
+
+@defvar gtk-paint-handle
+@end defvar
+
+@defvar gtk-paint-hline
+@end defvar
+
+@defvar gtk-paint-layout
+@end defvar
+
+@defvar gtk-paint-option
+@end defvar
+
+@defvar gtk-paint-resize-grip
+@end defvar
+
+@defvar gtk-paint-shadow
+@end defvar
+
+@defvar gtk-paint-shadow-gap
+@end defvar
+
+@defvar gtk-paint-slider
+@end defvar
+
+@defvar gtk-paint-tab
+@end defvar
+
+@defvar gtk-paint-vline
+@end defvar
+
+@defvar gtk-paper-size-get-default-bottom-margin
+@end defvar
+
+@defvar gtk-paper-size-get-default-left-margin
+@end defvar
+
+@defvar gtk-paper-size-get-default-right-margin
+@end defvar
+
+@defvar gtk-paper-size-get-default-top-margin
+@end defvar
+
+@defvar gtk-print-context-create-pango-context
+@end defvar
+
+@defvar gtk-print-context-create-pango-layout
+@end defvar
+
+@defvar gtk-print-error-quark
+@end defvar
+
+@defvar gtk-print-operation-get-default-page-setup
+@end defvar
+
+@defvar gtk-print-operation-get-print-settings
+@end defvar
+
+@defvar gtk-print-operation-get-status-string
+@end defvar
+
+@defvar gtk-print-operation-preview-end-preview
+@end defvar
+
+@defvar gtk-print-operation-preview-is-selected
+@end defvar
+
+@defvar gtk-print-operation-preview-render-page
+@end defvar
+
+@defvar gtk-print-operation-set-current-page
+@end defvar
+
+@defvar gtk-print-operation-set-custom-tab-label
+@end defvar
+
+@defvar gtk-print-operation-set-default-page-setup
+@end defvar
+
+@defvar gtk-print-operation-set-export-filename
+@end defvar
+
+@defvar gtk-print-operation-set-print-settings
+@end defvar
+
+@defvar gtk-print-operation-set-show-progress
+@end defvar
+
+@defvar gtk-print-operation-set-track-print-status
+@end defvar
+
+@defvar gtk-print-operation-set-use-full-page
+@end defvar
+
+@defvar gtk-print-settings-get-default-source
+@end defvar
+
+@defvar gtk-print-settings-get-double-with-default
+@end defvar
+
+@defvar gtk-print-settings-get-int-with-default
+@end defvar
+
+@defvar gtk-print-settings-set-default-source
+@end defvar
+
+@defvar gtk-progress-bar-get-orientation
+@end defvar
+
+@defvar gtk-propagate-event
+@end defvar
+
+@defvar gtk-radio-button-new-with-label-from-widget
+@end defvar
+
+@defvar gtk-radio-button-new-with-mnemonic-from-widget
+@end defvar
+
+@defvar gtk-radio-menu-item-new-with-label-from-widget
+@end defvar
+
+@defvar gtk-radio-menu-item-new-with-mnemonic
+@end defvar
+
+@defvar gtk-radio-menu-item-new-with-mnemonic-from-widget
+@end defvar
+
+@defun gtk-radio-tool-button-new-from-stock 
+@end defun
+
+@defvar gtk-radio-tool-button-new-from-widget
+@end defvar
+
+@defvar gtk-radio-tool-button-new-with-stock-from-widget
+@end defvar
+
+@defvar gtk-range-get-lower-stepper-sensitivity
+@end defvar
+
+@defvar gtk-range-get-upper-stepper-sensitivity
+@end defvar
+
+@defvar gtk-range-set-lower-stepper-sensitivity
+@end defvar
+
+@defvar gtk-range-set-upper-stepper-sensitivity
+@end defvar
+
+@defvar gtk-rc-add-default-file
+@end defvar
+
+@defvar gtk-rc-find-module-in-path
+@end defvar
+
+@defvar gtk-rc-get-im-module-file
+@end defvar
+
+@defvar gtk-rc-get-im-module-path
+@end defvar
+
+@defvar gtk-rc-get-module-dir
+@end defvar
+
+@defvar gtk-rc-get-style
+@end defvar
+
+@defun gtk-rc-get-style-by-paths 
+@end defun
+
+@defvar gtk-rc-get-theme-dir
+@end defvar
+
+@defvar gtk-rc-parse
+@end defvar
+
+@defvar gtk-rc-parse-string
+@end defvar
+
+@defvar gtk-rc-property-parse-border
+@end defvar
+
+@defvar gtk-rc-property-parse-color
+@end defvar
+
+@defvar gtk-rc-property-parse-enum
+@end defvar
+
+@defvar gtk-rc-property-parse-flags
+@end defvar
+
+@defvar gtk-rc-property-parse-requisition
+@end defvar
+
+@defvar gtk-rc-reparse-all
+@end defvar
+
+@defvar gtk-rc-reparse-all-for-settings
+@end defvar
+
+@defvar gtk-rc-reset-styles
+@end defvar
+
+@defun gtk-rc-set-default-files 
+@end defun
+
+@defvar gtk-rc-style-copy
+@end defvar
+
+@defvar gtk-rc-style-new
+@end defvar
+
+@defvar gtk-recent-chooser-error-quark
+@end defvar
+
+@defvar gtk-recent-chooser-get-select-multiple
+@end defvar
+
+@defvar gtk-recent-chooser-get-show-not-found
+@end defvar
+
+@defvar gtk-recent-chooser-menu-get-show-numbers
+@end defvar
+
+@defvar gtk-recent-chooser-menu-new-for-manager
+@end defvar
+
+@defvar gtk-recent-chooser-menu-set-show-numbers
+@end defvar
+
+@defvar gtk-recent-chooser-set-select-multiple
+@end defvar
+
+@defvar gtk-recent-chooser-set-show-not-found
+@end defvar
+
+@defvar gtk-recent-chooser-widget-new-for-manager
+@end defvar
+
+@defvar gtk-recent-filter-add-pixbuf-formats
+@end defvar
+
+@defun gtk-recent-info-get-application-info 
+@end defun
+
+@defvar gtk-recent-manager-error-quark
+@end defvar
+
+@defvar gtk-ruler-draw-pos
+@end defvar
+
+@defvar gtk-ruler-draw-ticks
+@end defvar
+
+@defvar gtk-scrolled-window-add-with-viewport
+@end defvar
+
+@defvar gtk-selection-add-target
+@end defvar
+
+@defvar gtk-selection-clear-targets
+@end defvar
+
+@defun gtk-selection-convert 
+@end defun
+
+@defvar gtk-selection-data-get-as-string
+@end defvar
+
+@defvar gtk-selection-data-get-pixbuf
+@end defvar
+
+@defvar gtk-selection-data-set-pixbuf
+@end defvar
+
+@defvar gtk-selection-data-set-text
+@end defvar
+
+@defvar gtk-selection-data-targets-include-image
+@end defvar
+
+@defvar gtk-selection-data-targets-include-rich-text
+@end defvar
+
+@defvar gtk-selection-data-targets-include-text
+@end defvar
+
+@defvar gtk-selection-data-targets-include-uri
+@end defvar
+
+@defun gtk-selection-owner-set 
+@end defun
+
+@defun gtk-selection-owner-set-for-display 
+@end defun
+
+@defvar gtk-selection-remove-all
+@end defvar
+
+@defvar gtk-settings-get-default
+@end defvar
+
+@defvar gtk-settings-get-for-screen
+@end defvar
+
+@defvar gtk-settings-install-property
+@end defvar
+
+@defvar gtk-settings-set-double-property
+@end defvar
+
+@defvar gtk-settings-set-long-property
+@end defvar
+
+@defvar gtk-settings-set-string-property
+@end defvar
+
+@defvar gtk-spin-button-get-update-policy
+@end defvar
+
+@defvar gtk-stock-add
+@end defvar
+
+@defvar gtk-stock-add-static
+@end defvar
+
+@defvar gtk-stock-item-copy
+@end defvar
+
+@defun gtk-stock-list-ids 
+@end defun
+
+@defvar gtk-stock-lookup
+@end defvar
+
+@defvar gtk-style-apply-default-background
+@end defvar
+
+@defvar gtk-style-attach
+@end defvar
+
+@defvar gtk-style-copy
+@end defvar
+
+@defvar gtk-style-detach
+@end defvar
+
+@defvar gtk-style-get-bg-gc
+@end defvar
+
+@defvar gtk-style-get-black-gc
+@end defvar
+
+@defvar gtk-style-get-fg-gc
+@end defvar
+
+@defvar gtk-style-get-white-gc
+@end defvar
+
+@defvar gtk-style-lookup-color
+@end defvar
+
+@defvar gtk-style-lookup-icon-set
+@end defvar
+
+@defvar gtk-style-new
+@end defvar
+
+@defvar gtk-style-render-icon
+@end defvar
+
+@defvar gtk-style-set-background
+@end defvar
+
+@defvar gtk-text-buffer-add-selection-clipboard
+@end defvar
+
+@defvar gtk-text-buffer-deserialize-get-can-create-tags
+@end defvar
+
+@defvar gtk-text-buffer-deserialize-set-can-create-tags
+@end defvar
+
+@defvar gtk-text-buffer-get-iter-at-child-anchor
+@end defvar
+
+@defvar gtk-text-buffer-get-iter-at-line-index
+@end defvar
+
+@defvar gtk-text-buffer-get-iter-at-line-offset
+@end defvar
+
+@defvar gtk-text-buffer-get-selection-bounds
+@end defvar
+
+@defvar gtk-text-buffer-insert-interactive-at-cursor
+@end defvar
+
+@defvar gtk-text-buffer-insert-range-interactive
+@end defvar
+
+@defun gtk-text-buffer-insert-with-tags-by-name 
+@end defun
+
+@defvar gtk-text-buffer-register-deserialize-tagset
+@end defvar
+
+@defvar gtk-text-buffer-register-serialize-tagset
+@end defvar
+
+@defvar gtk-text-buffer-remove-selection-clipboard
+@end defvar
+
+@defvar gtk-text-iter-backward-cursor-position
+@end defvar
+
+@defvar gtk-text-iter-backward-cursor-positions
+@end defvar
+
+@defvar gtk-text-iter-backward-sentence-start
+@end defvar
+
+@defvar gtk-text-iter-backward-sentence-starts
+@end defvar
+
+@defvar gtk-text-iter-backward-to-tag-toggle
+@end defvar
+
+@defvar gtk-text-iter-backward-visible-cursor-position
+@end defvar
+
+@defvar gtk-text-iter-backward-visible-cursor-positions
+@end defvar
+
+@defvar gtk-text-iter-backward-visible-lines
+@end defvar
+
+@defvar gtk-text-iter-backward-visible-word-start
+@end defvar
+
+@defvar gtk-text-iter-backward-visible-word-starts
+@end defvar
+
+@defvar gtk-text-iter-forward-cursor-position
+@end defvar
+
+@defvar gtk-text-iter-forward-cursor-positions
+@end defvar
+
+@defvar gtk-text-iter-forward-visible-cursor-position
+@end defvar
+
+@defvar gtk-text-iter-forward-visible-cursor-positions
+@end defvar
+
+@defvar gtk-text-iter-forward-visible-word-end
+@end defvar
+
+@defvar gtk-text-iter-forward-visible-word-ends
+@end defvar
+
+@defvar gtk-text-iter-get-visible-line-index
+@end defvar
+
+@defvar gtk-text-iter-get-visible-line-offset
+@end defvar
+
+@defvar gtk-text-iter-set-visible-line-index
+@end defvar
+
+@defvar gtk-text-iter-set-visible-line-offset
+@end defvar
+
+@defvar gtk-text-view-backward-display-line-start
+@end defvar
+
+@defun gtk-text-view-buffer-to-window-coords 
+@end defun
+
+@defvar gtk-text-view-forward-display-line-end
+@end defvar
+
+@defvar gtk-text-view-get-border-window-size
+@end defvar
+
+@defvar gtk-text-view-get-default-attributes
+@end defvar
+
+@defvar gtk-text-view-get-pixels-above-lines
+@end defvar
+
+@defvar gtk-text-view-get-pixels-below-lines
+@end defvar
+
+@defvar gtk-text-view-get-pixels-inside-wrap
+@end defvar
+
+@defvar gtk-text-view-set-border-window-size
+@end defvar
+
+@defvar gtk-text-view-set-pixels-above-lines
+@end defvar
+
+@defvar gtk-text-view-set-pixels-below-lines
+@end defvar
+
+@defvar gtk-text-view-set-pixels-inside-wrap
+@end defvar
+
+@defun gtk-text-view-window-to-buffer-coords 
+@end defun
+
+@defvar gtk-toggle-tool-button-new-from-stock
+@end defvar
+
+@defvar gtk-tool-item-get-visible-horizontal
+@end defvar
+
+@defvar gtk-tool-item-retrieve-proxy-menu-item
+@end defvar
+
+@defvar gtk-tool-item-set-visible-horizontal
+@end defvar
+
+@defvar gtk-tree-drag-dest-drag-data-received
+@end defvar
+
+@defvar gtk-tree-drag-dest-row-drop-possible
+@end defvar
+
+@defvar gtk-tree-drag-source-drag-data-delete
+@end defvar
+
+@defvar gtk-tree-model-filter-convert-child-iter-to-iter
+@end defvar
+
+@defvar gtk-tree-model-filter-convert-child-path-to-path
+@end defvar
+
+@defvar gtk-tree-model-filter-convert-iter-to-child-iter
+@end defvar
+
+@defvar gtk-tree-model-filter-convert-path-to-child-path
+@end defvar
+
+@defvar gtk-tree-model-filter-set-visible-column
+@end defvar
+
+@defvar gtk-tree-model-row-has-child-toggled
+@end defvar
+
+@defvar gtk-tree-model-sort-convert-child-iter-to-iter
+@end defvar
+
+@defvar gtk-tree-model-sort-convert-child-path-to-path
+@end defvar
+
+@defvar gtk-tree-model-sort-convert-iter-to-child-iter
+@end defvar
+
+@defvar gtk-tree-model-sort-convert-path-to-child-path
+@end defvar
+
+@defvar gtk-tree-model-sort-reset-default-sort-func
+@end defvar
+
+@defvar gtk-tree-selection-count-selected-rows
+@end defvar
+
+@defvar gtk-tree-sortable-has-default-sort-func
+@end defvar
+
+@defvar gtk-tree-sortable-set-sort-column-id
+@end defvar
+
+@defvar gtk-tree-sortable-sort-column-changed
+@end defvar
+
+@defun gtk-tree-view-column-cell-get-position 
+@end defun
+
+@defvar gtk-tree-view-column-cell-is-visible
+@end defvar
+
+@defvar gtk-tree-view-column-cell-set-cell-data
+@end defvar
+
+@defvar gtk-tree-view-column-clear-attributes
+@end defvar
+
+@defun gtk-tree-view-column-get-cell-renderers 
+@end defun
+
+@defvar gtk-tree-view-column-get-fixed-width
+@end defvar
+
+@defvar gtk-tree-view-column-get-reorderable
+@end defvar
+
+@defvar gtk-tree-view-column-get-sort-column-id
+@end defvar
+
+@defvar gtk-tree-view-column-get-sort-indicator
+@end defvar
+
+@defvar gtk-tree-view-column-set-cell-data-func
+@end defvar
+
+@defvar gtk-tree-view-column-set-fixed-width
+@end defvar
+
+@defvar gtk-tree-view-column-set-reorderable
+@end defvar
+
+@defvar gtk-tree-view-column-set-sort-column-id
+@end defvar
+
+@defvar gtk-tree-view-column-set-sort-indicator
+@end defvar
+
+@defvar gtk-tree-view-unset-rows-drag-source
+@end defvar
+
+@defvar gtk-true
+@end defvar
+
+@defun gtk-vscrollbar-get-type 
+@end defun
+
+@defvar gtk-widget-get-allocation
+@end defvar
+
+@defvar gtk-widget-get-window
+@end defvar
+
+@defvar gtk-window-set-auto-startup-notification
+@end defvar
+
+@defun gtk-window-set-default-icon-from-file 
+@end defun
+
+
+@c %end of fragment

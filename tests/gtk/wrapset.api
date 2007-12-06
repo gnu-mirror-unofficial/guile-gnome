@@ -30,6 +30,7 @@
           (<gtk-arrow> <top> <top>)
           (<gtk-aspect-frame> . <top>)
           (<gtk-list-store> <gtk-tree-iter> . <top>)
+          (<gtk-print-settings> <string> <string>)
           (<gtk-tree-store> <gtk-tree-iter> . <top>))
      (unblock generic (<gtype-instance> <top>))))
   ((gnome gtk)
@@ -85,48 +86,8 @@
   ((gnome gw gdk)
    (uses-interfaces (gnome gw generics))
    (typed-exports
-     (<gdk-atom*> <gw:wct>)
      (<gdk-atom> <gw:wct>)
-     (<gdk-bitmap**> <gw:wct>)
-     (<gdk-bitmap*> <gw:wct>)
-     (<gdk-device*> <gw:wct>)
-     (<gdk-display-manager*> <gw:wct>)
-     (<gdk-drag-protocol*> <gw:wct>)
-     (<gdk-drawable**> <gw:wct>)
-     (<gdk-event-func> <gw:wct>)
-     (<gdk-filter-func> <gw:wct>)
-     (<gdk-gc-values*> <gw:wct>)
-     (<gdk-geometry*> <gw:wct>)
-     (<gdk-keymap-key**> <gw:wct>)
-     (<gdk-keymap-key*> <gw:wct>)
-     (<gdk-modifier-type*> <gw:wct>)
-     (<gdk-pixbuf-destroy-notify> <gw:wct>)
      (<gdk-pixbuf-format*> <gw:wct>)
-     (<gdk-pixbuf-save-func> <gw:wct>)
-     (<gdk-pixbuf-simple-anim*> <gw:wct>)
-     (<gdk-pixmap**> <gw:wct>)
-     (<gdk-pixmap*> <gw:wct>)
-     (<gdk-point*> <gw:wct>)
-     (<gdk-pointer-hooks*> <gw:wct>)
-     (<gdk-rectangle**> <gw:wct>)
-     (<gdk-region*> <gw:wct>)
-     (<gdk-rgb-cmap*> <gw:wct>)
-     (<gdk-screen**> <gw:wct>)
-     (<gdk-segment*> <gw:wct>)
-     (<gdk-time-coord***> <gw:wct>)
-     (<gdk-visual*> <gw:wct>)
-     (<gdk-visual-type**> <gw:wct>)
-     (<gdk-wchar*> <gw:wct>)
-     (<gdk-window**> <gw:wct>)
-     (<gdk-window*> <gw:wct>)
-     (<gdk-window-attr*> <gw:wct>)
-     (<gdk-wm-decoration*> <gw:wct>)
-     (<gint8*> <gw:wct>)
-     (<guint**> <gw:wct>)
-     (<guint8*> <gw:wct>)
-     (gdk-add-client-message-filter
-       procedure
-       (arity 0 0 #t))
      (gdk-atom-intern procedure (arity 0 0 #t))
      (gdk-atom-name procedure (arity 0 0 #t))
      (gdk-beep procedure (arity 0 0 #t))
@@ -152,6 +113,7 @@
      (gdk-color-alloc procedure (arity 0 0 #t))
      (gdk-color-black procedure (arity 0 0 #t))
      (gdk-color-change procedure (arity 0 0 #t))
+     (gdk-color-copy procedure (arity 0 0 #t))
      (gdk-color-parse procedure (arity 0 0 #t))
      (gdk-color-white procedure (arity 0 0 #t))
      (gdk-cursor-get-display procedure (arity 0 0 #t))
@@ -173,8 +135,6 @@
      (gdk-device-get-core-pointer
        procedure
        (arity 0 0 #t))
-     (gdk-device-get-history procedure (arity 5 0 #f))
-     (gdk-device-get-state procedure (arity 3 0 #f))
      (gdk-device-set-axis-use
        procedure
        (arity 0 0 #t))
@@ -208,9 +168,6 @@
        procedure
        (arity 0 0 #t))
      (gdk-display-get-name procedure (arity 0 0 #t))
-     (gdk-display-get-pointer
-       procedure
-       (arity 3 0 #f))
      (gdk-display-get-screen procedure (arity 0 0 #t))
      (gdk-display-get-window-at-pointer
        procedure
@@ -279,14 +236,6 @@
      (gdk-drag-drop-succeeded
        procedure
        (arity 0 0 #t))
-     (gdk-drag-find-window procedure (arity 0 0 #t))
-     (gdk-drag-find-window-for-screen
-       procedure
-       (arity 0 0 #t))
-     (gdk-drag-get-protocol procedure (arity 0 0 #t))
-     (gdk-drag-get-protocol-for-display
-       procedure
-       (arity 0 0 #t))
      (gdk-drag-get-selection procedure (arity 0 0 #t))
      (gdk-drag-motion procedure (arity 0 0 #t))
      (gdk-drag-status procedure (arity 0 0 #t))
@@ -296,9 +245,7 @@
      (gdk-draw-glyphs-transformed
        procedure
        (arity 0 0 #t))
-     (gdk-draw-gray-image procedure (arity 0 0 #t))
      (gdk-draw-image procedure (arity 0 0 #t))
-     (gdk-draw-indexed-image procedure (arity 0 0 #t))
      (gdk-draw-layout procedure (arity 0 0 #t))
      (gdk-draw-layout-line procedure (arity 0 0 #t))
      (gdk-draw-layout-line-with-colors
@@ -308,18 +255,10 @@
        procedure
        (arity 0 0 #t))
      (gdk-draw-line procedure (arity 0 0 #t))
-     (gdk-draw-lines procedure (arity 0 0 #t))
      (gdk-draw-pixbuf procedure (arity 0 0 #t))
      (gdk-draw-point procedure (arity 0 0 #t))
-     (gdk-draw-points procedure (arity 0 0 #t))
-     (gdk-draw-polygon procedure (arity 0 0 #t))
      (gdk-draw-rectangle procedure (arity 0 0 #t))
-     (gdk-draw-rgb-32-image procedure (arity 0 0 #t))
-     (gdk-draw-rgb-image procedure (arity 0 0 #t))
-     (gdk-draw-segments procedure (arity 0 0 #t))
      (gdk-draw-string procedure (arity 0 0 #t))
-     (gdk-draw-text procedure (arity 0 0 #t))
-     (gdk-draw-text-wc procedure (arity 0 0 #t))
      (gdk-drawable-copy-to-image
        procedure
        (arity 0 0 #t))
@@ -329,7 +268,6 @@
      (gdk-drawable-get-colormap
        procedure
        (arity 0 0 #t))
-     (gdk-drawable-get-data procedure (arity 0 0 #t))
      (gdk-drawable-get-depth procedure (arity 0 0 #t))
      (gdk-drawable-get-display
        procedure
@@ -348,12 +286,12 @@
      (gdk-drawable-set-colormap
        procedure
        (arity 0 0 #t))
-     (gdk-drawable-set-data procedure (arity 0 0 #t))
      (gdk-drop-finish procedure (arity 0 0 #t))
      (gdk-drop-reply procedure (arity 0 0 #t))
      (gdk-error-trap-pop procedure (arity 0 0 #t))
      (gdk-error-trap-push procedure (arity 0 0 #t))
      (gdk-event->vector procedure (arity 0 0 #t))
+     (gdk-event-copy procedure (arity 0 0 #t))
      (gdk-event-get procedure (arity 0 0 #t))
      (gdk-event-get-axis procedure (arity 2 0 #f))
      (gdk-event-get-coords procedure (arity 1 0 #f))
@@ -364,13 +302,10 @@
        procedure
        (arity 1 0 #f))
      (gdk-event-get-screen procedure (arity 0 0 #t))
-     (gdk-event-get-state procedure (arity 0 0 #t))
      (gdk-event-get-time procedure (arity 0 0 #t))
-     (gdk-event-handler-set procedure (arity 0 0 #t))
      (gdk-event-peek procedure (arity 0 0 #t))
      (gdk-event-put procedure (arity 0 0 #t))
      (gdk-events-pending procedure (arity 0 0 #t))
-     (gdk-exit procedure (arity 0 0 #t))
      (gdk-flush procedure (arity 0 0 #t))
      (gdk-font-from-description
        procedure
@@ -378,11 +313,10 @@
      (gdk-font-id procedure (arity 0 0 #t))
      (gdk-font-load procedure (arity 0 0 #t))
      (gdk-fontset-load procedure (arity 0 0 #t))
+     (gdk-gc-copy procedure (arity 0 0 #t))
      (gdk-gc-get-colormap procedure (arity 0 0 #t))
      (gdk-gc-get-screen procedure (arity 0 0 #t))
-     (gdk-gc-get-values procedure (arity 0 0 #t))
      (gdk-gc-new procedure (arity 0 0 #t))
-     (gdk-gc-new-with-values procedure (arity 0 0 #t))
      (gdk-gc-offset procedure (arity 0 0 #t))
      (gdk-gc-set-background procedure (arity 0 0 #t))
      (gdk-gc-set-clip-mask procedure (arity 0 0 #t))
@@ -392,7 +326,6 @@
        (arity 0 0 #t))
      (gdk-gc-set-clip-region procedure (arity 0 0 #t))
      (gdk-gc-set-colormap procedure (arity 0 0 #t))
-     (gdk-gc-set-dashes procedure (arity 0 0 #t))
      (gdk-gc-set-exposures procedure (arity 0 0 #t))
      (gdk-gc-set-fill procedure (arity 0 0 #t))
      (gdk-gc-set-font procedure (arity 0 0 #t))
@@ -411,7 +344,6 @@
      (gdk-gc-set-subwindow procedure (arity 0 0 #t))
      (gdk-gc-set-tile procedure (arity 0 0 #t))
      (gdk-gc-set-ts-origin procedure (arity 0 0 #t))
-     (gdk-gc-set-values procedure (arity 0 0 #t))
      (gdk-get-default-root-window
        procedure
        (arity 0 0 #t))
@@ -437,19 +369,9 @@
      (gdk-keymap-get-direction
        procedure
        (arity 0 0 #t))
-     (gdk-keymap-get-entries-for-keycode
-       procedure
-       (arity 4 0 #f))
-     (gdk-keymap-get-entries-for-keyval
-       procedure
-       (arity 3 0 #f))
      (gdk-keymap-get-for-display
        procedure
        (arity 0 0 #t))
-     (gdk-keymap-lookup-key procedure (arity 0 0 #t))
-     (gdk-keymap-translate-keyboard-state
-       procedure
-       (arity 5 0 #f))
      (gdk-keyval-convert-case
        procedure
        (arity 1 0 #f))
@@ -461,7 +383,6 @@
      (gdk-keyval-to-unicode procedure (arity 0 0 #t))
      (gdk-keyval-to-upper procedure (arity 0 0 #t))
      (gdk-list-visuals procedure (arity 0 0 #f))
-     (gdk-mbstowcs procedure (arity 0 0 #t))
      (gdk-notify-startup-complete
        procedure
        (arity 0 0 #t))
@@ -498,9 +419,6 @@
      (gdk-pixbuf-animation-get-height
        procedure
        (arity 0 0 #t))
-     (gdk-pixbuf-animation-get-iter
-       procedure
-       (arity 0 0 #t))
      (gdk-pixbuf-animation-get-static-image
        procedure
        (arity 0 0 #t))
@@ -508,9 +426,6 @@
        procedure
        (arity 0 0 #t))
      (gdk-pixbuf-animation-is-static-image
-       procedure
-       (arity 0 0 #t))
-     (gdk-pixbuf-animation-iter-advance
        procedure
        (arity 0 0 #t))
      (gdk-pixbuf-animation-iter-get-delay-time
@@ -557,7 +472,6 @@
        procedure
        (arity 0 0 #t))
      (gdk-pixbuf-get-option procedure (arity 0 0 #t))
-     (gdk-pixbuf-get-pixels procedure (arity 0 0 #t))
      (gdk-pixbuf-get-rowstride
        procedure
        (arity 0 0 #t))
@@ -584,13 +498,7 @@
      (gdk-pixbuf-loader-set-size
        procedure
        (arity 0 0 #t))
-     (gdk-pixbuf-loader-write
-       procedure
-       (arity 3 0 #f))
      (gdk-pixbuf-new procedure (arity 0 0 #t))
-     (gdk-pixbuf-new-from-data
-       procedure
-       (arity 0 0 #t))
      (gdk-pixbuf-new-from-file
        procedure
        (arity 1 0 #f))
@@ -600,16 +508,7 @@
      (gdk-pixbuf-new-from-file-at-size
        procedure
        (arity 3 0 #f))
-     (gdk-pixbuf-new-from-inline
-       procedure
-       (arity 3 0 #f))
-     (gdk-pixbuf-new-from-xpm-data
-       procedure
-       (arity 0 0 #t))
      (gdk-pixbuf-new-subpixbuf
-       procedure
-       (arity 0 0 #t))
-     (gdk-pixbuf-render-pixmap-and-mask
        procedure
        (arity 0 0 #t))
      (gdk-pixbuf-render-threshold-alpha
@@ -627,16 +526,9 @@
      (gdk-pixbuf-saturate-and-pixelate
        procedure
        (arity 0 0 #t))
-     (gdk-pixbuf-save-to-bufferv
-       procedure
-       (arity 4 0 #f))
-     (gdk-pixbuf-save-to-callbackv
-       procedure
-       (arity 6 0 #f))
      (gdk-pixbuf-save-to-port
        procedure
        (arity 4 0 #f))
-     (gdk-pixbuf-savev procedure (arity 5 0 #f))
      (gdk-pixbuf-scale procedure (arity 0 0 #t))
      (gdk-pixbuf-scale-simple
        procedure
@@ -647,21 +539,9 @@
      (gdk-pixbuf-simple-anim-new
        procedure
        (arity 0 0 #t))
-     (gdk-pixmap-colormap-create-from-xpm
-       procedure
-       (arity 0 0 #t))
-     (gdk-pixmap-colormap-create-from-xpm-d
-       procedure
-       (arity 4 0 #f))
      (gdk-pixmap-create-from-data
        procedure
        (arity 0 0 #t))
-     (gdk-pixmap-create-from-xpm
-       procedure
-       (arity 0 0 #t))
-     (gdk-pixmap-create-from-xpm-d
-       procedure
-       (arity 3 0 #f))
      (gdk-pixmap-foreign-new-for-display
        procedure
        (arity 0 0 #t))
@@ -673,27 +553,15 @@
      (gdk-pointer-grab procedure (arity 0 0 #t))
      (gdk-pointer-is-grabbed procedure (arity 0 0 #t))
      (gdk-pointer-ungrab procedure (arity 0 0 #t))
-     (gdk-property-change procedure (arity 0 0 #t))
      (gdk-property-delete procedure (arity 0 0 #t))
-     (gdk-property-get procedure (arity 8 0 #f))
-     (gdk-query-depths procedure (arity 1 0 #f))
-     (gdk-query-visual-types procedure (arity 1 0 #f))
-     (gdk-rectangle-intersect
-       procedure
-       (arity 0 0 #t))
-     (gdk-rectangle-union procedure (arity 0 0 #t))
+     (gdk-region-copy procedure (arity 0 0 #t))
      (gdk-region-destroy procedure (arity 0 0 #t))
      (gdk-region-empty procedure (arity 0 0 #t))
      (gdk-region-equal procedure (arity 0 0 #t))
-     (gdk-region-get-clipbox procedure (arity 0 0 #t))
-     (gdk-region-get-rectangles
-       procedure
-       (arity 2 0 #f))
      (gdk-region-intersect procedure (arity 0 0 #t))
      (gdk-region-new procedure (arity 0 0 #t))
      (gdk-region-offset procedure (arity 0 0 #t))
      (gdk-region-point-in procedure (arity 0 0 #t))
-     (gdk-region-polygon procedure (arity 0 0 #t))
      (gdk-region-rect-in procedure (arity 0 0 #t))
      (gdk-region-rectangle procedure (arity 0 0 #t))
      (gdk-region-shrink procedure (arity 0 0 #t))
@@ -703,12 +571,10 @@
        procedure
        (arity 0 0 #t))
      (gdk-region-xor procedure (arity 0 0 #t))
-     (gdk-rgb-cmap-new procedure (arity 1 0 #f))
      (gdk-rgb-colormap-ditherable
        procedure
        (arity 0 0 #t))
      (gdk-rgb-ditherable procedure (arity 0 0 #t))
-     (gdk-rgb-find-color procedure (arity 0 0 #t))
      (gdk-rgb-gc-set-background
        procedure
        (arity 0 0 #t))
@@ -825,9 +691,6 @@
      (gdk-selection-owner-set-for-display
        procedure
        (arity 0 0 #t))
-     (gdk-selection-property-get
-       procedure
-       (arity 3 0 #f))
      (gdk-selection-send-notify
        procedure
        (arity 0 0 #t))
@@ -838,12 +701,10 @@
        procedure
        (arity 0 0 #t))
      (gdk-set-locale procedure (arity 0 0 #t))
-     (gdk-set-pointer-hooks procedure (arity 0 0 #t))
      (gdk-set-program-class procedure (arity 0 0 #t))
      (gdk-set-show-events procedure (arity 0 0 #t))
      (gdk-set-sm-client-id procedure (arity 0 0 #t))
      (gdk-set-use-xshm procedure (arity 0 0 #t))
-     (gdk-setting-get procedure (arity 0 0 #t))
      (gdk-spawn-command-line-on-screen
        procedure
        (arity 2 0 #f))
@@ -851,12 +712,9 @@
      (gdk-string-height procedure (arity 0 0 #t))
      (gdk-string-measure procedure (arity 0 0 #t))
      (gdk-string-width procedure (arity 0 0 #t))
-     (gdk-text-extents procedure (arity 3 0 #f))
-     (gdk-text-extents-wc procedure (arity 3 0 #f))
      (gdk-text-height procedure (arity 0 0 #t))
      (gdk-text-measure procedure (arity 0 0 #t))
      (gdk-text-width procedure (arity 0 0 #t))
-     (gdk-text-width-wc procedure (arity 0 0 #t))
      (gdk-threads-enter procedure (arity 0 0 #t))
      (gdk-threads-init procedure (arity 0 0 #t))
      (gdk-threads-leave procedure (arity 0 0 #t))
@@ -879,7 +737,6 @@
        (arity 0 0 #t))
      (gdk-visual-get-screen procedure (arity 0 0 #t))
      (gdk-visual-get-system procedure (arity 0 0 #t))
-     (gdk-window-add-filter procedure (arity 0 0 #t))
      (gdk-window-at-pointer procedure (arity 0 0 #f))
      (gdk-window-begin-move-drag
        procedure
@@ -901,9 +758,6 @@
      (gdk-window-configure-finished
        procedure
        (arity 0 0 #t))
-     (gdk-window-constrain-size
-       procedure
-       (arity 4 0 #f))
      (gdk-window-deiconify procedure (arity 0 0 #t))
      (gdk-window-destroy procedure (arity 0 0 #t))
      (gdk-window-enable-synchronized-configure
@@ -921,26 +775,16 @@
      (gdk-window-get-children
        procedure
        (arity 1 0 #f))
-     (gdk-window-get-decorations
-       procedure
-       (arity 0 0 #t))
      (gdk-window-get-deskrelative-origin
        procedure
        (arity 1 0 #f))
      (gdk-window-get-events procedure (arity 0 0 #t))
-     (gdk-window-get-frame-extents
-       procedure
-       (arity 0 0 #t))
      (gdk-window-get-geometry
        procedure
        (arity 1 0 #f))
      (gdk-window-get-group procedure (arity 0 0 #t))
-     (gdk-window-get-internal-paint-info
-       procedure
-       (arity 2 0 #f))
      (gdk-window-get-origin procedure (arity 1 0 #f))
      (gdk-window-get-parent procedure (arity 0 0 #t))
-     (gdk-window-get-pointer procedure (arity 2 0 #f))
      (gdk-window-get-position
        procedure
        (arity 1 0 #f))
@@ -991,7 +835,6 @@
      (gdk-window-move procedure (arity 0 0 #t))
      (gdk-window-move-region procedure (arity 0 0 #t))
      (gdk-window-move-resize procedure (arity 0 0 #t))
-     (gdk-window-new procedure (arity 0 0 #t))
      (gdk-window-process-all-updates
        procedure
        (arity 0 0 #t))
@@ -1000,9 +843,6 @@
        (arity 0 0 #t))
      (gdk-window-raise procedure (arity 0 0 #t))
      (gdk-window-register-dnd
-       procedure
-       (arity 0 0 #t))
-     (gdk-window-remove-filter
        procedure
        (arity 0 0 #t))
      (gdk-window-reparent procedure (arity 0 0 #t))
@@ -1035,9 +875,6 @@
        procedure
        (arity 0 0 #t))
      (gdk-window-set-functions
-       procedure
-       (arity 0 0 #t))
-     (gdk-window-set-geometry-hints
        procedure
        (arity 0 0 #t))
      (gdk-window-set-group procedure (arity 0 0 #t))
@@ -1081,9 +918,6 @@
      (gdk-window-set-urgency-hint
        procedure
        (arity 0 0 #t))
-     (gdk-window-set-user-data
-       procedure
-       (arity 0 0 #t))
      (gdk-window-shape-combine-mask
        procedure
        (arity 0 0 #t))
@@ -1113,6 +947,7 @@
           (<gtk-arrow> <top> <top>)
           (<gtk-aspect-frame> . <top>)
           (<gtk-list-store> <gtk-tree-iter> . <top>)
+          (<gtk-print-settings> <string> <string>)
           (<gtk-tree-store> <gtk-tree-iter> . <top>))))
   ((gnome gw gtk)
    (uses-interfaces (gnome gw generics))
@@ -1120,110 +955,14 @@
      (%gtk-message-dialog-new
        procedure
        (arity 1 4 #f))
-     (<g-callback> <gw:wct>)
-     (<g-list**> <gw:wct>)
-     (<g-object-class*> <gw:wct>)
-     (<g-option-group*> <gw:wct>)
-     (<g-param-spec**> <gw:wct>)
-     (<g-scanner*> <gw:wct>)
-     (<g-type*> <gw:wct>)
-     (<gdk-atom**> <gw:wct>)
-     (<gdk-color**> <gw:wct>)
-     (<gdk-image**> <gw:wct>)
-     (<gdk-pixbuf**> <gw:wct>)
-     (<gdk-point**> <gw:wct>)
-     (<gfloat*> <gw:wct>)
-     (<gtk-about-dialog-activate-link-func> <gw:wct>)
-     (<gtk-accel-key*> <gw:wct>)
-     (<gtk-accel-map*> <gw:wct>)
-     (<gtk-accel-map-foreach> <gw:wct>)
-     (<gtk-action-entry*> <gw:wct>)
-     (<gtk-allocation*> <gw:wct>)
-     (<gtk-binding-arg*> <gw:wct>)
      (<gtk-binding-set*> <gw:wct>)
-     (<gtk-border*> <gw:wct>)
-     (<gtk-cell-layout*> <gw:wct>)
-     (<gtk-cell-layout-data-func> <gw:wct>)
-     (<gtk-cell-renderer**> <gw:wct>)
-     (<gtk-clipboard*> <gw:wct>)
-     (<gtk-clipboard-clear-func> <gw:wct>)
-     (<gtk-clipboard-get-func> <gw:wct>)
-     (<gtk-clipboard-image-received-func> <gw:wct>)
-     (<gtk-clipboard-received-func> <gw:wct>)
-     (<gtk-clipboard-rich-text-received-func>
-       <gw:wct>)
-     (<gtk-clipboard-targets-received-func> <gw:wct>)
-     (<gtk-clipboard-text-received-func> <gw:wct>)
-     (<gtk-color-selection-change-palette-with-screen-func>
-       <gw:wct>)
-     (<gtk-container-class*> <gw:wct>)
-     (<gtk-destroy-notify> <gw:wct>)
-     (<gtk-entry-completion-match-func> <gw:wct>)
-     (<gtk-file-filter*> <gw:wct>)
-     (<gtk-file-filter-func> <gw:wct>)
-     (<gtk-file-filter-info*> <gw:wct>)
-     (<gtk-icon-info*> <gw:wct>)
-     (<gtk-icon-set**> <gw:wct>)
-     (<gtk-icon-size**> <gw:wct>)
-     (<gtk-icon-size*> <gw:wct>)
-     (<gtk-icon-view-drop-position*> <gw:wct>)
-     (<gtk-im-context*> <gw:wct>)
-     (<gtk-list-item*> <gw:wct>)
      (<gtk-list-store> class)
-     (<gtk-menu-detach-func> <gw:wct>)
-     (<gtk-menu-position-func> <gw:wct>)
      (<gtk-message-dialog> class)
      (<gtk-object> class)
-     (<gtk-orientation*> <gw:wct>)
-     (<gtk-pack-type*> <gw:wct>)
-     (<gtk-page-range*> <gw:wct>)
-     (<gtk-page-setup*> <gw:wct>)
-     (<gtk-paper-size*> <gw:wct>)
-     (<gtk-path-priority-type*> <gw:wct>)
-     (<gtk-policy-type*> <gw:wct>)
-     (<gtk-print-context*> <gw:wct>)
-     (<gtk-print-operation-preview*> <gw:wct>)
-     (<gtk-print-settings*> <gw:wct>)
-     (<gtk-radio-action-entry*> <gw:wct>)
      (<gtk-radio-group*> <gw:wct>)
-     (<gtk-rc-property-parser> <gw:wct>)
-     (<gtk-recent-chooser*> <gw:wct>)
-     (<gtk-recent-filter*> <gw:wct>)
-     (<gtk-recent-filter-func> <gw:wct>)
-     (<gtk-recent-filter-info*> <gw:wct>)
-     (<gtk-recent-info*> <gw:wct>)
-     (<gtk-recent-sort-func> <gw:wct>)
-     (<gtk-settings-value*> <gw:wct>)
-     (<gtk-sort-type*> <gw:wct>)
-     (<gtk-state-type*> <gw:wct>)
-     (<gtk-stock-item*> <gw:wct>)
-     (<gtk-target-entry*> <gw:wct>)
-     (<gtk-target-list*> <gw:wct>)
-     (<gtk-text-buffer-deserialize-func> <gw:wct>)
-     (<gtk-text-buffer-serialize-func> <gw:wct>)
      (<gtk-text-buffer> class)
-     (<gtk-text-char-predicate> <gw:wct>)
-     (<gtk-toggle-action-entry*> <gw:wct>)
-     (<gtk-tooltips**> <gw:wct>)
-     (<gtk-translate-func> <gw:wct>)
-     (<gtk-tree-cell-data-func> <gw:wct>)
-     (<gtk-tree-destroy-count-func> <gw:wct>)
-     (<gtk-tree-iter-compare-func> <gw:wct>)
      (<gtk-tree-iter> class)
-     (<gtk-tree-model**> <gw:wct>)
-     (<gtk-tree-model-filter-modify-func> <gw:wct>)
-     (<gtk-tree-model-filter-visible-func> <gw:wct>)
-     (<gtk-tree-path**> <gw:wct>)
-     (<gtk-tree-row-reference*> <gw:wct>)
-     (<gtk-tree-selection-func> <gw:wct>)
      (<gtk-tree-store> class)
-     (<gtk-tree-view-column**> <gw:wct>)
-     (<gtk-tree-view-column-drop-func> <gw:wct>)
-     (<gtk-tree-view-drop-position*> <gw:wct>)
-     (<gtk-tree-view-mapping-func> <gw:wct>)
-     (<gtk-tree-view-search-equal-func> <gw:wct>)
-     (<gtk-widget**> <gw:wct>)
-     (<gtk-widget-class*> <gw:wct>)
      (<guile-gtk-generic-tree-model> class)
      (gtk-about-dialog-get-copyright
        procedure
@@ -1256,9 +995,6 @@
      (gtk-about-dialog-set-copyright
        procedure
        (arity 0 0 #t))
-     (gtk-about-dialog-set-email-hook
-       procedure
-       (arity 0 0 #t))
      (gtk-about-dialog-set-license
        procedure
        (arity 0 0 #t))
@@ -1269,9 +1005,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-about-dialog-set-name
-       procedure
-       (arity 0 0 #t))
-     (gtk-about-dialog-set-url-hook
        procedure
        (arity 0 0 #t))
      (gtk-about-dialog-set-version
@@ -1338,19 +1071,10 @@
      (gtk-accel-map-change-entry
        procedure
        (arity 0 0 #t))
-     (gtk-accel-map-foreach-unfiltered
-       procedure
-       (arity 0 0 #t))
      (gtk-accel-map-get procedure (arity 0 0 #t))
      (gtk-accel-map-load procedure (arity 0 0 #t))
      (gtk-accel-map-load-fd procedure (arity 0 0 #t))
-     (gtk-accel-map-load-scanner
-       procedure
-       (arity 0 0 #t))
      (gtk-accel-map-lock-path
-       procedure
-       (arity 0 0 #t))
-     (gtk-accel-map-lookup-entry
        procedure
        (arity 0 0 #t))
      (gtk-accel-map-save procedure (arity 0 0 #t))
@@ -1365,7 +1089,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-accelerator-name procedure (arity 0 0 #t))
-     (gtk-accelerator-parse procedure (arity 2 0 #f))
      (gtk-accelerator-set-default-mod-mask
        procedure
        (arity 0 0 #t))
@@ -1417,19 +1140,10 @@
      (gtk-action-group-add-actions
        procedure
        (arity 0 0 #t))
-     (gtk-action-group-add-actions-full
-       procedure
-       (arity 0 0 #t))
      (gtk-action-group-add-radio-actions
        procedure
        (arity 0 0 #t))
-     (gtk-action-group-add-radio-actions-full
-       procedure
-       (arity 0 0 #t))
      (gtk-action-group-add-toggle-actions
-       procedure
-       (arity 0 0 #t))
-     (gtk-action-group-add-toggle-actions-full
        procedure
        (arity 0 0 #t))
      (gtk-action-group-get-action
@@ -1452,9 +1166,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-action-group-set-sensitive
-       procedure
-       (arity 0 0 #t))
-     (gtk-action-group-set-translate-func
        procedure
        (arity 0 0 #t))
      (gtk-action-group-set-translation-domain
@@ -1575,13 +1286,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-bin-get-child procedure (arity 0 0 #t))
-     (gtk-binding-entry-add-signall
-       procedure
-       (arity 5 0 #f))
-     (gtk-bindings-activate procedure (arity 0 0 #t))
-     (gtk-bindings-activate-event
-       procedure
-       (arity 0 0 #t))
      (gtk-border-copy procedure (arity 0 0 #t))
      (gtk-border-free procedure (arity 0 0 #t))
      (gtk-box-get-homogeneous
@@ -1596,9 +1300,6 @@
      (gtk-box-pack-start-defaults
        procedure
        (arity 0 0 #t))
-     (gtk-box-query-child-packing
-       procedure
-       (arity 3 0 #f))
      (gtk-box-reorder-child procedure (arity 0 0 #t))
      (gtk-box-set-child-packing
        procedure
@@ -1716,9 +1417,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-cell-layout-reorder
-       procedure
-       (arity 0 0 #t))
-     (gtk-cell-layout-set-cell-data-func
        procedure
        (arity 0 0 #t))
      (gtk-cell-renderer-accel-new
@@ -1855,34 +1553,10 @@
      (gtk-clipboard-get-owner
        procedure
        (arity 0 0 #t))
-     (gtk-clipboard-request-contents
-       procedure
-       (arity 0 0 #t))
-     (gtk-clipboard-request-image
-       procedure
-       (arity 0 0 #t))
-     (gtk-clipboard-request-rich-text
-       procedure
-       (arity 0 0 #t))
-     (gtk-clipboard-request-targets
-       procedure
-       (arity 0 0 #t))
-     (gtk-clipboard-request-text
-       procedure
-       (arity 0 0 #t))
-     (gtk-clipboard-set-can-store
-       procedure
-       (arity 0 0 #t))
      (gtk-clipboard-set-image
        procedure
        (arity 0 0 #t))
      (gtk-clipboard-set-text procedure (arity 0 0 #t))
-     (gtk-clipboard-set-with-data
-       procedure
-       (arity 0 0 #t))
-     (gtk-clipboard-set-with-owner
-       procedure
-       (arity 0 0 #t))
      (gtk-clipboard-store procedure (arity 0 0 #t))
      (gtk-clipboard-wait-for-contents
        procedure
@@ -1890,12 +1564,6 @@
      (gtk-clipboard-wait-for-image
        procedure
        (arity 0 0 #t))
-     (gtk-clipboard-wait-for-rich-text
-       procedure
-       (arity 3 0 #f))
-     (gtk-clipboard-wait-for-targets
-       procedure
-       (arity 2 0 #f))
      (gtk-clipboard-wait-for-text
        procedure
        (arity 0 0 #t))
@@ -1978,13 +1646,7 @@
      (gtk-color-selection-new
        procedure
        (arity 0 0 #t))
-     (gtk-color-selection-palette-from-string
-       procedure
-       (arity 2 0 #f))
      (gtk-color-selection-palette-to-string
-       procedure
-       (arity 0 0 #t))
-     (gtk-color-selection-set-change-palette-with-screen-hook
        procedure
        (arity 0 0 #t))
      (gtk-color-selection-set-current-alpha
@@ -2112,24 +1774,12 @@
      (gtk-container-child-type
        procedure
        (arity 1 0 #f))
-     (gtk-container-class-find-child-property
-       procedure
-       (arity 0 0 #t))
-     (gtk-container-class-install-child-property
-       procedure
-       (arity 0 0 #t))
-     (gtk-container-class-list-child-properties
-       procedure
-       (arity 1 0 #f))
      (gtk-container-get-border-width
        procedure
        (arity 0 0 #t))
      (gtk-container-get-children
        procedure
        (arity 1 0 #f))
-     (gtk-container-get-focus-chain
-       procedure
-       (arity 0 0 #t))
      (gtk-container-get-focus-hadjustment
        procedure
        (arity 0 0 #t))
@@ -2170,15 +1820,10 @@
      (gtk-container-unset-focus-chain
        procedure
        (arity 0 0 #t))
-     (gtk-curve-get-vector procedure (arity 0 0 #t))
      (gtk-curve-new procedure (arity 0 0 #t))
      (gtk-curve-reset procedure (arity 0 0 #t))
-     (gtk-curve-set-curve-type
-       procedure
-       (arity 0 0 #t))
      (gtk-curve-set-gamma procedure (arity 0 0 #t))
      (gtk-curve-set-range procedure (arity 0 0 #t))
-     (gtk-curve-set-vector procedure (arity 0 0 #t))
      (gtk-dialog-add-action-widget
        procedure
        (arity 0 0 #t))
@@ -2205,7 +1850,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-disable-setlocale procedure (arity 0 0 #t))
-     (gtk-drag-begin procedure (arity 0 0 #t))
      (gtk-drag-check-threshold
        procedure
        (arity 0 0 #t))
@@ -2218,20 +1862,11 @@
      (gtk-drag-dest-add-uri-targets
        procedure
        (arity 0 0 #t))
-     (gtk-drag-dest-find-target
-       procedure
-       (arity 0 0 #t))
-     (gtk-drag-dest-get-target-list
-       procedure
-       (arity 0 0 #t))
      (gtk-drag-dest-get-track-motion
        procedure
        (arity 0 0 #t))
      (gtk-drag-dest-set procedure (arity 4 0 #f))
      (gtk-drag-dest-set-proxy
-       procedure
-       (arity 0 0 #t))
-     (gtk-drag-dest-set-target-list
        procedure
        (arity 0 0 #t))
      (gtk-drag-dest-set-track-motion
@@ -2269,10 +1904,6 @@
      (gtk-drag-source-add-uri-targets
        procedure
        (arity 0 0 #t))
-     (gtk-drag-source-get-target-list
-       procedure
-       (arity 0 0 #t))
-     (gtk-drag-source-set procedure (arity 0 0 #t))
      (gtk-drag-source-set-icon
        procedure
        (arity 3 1 #f))
@@ -2283,9 +1914,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-drag-source-set-icon-stock
-       procedure
-       (arity 0 0 #t))
-     (gtk-drag-source-set-target-list
        procedure
        (arity 0 0 #t))
      (gtk-drag-source-unset procedure (arity 0 0 #t))
@@ -2374,9 +2002,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-entry-completion-set-inline-completion
-       procedure
-       (arity 0 0 #t))
-     (gtk-entry-completion-set-match-func
        procedure
        (arity 0 0 #t))
      (gtk-entry-completion-set-minimum-key-length
@@ -2694,9 +2319,6 @@
      (gtk-file-chooser-widget-new-with-backend
        procedure
        (arity 0 0 #t))
-     (gtk-file-filter-add-custom
-       procedure
-       (arity 0 0 #t))
      (gtk-file-filter-add-mime-type
        procedure
        (arity 0 0 #t))
@@ -2706,7 +2328,6 @@
      (gtk-file-filter-add-pixbuf-formats
        procedure
        (arity 0 0 #t))
-     (gtk-file-filter-filter procedure (arity 0 0 #t))
      (gtk-file-filter-get-name
        procedure
        (arity 0 0 #t))
@@ -2724,9 +2345,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-file-selection-get-select-multiple
-       procedure
-       (arity 0 0 #t))
-     (gtk-file-selection-get-selections
        procedure
        (arity 0 0 #t))
      (gtk-file-selection-hide-fileop-buttons
@@ -2847,17 +2465,12 @@
        procedure
        (arity 0 0 #t))
      (gtk-gamma-curve-new procedure (arity 0 0 #t))
-     (gtk-gc-get procedure (arity 0 0 #t))
-     (gtk-get-current-event-state
-       procedure
-       (arity 0 0 #t))
      (gtk-get-current-event-time
        procedure
        (arity 0 0 #t))
      (gtk-get-default-language
        procedure
        (arity 0 0 #t))
-     (gtk-get-option-group procedure (arity 0 0 #t))
      (gtk-grab-add procedure (arity 0 0 #t))
      (gtk-grab-get-current procedure (arity 0 0 #t))
      (gtk-grab-remove procedure (arity 0 0 #t))
@@ -2904,35 +2517,10 @@
      (gtk-icon-factory-remove-default
        procedure
        (arity 0 0 #t))
-     (gtk-icon-info-get-attach-points
-       procedure
-       (arity 2 0 #f))
-     (gtk-icon-info-get-base-size
-       procedure
-       (arity 0 0 #t))
-     (gtk-icon-info-get-builtin-pixbuf
-       procedure
-       (arity 0 0 #t))
-     (gtk-icon-info-get-display-name
-       procedure
-       (arity 0 0 #t))
-     (gtk-icon-info-get-embedded-rect
-       procedure
-       (arity 0 0 #t))
-     (gtk-icon-info-get-filename
-       procedure
-       (arity 0 0 #t))
-     (gtk-icon-info-load-icon
-       procedure
-       (arity 1 0 #f))
-     (gtk-icon-info-set-raw-coordinates
-       procedure
-       (arity 0 0 #t))
      (gtk-icon-set-add-source
        procedure
        (arity 0 0 #t))
      (gtk-icon-set-copy procedure (arity 0 0 #t))
-     (gtk-icon-set-get-sizes procedure (arity 2 0 #f))
      (gtk-icon-set-new procedure (arity 0 0 #t))
      (gtk-icon-set-new-from-pixbuf
        procedure
@@ -3035,9 +2623,6 @@
      (gtk-icon-theme-load-icon
        procedure
        (arity 4 0 #f))
-     (gtk-icon-theme-lookup-icon
-       procedure
-       (arity 0 0 #t))
      (gtk-icon-theme-new procedure (arity 0 0 #t))
      (gtk-icon-theme-prepend-search-path
        procedure
@@ -3054,28 +2639,10 @@
      (gtk-icon-view-create-drag-icon
        procedure
        (arity 0 0 #t))
-     (gtk-icon-view-enable-model-drag-dest
-       procedure
-       (arity 0 0 #t))
-     (gtk-icon-view-enable-model-drag-source
-       procedure
-       (arity 0 0 #t))
      (gtk-icon-view-get-column-spacing
        procedure
        (arity 0 0 #t))
      (gtk-icon-view-get-columns
-       procedure
-       (arity 0 0 #t))
-     (gtk-icon-view-get-cursor
-       procedure
-       (arity 0 0 #t))
-     (gtk-icon-view-get-dest-item-at-pos
-       procedure
-       (arity 0 0 #t))
-     (gtk-icon-view-get-drag-dest-item
-       procedure
-       (arity 0 0 #t))
-     (gtk-icon-view-get-item-at-pos
        procedure
        (arity 0 0 #t))
      (gtk-icon-view-get-item-width
@@ -3115,9 +2682,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-icon-view-get-text-column
-       procedure
-       (arity 0 0 #t))
-     (gtk-icon-view-get-visible-range
        procedure
        (arity 0 0 #t))
      (gtk-icon-view-item-activated
@@ -3208,9 +2772,6 @@
      (gtk-im-context-focus-out
        procedure
        (arity 0 0 #t))
-     (gtk-im-context-get-preedit-string
-       procedure
-       (arity 2 0 #f))
      (gtk-im-context-get-surrounding
        procedure
        (arity 1 0 #f))
@@ -3243,17 +2804,10 @@
      (gtk-image-get-animation
        procedure
        (arity 0 0 #t))
-     (gtk-image-get-icon-name
-       procedure
-       (arity 0 0 #t))
-     (gtk-image-get-icon-set procedure (arity 0 0 #t))
-     (gtk-image-get-image procedure (arity 0 0 #t))
      (gtk-image-get-pixbuf procedure (arity 0 0 #t))
      (gtk-image-get-pixel-size
        procedure
        (arity 0 0 #t))
-     (gtk-image-get-pixmap procedure (arity 0 0 #t))
-     (gtk-image-get-stock procedure (arity 2 0 #f))
      (gtk-image-get-storage-type
        procedure
        (arity 0 0 #t))
@@ -3467,12 +3021,6 @@
      (gtk-link-button-set-uri
        procedure
        (arity 0 0 #t))
-     (gtk-list-item-deselect procedure (arity 0 0 #t))
-     (gtk-list-item-new procedure (arity 0 0 #t))
-     (gtk-list-item-new-with-label
-       procedure
-       (arity 0 0 #t))
-     (gtk-list-item-select procedure (arity 0 0 #t))
      (gtk-list-store-append procedure (arity 0 0 #t))
      (gtk-list-store-clear procedure (arity 0 0 #t))
      (gtk-list-store-insert procedure (arity 0 0 #t))
@@ -3492,7 +3040,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-list-store-new procedure (arity 0 0 #t))
-     (gtk-list-store-newv procedure (arity 0 0 #t))
      (gtk-list-store-prepend procedure (arity 0 0 #t))
      (gtk-list-store-remove procedure (arity 0 0 #t))
      (gtk-list-store-reorder procedure (arity 1 0 #f))
@@ -3507,9 +3054,6 @@
      (gtk-main-level procedure (arity 0 0 #t))
      (gtk-main-quit procedure (arity 0 0 #t))
      (gtk-menu-attach procedure (arity 0 0 #t))
-     (gtk-menu-attach-to-widget
-       procedure
-       (arity 0 0 #t))
      (gtk-menu-bar-get-child-pack-direction
        procedure
        (arity 0 0 #t))
@@ -3574,7 +3118,6 @@
        (arity 1 0 #f))
      (gtk-menu-new procedure (arity 0 0 #t))
      (gtk-menu-popdown procedure (arity 0 0 #t))
-     (gtk-menu-popup procedure (arity 0 0 #t))
      (gtk-menu-reorder-child procedure (arity 0 0 #t))
      (gtk-menu-reposition procedure (arity 0 0 #t))
      (gtk-menu-set-accel-group
@@ -3710,9 +3253,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-notebook-prev-page procedure (arity 0 0 #t))
-     (gtk-notebook-query-tab-label-packing
-       procedure
-       (arity 3 0 #f))
      (gtk-notebook-remove-page
        procedure
        (arity 0 0 #t))
@@ -3823,7 +3363,6 @@
      (gtk-paint-hline procedure (arity 0 0 #t))
      (gtk-paint-layout procedure (arity 0 0 #t))
      (gtk-paint-option procedure (arity 0 0 #t))
-     (gtk-paint-polygon procedure (arity 0 0 #t))
      (gtk-paint-resize-grip procedure (arity 0 0 #t))
      (gtk-paint-shadow procedure (arity 0 0 #t))
      (gtk-paint-shadow-gap procedure (arity 0 0 #t))
@@ -4048,9 +3587,6 @@
      (gtk-print-settings-get-output-bin
        procedure
        (arity 0 0 #t))
-     (gtk-print-settings-get-page-ranges
-       procedure
-       (arity 1 0 #f))
      (gtk-print-settings-get-page-set
        procedure
        (arity 0 0 #t))
@@ -4061,9 +3597,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-print-settings-get-paper-width
-       procedure
-       (arity 0 0 #t))
-     (gtk-print-settings-get-print-pages
        procedure
        (arity 0 0 #t))
      (gtk-print-settings-get-printer
@@ -4131,9 +3664,6 @@
      (gtk-print-settings-set-output-bin
        procedure
        (arity 0 0 #t))
-     (gtk-print-settings-set-page-ranges
-       procedure
-       (arity 0 0 #t))
      (gtk-print-settings-set-page-set
        procedure
        (arity 0 0 #t))
@@ -4144,9 +3674,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-print-settings-set-paper-width
-       procedure
-       (arity 0 0 #t))
-     (gtk-print-settings-set-print-pages
        procedure
        (arity 0 0 #t))
      (gtk-print-settings-set-printer
@@ -4318,12 +3845,6 @@
      (gtk-rc-find-module-in-path
        procedure
        (arity 0 0 #t))
-     (gtk-rc-find-pixmap-in-path
-       procedure
-       (arity 0 0 #t))
-     (gtk-rc-get-default-files
-       procedure
-       (arity 0 0 #t))
      (gtk-rc-get-im-module-file
        procedure
        (arity 0 0 #t))
@@ -4337,9 +3858,6 @@
        (arity 4 0 #f))
      (gtk-rc-get-theme-dir procedure (arity 0 0 #t))
      (gtk-rc-parse procedure (arity 0 0 #t))
-     (gtk-rc-parse-color procedure (arity 0 0 #t))
-     (gtk-rc-parse-priority procedure (arity 0 0 #t))
-     (gtk-rc-parse-state procedure (arity 0 0 #t))
      (gtk-rc-parse-string procedure (arity 0 0 #t))
      (gtk-rc-property-parse-border
        procedure
@@ -4361,7 +3879,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-rc-reset-styles procedure (arity 0 0 #t))
-     (gtk-rc-scanner-new procedure (arity 0 0 #t))
      (gtk-rc-set-default-files
        procedure
        (arity 0 0 #f))
@@ -4412,9 +3929,6 @@
      (gtk-recent-chooser-get-sort-type
        procedure
        (arity 0 0 #t))
-     (gtk-recent-chooser-get-uris
-       procedure
-       (arity 1 0 #f))
      (gtk-recent-chooser-list-filters
        procedure
        (arity 1 0 #f))
@@ -4469,9 +3983,6 @@
      (gtk-recent-chooser-set-show-tips
        procedure
        (arity 0 0 #t))
-     (gtk-recent-chooser-set-sort-func
-       procedure
-       (arity 0 0 #t))
      (gtk-recent-chooser-set-sort-type
        procedure
        (arity 0 0 #t))
@@ -4493,9 +4004,6 @@
      (gtk-recent-filter-add-application
        procedure
        (arity 0 0 #t))
-     (gtk-recent-filter-add-custom
-       procedure
-       (arity 0 0 #t))
      (gtk-recent-filter-add-group
        procedure
        (arity 0 0 #t))
@@ -4506,9 +4014,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-recent-filter-add-pixbuf-formats
-       procedure
-       (arity 0 0 #t))
-     (gtk-recent-filter-filter
        procedure
        (arity 0 0 #t))
      (gtk-recent-filter-get-name
@@ -4651,9 +4156,6 @@
      (gtk-scrolled-window-get-placement
        procedure
        (arity 0 0 #t))
-     (gtk-scrolled-window-get-policy
-       procedure
-       (arity 0 0 #t))
      (gtk-scrolled-window-get-shadow-type
        procedure
        (arity 0 0 #t))
@@ -4687,9 +4189,6 @@
      (gtk-selection-add-target
        procedure
        (arity 0 0 #t))
-     (gtk-selection-add-targets
-       procedure
-       (arity 0 0 #t))
      (gtk-selection-clear-targets
        procedure
        (arity 0 0 #t))
@@ -4700,13 +4199,6 @@
      (gtk-selection-data-get-pixbuf
        procedure
        (arity 0 0 #t))
-     (gtk-selection-data-get-targets
-       procedure
-       (arity 2 0 #f))
-     (gtk-selection-data-get-text
-       procedure
-       (arity 0 0 #t))
-     (gtk-selection-data-set procedure (arity 0 0 #t))
      (gtk-selection-data-set-pixbuf
        procedure
        (arity 0 0 #t))
@@ -4755,16 +4247,10 @@
      (gtk-settings-install-property
        procedure
        (arity 0 0 #t))
-     (gtk-settings-install-property-parser
-       procedure
-       (arity 0 0 #t))
      (gtk-settings-set-double-property
        procedure
        (arity 0 0 #t))
      (gtk-settings-set-long-property
-       procedure
-       (arity 0 0 #t))
-     (gtk-settings-set-property-value
        procedure
        (arity 0 0 #t))
      (gtk-settings-set-string-property
@@ -4861,9 +4347,6 @@
      (gtk-status-icon-get-blinking
        procedure
        (arity 0 0 #t))
-     (gtk-status-icon-get-geometry
-       procedure
-       (arity 0 0 #t))
      (gtk-status-icon-get-icon-name
        procedure
        (arity 0 0 #t))
@@ -4898,9 +4381,6 @@
      (gtk-status-icon-new-from-stock
        procedure
        (arity 0 0 #t))
-     (gtk-status-icon-position-menu
-       procedure
-       (arity 2 0 #f))
      (gtk-status-icon-set-blinking
        procedure
        (arity 0 0 #t))
@@ -4940,9 +4420,6 @@
      (gtk-stock-item-copy procedure (arity 0 0 #t))
      (gtk-stock-list-ids procedure (arity 0 0 #f))
      (gtk-stock-lookup procedure (arity 0 0 #t))
-     (gtk-stock-set-translate-func
-       procedure
-       (arity 0 0 #t))
      (gtk-style-apply-default-background
        procedure
        (arity 0 0 #t))
@@ -4998,21 +4475,6 @@
      (gtk-table-set-row-spacings
        procedure
        (arity 0 0 #t))
-     (gtk-target-table-new-from-list
-       procedure
-       (arity 1 0 #f))
-     (gtk-targets-include-image
-       procedure
-       (arity 0 0 #t))
-     (gtk-targets-include-rich-text
-       procedure
-       (arity 0 0 #t))
-     (gtk-targets-include-text
-       procedure
-       (arity 0 0 #t))
-     (gtk-targets-include-uri
-       procedure
-       (arity 0 0 #t))
      (gtk-tearoff-menu-item-new
        procedure
        (arity 0 0 #t))
@@ -5065,9 +4527,6 @@
      (gtk-text-buffer-delete-selection
        procedure
        (arity 0 0 #t))
-     (gtk-text-buffer-deserialize
-       procedure
-       (arity 6 0 #f))
      (gtk-text-buffer-deserialize-get-can-create-tags
        procedure
        (arity 0 0 #t))
@@ -5083,12 +4542,6 @@
      (gtk-text-buffer-get-char-count
        procedure
        (arity 0 0 #t))
-     (gtk-text-buffer-get-copy-target-list
-       procedure
-       (arity 0 0 #t))
-     (gtk-text-buffer-get-deserialize-formats
-       procedure
-       (arity 1 0 #f))
      (gtk-text-buffer-get-end-iter
        procedure
        (arity 0 0 #t))
@@ -5125,18 +4578,12 @@
      (gtk-text-buffer-get-modified
        procedure
        (arity 0 0 #t))
-     (gtk-text-buffer-get-paste-target-list
-       procedure
-       (arity 0 0 #t))
      (gtk-text-buffer-get-selection-bound
        procedure
        (arity 0 0 #t))
      (gtk-text-buffer-get-selection-bounds
        procedure
        (arity 0 0 #t))
-     (gtk-text-buffer-get-serialize-formats
-       procedure
-       (arity 1 0 #f))
      (gtk-text-buffer-get-slice
        procedure
        (arity 3 1 #f))
@@ -5190,13 +4637,7 @@
      (gtk-text-buffer-place-cursor
        procedure
        (arity 0 0 #t))
-     (gtk-text-buffer-register-deserialize-format
-       procedure
-       (arity 0 0 #t))
      (gtk-text-buffer-register-deserialize-tagset
-       procedure
-       (arity 0 0 #t))
-     (gtk-text-buffer-register-serialize-format
        procedure
        (arity 0 0 #t))
      (gtk-text-buffer-register-serialize-tagset
@@ -5217,19 +4658,10 @@
      (gtk-text-buffer-select-range
        procedure
        (arity 0 0 #t))
-     (gtk-text-buffer-serialize
-       procedure
-       (arity 5 0 #f))
      (gtk-text-buffer-set-modified
        procedure
        (arity 0 0 #t))
      (gtk-text-buffer-set-text
-       procedure
-       (arity 0 0 #t))
-     (gtk-text-buffer-unregister-deserialize-format
-       procedure
-       (arity 0 0 #t))
-     (gtk-text-buffer-unregister-serialize-format
        procedure
        (arity 0 0 #t))
      (gtk-text-child-anchor-get-deleted
@@ -5251,9 +4683,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-text-iter-backward-cursor-positions
-       procedure
-       (arity 0 0 #t))
-     (gtk-text-iter-backward-find-char
        procedure
        (arity 0 0 #t))
      (gtk-text-iter-backward-line
@@ -5328,9 +4757,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-text-iter-forward-cursor-positions
-       procedure
-       (arity 0 0 #t))
-     (gtk-text-iter-forward-find-char
        procedure
        (arity 0 0 #t))
      (gtk-text-iter-forward-line
@@ -5885,9 +5311,6 @@
      (gtk-tooltips-force-window
        procedure
        (arity 0 0 #t))
-     (gtk-tooltips-get-info-from-tip-window
-       procedure
-       (arity 0 0 #t))
      (gtk-tooltips-new procedure (arity 0 0 #t))
      (gtk-tooltips-set-tip procedure (arity 3 1 #f))
      (gtk-tree-drag-dest-drag-data-received
@@ -5903,9 +5326,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-tree-drag-source-row-draggable
-       procedure
-       (arity 0 0 #t))
-     (gtk-tree-get-row-drag-data
        procedure
        (arity 0 0 #t))
      (gtk-tree-iter-copy procedure (arity 0 0 #t))
@@ -5933,13 +5353,7 @@
      (gtk-tree-model-filter-refilter
        procedure
        (arity 0 0 #t))
-     (gtk-tree-model-filter-set-modify-func
-       procedure
-       (arity 0 0 #t))
      (gtk-tree-model-filter-set-visible-column
-       procedure
-       (arity 0 0 #t))
-     (gtk-tree-model-filter-set-visible-func
        procedure
        (arity 0 0 #t))
      (gtk-tree-model-get-column-type
@@ -6075,13 +5489,7 @@
      (gtk-tree-selection-get-selected
        procedure
        (arity 0 0 #t))
-     (gtk-tree-selection-get-selected-rows
-       procedure
-       (arity 2 0 #f))
      (gtk-tree-selection-get-tree-view
-       procedure
-       (arity 0 0 #t))
-     (gtk-tree-selection-get-user-data
        procedure
        (arity 0 0 #t))
      (gtk-tree-selection-iter-is-selected
@@ -6105,9 +5513,6 @@
      (gtk-tree-selection-set-mode
        procedure
        (arity 0 0 #t))
-     (gtk-tree-selection-set-select-function
-       procedure
-       (arity 0 0 #t))
      (gtk-tree-selection-unselect-all
        procedure
        (arity 0 0 #t))
@@ -6123,19 +5528,10 @@
      (gtk-tree-set-row-drag-data
        procedure
        (arity 0 0 #t))
-     (gtk-tree-sortable-get-sort-column-id
-       procedure
-       (arity 2 0 #f))
      (gtk-tree-sortable-has-default-sort-func
        procedure
        (arity 0 0 #t))
-     (gtk-tree-sortable-set-default-sort-func
-       procedure
-       (arity 0 0 #t))
      (gtk-tree-sortable-set-sort-column-id
-       procedure
-       (arity 0 0 #t))
-     (gtk-tree-sortable-set-sort-func
        procedure
        (arity 0 0 #t))
      (gtk-tree-sortable-sort-column-changed
@@ -6166,7 +5562,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-tree-store-new procedure (arity 0 0 #t))
-     (gtk-tree-store-newv procedure (arity 0 0 #t))
      (gtk-tree-store-prepend procedure (arity 0 0 #t))
      (gtk-tree-store-remove procedure (arity 0 0 #t))
      (gtk-tree-store-reorder procedure (arity 2 0 #f))
@@ -6330,12 +5725,6 @@
      (gtk-tree-view-create-row-drag-icon
        procedure
        (arity 0 0 #t))
-     (gtk-tree-view-enable-model-drag-dest
-       procedure
-       (arity 0 0 #t))
-     (gtk-tree-view-enable-model-drag-source
-       procedure
-       (arity 0 0 #t))
      (gtk-tree-view-expand-all
        procedure
        (arity 0 0 #t))
@@ -6345,13 +5734,7 @@
      (gtk-tree-view-expand-to-path
        procedure
        (arity 0 0 #t))
-     (gtk-tree-view-get-background-area
-       procedure
-       (arity 0 0 #t))
      (gtk-tree-view-get-bin-window
-       procedure
-       (arity 0 0 #t))
-     (gtk-tree-view-get-cell-area
        procedure
        (arity 0 0 #t))
      (gtk-tree-view-get-column
@@ -6360,15 +5743,6 @@
      (gtk-tree-view-get-columns
        procedure
        (arity 1 0 #f))
-     (gtk-tree-view-get-cursor
-       procedure
-       (arity 0 0 #t))
-     (gtk-tree-view-get-dest-row-at-pos
-       procedure
-       (arity 0 0 #t))
-     (gtk-tree-view-get-drag-dest-row
-       procedure
-       (arity 0 0 #t))
      (gtk-tree-view-get-enable-search
        procedure
        (arity 0 0 #t))
@@ -6402,9 +5776,6 @@
      (gtk-tree-view-get-model
        procedure
        (arity 0 0 #t))
-     (gtk-tree-view-get-path-at-pos
-       procedure
-       (arity 5 0 #f))
      (gtk-tree-view-get-reorderable
        procedure
        (arity 0 0 #t))
@@ -6420,28 +5791,13 @@
      (gtk-tree-view-get-search-entry
        procedure
        (arity 0 0 #t))
-     (gtk-tree-view-get-search-equal-func
-       procedure
-       (arity 0 0 #t))
      (gtk-tree-view-get-selection
        procedure
        (arity 0 0 #t))
      (gtk-tree-view-get-vadjustment
        procedure
        (arity 0 0 #t))
-     (gtk-tree-view-get-visible-range
-       procedure
-       (arity 0 0 #t))
-     (gtk-tree-view-get-visible-rect
-       procedure
-       (arity 0 0 #t))
      (gtk-tree-view-insert-column
-       procedure
-       (arity 0 0 #t))
-     (gtk-tree-view-insert-column-with-data-func
-       procedure
-       (arity 0 0 #t))
-     (gtk-tree-view-map-expanded-rows
        procedure
        (arity 0 0 #t))
      (gtk-tree-view-move-column-after
@@ -6466,16 +5822,10 @@
      (gtk-tree-view-scroll-to-point
        procedure
        (arity 0 0 #t))
-     (gtk-tree-view-set-column-drag-function
-       procedure
-       (arity 0 0 #t))
      (gtk-tree-view-set-cursor
        procedure
        (arity 2 2 #f))
      (gtk-tree-view-set-cursor-on-cell
-       procedure
-       (arity 0 0 #t))
-     (gtk-tree-view-set-destroy-count-func
        procedure
        (arity 0 0 #t))
      (gtk-tree-view-set-drag-dest-row
@@ -6529,9 +5879,6 @@
      (gtk-tree-view-set-search-entry
        procedure
        (arity 0 0 #t))
-     (gtk-tree-view-set-search-equal-func
-       procedure
-       (arity 0 0 #t))
      (gtk-tree-view-set-vadjustment
        procedure
        (arity 0 0 #t))
@@ -6548,14 +5895,10 @@
        procedure
        (arity 3 0 #f))
      (gtk-true procedure (arity 0 0 #t))
-     (gtk-type-class procedure (arity 1 0 #f))
      (gtk-ui-manager-add-ui procedure (arity 0 0 #t))
      (gtk-ui-manager-add-ui-from-file
        procedure
        (arity 2 0 #f))
-     (gtk-ui-manager-add-ui-from-string
-       procedure
-       (arity 3 0 #f))
      (gtk-ui-manager-ensure-update
        procedure
        (arity 0 0 #t))
@@ -6641,18 +5984,6 @@
      (gtk-widget-child-notify
        procedure
        (arity 0 0 #t))
-     (gtk-widget-class-find-style-property
-       procedure
-       (arity 0 0 #t))
-     (gtk-widget-class-install-style-property
-       procedure
-       (arity 0 0 #t))
-     (gtk-widget-class-install-style-property-parser
-       procedure
-       (arity 0 0 #t))
-     (gtk-widget-class-list-style-properties
-       procedure
-       (arity 1 0 #f))
      (gtk-widget-class-path procedure (arity 1 0 #f))
      (gtk-widget-create-pango-context
        procedure
@@ -6757,7 +6088,6 @@
      (gtk-widget-input-shape-combine-mask
        procedure
        (arity 0 0 #t))
-     (gtk-widget-intersect procedure (arity 0 0 #t))
      (gtk-widget-is-ancestor procedure (arity 0 0 #t))
      (gtk-widget-is-composited
        procedure
@@ -7066,9 +6396,6 @@
        procedure
        (arity 0 0 #t))
      (gtk-window-set-frame-dimensions
-       procedure
-       (arity 0 0 #t))
-     (gtk-window-set-geometry-hints
        procedure
        (arity 0 0 #t))
      (gtk-window-set-gravity procedure (arity 0 0 #t))

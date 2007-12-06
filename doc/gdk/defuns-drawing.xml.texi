@@ -4,57 +4,9 @@
 @deftp Class <gdk-drawable>
 Derives from @code{<gobject>}.
 
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
-
-@deffn Function gdk-drawable-set-data  (self@tie{}@code{<gdk-drawable>}) (key@tie{}@code{mchars}) (data@tie{}@code{<gpointer>}) (destroy_func@tie{}@code{<g-destroy-notify>})
-@deffnx Method set-data
-@samp{gdk_drawable_set_data} is deprecated and should not be used in
-newly-written code.
-
-This function is equivalent to @code{g-object-set-data}, the @code{<gobject>}
-variant should be used instead.
-
-@table @var
-@item drawable
-a @code{<gdk-drawable>}
-
-@item key
-name to store the data under
-
-@item data
-arbitrary data
-
-@item destroy-func
-function to free @var{data}, or @samp{@code{#f}}
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-drawable-get-data  (self@tie{}@code{<gdk-drawable>}) (key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gpointer>})
-@deffnx Method get-data
-@samp{gdk_drawable_get_data} is deprecated and should not be used in
-newly-written code.
-
-Equivalent to @code{g-object-get-data}; the @code{<gobject>} variant should be
-used instead.
-
-@table @var
-@item drawable
-a @code{<gdk-drawable>}
-
-@item key
-name the data was stored under
-
-@item ret
-the data stored at @var{key}
-
-@end table
-
-@end deffn
 
 @deffn Function gdk-drawable-get-display  (self@tie{}@code{<gdk-drawable>}) @result{}@tie{} (ret@tie{}@code{<gdk-display>})
 @deffnx Method get-display
@@ -90,7 +42,7 @@ Since 2.2
 
 @end deffn
 
-@deffn Function gdk-drawable-get-visual  (self@tie{}@code{<gdk-drawable>}) @result{}@tie{} (ret@tie{}@code{<gdk-visual*>})
+@deffn Function gdk-drawable-get-visual  (self@tie{}@code{<gdk-drawable>}) @result{}@tie{} (ret@tie{}@code{<gdk-visual>})
 @deffnx Method get-visual
 Gets the @code{<gdk-visual>} describing the pixel format of @var{drawable}.
 
@@ -183,7 +135,7 @@ location to store drawable's height, or @samp{@code{#f}}
 
 @end deffn
 
-@deffn Function gdk-drawable-get-clip-region  (self@tie{}@code{<gdk-drawable>}) @result{}@tie{} (ret@tie{}@code{<gdk-region*>})
+@deffn Function gdk-drawable-get-clip-region  (self@tie{}@code{<gdk-drawable>}) @result{}@tie{} (ret@tie{}@code{<gdk-region>})
 @deffnx Method get-clip-region
 Computes the region of a drawable that potentially can be written to by drawing
 primitives. This region will not take into account the clip region for the GC,
@@ -203,7 +155,7 @@ you are done.
 
 @end deffn
 
-@deffn Function gdk-drawable-get-visible-region  (self@tie{}@code{<gdk-drawable>}) @result{}@tie{} (ret@tie{}@code{<gdk-region*>})
+@deffn Function gdk-drawable-get-visible-region  (self@tie{}@code{<gdk-drawable>}) @result{}@tie{} (ret@tie{}@code{<gdk-region>})
 @deffnx Method get-visible-region
 Computes the region of a drawable that is potentially visible. This does not
 necessarily take into account if the window is obscured by other windows, but no
@@ -242,27 +194,6 @@ the y coordinate of the point.
 
 @end deffn
 
-@deffn Function gdk-draw-points  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (points@tie{}@code{<gdk-point*>}) (npoints@tie{}@code{int})
-Draws a number of points, using the foreground color and other attributes of the
-@code{<gdk-gc>}.
-
-@table @var
-@item drawable
-a @code{<gdk-drawable>} (a @code{<gdk-window>} or a @code{<gdk-pixmap>}).
-
-@item gc
-a @code{<gdk-gc>}.
-
-@item points
-an array of @code{<gdk-point>} structures.
-
-@item npoints
-the number of points to be drawn.
-
-@end table
-
-@end deffn
-
 @deffn Function gdk-draw-line  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (x1_@tie{}@code{int}) (y1_@tie{}@code{int}) (x2_@tie{}@code{int}) (y2_@tie{}@code{int})
 Draws a line, using the foreground color and other attributes of the
 @code{<gdk-gc>}.
@@ -285,28 +216,6 @@ the x coordinate of the end point.
 
 @item y2
 the y coordinate of the end point.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-draw-lines  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (points@tie{}@code{<gdk-point*>}) (npoints@tie{}@code{int})
-Draws a series of lines connecting the given points. The way in which joins
-between lines are draw is determined by the @code{<gdk-cap-style>} value in the
-@code{<gdk-gc>}. This can be set with @code{gdk-gc-set-line-attributes}.
-
-@table @var
-@item drawable
-a @code{<gdk-drawable>} (a @code{<gdk-window>} or a @code{<gdk-pixmap>}).
-
-@item gc
-a @code{<gdk-gc>}.
-
-@item points
-an array of @code{<gdk-point>} structures specifying the endpoints of the
-
-@item npoints
-the size of the @var{points} array.
 
 @end table
 
@@ -365,27 +274,6 @@ Y offset for dither.
 @end table
 
 Since 2.2
-
-@end deffn
-
-@deffn Function gdk-draw-segments  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (segs@tie{}@code{<gdk-segment*>}) (nsegs@tie{}@code{int})
-Draws a number of unconnected lines.
-
-@table @var
-@item drawable
-a @code{<gdk-drawable>} (a @code{<gdk-window>} or a @code{<gdk-pixmap>}).
-
-@item gc
-a @code{<gdk-gc>}.
-
-@item segs
-an array of @code{<gdk-segment>} structures specifying the start and end points
-of the lines to be drawn.
-
-@item nsegs
-the number of line segments to draw, i.e. the size of the @var{segs} array.
-
-@end table
 
 @end deffn
 
@@ -459,31 +347,6 @@ counter-clockwise, in 1/64ths of a degree.
 
 @item angle2
 the end angle of the arc, relative to @var{angle1}, in 1/64ths of a degree.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-draw-polygon  (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (filled@tie{}@code{bool}) (points@tie{}@code{<gdk-point*>}) (npoints@tie{}@code{int})
-Draws an outlined or filled polygon.
-
-@table @var
-@item drawable
-a @code{<gdk-drawable>} (a @code{<gdk-window>} or a @code{<gdk-pixmap>}).
-
-@item gc
-a @code{<gdk-gc>}.
-
-@item filled
-@samp{@code{#t}} if the polygon should be filled. The polygon is closed
-automatically, connecting the last point to the first point if necessary.
-
-@item points
-an array of @code{<gdk-point>} structures specifying the points making up the
-polygon.
-
-@item npoints
-the number of points.
 
 @end table
 
@@ -715,72 +578,6 @@ the y coordinate of the baseline of the text.
 
 @item string
 the string of characters to draw.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-draw-text  (drawable@tie{}@code{<gdk-drawable>}) (font@tie{}@code{<gdk-font>}) (gc@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (text@tie{}@code{mchars}) (text_length@tie{}@code{int})
-@samp{gdk_draw_text} is deprecated and should not be used in newly-written code.
-Use @code{gdk-draw-layout} instead.
-
-Draws a number of characters in the given font or fontset.
-
-@table @var
-@item drawable
-a @code{<gdk-drawable>} (a @code{<gdk-window>} or a @code{<gdk-pixmap>}).
-
-@item font
-a @code{<gdk-font>}.
-
-@item gc
-a @code{<gdk-gc>}.
-
-@item x
-the x coordinate of the left edge of the text.
-
-@item y
-the y coordinate of the baseline of the text.
-
-@item text
-the characters to draw.
-
-@item text-length
-the number of characters of @var{text} to draw.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-draw-text-wc  (drawable@tie{}@code{<gdk-drawable>}) (font@tie{}@code{<gdk-font>}) (gc@tie{}@code{<gdk-gc>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (text@tie{}@code{<gdk-wchar*>}) (text_length@tie{}@code{int})
-@samp{gdk_draw_text_wc} is deprecated and should not be used in newly-written
-code. Use @code{gdk-draw-layout} instead.
-
-Draws a number of wide characters using the given font of fontset. If the font
-is a 1-byte font, the string is converted into 1-byte characters (discarding the
-high bytes) before output.
-
-@table @var
-@item drawable
-a @code{<gdk-drawable>} (a @code{<gdk-window>} or a @code{<gdk-pixmap>}).
-
-@item font
-a @code{<gdk-font>}.
-
-@item gc
-a @code{<gdk-gc>}.
-
-@item x
-the x coordinate of the left edge of the text.
-
-@item y
-the y coordinate of the baseline of the text.
-
-@item text
-the wide characters to draw.
-
-@item text-length
-the number of characters to draw.
 
 @end table
 

@@ -11,6 +11,7 @@ docbook_xml_files = $(wildcard $(docbook_xml_wildcard))
 GUILE_FLAGS=-l munge-parsed-ents --debug
 
 wrapset_stem = gdk
+GTK_DOC_COVERAGE_MODULES = (gnome gw $(wrapset_stem))
 
 EXTRA_DIST = overrides.texi
 

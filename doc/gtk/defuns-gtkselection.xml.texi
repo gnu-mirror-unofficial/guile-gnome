@@ -109,30 +109,6 @@ process request. (e.g., there was already a request in process for this widget).
 
 @end deffn
 
-@deffn Function gtk-selection-data-set  (self@tie{}@code{<gtk-selection-data>}) (type@tie{}@code{<gdk-atom>}) (format@tie{}@code{int}) (data@tie{}@code{<guchar*>}) (length@tie{}@code{int})
-Stores new data into a @code{<gtk-selection-data>} object. Should @emph{only} be
-called from a selection handler callback. Zero-terminates the stored data.
-
-@table @var
-@item selection-data
-a pointer to a @code{<gtk-selection-data>} structure.
-
-@item type
-the type of selection data
-
-@item format
-format (number of bits in a unit)
-
-@item data
-pointer to the data (will be copied)
-
-@item length
-length of the data
-
-@end table
-
-@end deffn
-
 @deffn Function gtk-selection-data-set-text  (self@tie{}@code{<gtk-selection-data>}) (str@tie{}@code{mchars}) (len@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
 Sets the contents of the selection from a UTF-8 encoded string. The string is
 converted to the form determined by @var{selection-data->target}.
@@ -150,23 +126,6 @@ the length of @var{str}, or -1 if @var{str} is nul-terminated.
 @item ret
 @samp{@code{#t}} if the selection was successfully set, otherwise
 @samp{@code{#f}}.
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-selection-data-get-text  (self@tie{}@code{<gtk-selection-data>}) @result{}@tie{} (ret@tie{}@code{<guchar*>})
-Gets the contents of the selection data as a UTF-8 string.
-
-@table @var
-@item selection-data
-a @code{<gtk-selection-data>}
-
-@item ret
-if the selection data contained a recognized text type and it could be converted
-to UTF-8, a newly allocated string containing the converted text, otherwise
-@samp{@code{#f}}. If the result is non-@samp{@code{#f}} it must be freed with
-@code{g-free}.
 
 @end table
 
@@ -209,96 +168,6 @@ freed with @code{g-object-unref}.
 @end table
 
 Since 2.6
-
-@end deffn
-
-@deffn Function gtk-targets-include-image  (targets@tie{}@code{<gdk-atom*>}) (n_targets@tie{}@code{int}) (writable@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
-Determines if any of the targets in @var{targets} can be used to provide a
-@code{<gdk-pixbuf>}.
-
-@table @var
-@item targets
-an array of @code{<gdk-atom>}s
-
-@item n-targets
-the length of @var{targets}
-
-@item writable
-whether to accept only targets for which GTK+ knows how to convert a pixbuf into
-the format
-
-@item ret
-@samp{@code{#t}} if @var{targets} include a suitable target for images,
-otherwise @samp{@code{#f}}.
-
-@end table
-
-Since 2.10
-
-@end deffn
-
-@deffn Function gtk-targets-include-text  (targets@tie{}@code{<gdk-atom*>}) (n_targets@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
-Determines if any of the targets in @var{targets} can be used to provide text.
-
-@table @var
-@item targets
-an array of @code{<gdk-atom>}s
-
-@item n-targets
-the length of @var{targets}
-
-@item ret
-@samp{@code{#t}} if @var{targets} include a suitable target for text, otherwise
-@samp{@code{#f}}.
-
-@end table
-
-Since 2.10
-
-@end deffn
-
-@deffn Function gtk-targets-include-uri  (targets@tie{}@code{<gdk-atom*>}) (n_targets@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
-Determines if any of the targets in @var{targets} can be used to provide an uri
-list.
-
-@table @var
-@item targets
-an array of @code{<gdk-atom>}s
-
-@item n-targets
-the length of @var{targets}
-
-@item ret
-@samp{@code{#t}} if @var{targets} include a suitable target for uri lists,
-otherwise @samp{@code{#f}}.
-
-@end table
-
-Since 2.10
-
-@end deffn
-
-@deffn Function gtk-targets-include-rich-text  (targets@tie{}@code{<gdk-atom*>}) (n_targets@tie{}@code{int}) (buffer@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (ret@tie{}@code{bool})
-Determines if any of the targets in @var{targets} can be used to provide rich
-text.
-
-@table @var
-@item targets
-an array of @code{<gdk-atom>}s
-
-@item n-targets
-the length of @var{targets}
-
-@item buffer
-a @code{<gtk-text-buffer>}
-
-@item ret
-@samp{@code{#t}} if @var{targets} include a suitable target for rich text,
-otherwise @samp{@code{#f}}.
-
-@end table
-
-Since 2.10
 
 @end deffn
 

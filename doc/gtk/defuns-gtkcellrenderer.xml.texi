@@ -98,7 +98,7 @@ Since 2.6
 
 @end defop
 
-@deffn Function gtk-cell-renderer-render  (self@tie{}@code{<gtk-cell-renderer>}) (window@tie{}@code{<gdk-window*>}) (widget@tie{}@code{<gtk-widget>}) (background_area@tie{}@code{<gdk-rectangle>}) (cell_area@tie{}@code{<gdk-rectangle>}) (expose_area@tie{}@code{<gdk-rectangle>}) (flags@tie{}@code{<gtk-cell-renderer-state>})
+@deffn Function gtk-cell-renderer-render  (self@tie{}@code{<gtk-cell-renderer>}) (window@tie{}@code{<gdk-window>}) (widget@tie{}@code{<gtk-widget>}) (background_area@tie{}@code{<gdk-rectangle>}) (cell_area@tie{}@code{<gdk-rectangle>}) (expose_area@tie{}@code{<gdk-rectangle>}) (flags@tie{}@code{<gtk-cell-renderer-state>})
 @deffnx Method render
 Invokes the virtual render function of the @code{<gtk-cell-renderer>}. The three
 passed-in rectangles are areas of @var{window}. Most renderers will draw within

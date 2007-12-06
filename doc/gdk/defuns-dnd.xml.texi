@@ -4,8 +4,7 @@
 @deftp Class <gdk-drag-context>
 Derives from @code{<gobject>}.
 
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
 
@@ -86,74 +85,7 @@ the timestamp for this operation.
 
 @end deffn
 
-@deffn Function gdk-drag-find-window  (context@tie{}@code{<gdk-drag-context>}) (drag_window@tie{}@code{<gdk-window*>}) (x_root@tie{}@code{int}) (y_root@tie{}@code{int}) (dest_window@tie{}@code{<gdk-window**>}) (protocol@tie{}@code{<gdk-drag-protocol*>})
-Finds the destination window and DND protocol to use at the given pointer
-position.
-
-This function is called by the drag source to obtain the @var{dest-window} and
-@var{protocol} parameters for @code{gdk-drag-motion}.
-
-@table @var
-@item context
-a @code{<gdk-drag-context>}.
-
-@item drag-window
-a window which may be at the pointer position, but should be ignored, since it
-is put up by the drag source as an icon.
-
-@item x-root
-the x position of the pointer in root coordinates.
-
-@item y-root
-the y position of the pointer in root coordinates.
-
-@item dest-window
-location to store the destination window in.
-
-@item protocol
-location to store the DND protocol in.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-drag-find-window-for-screen  (context@tie{}@code{<gdk-drag-context>}) (drag_window@tie{}@code{<gdk-window*>}) (screen@tie{}@code{<gdk-screen>}) (x_root@tie{}@code{int}) (y_root@tie{}@code{int}) (dest_window@tie{}@code{<gdk-window**>}) (protocol@tie{}@code{<gdk-drag-protocol*>})
-Finds the destination window and DND protocol to use at the given pointer
-position.
-
-This function is called by the drag source to obtain the @var{dest-window} and
-@var{protocol} parameters for @code{gdk-drag-motion}.
-
-@table @var
-@item context
-a @code{<gdk-drag-context>}
-
-@item drag-window
-a window which may be at the pointer position, but should be ignored, since it
-is put up by the drag source as an icon.
-
-@item screen
-the screen where the destination window is sought.
-
-@item x-root
-the x position of the pointer in root coordinates.
-
-@item y-root
-the y position of the pointer in root coordinates.
-
-@item dest-window
-location to store the destination window in.
-
-@item protocol
-location to store the DND protocol in.
-
-@end table
-
-Since 2.2
-
-@end deffn
-
-@deffn Function gdk-drag-motion  (context@tie{}@code{<gdk-drag-context>}) (dest_window@tie{}@code{<gdk-window*>}) (protocol@tie{}@code{<gdk-drag-protocol>}) (x_root@tie{}@code{int}) (y_root@tie{}@code{int}) (suggested_action@tie{}@code{<gdk-drag-action>}) (possible_actions@tie{}@code{<gdk-drag-action>}) (time_@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gdk-drag-motion  (context@tie{}@code{<gdk-drag-context>}) (dest_window@tie{}@code{<gdk-window>}) (protocol@tie{}@code{<gdk-drag-protocol>}) (x_root@tie{}@code{int}) (y_root@tie{}@code{int}) (suggested_action@tie{}@code{<gdk-drag-action>}) (possible_actions@tie{}@code{<gdk-drag-action>}) (time_@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Updates the drag context when the pointer moves or the set of actions changes.
 
 This function is called by the drag source.
@@ -206,47 +138,6 @@ a @code{<gtk-drag-context>}.
 the timestamp for this operation.
 
 @end table
-
-@end deffn
-
-@deffn Function gdk-drag-get-protocol  (xid@tie{}@code{unsigned-int32}) (protocol@tie{}@code{<gdk-drag-protocol*>}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
-Finds out the DND protocol supported by a window.
-
-@table @var
-@item xid
-the X id of the destination window.
-
-@item protocol
-location where the supported DND protocol is returned.
-
-@item ret
-the X id of the window where the drop should happen. This may be @var{xid} or
-the X id of a proxy window, or None if @var{xid} doesn't support Drag and Drop.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-drag-get-protocol-for-display  (display@tie{}@code{<gdk-display>}) (xid@tie{}@code{unsigned-int32}) (protocol@tie{}@code{<gdk-drag-protocol*>}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
-Finds out the DND protocol supported by a window.
-
-@table @var
-@item display
-the @code{<gdk-display>} where the destination window resides
-
-@item xid
-the X id of the destination window.
-
-@item protocol
-location where the supported DND protocol is returned.
-
-@item ret
-the X id of the window where the drop should happen. This may be @var{xid} or
-the X id of a proxy window, or None if @var{xid} doesn't support Drag and Drop.
-
-@end table
-
-Since 2.2
 
 @end deffn
 

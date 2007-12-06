@@ -402,7 +402,7 @@ y position, in buffer coordinates
 
 @end deffn
 
-@deffn Function gtk-text-view-get-window  (self@tie{}@code{<gtk-text-view>}) (win@tie{}@code{<gtk-text-window-type>}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>})
+@deffn Function gtk-text-view-get-window  (self@tie{}@code{<gtk-text-view>}) (win@tie{}@code{<gtk-text-window-type>}) @result{}@tie{} (ret@tie{}@code{<gdk-window>})
 @deffnx Method get-window
 Retrieves the @code{<gdk-window>} corresponding to an area of the text view;
 possible windows include the overall widget window, child windows on the left,
@@ -424,7 +424,7 @@ a @code{<gdk-window>}, or @samp{@code{#f}}
 
 @end deffn
 
-@deffn Function gtk-text-view-get-window-type  (self@tie{}@code{<gtk-text-view>}) (window@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-window-type>})
+@deffn Function gtk-text-view-get-window-type  (self@tie{}@code{<gtk-text-view>}) (window@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-window-type>})
 @deffnx Method get-window-type
 Usually used to find out which window an event corresponds to. If you connect to
 an event signal on @var{text-view}, this function should be called on

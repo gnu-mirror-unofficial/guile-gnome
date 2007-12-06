@@ -1,41 +1,12 @@
 
 @c %start of fragment
 
-@deffn Function gdk-query-depths  (depths@tie{}@code{<gint**>}) @result{}@tie{} (count@tie{}@code{int})
-This function returns the available bit depths for the default screen. It's
-equivalent to listing the visuals (@code{gdk-list-visuals}) and then looking at
-the depth field in each visual, removing duplicates.
+@deftp Class <gdk-visual>
+Derives from @code{<gobject>}.
 
-The array returned by this function should not be freed.
+This class defines no properties, other than those defined by its superclasses.
 
-@table @var
-@item depths
-return location for available depths
-
-@item count
-return location for number of available depths
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-query-visual-types  (visual_types@tie{}@code{<gdk-visual-type**>}) @result{}@tie{} (count@tie{}@code{int})
-This function returns the available visual types for the default screen. It's
-equivalent to listing the visuals (@code{gdk-list-visuals}) and then looking at
-the type field in each visual, removing duplicates.
-
-The array returned by this function should not be freed.
-
-@table @var
-@item visual-types
-return location for the available visual types
-
-@item count
-return location for the number of available visual types
-
-@end table
-
-@end deffn
+@end deftp
 
 @deffn Function gdk-list-visuals  @result{}@tie{} (ret@tie{}@code{glist-of})
 Lists the available visuals for the default screen. (See
@@ -76,7 +47,7 @@ best visual type
 
 @end deffn
 
-@deffn Function gdk-visual-get-system  @result{}@tie{} (ret@tie{}@code{<gdk-visual*>})
+@deffn Function gdk-visual-get-system  @result{}@tie{} (ret@tie{}@code{<gdk-visual>})
 Get the system'sdefault visual for the default GDK screen. This is the visual
 for the root window of the display. The return value should not be freed.
 
@@ -88,7 +59,7 @@ system visual
 
 @end deffn
 
-@deffn Function gdk-visual-get-best  @result{}@tie{} (ret@tie{}@code{<gdk-visual*>})
+@deffn Function gdk-visual-get-best  @result{}@tie{} (ret@tie{}@code{<gdk-visual>})
 Get the visual with the most available colors for the default GDK screen. The
 return value should not be freed.
 
@@ -100,7 +71,7 @@ best visual
 
 @end deffn
 
-@deffn Function gdk-visual-get-best-with-depth  (depth@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-visual*>})
+@deffn Function gdk-visual-get-best-with-depth  (depth@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-visual>})
 Get the best visual with depth @var{depth} for the default GDK screen. Color
 visuals and visuals with mutable colormaps are preferred over grayscale or
 fixed-colormap visuals. The return value should not be freed. @samp{@code{#f}}
@@ -117,7 +88,7 @@ best visual for the given depth
 
 @end deffn
 
-@deffn Function gdk-visual-get-best-with-type  (visual_type@tie{}@code{<gdk-visual-type>}) @result{}@tie{} (ret@tie{}@code{<gdk-visual*>})
+@deffn Function gdk-visual-get-best-with-type  (visual_type@tie{}@code{<gdk-visual-type>}) @result{}@tie{} (ret@tie{}@code{<gdk-visual>})
 Get the best visual of the given @var{visual-type} for the default GDK screen.
 Visuals with higher color depths are considered better. The return value should
 not be freed. @samp{@code{#f}} may be returned if no visual has type
@@ -134,7 +105,7 @@ best visual of the given type
 
 @end deffn
 
-@deffn Function gdk-visual-get-best-with-both  (depth@tie{}@code{int}) (visual_type@tie{}@code{<gdk-visual-type>}) @result{}@tie{} (ret@tie{}@code{<gdk-visual*>})
+@deffn Function gdk-visual-get-best-with-both  (depth@tie{}@code{int}) (visual_type@tie{}@code{<gdk-visual-type>}) @result{}@tie{} (ret@tie{}@code{<gdk-visual>})
 Combines @code{gdk-visual-get-best-with-depth} and
 @code{gdk-visual-get-best-with-type}.
 
@@ -153,7 +124,8 @@ none
 
 @end deffn
 
-@deffn Function gdk-visual-get-screen  (self@tie{}@code{<gdk-visual*>}) @result{}@tie{} (ret@tie{}@code{<gdk-screen>})
+@deffn Function gdk-visual-get-screen  (self@tie{}@code{<gdk-visual>}) @result{}@tie{} (ret@tie{}@code{<gdk-screen>})
+@deffnx Method get-screen
 Gets the screen to which this visual belongs
 
 @table @var

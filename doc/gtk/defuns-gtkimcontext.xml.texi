@@ -26,7 +26,7 @@ This class defines no properties, other than those defined by its superclasses.
 @defop Signal <gtk-im-context> delete-surrounding  (arg0@tie{}@code{<gint>}) (arg1@tie{}@code{<gint>}) @result{}@tie{}@code{<gboolean>}
 @end defop
 
-@deffn Function gtk-im-context-set-client-window  (self@tie{}@code{<gtk-im-context>}) (window@tie{}@code{<gdk-window*>})
+@deffn Function gtk-im-context-set-client-window  (self@tie{}@code{<gtk-im-context>}) (window@tie{}@code{<gdk-window>})
 @deffnx Method set-client-window
 Set the client window for the input context; this is the @code{<gdk-window>} in
 which the input appears. This window is used in order to correctly position

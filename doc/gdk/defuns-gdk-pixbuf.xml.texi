@@ -4,7 +4,7 @@
 @deftp Class <gdk-pixbuf>
 Derives from @code{<gobject>}.
 
-This @code{<gobject>} class defines the following properties:
+This class defines the following properties:
 
 @table @code
 @item colorspace
@@ -90,22 +90,6 @@ A pixbuf.
 
 @item ret
 Number of bits per color sample.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-pixbuf-get-pixels  (self@tie{}@code{<gdk-pixbuf>}) @result{}@tie{} (ret@tie{}@code{<guchar*>})
-@deffnx Method get-pixels
-Queries a pointer to the pixel data of a pixbuf.
-
-@table @var
-@item pixbuf
-A pixbuf.
-
-@item ret
-A pointer to the pixbuf's pixel data. Please see @emph{(the missing figure,
-image-data} for information about how the pixel data is stored in memory.
 
 @end table
 

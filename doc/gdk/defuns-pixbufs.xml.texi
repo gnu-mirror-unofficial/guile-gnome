@@ -1,7 +1,7 @@
 
 @c %start of fragment
 
-@deffn Function gdk-pixbuf-render-threshold-alpha  (self@tie{}@code{<gdk-pixbuf>}) (bitmap@tie{}@code{<gdk-bitmap*>}) (src_x@tie{}@code{int}) (src_y@tie{}@code{int}) (dest_x@tie{}@code{int}) (dest_y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (alpha_threshold@tie{}@code{int})
+@deffn Function gdk-pixbuf-render-threshold-alpha  (self@tie{}@code{<gdk-pixbuf>}) (bitmap@tie{}@code{<gdk-drawable>}) (src_x@tie{}@code{int}) (src_y@tie{}@code{int}) (dest_x@tie{}@code{int}) (dest_y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (alpha_threshold@tie{}@code{int})
 @deffnx Method render-threshold-alpha
 Takes the opacity values in a rectangular portion of a pixbuf and thresholds
 them to produce a bi-level alpha mask that can be used as a clipping mask for a
@@ -154,42 +154,6 @@ X offset for dither.
 
 @item y-dither
 Y offset for dither.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-pixbuf-render-pixmap-and-mask  (self@tie{}@code{<gdk-pixbuf>}) (pixmap_return@tie{}@code{<gdk-pixmap**>}) (mask_return@tie{}@code{<gdk-bitmap**>}) (alpha_threshold@tie{}@code{int})
-@deffnx Method render-pixmap-and-mask
-Creates a pixmap and a mask bitmap which are returned in the @var{pixmap-return}
-and @var{mask-return} arguments, respectively, and renders a pixbuf and its
-corresponding thresholded alpha mask to them. This is merely a convenience
-function; applications that need to render pixbufs with dither offsets or to
-given drawables should use @code{gdk-draw-pixbuf} and
-@code{gdk-pixbuf-render-threshold-alpha}.
-
-The pixmap that is created is created for the colormap returned by
-@code{gdk-rgb-get-colormap}. You normally will want to instead use the actual
-colormap for a widget, and use
-@code{gdk-pixbuf-render-pixmap-and-mask-for-colormap}.
-
-If the pixbuf does not have an alpha channel, then *@var{mask-return} will be
-set to @samp{@code{#f}}.
-
-@table @var
-@item pixbuf
-A pixbuf.
-
-@item pixmap-return
-Location to store a pointer to the created pixmap, or @samp{@code{#f}} if the
-pixmap is not needed.
-
-@item mask-return
-Location to store a pointer to the created mask, or @samp{@code{#f}} if the mask
-is not needed.
-
-@item alpha-threshold
-Threshold value for opacity values.
 
 @end table
 

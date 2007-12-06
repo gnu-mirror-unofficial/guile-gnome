@@ -264,6 +264,8 @@ Recently Used Documents
 * GtkRecentChooserWidget:: Displays recently used files
 * GtkRecentFilter:: A filter for selecting a subset of recently used files
 
+* Undocumented::    Undocumented functions.
+
 * Type Index::
 * Function Index::
 @end menu
@@ -465,6 +467,8 @@ Recently Used Documents
 @include section-gtkrecentchoosermenu.xml.texi
 @include section-gtkrecentchooserwidget.xml.texi
 @include section-gtkrecentfilter.xml.texi
+
+@include undocumented.texi
 
 @node Type Index
 @unnumbered Type Index

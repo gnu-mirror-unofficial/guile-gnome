@@ -6,48 +6,12 @@ Derives from @code{<gboxed>}.
 
 @end deftp
 
-@deffn Function gdk-rectangle-intersect  (self@tie{}@code{<gdk-rectangle>}) (src2@tie{}@code{<gdk-rectangle>}) (dest@tie{}@code{<gdk-rectangle>}) @result{}@tie{} (ret@tie{}@code{bool})
-Calculates the intersection of two rectangles. It is allowed for @var{dest} to
-be the same as either @var{src1} or @var{src2}.
+@deftp Class <gdk-region>
+Opaque pointer.
 
-@table @var
-@item src1
-a @code{<gdk-rectangle>}
+@end deftp
 
-@item src2
-a @code{<gdk-rectangle>}
-
-@item dest
-return location for the intersection of @var{src1} and @var{src2}
-
-@item ret
-@samp{@code{#t}} if the rectangles intersect.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-rectangle-union  (self@tie{}@code{<gdk-rectangle>}) (src2@tie{}@code{<gdk-rectangle>}) (dest@tie{}@code{<gdk-rectangle>})
-Calculates the union of two rectangles. The union of rectangles @var{src1} and
-@var{src2} is the smallest rectangle which includes both @var{src1} and
-@var{src2} within it. It is allowed for @var{dest} to be the same as either
-@var{src1} or @var{src2}.
-
-@table @var
-@item src1
-a @code{<gdk-rectangle>}
-
-@item src2
-a @code{<gdk-rectangle>}
-
-@item dest
-return location for the union of @var{src1} and @var{src2}
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-region-new  @result{}@tie{} (ret@tie{}@code{<gdk-region*>})
+@deffn Function gdk-region-new  @result{}@tie{} (ret@tie{}@code{<gdk-region>})
 Creates a new empty @code{<gdk-region>}.
 
 @table @var
@@ -58,29 +22,7 @@ a new empty @code{<gdk-region>}
 
 @end deffn
 
-@deffn Function gdk-region-polygon  (points@tie{}@code{<gdk-point*>}) (npoints@tie{}@code{int}) (fill_rule@tie{}@code{<gdk-fill-rule>}) @result{}@tie{} (ret@tie{}@code{<gdk-region*>})
-Creates a new @code{<gdk-region>} using the polygon defined by a number of
-points.
-
-@table @var
-@item points
-an array of @code{<gdk-point>} structs
-
-@item npoints
-the number of elements in the @var{points} array
-
-@item fill-rule
-specifies which pixels are included in the region when the polygon overlaps
-itself.
-
-@item ret
-a new @code{<gdk-region>} based on the given polygon
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-region-copy  (self@tie{}@code{<gdk-region*>}) @result{}@tie{} (ret@tie{}@code{<gdk-region*>})
+@deffn Function gdk-region-copy  (self@tie{}@code{<gdk-region>}) @result{}@tie{} (ret@tie{}@code{<gdk-region>})
 Copies @var{region}, creating an identical new region.
 
 @table @var
@@ -94,7 +36,7 @@ a new region identical to @var{region}
 
 @end deffn
 
-@deffn Function gdk-region-rectangle  (rectangle@tie{}@code{<gdk-rectangle>}) @result{}@tie{} (ret@tie{}@code{<gdk-region*>})
+@deffn Function gdk-region-rectangle  (rectangle@tie{}@code{<gdk-rectangle>}) @result{}@tie{} (ret@tie{}@code{<gdk-region>})
 Creates a new region containing the area @var{rectangle}.
 
 @table @var
@@ -108,7 +50,7 @@ a new region
 
 @end deffn
 
-@deffn Function gdk-region-destroy  (self@tie{}@code{<gdk-region*>})
+@deffn Function gdk-region-destroy  (self@tie{}@code{<gdk-region>})
 Destroys a @code{<gdk-region>}.
 
 @table @var
@@ -119,39 +61,7 @@ a @code{<gdk-region>}
 
 @end deffn
 
-@deffn Function gdk-region-get-clipbox  (self@tie{}@code{<gdk-region*>}) (rectangle@tie{}@code{<gdk-rectangle>})
-Obtains the smallest rectangle which includes the entire @code{<gdk-region>}.
-
-@table @var
-@item region
-a @code{<gdk-region>}
-
-@item rectangle
-return location for the clipbox
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-region-get-rectangles  (self@tie{}@code{<gdk-region*>}) (rectangles@tie{}@code{<gdk-rectangle**>}) @result{}@tie{} (n_rectangles@tie{}@code{int})
-Obtains the area covered by the region as a list of rectangles. The array
-returned in @var{rectangles} must be freed with @code{g-free}.
-
-@table @var
-@item region
-a @code{<gdk-region>}
-
-@item rectangles
-return location for an array of rectangles
-
-@item n-rectangles
-length of returned array
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-region-empty  (self@tie{}@code{<gdk-region*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gdk-region-empty  (self@tie{}@code{<gdk-region>}) @result{}@tie{} (ret@tie{}@code{bool})
 Finds out if the @code{<gdk-region>} is empty.
 
 @table @var
@@ -165,7 +75,7 @@ a @code{<gdk-region>}
 
 @end deffn
 
-@deffn Function gdk-region-equal  (self@tie{}@code{<gdk-region*>}) (region2@tie{}@code{<gdk-region*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gdk-region-equal  (self@tie{}@code{<gdk-region>}) (region2@tie{}@code{<gdk-region>}) @result{}@tie{} (ret@tie{}@code{bool})
 Finds out if the two regions are the same.
 
 @table @var
@@ -182,7 +92,7 @@ a @code{<gdk-region>}
 
 @end deffn
 
-@deffn Function gdk-region-point-in  (self@tie{}@code{<gdk-region*>}) (x@tie{}@code{int}) (y@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gdk-region-point-in  (self@tie{}@code{<gdk-region>}) (x@tie{}@code{int}) (y@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
 Finds out if a point is in a region.
 
 @table @var
@@ -202,7 +112,7 @@ the y coordinate of a point
 
 @end deffn
 
-@deffn Function gdk-region-rect-in  (self@tie{}@code{<gdk-region*>}) (rectangle@tie{}@code{<gdk-rectangle>}) @result{}@tie{} (ret@tie{}@code{<gdk-overlap-type>})
+@deffn Function gdk-region-rect-in  (self@tie{}@code{<gdk-region>}) (rectangle@tie{}@code{<gdk-rectangle>}) @result{}@tie{} (ret@tie{}@code{<gdk-overlap-type>})
 Tests whether a rectangle is within a region.
 
 @table @var
@@ -221,7 +131,7 @@ outside, or partly inside the @code{<gdk-region>}, respectively.
 
 @end deffn
 
-@deffn Function gdk-region-offset  (self@tie{}@code{<gdk-region*>}) (dx@tie{}@code{int}) (dy@tie{}@code{int})
+@deffn Function gdk-region-offset  (self@tie{}@code{<gdk-region>}) (dx@tie{}@code{int}) (dy@tie{}@code{int})
 Moves a region the specified distance.
 
 @table @var
@@ -238,7 +148,7 @@ the distance to move the region vertically
 
 @end deffn
 
-@deffn Function gdk-region-shrink  (self@tie{}@code{<gdk-region*>}) (dx@tie{}@code{int}) (dy@tie{}@code{int})
+@deffn Function gdk-region-shrink  (self@tie{}@code{<gdk-region>}) (dx@tie{}@code{int}) (dy@tie{}@code{int})
 Resizes a region by the specified amount. Positive values shrink the region.
 Negative values expand it.
 
@@ -256,7 +166,7 @@ the number of pixels to shrink the region vertically
 
 @end deffn
 
-@deffn Function gdk-region-union-with-rect  (self@tie{}@code{<gdk-region*>}) (rect@tie{}@code{<gdk-rectangle>})
+@deffn Function gdk-region-union-with-rect  (self@tie{}@code{<gdk-region>}) (rect@tie{}@code{<gdk-rectangle>})
 Sets the area of @var{region} to the union of the areas of @var{region} and
 @var{rect}. The resulting area is the set of pixels contained in either
 @var{region} or @var{rect}.
@@ -272,7 +182,7 @@ a @code{<gdk-rectangle>}.
 
 @end deffn
 
-@deffn Function gdk-region-intersect  (self@tie{}@code{<gdk-region*>}) (source2@tie{}@code{<gdk-region*>})
+@deffn Function gdk-region-intersect  (self@tie{}@code{<gdk-region>}) (source2@tie{}@code{<gdk-region>})
 Sets the area of @var{source1} to the intersection of the areas of @var{source1}
 and @var{source2}. The resulting area is the set of pixels contained in both
 @var{source1} and @var{source2}.
@@ -288,7 +198,7 @@ another @code{<gdk-region>}
 
 @end deffn
 
-@deffn Function gdk-region-union  (self@tie{}@code{<gdk-region*>}) (source2@tie{}@code{<gdk-region*>})
+@deffn Function gdk-region-union  (self@tie{}@code{<gdk-region>}) (source2@tie{}@code{<gdk-region>})
 Sets the area of @var{source1} to the union of the areas of @var{source1} and
 @var{source2}. The resulting area is the set of pixels contained in either
 @var{source1} or @var{source2}.
@@ -304,7 +214,7 @@ a @code{<gdk-region>}
 
 @end deffn
 
-@deffn Function gdk-region-subtract  (self@tie{}@code{<gdk-region*>}) (source2@tie{}@code{<gdk-region*>})
+@deffn Function gdk-region-subtract  (self@tie{}@code{<gdk-region>}) (source2@tie{}@code{<gdk-region>})
 Subtracts the area of @var{source2} from the area @var{source1}. The resulting
 area is the set of pixels contained in @var{source1} but not in @var{source2}.
 
@@ -319,7 +229,7 @@ another @code{<gdk-region>}
 
 @end deffn
 
-@deffn Function gdk-region-xor  (self@tie{}@code{<gdk-region*>}) (source2@tie{}@code{<gdk-region*>})
+@deffn Function gdk-region-xor  (self@tie{}@code{<gdk-region>}) (source2@tie{}@code{<gdk-region>})
 Sets the area of @var{source1} to the exclusive-OR of the areas of @var{source1}
 and @var{source2}. The resulting area is the set of pixels contained in one or
 the other of the two sources but not in both.

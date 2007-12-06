@@ -269,21 +269,6 @@ the timestamp from the current event, or @samp{GDK_CURRENT_TIME}.
 
 @end deffn
 
-@deffn Function gtk-get-current-event-state  (state@tie{}@code{<gdk-modifier-type*>}) @result{}@tie{} (ret@tie{}@code{bool})
-If there is a current event and it has a state field, place that state field in
-@var{state} and return @samp{@code{#t}}, otherwise return @samp{@code{#f}}.
-
-@table @var
-@item state
-a location to store the state of the current event
-
-@item ret
-@samp{@code{#t}} if there was a current event and it had a state field
-
-@end table
-
-@end deffn
-
 @deffn Function gtk-propagate-event  (self@tie{}@code{<gtk-widget>}) (event@tie{}@code{<gdk-event>})
 Sends an event to a widget, propagating the event to parent widgets if the event
 remains unhandled. Events received by GTK+ from GDK normally begin in

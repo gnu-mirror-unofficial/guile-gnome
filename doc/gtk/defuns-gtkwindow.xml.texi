@@ -13,11 +13,11 @@ The type of the window
 @item title
 The title of the window
 
-@item role
-Unique identifier for the window to be used when restoring a session
-
 @item startup-id
 Unique startup identifier for the window used by startup-notification
+
+@item role
+Unique identifier for the window to be used when restoring a session
 
 @item allow-shrink
 If TRUE, the window has no mimimum size. Setting this to TRUE is 99% of the time
@@ -334,30 +334,6 @@ width in pixels, or -1 to unset the default width
 
 @item height
 height in pixels, or -1 to unset the default height
-
-@end table
-
-@end deffn
-
-@deffn Function gtk-window-set-geometry-hints  (self@tie{}@code{<gtk-window>}) (geometry_widget@tie{}@code{<gtk-widget>}) (geometry@tie{}@code{<gdk-geometry*>}) (geom_mask@tie{}@code{<gdk-window-hints>})
-@deffnx Method set-geometry-hints
-This function sets up hints about how a window can be resized by the user. You
-can set a minimum and maximum size; allowed resize increments (e.g. for xterm,
-you can only resize by the size of a character); aspect ratios; and more. See
-the @code{<gdk-geometry>} struct.
-
-@table @var
-@item window
-a @code{<gtk-window>}
-
-@item geometry-widget
-widget the geometry hints will be applied to
-
-@item geometry
-struct containing geometry information
-
-@item geom-mask
-mask indicating which struct fields should be paid attention to
 
 @end table
 

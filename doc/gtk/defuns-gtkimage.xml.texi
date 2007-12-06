@@ -154,7 +154,7 @@ a new @code{<gtk-image>}
 
 @end deffn
 
-@deffn Function gtk-image-new-from-image  (image@tie{}@code{<gdk-image>}) (mask@tie{}@code{<gdk-bitmap*>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffn Function gtk-image-new-from-image  (image@tie{}@code{<gdk-image>}) (mask@tie{}@code{<gdk-drawable>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
 Creates a @code{<gtk-image>} widget displaying a @var{image} with a @var{mask}.
 A @code{<gdk-image>} is a client-side image buffer in the pixel format of the
 current display. The @code{<gtk-image>} does not assume a reference to the image
@@ -196,7 +196,7 @@ a new @code{<gtk-image>}
 
 @end deffn
 
-@deffn Function gtk-image-new-from-pixmap  (pixmap@tie{}@code{<gdk-pixmap*>}) (mask@tie{}@code{<gdk-bitmap*>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffn Function gtk-image-new-from-pixmap  (pixmap@tie{}@code{<gdk-pixmap>}) (mask@tie{}@code{<gdk-drawable>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
 Creates a @code{<gtk-image>} widget displaying @var{pixmap} with a @var{mask}. A
 @code{<gdk-pixmap>} is a server-side image buffer in the pixel format of the
 current display. The @code{<gtk-image>} does not assume a reference to the
@@ -315,7 +315,7 @@ a stock icon size
 
 @end deffn
 
-@deffn Function gtk-image-set-from-image  (self@tie{}@code{<gtk-image>}) (gdk_image@tie{}@code{<gdk-image>}) (mask@tie{}@code{<gdk-bitmap*>})
+@deffn Function gtk-image-set-from-image  (self@tie{}@code{<gtk-image>}) (gdk_image@tie{}@code{<gdk-image>}) (mask@tie{}@code{<gdk-drawable>})
 @deffnx Method set-from-image
 See @code{gtk-image-new-from-image} for details.
 
@@ -348,7 +348,7 @@ a @code{<gdk-pixbuf>} or @samp{@code{#f}}
 
 @end deffn
 
-@deffn Function gtk-image-set-from-pixmap  (self@tie{}@code{<gtk-image>}) (pixmap@tie{}@code{<gdk-pixmap*>}) (mask@tie{}@code{<gdk-bitmap*>})
+@deffn Function gtk-image-set-from-pixmap  (self@tie{}@code{<gtk-image>}) (pixmap@tie{}@code{<gdk-pixmap>}) (mask@tie{}@code{<gdk-drawable>})
 @deffnx Method set-from-pixmap
 See @code{gtk-image-new-from-pixmap} for details.
 

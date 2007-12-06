@@ -41,7 +41,7 @@ are pending. The returned @code{<gdk-event>} should be freed with
 
 @end deffn
 
-@deffn Function gdk-event-get-graphics-expose  (window@tie{}@code{<gdk-window*>}) @result{}@tie{} (ret@tie{}@code{<gdk-event>})
+@deffn Function gdk-event-get-graphics-expose  (window@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{<gdk-event>})
 Waits for a GraphicsExpose or NoExpose event from the X server. This is used in
 the @code{<gtk-text>} and @code{<gtk-clist>} widgets in GTK+ to make sure any
 GraphicsExpose events are handled before the widget is scrolled.
@@ -98,26 +98,6 @@ a @code{<gdk-event>}
 
 @item ret
 time stamp field from @var{event}
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-event-get-state  (self@tie{}@code{<gdk-event>}) (state@tie{}@code{<gdk-modifier-type*>}) @result{}@tie{} (ret@tie{}@code{bool})
-If the event contains a "state" field, puts that field in @var{state}. Otherwise
-stores an empty state (0). Returns @samp{@code{#t}} if there was a state field
-in the event. @var{event} may be @samp{@code{#f}}, in which case it's treated as
-if the event had no state field.
-
-@table @var
-@item event
-a @code{<gdk-event>} or NULL
-
-@item state
-return location for state
-
-@item ret
-@samp{@code{#t}} if there was a state field in the event
 
 @end table
 
@@ -183,47 +163,6 @@ location to put root window y coordinate
 
 @end deffn
 
-@deffn Function gdk-event-handler-set  (func@tie{}@code{<gdk-event-func>}) (data@tie{}@code{<gpointer>}) (notify@tie{}@code{<g-destroy-notify>})
-Sets the function to call to handle all events from GDK.
-
-Note that GTK+ uses this to install its own event handler, so it is usually not
-useful for GTK+ applications. (Although an application can call this function
-then call @code{gtk-main-do-event} to pass events to GTK+.)
-
-@table @var
-@item func
-the function to call to handle events from GDK.
-
-@item data
-user data to pass to the function.
-
-@item notify
-the function to call when the handler function is removed, i.e. when
-@code{gdk-event-handler-set} is called with another event handler.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-add-client-message-filter  (message_type@tie{}@code{<gdk-atom>}) (func@tie{}@code{<gdk-filter-func>}) (data@tie{}@code{<gpointer>})
-Adds a filter to the default display to be called when X ClientMessage events
-are received. See @code{gdk-display-add-client-message-filter}.
-
-@table @var
-@item message-type
-the type of ClientMessage events to receive. This will be checked against the @c
-(structfield "message_type") field of the XClientMessage event struct.
-
-@item func
-the function to call to process the event.
-
-@item data
-user data to pass to @var{func}.
-
-@end table
-
-@end deffn
-
 @deffn Function gdk-get-show-events  @result{}@tie{} (ret@tie{}@code{bool})
 Gets whether event debugging output is enabled.
 
@@ -265,25 +204,6 @@ the screen for the event
 @end table
 
 Since 2.2
-
-@end deffn
-
-@deffn Function gdk-setting-get  (name@tie{}@code{mchars}) (value@tie{}@code{<gvalue>}) @result{}@tie{} (ret@tie{}@code{bool})
-Obtains a desktop-wide setting, such as the double-click time, for the default
-screen. See @code{gdk-screen-get-setting}.
-
-@table @var
-@item name
-the name of the setting.
-
-@item value
-location to store the value of the setting.
-
-@item ret
-: @samp{@code{#t}} if the setting existed and a value was stored in @var{value},
-@samp{@code{#f}} otherwise.
-
-@end table
 
 @end deffn
 

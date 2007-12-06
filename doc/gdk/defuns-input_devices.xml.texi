@@ -1,6 +1,13 @@
 
 @c %start of fragment
 
+@deftp Class <gdk-device>
+Derives from @code{<gobject>}.
+
+This class defines no properties, other than those defined by its superclasses.
+
+@end deftp
+
 @deffn Function gdk-devices-list  @result{}@tie{} (ret@tie{}@code{glist-of})
 Returns the list of available input devices for the default display. The list is
 statically allocated and should not be freed.
@@ -13,7 +20,8 @@ a list of @code{<gdk-device>}
 
 @end deffn
 
-@deffn Function gdk-device-set-source  (self@tie{}@code{<gdk-device*>}) (source@tie{}@code{<gdk-input-source>})
+@deffn Function gdk-device-set-source  (self@tie{}@code{<gdk-device>}) (source@tie{}@code{<gdk-input-source>})
+@deffnx Method set-source
 Sets the source type for an input device.
 
 @table @var
@@ -27,7 +35,8 @@ the source type.
 
 @end deffn
 
-@deffn Function gdk-device-set-mode  (self@tie{}@code{<gdk-device*>}) (mode@tie{}@code{<gdk-input-mode>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gdk-device-set-mode  (self@tie{}@code{<gdk-device>}) (mode@tie{}@code{<gdk-input-mode>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-mode
 Sets a the mode of an input device. The mode controls if the device is active
 and whether the device's range is mapped to the entire screen or to a single
 window.
@@ -46,7 +55,8 @@ the input mode.
 
 @end deffn
 
-@deffn Function gdk-device-set-key  (self@tie{}@code{<gdk-device*>}) (index_@tie{}@code{unsigned-int}) (keyval@tie{}@code{unsigned-int}) (modifiers@tie{}@code{<gdk-modifier-type>})
+@deffn Function gdk-device-set-key  (self@tie{}@code{<gdk-device>}) (index_@tie{}@code{unsigned-int}) (keyval@tie{}@code{unsigned-int}) (modifiers@tie{}@code{<gdk-modifier-type>})
+@deffnx Method set-key
 Specifies the X key event to generate when a macro button of a device is
 pressed.
 
@@ -67,7 +77,8 @@ the modifiers to set.
 
 @end deffn
 
-@deffn Function gdk-device-set-axis-use  (self@tie{}@code{<gdk-device*>}) (index_@tie{}@code{unsigned-int}) (use@tie{}@code{<gdk-axis-use>})
+@deffn Function gdk-device-set-axis-use  (self@tie{}@code{<gdk-device>}) (index_@tie{}@code{unsigned-int}) (use@tie{}@code{<gdk-axis-use>})
+@deffnx Method set-axis-use
 Specifies how an axis of a device is used.
 
 @table @var
@@ -84,7 +95,7 @@ specifies how the axis is used.
 
 @end deffn
 
-@deffn Function gdk-device-get-core-pointer  @result{}@tie{} (ret@tie{}@code{<gdk-device*>})
+@deffn Function gdk-device-get-core-pointer  @result{}@tie{} (ret@tie{}@code{<gdk-device>})
 Returns the core pointer device for the default display.
 
 @table @var
@@ -95,63 +106,8 @@ the core pointer device; this is owned by the display and should not be freed.
 
 @end deffn
 
-@deffn Function gdk-device-get-state  (self@tie{}@code{<gdk-device*>}) (window@tie{}@code{<gdk-window*>}) (mask@tie{}@code{<gdk-modifier-type*>}) @result{}@tie{} (axes@tie{}@code{double})
-Gets the current state of a device.
-
-@table @var
-@item device
-a @code{<gdk-device>}.
-
-@item window
-a @code{<gdk-window>}.
-
-@item axes
-an array of doubles to store the values of the axes of @var{device} in, or
-@samp{@code{#f}}.
-
-@item mask
-location to store the modifiers, or @samp{@code{#f}}.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-device-get-history  (self@tie{}@code{<gdk-device*>}) (window@tie{}@code{<gdk-window*>}) (start@tie{}@code{unsigned-int32}) (stop@tie{}@code{unsigned-int32}) (events@tie{}@code{<gdk-time-coord***>}) @result{}@tie{} (ret@tie{}@code{bool}) (n_events@tie{}@code{int})
-Obtains the motion history for a device; given a starting and ending timestamp,
-return all events in the motion history for the device in the given range of
-time. Some windowing systems do not support motion history, in which case,
-@samp{@code{#f}} will be returned. (This is not distinguishable from the case
-where motion history is supported and no events were found.)
-
-@table @var
-@item device
-a @code{<gdk-device>}
-
-@item window
-the window with respect to which which the event coordinates will be reported
-
-@item start
-starting timestamp for range of events to return
-
-@item stop
-ending timestamp for the range of events to return
-
-@item events
-location to store a newly-allocated array of @code{<gdk-time-coord>}, or
-@samp{@code{#f}}
-
-@item n-events
-location to store the length of @var{events}, or @samp{@code{#f}}
-
-@item ret
-@samp{@code{#t}} if the windowing system supports motion history and at least
-one event was found.
-
-@end table
-
-@end deffn
-
-@deffn Function gdk-device-get-axis  (self@tie{}@code{<gdk-device*>}) (use@tie{}@code{<gdk-axis-use>}) @result{}@tie{} (ret@tie{}@code{bool}) (axes@tie{}@code{double}) (value@tie{}@code{double})
+@deffn Function gdk-device-get-axis  (self@tie{}@code{<gdk-device>}) (use@tie{}@code{<gdk-axis-use>}) @result{}@tie{} (ret@tie{}@code{bool}) (axes@tie{}@code{double}) (value@tie{}@code{double})
+@deffnx Method get-axis
 Interprets an array of double as axis values for a given device, and locates the
 value in the array for a given axis use.
 
@@ -175,7 +131,7 @@ location to store the found value.
 
 @end deffn
 
-@deffn Function gdk-input-set-extension-events  (window@tie{}@code{<gdk-window*>}) (mask@tie{}@code{int}) (mode@tie{}@code{<gdk-extension-mode>})
+@deffn Function gdk-input-set-extension-events  (window@tie{}@code{<gdk-window>}) (mask@tie{}@code{int}) (mode@tie{}@code{<gdk-extension-mode>})
 Turns extension events on or off for a particular window, and specifies the
 event mask for extension events.
 

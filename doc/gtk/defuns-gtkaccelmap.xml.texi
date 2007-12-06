@@ -10,8 +10,8 @@ This class defines no properties, other than those defined by its superclasses.
 
 @defop Signal <gtk-accel-map> changed  (arg0@tie{}@code{<gchararray>}) (arg1@tie{}@code{<guint>}) (arg2@tie{}@code{<gdk-modifier-type>})
 Notifies of a change in the global accelerator map. The path is also used as the
-detail for the signal, so it is possible to connect to changed::@c (replaceable
-"accel_path") .
+detail for the signal, so it is possible to connect to
+changed::@var{accel_path}.
 
 Since 2.4
 

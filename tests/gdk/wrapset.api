@@ -1402,48 +1402,8 @@
   ((gnome gw gdk)
    (uses-interfaces (gnome gw generics))
    (typed-exports
-     (<gdk-atom*> <gw:wct>)
      (<gdk-atom> <gw:wct>)
-     (<gdk-bitmap**> <gw:wct>)
-     (<gdk-bitmap*> <gw:wct>)
-     (<gdk-device*> <gw:wct>)
-     (<gdk-display-manager*> <gw:wct>)
-     (<gdk-drag-protocol*> <gw:wct>)
-     (<gdk-drawable**> <gw:wct>)
-     (<gdk-event-func> <gw:wct>)
-     (<gdk-filter-func> <gw:wct>)
-     (<gdk-gc-values*> <gw:wct>)
-     (<gdk-geometry*> <gw:wct>)
-     (<gdk-keymap-key**> <gw:wct>)
-     (<gdk-keymap-key*> <gw:wct>)
-     (<gdk-modifier-type*> <gw:wct>)
-     (<gdk-pixbuf-destroy-notify> <gw:wct>)
      (<gdk-pixbuf-format*> <gw:wct>)
-     (<gdk-pixbuf-save-func> <gw:wct>)
-     (<gdk-pixbuf-simple-anim*> <gw:wct>)
-     (<gdk-pixmap**> <gw:wct>)
-     (<gdk-pixmap*> <gw:wct>)
-     (<gdk-point*> <gw:wct>)
-     (<gdk-pointer-hooks*> <gw:wct>)
-     (<gdk-rectangle**> <gw:wct>)
-     (<gdk-region*> <gw:wct>)
-     (<gdk-rgb-cmap*> <gw:wct>)
-     (<gdk-screen**> <gw:wct>)
-     (<gdk-segment*> <gw:wct>)
-     (<gdk-time-coord***> <gw:wct>)
-     (<gdk-visual*> <gw:wct>)
-     (<gdk-visual-type**> <gw:wct>)
-     (<gdk-wchar*> <gw:wct>)
-     (<gdk-window**> <gw:wct>)
-     (<gdk-window*> <gw:wct>)
-     (<gdk-window-attr*> <gw:wct>)
-     (<gdk-wm-decoration*> <gw:wct>)
-     (<gint8*> <gw:wct>)
-     (<guint**> <gw:wct>)
-     (<guint8*> <gw:wct>)
-     (gdk-add-client-message-filter
-       procedure
-       (arity 0 0 #t))
      (gdk-atom-intern procedure (arity 0 0 #t))
      (gdk-atom-name procedure (arity 0 0 #t))
      (gdk-beep procedure (arity 0 0 #t))
@@ -1469,6 +1429,7 @@
      (gdk-color-alloc procedure (arity 0 0 #t))
      (gdk-color-black procedure (arity 0 0 #t))
      (gdk-color-change procedure (arity 0 0 #t))
+     (gdk-color-copy procedure (arity 0 0 #t))
      (gdk-color-parse procedure (arity 0 0 #t))
      (gdk-color-white procedure (arity 0 0 #t))
      (gdk-cursor-get-display procedure (arity 0 0 #t))
@@ -1490,8 +1451,6 @@
      (gdk-device-get-core-pointer
        procedure
        (arity 0 0 #t))
-     (gdk-device-get-history procedure (arity 5 0 #f))
-     (gdk-device-get-state procedure (arity 3 0 #f))
      (gdk-device-set-axis-use
        procedure
        (arity 0 0 #t))
@@ -1525,9 +1484,6 @@
        procedure
        (arity 0 0 #t))
      (gdk-display-get-name procedure (arity 0 0 #t))
-     (gdk-display-get-pointer
-       procedure
-       (arity 3 0 #f))
      (gdk-display-get-screen procedure (arity 0 0 #t))
      (gdk-display-get-window-at-pointer
        procedure
@@ -1596,14 +1552,6 @@
      (gdk-drag-drop-succeeded
        procedure
        (arity 0 0 #t))
-     (gdk-drag-find-window procedure (arity 0 0 #t))
-     (gdk-drag-find-window-for-screen
-       procedure
-       (arity 0 0 #t))
-     (gdk-drag-get-protocol procedure (arity 0 0 #t))
-     (gdk-drag-get-protocol-for-display
-       procedure
-       (arity 0 0 #t))
      (gdk-drag-get-selection procedure (arity 0 0 #t))
      (gdk-drag-motion procedure (arity 0 0 #t))
      (gdk-drag-status procedure (arity 0 0 #t))
@@ -1613,9 +1561,7 @@
      (gdk-draw-glyphs-transformed
        procedure
        (arity 0 0 #t))
-     (gdk-draw-gray-image procedure (arity 0 0 #t))
      (gdk-draw-image procedure (arity 0 0 #t))
-     (gdk-draw-indexed-image procedure (arity 0 0 #t))
      (gdk-draw-layout procedure (arity 0 0 #t))
      (gdk-draw-layout-line procedure (arity 0 0 #t))
      (gdk-draw-layout-line-with-colors
@@ -1625,18 +1571,10 @@
        procedure
        (arity 0 0 #t))
      (gdk-draw-line procedure (arity 0 0 #t))
-     (gdk-draw-lines procedure (arity 0 0 #t))
      (gdk-draw-pixbuf procedure (arity 0 0 #t))
      (gdk-draw-point procedure (arity 0 0 #t))
-     (gdk-draw-points procedure (arity 0 0 #t))
-     (gdk-draw-polygon procedure (arity 0 0 #t))
      (gdk-draw-rectangle procedure (arity 0 0 #t))
-     (gdk-draw-rgb-32-image procedure (arity 0 0 #t))
-     (gdk-draw-rgb-image procedure (arity 0 0 #t))
-     (gdk-draw-segments procedure (arity 0 0 #t))
      (gdk-draw-string procedure (arity 0 0 #t))
-     (gdk-draw-text procedure (arity 0 0 #t))
-     (gdk-draw-text-wc procedure (arity 0 0 #t))
      (gdk-drawable-copy-to-image
        procedure
        (arity 0 0 #t))
@@ -1646,7 +1584,6 @@
      (gdk-drawable-get-colormap
        procedure
        (arity 0 0 #t))
-     (gdk-drawable-get-data procedure (arity 0 0 #t))
      (gdk-drawable-get-depth procedure (arity 0 0 #t))
      (gdk-drawable-get-display
        procedure
@@ -1665,12 +1602,12 @@
      (gdk-drawable-set-colormap
        procedure
        (arity 0 0 #t))
-     (gdk-drawable-set-data procedure (arity 0 0 #t))
      (gdk-drop-finish procedure (arity 0 0 #t))
      (gdk-drop-reply procedure (arity 0 0 #t))
      (gdk-error-trap-pop procedure (arity 0 0 #t))
      (gdk-error-trap-push procedure (arity 0 0 #t))
      (gdk-event->vector procedure (arity 0 0 #t))
+     (gdk-event-copy procedure (arity 0 0 #t))
      (gdk-event-get procedure (arity 0 0 #t))
      (gdk-event-get-axis procedure (arity 2 0 #f))
      (gdk-event-get-coords procedure (arity 1 0 #f))
@@ -1681,13 +1618,10 @@
        procedure
        (arity 1 0 #f))
      (gdk-event-get-screen procedure (arity 0 0 #t))
-     (gdk-event-get-state procedure (arity 0 0 #t))
      (gdk-event-get-time procedure (arity 0 0 #t))
-     (gdk-event-handler-set procedure (arity 0 0 #t))
      (gdk-event-peek procedure (arity 0 0 #t))
      (gdk-event-put procedure (arity 0 0 #t))
      (gdk-events-pending procedure (arity 0 0 #t))
-     (gdk-exit procedure (arity 0 0 #t))
      (gdk-flush procedure (arity 0 0 #t))
      (gdk-font-from-description
        procedure
@@ -1695,11 +1629,10 @@
      (gdk-font-id procedure (arity 0 0 #t))
      (gdk-font-load procedure (arity 0 0 #t))
      (gdk-fontset-load procedure (arity 0 0 #t))
+     (gdk-gc-copy procedure (arity 0 0 #t))
      (gdk-gc-get-colormap procedure (arity 0 0 #t))
      (gdk-gc-get-screen procedure (arity 0 0 #t))
-     (gdk-gc-get-values procedure (arity 0 0 #t))
      (gdk-gc-new procedure (arity 0 0 #t))
-     (gdk-gc-new-with-values procedure (arity 0 0 #t))
      (gdk-gc-offset procedure (arity 0 0 #t))
      (gdk-gc-set-background procedure (arity 0 0 #t))
      (gdk-gc-set-clip-mask procedure (arity 0 0 #t))
@@ -1709,7 +1642,6 @@
        (arity 0 0 #t))
      (gdk-gc-set-clip-region procedure (arity 0 0 #t))
      (gdk-gc-set-colormap procedure (arity 0 0 #t))
-     (gdk-gc-set-dashes procedure (arity 0 0 #t))
      (gdk-gc-set-exposures procedure (arity 0 0 #t))
      (gdk-gc-set-fill procedure (arity 0 0 #t))
      (gdk-gc-set-font procedure (arity 0 0 #t))
@@ -1728,7 +1660,6 @@
      (gdk-gc-set-subwindow procedure (arity 0 0 #t))
      (gdk-gc-set-tile procedure (arity 0 0 #t))
      (gdk-gc-set-ts-origin procedure (arity 0 0 #t))
-     (gdk-gc-set-values procedure (arity 0 0 #t))
      (gdk-get-default-root-window
        procedure
        (arity 0 0 #t))
@@ -1754,19 +1685,9 @@
      (gdk-keymap-get-direction
        procedure
        (arity 0 0 #t))
-     (gdk-keymap-get-entries-for-keycode
-       procedure
-       (arity 4 0 #f))
-     (gdk-keymap-get-entries-for-keyval
-       procedure
-       (arity 3 0 #f))
      (gdk-keymap-get-for-display
        procedure
        (arity 0 0 #t))
-     (gdk-keymap-lookup-key procedure (arity 0 0 #t))
-     (gdk-keymap-translate-keyboard-state
-       procedure
-       (arity 5 0 #f))
      (gdk-keyval-convert-case
        procedure
        (arity 1 0 #f))
@@ -1778,7 +1699,6 @@
      (gdk-keyval-to-unicode procedure (arity 0 0 #t))
      (gdk-keyval-to-upper procedure (arity 0 0 #t))
      (gdk-list-visuals procedure (arity 0 0 #f))
-     (gdk-mbstowcs procedure (arity 0 0 #t))
      (gdk-notify-startup-complete
        procedure
        (arity 0 0 #t))
@@ -1815,9 +1735,6 @@
      (gdk-pixbuf-animation-get-height
        procedure
        (arity 0 0 #t))
-     (gdk-pixbuf-animation-get-iter
-       procedure
-       (arity 0 0 #t))
      (gdk-pixbuf-animation-get-static-image
        procedure
        (arity 0 0 #t))
@@ -1825,9 +1742,6 @@
        procedure
        (arity 0 0 #t))
      (gdk-pixbuf-animation-is-static-image
-       procedure
-       (arity 0 0 #t))
-     (gdk-pixbuf-animation-iter-advance
        procedure
        (arity 0 0 #t))
      (gdk-pixbuf-animation-iter-get-delay-time
@@ -1874,7 +1788,6 @@
        procedure
        (arity 0 0 #t))
      (gdk-pixbuf-get-option procedure (arity 0 0 #t))
-     (gdk-pixbuf-get-pixels procedure (arity 0 0 #t))
      (gdk-pixbuf-get-rowstride
        procedure
        (arity 0 0 #t))
@@ -1901,13 +1814,7 @@
      (gdk-pixbuf-loader-set-size
        procedure
        (arity 0 0 #t))
-     (gdk-pixbuf-loader-write
-       procedure
-       (arity 3 0 #f))
      (gdk-pixbuf-new procedure (arity 0 0 #t))
-     (gdk-pixbuf-new-from-data
-       procedure
-       (arity 0 0 #t))
      (gdk-pixbuf-new-from-file
        procedure
        (arity 1 0 #f))
@@ -1917,16 +1824,7 @@
      (gdk-pixbuf-new-from-file-at-size
        procedure
        (arity 3 0 #f))
-     (gdk-pixbuf-new-from-inline
-       procedure
-       (arity 3 0 #f))
-     (gdk-pixbuf-new-from-xpm-data
-       procedure
-       (arity 0 0 #t))
      (gdk-pixbuf-new-subpixbuf
-       procedure
-       (arity 0 0 #t))
-     (gdk-pixbuf-render-pixmap-and-mask
        procedure
        (arity 0 0 #t))
      (gdk-pixbuf-render-threshold-alpha
@@ -1944,16 +1842,9 @@
      (gdk-pixbuf-saturate-and-pixelate
        procedure
        (arity 0 0 #t))
-     (gdk-pixbuf-save-to-bufferv
-       procedure
-       (arity 4 0 #f))
-     (gdk-pixbuf-save-to-callbackv
-       procedure
-       (arity 6 0 #f))
      (gdk-pixbuf-save-to-port
        procedure
        (arity 4 0 #f))
-     (gdk-pixbuf-savev procedure (arity 5 0 #f))
      (gdk-pixbuf-scale procedure (arity 0 0 #t))
      (gdk-pixbuf-scale-simple
        procedure
@@ -1964,21 +1855,9 @@
      (gdk-pixbuf-simple-anim-new
        procedure
        (arity 0 0 #t))
-     (gdk-pixmap-colormap-create-from-xpm
-       procedure
-       (arity 0 0 #t))
-     (gdk-pixmap-colormap-create-from-xpm-d
-       procedure
-       (arity 4 0 #f))
      (gdk-pixmap-create-from-data
        procedure
        (arity 0 0 #t))
-     (gdk-pixmap-create-from-xpm
-       procedure
-       (arity 0 0 #t))
-     (gdk-pixmap-create-from-xpm-d
-       procedure
-       (arity 3 0 #f))
      (gdk-pixmap-foreign-new-for-display
        procedure
        (arity 0 0 #t))
@@ -1990,27 +1869,15 @@
      (gdk-pointer-grab procedure (arity 0 0 #t))
      (gdk-pointer-is-grabbed procedure (arity 0 0 #t))
      (gdk-pointer-ungrab procedure (arity 0 0 #t))
-     (gdk-property-change procedure (arity 0 0 #t))
      (gdk-property-delete procedure (arity 0 0 #t))
-     (gdk-property-get procedure (arity 8 0 #f))
-     (gdk-query-depths procedure (arity 1 0 #f))
-     (gdk-query-visual-types procedure (arity 1 0 #f))
-     (gdk-rectangle-intersect
-       procedure
-       (arity 0 0 #t))
-     (gdk-rectangle-union procedure (arity 0 0 #t))
+     (gdk-region-copy procedure (arity 0 0 #t))
      (gdk-region-destroy procedure (arity 0 0 #t))
      (gdk-region-empty procedure (arity 0 0 #t))
      (gdk-region-equal procedure (arity 0 0 #t))
-     (gdk-region-get-clipbox procedure (arity 0 0 #t))
-     (gdk-region-get-rectangles
-       procedure
-       (arity 2 0 #f))
      (gdk-region-intersect procedure (arity 0 0 #t))
      (gdk-region-new procedure (arity 0 0 #t))
      (gdk-region-offset procedure (arity 0 0 #t))
      (gdk-region-point-in procedure (arity 0 0 #t))
-     (gdk-region-polygon procedure (arity 0 0 #t))
      (gdk-region-rect-in procedure (arity 0 0 #t))
      (gdk-region-rectangle procedure (arity 0 0 #t))
      (gdk-region-shrink procedure (arity 0 0 #t))
@@ -2020,12 +1887,10 @@
        procedure
        (arity 0 0 #t))
      (gdk-region-xor procedure (arity 0 0 #t))
-     (gdk-rgb-cmap-new procedure (arity 1 0 #f))
      (gdk-rgb-colormap-ditherable
        procedure
        (arity 0 0 #t))
      (gdk-rgb-ditherable procedure (arity 0 0 #t))
-     (gdk-rgb-find-color procedure (arity 0 0 #t))
      (gdk-rgb-gc-set-background
        procedure
        (arity 0 0 #t))
@@ -2142,9 +2007,6 @@
      (gdk-selection-owner-set-for-display
        procedure
        (arity 0 0 #t))
-     (gdk-selection-property-get
-       procedure
-       (arity 3 0 #f))
      (gdk-selection-send-notify
        procedure
        (arity 0 0 #t))
@@ -2155,12 +2017,10 @@
        procedure
        (arity 0 0 #t))
      (gdk-set-locale procedure (arity 0 0 #t))
-     (gdk-set-pointer-hooks procedure (arity 0 0 #t))
      (gdk-set-program-class procedure (arity 0 0 #t))
      (gdk-set-show-events procedure (arity 0 0 #t))
      (gdk-set-sm-client-id procedure (arity 0 0 #t))
      (gdk-set-use-xshm procedure (arity 0 0 #t))
-     (gdk-setting-get procedure (arity 0 0 #t))
      (gdk-spawn-command-line-on-screen
        procedure
        (arity 2 0 #f))
@@ -2168,12 +2028,9 @@
      (gdk-string-height procedure (arity 0 0 #t))
      (gdk-string-measure procedure (arity 0 0 #t))
      (gdk-string-width procedure (arity 0 0 #t))
-     (gdk-text-extents procedure (arity 3 0 #f))
-     (gdk-text-extents-wc procedure (arity 3 0 #f))
      (gdk-text-height procedure (arity 0 0 #t))
      (gdk-text-measure procedure (arity 0 0 #t))
      (gdk-text-width procedure (arity 0 0 #t))
-     (gdk-text-width-wc procedure (arity 0 0 #t))
      (gdk-threads-enter procedure (arity 0 0 #t))
      (gdk-threads-init procedure (arity 0 0 #t))
      (gdk-threads-leave procedure (arity 0 0 #t))
@@ -2196,7 +2053,6 @@
        (arity 0 0 #t))
      (gdk-visual-get-screen procedure (arity 0 0 #t))
      (gdk-visual-get-system procedure (arity 0 0 #t))
-     (gdk-window-add-filter procedure (arity 0 0 #t))
      (gdk-window-at-pointer procedure (arity 0 0 #f))
      (gdk-window-begin-move-drag
        procedure
@@ -2218,9 +2074,6 @@
      (gdk-window-configure-finished
        procedure
        (arity 0 0 #t))
-     (gdk-window-constrain-size
-       procedure
-       (arity 4 0 #f))
      (gdk-window-deiconify procedure (arity 0 0 #t))
      (gdk-window-destroy procedure (arity 0 0 #t))
      (gdk-window-enable-synchronized-configure
@@ -2238,26 +2091,16 @@
      (gdk-window-get-children
        procedure
        (arity 1 0 #f))
-     (gdk-window-get-decorations
-       procedure
-       (arity 0 0 #t))
      (gdk-window-get-deskrelative-origin
        procedure
        (arity 1 0 #f))
      (gdk-window-get-events procedure (arity 0 0 #t))
-     (gdk-window-get-frame-extents
-       procedure
-       (arity 0 0 #t))
      (gdk-window-get-geometry
        procedure
        (arity 1 0 #f))
      (gdk-window-get-group procedure (arity 0 0 #t))
-     (gdk-window-get-internal-paint-info
-       procedure
-       (arity 2 0 #f))
      (gdk-window-get-origin procedure (arity 1 0 #f))
      (gdk-window-get-parent procedure (arity 0 0 #t))
-     (gdk-window-get-pointer procedure (arity 2 0 #f))
      (gdk-window-get-position
        procedure
        (arity 1 0 #f))
@@ -2308,7 +2151,6 @@
      (gdk-window-move procedure (arity 0 0 #t))
      (gdk-window-move-region procedure (arity 0 0 #t))
      (gdk-window-move-resize procedure (arity 0 0 #t))
-     (gdk-window-new procedure (arity 0 0 #t))
      (gdk-window-process-all-updates
        procedure
        (arity 0 0 #t))
@@ -2317,9 +2159,6 @@
        (arity 0 0 #t))
      (gdk-window-raise procedure (arity 0 0 #t))
      (gdk-window-register-dnd
-       procedure
-       (arity 0 0 #t))
-     (gdk-window-remove-filter
        procedure
        (arity 0 0 #t))
      (gdk-window-reparent procedure (arity 0 0 #t))
@@ -2352,9 +2191,6 @@
        procedure
        (arity 0 0 #t))
      (gdk-window-set-functions
-       procedure
-       (arity 0 0 #t))
-     (gdk-window-set-geometry-hints
        procedure
        (arity 0 0 #t))
      (gdk-window-set-group procedure (arity 0 0 #t))
@@ -2396,9 +2232,6 @@
        procedure
        (arity 0 0 #t))
      (gdk-window-set-urgency-hint
-       procedure
-       (arity 0 0 #t))
-     (gdk-window-set-user-data
        procedure
        (arity 0 0 #t))
      (gdk-window-shape-combine-mask

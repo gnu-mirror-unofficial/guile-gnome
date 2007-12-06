@@ -831,7 +831,7 @@ a @code{<gtk-tree-view>}
 
 @end deffn
 
-@deffn Function gtk-tree-view-get-bin-window  (self@tie{}@code{<gtk-tree-view>}) @result{}@tie{} (ret@tie{}@code{<gdk-window*>})
+@deffn Function gtk-tree-view-get-bin-window  (self@tie{}@code{<gtk-tree-view>}) @result{}@tie{} (ret@tie{}@code{<gdk-window>})
 @deffnx Method get-bin-window
 Returns the window that @var{tree-view} renders to. This is used primarily to
 compare to @samp{event->window} to confirm that the event on @var{tree-view} is
@@ -929,7 +929,7 @@ Specifies whether to drop before, after or into the row
 
 @end deffn
 
-@deffn Function gtk-tree-view-create-row-drag-icon  (self@tie{}@code{<gtk-tree-view>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixmap*>})
+@deffn Function gtk-tree-view-create-row-drag-icon  (self@tie{}@code{<gtk-tree-view>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixmap>})
 @deffnx Method create-row-drag-icon
 Creates a @code{<gdk-pixmap>} representation of the row at @var{path}. This
 image is used for a drag icon.
