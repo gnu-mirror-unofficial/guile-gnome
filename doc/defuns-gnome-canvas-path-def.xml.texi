@@ -1,7 +1,12 @@
 
 @c %start of fragment
 
-@deffn Function gnome-canvas-path-def-new  @result{}@tie{} (ret@tie{}@code{<gnome-canvas-path-def*>})
+@deftp Class <gnome-canvas-path-def>
+Derives from @code{<gboxed>}.
+
+@end deftp
+
+@deffn Function gnome-canvas-path-def-new  @result{}@tie{} (ret@tie{}@code{<gnome-canvas-path-def>})
 This function creates a new empty @code{<gnome-canvas-path-def>}.
 
 @table @var
@@ -12,7 +17,7 @@ the new canvas path definition.
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-new-sized  (length@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gnome-canvas-path-def*>})
+@deffn Function gnome-canvas-path-def-new-sized  (length@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gnome-canvas-path-def>})
 This function creates a new @code{<gnome-canvas-path-def>} with @var{length}
 number of points allocated. It is useful, if you know the exact number of points
 in path, so you can avoid automatic point array reallocation.
@@ -28,7 +33,7 @@ the new canvas path definition
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-finish  (self@tie{}@code{<gnome-canvas-path-def*>})
+@deffn Function gnome-canvas-path-def-finish  (self@tie{}@code{<gnome-canvas-path-def>})
 Trims dynamic point array to exact length of path.
 
 @table @var
@@ -39,7 +44,7 @@ a GnomeCanvasPathDef
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-ensure-space  (self@tie{}@code{<gnome-canvas-path-def*>}) (space@tie{}@code{int})
+@deffn Function gnome-canvas-path-def-ensure-space  (self@tie{}@code{<gnome-canvas-path-def>}) (space@tie{}@code{int})
 This function ensures that enough space for @var{space} points is allocated at
 the end of the path.
 
@@ -54,7 +59,7 @@ number of points to guarantee are allocated at the end of the path.
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-duplicate  (self@tie{}@code{<gnome-canvas-path-def*>}) @result{}@tie{} (ret@tie{}@code{<gnome-canvas-path-def*>})
+@deffn Function gnome-canvas-path-def-duplicate  (self@tie{}@code{<gnome-canvas-path-def>}) @result{}@tie{} (ret@tie{}@code{<gnome-canvas-path-def>})
 This function duplicates the passed @var{path}. The new path is marked as
 non-static regardless of the state of original.
 
@@ -69,7 +74,7 @@ a GnomeCanvasPathDef which is a duplicate of @var{path}.
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-concat  (list@tie{}@code{gslist-of}) @result{}@tie{} (ret@tie{}@code{<gnome-canvas-path-def*>})
+@deffn Function gnome-canvas-path-def-concat  (list@tie{}@code{gslist-of}) @result{}@tie{} (ret@tie{}@code{<gnome-canvas-path-def>})
 This function concatenates a list of GnomeCanvasPathDefs into one newly created
 GnomeCanvasPathDef.
 
@@ -84,7 +89,7 @@ a new GnomeCanvasPathDef
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-split  (self@tie{}@code{<gnome-canvas-path-def*>}) @result{}@tie{} (ret@tie{}@code{gslist-of})
+@deffn Function gnome-canvas-path-def-split  (self@tie{}@code{<gnome-canvas-path-def>}) @result{}@tie{} (ret@tie{}@code{gslist-of})
 This function splits the passed @var{path} into a list of GnomeCanvasPathDefs
 which represent each segment of the origional path. The path is split when ever
 an ART_MOVETO or ART_MOVETO_OPEN is encountered. The closedness of resulting
@@ -101,7 +106,7 @@ a list of GnomeCanvasPathDef(s).
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-open-parts  (self@tie{}@code{<gnome-canvas-path-def*>}) @result{}@tie{} (ret@tie{}@code{<gnome-canvas-path-def*>})
+@deffn Function gnome-canvas-path-def-open-parts  (self@tie{}@code{<gnome-canvas-path-def>}) @result{}@tie{} (ret@tie{}@code{<gnome-canvas-path-def>})
 This function creates a new GnomeCanvasPathDef that contains all of the open
 segments on the passed @var{path}.
 
@@ -116,7 +121,7 @@ a new GnomeCanvasPathDef that contains all of the open segemtns in @var{path}.
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-closed-parts  (self@tie{}@code{<gnome-canvas-path-def*>}) @result{}@tie{} (ret@tie{}@code{<gnome-canvas-path-def*>})
+@deffn Function gnome-canvas-path-def-closed-parts  (self@tie{}@code{<gnome-canvas-path-def>}) @result{}@tie{} (ret@tie{}@code{<gnome-canvas-path-def>})
 This function returns a new GnomeCanvasPathDef that contains the all of close
 parts of passed @var{path}.
 
@@ -132,7 +137,7 @@ a new GnomeCanvasPathDef that contains all of the closed parts of passed
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-close-all  (self@tie{}@code{<gnome-canvas-path-def*>}) @result{}@tie{} (ret@tie{}@code{<gnome-canvas-path-def*>})
+@deffn Function gnome-canvas-path-def-close-all  (self@tie{}@code{<gnome-canvas-path-def>}) @result{}@tie{} (ret@tie{}@code{<gnome-canvas-path-def>})
 This function closes all of the open segments in the passed path and returns a
 new GnomeCanvasPathDef.
 
@@ -148,7 +153,7 @@ the path is fully closed
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-reset  (self@tie{}@code{<gnome-canvas-path-def*>})
+@deffn Function gnome-canvas-path-def-reset  (self@tie{}@code{<gnome-canvas-path-def>})
 This function clears the contents of the passed @var{path}.
 
 @table @var
@@ -159,7 +164,7 @@ a GnomeCanvasPathDef
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-moveto  (self@tie{}@code{<gnome-canvas-path-def*>}) (x@tie{}@code{double}) (y@tie{}@code{double})
+@deffn Function gnome-canvas-path-def-moveto  (self@tie{}@code{<gnome-canvas-path-def>}) (x@tie{}@code{double}) (y@tie{}@code{double})
 This function adds starts new subpath on @var{path}, and sets its starting point
 to @var{x} and @var{y}. If current subpath is empty, it simply changes its
 starting coordinates to new values.
@@ -178,7 +183,7 @@ y coordinate
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-lineto  (self@tie{}@code{<gnome-canvas-path-def*>}) (x@tie{}@code{double}) (y@tie{}@code{double})
+@deffn Function gnome-canvas-path-def-lineto  (self@tie{}@code{<gnome-canvas-path-def>}) (x@tie{}@code{double}) (y@tie{}@code{double})
 This function add a line segment to the passed @var{path} with the specified
 @var{x} and @var{y} coordinates.
 
@@ -196,7 +201,7 @@ y coordinate
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-lineto-moving  (self@tie{}@code{<gnome-canvas-path-def*>}) (x@tie{}@code{double}) (y@tie{}@code{double})
+@deffn Function gnome-canvas-path-def-lineto-moving  (self@tie{}@code{<gnome-canvas-path-def>}) (x@tie{}@code{double}) (y@tie{}@code{double})
 This functions adds a new line segment with loose endpoint to the path, or if
 endpoint is already loose, changes its coordinates to @var{x}, @var{y}. You can
 change the coordinates of loose endpoint as many times as you want, the last
@@ -217,7 +222,7 @@ y coordinate
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-curveto  (self@tie{}@code{<gnome-canvas-path-def*>}) (x0@tie{}@code{double}) (y0@tie{}@code{double}) (x1@tie{}@code{double}) (y1@tie{}@code{double}) (x2@tie{}@code{double}) (y2@tie{}@code{double})
+@deffn Function gnome-canvas-path-def-curveto  (self@tie{}@code{<gnome-canvas-path-def>}) (x0@tie{}@code{double}) (y0@tie{}@code{double}) (x1@tie{}@code{double}) (y1@tie{}@code{double}) (x2@tie{}@code{double}) (y2@tie{}@code{double})
 This function adds a bezier curve segment to the path definition.
 
 @table @var
@@ -246,7 +251,7 @@ end of curve y coordinate
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-closepath  (self@tie{}@code{<gnome-canvas-path-def*>})
+@deffn Function gnome-canvas-path-def-closepath  (self@tie{}@code{<gnome-canvas-path-def>})
 This function closes the last subpath of @var{path}, adding a ART_LINETO to
 subpath starting point, if needed and changing starting pathcode to ART_MOVETO
 
@@ -258,21 +263,7 @@ a GnomeCanvasPathDef
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-bpath  (self@tie{}@code{<gnome-canvas-path-def*>}) @result{}@tie{} (ret@tie{}@code{<art-bpath*>})
-This function returns a ArtBpath that consists of the path definition.
-
-@table @var
-@item path
-a GnomeCanvasPathDef
-
-@item ret
-ArtBpath
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-canvas-path-def-length  (self@tie{}@code{<gnome-canvas-path-def*>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffn Function gnome-canvas-path-def-length  (self@tie{}@code{<gnome-canvas-path-def>}) @result{}@tie{} (ret@tie{}@code{int})
 This function returns the length of the path definition. Not Euclidian length of
 the path but rather the number of points on the path.
 
@@ -287,7 +278,7 @@ integer, number of points on the path.
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-is-empty  (self@tie{}@code{<gnome-canvas-path-def*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gnome-canvas-path-def-is-empty  (self@tie{}@code{<gnome-canvas-path-def>}) @result{}@tie{} (ret@tie{}@code{bool})
 This function is a boolean test to see if the path is empty, meaning containing
 no line segments.
 
@@ -302,52 +293,7 @@ boolean, indicating if the path is empty.
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-currentpoint  (self@tie{}@code{<gnome-canvas-path-def*>}) (p@tie{}@code{<art-point*>})
-Stores the current point of the path definition in the passed ArtPoint @var{p}.
-
-@table @var
-@item path
-a GnomeCanvasPathDef
-
-@item p
-a ArtPoint where to store the current point
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-canvas-path-def-last-bpath  (self@tie{}@code{<gnome-canvas-path-def*>}) @result{}@tie{} (ret@tie{}@code{<art-bpath*>})
-This function returns pointer to the last ArtBpath segment in the path
-definition.
-
-@table @var
-@item path
-a GnomeCanvasPathDef
-
-@item ret
-ArtBpath, being the last segment in the path definition or null if no line
-segments have been defined.
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-canvas-path-def-first-bpath  (self@tie{}@code{<gnome-canvas-path-def*>}) @result{}@tie{} (ret@tie{}@code{<art-bpath*>})
-This function returns the first ArtBpath point in the definition.
-
-@table @var
-@item path
-a GnomeCanvasPathDef
-
-@item ret
-ArtBpath being the first point in the path definition or null if no points are
-defined
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-canvas-path-def-any-open  (self@tie{}@code{<gnome-canvas-path-def*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gnome-canvas-path-def-any-open  (self@tie{}@code{<gnome-canvas-path-def>}) @result{}@tie{} (ret@tie{}@code{bool})
 This function returns a boolean value indicating if the path has any open
 segments.
 
@@ -362,7 +308,7 @@ boolean, indicating if the path has any open segments.
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-all-open  (self@tie{}@code{<gnome-canvas-path-def*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gnome-canvas-path-def-all-open  (self@tie{}@code{<gnome-canvas-path-def>}) @result{}@tie{} (ret@tie{}@code{bool})
 This function returns a boolean value indicating if the path only contains open
 segments.
 
@@ -377,7 +323,7 @@ boolean, indicating if the path has all open segments.
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-any-closed  (self@tie{}@code{<gnome-canvas-path-def*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gnome-canvas-path-def-any-closed  (self@tie{}@code{<gnome-canvas-path-def>}) @result{}@tie{} (ret@tie{}@code{bool})
 This function returns a boolean valid indicating if the path has any closed
 segements.
 
@@ -392,7 +338,7 @@ boolean, indicating if the path has any closed segments.
 
 @end deffn
 
-@deffn Function gnome-canvas-path-def-all-closed  (self@tie{}@code{<gnome-canvas-path-def*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gnome-canvas-path-def-all-closed  (self@tie{}@code{<gnome-canvas-path-def>}) @result{}@tie{} (ret@tie{}@code{bool})
 This function returns a boolean value indicating if the path only contains
 closed segments.
 

@@ -2,26 +2,7 @@
   (version 1 0)
   ((gnome canvas)
    (uses-interfaces (gnome gw canvas))
-   (typed-exports
-     (<gnome-canvas-path-def> class)
-     (closepath generic (<gnome-canvas-path-def>))
-     (curveto
-       generic
-       (<gnome-canvas-path-def>
-         <top>
-         <top>
-         <top>
-         <top>
-         <top>
-         <top>))
-     (get-def generic (<gnome-canvas-path-def>))
-     (lineto
-       generic
-       (<gnome-canvas-path-def> <top> <top>))
-     (moveto
-       generic
-       (<gnome-canvas-path-def> <top> <top>))
-     (set-def generic (<gnome-canvas-path-def> <top>))))
+   (typed-exports))
   ((gnome gobject generics)
    (uses-interfaces)
    (typed-exports
@@ -51,15 +32,6 @@
   ((gnome gw canvas)
    (uses-interfaces (gnome gw generics))
    (typed-exports
-     (<art-bpath*> <gw:wct>)
-     (<art-point*> <gw:wct>)
-     (<art-svp*> <gw:wct>)
-     (<gnome-canvas-buf*> <gw:wct>)
-     (<gnome-canvas-path-def*> <gw:wct>)
-     (<gnome-canvas-shape> class)
-     (gnome-canvas-buf-ensure-buf
-       procedure
-       (arity 0 0 #t))
      (gnome-canvas-c2w procedure (arity 3 0 #f))
      (gnome-canvas-get-butt-points
        procedure
@@ -117,9 +89,6 @@
      (gnome-canvas-item-reparent
        procedure
        (arity 0 0 #t))
-     (gnome-canvas-item-request-redraw-svp
-       procedure
-       (arity 0 0 #t))
      (gnome-canvas-item-request-update
        procedure
        (arity 0 0 #t))
@@ -145,9 +114,6 @@
      (gnome-canvas-path-def-any-open
        procedure
        (arity 0 0 #t))
-     (gnome-canvas-path-def-bpath
-       procedure
-       (arity 0 0 #t))
      (gnome-canvas-path-def-close-all
        procedure
        (arity 0 0 #t))
@@ -163,9 +129,6 @@
      (gnome-canvas-path-def-concat
        procedure
        (arity 1 0 #f))
-     (gnome-canvas-path-def-currentpoint
-       procedure
-       (arity 0 0 #t))
      (gnome-canvas-path-def-curveto
        procedure
        (arity 0 0 #t))
@@ -178,16 +141,10 @@
      (gnome-canvas-path-def-finish
        procedure
        (arity 0 0 #t))
-     (gnome-canvas-path-def-first-bpath
-       procedure
-       (arity 0 0 #t))
      (gnome-canvas-path-def-has-currentpoint
        procedure
        (arity 0 0 #t))
      (gnome-canvas-path-def-is-empty
-       procedure
-       (arity 0 0 #t))
-     (gnome-canvas-path-def-last-bpath
        procedure
        (arity 0 0 #t))
      (gnome-canvas-path-def-length
@@ -203,15 +160,6 @@
        procedure
        (arity 0 0 #t))
      (gnome-canvas-path-def-new
-       procedure
-       (arity 0 0 #t))
-     (gnome-canvas-path-def-new-from-bpath
-       procedure
-       (arity 0 0 #t))
-     (gnome-canvas-path-def-new-from-foreign-bpath
-       procedure
-       (arity 0 0 #t))
-     (gnome-canvas-path-def-new-from-static-bpath
        procedure
        (arity 0 0 #t))
      (gnome-canvas-path-def-new-sized
@@ -232,9 +180,6 @@
      (gnome-canvas-polygon-to-point
        procedure
        (arity 3 0 #f))
-     (gnome-canvas-render-svp
-       procedure
-       (arity 0 0 #t))
      (gnome-canvas-request-redraw
        procedure
        (arity 0 0 #t))
@@ -301,12 +246,4 @@
        (arity 0 0 #t))))
   ((gnome gw generics)
    (uses-interfaces (gnome gobject generics))
-   (typed-exports
-     (get-path-def generic (<gnome-canvas-shape>))
-     (reset generic
-            (<gnome-canvas-path-def>)
-            (<gtk-curve>))
-     (set-path-def
-       generic
-       (<gnome-canvas-shape> <gnome-canvas-path-def>)
-       (<gnome-canvas-shape> <top>)))))
+   (typed-exports)))

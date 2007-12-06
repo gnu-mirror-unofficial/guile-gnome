@@ -2,6 +2,8 @@
 @c %start of fragment
 
 @deftp Class <gnome-canvas-points>
+Derives from @code{<gboxed>}.
+
 @end deftp
 
 @deffn Function gnome-canvas-points-new  (points@tie{}@code{scm}) @result{}@tie{} (ret@tie{}@code{scm})
@@ -129,23 +131,6 @@ polygon.
 
 @end deffn
 
-@deffn Function gnome-canvas-render-svp  (buf@tie{}@code{<gnome-canvas-buf*>}) (svp@tie{}@code{<art-svp*>}) (rgba@tie{}@code{unsigned-int32})
-Render the svp over the buf.
-
-@table @var
-@item buf
-the canvas buffer to render over
-
-@item svp
-the vector path to render
-
-@item rgba
-the rgba color to render
-
-@end table
-
-@end deffn
-
 @deffn Function gnome-canvas-item-reset-bounds  (self@tie{}@code{<gnome-canvas-item>})
 @deffnx Method reset-bounds
 Resets the bounding box of a canvas item to an empty rectangle.
@@ -176,17 +161,6 @@ Right coordinate of the new bounding box
 
 @item y2
 Bottom coordinate of the new bounding box
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-canvas-buf-ensure-buf  (self@tie{}@code{<gnome-canvas-buf*>})
-Ensure that the buffer is in RGB format, suitable for compositing.
-
-@table @var
-@item buf
-the buf that needs to be represened in RGB format
 
 @end table
 

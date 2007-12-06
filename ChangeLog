@@ -1,3 +1,20 @@
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* tests/wrapset.api: Update for API removal.
+
+	* gnome/canvas.scm (<gnome-canvas-path-def>, moveto, curveto)
+	(lineto, closepath, reset, set-path-def, get-path-def):
+	Unfortunately, now that we wrap <gnome-canvas-path-def> properly,
+	we can't have these convenient generics, because
+	<gnome-canvas-path-def> is a <gvalue> class. If this is to be
+	fixed, it should be fixed in the core. Removing these manual
+	wrappers.
+
+	* doc/defuns-*.texi: Regenerated.
+
+	* doc/guile-gnome-libgnomecanvas.texi (Top): 
+	* doc/undocumented.texi: New section for undocumented exports.
+
 2007-11-30  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/overrides/libgnomecanvas.defs: Mark GnomeCanvasPathDef as
