@@ -12,6 +12,7 @@ docbook_xml_base = ~/src/gnome2/pango/docs/xml/
 docbook_xml_files = $(addprefix $(docbook_xml_base),$(docbook_xml))
 
 wrapset_stem = pangocairo
+GTK_DOC_COVERAGE_MODULES = (gnome gw $(wrapset_stem))
 
 EXTRA_DIST = overrides.texi
 

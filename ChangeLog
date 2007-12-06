@@ -1,3 +1,14 @@
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* doc/pango/defuns-*.texi: Regenerated.
+	* doc/pangocairo/defuns-*.texi: Regenerated.
+
+	* doc/pangocairo/guile-gnome-pango.texi (Top): 
+	* doc/pangocairo/undocumented.texi:
+	* doc/pango/guile-gnome-pango.texi (Top): 
+	* doc/pango/undocumented.texi: New section for undocumented
+	exports.
+
 2007-11-25  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/pango-spec.scm (global-declarations-cg): Fix a typo.

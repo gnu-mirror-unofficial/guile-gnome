@@ -1,6 +1,11 @@
 
 @c %start of fragment
 
+@deftp Class <pango-coverage>
+Opaque pointer.
+
+@end deftp
+
 @deffn Function pango-coverage-new  @result{}@tie{} (ret@tie{}@code{<pango-coverage>})
 Create a new @code{<pango-coverage>}
 

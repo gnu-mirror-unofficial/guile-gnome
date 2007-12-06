@@ -2,9 +2,13 @@
 @c %start of fragment
 
 @deftp Class <pango-matrix>
+Derives from @code{<gboxed>}.
+
 @end deftp
 
 @deftp Class <pango-glyph-string>
+Derives from @code{<gboxed>}.
+
 @end deftp
 
 @deffn Function pango-matrix-copy  (self@tie{}@code{<pango-matrix>}) @result{}@tie{} (ret@tie{}@code{<pango-matrix>})

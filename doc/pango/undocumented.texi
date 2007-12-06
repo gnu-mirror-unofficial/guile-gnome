@@ -1,0 +1,73 @@
+
+@c %start of fragment
+
+@node Undocumented
+@chapter Undocumented
+The following symbols, if any, have not been properly documented.
+
+@section (gnome gw pango)
+@defvar pango-context-get-font-description
+@end defvar
+
+@defvar pango-font-describe-with-absolute-size
+@end defvar
+
+@defvar pango-font-description-copy-static
+@end defvar
+
+@defvar pango-font-description-from-string
+@end defvar
+
+@defvar pango-font-description-get-set-fields
+@end defvar
+
+@defvar pango-font-description-get-size-is-absolute
+@end defvar
+
+@defvar pango-font-description-set-absolute-size
+@end defvar
+
+@defvar pango-font-description-set-family-static
+@end defvar
+
+@defvar pango-font-metrics-get-approximate-char-width
+@end defvar
+
+@defvar pango-font-metrics-get-approximate-digit-width
+@end defvar
+
+@defvar pango-font-metrics-get-strikethrough-position
+@end defvar
+
+@defvar pango-font-metrics-get-strikethrough-thickness
+@end defvar
+
+@defvar pango-font-metrics-get-underline-position
+@end defvar
+
+@defvar pango-font-metrics-get-underline-thickness
+@end defvar
+
+@defun pango-glyph-string-get-logical-widths 
+@end defun
+
+@defvar pango-layout-get-font-description
+@end defvar
+
+@defvar pango-layout-get-single-paragraph-mode
+@end defvar
+
+@defun pango-layout-iter-get-cluster-extents 
+@end defun
+
+@defun pango-layout-iter-get-layout-extents 
+@end defun
+
+@defvar pango-layout-set-single-paragraph-mode
+@end defvar
+
+@defvar pango-tab-array-get-positions-in-pixels
+@end defvar
+
+
+@c %end of fragment

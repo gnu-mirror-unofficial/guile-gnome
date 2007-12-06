@@ -1,6 +1,11 @@
 
 @c %start of fragment
 
+@deftp Class <pango-script-iter>
+Opaque pointer.
+
+@end deftp
+
 @deffn Function pango-script-for-unichar  (ch@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{<pango-script>})
 Looks up the @code{<pango-script>} for a particular character (as defined by
 Unicode Standard Annex @code{<24>}). No check is made for @var{ch} being a valid

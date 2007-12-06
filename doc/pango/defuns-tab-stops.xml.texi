@@ -2,6 +2,8 @@
 @c %start of fragment
 
 @deftp Class <pango-tab-array>
+Derives from @code{<gboxed>}.
+
 @end deftp
 
 @deffn Function pango-tab-array-new  (initial_size@tie{}@code{int}) (positions_in_pixels@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<pango-tab-array>})

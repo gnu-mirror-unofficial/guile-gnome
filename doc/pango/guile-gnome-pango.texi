@@ -56,6 +56,8 @@ later version published by the Free Software Foundation.
 * Tab Stops::                 Structures for storing tab stops
 * Text Attributes::           Font and other attributes for annotating text
 
+* Undocumented::              Undocumented functions.
+
 * Type Index::
 * Function Index::
 @end menu
@@ -77,6 +79,7 @@ later version published by the Free Software Foundation.
 @include section-tab-stops.xml.texi
 @include section-text-attributes.xml.texi
 
+@include undocumented.texi
 
 @node Type Index
 @unnumbered Type Index

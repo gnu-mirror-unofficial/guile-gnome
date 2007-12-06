@@ -1,13 +1,29 @@
 
 @c %start of fragment
 
+@deftp Class <pango-attribute>
+Opaque pointer.
+
+@end deftp
+
 @deftp Class <pango-color>
+Derives from @code{<gboxed>}.
+
 @end deftp
 
 @deftp Class <pango-language>
+Derives from @code{<gboxed>}.
+
 @end deftp
 
 @deftp Class <pango-attr-list>
+Derives from @code{<gboxed>}.
+
+@end deftp
+
+@deftp Class <pango-attr-iterator>
+Opaque pointer.
+
 @end deftp
 
 @deffn Function pango-attr-type-register  (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<pango-attr-type>})
