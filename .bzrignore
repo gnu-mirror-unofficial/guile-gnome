@@ -8,3 +8,5 @@ libgw-guile-gnome-cairo.la
 libgw_guile_gnome_cairo_la-guile-gnome-gw-cairo.lo
 cairo.scm
 gnome-glib.log
+gnome/gw/.deps
+gnome/gw/.libs
