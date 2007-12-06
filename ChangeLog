@@ -1,3 +1,18 @@
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/wrapset.api: 
+	* test-suite/gobject.api: Regenerate.
+
+	* gnome/gw/support/gtk-doc.scm (generate-undocumented-texi): New
+	exported function, generates undocumented.texi.
+
+	* doc/glib/undocumented.texi: 
+	* doc/glib/guile-gnome-glib.texi (Top): Add undocumented
+	functions.
+
+	* doc/glib/defuns-unicode.xml.texi: Regenerated docs removed some
+	functions.
+
 2007-11-30  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/support/defs.scm (type-lookup): Ignore functions that

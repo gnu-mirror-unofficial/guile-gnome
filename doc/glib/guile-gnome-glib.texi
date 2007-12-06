@@ -83,6 +83,8 @@ POSSIBILITY OF SUCH DAMAGES.
 * Strings::                   Text buffers which grow automatically as text is added.
 * Unicode Manipulation::      Functions operating on Unicode characters and UTF-8 strings.
 
+* Undocumented::              Undocumented functions.
+
 * Type Index::
 * Function Index::
 @end menu
@@ -103,6 +105,8 @@ POSSIBILITY OF SUCH DAMAGES.
 @include section-shell.xml.texi
 @include section-strings.xml.texi
 @include section-unicode.xml.texi
+
+@include undocumented.texi
 
 @node Type Index
 @unnumbered Type Index

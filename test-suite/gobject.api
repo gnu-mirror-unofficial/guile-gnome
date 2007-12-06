@@ -347,6 +347,7 @@
      (wrap-flags!
        generic
        (<gobject-wrapset-base> . <top>))
+     (wrap-freeable-pointer! procedure (arity 3 0 #f))
      (wrap-gobject-class!
        generic
        (<gobject-wrapset-base> . <top>))
@@ -359,10 +360,20 @@
      (wrap-opaque-pointer! procedure (arity 2 0 #f))
      (wrap-pointer!
        generic
-       (<gobject-wrapset-base> . <top>))))
+       (<gobject-wrapset-base> . <top>))
+     (wrap-refcounted-pointer!
+       procedure
+       (arity 4 0 #f))
+     (wrap-structure! procedure (arity 4 0 #f))))
   ((gnome gw support gtk-doc)
    (uses-interfaces)
    (typed-exports
+     (check-documentation-coverage
+       procedure
+       (arity 2 0 #f))
+     (generate-undocumented-texi
+       procedure
+       (arity 2 0 #f))
      (gtk-doc->texi-defuns procedure (arity 3 0 #t))
      (gtk-doc->texi-stubs procedure (arity 1 0 #f))))
   ((gnome gw support modules)

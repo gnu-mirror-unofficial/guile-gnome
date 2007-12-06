@@ -110,6 +110,7 @@
 
   #:use-module (texinfo)
   #:use-module (texinfo docbook)
+  #:use-module (texinfo reflection)
   #:use-module (texinfo serialize)
   #:use-module (match-bind)
 
@@ -122,7 +123,8 @@
 
   #:export (gtk-doc->texi-stubs
             gtk-doc->texi-defuns
-            check-documentation-coverage))
+            check-documentation-coverage
+            generate-undocumented-texi))
 
 (define (attr-ref attrs name . default)
   (or (and=> (assq name (cdr attrs)) cadr)
@@ -798,3 +800,48 @@ to the current output port."
      (lambda (sym)
        (format #t "  ~A\n" sym))
      (sort spurious symbol<?))))
+
+(define (generate-undocumented-texi modules texi)
+  "Verify the bindings exported by @var{modules} against the
+documentation in @var{texi}, writing documentation for any undocumented
+symbol to @code{undocumented.texi}.
+
+@var{modules} is a list of module names, and @var{texi} is a path to a
+texinfo file."
+  (let* ((defs (extract-defs
+                (call-with-input-file texi texi->stexi)))
+         (def-names (map def-name defs)))
+    (define (module-undocumented mod)
+      (sort! 
+       (lset-difference eq?
+                        (module-map (lambda (k v) k)
+                                    (resolve-interface mod))
+                        def-names)
+       symbol<?))
+    (display
+     (stexi->texi
+      `(*fragment*
+        (node (% (name "Undocumented")))
+        (chapter "Undocumented")
+        (para "The following symbols, if any, have not been properly "
+              "documented.")
+        ,@(append-map
+           (lambda (mod)
+             (let ((undocumented (module-undocumented mod)))
+               (cond
+                ((null? undocumented) '())
+                (else
+                 `((section ,(with-output-to-string
+                               (lambda () (write mod))))
+                   ,@(append-map
+                      (lambda (sym)
+                        (let ((odoc (object-stexi-documentation
+                                     (module-ref (resolve-interface mod) sym)
+                                     sym
+                                     #:force #t)))
+                          (if (eq? (car odoc) '*fragment*)
+                              (cdr odoc)
+                              (list odoc))))
+                      undocumented))))))
+           modules)))
+     (open-output-file "undocumented.texi"))))
