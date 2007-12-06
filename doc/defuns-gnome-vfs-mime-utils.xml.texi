@@ -38,23 +38,6 @@ Since 2.14
 
 @end deffn
 
-@deffn Function gnome-vfs-get-mime-type-for-data  (data@tie{}@code{<gconstpointer>}) (data_size@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
-Tries to guess the mime type of the data in @var{data} using the magic patterns.
-
-@table @var
-@item data
-a pointer to data in memory.
-
-@item data-size
-size of the data.
-
-@item ret
-the mime-type for @var{data}.
-
-@end table
-
-@end deffn
-
 @deffn Function gnome-vfs-get-mime-type  (text_uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Determine the mime type of @var{text-uri}. The mime type is determined in the
 same way as by @code{gnome-vfs-get-file-info}. This is meant as a convenient

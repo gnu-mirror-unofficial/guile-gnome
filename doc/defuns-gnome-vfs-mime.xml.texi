@@ -22,7 +22,7 @@ if mime-type could not be found.
 
 @end deffn
 
-@deffn Function gnome-vfs-get-mime-type-common  (uri@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function gnome-vfs-get-mime-type-common  (uri@tie{}@code{<gnome-vfsuri>}) @result{}@tie{} (ret@tie{}@code{mchars})
 Tries to guess the mime type of the file represented by @var{uri}. Favors using
 the file data to the @var{uri} extension. Handles @var{uri} of a non-existent
 file by falling back on returning a type based on the extension. If cant find
@@ -43,7 +43,7 @@ the mime-type for @var{uri}.
 
 @end deffn
 
-@deffn Function gnome-vfs-get-mime-type-from-uri  (uri@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffn Function gnome-vfs-get-mime-type-from-uri  (uri@tie{}@code{<gnome-vfsuri>}) @result{}@tie{} (ret@tie{}@code{mchars})
 Tries to guess the mime type of the file @var{uri} by checking the file name
 extension. Works on non-existent files.
 
@@ -53,53 +53,6 @@ a file uri.
 
 @item ret
 the mime-type for file at @var{uri}.
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-vfs-get-file-mime-type-fast  (path@tie{}@code{mchars}) (optional_stat_info@tie{}@code{<gpointer>}) @result{}@tie{} (ret@tie{}@code{mchars})
-Tries to guess the mime type of the file represented by @var{path}. It uses
-extention/name detection first, and if that fails it falls back to mime-magic
-based lookup. This is faster than always doing mime-magic but doesn't always
-produce the right answer, so for important decisions you should use
-@code{gnome-vfs-get-file-mime-type}.
-
-@table @var
-@item path
-path of the file whose mime type is to be found out.
-
-@item optional-stat-info
-optional stat buffer.
-
-@item ret
-the mime-type for file at @var{path}.
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-vfs-get-file-mime-type  (path@tie{}@code{mchars}) (optional_stat_info@tie{}@code{<gpointer>}) (suffix_only@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{mchars})
-Tries to guess the mime type of the file represented by @var{path}. If
-@var{suffix-only} is false, uses the mime-magic based lookup first. Handles
-@var{path} of a non-existent file by falling back on returning a type based on
-the extension.
-
-If you need a faster, less accurate version, use
-@code{gnome-vfs-get-file-mime-type-fast}.
-
-@table @var
-@item path
-path of a file whose mime type is to be found out.
-
-@item optional-stat-info
-optional stat buffer.
-
-@item suffix-only
-whether or not to do a magic-based lookup.
-
-@item ret
-the mime-type for file at @var{path}.
 
 @end table
 

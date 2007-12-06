@@ -30,7 +30,7 @@ an integer representing the result of the operation.
 
 @end deffn
 
-@deffn Function gnome-vfs-create-uri  (uri@tie{}@code{<gnome-vfsuri*>}) (open_mode@tie{}@code{<gnome-vfs-open-mode>}) (exclusive@tie{}@code{bool}) (perm@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{scm})
+@deffn Function gnome-vfs-create-uri  (uri@tie{}@code{<gnome-vfsuri>}) (open_mode@tie{}@code{<gnome-vfs-open-mode>}) (exclusive@tie{}@code{bool}) (perm@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{scm})
 Create @var{uri} according to mode @var{open-mode}. On return, @var{handle} will
 then contain a pointer to a handle for the open file.
 
@@ -79,7 +79,7 @@ an integer representing the result of the operation.
 
 @end deffn
 
-@deffn Function gnome-vfs-open-uri  (uri@tie{}@code{<gnome-vfsuri*>}) (open_mode@tie{}@code{<gnome-vfs-open-mode>}) @result{}@tie{} (ret@tie{}@code{scm})
+@deffn Function gnome-vfs-open-uri  (uri@tie{}@code{<gnome-vfsuri>}) (open_mode@tie{}@code{<gnome-vfs-open-mode>}) @result{}@tie{} (ret@tie{}@code{scm})
 Open @var{uri} according to mode @var{open-mode}. On return, @var{handle} will
 then contain a pointer to a handle for the open file.
 
@@ -92,20 +92,6 @@ uri to open.
 
 @item open-mode
 open mode.
-
-@item ret
-an integer representing the result of the operation.
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-vfs-close  (handle@tie{}@code{<gnome-vfs-handle*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
-Close file associated with @var{handle}.
-
-@table @var
-@item handle
-pointer to a @code{<gnome-vfs-handle>} object.
 
 @item ret
 an integer representing the result of the operation.
@@ -128,7 +114,7 @@ an integer representing the result of the operation.
 
 @end deffn
 
-@deffn Function gnome-vfs-unlink-from-uri  (uri@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+@deffn Function gnome-vfs-unlink-from-uri  (uri@tie{}@code{<gnome-vfsuri>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
 Unlink @var{uri} (i.e. delete the file).
 
 @table @var
@@ -142,7 +128,7 @@ an integer representing the result of the operation.
 
 @end deffn
 
-@deffn Function gnome-vfs-move-uri  (old_uri@tie{}@code{<gnome-vfsuri*>}) (new_uri@tie{}@code{<gnome-vfsuri*>}) (force_replace@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+@deffn Function gnome-vfs-move-uri  (old_uri@tie{}@code{<gnome-vfsuri>}) (new_uri@tie{}@code{<gnome-vfsuri>}) (force_replace@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
 Move a file from uri @var{old-uri} to @var{new-uri}. This will only work if
 @var{old-uri} and @var{new-uri} are on the same file system. Otherwise, it is
 necessary to use the more general @code{gnome-vfs-xfer-uri} function.
@@ -189,7 +175,7 @@ an integer representing the result of the operation.
 
 @end deffn
 
-@deffn Function gnome-vfs-check-same-fs-uris  (source_uri@tie{}@code{<gnome-vfsuri*>}) (target_uri@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>}) (same_fs_return@tie{}@code{bool})
+@deffn Function gnome-vfs-check-same-fs-uris  (source_uri@tie{}@code{<gnome-vfsuri>}) (target_uri@tie{}@code{<gnome-vfsuri>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>}) (same_fs_return@tie{}@code{bool})
 Check if @var{source-uri} and @var{target-uri} are on the same file system.
 
 @table @var
@@ -231,7 +217,7 @@ an integer representing the result of the operation.
 
 @end deffn
 
-@deffn Function gnome-vfs-uri-exists  (self@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffn Function gnome-vfs-uri-exists  (self@tie{}@code{<gnome-vfsuri>}) @result{}@tie{} (ret@tie{}@code{bool})
 Check if the uri points to an existing entity.
 
 @table @var
@@ -245,7 +231,7 @@ a uri.
 
 @end deffn
 
-@deffn Function gnome-vfs-create-symbolic-link  (uri@tie{}@code{<gnome-vfsuri*>}) (target_reference@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+@deffn Function gnome-vfs-create-symbolic-link  (uri@tie{}@code{<gnome-vfsuri>}) (target_reference@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
 Creates a symbolic link, or eventually, a uri link (as necessary) at @var{uri}
 pointing to @var{target-reference}.
 

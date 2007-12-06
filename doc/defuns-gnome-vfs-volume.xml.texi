@@ -2,8 +2,9 @@
 @c %start of fragment
 
 @deftp Class <gnome-vfs-volume>
-This @code{<gobject>} class defines no properties, other than those defined by
-its superclasses.
+Derives from @code{<gobject>}.
+
+This class defines no properties, other than those defined by its superclasses.
 
 @end deftp
 
@@ -19,6 +20,15 @@ The resulting @code{<gint>} should be used to determine the order in which
 
 The comparison algorithm first of all peeks the device type of @var{a} and
 @var{b}, they will be sorted in the following order:
+
+@itemize 
+@item
+@item
+@item
+@item
+@item
+@item
+@end itemize
 
 Magnetic and opto-magnetic volumes (ZIP, floppy)
 
@@ -49,42 +59,6 @@ a @code{<gnome-vfs-volume>}.
 0 if the volumes refer to the same @var{gnome-vfs-volume}, a negative value if
 @var{a} should be displayed before @var{b}, or a positive value if @var{a}
 should be displayed after @var{b}.
-
-@end table
-
-Since 2.6
-
-@end deffn
-
-@deffn Function gnome-vfs-volume-eject  (self@tie{}@code{<gnome-vfs-volume>}) (callback@tie{}@code{<gnome-vfs-volume-op-callback>}) (user_data@tie{}@code{<gpointer>})
-@deffnx Method eject
-Requests ejection of a @code{<gnome-vfs-volume>}.
-
-Before the unmount operation is executed, the
-@code{<gnome-vfs-volume::pre-unmount>} signal is emitted.
-
-If the @var{volume} is a mount point (its type is
-@code{<gnome-vfs-volume-type-mountpoint>}), it is unmounted, and if it refers to
-a disc, it is also ejected.
-
-If the @var{volume} is a special VFS mount, i.e. its type is
-@code{<gnome-vfs-volume-type-vfs-mount>}, it is ejected.
-
-If the @var{volume} is a connected server, it is removed from the list of
-connected servers.
-
-Otherwise, no further action is done.
-
-@table @var
-@item volume
-the @code{<gnome-vfs-volume>} that should be ejected.
-
-@item callback
-the @code{<gnome-vfs-volume-op-callback>} that should be invoked after ejecting
-of @var{volume}.
-
-@item user-data
-the user data to pass to @var{callback}.
 
 @end table
 
@@ -348,30 +322,6 @@ Since 2.6
 
 @end deffn
 
-@deffn Function gnome-vfs-volume-unmount  (self@tie{}@code{<gnome-vfs-volume>}) (callback@tie{}@code{<gnome-vfs-volume-op-callback>}) (user_data@tie{}@code{<gpointer>})
-@deffnx Method unmount
-Note that @code{gnome-vfs-volume-unmount} may also invoke
-@code{gnome-vfs-volume-eject}, if the @var{volume} signals that it should be
-ejected when it is unmounted. This may be true for CD-ROMs, USB sticks and other
-devices, depending on the backend providing the @var{volume}.
-
-@table @var
-@item volume
-the @code{<gnome-vfs-volume>} that should be unmounted.
-
-@item callback
-the @code{<gnome-vfs-volume-op-callback>} that should be invoked after
-unmounting @var{volume}.
-
-@item user-data
-the user data to pass to @var{callback}.
-
-@end table
-
-Since 2.6
-
-@end deffn
-
 @deffn Function gnome-vfs-connect-to-server  (uri@tie{}@code{mchars}) (display_name@tie{}@code{mchars}) (icon@tie{}@code{mchars})
 This function adds a server connection to the specified @var{uri}, which is
 displayed in user interfaces with the specified @var{display-name} and
@@ -380,8 +330,6 @@ displayed in user interfaces with the specified @var{display-name} and
 If this function is invoked successfully, the created server shows up in the
 list of mounted volumes of the @code{<gnome-vfs-volume-monitor>}, which can be
 queried using @code{gnome-vfs-volume-monitor-get-mounted-volumes}.
-
-
 
 This function does not have a return value. Hence, you can't easily detect
 whether the specified server was successfully created. The actual creation and

@@ -20,6 +20,7 @@ docbook_xml_ignore_files = \
 docbook_xml_files = $(filter-out $(docbook_xml_ignore_files), $(wildcard $(docbook_xml_wildcard)))
 
 wrapset_stem = gnome-vfs
+GTK_DOC_COVERAGE_MODULES = (gnome vfs) (gnome gw $(wrapset_stem))
 
 EXTRA_DIST = overrides.texi
 

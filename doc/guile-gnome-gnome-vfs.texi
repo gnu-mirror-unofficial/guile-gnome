@@ -100,6 +100,8 @@ MIME Registry
 * MIME Database:: functions for getting information about applications and components associated
 * gnome-vfs-mime-monitor:: 
 
+* Undocumented::           Undocumented functions.
+
 * Type Index::
 * Function Index::
 @end menu
@@ -149,6 +151,8 @@ MIME Registry
 @include section-gnome-vfs-mime-utils.xml.texi
 @include section-gnome-vfs-mime-database.xml.texi
 @include section-gnome-vfs-mime-monitor.xml.texi
+
+@include undocumented.texi
 
 @node Type Index
 @unnumbered Type Index

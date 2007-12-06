@@ -42,31 +42,6 @@ Since 2.4
 
 @end deffn
 
-@deffn Function gnome-vfs-url-show-with-env  (url@tie{}@code{mchars}) (envp@tie{}@code{<char**>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
-Like @code{gnome-vfs-url-show} except that the default action will be launched
-with the given environment.
-
-@table @var
-@item url
-url to be shown.
-
-@item envp
-environment data.
-
-@item ret
-@samp{GNOME_VFS_OK} if the default action was launched.
-@samp{GNOME_VFS_ERROR_BAD_PARAMETERS} for an invalid or non-existant @var{url},
-@samp{GNOME_VFS_ERROR_NO_DEFAULT} if no default action is associated with the
-@var{url}. Also error codes from
-@code{gnome-vfs-mime-application-launch-with-env} or
-@code{gnome-vfs-mime-action-launch-with-env}.
-
-@end table
-
-Since 2.4
-
-@end deffn
-
 @deffn Function gnome-vfs-escape-string  (string@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 Escapes @var{string}, replacing any and all special characters with equivalent
 escape sequences.
@@ -280,24 +255,6 @@ a newly allocated string containing the uri corresponding to
 
 @end deffn
 
-@deffn Function gnome-vfs-get-volume-free-space  (vfs_uri@tie{}@code{<gnome-vfsuri*>}) (size@tie{}@code{<gnome-vfs-file-size*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
-Stores the amount of free space in bytes on @var{vfs}-uri's volume in
-@var{size}.
-
-@table @var
-@item vfs-uri
-a @code{<gnome-vfsuri>}.
-
-@item size
-a @code{<gnome-vfs-file-size>}.
-
-@item ret
-@samp{GNOME_VFS_OK} on success, otherwise an @samp{GNOME_VFS_ERROR_}* code.
-
-@end table
-
-@end deffn
-
 @deffn Function gnome-vfs-icon-path-from-filename  (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
 @table @var
 @item filename
@@ -354,51 +311,6 @@ stringified uri to compare with @var{uri-1}.
 
 @item ret
 @samp{@code{#t}} if they are the same, @samp{@code{#f}} otherwise.
-
-@end table
-
-Since 2.2
-
-@end deffn
-
-@deffn Function gnome-vfs-open-fd  (handle@tie{}@code{<gnome-vfs-handle**>}) (filedes@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
-Converts an open unix file descript into a GnomeVFSHandle that can be used with
-the normal GnomeVFS file operations. When the handle is closed the file
-descriptor will also be closed.
-
-@table @var
-@item handle
-A pointer to a pointer to a GnomeVFSHandle object
-
-@item filedes
-a UNIX file descriptor
-
-@item ret
-@samp{GNOME_VFS_OK} if the open was ok, a suitable error otherwise. Since 2.2
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-vfs-read-entire-file  (uri@tie{}@code{mchars}) (file_contents@tie{}@code{<char**>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>}) (file_size@tie{}@code{int})
-Reads an entire file into memory for convenience. Beware accidentally loading
-large files into memory with this function.
-
-Since version 2.10 the string stored in @var{file-contents} will be
-null-terminated, so for text files you can use result as a normal string.
-
-@table @var
-@item uri
-uri of the file to read.
-
-@item file-size
-after reading the file, contains the size of the file read.
-
-@item file-contents
-contains the file_size bytes, the contents of the file at @var{uri}.
-
-@item ret
-an integer representing the result of the operation.
 
 @end table
 

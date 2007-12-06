@@ -1,48 +1,5 @@
 
 @c %start of fragment
 
-@deffn Function gnome-vfs-monitor-add  (handle@tie{}@code{<gnome-vfs-monitor-handle**>}) (text_uri@tie{}@code{mchars}) (monitor_type@tie{}@code{<gnome-vfs-monitor-type>}) (callback@tie{}@code{<gnome-vfs-monitor-callback>}) (user_data@tie{}@code{<gpointer>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
-Watch the file or directory at @var{text-uri} for changes (or the
-creation/deletion of the file) and call @var{callback} when there is a change.
-If a directory monitor is added, @var{callback} is notified when any file in the
-directory changes.
-
-@table @var
-@item handle
-after the call, @var{handle} will be a pointer to an operation handle.
-
-@item text-uri
-string representing the uri to monitor.
-
-@item monitor-type
-add a directory or file monitor.
-
-@item callback
-function to call when the monitor is tripped.
-
-@item user-data
-data to pass to @var{callback}.
-
-@item ret
-an integer representing the result of the operation.
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-vfs-monitor-cancel  (handle@tie{}@code{<gnome-vfs-monitor-handle*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
-Cancel the monitor pointed to be @var{handle}.
-
-@table @var
-@item handle
-handle of the monitor to cancel.
-
-@item ret
-an integer representing the result of the operation.
-
-@end table
-
-@end deffn
-
 
 @c %end of fragment

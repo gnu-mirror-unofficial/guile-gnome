@@ -1,76 +1,10 @@
 
 @c %start of fragment
 
-@deffn Function gnome-vfs-file-info-new  @result{}@tie{} (ret@tie{}@code{<gnome-vfs-file-info*>})
-Allocate and initialize a new @code{<gnome-vfs-file-info>} struct.
+@deftp Class <gnome-vfs-file-info>
+Opaque pointer.
 
-@table @var
-@item ret
-a pointer to the newly allocated file information struct.
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-vfs-file-info-clear  (self@tie{}@code{<gnome-vfs-file-info*>})
-Clear @var{info} so that it's ready to accept new data. This is supposed to be
-used when @var{info} already contains meaningful information which we want to
-replace.
-
-@table @var
-@item info
-pointer to a file information struct.
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-vfs-file-info-get-mime-type  (self@tie{}@code{<gnome-vfs-file-info*>}) @result{}@tie{} (ret@tie{}@code{mchars})
-Retrieve MIME type from @var{info}. There is no need to free the return value.
-
-@table @var
-@item info
-a pointer to a file information struct.
-
-@item ret
-a pointer to a string representing the MIME type.
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-vfs-file-info-dup  (self@tie{}@code{<gnome-vfs-file-info*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-file-info*>})
-Duplicates @var{orig} and returns it.
-
-@table @var
-@item orig
-pointer to a file information structure to duplicate.
-
-@item ret
-a new file information struct that duplicates the information in @var{orig}.
-
-@end table
-
-@end deffn
-
-@deffn Function gnome-vfs-file-info-matches  (self@tie{}@code{<gnome-vfs-file-info*>}) (b@tie{}@code{<gnome-vfs-file-info*>}) @result{}@tie{} (ret@tie{}@code{bool})
-Compare the two file info structs, return @samp{@code{#t}} if they match exactly
-the same file data.
-
-@table @var
-@item a
-first @code{<gnome-vfs-file-info>} struct to compare.
-
-@item b
-second @code{<gnome-vfs-file-info>} struct to compare.
-
-@item ret
-@samp{@code{#t}} if the two @code{<gnome-vfs-file-infos>} match, otherwise
-return @samp{@code{#f}}.
-
-@end table
-
-@end deffn
+@end deftp
 
 
 @c %end of fragment

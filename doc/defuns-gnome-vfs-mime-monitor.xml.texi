@@ -1,16 +1,5 @@
 
 @c %start of fragment
 
-@deffn Function gnome-vfs-mime-monitor-get  @result{}@tie{} (ret@tie{}@code{<gnome-vfsmime-monitor*>})
-Get access to the single global monitor.
-
-@table @var
-@item ret
-
-
-@end table
-
-@end deffn
-
 
 @c %end of fragment

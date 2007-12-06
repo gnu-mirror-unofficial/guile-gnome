@@ -18,7 +18,7 @@ an integer representing the result of the operation.
 
 @end deffn
 
-@deffn Function gnome-vfs-make-directory-for-uri  (uri@tie{}@code{<gnome-vfsuri*>}) (perm@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+@deffn Function gnome-vfs-make-directory-for-uri  (uri@tie{}@code{<gnome-vfsuri>}) (perm@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
 Create a directory at @var{uri}. Only succeeds if a file or directory does not
 already exist at @var{uri}.
 
@@ -50,7 +50,7 @@ an integer representing the result of the operation.
 
 @end deffn
 
-@deffn Function gnome-vfs-remove-directory-from-uri  (uri@tie{}@code{<gnome-vfsuri*>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+@deffn Function gnome-vfs-remove-directory-from-uri  (uri@tie{}@code{<gnome-vfsuri>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
 Remove @var{uri}. @var{uri} must be an empty directory.
 
 @table @var
