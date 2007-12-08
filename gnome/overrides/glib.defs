@@ -183,6 +183,7 @@
   (of-object "GMainLoop")
   (c-name "_wrap_g_main_loop_run")
   (overrides "g_main_loop_run")
+  (leave-guile-mode #f)
   (return-type "none"))
 
 (define-method string

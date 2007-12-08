@@ -1,3 +1,11 @@
+2007-12-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/glib.defs (run): 
+	* gnome/gw/glib-support.c (_wrap_g_main_loop_run): Don't leave
+	guile mode before calling main_loop_run, because we still have to
+	do some SCM-calling things. Instead leave guile mode from inside
+	the wrapper. Fixes some lockups.
+
 2007-12-06  Andy Wingo  <wingo@pobox.com>
 
 	* test-suite/wrapset.api: 

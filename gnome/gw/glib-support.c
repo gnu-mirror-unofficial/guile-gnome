@@ -227,6 +227,13 @@ scm_init_glib (void)
     /* noop */
 }
 
+static void*
+main_loop_run_without_guile (void *loop)
+{
+    g_main_loop_run (loop);
+    return NULL;
+}
+
 void
 _wrap_g_main_loop_run (GMainLoop *loop)
 {
@@ -239,7 +246,7 @@ _wrap_g_main_loop_run (GMainLoop *loop)
     scm_dynwind_unwind_handler ((void*)(void*)g_source_destroy, source,
                                 SCM_F_WIND_EXPLICITLY);
 
-    g_main_loop_run (loop);
+    scm_without_guile (main_loop_run_without_guile, loop);
     
     if (caught_intr)
         scm_error (scm_from_locale_symbol ("signal"),
