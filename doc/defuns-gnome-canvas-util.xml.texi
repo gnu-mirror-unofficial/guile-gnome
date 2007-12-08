@@ -6,20 +6,6 @@ Derives from @code{<gboxed>}.
 
 @end deftp
 
-@deffn Function gnome-canvas-points-new  (points@tie{}@code{scm}) @result{}@tie{} (ret@tie{}@code{scm})
-Creates a structure that should be used to pass an array of points to items.
-
-@table @var
-@item num-points
-The number of points to allocate space for in the array.
-
-@item ret
-A newly-created array of points. It should be filled in by the user.
-
-@end table
-
-@end deffn
-
 @deffn Function gnome-canvas-get-miter-points  (x1@tie{}@code{double}) (y1@tie{}@code{double}) (x2@tie{}@code{double}) (y2@tie{}@code{double}) (x3@tie{}@code{double}) (y3@tie{}@code{double}) (width@tie{}@code{double}) @result{}@tie{} (ret@tie{}@code{int}) (mx1@tie{}@code{double}) (my1@tie{}@code{double}) (mx2@tie{}@code{double}) (my2@tie{}@code{double})
 Given three points forming an angle, computes the coordinates of the inside and
 outside points of the mitered corner formed by a line of a given width at that

@@ -47,21 +47,12 @@
 	 "#include <libgnomecanvas/gnome-canvas-clipgroup.h>\n"
 	 "#include \"libgnomecanvas-support.h\"\n"))
 
-(if #f
-    (custom-wrap-decls
-     "GnomeCanvasPoints"
-     ;; unwrap
-     (unwrap-null-checked
-      value status-var
-      (list c-var " = guile_gnome_scm_to_canvas_points (" scm-var ");\n"))
-     ;; wrap
-     (list scm-var " = guile_gnome_canvas_points_to_scm (" c-var ");\n"
-	   "gnome_canvas_points_free (" c-var ");\n")))
-    
-
 (define-method (initialize (ws <canvas-wrapset>) initargs)
   (next-method ws (cons #:module (cons '(gnome gw canvas) initargs)))
-  ;; ?
-  (if #f
-      (wrap-custom-pointer! "GnomeCanvasPoints"))
+  (wrap-custom-boxed!
+   "GnomeCanvasPoints" "GNOME_TYPE_CANVAS_POINTS"
+   ;; wrap
+   (list scm-var " = " c-var " ? guile_gnome_canvas_points_to_scm (" c-var ") : SCM_BOOL_F;\n")
+   ;; unwrap
+   (list c-var " = guile_gnome_scm_to_canvas_points (" scm-var ");\n"))
   (load-defs-with-overrides ws "gnome/defs/libgnomecanvas.defs"))

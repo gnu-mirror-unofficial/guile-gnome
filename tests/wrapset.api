@@ -174,9 +174,6 @@
      (gnome-canvas-path-def-split
        procedure
        (arity 1 0 #f))
-     (gnome-canvas-points-new
-       procedure
-       (arity 0 0 #t))
      (gnome-canvas-polygon-to-point
        procedure
        (arity 3 0 #f))
@@ -240,10 +237,7 @@
        (arity 3 0 #f))
      (gnome-canvas-world-to-window
        procedure
-       (arity 3 0 #f))
-     (guile-gnome-canvas-points-copy
-       procedure
-       (arity 0 0 #t))))
+       (arity 3 0 #f))))
   ((gnome gw generics)
    (uses-interfaces (gnome gobject generics))
    (typed-exports)))

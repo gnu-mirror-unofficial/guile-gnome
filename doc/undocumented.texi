@@ -33,8 +33,5 @@ The following symbols, if any, have not been properly documented.
 @defvar gnome-canvas-set-center-scroll-region
 @end defvar
 
-@defvar guile-gnome-canvas-points-copy
-@end defvar
-
 
 @c %end of fragment

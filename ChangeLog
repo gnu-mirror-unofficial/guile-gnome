@@ -1,3 +1,22 @@
+2007-12-08  Andy Wingo  <wingo@pobox.com>
+
+	* tests/wrapset.api: Updated.
+
+	* doc/undocumented.texi (Undocumented):
+	* doc/defuns-gnome-canvas-util.xml.texi: Regenerated.
+
+	* gnome/overrides/libgnomecanvas.defs: Don't wrap
+	gnome-canvas-points-copy, it's unnecessary. Don't provide a custom
+	canvas-points-new, that's taken care of by the foo in
+	canvas-spec.scm.
+
+	* gnome/gw/canvas-spec.scm (initialize): Wrap
+	<gnome-canvas-points> properly.
+
+	* examples/canvas.scm: Update to use (oop goops), to work around
+	lack of path-def generics, and to use the proper SCM
+	representation for <gnome-canvas-points>.
+
 2007-12-06  Andy Wingo  <wingo@pobox.com>
 
 	* tests/wrapset.api: Update for API removal.

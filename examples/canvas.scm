@@ -1,5 +1,6 @@
 #! /bin/sh
-exec guile -s $0 "$@"
+# -*- scheme -*-
+exec guile --debug -s $0 "$@"
 !#
 ;; guile-gnome
 ;; Copyright (C) 2004 Free Software Foundation, Inc.
@@ -22,6 +23,7 @@ exec guile -s $0 "$@"
 ;; Boston, MA  02111-1307,  USA       gnu@gnu.org
 
 (use-modules (gnome-0) 
+             (oop goops)
              (gnome gtk)
              (srfi srfi-8)
 	     (gnome gtk gdk-event)
@@ -71,11 +73,7 @@ exec guile -s $0 "$@"
 		       #:arrow-shape-b 10
 		       #:arrow-shape-c 10
 		       #:line-style 'on-off-dash
-;;;FIXME: how to wrap this properly?
-;;;#:points #(0 0 100 100)))
-;;;ERROR: In procedure scm->gvalue:
-;;;ERROR: Don't know how to make values of type #<gtype GnomeCanvasPoints>
-		       #:points (gnome-canvas-points-new #(0 0 100 100))))
+                       #:points #(0 0 100 100)))
 	   (rect (make <gnome-canvas-rect> #:parent canvas-root
                        #:x1 0.0 #:y1 0.0 #:x2 100.0 #:y2 9.0
                        #:fill-color "black"))
@@ -87,7 +85,12 @@ exec guile -s $0 "$@"
 		       #:size-set #t
 		       #:fill-color "black"
 		       #:anchor 'west))
-	   (def (make <gnome-canvas-path-def>))
+	   (def (gnome-canvas-path-def-new))
+           (reset gnome-canvas-path-def-reset)
+           (moveto gnome-canvas-path-def-moveto)
+           (curveto gnome-canvas-path-def-curveto)
+           (lineto gnome-canvas-path-def-lineto)
+           (closepath gnome-canvas-path-def-closepath)
 	   (bezier (make <gnome-canvas-bpath>
 		     #:parent canvas-root
 		     #:fill-color "black"
@@ -121,9 +124,9 @@ exec guile -s $0 "$@"
     (set-size-request canvas canvas-width canvas-height)
 
     (set-pixels-per-unit canvas output-scale)
-    (receive (r x y)
+    (receive (x y)
 	     (world-to-window canvas 1.0 1.0)
-	     (stderr "result: ~S (~S, ~S)\n" r x y))
+	     (stderr "result: (~S, ~S)\n" x y))
     (set-pixels-per-unit canvas 1.0)
     
     (show-all window)

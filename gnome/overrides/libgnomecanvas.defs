@@ -55,34 +55,6 @@
     '("double" "x3")
     '("double" "y3")))
 
-(define-boxed
-  CanvasPoints
-  (in-module "Gnome")
-  (c-name "GnomeCanvasPoints")
-  (gtype-id "GNOME_TYPE_CANVAS_POINTS")
-  (copy-func "guile_gnome_canvas_points_copy")
-  (release-func "gnome_canvas_points_free")
-;;  (fields '("double*" "coords") '("int" "num_points") '("int" "ref_count"))
-  )
-
-(define-method
-  copy
-  (of-object "GnomeCanvasPoints")
-  (c-name "guile_gnome_canvas_points_copy")
-;;  (overrides "gtk_tree_iter_copy")
-  (return-type "GnomeCanvasPoints*")
-  (caller-owns-return #t))
-
-(define-function gnome_canvas_points_new
-  (c-name "_wrap_gnome_canvas_points_new")
-  (overrides "gnome_canvas_points_new")
-  (is-constructor-of CanvasPoints)
-;;  (return-type "GnomeCanvasPoints*")
-  (return-type "SCM")
-  (leave-guile-mode #f)
-  (parameters
-   '("SCM" "points")))
-
 (define-function
   gnome_canvas_new_aa
   (is-constructor-of GnomeCanvas)
@@ -135,7 +107,7 @@
 
 (ignore
  "gnome_canvas_item_construct"  ;; use of va-list
- 
+ "gnome_canvas_points_new" ;; use (make <gnome-canvas-points> #:value #(x y z))
  ;; ignore functions that deal in libart types
  "gnome_canvas_path_def_bpath"
  "gnome_canvas_path_def_currentpoint"
