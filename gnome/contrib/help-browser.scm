@@ -50,6 +50,9 @@
 
 (define-module (gnome contrib help-browser)
   #:use-module (ice-9 optargs)
+  #:use-module (oop goops)
+  #:use-module (gnome gobject)
+  #:use-module (gnome glib)
   #:use-module (gnome gtk)
   #:use-module (srfi srfi-13)
   #:use-module (texinfo)

@@ -1,4 +1,5 @@
 #! /bin/sh
+# -*- scheme -*-
 exec guile-gnome-0 -s $0 "$@"
 !#
 ;;;A translation of the GTK scribble example
@@ -7,7 +8,7 @@ exec guile-gnome-0 -s $0 "$@"
 ;;;translated to the guile-gnome API by Andy Wingo
 ;;;(C) 2004 GNU GPL
 
-(use-modules (gnome gtk) (gnome gtk gdk-event))
+(use-modules (oop goops) (gnome glib) (gnome gtk) (gnome gtk gdk-event))
 
 ;Variables holding the size of the pixmap & drawing area.
 (define width 200)
@@ -39,7 +40,7 @@ exec guile-gnome-0 -s $0 "$@"
         (a (get-allocation drawing-area)))
     (set! width (vector-ref a 2))
     (set! height (vector-ref a 3))
-    (set! pixmap (gdk-pixmap-new window width height))
+    (set! pixmap (gdk-pixmap-new window width height -1))
     (gdk-draw-rectangle pixmap back-gc 1 0 0 width height))
   (update-handler))
 ;Important note: we can't draw directly on the drawing area.

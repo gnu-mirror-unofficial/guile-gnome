@@ -28,6 +28,7 @@
 ;;; Code:
 
 (define-module (gnome contrib filtered-list)
+  #:use-module (oop goops)
   #:use-module (gnome gtk)
   #:use-module (scheme documentation)
   #:export (<filtered-list-model>)

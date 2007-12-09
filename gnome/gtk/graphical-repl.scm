@@ -31,6 +31,9 @@
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 session) ;; for the completer
   #:use-module (ice-9 regex) ;; for the completer
+  #:use-module (oop goops)
+  #:use-module (gnome gobject)
+  #:use-module (gnome glib)
   #:use-module (gnome gtk)
   #:use-module (gnome pango)
   #:use-module (gnome gtk gdk-event)

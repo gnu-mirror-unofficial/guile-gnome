@@ -1,4 +1,5 @@
 #! /bin/sh
+# -*- scheme -*-
 exec guile-gnome-0 -s $0 "$@"
 !#
 ;; guile-gnome
@@ -28,7 +29,8 @@ exec guile-gnome-0 -s $0 "$@"
 (or (= (length (command-line)) 2)
     (usage))
 
-(use-modules (gnome gtk)
+(use-modules (gnome glib)
+             (gnome gtk)
              (texinfo)
              (texinfo nodal-tree)
              (gnome contrib help-browser))

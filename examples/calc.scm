@@ -187,6 +187,7 @@ exec guile-gnome-0 -s $0 "$@"
 ;; overwriting builtin functions.
 
 (define-module (calc)
+  :use-module (oop goops)
   :use-module (gnome gtk))
 
 ;; This one loads a file from the users home directory, if it exists.

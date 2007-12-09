@@ -29,6 +29,7 @@
   #:use-module (sxml transform)
   #:use-module (sxml simple)
   #:use-module (scheme documentation)
+  #:use-module (oop goops)
   #:use-module (gnome gtk)
   #:use-module (gnome gtk gdk-event)
   #:use-module (gnome gobject)
@@ -223,6 +224,7 @@ manual."
   (define (code x) (and x (cons 'code x)))
   (define (var x) (and x (cons 'var x)))
   (define (b x) (and x (cons 'bold x)))
+  (define (trans x) (and x (map stexi->text-tagged-tree x)))
   (define (list/spaces . elts)
     (let lp ((in elts) (out '()))
       (cond ((null? in) (reverse! out))
@@ -231,12 +233,15 @@ manual."
                       (cons (car in)
                             (if (null? out) out (cons " " out))))))))
   (define (header)
-    (list/spaces (code (arg-ref 'data-type args))
-                 (b (list (code (arg-ref 'class args)))) ;; is this right?
-                 (b (list (code (arg-ref 'name args))))
-                 (if (memq tag '(deftypeop deftypefn deftypefun))
-                     (code (arg-ref 'arguments args))
-                     (var (list (code (arg-ref 'arguments args)))))))
+    (list (code (arg-ref 'data-type args))
+          " "
+          (b (list (code (arg-ref 'class args)))) ;; is this right?
+          " "
+          (b (list (code (arg-ref 'name args))))
+          " "
+          (if (memq tag '(deftypeop deftypefn deftypefun))
+              (code (trans (arg-ref 'arguments args)))
+              (var (list (code (trans (arg-ref 'arguments args))))))))
 
   (let* ((category (case tag
                      ((defun) "Function")
@@ -320,6 +325,7 @@ manual."
     (defspec             . ,def)
     (defun               . ,def)
     (deftypefun          . ,def)
+    (tie                 . ,(lambda args " "))
     (*text*              . ,(lambda (tag x) x))
     (*default*           . ,default-handler)))
 

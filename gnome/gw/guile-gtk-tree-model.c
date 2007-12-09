@@ -23,6 +23,7 @@
  * Based on work Copyright (C) 2003 James Henstridge <james@daa.com.au>
  */
 
+#include <string.h>
 #include <libguile.h>
 #include <glib-object.h>
 #include "guile-gnome-gobject.h"
@@ -32,7 +33,7 @@
 #include "gtk-support.h"
 
 
-#define PROC_FROM_INSTANCE(instance, member) (((GuileGtkGenericTreeModel*)tree_model)->member)
+#define PROC_FROM_INSTANCE(instance, member) (((GuileGtkGenericTreeModel*)instance)->member)
 
 #define GET_ITER_VAL(iter) (GPOINTER_TO_SCM (iter->user_data))
 
@@ -184,133 +185,232 @@ guile_gtk_generic_tree_model_iface_init(GtkTreeModelIface *iface)
  *  user_data == SCM value
  */
 
-static guint
-guile_gtk_generic_tree_model_get_flags (GtkTreeModel *tree_model)
+
+struct with_guile_args {
+    GtkTreeModel *tree_model;
+    gint i;
+    GType t;
+    guint u;
+    GtkTreeIter *iter;
+    GtkTreeIter *iter2;
+    GtkTreePath *path;
+    gboolean b;
+    GValue *v;
+};
+    
+static void*
+_with_guile_gtk_generic_tree_model_get_flags (void *p)
 #define FUNC_NAME "guile-gtk-generic-tree-model-get-flags"
 {
+    struct with_guile_args *a = p;
+    GtkTreeModel *tree_model = a->tree_model;
     SCM scm_obj, scm_ret;
     GValue *flags_val = NULL;
 
-    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), 0);
+    a->u = 0;
+    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), NULL);
 
     scm_obj = scm_c_gtype_instance_to_scm ((GTypeInstance*) (tree_model));
     scm_ret = scm_call_1 (PROC_FROM_INSTANCE (tree_model, on_get_flags), scm_obj);
 
     if (SCM_NFALSEP (scm_ret)) {
         SCM_VALIDATE_GVALUE_TYPE_COPY (0, scm_ret, GTK_TYPE_TREE_MODEL_FLAGS, flags_val);
-        return g_value_get_flags (flags_val);
-    } else {
-        return 0;
+        a->u = g_value_get_flags (flags_val);
     }
+    return NULL;
+}
+static guint
+guile_gtk_generic_tree_model_get_flags (GtkTreeModel *tree_model)
+{
+    struct with_guile_args args;
+    memset (&args, 0, sizeof(args));
+    args.tree_model = tree_model;
+    scm_with_guile (_with_guile_gtk_generic_tree_model_get_flags, &args);
+    return args.u;
 }
 #undef FUNC_NAME
 
-static gint
-guile_gtk_generic_tree_model_get_n_columns (GtkTreeModel *tree_model)
+static void*
+_with_guile_gtk_generic_tree_model_get_n_columns (void *p)
 #define FUNC_NAME "guile-gtk-generic-tree-model-get-n-columns"
 {
+    struct with_guile_args *a = p;
+    GtkTreeModel *tree_model = a->tree_model;
     SCM scm_obj, scm_ret;
 
-    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), 0);
+    a->i = 0;
+    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), NULL);
 
     scm_obj = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
     scm_ret = scm_call_1 (PROC_FROM_INSTANCE (tree_model, on_get_n_columns), scm_obj);
 
-    return SCM_NUM2INT (0, scm_ret);
+    a->i = SCM_NUM2INT (0, scm_ret);
+    return NULL;
+}
+static gint
+guile_gtk_generic_tree_model_get_n_columns (GtkTreeModel *tree_model)
+{
+    struct with_guile_args args;
+    memset (&args, 0, sizeof(args));
+    args.tree_model = tree_model;
+    scm_with_guile (_with_guile_gtk_generic_tree_model_get_n_columns, &args);
+    return args.i;
 }
 #undef FUNC_NAME
 
-static GType
-guile_gtk_generic_tree_model_get_column_type (GtkTreeModel *tree_model, gint index)
+static void*
+_with_guile_gtk_generic_tree_model_get_column_type (void *p)
 #define FUNC_NAME "guile-gtk-generic-tree-model-get-column-type"
 {
+    struct with_guile_args *a = p;
+    GtkTreeModel *tree_model = a->tree_model;
     SCM scm_obj, scm_ret;
     GType gtype;
 
-    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), 0);
+    a->t = 0;
+    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), NULL);
 
     scm_obj = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
     scm_ret = scm_call_2 (PROC_FROM_INSTANCE (tree_model, on_get_column_type),
-                          scm_obj, SCM_MAKINUM (index));
+                          scm_obj, SCM_MAKINUM (a->i));
     SCM_VALIDATE_GTYPE_COPY (0, scm_ret, gtype);
-
-    return gtype;
+    a->t = gtype;
+    return NULL;
+}
+static GType
+guile_gtk_generic_tree_model_get_column_type (GtkTreeModel *tree_model, gint index)
+{
+    struct with_guile_args args;
+    memset (&args, 0, sizeof(args));
+    args.tree_model = tree_model;
+    args.i = index;
+    scm_with_guile (_with_guile_gtk_generic_tree_model_get_column_type, &args);
+    return args.t;
 }
 #undef FUNC_NAME
 
-static gboolean
-guile_gtk_generic_tree_model_get_iter (GtkTreeModel *tree_model,
-                                       GtkTreeIter *iter, GtkTreePath *path)
+static void*
+_with_guile_gtk_generic_tree_model_get_iter (void *p)
 {
+    struct with_guile_args *a = p;
+    GtkTreeModel *tree_model = a->tree_model;
+    GtkTreeIter *iter = a->iter;
     SCM scm_obj, scm_ret, scm_path;
 
-    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), FALSE);
+    a->b = FALSE;
+    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), NULL);
 
     scm_obj = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
-    scm_path = guile_gtk_tree_path_to_scm (path);
+    scm_path = guile_gtk_tree_path_to_scm (a->path);
     scm_ret = scm_call_2 (PROC_FROM_INSTANCE (tree_model, on_get_iter),
                           scm_obj, scm_path);
 
     if (SCM_NFALSEP (scm_ret)) {
         SET_ITER_VAL (iter, scm_ret);
-        return TRUE;
+        a->b = TRUE;
     } else {
         SET_ITER_NULL (iter);
-        return FALSE;
+        a->b = FALSE;
     }
+    return NULL;
+}
+static gboolean
+guile_gtk_generic_tree_model_get_iter (GtkTreeModel *tree_model,
+                                       GtkTreeIter *iter, GtkTreePath *path)
+{
+    struct with_guile_args args;
+    memset (&args, 0, sizeof(args));
+    args.tree_model = tree_model;
+    args.iter = iter;
+    args.path = path;
+    scm_with_guile (_with_guile_gtk_generic_tree_model_get_iter, &args);
+    return args.b;
 }
 
-static GtkTreePath *
-guile_gtk_generic_tree_model_get_path (GtkTreeModel *tree_model, GtkTreeIter *iter)
+static void*
+_with_guile_gtk_generic_tree_model_get_path (void *p)
 {
+    struct with_guile_args *a = p;
+    GtkTreeModel *tree_model = a->tree_model;
+    GtkTreeIter *iter = a->iter;
     SCM scm_obj, scm_ret;
-    GtkTreePath *path = NULL;
 
+    a->path = NULL;
     g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL(tree_model), NULL);
     RETURN_VAL_IF_INVALID_ITER (iter, NULL);
 
     scm_obj = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
     scm_ret = scm_call_2 (PROC_FROM_INSTANCE (tree_model, on_get_path),
                           scm_obj, GET_ITER_VAL (iter));
-    path = guile_gtk_scm_to_tree_path (scm_ret);
+    a->path = guile_gtk_scm_to_tree_path (scm_ret);
 
-    if (!path)
+    if (!a->path)
         g_warning("could not convert return value of `on-get-path' to "
                   "a GtkTreePath");
 
-    return path;
+    return NULL;
+}
+static GtkTreePath *
+guile_gtk_generic_tree_model_get_path (GtkTreeModel *tree_model, GtkTreeIter *iter)
+{
+    struct with_guile_args args;
+    memset (&args, 0, sizeof(args));
+    args.tree_model = tree_model;
+    args.iter = iter;
+    scm_with_guile (_with_guile_gtk_generic_tree_model_get_path, &args);
+    return args.path;
 }
 
-static void
-guile_gtk_generic_tree_model_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter,
-                                        gint column, GValue *value)
+static void*
+_with_guile_gtk_generic_tree_model_get_value (void *p)
 {
+    struct with_guile_args *a = p;
+    GtkTreeModel *tree_model = a->tree_model;
+    GtkTreeIter *iter = a->iter;
     SCM scm_obj, scm_ret;
     GValue *tmp;
     GType type;
 
-    g_return_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model));
-    RETURN_IF_INVALID_ITER (iter);
+    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), NULL);
+    RETURN_VAL_IF_INVALID_ITER (iter, NULL);
 
     scm_obj = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
     scm_ret = scm_call_3 (PROC_FROM_INSTANCE (tree_model, on_get_value),
-                          scm_obj, GET_ITER_VAL (iter), SCM_MAKINUM (column));
+                          scm_obj, GET_ITER_VAL (iter), SCM_MAKINUM (a->i));
 
-    type = guile_gtk_generic_tree_model_get_column_type (tree_model, column);
+    /* oh god this is terrible */
+    _with_guile_gtk_generic_tree_model_get_column_type (a);
+    type = a->t;
     tmp = scm_c_scm_to_gvalue (type, scm_ret);
-    g_value_init (value, type);
-    g_value_copy (tmp, value);
+    g_value_init (a->v, type);
+    g_value_copy (tmp, a->v);
     g_value_unset (tmp);
     g_free (tmp);
+    return NULL;
+}
+static void
+guile_gtk_generic_tree_model_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint column, GValue *value)
+{
+    struct with_guile_args args;
+    memset (&args, 0, sizeof(args));
+    args.tree_model = tree_model;
+    args.iter = iter;
+    args.i = column;
+    args.v = value;
+    scm_with_guile (_with_guile_gtk_generic_tree_model_get_value, &args);
 }
 
-static gboolean
-guile_gtk_generic_tree_model_iter_next (GtkTreeModel *tree_model, GtkTreeIter *iter)
+static void*
+_with_guile_gtk_generic_tree_model_iter_next (void *p)
 {
+    struct with_guile_args *a = p;
+    GtkTreeModel *tree_model = a->tree_model;
+    GtkTreeIter *iter = a->iter;
     SCM scm_obj, scm_ret;
-
-    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), FALSE);
-    RETURN_VAL_IF_INVALID_ITER (iter, FALSE);
+    
+    a->b = FALSE;
+    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), NULL);
+    RETURN_VAL_IF_INVALID_ITER (iter, NULL);
 
     scm_obj = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
     scm_ret = scm_call_2 (PROC_FROM_INSTANCE (tree_model, on_iter_next),
@@ -318,23 +418,38 @@ guile_gtk_generic_tree_model_iter_next (GtkTreeModel *tree_model, GtkTreeIter *i
 
     if (SCM_NFALSEP (scm_ret)) {
         SET_ITER_VAL (iter, scm_ret);
-        return TRUE;
+        a->b = TRUE;
     } else {
         SET_ITER_NULL (iter);
-        return FALSE;
+        a->b = FALSE;
     }
+    return NULL;
+}
+static gboolean
+guile_gtk_generic_tree_model_iter_next (GtkTreeModel *tree_model, GtkTreeIter *iter)
+{
+    struct with_guile_args args;
+    memset (&args, 0, sizeof(args));
+    args.tree_model = tree_model;
+    args.iter = iter;
+    scm_with_guile (_with_guile_gtk_generic_tree_model_iter_next, &args);
+    return args.b;
 }
 
-static gboolean
-guile_gtk_generic_tree_model_iter_children (GtkTreeModel *tree_model, GtkTreeIter *iter,
-                                            GtkTreeIter *parent)
+static void*
+_with_guile_gtk_generic_tree_model_iter_children (void *p)
 {
+    struct with_guile_args *a = p;
+    GtkTreeModel *tree_model = a->tree_model;
+    GtkTreeIter *iter = a->iter;
+    GtkTreeIter *parent = a->iter2;
     SCM scm_obj, scm_ret;
 
-    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), FALSE);
+    a->b = FALSE;
+    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), NULL);
     g_return_val_if_fail (!parent ||
                           GUILE_GTK_GENERIC_TREE_MODEL (tree_model)->stamp == parent->stamp,
-                          FALSE);
+                          NULL);
 
     scm_obj = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
     scm_ret = scm_call_2 (PROC_FROM_INSTANCE (tree_model, on_iter_children), scm_obj,
@@ -342,78 +457,141 @@ guile_gtk_generic_tree_model_iter_children (GtkTreeModel *tree_model, GtkTreeIte
 
     if (SCM_NFALSEP (scm_ret)) {
         SET_ITER_VAL (iter, scm_ret);
-        return TRUE;
+        a->b = TRUE;
     } else {
         SET_ITER_NULL (iter);
-        return FALSE;
+        a->b = FALSE;
     }
+    return NULL;
+}
+static gboolean
+guile_gtk_generic_tree_model_iter_children (GtkTreeModel *tree_model, GtkTreeIter *iter,GtkTreeIter *parent)
+{
+    struct with_guile_args args;
+    memset (&args, 0, sizeof(args));
+    args.tree_model = tree_model;
+    args.iter = iter;
+    args.iter2 = parent;
+    scm_with_guile (_with_guile_gtk_generic_tree_model_iter_children, &args);
+    return args.b;
 }
 
-static gboolean
-guile_gtk_generic_tree_model_iter_has_child (GtkTreeModel *tree_model, GtkTreeIter *iter)
+static void*
+_with_guile_gtk_generic_tree_model_iter_has_child (void *p)
 {
+    struct with_guile_args *a = p;
+    GtkTreeModel *tree_model = a->tree_model;
+    GtkTreeIter *iter = a->iter;
     SCM scm_obj;
 
-    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), FALSE);
+    a->b = FALSE;
+    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), NULL);
     RETURN_VAL_IF_INVALID_ITER (iter, FALSE);
 
     scm_obj = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
 
-    return SCM_NFALSEP (scm_call_2 (PROC_FROM_INSTANCE (tree_model, on_iter_has_child),
+    a->b = SCM_NFALSEP (scm_call_2 (PROC_FROM_INSTANCE (tree_model, on_iter_has_child),
                                     scm_obj, GET_ITER_VAL (iter)));
+    return NULL;
+}
+static gboolean
+guile_gtk_generic_tree_model_iter_has_child (GtkTreeModel *tree_model, GtkTreeIter *iter)
+{
+    struct with_guile_args args;
+    memset (&args, 0, sizeof(args));
+    args.tree_model = tree_model;
+    args.iter = iter;
+    scm_with_guile (_with_guile_gtk_generic_tree_model_iter_has_child, &args);
+    return args.b;
 }
 
-static gint
-guile_gtk_generic_tree_model_iter_n_children (GtkTreeModel *tree_model, GtkTreeIter *iter)
+static void*
+_with_guile_gtk_generic_tree_model_iter_n_children (void *p)
 #define FUNC_NAME "guile-gtk-generic-tree-model-iter-n-children"
 {
+    struct with_guile_args *a = p;
+    GtkTreeModel *tree_model = a->tree_model;
+    GtkTreeIter *iter = a->iter;
     SCM scm_obj, scm_ret;
 
-    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), 0);
+    a->i = 0;
+    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), NULL);
     g_return_val_if_fail (!iter ||
-                          iter->stamp == ((GuileGtkGenericTreeModel*)tree_model)->stamp, 0);
+                          iter->stamp == ((GuileGtkGenericTreeModel*)tree_model)->stamp, NULL);
 
     scm_obj = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
     scm_ret = scm_call_2 (PROC_FROM_INSTANCE (tree_model, on_iter_n_children),
                           scm_obj, GET_ITER_VAL_OR_FALSE (iter));
 
-    return SCM_NUM2INT (0, scm_ret);
+    a->i = SCM_NUM2INT (0, scm_ret);
+    return NULL;
+}
+static gint
+guile_gtk_generic_tree_model_iter_n_children (GtkTreeModel *tree_model, GtkTreeIter *iter)
+{
+    struct with_guile_args args;
+    memset (&args, 0, sizeof(args));
+    args.tree_model = tree_model;
+    args.iter = iter;
+    scm_with_guile (_with_guile_gtk_generic_tree_model_iter_n_children, &args);
+    return args.i;
 }
 #undef FUNC_NAME
 
-static gboolean
-guile_gtk_generic_tree_model_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *iter,
-                                             GtkTreeIter *parent, gint n)
+static void*
+_with_guile_gtk_generic_tree_model_iter_nth_child (void *p)
 {
+    struct with_guile_args *a = p;
+    GtkTreeModel *tree_model = a->tree_model;
+    GtkTreeIter *iter = a->iter;
+    GtkTreeIter *parent = a->iter2;
     SCM scm_obj, scm_ret;
 
-    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), FALSE);
+    a->b = FALSE;
+    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), NULL);
     g_return_val_if_fail (!parent ||
                           ((GuileGtkGenericTreeModel*)tree_model)->stamp == parent->stamp,
-                          FALSE);
+                          NULL);
 
     scm_obj = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
     scm_ret = scm_call_3 (PROC_FROM_INSTANCE (tree_model, on_iter_nth_child),
                           scm_obj, GET_ITER_VAL_OR_FALSE (parent),
-                          SCM_MAKINUM (n));
+                          SCM_MAKINUM (a->i));
 
     if (SCM_NFALSEP (scm_ret)) {
         SET_ITER_VAL (iter, scm_ret);
-        return TRUE;
+        a->b = TRUE;
     } else {
         SET_ITER_NULL (iter);
-        return FALSE;
+        a->b = FALSE;
     }
+    return NULL;
+}
+static gboolean
+guile_gtk_generic_tree_model_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *iter,GtkTreeIter *parent, gint n)
+{
+    struct with_guile_args args;
+    memset (&args, 0, sizeof(args));
+    args.tree_model = tree_model;
+    args.iter = iter;
+    args.iter2 = parent;
+    args.i = n;
+    scm_with_guile (_with_guile_gtk_generic_tree_model_iter_nth_child, &args);
+    return args.b;
 }
 
-static gboolean
-guile_gtk_generic_tree_model_iter_parent (GtkTreeModel *tree_model, GtkTreeIter *iter,
-                                          GtkTreeIter *child)
+static void*
+_with_guile_gtk_generic_tree_model_iter_parent (void *p)
 {
+    struct with_guile_args *a = p;
+    GtkTreeModel *tree_model = a->tree_model;
+    GtkTreeIter *iter = a->iter;
+    GtkTreeIter *child = a->iter2;
     SCM scm_obj, scm_ret;
 
-    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), FALSE);
-    RETURN_VAL_IF_INVALID_ITER (child, FALSE);
+    a->b = FALSE;
+    g_return_val_if_fail (GUILE_GTK_IS_GENERIC_TREE_MODEL (tree_model), NULL);
+    RETURN_VAL_IF_INVALID_ITER (child, NULL);
 
     scm_obj = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
     scm_ret = scm_call_2 (PROC_FROM_INSTANCE (tree_model, on_iter_parent),
@@ -421,9 +599,21 @@ guile_gtk_generic_tree_model_iter_parent (GtkTreeModel *tree_model, GtkTreeIter 
 
     if (SCM_NFALSEP (scm_ret)) {
         SET_ITER_VAL (iter, scm_ret);
-        return TRUE;
+        a->b = TRUE;
     } else {
         SET_ITER_NULL (iter);
-        return FALSE;
+        a->b = FALSE;
     }
+    return NULL;
+}
+static gboolean
+guile_gtk_generic_tree_model_iter_parent (GtkTreeModel *tree_model, GtkTreeIter *iter,GtkTreeIter *child)
+{
+    struct with_guile_args args;
+    memset (&args, 0, sizeof(args));
+    args.tree_model = tree_model;
+    args.iter = iter;
+    args.iter2 = child;
+    scm_with_guile (_with_guile_gtk_generic_tree_model_iter_parent, &args);
+    return args.b;
 }

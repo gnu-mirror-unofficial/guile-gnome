@@ -1,3 +1,43 @@
+2007-12-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/guile-gtk-tree-model.c: Terrible fixes to enter guile
+	mode within all of the vmethods. Assuredly in the future things
+	will not be as painful.
+
+	* gnome/gw/gtk-support.c (scm_to_locale_string_dynwind): New
+	helper function, tries to replace SCM_STRING_CHARS, but has to be
+	enclosed within a scm_dynwind_begin(0)/scm_dynwind_end() pair.
+	(guile_gtk_scm_to_tree_path, GET_ACTION_STR)
+	(_wrap_gtk_stock_add, _wrap_gtk_text_buffer_set_text)
+	(_wrap_gtk_text_buffer_insert)
+	(_wrap_gtk_text_buffer_insert_at_cursor)
+	(_wrap_gtk_text_buffer_insert_interactive)
+	(_wrap_gtk_text_buffer_insert_interactive_at_cursor)
+	(_wrap_gtk_text_buffer_insert_with_tags)
+	(_wrap_gtk_text_buffer_insert_with_tags_by_name): Avoid
+	SCM_STRING_CHARS.
+	(_wrap_gtk_tree_model_iter_next): gtk_tree_iter_free, not g_free.
+	Avoids memory corruption with newer glib (where the underlying
+	allocator is GSlice).
+
+	* gnome/contrib/texinfo-buffer.scm (def): Update not to expect to
+	have to put spaces between elements, and to take generic contents,
+	thus passing through stexi->text-tagged-tree.
+	(rules): Add rule for @tie{}.
+
+	* examples/scribble.scm: Fix invocation of gdk-pixmap-new (?).
+
+	* gnome/contrib/help-browser.scm: 
+	* gnome/contrib/filtered-list.scm: 
+	* gnome/contrib/delay-tree-model.scm: 
+	* examples/scribble.scm:
+	* examples/repl.scm: 
+	* gnome/gtk/graphical-repl.scm:
+	* examples/hello.scm: 
+	* examples/hello-generics.scm:
+	* examples/calendar.scm: 
+	* examples/calc.scm: Import (oop goops) and other needed modules.
+
 2007-12-06  Andy Wingo  <wingo@pobox.com>
 
 	* tests/gdk/wrapset.api:

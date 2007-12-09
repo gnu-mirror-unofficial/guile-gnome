@@ -26,6 +26,14 @@
 #include <string.h>
 #include "gtk-support.h"
 
+static char*
+scm_to_locale_string_dynwind (SCM s)
+{
+    char *ret = scm_to_locale_string (s);
+    scm_dynwind_free (ret);
+    return ret;
+}
+    
 
 /* python-gtk defines a nice series of classes to access rows as elements of a
    sequence and to access their fields via a sequence interface. I wish we could
@@ -50,7 +58,11 @@ guile_gtk_scm_to_tree_path (SCM scm)
 #define FUNC_NAME "guile-gtk-scm-to-tree-path"
 {
     if (SCM_STRINGP (scm)) {
-	return gtk_tree_path_new_from_string (SCM_STRING_CHARS (scm));
+        GtkTreePath *ret;
+        scm_dynwind_begin (0);
+        ret = gtk_tree_path_new_from_string (scm_to_locale_string_dynwind (scm));
+        scm_dynwind_end ();
+        return ret;
     } else if (SCM_INUMP (scm)) {
         GtkTreePath *ret = gtk_tree_path_new ();
         gtk_tree_path_append_index (ret, SCM_INUM (scm));
@@ -75,7 +87,7 @@ do {\
         SCM x = scm_list_ref (entry, SCM_MAKINUM (n));\
         SCM_ASSERT (SCM_FALSEP (x) || SCM_STRINGP (x), entry,\
                     2, FUNC_NAME);\
-        var = SCM_FALSEP (x) ? NULL : SCM_STRING_CHARS (x);\
+        var = SCM_FALSEP (x) ? NULL : scm_to_locale_string_dynwind (x);\
     } else {\
         var = NULL;\
     }\
@@ -440,6 +452,8 @@ _wrap_gtk_stock_add (SCM items)
 
     stockitems = g_new0 (GtkStockItem, len);
 	
+    scm_dynwind_begin (0);
+
     for (i = 0; i < len ; i++) {
         SCM item = SCM_CAR(items);
 
@@ -451,18 +465,19 @@ _wrap_gtk_stock_add (SCM items)
                     SCM_INUMP   (SCM_CADDDR (item)),
                     item, 1, FUNC_NAME);
 
-        stockitems[i].stock_id = SCM_STRING_CHARS (SCM_CAR (item));
-        stockitems[i].label    = SCM_STRING_CHARS (SCM_CADR (item));
+        stockitems[i].stock_id = scm_to_locale_string_dynwind (SCM_CAR (item));
+        stockitems[i].label    = scm_to_locale_string_dynwind (SCM_CADR (item));
         stockitems[i].modifier = SCM_INUM (SCM_CADDR (item));
         stockitems[i].keyval   = (guint) SCM_INUM (SCM_CADDDR (item));
         stockitems[i].translation_domain =
             SCM_STRINGP (SCM_CADDDR (SCM_CDR (item))) ?
-            SCM_STRING_CHARS (SCM_CADDDR (SCM_CDR (item))) : NULL;
+            scm_to_locale_string_dynwind (SCM_CADDDR (SCM_CDR (item))) : NULL;
 		
         items = SCM_CDR(items);
     }
 
     gtk_stock_add (stockitems, len);
+    scm_dynwind_end ();
     g_free(stockitems);
 }
 #undef FUNC_NAME
@@ -491,7 +506,9 @@ _wrap_gtk_text_buffer_set_text (GtkTextBuffer *buf, SCM stext)
 #define FUNC_NAME "gtk-text-buffer-set-text"
 {
     SCM_VALIDATE_STRING (2, stext);
-    gtk_text_buffer_set_text (buf, SCM_STRING_CHARS (stext), SCM_STRING_LENGTH (stext));
+    scm_dynwind_begin (0);
+    gtk_text_buffer_set_text (buf, scm_to_locale_string_dynwind (stext), SCM_STRING_LENGTH (stext));
+    scm_dynwind_end ();
 }
 #undef FUNC_NAME
 
@@ -500,7 +517,9 @@ _wrap_gtk_text_buffer_insert (GtkTextBuffer *buf, GtkTextIter* iter, SCM stext)
 #define FUNC_NAME "gtk-text-buffer-insert"
 {
     SCM_VALIDATE_STRING (3, stext);
-    gtk_text_buffer_insert (buf, iter, SCM_STRING_CHARS (stext), SCM_STRING_LENGTH (stext));
+    scm_dynwind_begin (0);
+    gtk_text_buffer_insert (buf, iter, scm_to_locale_string_dynwind (stext), SCM_STRING_LENGTH (stext));
+    scm_dynwind_end ();
 }
 #undef FUNC_NAME
 
@@ -509,7 +528,9 @@ _wrap_gtk_text_buffer_insert_at_cursor (GtkTextBuffer *buf, SCM stext)
 #define FUNC_NAME "gtk-text-buffer-insert-at-cursor"
 {
     SCM_VALIDATE_STRING (2, stext);
-    gtk_text_buffer_insert_at_cursor (buf, SCM_STRING_CHARS (stext), SCM_STRING_LENGTH (stext));
+    scm_dynwind_begin (0);
+    gtk_text_buffer_insert_at_cursor (buf, scm_to_locale_string_dynwind (stext), SCM_STRING_LENGTH (stext));
+    scm_dynwind_end ();
 }
 #undef FUNC_NAME
 
@@ -518,9 +539,14 @@ _wrap_gtk_text_buffer_insert_interactive (GtkTextBuffer *buf, GtkTextIter* iter,
                                                    SCM stext, gboolean default_editable)
 #define FUNC_NAME "gtk-text-buffer-insert-interactive"
 {
+    gboolean ret;
+
     SCM_VALIDATE_STRING (3, stext);
-    return gtk_text_buffer_insert_interactive (buf, iter, SCM_STRING_CHARS (stext),
-                                               SCM_STRING_LENGTH (stext), default_editable);
+    scm_dynwind_begin (0);
+    ret = gtk_text_buffer_insert_interactive (buf, iter, scm_to_locale_string_dynwind (stext),
+                                              SCM_STRING_LENGTH (stext), default_editable);
+    scm_dynwind_end ();
+    return ret;
 }
 #undef FUNC_NAME
 
@@ -529,10 +555,14 @@ _wrap_gtk_text_buffer_insert_interactive_at_cursor (GtkTextBuffer *buf, SCM stex
                                                     gboolean default_editable)
 #define FUNC_NAME "gtk-text-buffer-insert-interactive-at-cursor"
 {
+    gboolean ret;
     SCM_VALIDATE_STRING (2, stext);
-    return gtk_text_buffer_insert_interactive_at_cursor (buf, SCM_STRING_CHARS (stext),
-                                                         SCM_STRING_LENGTH (stext),
-                                                         default_editable);
+    scm_dynwind_begin (0);
+    ret = gtk_text_buffer_insert_interactive_at_cursor (buf, scm_to_locale_string_dynwind (stext),
+                                                        SCM_STRING_LENGTH (stext),
+                                                        default_editable);
+    scm_dynwind_end ();
+    return ret;
 }
 #undef FUNC_NAME
 
@@ -548,14 +578,16 @@ _wrap_gtk_text_buffer_insert_with_tags (GtkTextBuffer *buf, GtkTextIter* iter,
     /* based on gtktextbuffer.c (LGPL) */
 
     SCM_VALIDATE_STRING (3, stext);
+    scm_dynwind_begin (0);
     start_offset = gtk_text_iter_get_offset (iter);
-    gtk_text_buffer_insert (buf, iter, SCM_STRING_CHARS (stext),
+    gtk_text_buffer_insert (buf, iter, scm_to_locale_string_dynwind (stext),
                             SCM_STRING_LENGTH (stext));
     gtk_text_buffer_get_iter_at_offset (buf, &start, start_offset);
     
     for (walk = tag_list; walk; walk = walk->next)
         gtk_text_buffer_apply_tag (buf, (GtkTextTag*)walk->data, &start, iter);
     g_list_free (tag_list);
+    scm_dynwind_end ();
 }
 #undef FUNC_NAME
 
@@ -571,8 +603,9 @@ _wrap_gtk_text_buffer_insert_with_tags_by_name (GtkTextBuffer *buf, GtkTextIter*
     /* based on gtktextbuffer.c (LGPL) */
 
     SCM_VALIDATE_STRING (3, stext);
+    scm_dynwind_begin (0);
     start_offset = gtk_text_iter_get_offset (iter);
-    gtk_text_buffer_insert (buf, iter, SCM_STRING_CHARS (stext),
+    gtk_text_buffer_insert (buf, iter, scm_to_locale_string_dynwind (stext),
                             SCM_STRING_LENGTH (stext));
     gtk_text_buffer_get_iter_at_offset (buf, &start, start_offset);
     
@@ -582,6 +615,7 @@ _wrap_gtk_text_buffer_insert_with_tags_by_name (GtkTextBuffer *buf, GtkTextIter*
                                                               (gchar*)walk->data),
                                    &start, iter);
     g_list_free (tag_list);
+    scm_dynwind_end ();
 }
 #undef FUNC_NAME
 
@@ -727,7 +761,7 @@ _wrap_gtk_tree_model_iter_next (GtkTreeModel *model, GtkTreeIter *iter)
 
     if (gtk_tree_model_iter_next (model, new))
         return new;
-    g_free (new);
+    gtk_tree_iter_free (new);
     return NULL;
 }
     

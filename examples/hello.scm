@@ -1,4 +1,5 @@
 #! /bin/sh
+# -*- scheme -*-
 exec guile-gnome-0 -s $0 "$@"
 !#
 ;; guile-gnome
@@ -22,8 +23,7 @@ exec guile-gnome-0 -s $0 "$@"
 ;; Boston, MA  02111-1307,  USA       gnu@gnu.org
 
 
-;; load up gtk -- also pulls in goops bindings
-(use-modules (gnome gtk))
+(use-modules (oop goops) (gnome gobject) (gnome gtk))
 
 ;; define the hello as a function -- there are many other ways to do this,
 ;; of course...

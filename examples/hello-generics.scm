@@ -1,4 +1,5 @@
 #! /bin/sh
+# -*- scheme -*-
 exec guile-gnome-0 -s $0 "$@"
 !#
 
@@ -22,7 +23,7 @@ exec guile-gnome-0 -s $0 "$@"
 ;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
 ;; Boston, MA  02111-1307,  USA       gnu@gnu.org
 
-(use-modules (gnome gtk))
+(use-modules (oop goops) (gnome gobject) (gnome gtk))
 
 (define (hello)
   (let* ((window (make <gtk-window> #:type 'toplevel))

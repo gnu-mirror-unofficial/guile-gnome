@@ -26,6 +26,8 @@
 ;;; Code:
 
 (define-module (gnome contrib delay-tree-model)
+  #:use-module (oop goops)
+  #:use-module (gnome gobject)
   #:use-module (gnome gtk)
   #:use-module (container nodal-tree)
   #:use-module (container delay-tree)
