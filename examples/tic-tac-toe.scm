@@ -1,4 +1,5 @@
 #! /bin/sh
+# -*- scheme -*-
 exec guile-gnome-0 -s $0 "$@"
 !#
 ;; guile-gnome
@@ -22,7 +23,7 @@ exec guile-gnome-0 -s $0 "$@"
 ;; Boston, MA  02111-1307,  USA       gnu@gnu.org
 
 (read-set! keywords 'prefix)
-(use-modules (gnome gtk))
+(use-modules (oop goops) (gnome gobject) (gnome glib) (gnome gtk))
 
 (define-class <tic-tac-toe> (<gtk-vbox>)
   (board-size
@@ -110,7 +111,7 @@ exec guile-gnome-0 -s $0 "$@"
        (spin (make <gtk-spin-button>)))
   (set spin 'adjustment adj)
   (connect adj 'value-changed
-           (lambda (a) (set ttt 'board-size (inexact->exact (get-value a)))))
+           (lambda (a) (set ttt 'board-size (inexact->exact (get a 'value)))))
   (set-default-size w 250 250)
   (add w vbox)
   (pack-start-defaults vbox ttt)

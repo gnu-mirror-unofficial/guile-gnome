@@ -1,5 +1,8 @@
 2007-12-09  Andy Wingo  <wingo@pobox.com>
 
+	* examples/tic-tac-toe.scm: Crackily avoid
+	`gtk-adjustment-get-value', as it is broken on ppc32.
+
 	* gnome/gw/guile-gtk-tree-model.c: Terrible fixes to enter guile
 	mode within all of the vmethods. Assuredly in the future things
 	will not be as painful.
