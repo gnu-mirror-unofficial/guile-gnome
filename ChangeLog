@@ -1,3 +1,10 @@
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.96 ==
+
+	* gnome/defs/Makefile.am (atk): Add type-ignores.
+	* gnome/defs/common-ignores.defs: Don't ignore *_copy functions.
+
 2007-11-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.95 ==

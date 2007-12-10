@@ -23,7 +23,6 @@
               "_*"
               "*_ref"
               "*_unref"
-              "*_copy"
               "*_free"
               "*_newv"
               "*_valist"
