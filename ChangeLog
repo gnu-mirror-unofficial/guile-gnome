@@ -1,3 +1,7 @@
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.96 ==
+
 2007-12-06  Andy Wingo  <wingo@pobox.com>
 
 	* tests/wrapset.api: Regnerated for massive API removal on
