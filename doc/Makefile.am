@@ -15,4 +15,4 @@ EXTRA_DIST = overrides.texi
 
 info_TEXINFOS=guile-gnome-libgnome.texi
 guile_gnome_libgnome_TEXINFOS=overview.texi \
-	$(wildcard section-*.texi) $(wildcard defuns-*.texi)
+	$(wildcard section-*.texi) $(wildcard defuns-*.texi) undocumented.texi
