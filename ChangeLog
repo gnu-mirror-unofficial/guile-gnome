@@ -1,5 +1,13 @@
 2007-12-10  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.96 ==
+
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.15.96.
+
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
 	* gnome/overrides/glib.defs (g_io_channel_read_line): 
 	* gnome/gw/glib-support.h:
 	* gnome/gw/glib-support.c (_wrap_g_io_channel_read_line): Restore

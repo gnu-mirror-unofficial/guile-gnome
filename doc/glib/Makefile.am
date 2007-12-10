@@ -25,4 +25,4 @@ wrapset_stem = glib
 EXTRA_DIST = overrides.texi
 
 info_TEXINFOS=guile-gnome-glib.texi
-guile_gnome_glib_TEXINFOS=$(wildcard section-*.texi) $(wildcard defuns-*.texi)
+guile_gnome_glib_TEXINFOS=$(wildcard section-*.texi) $(wildcard defuns-*.texi) undocumented.texi

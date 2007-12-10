@@ -1,12 +1,41 @@
 guile-gnome-glib NEWS --- history of user-visible changes.
 Copyright (C) 2004,2005,2006,2007 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 10 Nov 2007.
+Last updated 10 Dec 2007.
 
 
 guile-gnome-glib is a Guile binding for GLib and GObject, including a
 bindings generator. It is part of GNU guile-gnome. This file documents
 the user-visible changes in guile-gnome-glib only.
+
+
+guile-gnome-glib 2.15.96 - Andy Wingo, 2007-12-10
+=================================================
+
+* API review.
+
+* Documentation changes: add type index, section for undocumented
+  exports, regenerated for changes resulting from API review.
+
+* Bugfix: avoid SCM_STRING_CHARS in core (gnome gobject) code, which
+  will raise an exception when called on shared substrings.
+
+* Fixes to the fifo.scm example, which uses GIOChannel.
+
+* Leave guile mode at the right time in g-main-loop-run, fixing some
+  hangs.
+
+* Change to the wrapset generator to no longer silently wrap opaque
+  types; instead, functions that reference unknown types are ignored,
+  and a warning is printed out. Requires more discipline when making
+  wrapsets, but reduces random crap being wrapped.
+
+* Add support for appending a list of undocumented functions to the
+  generated documentation.
+
+* Add support for wrapping more kinds of C structures: freeable
+  pointers, generic refcounted pointers, and destructurable values. See
+  the changes to (gnome gw support gobject) for more information.
 
 
 guile-gnome-glib 2.15.95 - Andy Wingo, 2007-11-10
