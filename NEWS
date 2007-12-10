@@ -1,12 +1,21 @@
 guile-gnome-pango NEWS --- history of user-visible changes.
 Copyright (C) 2004,2005,2006,2007 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 10 Nov 2007.
+Last updated 10 Dec 2007.
 
 
 guile-gnome-pango is a Guile binding for Pango. It is part of GNU
 guile-gnome. This file documents the user-visible changes in
 guile-gnome-pango only.
+
+
+guile-gnome-pango 2.15.96 - Andy Wingo, 2007-12-10
+==================================================
+
+* Documentation changes: add type index, section for undocumented
+ exports, regenerated for changes resulting from API review.
+
+* API review, resulting in a number of functions being ignored.
 
 
 guile-gnome-pango 2.15.95 - Andy Wingo, 2007-11-10

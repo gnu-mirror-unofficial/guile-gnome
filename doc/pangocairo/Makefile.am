@@ -18,4 +18,4 @@ EXTRA_DIST = overrides.texi
 
 info_TEXINFOS=guile-gnome-pangocairo.texi
 guile_gnome_pangocairo_TEXINFOS=overview.texi \
-	$(wildcard section-*.texi) $(wildcard defuns-*.texi)
+	$(wildcard section-*.texi) $(wildcard defuns-*.texi) undocumented.texi
