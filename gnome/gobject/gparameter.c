@@ -69,10 +69,10 @@ static const scm_t_gtype_instance_funcs gparamspec_funcs = {
 #define SCM_GPARAM_STRUCT_NAME(x)		SCM_SYMBOL_CHARS (SCM_PACK ((SCM_STRUCT_DATA (x) [scm_gparam_struct_i_name])))
 #define SCM_GPARAM_STRUCT_NICK(x)		(SCM_FALSEP (SCM_PACK (SCM_STRUCT_DATA (x) [scm_gparam_struct_i_nick])) ? \
 						 NULL : \
-						 SCM_STRING_CHARS (SCM_PACK (SCM_STRUCT_DATA (x) [scm_gparam_struct_i_nick])))
+						 scm_to_locale_string_dynwind (SCM_PACK (SCM_STRUCT_DATA (x) [scm_gparam_struct_i_nick])))
 #define SCM_GPARAM_STRUCT_BLURB(x)		(SCM_FALSEP (SCM_PACK (SCM_STRUCT_DATA (x) [scm_gparam_struct_i_blurb])) ? \
 						 NULL : \
-						 SCM_STRING_CHARS (SCM_PACK (SCM_STRUCT_DATA (x) [scm_gparam_struct_i_blurb])))
+						 scm_to_locale_string_dynwind (SCM_PACK (SCM_STRUCT_DATA (x) [scm_gparam_struct_i_blurb])))
 #define SCM_GPARAM_STRUCT_FLAGS(x)		SCM_PACK (SCM_STRUCT_DATA (x) [scm_gparam_struct_i_flags])
 #define SCM_GPARAM_STRUCT_PARAM_TYPE(x)		((GType) SCM_SMOB_DATA (SCM_PACK ((SCM_STRUCT_DATA (x) [scm_gparam_struct_i_param_type]))))
 #define SCM_GPARAM_STRUCT_VALUE_TYPE(x)		((GType) SCM_SMOB_DATA (SCM_PACK ((SCM_STRUCT_DATA (x) [scm_gparam_struct_i_value_type]))))
@@ -398,6 +398,7 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
        
     SCM_ASSERT ((SCM_GPARAM_STRUCT_N_ARGS (pspec_struct) == n_args), pspec_struct, 4, FUNC_NAME); 
         
+    scm_dynwind_begin (0);
 
     if (param_type == G_TYPE_PARAM_BOOLEAN) {
         SCM_VALIDATE_BOOL (0, SCM_GPARAM_STRUCT_ARG (pspec_struct, 0));
@@ -614,6 +615,8 @@ SCM_DEFINE (scm_gparam_primitive_create, "gparam-primitive-create", 4, 0, 0,
                  pspec->ref_count);
 
     scm_slot_set_x (object, scm_sym_gtype_instance, smob);
+
+    scm_dynwind_end ();
 
     return smob;
 }

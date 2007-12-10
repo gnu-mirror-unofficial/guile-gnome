@@ -50,6 +50,8 @@ gchar* _wrap_g_convert_with_fallback (const gchar* str, const gchar* to_codeset,
 void _wrap_g_main_loop_run (GMainLoop *loop);
 SCM  _wrap_g_string_get_str (GString *str);
 guint _wrap_g_io_add_watch (GIOChannel *channel, GIOCondition condition, SCM func);
+GIOStatus _wrap_g_io_channel_read_line (GIOChannel *channel, gchar **str_return,
+                                        GError **error);
 gunichar
 _wrap_g_utf8_get_char (const gchar *p);
 const char* _wrap_g_utf8_find_next_char (const gchar *p);

@@ -55,6 +55,8 @@ SCM scm_str2string (const char *src);
 
 #endif
 
+char* scm_to_locale_string_dynwind (SCM s);
+
 G_END_DECLS
 
 #endif /* __GUILE_SUPPORT_H__ */

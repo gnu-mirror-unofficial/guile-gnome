@@ -40,3 +40,11 @@ scm_with_guile (void*(*func)(void*), void *data)
 }
 
 #endif
+
+char*
+scm_to_locale_string_dynwind (SCM s)
+{
+    char *ret = scm_to_locale_string (s);
+    scm_dynwind_free (ret);
+    return ret;
+}

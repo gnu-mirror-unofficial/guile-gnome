@@ -1,3 +1,32 @@
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/glib.defs (g_io_channel_read_line): 
+	* gnome/gw/glib-support.h:
+	* gnome/gw/glib-support.c (_wrap_g_io_channel_read_line): Restore
+	this wrapper.
+
+	* gnome/gw/glib-support.c (g_io_add_watch): Enter guile mode in
+	the callback. What a pain in the ass.
+
+	* gnome/gobject/guile-support.h: 
+	* gnome/gobject/guile-support.c (scm_to_locale_string_dynwind):
+	New helper, allocates a string to be freed within the current
+	dynwind.
+
+	* gnome/gobject/gvalue.c (scm_gvalue_primitive_set)
+	(scm_genum_register_static, scm_gflags_register_static):
+	* gnome/gobject/gtype.c (scm_gtype_from_name)
+	(scm_c_define_and_export_gtype_x): 
+	* gnome/gobject/gparameter.c (SCM_GPARAM_STRUCT_BLURB)
+	(SCM_GPARAM_STRUCT_NICK, scm_gparam_primitive_create):
+	* gnome/gobject/gobject.c (scm_gtype_register_static): Use the
+	scm_to_locale_string_dynwind instead of SCM_STRING_CHARS.
+
+	* examples/fifo.scm (fifo-callback): Update for new
+	io-channel-read-line behavior.
+	(main): primitive-exit from the subthread. Adapt to
+	io-channel-new-file argument change.
+
 2007-12-08  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/overrides/glib.defs (run): 

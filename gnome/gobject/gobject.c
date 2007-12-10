@@ -240,11 +240,16 @@ SCM_DEFINE (scm_gtype_register_static, "gtype-register-static", 2, 0, 0,
     GTypeInfo gtype_info;
     GTypeQuery gtype_query;
     GuileGTypeClass *guile_class;
+    char *utf8;
 
     SCM_VALIDATE_STRING (1, name);
     SCM_VALIDATE_GTYPE_COPY (2, parent_type, gtype_parent);
 
-    gtype = g_type_from_name (SCM_STRING_CHARS (name));
+    scm_dynwind_begin (0);
+
+    utf8 = scm_to_locale_string_dynwind (name);
+    gtype = g_type_from_name (utf8);
+
     if (gtype)
 	scm_c_gruntime_error (FUNC_NAME,
                               "There is already a type with this name: ~S",
@@ -268,13 +273,14 @@ SCM_DEFINE (scm_gtype_register_static, "gtype-register-static", 2, 0, 0,
     gtype_info.class_init = scm_c_gtype_instance_class_init;
     gtype_info.instance_init = scm_c_gtype_instance_instance_init;
 
-    gtype = g_type_register_static (gtype_parent, SCM_STRING_CHARS (name),
-				    &gtype_info, 0);
+    gtype = g_type_register_static (gtype_parent, utf8, &gtype_info, 0);
 
     guile_class = g_new0 (GuileGTypeClass, 1);
     guile_class->properties_hash = g_hash_table_new (NULL, NULL);
 
     g_type_set_qdata (gtype, quark_guile_gtype_class, guile_class);
+
+    scm_dynwind_end ();
 
     return scm_c_register_gtype (gtype);
 }

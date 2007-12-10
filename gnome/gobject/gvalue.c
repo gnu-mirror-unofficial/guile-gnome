@@ -277,7 +277,7 @@ SCM_DEFINE (scm_gvalue_primitive_set, "gvalue-primitive-set", 2, 0, 0,
 	if (SCM_FALSEP (value))
 	    g_value_set_string (gvalue, NULL);
 	else
-	    g_value_set_string (gvalue, SCM_STRING_CHARS (value));
+	    g_value_take_string (gvalue, scm_to_locale_string (value));
 	break;
 
     case G_TYPE_ENUM: {
@@ -730,7 +730,10 @@ SCM_DEFINE (scm_genum_register_static, "genum-register-static", 2, 0, 0,
     SCM_VALIDATE_STRING (1, name);
     SCM_VALIDATE_VECTOR (2, vtable);
 
-    type = g_type_from_name (SCM_STRING_CHARS (name));
+    scm_dynwind_begin (0);
+
+    type = g_type_from_name (scm_to_locale_string_dynwind (name));
+    
     if (type)
         scm_c_gruntime_error (FUNC_NAME,
                               "There is already a type with this name: ~S",
@@ -754,11 +757,13 @@ SCM_DEFINE (scm_genum_register_static, "genum-register-static", 2, 0, 0,
 	SCM this = scm_vector_ref (vtable, SCM_MAKINUM (i));
 
 	values [i].value_nick  = g_strdup (SCM_SYMBOL_CHARS (scm_list_ref (this, SCM_MAKINUM (0))));
-	values [i].value_name  = g_strdup (SCM_STRING_CHARS (scm_list_ref (this, SCM_MAKINUM (1))));
+	values [i].value_name  = g_strdup (scm_to_locale_string_dynwind (scm_list_ref (this, SCM_MAKINUM (1))));
 	values [i].value       = SCM_INUM (scm_list_ref (this, SCM_MAKINUM (2)));
     }
 
-    type = g_enum_register_static (SCM_STRING_CHARS (name), values);
+    type = g_enum_register_static (scm_to_locale_string_dynwind (name), values);
+
+    scm_dynwind_end ();
 
     return scm_c_register_gtype (type);
 }
@@ -778,7 +783,9 @@ SCM_DEFINE (scm_gflags_register_static, "gflags-register-static", 2, 0, 0,
     SCM_VALIDATE_STRING (1, name);
     SCM_VALIDATE_VECTOR (2, vtable);
 
-    type = g_type_from_name (SCM_STRING_CHARS (name));
+    scm_dynwind_begin (0);
+
+    type = g_type_from_name (scm_to_locale_string_dynwind (name));
     if (type)
 	scm_c_gruntime_error (FUNC_NAME,
                               "There is already a type with this name: ~S",
@@ -802,11 +809,13 @@ SCM_DEFINE (scm_gflags_register_static, "gflags-register-static", 2, 0, 0,
 	SCM this = scm_vector_ref (vtable, SCM_MAKINUM (i));
 
 	values [i].value_nick  = g_strdup (SCM_SYMBOL_CHARS (scm_list_ref (this, SCM_MAKINUM (0))));
-	values [i].value_name  = g_strdup (SCM_STRING_CHARS (scm_list_ref (this, SCM_MAKINUM (1))));
+	values [i].value_name  = g_strdup (scm_to_locale_string_dynwind (scm_list_ref (this, SCM_MAKINUM (1))));
 	values [i].value       = SCM_INUM (scm_list_ref (this, SCM_MAKINUM (2)));
     }
 
-    type = g_flags_register_static (SCM_STRING_CHARS (name), values);
+    type = g_flags_register_static (scm_to_locale_string_dynwind (name), values);
+
+    scm_dynwind_end ();
 
     return scm_c_register_gtype (type);
 }

@@ -304,7 +304,9 @@ SCM_DEFINE (scm_gtype_from_name, "gtype-from-name", 1, 0, 0,
     GType gtype;
 
     SCM_VALIDATE_STRING (1, name);
-    gtype = g_type_from_name (SCM_STRING_CHARS (name));
+    scm_dynwind_begin (0);
+    gtype = g_type_from_name (scm_to_locale_string_dynwind (name));
+    scm_dynwind_end ();
 
     return gtype ? scm_c_register_gtype (gtype) : SCM_BOOL_F;
 }
@@ -792,7 +794,9 @@ void scm_c_define_and_export_gtype_x (GType type)
                                  scm_str2string (g_type_name (type)))));
                      
     scm_define (scm_string_to_symbol (str), scm_c_register_gtype (type));
-    scm_c_export (SCM_STRING_CHARS (str), NULL);
+    scm_dynwind_begin (0);
+    scm_c_export (scm_to_locale_string_dynwind (str), NULL);
+    scm_dynwind_end ();
 }
 
 SCM_KEYWORD (k_name,		"name");

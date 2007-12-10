@@ -117,6 +117,16 @@
     '("int" "fd")
   )
 )
+(define-method g_io_channel_read_line
+  (of-object "GIOChannel")
+  (c-name "_wrap_g_io_channel_read_line")
+  (overrides "g_io_channel_read_line")
+  (return-type "GIOStatus")
+  (parameters
+    '("gchar**" "string_return")
+    '("GError**" "error")
+  )
+)
 
 (define-method iteration
   (of-object "GMainContext")

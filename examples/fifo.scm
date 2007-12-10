@@ -32,7 +32,7 @@
 
 (define (fifo-callback loop source condition)
   (stderr "fifo\n")
-  (receive (status line len term) (g-io-channel-read-line source)
+  (receive (status line) (g-io-channel-read-line source)
     (stderr "result: ~S\n" line)
     (if (equal? line "exit\n")
         (g-main-loop-quit loop)))
@@ -55,10 +55,10 @@
     (if (= 0 (primitive-fork))
         (begin
           (talk fifo)
-          (exit 0)))
+          (primitive-exit 0)))
     
     (g-io-add-watch
-     (g-io-channel-new-file fifo) 'in
+     (g-io-channel-new-file fifo "r") 'in
      (lambda (source condition) (fifo-callback loop source condition)))
     
     (g-main-loop-run loop)

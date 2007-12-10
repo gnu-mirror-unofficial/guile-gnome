@@ -263,19 +263,34 @@ _wrap_g_string_get_str (GString *str)
     return scm_mem2string (str->str, str->len);
 }
 
+struct io_args {
+    GIOChannel *source;
+    GIOCondition condition;
+    SCM proc;
+};
+
+static void*
+_with_io_func (gpointer data)
+{
+    struct io_args *args = data;
+    SCM result;
+
+    result = scm_call_2 (args->proc,
+                         gw_wcp_assimilate_ptr (args->source, iochannel_type),
+                         scm_long2num (args->condition));
+    return result != SCM_BOOL_F ? (void*)1 : (void*)0;
+}
+    
 static gboolean
 g_io_func (GIOChannel *source,
 	   GIOCondition condition,
 	   gpointer data)
 {
-    SCM proc;
-    SCM result;
-
-    proc = GPOINTER_TO_SCM (data);
-    result = scm_call_2 (proc,
-                         gw_wcp_assimilate_ptr (source, iochannel_type),
-                         scm_long2num (condition));
-    return result == SCM_BOOL_T;
+    struct io_args args;
+    args.source = source;
+    args.condition = condition;
+    args.proc = GPOINTER_TO_SCM (data);
+    return !!scm_with_guile(_with_io_func, &args);
 }
 
 guint
@@ -287,7 +302,7 @@ _wrap_g_io_add_watch (GIOChannel *channel,
     if (SCM_FALSEP (iochannel_type))
         iochannel_type = scm_permanent_object
             (SCM_VARIABLE_REF (scm_c_module_lookup (scm_c_resolve_module ("gnome glib"),
-                                                    "<g-iochannel*>")));
+                                                    "<gio-channel>")));
 
     SCM_VALIDATE_PROC (3, func);
     return g_io_add_watch (channel,
@@ -296,6 +311,13 @@ _wrap_g_io_add_watch (GIOChannel *channel,
                            SCM_TO_GPOINTER (func));
 }
 #undef FUNC_NAME
+
+GIOStatus
+_wrap_g_io_channel_read_line (GIOChannel *channel, gchar **str_return,
+                              GError **error)
+{
+    return g_io_channel_read_line (channel, str_return, NULL, NULL, error);
+}
 
 gunichar
 _wrap_g_utf8_get_char (const gchar *p) 
