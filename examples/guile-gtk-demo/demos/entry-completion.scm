@@ -2,6 +2,8 @@
 ;; GNU General Public License version 2 or later. No warrantee.
 
 (define-module (demos entry-completion)
+  :use-module (oop goops)
+  :use-module (gnome gobject)
   :use-module (gnome gtk))
 
 

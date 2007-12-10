@@ -803,6 +803,19 @@
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkUIManager
+(define-method add_ui_from_string
+  (of-object "GtkUIManager")
+  (c-name "_wrap_gtk_ui_manager_add_ui_from_string")
+  (overrides "gtk_ui_manager_add_ui_from_string")
+  (return-type "guint")
+  (parameters
+    '("const-gchar*" "buffer")
+    '("GError**" "error")
+  )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkWidget
 (define-method drag_dest_set
   (of-object "GtkWidget")
@@ -1223,7 +1236,6 @@
  "gtk_type_init"
  "gtk_type_new"
  "gtk_type_unique"
- "gtk_ui_manager_add_ui_from_string"
  "gtk_vbutton_box_get_layout_default"
  "gtk_vbutton_box_get_spacing_default"
  "gtk_vbutton_box_set_layout_default"

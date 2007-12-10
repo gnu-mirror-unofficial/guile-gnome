@@ -1,4 +1,4 @@
-(use-modules (gnome gtk))
+(use-modules (oop goops) (gnome gobject) (gnome gtk))
 
 (let ((window (make <gtk-window> #:type 'toplevel #:title "Hello Buttons!"))
       (box1 (make <gtk-hbox>))

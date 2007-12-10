@@ -4,6 +4,8 @@
 ;; Don't try this at home, kids: it's a broken strategy.
 
 (define-module (demos continuations)
+  :use-module (oop goops)
+  :use-module (gnome gobject)
   :use-module (gnome gtk))
 
 (define name "Continuations")

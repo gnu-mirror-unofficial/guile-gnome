@@ -2,17 +2,14 @@
 ;; GNU General Public License version 2 or later. No warrantee.
 
 (define-module (demos appwindow)
+  :use-module (oop goops)
+  :use-module (gnome gobject)
   :use-module (gnome gtk)
   :use-module (gnome gtk gdk-event))
 
 
 (define window #f)
 
-
-(define (demo-find-file base)
-  (and (g-file-test "gtk-logo-rgb.gif" 'exists)
-       (g-file-test base 'exists)
-       base))
 
 (define (activate-action action)
   (let* ((name     (get-name action))
@@ -165,40 +162,6 @@
 </ui>
 ")
 
-
-(define (register-stock-icons)
-  "This function registers our custom toolbar icons, so they can be themed.
-
-It's totally optional to do this, you could just manually insert icons
-and have them not be themeable, especially if you never expect people
-to theme your app."
-  
-  ;; register our stock items
-  (gtk-stock-add '(("demo-gtk-logo"
-		    "_GTK!"
-		    0 0 #f)))
-  (let ((factory (make <gtk-icon-factory>))
-	;; demo_find_file() looks in the the current directory first,
-	;; so you can run gtk-demo without installing GTK, then looks
-	;; in the location where the file is installed.
-	(pixbuf   (and=> (demo-find-file "gtk-logo-rgb.gif")
-			 (lambda (f)
-			   (gdk-pixbuf-new-from-file f)))))
-    ;; add our custom icon factory to the list of defaults
-    (add-default factory)
-
-    (if pixbuf
-	;; register icon to accompany stock item
-	(add factory "demo-gtk-logo"
-	     (gtk-icon-set-new-from-pixbuf
-	      ;; the gtk-logo-rgb icon has a white background, 
-	      ;; make it transparent
-	      (gdk-pixbuf-add-alpha pixbuf #t 
-				    (integer->char #xff) 
-				    (integer->char #xff) 
-				    (integer->char #xff))))
-	(display "failed to load GTK logo for toolbar"))))
-
 (define (main)
 
   (define (update-statusbar buffer statusbar)
@@ -240,8 +203,6 @@ to theme your app."
 	 ;; create statusbar
 	 (statusbar (make <gtk-statusbar>)))
 
-    (register-stock-icons)
-
     (add window table)
 
     (add-actions actions entries)
@@ -252,14 +213,7 @@ to theme your app."
     (insert-action-group merge actions 0)
     (add-accel-group window (get-accel-group merge))
 
-    (catch #t
-	   (lambda ()
-	     (add-ui-from-string merge ui-info -1))
-	   (lambda (key . args)
-	     (case key
-	       ((g-error)
-		(display (format #f "building menus failed: ~A\n"
-				 (caddr args)))))))
+    (add-ui-from-string merge ui-info)
 
     (let ((bar1 (get-widget merge "/MenuBar"))
 	  (bar2 (get-widget merge "/ToolBar")))

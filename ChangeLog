@@ -1,3 +1,37 @@
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gtk.defs: 
+	* gnome/gw/gtk-support.h: 
+	* gnome/gw/gtk-support.c
+	(_wrap_gtk_ui_manager_add_ui_from_string): Wrap function without
+	string length argument.
+
+	* examples/tutorial/hello2.scm: 
+	* examples/tutorial/hello.scm: 
+	* examples/guile-gtk-demo/guile-gtk-demo.scm: Use the right extra
+	modules.
+
+	* examples/guile-gtk-demo/demos/ui-manager.scm: Use (oop goops),
+	add-ui-from-string changes.
+
+	* examples/guile-gtk-demo/demos/tree-store.scm: 
+	* examples/guile-gtk-demo/demos/tree-model.scm: 
+	* examples/guile-gtk-demo/demos/sizegroup.scm: 
+	* examples/guile-gtk-demo/demos/panes.scm:
+	* examples/guile-gtk-demo/demos/menus.scm: 
+	* examples/guile-gtk-demo/demos/list-store.scm: 
+	* examples/guile-gtk-demo/demos/entry-completion.scm: 
+	* examples/guile-gtk-demo/demos/editable-cells.scm: 
+	* examples/guile-gtk-demo/demos/dialog.scm: 
+	* examples/guile-gtk-demo/demos/continuations.scm: 
+	* examples/guile-gtk-demo/demos/button-box.scm: Use (oop goops)
+	etc.
+
+	* examples/guile-gtk-demo/demos/appwindow.scm: Use (oop goops),
+	give up on loading a custom stock icon (how to I get the directory
+	of this source file anyways??), use lengthless invocation of
+	add-ui-from-string.
+
 2007-12-09  Andy Wingo  <wingo@pobox.com>
 
 	* examples/tic-tac-toe.scm: Crackily avoid

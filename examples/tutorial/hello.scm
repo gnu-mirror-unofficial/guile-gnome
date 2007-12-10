@@ -1,4 +1,4 @@
-(use-modules (gnome gtk))
+(use-modules (oop goops) (gnome gobject) (gnome gtk))
 
 (let ((window (make <gtk-window> #:type 'toplevel))
       (button (make <gtk-button> #:label "Hello World")))

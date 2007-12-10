@@ -952,6 +952,13 @@ _wrap_gtk_tree_view_column_set_cell_data_func (GtkTreeViewColumn *tree_column,
          (GtkDestroyNotify)scm_gc_unprotect_object);
 }
 
+guint
+_wrap_gtk_ui_manager_add_ui_from_string (GtkUIManager *ui, const gchar *string,
+                                         GError **error)
+{
+    return gtk_ui_manager_add_ui_from_string (ui, string, -1, error);
+}
+
 void
 _wrap_gtk_drag_dest_set (GtkWidget *widget, GtkDestDefaults flags,
                          const GList* types, GdkDragAction actions)

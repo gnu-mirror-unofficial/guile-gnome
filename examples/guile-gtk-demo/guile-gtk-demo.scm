@@ -1,4 +1,5 @@
 #! /bin/sh
+# -*- scheme -*-
 exec guile-gnome-0 -s $0 "$@"
 !#
 ;; guile-gnome
@@ -23,7 +24,10 @@ exec guile-gnome-0 -s $0 "$@"
 
 
 (read-set! keywords 'prefix)
-(use-modules (gnome gtk)
+(use-modules (oop goops)
+             (gnome gobject)
+             (gnome glib)
+             (gnome gtk)
              (srfi srfi-13)
              (srfi srfi-1)
              (ice-9 rw)

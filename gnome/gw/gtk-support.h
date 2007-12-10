@@ -110,6 +110,8 @@ GtkTreeIter* _wrap_gtk_tree_store_append (GtkTreeStore *store, GtkTreeIter *pare
 
 void _wrap_gtk_tree_view_column_set_cell_data_func (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell_renderer, SCM proc);
 
+guint _wrap_gtk_ui_manager_add_ui_from_string (GtkUIManager *ui, const gchar *string, GError **error);
+
 GdkWindow* gtk_widget_get_window (GtkWidget *widget);
 GdkRectangle* gtk_widget_get_allocation (GtkWidget *widget);
 void _wrap_gtk_drag_dest_set (GtkWidget *widget, GtkDestDefaults flags, const GList *types, GdkDragAction actions);

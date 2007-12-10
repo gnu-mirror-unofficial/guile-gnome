@@ -2,6 +2,8 @@
 ;; GNU General Public License version 2 or later. No warrantee.
 
 (define-module (demos ui-manager)
+  :use-module (oop goops)
+  :use-module (gnome gobject)
   :use-module (gnome gtk))
 
 
@@ -152,16 +154,17 @@
 
     (catch #t
 	   (lambda ()
-	     (add-ui-from-string ui ui-info -1))
+	     (add-ui-from-string ui ui-info))
 	   (lambda (key . args)
 	     (case key
 	       ((g-error)
 		(display (format #f "building menus failed: ~A\n"
-				 (caddr args)))))))
+				 (caddr args))))
+               (else (apply throw key args)))))
 
     (add window box1)
 
-    (pack-start box1 (gtk-ui-manager-get-widget ui "/MenuBar") #f #f 0)
+    (pack-start box1 (get-widget ui "/MenuBar") #f #f 0)
 
     (pack-start box1 label #t #t 0)
 
