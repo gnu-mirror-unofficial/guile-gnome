@@ -1,5 +1,13 @@
 2007-12-10  Andy Wingo  <wingo@pobox.com>
 
+	Patch by: Patrick Bernaud <patrickb at chez.com>
+	
+	* gnome/overrides/gdk.defs (gdk-window-set-cursor): Restore
+	(null-ok) for the cursor-parameter, lost in the regeneration.
+	Fixes #449790.
+
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
 	* gnome/overrides/gtk.defs: 
 	* gnome/gw/gtk-support.h: 
 	* gnome/gw/gtk-support.c

@@ -167,6 +167,16 @@
   (return-type "GList*-of-GdkWindow*")
 )
 
+(define-method set_cursor
+  (of-object "GdkWindow")
+  (c-name "gdk_window_set_cursor")
+  (overrides "gdk_window_set_cursor")
+  (return-type "none")
+  (parameters
+    '("GdkCursor*" "cursor" (null-ok))
+  )
+)
+
 (ignore-glob "gdk_colormap_*"
              "*libgtk_only"
              "gdk_x11_*"
