@@ -1,5 +1,9 @@
 2007-12-10  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.96 ==
+
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
 	Patch by: Patrick Bernaud <patrickb at chez.com>
 	
 	* gnome/overrides/gdk.defs (gdk-window-set-cursor): Restore
