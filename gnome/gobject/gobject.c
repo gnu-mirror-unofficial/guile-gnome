@@ -207,7 +207,7 @@ scm_c_gtype_instance_instance_init (GTypeInstance *g_instance,
 }
 
 static void
-scm_c_gtype_instance_class_init (gpointer g_class, gpointer class_data)
+scm_with_c_gtype_instance_class_init (gpointer g_class, gpointer class_data)
 {
     GuileGTypeClass *guile_class;
     SCM class;
@@ -237,6 +237,14 @@ scm_c_gtype_instance_class_init (gpointer g_class, gpointer class_data)
 	((GObjectClass *) g_class)->get_property = scm_c_gobject_get_property;
 	((GObjectClass *) g_class)->set_property = scm_c_gobject_set_property;
     }
+}
+
+static void
+scm_c_gtype_instance_class_init (gpointer g_class, gpointer class_data)
+{
+    scm_dynwind_guile_v__p_p (scm_with_guile,
+                              scm_with_c_gtype_instance_class_init,
+                              g_class, class_data);
 }
 
 SCM_DEFINE (scm_scheme_gclass_p, "scheme-gclass?", 1, 0, 0,

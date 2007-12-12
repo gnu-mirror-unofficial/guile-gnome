@@ -2,6 +2,7 @@
 
 	* gnome/gobject/gobject.c (scm_c_gtype_instance_class_init): Enter
 	guile mode.
+	(scm_c_gtype_instance_class_init): Enter guile mode.
 
 	* gnome/gobject/guile-support.h: 
 	* gnome/gobject/guile-support.c (scm_dynwind_guile_v__p_u_c_p)
