@@ -110,48 +110,6 @@ SCM_DEFINE (scm_gobject_get_data, "gobject-get-data", 2, 0, 0,
 }
 #undef FUNC_NAME
 
-typedef struct {
-    void *func;
-    void *p[4];
-    guint u[3];
-    gint d[3];
-    const void *c[4];
-} arg_data;
-
-static void*
-_invoke_v__p_u_p_p (void *p)
-{
-    arg_data *a = p;
-    void (*func)(void*, guint, void*, void*) = a->func;
-    func(a->p[0], a->u[0], a->p[1], a->p[2]);
-    return NULL;
-}
-
-static void
-scm_with_guile_v__p_u_p_p (void *func, void *arg1, guint arg2, void *arg3,
-                           void *arg4)
-{
-    arg_data args = {func, {arg1, arg3, arg4,}, {arg2,},};
-    scm_without_guile (_invoke_v__p_u_p_p, &args);
-}
-
-static void*
-_invoke_v__p_u_c_p (void *p)
-{
-    arg_data *a = p;
-    void (*func)(void*, guint, const void*, void*) = a->func;
-    func(a->p[0], a->u[0], a->c[0], a->p[1]);
-    return NULL;
-}
-
-static void
-scm_with_guile_v__p_u_c_p (void *func, void *arg1, guint arg2, const void *arg3,
-                           void *arg4)
-{
-    arg_data args = {func, {arg1, arg4,}, {arg2,}, {0,}, {arg3,}};
-    scm_without_guile (_invoke_v__p_u_c_p, &args);
-}
-
 static void
 scm_with_c_gobject_get_property (GObject *gobject, guint param_id,
                                     GValue *dest_gvalue, GParamSpec *pspec)
@@ -170,8 +128,9 @@ scm_with_c_gobject_get_property (GObject *gobject, guint param_id,
 static void
 scm_c_gobject_get_property (GObject *gobject, guint param_id, GValue *dest_gvalue, GParamSpec *pspec)
 {
-    return scm_with_guile_v__p_u_p_p (scm_with_c_gobject_get_property,
-                                      gobject, param_id, dest_gvalue, pspec);
+    return scm_dynwind_guile_v__p_u_p_p (scm_with_guile,
+                                         scm_with_c_gobject_get_property,
+                                         gobject, param_id, dest_gvalue, pspec);
 }
 
 static void
@@ -191,15 +150,16 @@ scm_with_c_gobject_set_property (GObject *gobject, guint param_id, const GValue 
 static void
 scm_c_gobject_set_property (GObject *gobject, guint param_id, const GValue *src_value, GParamSpec *pspec)
 {
-    return scm_with_guile_v__p_u_c_p (scm_with_c_gobject_set_property,
-                                      gobject, param_id, src_value, pspec);
+    return scm_dynwind_guile_v__p_u_c_p (scm_with_guile,
+                                         scm_with_c_gobject_set_property,
+                                         gobject, param_id, src_value, pspec);
 }
 
 
 
 static void
-scm_c_gtype_instance_instance_init (GTypeInstance *g_instance,
-				    gpointer g_class)
+scm_with_c_gtype_instance_instance_init (GTypeInstance *g_instance,
+                                         gpointer g_class)
 {
     GType type;
     SCM class;
@@ -235,6 +195,15 @@ scm_c_gtype_instance_instance_init (GTypeInstance *g_instance,
     default:
 	break;
     }
+}
+
+static void
+scm_c_gtype_instance_instance_init (GTypeInstance *g_instance,
+                                    gpointer g_class)
+{
+    scm_dynwind_guile_v__p_p (scm_with_guile,
+                              scm_with_c_gtype_instance_instance_init,
+                              g_instance, g_class);
 }
 
 static void
