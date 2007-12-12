@@ -1,5 +1,8 @@
 2007-12-12  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gobject/gobject.c (scm_c_gobject_set_property)
+	(scm_c_gobject_get_property): Enter guile mode. Icky icky ick.
+
 	* gnome/gobject/gclosure.c
 	(scm_closure_primitive_invoke_without_guile)
 	(scm_closure_primitive_invoke): Leave Guile mode when invoking

@@ -110,8 +110,51 @@ SCM_DEFINE (scm_gobject_get_data, "gobject-get-data", 2, 0, 0,
 }
 #undef FUNC_NAME
 
+typedef struct {
+    void *func;
+    void *p[4];
+    guint u[3];
+    gint d[3];
+    const void *c[4];
+} arg_data;
+
+static void*
+_invoke_v__p_u_p_p (void *p)
+{
+    arg_data *a = p;
+    void (*func)(void*, guint, void*, void*) = a->func;
+    func(a->p[0], a->u[0], a->p[1], a->p[2]);
+    return NULL;
+}
+
 static void
-scm_c_gobject_get_property (GObject *gobject, guint param_id, GValue *dest_gvalue, GParamSpec *pspec)
+scm_with_guile_v__p_u_p_p (void *func, void *arg1, guint arg2, void *arg3,
+                           void *arg4)
+{
+    arg_data args = {func, {arg1, arg3, arg4,}, {arg2,},};
+    scm_without_guile (_invoke_v__p_u_p_p, &args);
+}
+
+static void*
+_invoke_v__p_u_c_p (void *p)
+{
+    arg_data *a = p;
+    void (*func)(void*, guint, const void*, void*) = a->func;
+    func(a->p[0], a->u[0], a->c[0], a->p[1]);
+    return NULL;
+}
+
+static void
+scm_with_guile_v__p_u_c_p (void *func, void *arg1, guint arg2, const void *arg3,
+                           void *arg4)
+{
+    arg_data args = {func, {arg1, arg4,}, {arg2,}, {0,}, {arg3,}};
+    scm_without_guile (_invoke_v__p_u_c_p, &args);
+}
+
+static void
+scm_with_c_gobject_get_property (GObject *gobject, guint param_id,
+                                    GValue *dest_gvalue, GParamSpec *pspec)
 {
     SCM object;
     GValue *gvalue;
@@ -125,7 +168,14 @@ scm_c_gobject_get_property (GObject *gobject, guint param_id, GValue *dest_gvalu
 }
 
 static void
-scm_c_gobject_set_property (GObject *gobject, guint param_id, const GValue *src_value, GParamSpec *pspec)
+scm_c_gobject_get_property (GObject *gobject, guint param_id, GValue *dest_gvalue, GParamSpec *pspec)
+{
+    return scm_with_guile_v__p_u_p_p (scm_with_c_gobject_get_property,
+                                      gobject, param_id, dest_gvalue, pspec);
+}
+
+static void
+scm_with_c_gobject_set_property (GObject *gobject, guint param_id, const GValue *src_value, GParamSpec *pspec)
 {
     SCM object, value;
 
@@ -136,6 +186,13 @@ scm_c_gobject_set_property (GObject *gobject, guint param_id, const GValue *src_
 
     scm_call_3 (_gobject_set_property, object, scm_str2symbol (pspec->name),
                 scm_gvalue_to_scm (value));
+}
+
+static void
+scm_c_gobject_set_property (GObject *gobject, guint param_id, const GValue *src_value, GParamSpec *pspec)
+{
+    return scm_with_guile_v__p_u_c_p (scm_with_c_gobject_set_property,
+                                      gobject, param_id, src_value, pspec);
 }
 
 
