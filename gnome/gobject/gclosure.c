@@ -161,6 +161,14 @@ SCM_DEFINE (scm_gclosure_primitive_new, "gclosure-primitive-new", 1, 0, 0,
 
 
 
+static void*
+scm_closure_primitive_invoke_without_guile (closure_data *args)
+{
+    g_closure_invoke (args->closure, args->return_value, args->n_param_values,
+                      args->param_values, NULL);
+    return NULL;
+}
+    
 SCM_DEFINE (scm_gclosure_primitive_invoke, "gclosure-primitive-invoke", 3, 0, 0,
 	    (SCM instance, SCM return_type, SCM args),
 	    "")
@@ -201,8 +209,13 @@ SCM_DEFINE (scm_gclosure_primitive_invoke, "gclosure-primitive-invoke", 3, 0, 0,
 	retval_param = (GValue *) SCM_SMOB_DATA (retval);
     }
 
-    g_closure_invoke (gclosure, retval_param, n_params, params, NULL);
-
+    {
+        closure_data cdata = { gclosure, retval_param, n_params,
+                               params, NULL, NULL };
+        scm_without_guile
+            ((GThreadFunc)scm_closure_primitive_invoke_without_guile, &cdata);
+    }
+    
     g_free (params);
 
     return retval;
