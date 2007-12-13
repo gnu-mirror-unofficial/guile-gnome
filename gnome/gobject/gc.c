@@ -45,7 +45,7 @@ static scm_t_bits scm_tc16_glib_gc_marker;
 #endif
 
 
-SCM
+gpointer
 scm_glib_gc_protect_object (SCM obj)
 {
     gpointer key = SCM_TO_GPOINTER (obj);
@@ -57,25 +57,23 @@ scm_glib_gc_protect_object (SCM obj)
                          GINT_TO_POINTER (GPOINTER_TO_INT (val)+1));
     G_UNLOCK (glib_gc_marker_hash_lock);
 
-    return obj;
+    return key;
 }
 
-SCM
-scm_glib_gc_unprotect_object (SCM obj)
+void
+scm_glib_gc_unprotect_object (gpointer key)
 {
-    gpointer key = SCM_TO_GPOINTER (obj);
     gpointer val;
     
     G_LOCK (glib_gc_marker_hash_lock);
     val = g_hash_table_lookup (glib_gc_marker_hash, key);
+    /* FIXME: is this right? */
     if (val)
         g_hash_table_insert (glib_gc_marker_hash, key,
                              GINT_TO_POINTER (GPOINTER_TO_INT (val)-1));
     else
         g_hash_table_remove (glib_gc_marker_hash, key);
     G_UNLOCK (glib_gc_marker_hash_lock);
-
-    return obj;
 }
 
 static void

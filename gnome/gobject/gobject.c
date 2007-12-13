@@ -78,10 +78,9 @@ SCM_DEFINE (scm_gobject_set_data_x, "gobject-set-data!", 3, 0, 0,
     if (SCM_EQ_P (val, SCM_UNBOUND))
         g_object_set_qdata (gobject, g_quark_from_string (sym), NULL);
     else
-        g_object_set_qdata_full
-            (gobject, g_quark_from_string (sym),
-             SCM_TO_GPOINTER (scm_glib_gc_protect_object (val)),
-             (GDestroyNotify)scm_glib_gc_unprotect_object);
+        g_object_set_qdata_full (gobject, g_quark_from_string (sym),
+                                 scm_glib_gc_protect_object (val),
+                                 scm_glib_gc_unprotect_object);
         
     return SCM_UNSPECIFIED;
 }
@@ -225,7 +224,8 @@ scm_with_c_gtype_instance_class_init (gpointer g_class, gpointer class_data)
     DEBUG_ALLOC ("  protecting class %p of %s gclass %p", class,
                  g_type_name (G_TYPE_FROM_CLASS (g_class)), class);
 
-    guile_class->class = scm_glib_gc_protect_object (class);
+    scm_glib_gc_protect_object (class);
+    guile_class->class = class;
 
     /* Not calling a class-init generic will prevent GOOPS classes that are
      * subclassed on the scheme side from being initialized, but that's a corner

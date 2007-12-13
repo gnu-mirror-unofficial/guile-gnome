@@ -79,7 +79,7 @@ static void
 free_gboxed_scm (gpointer boxed)
 {
     DEBUG_ALLOC (G_STRLOC ": freeing gboxed %p", boxed);
-    scm_glib_gc_unprotect_object ((SCM) boxed);
+    scm_glib_gc_unprotect_object (boxed);
 }
 
 GType

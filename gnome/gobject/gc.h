@@ -32,8 +32,8 @@
 G_BEGIN_DECLS
 
 
-SCM scm_glib_gc_protect_object (SCM obj);
-SCM scm_glib_gc_unprotect_object (SCM obj);
+gpointer scm_glib_gc_protect_object (SCM obj);
+void scm_glib_gc_unprotect_object (gpointer key);
 
 
 void scm_init_gnome_gobject_gc (void);

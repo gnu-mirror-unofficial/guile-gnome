@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "guile-support.h"
+#include "gc.h"
 #include "gutil.h"
 #include "gtype.h"
 #include "private.h"
@@ -549,6 +550,8 @@ static size_t
 scm_gtype_instance_free (SCM smob)
 {
     gpointer instance = (gpointer)SCM_SMOB_DATA (smob);
+
+    DEBUG_ALLOC ("freeing instance 0x%p", instance);
 
     SCM_SET_SMOB_DATA (smob, NULL);
 

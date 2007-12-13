@@ -1,3 +1,19 @@
+2007-12-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.c (scm_gtype_instance_free): Add debug.
+
+	* gnome/gobject/gvalue.c (free_gboxed_scm): 
+	* gnome/gobject/gparameter.c (gparam->param-struct):
+	* gnome/gobject/gobject.c (scm_with_c_gtype_instance_class_init):
+	* gnome/gobject/gclosure.c (free_closure, gclosure-primitive-new):
+	Update for gc_protect_object changes.
+
+	* gnome/gobject/gc.h: 
+	* gnome/gobject/gc.c (scm_glib_gc_protect_object)
+	(scm_glib_gc_unprotect_object): Change prototypes to reflect these
+	functions' nature as a bridge between C and scheme. Note that
+	unprotect_object looks mightily dodgy.
+
 2007-12-12  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gobject/gobject.c (scm_c_gtype_instance_class_init): Enter
