@@ -174,8 +174,8 @@ void scm_register_gtype_instance_funcs (const scm_t_gtype_instance_funcs *funcs)
 void scm_register_gtype_instance_sinkfunc (GType type, void (*sinkfunc) (gpointer));
 SCM scm_c_gtype_instance_get_cached_smob (gpointer instance);
 void scm_c_gtype_instance_set_cached_smob (gpointer instance, SCM smob);
-SCM scm_c_gtype_instance_get_cached_goops (gpointer instance);
-void scm_c_gtype_instance_set_cached_goops (gpointer instance, SCM goops);
+SCM scm_c_gtype_instance_get_cached_goops (SCM smob);
+void scm_c_gtype_instance_set_cached_goops (SCM smob, SCM goops);
 
 
 G_END_DECLS

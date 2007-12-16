@@ -591,7 +591,7 @@ SCM_DEFINE (scm_gobject_primitive_create_instance, "gobject-primitive-create-ins
     scm_slot_set_x (object, scm_sym_gtype_instance, smob);
     
     /* cache this wrapper, like in scm_c_gtype_instance_to_scm */
-    scm_c_gtype_instance_set_cached_goops (gobject, object);
+    scm_c_gtype_instance_set_cached_goops (smob, object);
 
     return SCM_UNSPECIFIED;
 }

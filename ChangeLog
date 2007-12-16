@@ -1,3 +1,26 @@
+2007-12-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.h: 
+	* gnome/gobject/gtype.c:
+	* gnome/gobject/gobject.c (gobject-primitive-create-instance):
+	(scm_c_gtype_instance_get_cached_goops)
+	(scm_c_gtype_instance_set_cached_goops)
+	(scm_c_gtype_instance_to_scm_typed)
+	(scm_init_gnome_gobject_types): Because we don't really have any
+	guarantee on the order that the SMOB and the GOOPS object are
+	collected, change from caching the GOOPS object on the instance to
+	caching it on a weak hash table, keyed on the SMOB itself.
+	
+	* gnome/gobject/gtype.c (scm_c_gtype_instance_get_cached_smob)
+	(scm_c_gtype_instance_get_cached_goops): Crazily, with Guile 1.8
+	there is a window between mark and sweep in which a value has not
+	been collected, but is marked for collecting. If we try to get a
+	cached SCM value in this window, re-mark it so that when lazy
+	sweeping happens, we don't get the newly-alive value freed out
+	from under us. Quite a tough bug!
+	(scm_c_scm_to_gtype_instance): More debugging if we have a bad
+	%gtype-instance.
+
 2007-12-13  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gobject/gtype.c (scm_gtype_instance_free): Add debug.

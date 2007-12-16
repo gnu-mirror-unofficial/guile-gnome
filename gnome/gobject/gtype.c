@@ -59,6 +59,7 @@ static SCM _class_redefinition;
 
 static SCM _gtype_instance_write;
 static SCM _gtype_name_to_scheme_name;
+static SCM _weak_smob_to_goops_hash;
 
 static GQuark quark_class = 0;
 static GQuark quark_type = 0;
@@ -497,13 +498,17 @@ scm_c_gtype_instance_unref (gpointer instance)
 SCM
 scm_c_gtype_instance_get_cached_smob (gpointer instance)
 {
+    SCM ret;
     scm_t_gtype_instance_funcs *funcs;
     funcs = get_gtype_instance_instance_funcs (instance);
     if (funcs && funcs->get_qdata) {
         gpointer data = funcs->get_qdata ((GObject*)instance,
                                           guile_gobject_quark_smob_wrapper);
-        if (data)
-            return GPOINTER_TO_SCM (data);
+        if (data) {
+            ret = GPOINTER_TO_SCM (data);
+            scm_gc_mark (ret);
+            return ret;
+        }
     }
     return SCM_BOOL_F;
 }
@@ -520,28 +525,20 @@ scm_c_gtype_instance_set_cached_smob (gpointer instance, SCM smob)
 }
 
 SCM
-scm_c_gtype_instance_get_cached_goops (gpointer instance)
+scm_c_gtype_instance_get_cached_goops (SCM smob)
 {
-    scm_t_gtype_instance_funcs *funcs;
-    funcs = get_gtype_instance_instance_funcs (instance);
-    if (funcs && funcs->get_qdata) {
-        gpointer data = funcs->get_qdata ((GObject*)instance,
-                                          guile_gobject_quark_goops_wrapper);
-        if (data)
-            return GPOINTER_TO_SCM (data);
-    }
-    return SCM_BOOL_F;
+    SCM ret;
+    
+    ret = scm_hashq_ref (_weak_smob_to_goops_hash, smob, SCM_BOOL_F);
+    if (SCM_NFALSEP (ret))
+        scm_gc_mark (ret);
+    return ret;
 }
 
 void
-scm_c_gtype_instance_set_cached_goops (gpointer instance, SCM goops)
+scm_c_gtype_instance_set_cached_goops (SCM smob, SCM goops)
 {
-    scm_t_gtype_instance_funcs *funcs;
-    funcs = get_gtype_instance_instance_funcs (instance);
-    if (funcs && funcs->set_qdata)
-        funcs->set_qdata ((GObject*)instance,
-                          guile_gobject_quark_goops_wrapper,
-                          goops == SCM_BOOL_F ? NULL : SCM_TO_GPOINTER (goops));
+    scm_hashq_set_x (_weak_smob_to_goops_hash, smob, goops);
 }
 
 /* A GTypeInstance is a SMOB whose first word is the GTypeInstance* pointer, and
@@ -551,14 +548,15 @@ scm_gtype_instance_free (SCM smob)
 {
     gpointer instance = (gpointer)SCM_SMOB_DATA (smob);
 
-    DEBUG_ALLOC ("freeing instance 0x%p", instance);
+    DEBUG_ALLOC ("freeing instance 0x%p, smob 0x%p", instance, (void*)smob);
 
     SCM_SET_SMOB_DATA (smob, NULL);
 
     if (!instance)
 	return 0;
 
-    scm_c_gtype_instance_set_cached_goops (instance, SCM_BOOL_F);
+    /* cached goops will go away when this is gc'd, because it is in a weak key
+       hash */
     scm_c_gtype_instance_set_cached_smob (instance, SCM_BOOL_F);
     scm_c_gtype_instance_unref (instance);
 
@@ -634,7 +632,7 @@ scm_c_scm_to_gtype_instance (SCM instance, GType gtype)
 
     type = scm_c_register_gtype (gtype);
     class = scm_sys_gtype_lookup_class (type);
-    if (!class)
+    if (SCM_FALSEP (class))
 	return NULL;
 
     if (!SCM_IS_A_P (instance, class))
@@ -653,9 +651,12 @@ scm_c_scm_to_gtype_instance (SCM instance, GType gtype)
 	    return ginstance;
 	else
 	    return NULL;
+    } else {
+        scm_c_gruntime_error ("%scm->gtype-instance",
+                              "Bad %gtype-instance slot value: ~A",
+                              SCM_LIST1 (pinstance));
+        return NULL; /* won't be reached */
     }
-
-    return NULL;
 }
 
 /* idea, code, and comments stolen from pygtk -- thanks, James :-) */
@@ -713,11 +714,16 @@ scm_c_gtype_instance_to_scm_typed (gpointer ginstance, GType type)
 {
     SCM instance_smob, class, object;
 
-    object = scm_c_gtype_instance_get_cached_goops (ginstance);
+    instance_smob = scm_c_gtype_instance_get_cached_smob (ginstance);
+    if (!scm_is_false (instance_smob)) {
+        object = scm_c_gtype_instance_get_cached_goops (instance_smob);
+    } else {
+        instance_smob = scm_c_make_gtype_instance (ginstance);
+        object = SCM_BOOL_F;
+    }
+
     if (!scm_is_false (object))
         return object;
-    
-    instance_smob = scm_c_make_gtype_instance (ginstance);
     
     class = scm_c_gtype_lookup_class (type);
     if (SCM_FALSEP (class))
@@ -730,7 +736,9 @@ scm_c_gtype_instance_to_scm_typed (gpointer ginstance, GType type)
     /* Cache the return value, so that if a callback or another function returns
      * this ginstance while the ginstance is visible elsewhere, the same wrapper
      * will be used. This qdata is unset in the SMOB's free function. */
-    scm_c_gtype_instance_set_cached_goops (ginstance, object);
+    scm_c_gtype_instance_set_cached_goops (instance_smob, object);
+    DEBUG_ALLOC ("returning new object 0x%p for i0x%p/s0x%p",
+                 (void*)object, ginstance, (void*)instance_smob);
     
     return object;
 }
@@ -931,6 +939,9 @@ scm_init_gnome_gobject_types (void)
 
     _gtype_name_to_scheme_name = 
         scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gtype-name->scheme-name")));
+
+    _weak_smob_to_goops_hash =
+        scm_permanent_object (scm_make_weak_key_hash_table (scm_from_int (61)));
 
     scm_c_define_and_export_gtype_x (G_TYPE_NONE);
     scm_c_define_and_export_gtype_x (G_TYPE_ENUM);
