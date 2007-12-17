@@ -1012,3 +1012,12 @@ gtk_widget_get_allocation (GtkWidget *widget)
     *ret = widget->allocation;
     return ret;
 }
+
+GtkStateType
+gtk_widget_get_state (GtkWidget *widget)
+{
+  g_return_val_if_fail (widget != NULL, 0);
+  g_return_val_if_fail (GTK_IS_WIDGET (widget), 0);
+  
+  return GTK_WIDGET_STATE (widget);
+}
