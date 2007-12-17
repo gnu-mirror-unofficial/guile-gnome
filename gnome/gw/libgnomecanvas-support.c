@@ -97,7 +97,8 @@ guile_gnome_scm_to_canvas_points (SCM scm)
     {
       int length = SCM_VECTOR_LENGTH (scm);
       points = gnome_canvas_points_new (length);
-      for (int i = 0; i < length; i++)
+      int i;
+      for (i = 0; i < length; i++)
 	{
 	  SCM s = SCM_VECTOR_REF (scm, i);
 	  /* Just return NULL? */
