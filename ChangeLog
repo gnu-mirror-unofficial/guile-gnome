@@ -1,3 +1,21 @@
+2008-04-04  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gc.c: Gcc started throwing warnings about the
+	locking foo, at which point I realized that we never actually
+	initialized gthreads, or linked to it. Fix to use normal mutexen
+	and initialize threads. Perhaps in the future we will do something
+	clever with gdk_thread_funcs.
+
+	* package.ac: Check for gthreads.
+
+	* gnome/gobject/Makefile.am (C_FILES): Reorder to reflect correct
+	dependency ordering.
+	(libguile_gnome_gobject_@API_VERSION@_la_CFLAGS):
+	(libguile_gnome_gobject_@API_VERSION@_la_LIBADD): Link to
+	gthreads.
+	(DOT_DOC_FILES): Remove gparameter.doc from the list, as soon it
+	will have nothing to say.
+
 2007-12-14  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gobject/gtype.h: 

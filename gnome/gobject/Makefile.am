@@ -4,18 +4,18 @@ lib_LTLIBRARIES = libguile-gnome-gobject-@API_VERSION@.la
 
 # libguile-gnome-gobject (core library)
 
-C_FILES = gobject.c gsignal.c gclosure.c gvalue.c gparameter.c gtype.c \
-	gutil.c gc.c
+C_FILES = gc.c gutil.c gtype.c gparameter.c gvalue.c gclosure.c \
+	gsignal.c gobject.c
 H_FILES = $(C_FILES:.c=.h)
 
 libguile_gnome_gobject_@API_VERSION@_la_SOURCES = \
        $(C_FILES) $(H_FILES) guile-support.c guile-support.h
 
 libguile_gnome_gobject_@API_VERSION@_la_CFLAGS = \
-  $(AM_CFLAGS) $(GOBJECT_CFLAGS) $(GUILE_CFLAGS) \
+  $(AM_CFLAGS) $(GOBJECT_CFLAGS) $(GTHREAD_CFLAGS) $(GUILE_CFLAGS) \
   -DGUILE_GOBJECT_DIR=\""$(guilegnomedir)"\"
 
-libguile_gnome_gobject_@API_VERSION@_la_LIBADD = $(GOBJECT_LIBS) $(GUILE_LIBS)
+libguile_gnome_gobject_@API_VERSION@_la_LIBADD = $(GOBJECT_LIBS) $(GTHREAD_LIBS) $(GUILE_LIBS)
 libguile_gnome_gobject_@API_VERSION@_la_LDFLAGS = # FIXME: version info
 
 guile_gnome_includedir = $(includedir)/guile-gnome-@API_VERSION@
@@ -38,7 +38,7 @@ GUILE_SNARF_CFLAGS += $(GOBJECT_CFLAGS)
 
 DOT_X_FILES = $(C_FILES:.c=.x)
 DOT_DOC_FILES = gobject.doc gsignal.doc gclosure.doc gvalue.doc	\
-	gparameter.doc gtype.doc
+	gtype.doc
 
 guile-gnome-gobject.texi: $(DOT_DOC_FILES)
 	cat $(DOT_DOC_FILES) | guile-snarf-docs-texi > $@ \

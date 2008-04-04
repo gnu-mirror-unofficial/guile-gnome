@@ -28,7 +28,7 @@
 #include "gutil.h"
 
 
-G_LOCK_DEFINE_STATIC(glib_gc_marker_hash_lock);
+static GMutex *glib_gc_marker_hash_lock = NULL;
 
 static GHashTable *glib_gc_marker_hash = NULL;
 
@@ -51,11 +51,11 @@ scm_glib_gc_protect_object (SCM obj)
     gpointer key = SCM_TO_GPOINTER (obj);
     gpointer val;
     
-    G_LOCK (glib_gc_marker_hash_lock);
+    g_mutex_lock (glib_gc_marker_hash_lock);
     val = g_hash_table_lookup (glib_gc_marker_hash, key);
     g_hash_table_insert (glib_gc_marker_hash, key,
                          GINT_TO_POINTER (GPOINTER_TO_INT (val)+1));
-    G_UNLOCK (glib_gc_marker_hash_lock);
+    g_mutex_unlock (glib_gc_marker_hash_lock);
 
     return key;
 }
@@ -65,7 +65,7 @@ scm_glib_gc_unprotect_object (gpointer key)
 {
     gpointer val;
     
-    G_LOCK (glib_gc_marker_hash_lock);
+    g_mutex_lock (glib_gc_marker_hash_lock);
     val = g_hash_table_lookup (glib_gc_marker_hash, key);
     /* FIXME: is this right? */
     if (val)
@@ -73,7 +73,7 @@ scm_glib_gc_unprotect_object (gpointer key)
                              GINT_TO_POINTER (GPOINTER_TO_INT (val)-1));
     else
         g_hash_table_remove (glib_gc_marker_hash, key);
-    G_UNLOCK (glib_gc_marker_hash_lock);
+    g_mutex_unlock (glib_gc_marker_hash_lock);
 }
 
 static void
@@ -85,9 +85,9 @@ mark (gpointer key, gpointer val, gpointer user_data)
 static SCM
 glib_gc_marker_mark (SCM smob)
 {
-    G_LOCK (glib_gc_marker_hash_lock);
+    g_mutex_lock (glib_gc_marker_hash_lock);
     g_hash_table_foreach (glib_gc_marker_hash, mark, NULL);
-    G_UNLOCK (glib_gc_marker_hash_lock);
+    g_mutex_unlock (glib_gc_marker_hash_lock);
 
     return SCM_BOOL_F;
 }
@@ -106,7 +106,11 @@ scm_init_gnome_gobject_gc (void)
     scm_set_smob_mark (scm_tc16_glib_gc_marker, glib_gc_marker_mark);
     scm_set_smob_print (scm_tc16_glib_gc_marker, glib_gc_marker_print);
 
+    if (!g_thread_supported ())
+        g_thread_init (NULL);
+
     glib_gc_marker_hash = g_hash_table_new (NULL, NULL);
+    glib_gc_marker_hash_lock = g_mutex_new ();
 
     SCM_NEWSMOB (scm_sys_glib_gc_marker, scm_tc16_glib_gc_marker, NULL);
     scm_permanent_object (scm_sys_glib_gc_marker);
