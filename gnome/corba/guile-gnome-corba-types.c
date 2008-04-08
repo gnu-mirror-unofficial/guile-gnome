@@ -503,8 +503,8 @@ case CORBA_tk_ ## k:								\
 	g_message (G_STRLOC ": %ld", (unsigned long)gtype);
 
 	retval = scm_c_make_gvalue (gtype);
-        scm_gvalue_primitive_set (retval, SCM_MAKINUM(*(CORBA_unsigned_long*)any->_value));
-
+        g_value_set_enum (scm_c_gvalue_peek_value (retval),
+                          *(CORBA_unsigned_long*)any->_value);
 	break;
     }
 
@@ -679,10 +679,10 @@ guile_corba_data_free (SCM data)
 
 
 
-SCM_DEFINE (scm_corba_typecode_to_gtype, "corba-typecode->gtype", 1, 0, 0,
+SCM_DEFINE (scm_corba_typecode_to_gtype_class, "corba-typecode->gtype-class", 1, 0, 0,
 	    (SCM typecode),
 	    "")
-#define FUNC_NAME s_scm_corba_typecode_to_gtype
+#define FUNC_NAME s_scm_corba_typecode_to_gtype_class
 {
     CORBA_TypeCode tc;
     GType gtype;
@@ -691,7 +691,7 @@ SCM_DEFINE (scm_corba_typecode_to_gtype, "corba-typecode->gtype", 1, 0, 0,
 
     gtype = guile_corba_generic_typecode_to_type (tc);
 
-    return scm_c_register_gtype (gtype);
+    return scm_c_gtype_to_class (gtype);
 }
 #undef FUNC_NAME
 
@@ -833,7 +833,7 @@ scm_init_gnome_corba_types (void)
 		  NULL);
 
     scm_c_export (s_scm_corba_object_class_to_typecode,
-		  s_scm_corba_typecode_to_gtype,
+		  s_scm_corba_typecode_to_gtype_class,
 		  s_scm_make_corba_struct,
 		  s_scm_corba_struct_fields,
 		  s_scm_corba_struct_ref,

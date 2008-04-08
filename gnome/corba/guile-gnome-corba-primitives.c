@@ -55,7 +55,10 @@ static SCM scm_class_slot_set_x;
 
 static GMainLoop *guile_corba_main_loop = NULL;
 
+
+#ifndef BONOBO_EX
 #define BONOBO_EX(ev) ((ev) && (ev)->_major != CORBA_NO_EXCEPTION)
+#endif
 
 #define WITH_DEBUGGING
 
