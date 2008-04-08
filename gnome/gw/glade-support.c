@@ -53,7 +53,7 @@ connect_one (const gchar *handler_name, GObject *object, const gchar *signal_nam
 
     proc = GPOINTER_TO_SCM (user_data);
     scm_call_4 (gtype_instance_signal_connect_data,
-                scm_c_gtype_instance_to_scm ((GTypeInstance*)object),
+                scm_c_gtype_instance_to_scm (object),
                 scm_str2symbol (signal_name),
                 proc,
                 after ? SCM_BOOL_T : SCM_BOOL_F);
@@ -116,7 +116,7 @@ guile_glade_custom_handler (GladeXML *xml, gchar *func, gchar *name, gchar *stri
     
     ret = scm_c_eval_string (func);
     SCM_VALIDATE_GOBJECT (0, ret);
-    widget = (GtkWidget*)scm_c_scm_to_gtype_instance (ret, GTK_TYPE_WIDGET);
+    widget = (GtkWidget*)scm_c_scm_to_gtype_instance_typed (ret, GTK_TYPE_WIDGET);
     gtk_widget_show (widget);
     return widget;
 }

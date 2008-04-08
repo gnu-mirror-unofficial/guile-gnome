@@ -1,3 +1,9 @@
+2008-04-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/glade-support.c (connect_one): Remove needless cast.
+	(guile_glade_custom_handler): Use the two-arg
+	scm_c_scm_to_gtype_instance_typed.
+
 2007-12-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.96 ==
