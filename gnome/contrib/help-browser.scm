@@ -77,7 +77,7 @@
   3) ;; name, value, buffer
 (define-method (on-get-column-type (obj <help-tree>) index)
   (case index
-    ((2) gtype:gboxed-scm)
+    ((2) <gboxed-scm>)
     (else (next-method))))
 (define-method (on-get-value (obj <help-tree>) iter index)
   (case index
@@ -124,8 +124,8 @@
   3) ;; name, node name, tree-iter
 (define-method (on-get-column-type (obj <help-index>) index)
   (case index
-    ((0 1) gtype:gchararray)
-    ((2) (gtype-from-name "GtkTreeIter"))
+    ((0 1) <gchararray>)
+    ((2) (gtype-name->class "GtkTreeIter"))
     (else (error "Invalid index" index))))
 (define-method (on-get-value (obj <help-index>) iter index)
   (case index

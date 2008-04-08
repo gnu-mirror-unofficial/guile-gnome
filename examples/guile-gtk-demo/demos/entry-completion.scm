@@ -8,7 +8,7 @@
 
 
 (define (create-completion-model)
-  (let ((store (gtk-list-store-new (list gtype:gchararray))))
+  (let ((store (gtk-list-store-new (list <gchararray>))))
     (for-each
      (lambda (v)
        ;; append a word

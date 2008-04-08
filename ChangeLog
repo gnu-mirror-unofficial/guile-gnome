@@ -1,3 +1,53 @@
+2008-04-08  Andy Wingo  <wingo@pobox.com>
+
+	Updates for (gnome gobject) api change
+
+	* gnome/gw/guile-gtk-tree-model.c
+	(_with_guile_gtk_generic_tree_model_get_column_type): Expect a
+	<gtype-class>, not a <gtype.
+
+	* gnome/gw/gtk-support.c (_wrap_gtk_list_store_new)
+	(_wrap_gtk_tree_store_new): Expect <gtype-class> instances, not
+	<gtype>s.
+	(_wrap_gtk_message_dialog_new): Minimal updates.
+	(_wrap_gtk_text_buffer_get_bounds)
+	(_wrap_gtk_text_buffer_get_selection_bounds)
+	(_wrap_gtk_tree_selection_get_selected)
+	(cell_data_func): Use new GValue functions.
+
+	* gnome/gw/gdk-support.c (gdk_event_to_vector): Try to eliminate
+	some deprecation warnings.
+
+	* gnome/gw/gdk-spec.scm: Use new GValue* helpers, and
+	wrap-instance! instead of wrap-object!.
+
+	* gnome/gtk.scm (initialize on <gtk-object>): Specialize
+	<gtk-object>'s initialize, not make-gobject-instance, to hook up
+	the destroy foo.
+	(make-instance on <gtk-message-dialog>): some perhaps untested
+	updates for the new API.
+
+	* gnome/contrib/texinfo-buffer.scm (tag-prop-alist, def):
+	Apparently I had some uncommitted changes sitting around to redo
+	the display of a def section.
+	(<stexi-ref-tag>): Update for gtype foo.
+
+	* gnome/contrib/help-browser.scm (on-get-column-type):
+	* gnome/contrib/delay-tree-model.scm (on-get-column-type):
+	* examples/guile-gtk-demo/guile-gtk-demo.scm (tree-view):
+	* examples/guile-gtk-demo/demos/tree-store.scm (create-model):
+	* examples/guile-gtk-demo/demos/tree-model.scm
+	(on-get-column-type):
+	* examples/guile-gtk-demo/demos/list-store.scm (main):
+	* examples/guile-gtk-demo/demos/entry-completion.scm
+	(create-completion-model):
+	* examples/guile-gtk-demo/demos/editable-cells.scm (main):
+	* examples/guile-gtk-demo/demos/appwindow.scm (activate-action):
+	Update for new gtypeless world.
+
+	* examples/guile-gtk-demo/demos/tree-model.scm (initialize): Chain
+	up, now necessary.
+
 2007-12-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.96 ==

@@ -100,14 +100,14 @@
 (define (create-model)
   (let (
 	; create tree store
-	(model (gtk-tree-store-new (list gtype:gchararray
-					 gtype:gboolean
-					 gtype:gboolean
-					 gtype:gboolean
-					 gtype:gboolean
-					 gtype:gboolean
-					 gtype:gboolean
-					 gtype:gboolean))))
+	(model (gtk-tree-store-new (list <gchararray>
+					 <gboolean>
+					 <gboolean>
+					 <gboolean>
+					 <gboolean>
+					 <gboolean>
+					 <gboolean>
+					 <gboolean>))))
     (for-each 
      (lambda (m)
        (let ((iter (append model (make <gtk-tree-iter>))))

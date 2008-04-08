@@ -26,6 +26,7 @@
 
 #include "gdk-support.h"
 
+#define VSET(scm, i, val) scm_vector_set_x (scm, scm_from_short (i), val)
 SCM
 gdk_event_to_vector (GdkEvent *event)
 {
@@ -39,15 +40,14 @@ gdk_event_to_vector (GdkEvent *event)
             /* 8 fields (we ignore key.string and key.length) */
             ret = scm_c_make_vector (8, SCM_BOOL_F);
             
-            scm_vector_set_x (ret, SCM_MAKINUM (0), SCM_MAKINUM (event->type));
-            scm_vector_set_x (ret, SCM_MAKINUM (1),
-                              scm_c_gtype_instance_to_scm ((GTypeInstance*)ekey.window));
-            scm_vector_set_x (ret, SCM_MAKINUM (2), ekey.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            scm_vector_set_x (ret, SCM_MAKINUM (3), scm_ulong2num (ekey.time));
-            scm_vector_set_x (ret, SCM_MAKINUM (4), SCM_MAKINUM ((int)ekey.state));
-            scm_vector_set_x (ret, SCM_MAKINUM (5), SCM_MAKINUM (ekey.keyval));
-            scm_vector_set_x (ret, SCM_MAKINUM (6), SCM_MAKINUM (ekey.hardware_keycode));
-            scm_vector_set_x (ret, SCM_MAKINUM (7), SCM_MAKINUM (ekey.group));
+            VSET (ret, 0, scm_from_int (event->type));
+            VSET (ret, 1, scm_c_gtype_instance_to_scm (ekey.window));
+            VSET (ret, 2, ekey.send_event ? SCM_BOOL_T : SCM_BOOL_F);
+            VSET (ret, 3, scm_ulong2num (ekey.time));
+            VSET (ret, 4, scm_from_int (ekey.state));
+            VSET (ret, 5, scm_from_int (ekey.keyval));
+            VSET (ret, 6, scm_from_int (ekey.hardware_keycode));
+            VSET (ret, 7, scm_from_int (ekey.group));
             return ret;
         }
     case GDK_BUTTON_PRESS:
@@ -61,19 +61,17 @@ gdk_event_to_vector (GdkEvent *event)
             /* 11 fields (we ignore axes) */
             ret = scm_c_make_vector (11, SCM_BOOL_F);
             
-            scm_vector_set_x (ret, SCM_MAKINUM (0), SCM_MAKINUM (event->type));
-            scm_vector_set_x (ret, SCM_MAKINUM (1),
-                              scm_c_gtype_instance_to_scm ((GTypeInstance*)ebutton.window));
-            scm_vector_set_x (ret, SCM_MAKINUM (2), ebutton.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            scm_vector_set_x (ret, SCM_MAKINUM (3), scm_ulong2num (ebutton.time));
-            scm_vector_set_x (ret, SCM_MAKINUM (4), scm_double2num (ebutton.x));
-            scm_vector_set_x (ret, SCM_MAKINUM (5), scm_double2num (ebutton.y));
-            scm_vector_set_x (ret, SCM_MAKINUM (6), SCM_MAKINUM ((int)ebutton.state));
-            scm_vector_set_x (ret, SCM_MAKINUM (7), SCM_MAKINUM ((int)ebutton.button));
-            scm_vector_set_x (ret, SCM_MAKINUM (8), 
-                              scm_c_gtype_instance_to_scm ((GTypeInstance*)ebutton.device));
-            scm_vector_set_x (ret, SCM_MAKINUM (9), scm_double2num (ebutton.x_root));
-            scm_vector_set_x (ret, SCM_MAKINUM (10), scm_double2num (ebutton.y_root));
+            VSET (ret, 0, scm_from_int (event->type));
+            VSET (ret, 1, scm_c_gtype_instance_to_scm (ebutton.window));
+            VSET (ret, 2, ebutton.send_event ? SCM_BOOL_T : SCM_BOOL_F);
+            VSET (ret, 3, scm_ulong2num (ebutton.time));
+            VSET (ret, 4, scm_double2num (ebutton.x));
+            VSET (ret, 5, scm_double2num (ebutton.y));
+            VSET (ret, 6, scm_from_int (ebutton.state));
+            VSET (ret, 7, scm_from_int (ebutton.button));
+            VSET (ret, 8, scm_c_gtype_instance_to_scm (ebutton.device));
+            VSET (ret, 9, scm_double2num (ebutton.x_root));
+            VSET (ret, 10, scm_double2num (ebutton.y_root));
             return ret;
         }
     case GDK_ENTER_NOTIFY:
@@ -85,26 +83,24 @@ gdk_event_to_vector (GdkEvent *event)
             /* 13 fields */
             ret = scm_c_make_vector (13, SCM_BOOL_F);
 
-            scm_vector_set_x (ret, SCM_MAKINUM (0), SCM_MAKINUM (event->type));
-            scm_vector_set_x (ret, SCM_MAKINUM (1),
-                              scm_c_gtype_instance_to_scm ((GTypeInstance*)ecrossing.window));
-            scm_vector_set_x (ret, SCM_MAKINUM (2), ecrossing.send_event ? SCM_BOOL_T : SCM_BOOL_F);
+            VSET (ret, 0, scm_from_int (event->type));
+            VSET (ret, 1, scm_c_gtype_instance_to_scm (ecrossing.window));
+            VSET (ret, 2, ecrossing.send_event ? SCM_BOOL_T : SCM_BOOL_F);
 	    /* subwindow may be NULL. --jcn */
 	    if (ecrossing.subwindow)
-	      scm_vector_set_x (ret, SCM_MAKINUM (3),
-				scm_c_gtype_instance_to_scm ((GTypeInstance*)ecrossing.subwindow));
+	      VSET (ret, 3, scm_c_gtype_instance_to_scm (ecrossing.subwindow));
 	    else
-	      scm_vector_set_x (ret, SCM_MAKINUM (3), SCM_BOOL_F);
+	      VSET (ret, 3, SCM_BOOL_F);
 	      
-            scm_vector_set_x (ret, SCM_MAKINUM (4), scm_ulong2num (ecrossing.time));
-            scm_vector_set_x (ret, SCM_MAKINUM (5), scm_double2num (ecrossing.x));
-            scm_vector_set_x (ret, SCM_MAKINUM (6), scm_double2num (ecrossing.y));
-            scm_vector_set_x (ret, SCM_MAKINUM (7), scm_double2num (ecrossing.x_root));
-            scm_vector_set_x (ret, SCM_MAKINUM (8), scm_double2num (ecrossing.y_root));
-            scm_vector_set_x (ret, SCM_MAKINUM (9), SCM_MAKINUM ((int)ecrossing.mode));
-            scm_vector_set_x (ret, SCM_MAKINUM (10), SCM_MAKINUM ((int)ecrossing.detail));
-            scm_vector_set_x (ret, SCM_MAKINUM (11), SCM_BOOL ((int)ecrossing.focus));
-            scm_vector_set_x (ret, SCM_MAKINUM (12), SCM_MAKINUM ((int)ecrossing.state));
+            VSET (ret, 4, scm_ulong2num (ecrossing.time));
+            VSET (ret, 5, scm_double2num (ecrossing.x));
+            VSET (ret, 6, scm_double2num (ecrossing.y));
+            VSET (ret, 7, scm_double2num (ecrossing.x_root));
+            VSET (ret, 8, scm_double2num (ecrossing.y_root));
+            VSET (ret, 9, scm_from_int (ecrossing.mode));
+            VSET (ret, 10, scm_from_int (ecrossing.detail));
+            VSET (ret, 11, SCM_BOOL (ecrossing.focus));
+            VSET (ret, 12, scm_from_int (ecrossing.state));
             return ret;
         }
     case GDK_SELECTION_CLEAR:
@@ -117,15 +113,14 @@ gdk_event_to_vector (GdkEvent *event)
             /* 8 fields */
             ret = scm_c_make_vector (8, SCM_BOOL_F);
             
-            scm_vector_set_x (ret, SCM_MAKINUM (0), SCM_MAKINUM (event->type));
-            scm_vector_set_x (ret, SCM_MAKINUM (1),
-                              scm_c_gtype_instance_to_scm ((GTypeInstance*)eselection.window));
-            scm_vector_set_x (ret, SCM_MAKINUM (2), eselection.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            scm_vector_set_x (ret, SCM_MAKINUM (3), scm_take0str (gdk_atom_name (eselection.selection)));
-            scm_vector_set_x (ret, SCM_MAKINUM (4), scm_take0str (gdk_atom_name (eselection.target)));
-            scm_vector_set_x (ret, SCM_MAKINUM (5), scm_take0str (gdk_atom_name (eselection.property)));
-            scm_vector_set_x (ret, SCM_MAKINUM (6), scm_ulong2num (eselection.time));
-            scm_vector_set_x (ret, SCM_MAKINUM (7), SCM_MAKINUM (eselection.requestor));
+            VSET (ret, 0, scm_from_int (event->type));
+            VSET (ret, 1, scm_c_gtype_instance_to_scm (eselection.window));
+            VSET (ret, 2, eselection.send_event ? SCM_BOOL_T : SCM_BOOL_F);
+            VSET (ret, 3, scm_take0str (gdk_atom_name (eselection.selection)));
+            VSET (ret, 4, scm_take0str (gdk_atom_name (eselection.target)));
+            VSET (ret, 5, scm_take0str (gdk_atom_name (eselection.property)));
+            VSET (ret, 6, scm_ulong2num (eselection.time));
+            VSET (ret, 7, scm_from_int (eselection.requestor));
 
             return ret;
         }
@@ -137,19 +132,18 @@ gdk_event_to_vector (GdkEvent *event)
             /* 11 fields (we ignore axes) */
             ret = scm_c_make_vector (11, SCM_BOOL_F);
             
-            scm_vector_set_x (ret, SCM_MAKINUM (0), SCM_MAKINUM (event->type));
-            scm_vector_set_x (ret, SCM_MAKINUM (1),
-                              scm_c_gtype_instance_to_scm ((GTypeInstance*)emotion.window));
-            scm_vector_set_x (ret, SCM_MAKINUM (2), emotion.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            scm_vector_set_x (ret, SCM_MAKINUM (3), scm_ulong2num (emotion.time));
-            scm_vector_set_x (ret, SCM_MAKINUM (4), scm_double2num (emotion.x));
-            scm_vector_set_x (ret, SCM_MAKINUM (5), scm_double2num (emotion.y));
-            scm_vector_set_x (ret, SCM_MAKINUM (6), SCM_MAKINUM ((int)emotion.state));
-            scm_vector_set_x (ret, SCM_MAKINUM (7), emotion.is_hint ? SCM_BOOL_T : SCM_BOOL_F);
-            scm_vector_set_x (ret, SCM_MAKINUM (8), 
-                              scm_c_gtype_instance_to_scm ((GTypeInstance*)emotion.device));
-            scm_vector_set_x (ret, SCM_MAKINUM (9), scm_double2num (emotion.x_root));
-            scm_vector_set_x (ret, SCM_MAKINUM (10), scm_double2num (emotion.y_root));
+            VSET (ret, 0, scm_from_int (event->type));
+            VSET (ret, 1, scm_c_gtype_instance_to_scm (emotion.window));
+            VSET (ret, 2, emotion.send_event ? SCM_BOOL_T : SCM_BOOL_F);
+            VSET (ret, 3, scm_ulong2num (emotion.time));
+            VSET (ret, 4, scm_double2num (emotion.x));
+            VSET (ret, 5, scm_double2num (emotion.y));
+            VSET (ret, 6, scm_from_int (emotion.state));
+            VSET (ret, 7, emotion.is_hint ? SCM_BOOL_T : SCM_BOOL_F);
+            VSET (ret, 8, 
+                            scm_c_gtype_instance_to_scm (emotion.device));
+            VSET (ret, 9, scm_double2num (emotion.x_root));
+            VSET (ret, 10, scm_double2num (emotion.y_root));
             return ret;
         }
     case GDK_WINDOW_STATE:
@@ -160,15 +154,11 @@ gdk_event_to_vector (GdkEvent *event)
             /* 5 fields */
             ret = scm_c_make_vector (5, SCM_BOOL_F);
 
-            scm_vector_set_x (ret, SCM_MAKINUM (0), SCM_MAKINUM (event->type));
-            scm_vector_set_x (ret, SCM_MAKINUM (1),
-                              scm_c_gtype_instance_to_scm ((GTypeInstance *)ewinstate.window));
-            scm_vector_set_x (ret, SCM_MAKINUM (2),
-                              ewinstate.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            scm_vector_set_x (ret, SCM_MAKINUM (3),
-                              SCM_MAKINUM ((int)ewinstate.changed_mask));
-            scm_vector_set_x (ret, SCM_MAKINUM (4),
-                              SCM_MAKINUM ((int)ewinstate.new_window_state));
+            VSET (ret, 0, scm_from_int (event->type));
+            VSET (ret, 1, scm_c_gtype_instance_to_scm (ewinstate.window));
+            VSET (ret, 2, ewinstate.send_event ? SCM_BOOL_T : SCM_BOOL_F);
+            VSET (ret, 3, scm_from_int (ewinstate.changed_mask));
+            VSET (ret, 4, scm_from_int (ewinstate.new_window_state));
             
             return ret;
         }
@@ -180,15 +170,12 @@ gdk_event_to_vector (GdkEvent *event)
             /* 6 fields */
             ret = scm_c_make_vector (6, SCM_BOOL_F);
 
-            scm_vector_set_x (ret, SCM_MAKINUM (0), SCM_MAKINUM (event->type));
-            scm_vector_set_x (ret, SCM_MAKINUM (1),
-                              scm_c_gtype_instance_to_scm (
-                                  (GTypeInstance *)expose.window));
-            scm_vector_set_x (ret, SCM_MAKINUM (2), SCM_BOOL (expose.send_event));
-            scm_vector_set_x (ret, SCM_MAKINUM (3),
-                              scm_gdk_rectangle_to_scm (&expose.area));
-            scm_vector_set_x (ret, SCM_MAKINUM (4), SCM_BOOL_F); /* FIXME: region */
-            scm_vector_set_x (ret, SCM_MAKINUM (5), SCM_MAKINUM (expose.count));
+            VSET (ret, 0, scm_from_int (event->type));
+            VSET (ret, 1, scm_c_gtype_instance_to_scm (expose.window));
+            VSET (ret, 2, SCM_BOOL (expose.send_event));
+            VSET (ret, 3, scm_gdk_rectangle_to_scm (&expose.area));
+            VSET (ret, 4, SCM_BOOL_F); /* FIXME: region */
+            VSET (ret, 5, scm_from_int (expose.count));
             return ret;
         }
     default:
@@ -203,10 +190,10 @@ scm_gdk_rectangle_to_scm (GdkRectangle *rect)
 {
     SCM ret = scm_c_make_vector (4, SCM_BOOL_F);
 
-    scm_vector_set_x (ret, SCM_MAKINUM(0), scm_int2num (rect->x));
-    scm_vector_set_x (ret, SCM_MAKINUM(1), scm_int2num (rect->y));
-    scm_vector_set_x (ret, SCM_MAKINUM(2), scm_int2num (rect->width));
-    scm_vector_set_x (ret, SCM_MAKINUM(3), scm_int2num (rect->height));
+    VSET (ret, 0, scm_int2num (rect->x));
+    VSET (ret, 1, scm_int2num (rect->y));
+    VSET (ret, 2, scm_int2num (rect->width));
+    VSET (ret, 3, scm_int2num (rect->height));
 
     return ret;
 }
@@ -218,7 +205,7 @@ scm_scm_to_gdk_rectangle (SCM scm)
     GdkRectangle *ret = g_new0 (GdkRectangle, 1);
     
 #define GET_VINT(v,i) \
-  scm_num2int (scm_vector_ref (v, SCM_MAKINUM(i)), 0, FUNC_NAME)
+  scm_num2int (scm_vector_ref (v, scm_from_int(i)), 0, FUNC_NAME)
 
     ret->x = GET_VINT (scm, 0);
     ret->y = GET_VINT (scm, 1);
@@ -234,9 +221,9 @@ scm_gdk_color_to_scm (GdkColor *c)
 {
     SCM ret = scm_c_make_vector (3, SCM_BOOL_F);
 
-    scm_vector_set_x (ret, SCM_MAKINUM(0), scm_ushort2num (c->red));
-    scm_vector_set_x (ret, SCM_MAKINUM(1), scm_ushort2num (c->green));
-    scm_vector_set_x (ret, SCM_MAKINUM(2), scm_ushort2num (c->blue));
+    VSET (ret, 0, scm_ushort2num (c->red));
+    VSET (ret, 1, scm_ushort2num (c->green));
+    VSET (ret, 2, scm_ushort2num (c->blue));
 
     return ret;
 }
@@ -254,7 +241,7 @@ scm_scm_to_gdk_color (SCM scm)
     }
     
 #define GET_VUSHORT(v,i) \
-  scm_num2ushort (scm_vector_ref (v, SCM_MAKINUM(i)), 0, FUNC_NAME)
+  scm_num2ushort (scm_vector_ref (v, scm_from_int (i)), 0, FUNC_NAME)
 
     ret->red = GET_VUSHORT (scm, 0);
     ret->green = GET_VUSHORT (scm, 1);

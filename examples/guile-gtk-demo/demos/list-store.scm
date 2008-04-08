@@ -103,10 +103,10 @@
 		     :hscrollbar-policy 'never :vscrollbar-policy 'automatic
 		     :shadow-type 'etched-in))
 	 ;; create list store
-	 (model    (gtk-list-store-new (list gtype:gboolean
-					     gtype:guint
-					     gtype:gchararray
-					     gtype:gchararray)))
+	 (model    (gtk-list-store-new (list <gboolean>
+					     <guint>
+					     <gchararray>
+					     <gchararray>)))
 	 ;; create tree view
 	 (treeview (make <gtk-tree-view> 
 		     :model model :rules-hint #t :search-column 3)))

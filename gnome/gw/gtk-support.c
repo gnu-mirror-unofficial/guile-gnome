@@ -338,15 +338,7 @@ _wrap_gtk_list_store_new (SCM col_types)
 
     for (i=0; i<len; i++) {
         SCM v = SCM_CAR (col_types);
-        if (SCM_GTYPEP (v))
-            col_gtypes[i] = (GType)SCM_SMOB_DATA (v);
-        else if (SCM_GTYPE_CLASSP (v))
-            col_gtypes[i] = (GType)SCM_SMOB_DATA (scm_slot_ref
-                                                  (v, scm_str2symbol ("gtype")));
-        else {
-            g_free (col_gtypes);
-            scm_wrong_type_arg (FUNC_NAME, 1, v);
-        }
+        SCM_VALIDATE_GTYPE_CLASS_COPY (1, v, col_gtypes[i]);
         col_types = SCM_CDR (col_types);
     }
     
@@ -421,15 +413,14 @@ _wrap_gtk_list_store_append (GtkListStore *store)
     return new;
 }
 
+/* FIXME: is this still necessary? */
 SCM
 _wrap_gtk_message_dialog_new (GtkWindow* parent, GtkDialogFlags flags, GtkMessageType type,
                               GtkButtonsType buttons, const gchar *text)
 {
-    SCM ret;
     GtkWidget *w = gtk_message_dialog_new (parent, flags, type, buttons, "%s", text);
     g_object_ref (w); /* the initial ref belongs to GTK+ */
-    SCM_NEWSMOB2 (ret, scm_tc16_gtype_instance, w, NULL);
-    return ret;
+    return scm_c_gtype_instance_to_scm (w);
 }
 
 gchar*
@@ -678,10 +669,8 @@ _wrap_gtk_text_buffer_get_bounds (GtkTextBuffer *buf)
     start = g_new0 (GtkTextIter, 1);
     end = g_new0 (GtkTextIter, 1);
     gtk_text_buffer_get_bounds (buf, start, end);
-    sstart = scm_c_make_gvalue (GTK_TYPE_TEXT_ITER);
-    send = scm_c_make_gvalue (GTK_TYPE_TEXT_ITER);
-    g_value_set_boxed_take_ownership ((GValue*)SCM_SMOB_DATA (sstart), start);
-    g_value_set_boxed_take_ownership ((GValue*)SCM_SMOB_DATA (send), end);
+    sstart = scm_c_gvalue_new_take_boxed (GTK_TYPE_TEXT_ITER, start);
+    send = scm_c_gvalue_new_take_boxed (GTK_TYPE_TEXT_ITER, end);
     return scm_values (SCM_LIST2 (sstart, send));
 }
 
@@ -694,10 +683,8 @@ _wrap_gtk_text_buffer_get_selection_bounds (GtkTextBuffer *buf)
     start = g_new0 (GtkTextIter, 1);
     end = g_new0 (GtkTextIter, 1);
     if (gtk_text_buffer_get_selection_bounds (buf, start, end)) {
-        sstart = scm_c_make_gvalue (GTK_TYPE_TEXT_ITER);
-        send = scm_c_make_gvalue (GTK_TYPE_TEXT_ITER);
-        g_value_set_boxed_take_ownership ((GValue*)SCM_SMOB_DATA (sstart), start);
-        g_value_set_boxed_take_ownership ((GValue*)SCM_SMOB_DATA (send), end);
+        sstart = scm_c_gvalue_new_take_boxed (GTK_TYPE_TEXT_ITER, start);
+        send = scm_c_gvalue_new_take_boxed (GTK_TYPE_TEXT_ITER, end);
         return scm_values (SCM_LIST2 (sstart, send));
     }
     g_free (start);
@@ -821,8 +808,7 @@ _wrap_gtk_tree_selection_get_selected (GtkTreeSelection *selection)
         SCM smodel, siter;
         g_object_ref (model);
         smodel = scm_c_gtype_instance_to_scm ((GTypeInstance*)model);
-        siter = scm_c_make_gvalue (GTK_TYPE_TREE_ITER);
-        g_value_set_boxed_take_ownership ((GValue*)SCM_SMOB_DATA (siter), iter);
+        siter = scm_c_gvalue_new_take_boxed (GTK_TYPE_TREE_ITER, iter);
         return scm_values (SCM_LIST2 (smodel, siter));
     }
     return scm_values (SCM_LIST2 (SCM_BOOL_F, SCM_BOOL_F));
@@ -842,15 +828,7 @@ _wrap_gtk_tree_store_new (SCM col_types)
 
     for (i=0; i<len; i++) {
         SCM v = SCM_CAR (col_types);
-        if (SCM_GTYPEP (v))
-            col_gtypes[i] = (GType)SCM_SMOB_DATA (v);
-        else if (SCM_GTYPE_CLASSP (v))
-            col_gtypes[i] = (GType)SCM_SMOB_DATA (scm_slot_ref
-                                                  (v, scm_str2symbol ("gtype")));
-        else {
-            g_free (col_gtypes);
-            scm_wrong_type_arg (FUNC_NAME, 1, v);
-        }
+        SCM_VALIDATE_GTYPE_CLASS_COPY (1, v, col_gtypes[i]);
         col_types = SCM_CDR (col_types);
     }
     
@@ -936,7 +914,7 @@ cell_data_func (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell,
     scolumn = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_column);
     scell = scm_c_gtype_instance_to_scm ((GTypeInstance*)cell);
     smodel = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
-    siter = scm_c_dup_gboxed_to_scm (GTK_TYPE_TREE_ITER, iter);
+    siter = scm_c_gvalue_new_from_boxed (GTK_TYPE_TREE_ITER, iter);
     
     scm_call_4 (proc, scolumn, scell, smodel, siter);
 }

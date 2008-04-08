@@ -49,13 +49,11 @@
 (progress "support")
 
 ;; Support explicit object destruction.
-(define-method (make-gobject-instance class type (instance <gtk-object>) initargs)
+(define-method (initialize (instance <gtk-object>) initargs)
   (next-method)
   (connect instance 'destroy
            (lambda args
-             (let ((primitive-instance (slot-ref instance 'gtype-instance)))
-               (%gtype-instance-primitive-destroy! primitive-instance))))
-  instance)
+             (%gtype-instance-destroy! instance))))
 
 (define-public <guile-gtk-tree-model> <guile-gtk-generic-tree-model>)
 
@@ -126,15 +124,12 @@
 (define-class <gtk-message-dialog-class> ((class-of <gtk-message-dialog>)))
 (especify-metaclass! <gtk-message-dialog> <gtk-message-dialog-class>)
 (define-method (make-instance (class <gtk-message-dialog-class>) . initargs)
-  (let ((instance (allocate-instance class initargs))
-        (parent (get-keyword #:parent initargs #f))
+  (let ((parent (get-keyword #:parent initargs #f))
         (flags (get-keyword #:flags initargs #f))
         (message-type (get-keyword #:message-type initargs 'error))
         (buttons (get-keyword #:buttons initargs 'close))
         (text (get-keyword #:text initargs "Error")))
-    (slot-set! instance 'gtype-instance
-               (%gtk-message-dialog-new parent flags message-type buttons text))
-    instance))
+    (%gtk-message-dialog-new parent flags message-type buttons text)))
 
 (define-public (gtk-stock-id nick)
   (string-append "gtk-" (symbol->string nick)))

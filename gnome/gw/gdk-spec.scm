@@ -63,9 +63,8 @@
     (unwrap-null-checked
      value status-var
      (list
-      "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
-      "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), GDK_TYPE_EVENT))\n"
-      "  " c-var " = (" (c-type-name type)  ") g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
+      "if (scm_c_gvalue_holds (" scm-var ", GDK_TYPE_EVENT))\n"
+      "  " c-var " = scm_c_gvalue_peek_boxed (" scm-var ");\n"
       "else {\n"
       "  " c-var " = NULL;\n"
       `(gw:error ,status-var type ,(wrapped-var value))
@@ -80,8 +79,7 @@
      "if (" c-var " == NULL) {\n"
      "  " scm-var " = SCM_BOOL_F;\n"
      "} else {\n"
-     "  " scm-var " = scm_c_make_gvalue (GDK_TYPE_EVENT);\n"
-     "  g_value_set_boxed ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n"
+     "  " scm-var " = scm_c_gvalue_new_from_boxed (GDK_TYPE_EVENT, " c-var ");\n"
      "}\n")))
 
 (define-method (initialize (ws <gdk-wrapset>) initargs)
@@ -137,7 +135,7 @@
   (add-type-rule! ws "GdkAtom*" '(<gdk-atom> out))
   (wrap-freeable-pointer! ws "GdkRegion" "gdk_region_destroy")
 
-  (wrap-object! ws #:ctype "GdkDrawable" #:gtype-id "GDK_TYPE_DRAWABLE")
+  (wrap-instance! ws #:ctype "GdkDrawable" #:gtype-id "GDK_TYPE_DRAWABLE")
   (add-type-alias! ws "GdkDrawable*" '<gdk-drawable>)
   (add-type-alias! ws "GdkBitmap*" '<gdk-drawable>)
 

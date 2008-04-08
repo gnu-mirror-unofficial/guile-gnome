@@ -75,9 +75,7 @@
 		     :vscrollbar-policy 'automatic
 		     :shadow-type 'etched-in))
 	 ;; create tree model
-         (model (gtk-list-store-new (list gtype:gint
-                                          gtype:gchararray
-                                          gtype:gboolean)))
+         (model (gtk-list-store-new (list <gint> <gchararray> <gboolean>)))
 	 ;; create tree view
 	 (treeview (make <gtk-tree-view> 
 		     :model model :rules-hint #t))

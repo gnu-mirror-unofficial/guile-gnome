@@ -85,7 +85,7 @@ exec guile-gnome-0 -s $0 "$@"
     :vscrollbar-policy 'automatic))
 (define tree-view
   (let* ((store (gtk-list-store-new
-                 (list gtype:gboxed-scm gtype:gchararray)))
+                 (list <gboxed-scm> <gchararray>)))
          (tree-view (make <gtk-tree-view> :model store))
          (cellrenderer (make <gtk-cell-renderer-text>))
          (column (make <gtk-tree-view-column> :title "Widget (double-click to show)"))

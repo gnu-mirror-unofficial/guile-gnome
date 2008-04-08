@@ -14,7 +14,7 @@
   1)
 
 (define-method (on-get-column-type (obj <my-tree-model>) index)
-  gtype:gchararray)
+  <gchararray>)
 
 (define-method (on-get-iter (obj <my-tree-model>) path)
   path)
@@ -65,6 +65,7 @@
       (reverse (cdr (reverse iter)))))
 
 (define-method (initialize (obj <my-tree-model>) initargs)
+  (next-method)
   (slot-set! obj 'depth 4)
   (slot-set! obj 'siblings 5))
 

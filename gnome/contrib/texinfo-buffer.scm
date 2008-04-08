@@ -99,6 +99,7 @@ manual."
     (table . (#:left-margin 50 #:right-margin 25))
     (ftable . (#:left-margin 50 #:right-margin 25))
     (vtable . (#:left-margin 50 #:right-margin 25))
+    (def-header . (#:pixels-below-lines 0 #:indent -100))
     (def-body . (#:right-margin 50)) ;; left is handled by the *nest*
     (quotation . (#:left-margin 50 #:right-margin 50 #:scale 0.9))
     (entry-header . (#:pixels-above-lines 6 #:pixels-below-lines 0))
@@ -134,11 +135,6 @@ manual."
      (add tag-table tag)))
  tag-prop-alist)
 
-(let ((tabs (pango-tab-array-new 1 #t)))
-  (pango-tab-array-set-tab tabs 0 'left 325)
-  (add tag-table (make <gtk-text-tag>
-                   #:name "def-header" #:tabs tabs #:pixels-below-lines 0)))
-
 (define (get-tag name)
   (lookup tag-table (symbol->string name)))
 
@@ -162,9 +158,9 @@ manual."
   `(smallexample ,@body #\newline (small #\newline)))
 
 (define-class <stexi-ref-tag> (<gtk-text-tag>)
-  (node #:gparam `(,<gparam-boxed> #:boxed-type ,gtype:gboxed-scm
+  (node #:gparam `(,<gparam-boxed> #:boxed-type <gboxed-scm>
                                    #:flags (read write)))
-  (manual #:gparam `(,<gparam-boxed> #:boxed-type ,gtype:gboxed-scm
+  (manual #:gparam `(,<gparam-boxed> #:boxed-type <gboxed-scm>
                                      #:flags (read write))))
 
 (define-method (initialize (obj <stexi-ref-tag>) initargs)
@@ -221,36 +217,36 @@ manual."
   (list '*nest* args))
 
 (define (def tag args . body)
-  (define (code x) (and x (cons 'code x)))
-  (define (var x) (and x (cons 'var x)))
-  (define (b x) (and x (cons 'bold x)))
-  (define (trans x) (and x (map stexi->text-tagged-tree x)))
-  (define (list/spaces . elts)
-    (let lp ((in elts) (out '()))
-      (cond ((null? in) (reverse! out))
-            ((null? (car in)) (lp (cdr in) out))
-            (else (lp (cdr in)
-                      (cons (car in)
-                            (if (null? out) out (cons " " out))))))))
-  (define (header)
-    (list (code (arg-ref 'data-type args))
-          " "
-          (b (list (code (arg-ref 'class args)))) ;; is this right?
-          " "
-          (b (list (code (arg-ref 'name args))))
-          " "
-          (if (memq tag '(deftypeop deftypefn deftypefun))
-              (code (trans (arg-ref 'arguments args)))
-              (var (list (code (trans (arg-ref 'arguments args))))))))
-
-  (let* ((category (case tag
-                     ((defun) "Function")
-                     ((defspec) "Special Form")
-                     ((defvar) "Variable")
-                     (else (car (arg-req 'category args))))))
-    `((def-header ,@(header) #\tab ,category #\newline)
-      (*nest* (def-body ,@body)))))
-
+  (define (wrap t)
+    (lambda (x) (list t x)))
+  (define (compose f . rest)
+    (cond ((null? rest) f)
+          (else (let ((g (apply compose rest)))
+                  (lambda (x) (f (g x)))))))
+  (define (splice/space arg wrapper)
+    (cond ((arg-ref arg args)
+           => (lambda (val) `(,@(map wrapper val) " ")))
+          (else '())))
+    
+  `((def-header
+      ,@(splice/space 'data-type (wrap 'code))
+      ,@(splice/space 'class (compose (wrap 'bold) (wrap 'code)))
+      ,@(splice/space 'name (compose (wrap 'bold) (wrap 'code)))
+      ,@(splice/space 'arguments
+                      (compose
+                       (if (memq tag '(deftypeop deftypefn deftypefun))
+                           (compose (wrap 'var) (wrap 'code))
+                           (wrap 'code))
+                       stexi->text-tagged-tree))
+      #\newline)
+    (*nest*
+     ,(case tag
+        ((defun) "Function")
+        ((defspec) "Special Form")
+        ((defvar) "Variable")
+        (else (car (arg-req 'category args))))
+     #\newline
+     (def-body ,@body))))
 
 (define *table-formatter* (make-fluid))
 (fluid-set! *table-formatter* 'asis) ;; just in case

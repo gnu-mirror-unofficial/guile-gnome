@@ -13,7 +13,6 @@
 
 (define (activate-action action)
   (let* ((name     (get-name action))
-	 (typename (gtype-name (gtype-class->type (class-of action))))
 	 (dialog   (make <gtk-message-dialog> 
 		     :parent window
 		     :flags 'destroy-with-parent
@@ -22,7 +21,7 @@
 		     :text (format 
 			    #f
 			    "You activated action: \"~A\" of type \"~A\""
-			    name typename))))
+			    name (class-of action)))))
     ;; close dialog on user response
     (connect dialog 'response (lambda (d arg1)
 				(gtk-widget-destroy dialog)))

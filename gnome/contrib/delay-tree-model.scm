@@ -44,8 +44,8 @@ for use with @code{<gtk-tree-view>}."
 
 (define-method (on-get-column-type (obj <delay-tree-model>) index)
   (case index
-    ((0) gtype:gchararray)
-    ((1) gtype:gboxed-scm)
+    ((0) <gchararray>)
+    ((1) <gboxed-scm>)
     (else (error "Invalid index:" index))))
 
 (define-method (on-get-iter (obj <delay-tree-model>) path)

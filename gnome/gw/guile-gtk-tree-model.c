@@ -273,7 +273,7 @@ _with_guile_gtk_generic_tree_model_get_column_type (void *p)
     scm_obj = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
     scm_ret = scm_call_2 (PROC_FROM_INSTANCE (tree_model, on_get_column_type),
                           scm_obj, SCM_MAKINUM (a->i));
-    SCM_VALIDATE_GTYPE_COPY (0, scm_ret, gtype);
+    SCM_VALIDATE_GTYPE_CLASS_COPY (0, scm_ret, gtype);
     a->t = gtype;
     return NULL;
 }
