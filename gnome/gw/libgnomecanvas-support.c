@@ -153,9 +153,7 @@ _wrap_gnome_canvas_points_new (SCM scm)
   SCM_ASSERT_TYPE (scm_vector_p (scm) == SCM_BOOL_T, scm, SCM_ARG1, FUNC_NAME,
 		   "points");
   points = guile_gnome_scm_to_canvas_points (scm);
-  spoints = scm_c_make_gvalue (GNOME_TYPE_CANVAS_POINTS);
-  g_value_set_boxed_take_ownership ((GValue*) SCM_SMOB_DATA (spoints), points);
-  return spoints;
+  return scm_c_gvalue_new_take_boxed (GNOME_TYPE_CANVAS_POINTS, points);
 }
 #endif
 

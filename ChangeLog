@@ -1,3 +1,8 @@
+2008-04-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/libgnomecanvas-support.c
+	(_wrap_gnome_canvas_points_new): Use scm_c_gvalue_new_take_boxed.
+
 2007-12-10  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.96 ==
