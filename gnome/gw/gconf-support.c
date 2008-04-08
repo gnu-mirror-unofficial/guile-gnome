@@ -68,8 +68,8 @@ scm_c_gconf_value_to_scm (const GConfValue *value)
     case GCONF_VALUE_BOOL:
         return SCM_BOOL (gconf_value_get_bool (value));
     case GCONF_VALUE_SCHEMA:
-        return scm_c_gboxed_to_scm (_GCONF_TYPE_SCHEMA, 
-                                    gconf_value_get_schema (value));
+        return scm_c_gvalue_new_from_boxed (_GCONF_TYPE_SCHEMA, 
+                                            gconf_value_get_schema (value));
     case GCONF_VALUE_LIST: {
         SCM ret = SCM_EOL;
         GSList *head, *walk;
@@ -94,8 +94,8 @@ scm_c_gconf_value_to_scm (const GConfValue *value)
                 ret = scm_cons (SCM_BOOL (walk->data), ret);
                 break;
             case GCONF_VALUE_SCHEMA:
-                ret = scm_cons (scm_c_gboxed_to_scm (_GCONF_TYPE_SCHEMA,
-                                                     walk->data),
+                ret = scm_cons (scm_c_gvalue_new_from_boxed (_GCONF_TYPE_SCHEMA,
+                                                             walk->data),
                                 ret);
                 break;
             default:
