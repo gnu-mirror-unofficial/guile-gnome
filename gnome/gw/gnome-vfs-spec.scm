@@ -93,16 +93,13 @@
         (scm-var (scm-var value))
         (gtype-id (gtype-id type)))
     (list
-     "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
-     "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " gtype-id "))\n"
-     "  " c-var " = g_value_get_enum ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
+     "if (scm_c_gvalue_holds (" scm-var ", " gtype-id "))\n"
+     "  " c-var " = g_value_get_enum (scm_c_gvalue_peek_value (" scm-var "));\n"
      "else {\n"
-     ;; will throw an exception if the conversion fails
-     ;; don't use scm_c_scm_to_gvalue because that will unecessarily
-     ;; create a new value
-     "  SCM newval = scm_scm_to_gvalue (scm_c_register_gtype (" gtype-id "), "
-     scm-var ");\n"
-     "  " c-var " = g_value_get_enum ((GValue*)SCM_SMOB_DATA (newval));\n"
+     "  GValue tmp = {0,};\n"
+     "  g_value_init (&tmp, " gtype-id ");\n"
+     "  scm_c_gvalue_set (&tmp, " scm-var ");\n"
+     "  " c-var " = g_value_get_enum (&tmp);\n"
      "}\n")))
 
 (define-method (wrap-value-cg (type <gnome-vfs-result-type>)
