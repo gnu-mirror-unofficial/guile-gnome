@@ -35,14 +35,13 @@ SCM scm_class_gobject;
 static SCM _initialize;
 static SCM _gobject_set_property;
 static SCM _gobject_get_property;
-static SCM _gobject_class_set_properties_x;
-static SCM _gobject_initargs_fluid;
+static SCM _in_construction_from_scheme;
 
 static GQuark quark_guile_gtype_class = 0;
 
 SCM_SYMBOL  (sym_gruntime_error,"gruntime-error");
 
-/* #define DEBUG_PRINT */
+#define DEBUG_PRINT
 
 #ifdef DEBUG_PRINT
 #define DEBUG_ALLOC(str, args...) g_print ("I: " str "\n", ##args)
@@ -52,13 +51,22 @@ SCM_SYMBOL  (sym_gruntime_error,"gruntime-error");
 
 #define DEBUG_REFCOUNTING
 
+static gpointer scm_c_gobject_construct (SCM instance, SCM initargs);
+//static void scm_c_gobject_initialize_scm (SCM instance, SCM initargs);
+
 static const scm_t_gtype_instance_funcs gobject_funcs = {
     G_TYPE_OBJECT,
     (scm_t_gtype_instance_ref)g_object_ref,
     (scm_t_gtype_instance_unref)g_object_unref,
     (scm_t_gtype_instance_get_qdata)g_object_get_qdata,
-    (scm_t_gtype_instance_set_qdata)g_object_set_qdata
+    (scm_t_gtype_instance_set_qdata)g_object_set_qdata,
+    (scm_t_gtype_instance_construct)scm_c_gobject_construct,
+    NULL
+//    (scm_t_gtype_instance_initialize_scm)scm_c_gobject_initialize_scm
 };
+
+// FIXME
+static inline void post_make_object (GObject *obj);
 
 
 
@@ -113,15 +121,10 @@ static void
 scm_with_c_gobject_get_property (GObject *gobject, guint param_id,
                                     GValue *dest_gvalue, GParamSpec *pspec)
 {
-    SCM object;
-    GValue *gvalue;
-
-    object = scm_c_gtype_instance_to_scm ((GTypeInstance*)gobject);
-
-    gvalue = scm_c_scm_to_gvalue (G_VALUE_TYPE (dest_gvalue),
-                                  scm_call_2 (_gobject_get_property,
-                                              object, scm_str2symbol (pspec->name)));
-    g_value_copy (gvalue, dest_gvalue);
+    scm_c_gvalue_set (dest_gvalue,
+                      scm_call_2 (_gobject_get_property,
+                                  scm_c_gtype_instance_to_scm (gobject),
+                                  scm_str2symbol (pspec->name)));
 }
 
 static void
@@ -135,15 +138,10 @@ scm_c_gobject_get_property (GObject *gobject, guint param_id, GValue *dest_gvalu
 static void
 scm_with_c_gobject_set_property (GObject *gobject, guint param_id, const GValue *src_value, GParamSpec *pspec)
 {
-    SCM object, value;
-
-    object = scm_c_gtype_instance_to_scm ((GTypeInstance*)gobject);
-
-    value = scm_c_make_gvalue (G_VALUE_TYPE (src_value));
-    g_value_copy (src_value, (GValue *) SCM_SMOB_DATA (value));
-
-    scm_call_3 (_gobject_set_property, object, scm_str2symbol (pspec->name),
-                scm_gvalue_to_scm (value));
+    scm_call_3 (_gobject_set_property,
+                scm_c_gtype_instance_to_scm (gobject),
+                scm_str2symbol (pspec->name),
+                scm_c_gvalue_to_scm (src_value));
 }
 
 static void
@@ -155,6 +153,109 @@ scm_c_gobject_set_property (GObject *gobject, guint param_id, const GValue *src_
 }
 
 
+
+static gboolean
+is_init_keyword (SCM slots, SCM kw)
+{
+    SCM defs;
+    
+    for (; SCM_CONSP (slots); slots = scm_cdr (slots))
+        for (defs = scm_cdar (slots); SCM_CONSP (defs);
+             defs = scm_cddr (defs))
+            if (scm_is_eq (scm_car (defs), kw))
+                return TRUE;
+
+    return FALSE;
+}
+
+static void
+push_in_construction_from_scheme (void)
+{
+    int val = scm_to_int (scm_fluid_ref (_in_construction_from_scheme));
+    scm_fluid_set_x (_in_construction_from_scheme, scm_from_int (val + 1));
+}
+
+static void
+pop_in_construction_from_scheme (void)
+{
+    int val = scm_to_int (scm_fluid_ref (_in_construction_from_scheme));
+    scm_fluid_set_x (_in_construction_from_scheme, scm_from_int (val - 1));
+}
+
+static gboolean
+in_construction_from_scheme (void)
+{
+    return scm_to_int (scm_fluid_ref (_in_construction_from_scheme)) >= 0;
+}
+
+static gpointer
+scm_c_gobject_construct (SCM instance, SCM initargs)
+#define FUNC_NAME "%gobject-construct"
+{
+    GObject *gobject;
+    GObjectClass *propclass;
+    GType gtype;
+    GParameter *params, *current;
+    GParamSpec *pspec;
+    long nparams, i;
+    SCM class, slots, kw, propname, val;
+
+    SCM_VALIDATE_INSTANCE (1, instance);
+
+    scm_dynwind_begin (0);
+
+    class = scm_class_of (instance);
+    gtype = scm_c_gtype_class_to_gtype (class);
+    slots = scm_class_slots (class);
+    nparams = scm_ilength (initargs) / 2; /* a maximum length */
+    params = g_new0 (GParameter, nparams);
+    scm_dynwind_unwind_handler ((gpointer)g_free, params,
+                                SCM_F_WIND_EXPLICITLY);
+
+    for (i = 0; SCM_CONSP (initargs); initargs = scm_cddr (initargs)) {
+        kw = scm_car (initargs);
+        SCM_ASSERT (scm_is_keyword (kw), kw, 2, FUNC_NAME);
+        SCM_ASSERT (SCM_CONSP (scm_cdr (initargs)), initargs, 2, FUNC_NAME);
+        propname = scm_keyword_to_symbol (kw);
+        val = scm_cadr (initargs);
+
+        if (is_init_keyword (slots, kw))
+            continue;
+        
+	current = &params [i];
+
+	current->name = SCM_SYMBOL_CHARS (scm_keyword_to_symbol (kw));
+        propclass = g_type_class_ref (gtype);
+        pspec = g_object_class_find_property (propclass,
+                                              SCM_SYMBOL_CHARS (propname));
+        g_type_class_unref (propclass);
+
+        if (!pspec)
+            scm_c_gruntime_error (FUNC_NAME,
+                                  "No property named ~S in object ~A",
+                                  SCM_LIST2 (propname, instance));
+        
+	g_value_init (&current->value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+        scm_c_gvalue_set (&current->value, val);
+
+        i++;
+    }
+    
+    push_in_construction_from_scheme ();
+    gobject = g_object_newv (gtype, i, params);
+    pop_in_construction_from_scheme ();
+
+    /* GtkWindow's first ref is owned by GTK. */
+    post_make_object (gobject);
+
+    for (i--; i>=0; i--)
+        g_value_unset (&params[i].value);
+
+    scm_dynwind_end ();
+
+    return gobject;
+}
+#undef FUNC_NAME
 
 static void
 scm_with_c_gtype_instance_instance_init (GTypeInstance *g_instance,
@@ -185,9 +286,14 @@ scm_with_c_gtype_instance_instance_init (GTypeInstance *g_instance,
 	guile_class = g_type_get_qdata (type, quark_guile_gtype_class);
 	guile_class->first_instance_created = TRUE;
 
-        scm_call_2 (_initialize,
-                    scm_c_gtype_instance_to_scm_typed (g_instance, type),
-                    scm_fluid_ref (_gobject_initargs_fluid));
+        if (!in_construction_from_scheme ())
+            /* not strictly necessary from the pov of c code, but we want to
+               make sure that g_object_new () causes `initialize' to be called
+               on a new scheme object -- hence this call that just serves to
+               associate a scheme object with the instance as long as the
+               instance is alive */
+            scm_c_gtype_instance_to_scm_typed (g_instance, type);
+            
 	break;
     }
 
@@ -255,17 +361,18 @@ SCM_DEFINE (scm_scheme_gclass_p, "scheme-gclass?", 1, 0, 0,
     GType gtype;
     GObjectClass *gclass;
 
-    SCM_VALIDATE_GOBJECT_CLASS_GET_TYPE (1, class, gtype);
+    SCM_VALIDATE_GOBJECT_CLASS_COPY (1, class, gtype);
     
     gclass = g_type_class_ref (gtype);
     return SCM_BOOL (gclass->get_property == scm_c_gobject_get_property);
 }
 #undef FUNC_NAME
 
+// FIXME: remove?
 SCM_DEFINE (scm_gtype_register_static, "gtype-register-static", 2, 0, 0,
-	    (SCM name, SCM parent_type),
-	    "Derive a new type named @var{name} from @var{parent_type}. "
-            "Returns the new @code{<gtype>}. This function is called "
+	    (SCM name, SCM parent_class),
+	    "Derive a new type named @var{name} from @var{parent_class}. "
+            "Returns the new @code{<gtype-class>}. This function is called "
             "when deriving from @code{<gobject>}; users do not normally "
             "call this function directly.")
 #define FUNC_NAME s_scm_gtype_register_static
@@ -277,7 +384,7 @@ SCM_DEFINE (scm_gtype_register_static, "gtype-register-static", 2, 0, 0,
     char *utf8;
 
     SCM_VALIDATE_STRING (1, name);
-    SCM_VALIDATE_GTYPE_COPY (2, parent_type, gtype_parent);
+    SCM_VALIDATE_GTYPE_CLASS_COPY (2, parent_class, gtype_parent);
 
     scm_dynwind_begin (0);
 
@@ -292,12 +399,12 @@ SCM_DEFINE (scm_gtype_register_static, "gtype-register-static", 2, 0, 0,
     if (!G_TYPE_IS_DERIVABLE (gtype_parent))
         scm_c_gruntime_error (FUNC_NAME,
                               "Cannot derive ~S from non-derivable parent type: ~S",
-                              SCM_LIST2 (name, parent_type));
+                              SCM_LIST2 (name, parent_class));
 
     if (!G_TYPE_IS_FUNDAMENTAL (gtype_parent) && !G_TYPE_IS_DEEP_DERIVABLE (gtype_parent))
         scm_c_gruntime_error (FUNC_NAME,
                               "Cannot derive ~S from non-fundamental parent type: ~S",
-                              SCM_LIST2 (name, parent_type));
+                              SCM_LIST2 (name, parent_class));
 
     g_type_query (gtype_parent, &gtype_query);
 
@@ -316,65 +423,96 @@ SCM_DEFINE (scm_gtype_register_static, "gtype-register-static", 2, 0, 0,
 
     scm_dynwind_end ();
 
-    return scm_c_register_gtype (gtype);
+    return scm_from_locale_string (g_type_name (gtype));
 }
 #undef FUNC_NAME
 
-SCM_DEFINE (scm_gobject_type_get_properties, "gobject-type-get-properties", 1, 0, 0,
-	    (SCM type),
+SCM_DEFINE (scm_gobject_class_get_properties, "gobject-class-get-properties", 1, 0, 0,
+	    (SCM class),
 	    "")
-#define FUNC_NAME s_scm_gobject_type_get_properties
+#define FUNC_NAME s_scm_gobject_class_get_properties
 {
-    gpointer class = 0;
+    gpointer gclass = 0;
     GParamSpec **properties;
-    guint n_properties, i, count;
+    guint n_properties;
+    glong i;
     GType gtype;
-    SCM vector;
+    SCM ret = SCM_EOL;
 
-    SCM_VALIDATE_GTYPE_COPY (1, type, gtype);
+    SCM_VALIDATE_GTYPE_CLASS_COPY (1, class, gtype);
 
     if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_OBJECT) {
-        class = G_OBJECT_CLASS (g_type_class_ref (gtype));
-        properties = g_object_class_list_properties (class, &n_properties);
+        gclass = G_OBJECT_CLASS (g_type_class_ref (gtype));
+        properties = g_object_class_list_properties (gclass, &n_properties);
     } else if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_INTERFACE) {
         if (G_TYPE_IS_FUNDAMENTAL (gtype)) {
             properties = NULL;
             n_properties = 0;
         } else {
-            class = g_type_default_interface_ref (gtype);
-            properties = g_object_interface_list_properties (class, &n_properties);
+            gclass = g_type_default_interface_ref (gtype);
+            properties = g_object_interface_list_properties (gclass, &n_properties);
         }
     } else {
-        scm_wrong_type_arg (FUNC_NAME, 1, type);
+        scm_wrong_type_arg (FUNC_NAME, 1, class);
     }
 
-    for (i = count = 0; i < n_properties; i++)
-	if (properties [i]->owner_type == gtype)
-	    count++;
-
-    vector = scm_make_vector (SCM_MAKINUM (count), SCM_UNDEFINED);
-
-    for (i = count = 0; i < n_properties; i++) {
-	SCM this;
-
-	if (properties [i]->owner_type != gtype)
-	    continue;
-
-	this = scm_c_gtype_instance_to_scm ((GTypeInstance *) properties [i]);
-
-	scm_vector_set_x (vector, SCM_MAKINUM (count), this);
-	count++;
-    }
+    for (i = n_properties - 1; i >= 0; i--)
+	ret = scm_cons (scm_c_gtype_instance_to_scm (properties[i]),
+                        ret);
 
     if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_OBJECT)
-        g_type_class_unref (class);
+        g_type_class_unref (gclass);
     else if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_INTERFACE
              && !G_TYPE_IS_FUNDAMENTAL (gtype))
-        g_type_default_interface_unref (class);
+        g_type_default_interface_unref (gclass);
 
     g_free (properties);
 
-    return vector;
+    return ret;
+}
+#undef FUNC_NAME
+
+SCM_DEFINE (scm_gobject_class_get_property_names, "gobject-class-get-property-names", 1, 0, 0,
+	    (SCM class),
+	    "")
+#define FUNC_NAME s_scm_gobject_class_get_property_names
+{
+    gpointer gclass = 0;
+    GParamSpec **properties;
+    guint n_properties;
+    glong i;
+    GType gtype;
+    SCM ret = SCM_EOL;
+
+    SCM_VALIDATE_GTYPE_CLASS_COPY (1, class, gtype);
+
+    if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_OBJECT) {
+        gclass = G_OBJECT_CLASS (g_type_class_ref (gtype));
+        properties = g_object_class_list_properties (gclass, &n_properties);
+    } else if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_INTERFACE) {
+        if (G_TYPE_IS_FUNDAMENTAL (gtype)) {
+            properties = NULL;
+            n_properties = 0;
+        } else {
+            gclass = g_type_default_interface_ref (gtype);
+            properties = g_object_interface_list_properties (gclass, &n_properties);
+        }
+    } else {
+        scm_wrong_type_arg (FUNC_NAME, 1, class);
+    }
+
+    for (i = n_properties - 1; i >= 0; i--)
+	ret = scm_cons (scm_from_locale_symbol (properties[i]->name), ret);
+
+    if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_OBJECT)
+        g_type_class_unref (gclass);
+    else if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_INTERFACE
+             && !G_TYPE_IS_FUNDAMENTAL (gtype))
+        g_type_default_interface_unref (gclass);
+
+    g_free (properties);
+
+    return ret;
 }
 #undef FUNC_NAME
 
@@ -389,7 +527,7 @@ SCM_DEFINE (scm_gobject_class_install_property, "gobject-class-install-property"
     GuileGTypeClass *guile_class;
     guint id;
 
-    SCM_VALIDATE_GOBJECT_CLASS_GET_TYPE (1, class, gtype);
+    SCM_VALIDATE_GOBJECT_CLASS_COPY (1, class, gtype);
     SCM_VALIDATE_GPARAM_COPY (2, param, gparam);
 
     gclass = g_type_class_ref (gtype);
@@ -417,36 +555,35 @@ SCM_DEFINE (scm_gobject_class_install_property, "gobject-class-install-property"
     g_hash_table_insert (guile_class->properties_hash, GINT_TO_POINTER (id),
 			 scm_glib_gc_protect_object (param));
 
-    scm_call_1 (_gobject_class_set_properties_x, class);
-
     return SCM_UNSPECIFIED;
 }
 #undef FUNC_NAME
 
-SCM_DEFINE (scm_gobject_primitive_get_property, "gobject-primitive-get-property", 2, 0, 0,
+SCM_DEFINE (scm_gobject_get_property, "gobject-get-property", 2, 0, 0,
 	    (SCM object, SCM name),
-	    "")
-#define FUNC_NAME s_scm_gobject_primitive_get_property
+            "Gets a the property named @var{name} (a symbol) from @var{object}.")
+#define FUNC_NAME s_scm_gobject_get_property
 {
     GObject *gobject;
     GParamSpec *pspec;
     SCM retval;
-
-    SCM_VALIDATE_GTYPE_INSTANCE_TYPE_COPY (1, object, G_TYPE_OBJECT, GObject, gobject);
+    GValue value = { 0, };
+    
+    SCM_VALIDATE_GOBJECT_COPY (1, object, gobject);
     SCM_VALIDATE_SYMBOL (2, name);
 
-    pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (gobject), SCM_SYMBOL_CHARS (name));
-    if (!pspec) {
-	SCM type = scm_c_register_gtype (G_TYPE_FROM_INSTANCE (gobject));
+    pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (gobject),
+                                          SCM_SYMBOL_CHARS (name));
 
+    if (!pspec)
 	scm_error (sym_gruntime_error, FUNC_NAME,
 		   "No such property ~S in class ~S",
-		   SCM_LIST2 (name, type), SCM_EOL);
-    }
+		   SCM_LIST2 (name, scm_class_of (object)), SCM_EOL);
 
-    retval = scm_c_make_gvalue (pspec->value_type);
-    g_object_get_property (gobject, SCM_SYMBOL_CHARS (name),
-			   (GValue *) SCM_SMOB_DATA (retval));
+    g_value_init (&value, pspec->value_type);
+    g_object_get_property (gobject, SCM_SYMBOL_CHARS (name), &value);
+    retval = scm_c_gvalue_ref (&value);
+    g_value_unset (&value);
 
     return retval;
 }
@@ -454,30 +591,29 @@ SCM_DEFINE (scm_gobject_primitive_get_property, "gobject-primitive-get-property"
 
 
 
-SCM_DEFINE (scm_gobject_primitive_set_property, "gobject-primitive-set-property", 3, 0, 0,
+SCM_DEFINE (scm_gobject_set_property, "gobject-set-property", 3, 0, 0,
 	    (SCM object, SCM name, SCM value),
-	    "")
-#define FUNC_NAME s_scm_gobject_primitive_set_property
+            "Sets the property named @var{name} (a symbol) on @var{object} to "
+            "@var{init-value}.")
+#define FUNC_NAME s_scm_gobject_set_property
 {
     GObject *gobject;
     GParamSpec *pspec;
     GValue *gvalue;
 
-    SCM_VALIDATE_GTYPE_INSTANCE_TYPE_COPY (1, object, G_TYPE_OBJECT, GObject, gobject);
+    SCM_VALIDATE_GOBJECT_COPY (1, object, gobject);
     SCM_VALIDATE_SYMBOL (2, name);
 
-    pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (gobject), SCM_SYMBOL_CHARS (name));
-    if (!pspec) {
-	SCM type = scm_c_register_gtype (G_TYPE_FROM_INSTANCE (gobject));
-
+    pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (gobject),
+                                          SCM_SYMBOL_CHARS (name));
+    if (!pspec)
 	scm_error (sym_gruntime_error, FUNC_NAME,
 		   "No such property ~S in class ~S",
-		   SCM_LIST2 (name, type), SCM_EOL);
-    }
+		   SCM_LIST2 (name, scm_class_of (object)), SCM_EOL);
 
-    SCM_VALIDATE_GVALUE_TYPE_COPY (3, value, pspec->value_type, gvalue);
-
+    gvalue = scm_c_scm_to_gvalue (pspec->value_type, value);
     g_object_set_property (gobject, SCM_SYMBOL_CHARS (name), gvalue);
+    g_value_unset (gvalue);    
     
     return SCM_UNSPECIFIED;
 }
@@ -536,67 +672,6 @@ scm_register_gobject_postmakefunc (GType type, gpointer (*postmakefunc) (gpointe
     g_array_append_val (post_make_funcs, pmf);
 }
 
-SCM_DEFINE (scm_gobject_primitive_create_instance, "gobject-primitive-create-instance", 4, 0, 0,
-	    (SCM class, SCM type, SCM object, SCM properties),
-	    "")
-#define FUNC_NAME s_scm_gobject_primitive_create_instance
-{
-    GObject *gobject;
-    GType gtype;
-    SCM smob;
-    GParameter *params;
-    guint length, i;
-
-    SCM_VALIDATE_GTYPE_CLASS (1, class);
-    SCM_VALIDATE_GTYPE_COPY (2, type, gtype);
-    SCM_VALIDATE_INSTANCE (3, object);
-    SCM_VALIDATE_VECTOR (4, properties);
-    SCM_ASSERT (G_TYPE_IS_OBJECT (gtype), type, 2, FUNC_NAME);
-
-    length = SCM_INUM (scm_vector_length (properties));
-    for (i = 0; i < length; i++) {
-	SCM this = scm_vector_ref (properties, SCM_MAKINUM (i));
-
-	SCM_VALIDATE_SYMBOL (4, SCM_CAR (this));
-        SCM_VALIDATE_GVALUE (4, SCM_CDR (this));
-    }
-    
-    params = g_new0 (GParameter, length);
-
-    for (i = 0; i < length; i++) {
-	const GValue *gvalue;
-	SCM this = scm_vector_ref (properties, SCM_MAKINUM (i));
-	GParameter *current = &params [i];
-
-	current->name = SCM_SYMBOL_CHARS (SCM_CAR (this));
-	current->value.g_type = 0;
-        SCM_VALIDATE_GVALUE_COPY (4, SCM_CDR (this), gvalue);
-        g_value_init (&current->value, G_VALUE_TYPE (gvalue));
-        g_value_copy (gvalue, &current->value);
-    }
-
-    gobject = g_object_newv (gtype, length, params);
-
-    /* eat me, GtkWindow! */
-    post_make_object (gobject);
-
-    g_free (params);
-
-    smob = scm_c_make_gtype_instance ((GTypeInstance *) gobject);
-    /* gobject was just reffed by make_gtype_instance, but we need to unref it
-       now -- see the note above */
-    DEBUG_ALLOC ("unreffing guile-owned gobject %p, ->%u",
-                 gobject, ((GObject*)gobject)->ref_count - 1);
-    g_object_unref (gobject);
-    scm_slot_set_x (object, scm_sym_gtype_instance, smob);
-    
-    /* cache this wrapper, like in scm_c_gtype_instance_to_scm */
-    scm_c_gtype_instance_set_cached_goops (smob, object);
-
-    return SCM_UNSPECIFIED;
-}
-#undef FUNC_NAME
-
 #ifdef DEBUG_REFCOUNTING
 SCM_DEFINE (scm_sys_gobject_get_refcount, "%gobject-get-refcount", 1, 0, 0,
 	    (SCM object),
@@ -621,7 +696,6 @@ SCM_DEFINE (scm_sys_gnome_gobject_object_post_init,
     _initialize = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("initialize")));
     _gobject_get_property = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gobject:get-property")));
     _gobject_set_property = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gobject:set-property")));
-    _gobject_class_set_properties_x = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gobject-class-set-properties!")));
     scm_class_gobject = scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("<gobject>")));
     return SCM_UNSPECIFIED;
 }
@@ -643,13 +717,12 @@ scm_init_gnome_gobject (void)
          (SCMGValueGetTypeInstanceFunc)g_value_get_object,
          (SCMGValueSetTypeInstanceFunc)g_value_set_object);
 
-    _gobject_initargs_fluid = scm_make_fluid ();
+    _in_construction_from_scheme = scm_permanent_object (scm_make_fluid ());
     /* there is a case where the fluid won't be set before entering
        scm_c_gtype_instance_instance_init: if the class is instantiated from C
        via g_object_new instead of from scheme via `make'. Give the initargs a
        sane value in that case. */
-    scm_fluid_set_x (_gobject_initargs_fluid, SCM_EOL);
+    scm_fluid_set_x (_in_construction_from_scheme, scm_from_int (0));
 
     quark_guile_gtype_class = g_quark_from_static_string ("%scm-guile-gtype-class");
-    scm_c_define ("%gobject-initargs", _gobject_initargs_fluid);
 }

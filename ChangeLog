@@ -1,3 +1,245 @@
+2008-04-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.h:
+	* gnome/gobject/gtype.c: Rewrite to never expose GTypes on the
+	Scheme side, rather wrapping GTypes directly as <gtype-class>
+	instances. The GType is stored in a <read-only-slot>, which stores
+	a raw (untagged) word -- the perfect size for a GType. Hence much
+	gtype<->class API has been removed.
+
+	Because a GType is isomorphic to GTypeClass*, the <%gtype-class>
+	smob is also gone.
+
+	On the instance side, I also removed the need for
+	<%gtype-instance> smobs as well, through interesting trickery: the
+	GOOPS objects directly store the GTypeInstance* pointer in a
+	<read-only-slot>, as with the <gtype-class> instances. The
+	trickery is that we can be notified when the struct is collected,
+	via monkeypatching the <gtype-class> objects to free via a custom
+	function, scm_gtype_instance_struct_free. This allows us to unref
+	the object.
+
+	This low-level trickery happens as part of the object allocation
+	and initialization protocol.
+
+	(scm_c_gtype_get_direct_supers): C function to determine the
+	superclasses of a given GType: the union of the type's parents and
+	the type's interfaces.
+	(scm_c_gtype_to_class): Dispatch down to `make-class' with the
+	right #:gtype-name.
+	(%gtype_to_class): New function corresponding to the old
+	gtype->class, but for such things as g-wrap's latent class
+	binding. Not really public.
+	(scm_gtype_name_to_class): Replaces the old gtype->class. In the
+	new world order gtypes can be summoned by name only.
+	(gtype_struct_offset): Helper to compute the offset within the
+	class struct in which to store the gtype.
+	(scm_sys_gtype_bind): Deep magic to shove a GType into a
+	<gtype-class>, called during <gtype-class>'s `initialize'
+	function. Also sets the struct free functions in the classes with
+	a sketchy heuristic.
+	(scm_c_gtype_class_to_gtype): New function for C.
+	(scm_c_gtype_class_is_a_p): New function for C.
+	(scm_c_gtype_instance_get_cached): Remove the smob/goops glue
+	code: there is just one cache for an instance.
+
+	(scm_t_gtype_instance_funcs): Add construct() and initialize_scm()
+	methods.
+
+	(scm_c_gtype_instance_construct): New function, called as the
+	first thing that <gtype-instance>'s `initialize' does.
+	(scm_c_gtype_instance_bind_to_object):
+	(scm_gtype_instance_unbind):
+	(scm_gtype_instance_struct_free): Corresponding trickery to bind
+	<gtype-instance> values to refcounted C pointers.
+
+	(%gtype-instance-construct): <gtype-instance>'s `initialize'
+	bottoms out here, normally resulting in the construction of the
+	instance, e.g. via g_object_newv(). There is another codepath to
+	initialize a SCM instead of the pointer, but I think the idea is a
+	bit flaky. See e.g. gparameter.c.
+	(%gtype-instance-destroy!): Forcibly drop the GOOPS object's
+	reference on the type instance.
+	(scm_c_scm_to_gtype_instance): No longer takes two arguments. The
+	two-arg version is...
+	(scm_c_scm_to_gtype_instance_typed): ...here.
+	(%get-struct-slot, %set-struct-slot!): Removed, no longer
+	necessary.
+
+	* gnome/gobject/gtype.scm: A rewrite corresponding to that
+	described in gtype.[ch].
+	(initialize <gtype-class>): Base mechanics to bind a class to a
+	GType, looked up by name.
+	(initialize <gtype-instance>): Base mechanics to construct a
+	GTypeInstance, if the instance is not yet bound.
+
+	* gnome/gobject/gvalue.c: Rewrite to represent GValue objects as
+	instances of GOOPS classes, bound to C GValue* values in the same
+	way as <gtype-instance> objects are bound to GTypeInstance*
+	values. (They used to be SMOBs.)
+
+	(scm_gvalue_struct_free): A <gvalue> free function, like
+	scm_gtype_instance_struct_free.
+	(scm_sys_bless_gvalue_class): Magic like %gtype-class-bind.
+	(scm_sys_allocate_gvalue): <gvalue>'s `allocate-instance' bottoms
+	out here, which allocates the C GValue* object.
+	(scm_c_make_gvalue): Redone on top of GOOPS allocation protocol.
+	The case in which the <gtype-class> is not a <gvalue-class> is a
+	bit hacky, unfortunately.
+	(scm_c_gvalue_peek_value): New function.
+	(scm_c_gvalue_ref): New function, factored out of
+	scm_gvalue_primitive_get, but operating on GValue*.
+	(scm_c_gvalue_set): New function, factored out of
+	scm_gvalue_primitive_set, but operating on GValue*.
+	(scm_c_scm_to_enum_value, scm_c_scm_to_flags_value): New
+	functions, factored out gvalue.scm.
+	(%gvalue-set!): New hackiness, for <gvalue>'s `initialize'.
+	(scm_c_gvalue_to_scm, scm_c_scm_to_gvalue): Implemented on top of
+	ref() and set().
+	(
+	(scm_genum_class_to_value_table, scm_gflags_class_to_value_table):
+	Rename from foo-type-get-values, remove the old SCM wrappers.
+	(scm_c_gvalue_holds, scm_c_gvalue_new_from_boxed)
+	(scm_c_gvalue_new_take_boxed, scm_c_gvalue_peek_boxed)
+	(scm_c_gvalue_dup_boxed, scm_c_gvalue_dup_value)
+	(scm_c_gvalue_from_value, scm_c_gvalue_take_value): New C helper
+	functions.
+	(scm_init_gnome_gobject_values): Register SCM-gvalue wrappers for
+	boxeds and value arrays just like other non-core boxed types.
+
+	* gnome/gobject/gvalue.scm (gnome): Also export <gvalue>. Remove
+	{genum,gflags}-type-get-value, use the foo-class->value-table
+	functions instead. Define all <gvalue> subclasses (<gchar>,
+	<gfloat>, etc.) using normal subclassing foo.
+	(<genum>, <gflags>): Rework to be more like other <gtype-class>
+	instances. Don't store a value table on the class object, that's
+	not necessary.
+
+	* gnome/gobject/utils.scm (unless): New macro.
+	(with-accessors): New macro, defines procedures-with-setters in
+	its body that map to particular slot accessors. Very interesting;
+	needs more docs.
+
+	* gnome/gobject/gclosure.scm:
+	* gnome/gobject/gclosure.h:
+	* gnome/gobject/gclosure.c (scm_gclosure_marshal_with_guile):
+	Perform the C<->GValue conversions here, not in a Scheme wrapper.
+	(struct _GuileGClosure, %gclosure-construct): Store the closure
+	metadata in the C closure instead of in the SCM, which is just a
+	boxed value anyway. Perhaps avoid a leaked ref -- there was a very
+	crufty-looking comment that might need checking up on in the
+	future.
+	(scm_gclosure_invoke): Renamed from gclosure-primitive-invoke.
+	Require typed <gvalue> instances, because otherwise we don't know
+	what GValues to use to invoke the closure.
+	(<gclosure>): Derive from <gvalue>, yay. Don't store
+	things (return type, etc) on the SCM object, because if we get a
+	closure from C, we have no way of knowing those things.
+	(initialize): Don't chain up, because we do our own construction.
+	Hacky, but it gets the job done.
+
+	* gnome/gobject/gparameter.scm:
+	* gnome/gobject/gparameter.h:
+	* gnome/gobject/gparameter.c: Parameters are now GOOPS objects
+	only, not GOOPS objects augmented by strange structs.
+	(scm_c_gparam_initialize_scm): New function, called when wrapping
+	an existing parameter as a SCM to initialize the SCM's slots. It's
+	pretty silly though to actually allocate slots, it would be better
+	to use accessors instead. Oh well, perhaps in the future.
+	(scm_c_gparam_construct): New function to create a GParamSpec via
+	e.g.
+	(make <gparam-char> #:name ...)
+	(<gparam>): Define slots for each attribute: name, nick, etc...
+	(<gparam-char>, etc): Define manually.
+
+	* gnome/gobject/gsignal.scm:
+	* gnome/gobject/gsignal.h:
+	* gnome/gobject/gsignal.c: Signals are now GOOPS objects, not
+	structs.
+	(scm_c_gsignal_query, scm_gsignal_query): Make a <gsignal> out of
+	an integer signal ID.
+	(scm_gtype_class_get_signals): Change from gtype-get-signals;
+	return a list of <gsignal> objects.
+	(scm_gsignal_create): Change from gsignal-primitive-create;
+	otherwise basically the same.
+	(scm_gtype_instance_signal_emit): Change from
+	gtype-instance-primitive-signal-emit.
+	(scm_gtype_instance_signal_connect_closure): Renamed from
+	gtype-instance-primitive-signal-connect.
+	(scm_gsignal_handler_block, scm_gsignal_handler_unblock)
+	(scm_gsignal_handler_disconnect, scm_gsignal_handler_connected_p):
+	De-primitivize.
+
+	* gnome/gobject/gobject.scm:
+	* gnome/gobject/gobject.h:
+	* gnome/gobject/gobject.c: Adapt to <gtype-class>/<gtype-instance>
+	changes.
+	(scm_c_gobject_construct): Move construction logic into C; this
+	function is called by <gtype-instance>'s `initialize'. Some
+	trickery to know whether construction was initialized by Scheme)
+	(and thus the initialization protocol is in progress, or whether
+	we need to allocate and initialize a new SCM object.
+	(scm_with_c_gtype_instance_instance_init): Second part of the
+	trickery.
+	(scm_gtype_register_static): Return the type name instead of a
+	GType object.
+	(scm_gobject_class_get_properties): Rename and rework from
+	gobject-type-get-properties.
+	(scm_gobject_class_get_property_names): Crackily duplicated code)
+	(but allows slots to be computed during class initialization
+	without forcing initialization cycles, e.g. <gtk-container> <->
+	<gtk-widget>.
+	(scm_gobject_class_install_property): No need to update a
+	#:properties slot.
+	(scm_gobject_get_property, scm_gobject_set_property):
+	Deprimitivize.
+
+	* gnome/gobject/gobject.scm (compute-slots on <gobject-class>):
+	Excellent cleverness to declare, but not allocate, slots for each
+	GObject property, even for C types.
+	(compute-get-n-set): Use gobject-{get,set}-property for the slot
+	accessors.
+	(initialize on <gobject-class>): Adapt to gtype.scm protocols.
+	(<gobject>): No more #:gsignals and #:gobject-properties slots;
+	use getter functions instead.
+	(<gparam-object>): Define here, because <gobject> is only defined
+	here.
+
+	* examples/example-1.scm: Update to the new <gclosure> API, and to
+	avoid gtypes.
+
+	* gnome/glib.scm:
+	* examples/main-loop.scm: Avoid gtypes.
+
+	* gnome/gw/support/defs.scm (load-defs):
+	s/wrap-object!/wrap-instance!/.
+
+	* gnome/gw/support/gobject.scm:
+	* gnome/gw/gobject-spec.scm: Wrap <gtype> as <gtype-class>. Remove
+	wrappers for primitive <gtype-instance> objects. Use two-arg
+	scm_c_scm_to_gtype_instance_typed when needed. Remove redundant
+	casts. Use new GValue* helpers. Rename wrap-object! to
+	wrap-instance!, as it works on all GTypeInstance* types that we
+	know about.
+	(initializations-cg on <gobject-classed-type>): Perform the latent
+	binding via (%gtype->class gtype-as-int), instead of on gtype
+	objects. Be more clever about avoiding GValue allocation.
+
+	* gnome/gw/support/gtk-doc.scm (signal-stexi-args)
+	(class-signal-stexi-docs, gobject-class-stexi-docs): Cursory
+	changes that might work; needs more testing. Looks much nicer)
+	(though.
+
+	* test-suite/gobject.api: Update for new API. Yay!
+
+	* test-suite/gobject.test: Remove some GType tests. Adapt others
+	to new API.
+
+	* test-suite/gw-gobject.test: Adapt to new API.
+
+	* test-suite/test-gobject.c (test_obj_class_init): Properly
+	declare the value array parameter.
+
 2008-04-04  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gobject/gc.c: Gcc started throwing warnings about the

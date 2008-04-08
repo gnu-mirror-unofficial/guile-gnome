@@ -31,20 +31,13 @@ G_BEGIN_DECLS
 extern SCM scm_class_gparam;
 
 #define SCM_GPARAMP(scm) \
-  SCM_INSTANCEP (scm) && SCM_IS_A_P (scm, scm_class_gparam)
+  scm_c_gtype_instance_is_a_p (scm, G_TYPE_PARAM)
 
 #define SCM_VALIDATE_GPARAM(pos, scm) \
   SCM_MAKE_VALIDATE (pos, scm, GPARAMP)
 
 #define SCM_VALIDATE_GPARAM_COPY(pos, scm, cvar) \
-  do { \
-    SCM tmp_instance; \
-    SCM_VALIDATE_GPARAM (pos, scm); \
-    tmp_instance = scm_slot_ref (scm, scm_sym_gtype_instance); \
-    SCM_VALIDATE_GTYPE_INSTANCE_TYPE_COPY (0, tmp_instance, G_TYPE_PARAM, GParamSpec, cvar); \
-  } while (0)
-
-SCM scm_gparam_to_value_type (SCM param);
+  SCM_VALIDATE_GTYPE_INSTANCE_TYPE_COPY (pos, scm, G_TYPE_PARAM, cvar)
 
 G_END_DECLS
 

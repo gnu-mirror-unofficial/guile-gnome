@@ -56,32 +56,19 @@
     (add-item! ws item)
     (add-client-item! ws item))
   
-  (add-type!
-   ws
-   (make <gw-guile-simple-type>
-     #:name '<gtype>
-     #:c-type-name "GType"
-     #:type-check '("SCM_TYP16_PREDICATE (scm_tc16_gtype, " scm-var ")")
-     #:unwrap '(c-var " = (GType) SCM_SMOB_DATA (" scm-var ");\n")
-     #:wrap '(scm-var " = scm_c_register_gtype (" c-var ");\n")
-     #:ffspec 'ulong)) ; FIXME: Not always true according to gtype.h
+  (add-type! ws (make <gw-guile-simple-type>
+                  #:name '<gtype>
+                  #:c-type-name "GType"
+                  #:type-check #f
+                  #:unwrap '(c-var " = scm_c_gtype_class_to_gtype (" scm-var ");\n")
+                  #:wrap '(scm-var " = scm_c_gtype_to_class (" c-var ");\n")
+                  #:ffspec 'size_t))
   
-  (add-type!
-   ws
-   (make <gw-guile-simple-type>
-     #:name '<gtype-instance>
-     #:c-type-name "GTypeInstance*"
-     #:type-check '("SCM_TYP16_PREDICATE (scm_tc16_gtype_instance, " scm-var ")")
-     #:unwrap '(c-var " = (GTypeInstance*) SCM_SMOB_DATA (" scm-var ");\n")
-     #:wrap '(scm-var " = scm_c_gtype_instance_to_scm (" c-var ");\n") ; fixme: unref the scm_var
-     #:ffspec 'pointer))
-  
-  ;; should <gobject> really be <g-object>?
-  (wrap-object! ws
-                #:name '<gobject>
-                #:ctype "GObject"
-                #:gtype-id "G_TYPE_OBJECT"
-                #:define-class? #f)
+  (wrap-instance! ws
+                  #:name '<gobject>
+                  #:ctype "GObject"
+                  #:gtype-id "G_TYPE_OBJECT"
+                  #:define-class? #f)
 
   (add-type! ws (make <gvalue-type>
                   #:name '<gvalue>
@@ -101,7 +88,6 @@
                   #:wrapped "Custom"
                   #:define-class? #f))
              
-  
   (add-type! ws (make <gparam-spec-type>
                   #:name '<gparam>
                   #:ctype "GParamSpec"
@@ -139,7 +125,7 @@
       "if (SCM_FALSEP (" scm-var "))\n"
       "  " c-var " = NULL;\n")
      (list
-      "if (!(" c-var " = (GParamSpec*)scm_c_scm_to_gtype_instance (" scm-var ", G_TYPE_PARAM)))\n"
+      "if (!(" c-var " = scm_c_scm_to_gtype_instance_typed (" scm-var ", G_TYPE_PARAM)))\n"
       `(gw:error ,status-var type ,(wrapped-var value))))))
 
 
@@ -148,7 +134,7 @@
                               status-var)
   (let ((c-var (var value)) (scm-var (scm-var value)))
     (list
-     scm-var " = scm_c_gtype_instance_to_scm ((GTypeInstance*)" c-var ");\n")))
+     scm-var " = scm_c_gtype_instance_to_scm (" c-var ");\n")))
 
 (define-class <gclosure-type> (<gobject-classed-pointer-type>))
 
@@ -156,19 +142,21 @@
                                 (value <gw-value>)
                                 status-var)
   (let ((c-var (var value)) (scm-var (scm-var value)))
-    (list
-     "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var "))\n"
-     "  " c-var " = (GClosure*) g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
-     "else if (SCM_GCLOSUREP ("  scm-var "))\n"
-     "  " c-var " = (GClosure*) g_value_get_boxed ((GValue*)SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_str2symbol (\"closure\"))));\n"
-     "else " `(gw:error ,status-var type ,(wrapped-var value)))))
+    (list c-var " = scm_c_gvalue_peek_boxed (" scm-var ");\n")))
+
+;; necessary gvalue functions:
+;; peek_boxed
+;; dup_boxed
+;; new_boxed
+;; new_take_boxed
+;; peek_value
+;; dup_value
 
 (define-method (wrap-value-cg (type <gclosure-type>)
                               (value <gw-value>)
                               status-var)
   (let ((c-var (var value)) (scm-var (scm-var value))) ; not ideal but ok
-    (list scm-var " = scm_c_make_gvalue (G_TYPE_CLOSURE);\n"
-          "g_value_set_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "), " c-var ");\n")))
+    (list scm-var " = scm_c_gvalue_new_from_boxed (G_TYPE_CLOSURE, " c-var ");\n")))
 
 (define-class <gvalue-type> (<gobject-type-base>))
 
@@ -177,18 +165,10 @@
                                 status-var)
   (let ((c-var (var value)) (scm-var (scm-var value)))
     (list
-     "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var "))\n"
-     ;; We allow mutation of the argument unless
-     ;; 'callee-owned is present in the options, in which
-     ;; case we make a copy.
      (if-typespec-option
       value 'callee-owned
-      `(,c-var " = g_new0 (GValue, 1);\n"
-        "g_value_init (" ,c-var ", G_VALUE_TYPE (SCM_SMOB_DATA (" ,scm-var ")));\n"
-        "g_value_copy ((GValue*)SCM_SMOB_DATA (" ,scm-var "), " ,c-var ");\n")
-      `("  " ,c-var " = (GValue*) SCM_SMOB_DATA (" ,scm-var ");\n"))
-     "else " `(gw:error ,status-var type ,(wrapped-var value)))))
-
+      (list c-var " = scm_c_gvalue_dup_value (" scm-var ");\n")
+      (list c-var " = scm_c_gvalue_peek_value (" scm-var ");\n")))))
 
 (define-method (wrap-value-cg (type <gvalue-type>)
                               (value <gw-value>)
@@ -198,13 +178,7 @@
      "if (" c-var " != NULL)\n"
      (if-typespec-option
       value 'const
-      `("GValue * tmp = g_new0 (GValue, 1);\n"
-        "g_value_init (tmp, G_VALUE_TYPE (" ,c-var "));\n"
-         "g_value_copy (" ,c-var ", tmp);\n"
-         "SCM_NEWSMOB (" ,scm-var ", scm_tc16_gvalue, tmp);\n")
-      `("  SCM_NEWSMOB (" ,scm-var ", scm_tc16_gvalue, " ,c-var ");\n"))
+      (list scm-var " = scm_c_gvalue_from_value (" c-var ");\n")
+      (list scm-var " = scm_c_gvalue_take_value (" c-var ");\n"))
      "else\n"
      "  " scm-var " = SCM_BOOL_F;\n")))
-
-  
-

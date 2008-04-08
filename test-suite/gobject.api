@@ -4,8 +4,7 @@
    (uses-interfaces)
    (typed-exports
      (<gclosure> class)
-     (gclosure-invoke procedure (arity 1 0 #t))
-     (gtype:gclosure <gtype>)))
+     (gclosure-invoke procedure (arity 2 0 #t))))
   ((gnome gobject generics)
    (uses-interfaces)
    (typed-exports
@@ -37,6 +36,7 @@
    (typed-exports
      (<ginterface> class)
      (<gobject> class)
+     (<gparam-object> class)
      (gobject-class-find-property
        procedure
        (arity 2 0 #f))
@@ -47,15 +47,6 @@
        procedure
        (arity 1 0 #f))
      (gobject-get-property procedure (arity 2 0 #f))
-     (gobject-interface-find-property
-       procedure
-       (arity 2 0 #f))
-     (gobject-interface-get-properties
-       procedure
-       (arity 1 0 #f))
-     (gobject-interface-get-property-names
-       procedure
-       (arity 1 0 #f))
      (gobject-set-property procedure (arity 3 0 #f))
      (gobject:get-property
        generic
@@ -63,10 +54,7 @@
      (gobject:set-property
        generic
        (<gobject> <symbol> <top>))
-     (gtype-register-static procedure (arity 2 0 #f))
-     (make-gobject-instance
-       generic
-       (<top> <top> <top> <top>))))
+     (gtype-register-static procedure (arity 2 0 #f))))
   ((gnome gobject gparameter)
    (uses-interfaces)
    (typed-exports
@@ -80,7 +68,6 @@
      (<gparam-int64> class)
      (<gparam-int> class)
      (<gparam-long> class)
-     (<gparam-object> class)
      (<gparam-pointer> class)
      (<gparam-spec-flags> class)
      (<gparam-string> class)
@@ -89,22 +76,6 @@
      (<gparam-uint> class)
      (<gparam-ulong> class)
      (<gparam> class)
-     (gparam->param-struct procedure (arity 1 0 #f))
-     (gparam->value-type procedure (arity 1 0 #f))
-     (gparam-struct:args procedure (arity 1 0 #f))
-     (gparam-struct:blurb procedure (arity 1 0 #f))
-     (gparam-struct:flags procedure (arity 1 0 #f))
-     (gparam-struct:name procedure (arity 1 0 #f))
-     (gparam-struct:nick procedure (arity 1 0 #f))
-     (gparam-struct:owner-type
-       procedure
-       (arity 1 0 #f))
-     (gparam-struct:param-type
-       procedure
-       (arity 1 0 #f))
-     (gparam-struct:value-type
-       procedure
-       (arity 1 0 #f))
      (gparameter:byte-order <integer>)
      (gparameter:double-max <real>)
      (gparameter:double-min <real>)
@@ -118,28 +89,11 @@
      (gparameter:long-min <integer>)
      (gparameter:uint-max <integer>)
      (gparameter:uint64-max <integer>)
-     (gparameter:ulong-max <integer>)
-     (gtype:gparam-boolean <gtype>)
-     (gtype:gparam-boxed <gtype>)
-     (gtype:gparam-char <gtype>)
-     (gtype:gparam-double <gtype>)
-     (gtype:gparam-enum <gtype>)
-     (gtype:gparam-flags <gtype>)
-     (gtype:gparam-float <gtype>)
-     (gtype:gparam-int <gtype>)
-     (gtype:gparam-int64 <gtype>)
-     (gtype:gparam-long <gtype>)
-     (gtype:gparam-object <gtype>)
-     (gtype:gparam-pointer <gtype>)
-     (gtype:gparam-string <gtype>)
-     (gtype:gparam-uchar <gtype>)
-     (gtype:gparam-uint <gtype>)
-     (gtype:gparam-uint64 <gtype>)
-     (gtype:gparam-ulong <gtype>)))
+     (gparameter:ulong-max <integer>)))
   ((gnome gobject gsignal)
    (uses-interfaces)
    (typed-exports
-     (<gsignal> struct-vtable)
+     (<gsignal> class)
      (gsignal-handler-block procedure (arity 2 0 #f))
      (gsignal-handler-connected?
        procedure
@@ -150,77 +104,36 @@
      (gsignal-handler-unblock
        procedure
        (arity 2 0 #f))
-     (gsignal:id procedure (arity 1 0 #f))
-     (gsignal:interface-type procedure (arity 1 0 #f))
-     (gsignal:name procedure (arity 1 0 #f))
-     (gsignal:param-types procedure (arity 1 0 #f))
-     (gsignal:return-type procedure (arity 1 0 #f))
      (gtype-class-create-signal
        procedure
        (arity 4 0 #f))
-     (gtype-class-define-signal macro)
      (gtype-class-get-signal-names
        procedure
        (arity 1 0 #f))
      (gtype-class-get-signals
        procedure
-       (arity 1 0 #f))
-     (gtype-get-signals procedure (arity 1 0 #f))
+       (arity 1 1 #f))
      (gtype-instance-signal-connect
        procedure
-       (arity 3 0 #f))
+       (arity 3 0 #t))
      (gtype-instance-signal-connect-after
        procedure
        (arity 3 0 #f))
-     (gtype-instance-signal-connect-data
-       procedure
-       (arity 4 0 #f))
      (gtype-instance-signal-emit
        procedure
        (arity 2 0 #t))))
   ((gnome gobject gtype)
    (uses-interfaces)
    (typed-exports
-     (%gtype-bind-to-class procedure (arity 2 0 #f))
-     (%gtype-instance-primitive-destroy!
+     (%gtype-instance-destroy!
        procedure
        (arity 1 0 #f))
-     (%gtype-lookup-class procedure (arity 1 0 #f))
      (<gtype-class> class)
-     (<gtype-instance-class> class)
      (<gtype-instance> class)
      (class-name->gtype-name procedure (arity 1 0 #f))
      (especify-metaclass! procedure (arity 2 0 #f))
      (gruntime-error procedure (arity 1 0 #t))
-     (gtype->class procedure (arity 1 0 #f))
-     (gtype->fundamental procedure (arity 1 0 #f))
-     (gtype-basic? procedure (arity 1 0 #f))
-     (gtype-children procedure (arity 1 0 #f))
-     (gtype-class->type procedure (arity 1 0 #f))
-     (gtype-classed? procedure (arity 1 0 #f))
-     (gtype-from-instance procedure (arity 1 0 #f))
-     (gtype-from-name procedure (arity 1 0 #f))
-     (gtype-fundamental? procedure (arity 1 0 #f))
-     (gtype-instance-primitive->type
-       procedure
-       (arity 1 0 #f))
-     (gtype-instance:write
-       generic
-       (<gtype-class> <%gtype-instance> <top>)
-       (<gtype-class> <gvalue> <top>)
-       (<gtype> <gvalue> <top>))
-     (gtype-instantiatable? procedure (arity 1 0 #f))
-     (gtype-interfaces procedure (arity 1 0 #f))
-     (gtype-is-a? procedure (arity 2 0 #f))
-     (gtype-name procedure (arity 1 0 #f))
-     (gtype-parent procedure (arity 1 0 #f))
-     (gtype:genum <gtype>)
-     (gtype:gflags <gtype>)
-     (gtype:ginterface <gtype>)
-     (gtype:gobject <gtype>)
-     (gtype:gparam <gtype>)
-     (gtype:void <gtype>)
-     (gtype? procedure (arity 1 0 #f))))
+     (gtype-name->class procedure (arity 1 0 #f))))
   ((gnome gobject gvalue)
    (uses-interfaces)
    (typed-exports
@@ -236,11 +149,13 @@
      (<gint64> class)
      (<gint> class)
      (<glong> class)
+     (<gpointer> class)
      (<guchar> class)
      (<guint64> class)
      (<guint> class)
      (<gulong> class)
      (<gvalue-array> class)
+     (<gvalue> class)
      (genum->name procedure (arity 1 0 #f))
      (genum->symbol procedure (arity 1 0 #f))
      (genum->value procedure (arity 1 0 #f))
@@ -248,7 +163,6 @@
        procedure
        (arity 1 0 #f))
      (genum-register-static procedure (arity 2 0 #f))
-     (genum-type-get-values procedure (arity 1 0 #f))
      (gflags->name-list procedure (arity 1 0 #f))
      (gflags->symbol-list procedure (arity 1 0 #f))
      (gflags->value-list procedure (arity 1 0 #f))
@@ -256,26 +170,7 @@
        procedure
        (arity 1 0 #f))
      (gflags-register-static procedure (arity 2 0 #f))
-     (gflags-type-get-values procedure (arity 1 0 #f))
-     (gtype:gboolean <gtype>)
-     (gtype:gboxed <gtype>)
-     (gtype:gboxed-scm <gtype>)
-     (gtype:gchar <gtype>)
-     (gtype:gchararray <gtype>)
-     (gtype:gdouble <gtype>)
-     (gtype:gfloat <gtype>)
-     (gtype:gint <gtype>)
-     (gtype:gint64 <gtype>)
-     (gtype:glong <gtype>)
-     (gtype:gpointer <gtype>)
-     (gtype:guchar <gtype>)
-     (gtype:guint <gtype>)
-     (gtype:guint64 <gtype>)
-     (gtype:gulong <gtype>)
-     (gtype:gvalue-array <gtype>)
      (gvalue->scm procedure (arity 1 0 #f))
-     (gvalue->type procedure (arity 1 0 #f))
-     (gvalue? procedure (arity 1 0 #f))
      (scm->gvalue procedure (arity 2 0 #f))))
   ((gnome gobject utils)
    (uses-interfaces)
@@ -285,15 +180,17 @@
      (define-generic-with-docs macro)
      (define-macro-with-docs macro)
      (define-with-docs macro)
-     (gtype-name->class-name procedure (arity 1 0 #f))
-     (gtype-name->method-name
+     (gtype-class-name->method-name
        procedure
        (arity 2 0 #f))
+     (gtype-name->class-name procedure (arity 1 0 #f))
      (gtype-name->scheme-name
        procedure
        (arity 1 0 #f))
      (gtype-name->scheme-name-alist <pair>)
-     (re-export-modules macro)))
+     (re-export-modules macro)
+     (unless macro)
+     (with-accessors macro)))
   ((gnome gw generics)
    (uses-interfaces (gnome gobject generics))
    (typed-exports))
@@ -330,8 +227,8 @@
        (<gobject-custom-gvalue-type>)
        (<gobject-enum-type>)
        (<gobject-flags-type>)
+       (<gobject-instance-type>)
        (<gobject-interface-type>)
-       (<gobject-object-type>)
        (<gobject-pointer-type>))
      (lookup-type-by-alias
        generic
@@ -351,10 +248,10 @@
      (wrap-gobject-class!
        generic
        (<gobject-wrapset-base> . <top>))
-     (wrap-interface!
+     (wrap-instance!
        generic
        (<gobject-wrapset-base> . <top>))
-     (wrap-object!
+     (wrap-interface!
        generic
        (<gobject-wrapset-base> . <top>))
      (wrap-opaque-pointer! procedure (arity 2 0 #f))

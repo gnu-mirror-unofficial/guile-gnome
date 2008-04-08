@@ -35,18 +35,19 @@ exec guile-gnome-0 -s $0
 
 (define closure
   (make <gclosure>
-    #:return-type gtype:gulong
-    #:param-types (list gtype:gulong gtype:gchar)
+    #:return-type <gulong>
+    #:param-types (list <gulong> <gchar>)
     #:func (lambda (x y) (* x 5))))
 
 (p " and invoke it to get the answer "
-   (gclosure-invoke closure 6 #\a)
+   (gclosure-invoke closure <gulong> 
+                    (scm->gvalue <gulong> 6) (scm->gvalue <gchar> #\a))
    ".\n\n")
 
 (p "We can derive new object types, like ")
 (define-class <test> (<gobject>)
   (my-property #:gparam (list <gparam-long>))
-  #:gsignal (list 'touch-me gtype:void))
+  #:gsignal (list 'touch-me #f))
 (p <test> ".\n\n")
 
 (define-method (test:touch-me (obj <test>))

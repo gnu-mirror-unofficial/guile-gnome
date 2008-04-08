@@ -132,11 +132,11 @@ test_obj_class_init (TestObjClass *klass)
   object_class->set_property = test_obj_set_property;
   object_class->get_property = test_obj_get_property;
 
-  param_spec = g_param_spec_boxed (
+  param_spec = g_param_spec_value_array (
           "arr",
           "Array",
           "An array",
-          G_TYPE_VALUE_ARRAY,
+          g_param_spec_int ("int", "Int", "An int", 0, 100, 0, G_PARAM_READWRITE),
           G_PARAM_WRITABLE | G_PARAM_CONSTRUCT);
   
   g_object_class_install_property (object_class,

@@ -33,53 +33,31 @@
 G_BEGIN_DECLS
 
 
-extern SCM scm_class_gobject;
-
-
 
-
-#define SCM_GOBJECTP(scm) \
-SCM_INSTANCEP (scm) && SCM_GTYPE_CLASS_SUBCLASSP (SCM_CLASS_OF (scm), scm_class_gobject)
-
-#define SCM_VALIDATE_GOBJECT(pos, scm) \
-SCM_MAKE_VALIDATE (pos, scm, GOBJECTP)
-
-#define SCM_VALIDATE_GOBJECT_COPY(pos, scm, cvar) \
-  do { \
-    SCM tmp_instance; \
-    SCM_VALIDATE_GOBJECT (pos, scm); \
-    tmp_instance = scm_slot_ref (scm, scm_sym_gtype_instance); \
-    SCM_VALIDATE_GTYPE_INSTANCE_TYPE_COPY (pos, tmp_instance, G_TYPE_OBJECT, GObject, cvar); \
-  } while (0)
 
 #define SCM_GOBJECT_CLASSP(scm) \
-SCM_GTYPE_CLASS_SUBCLASSP (scm, scm_class_gobject)
+  scm_c_gtype_class_is_a_p (scm, G_TYPE_OBJECT)
 
 #define SCM_VALIDATE_GOBJECT_CLASS(pos, scm) \
-SCM_MAKE_VALIDATE (pos, scm, GOBJECT_CLASSP)
+  SCM_MAKE_VALIDATE (pos, scm, GOBJECT_CLASSP)
 
-#define SCM_VALIDATE_GOBJECT_CLASS_GET_TYPE(pos, scm, cvar) \
+#define SCM_VALIDATE_GOBJECT_CLASS_COPY(pos, scm, cvar) \
   do { \
-    SCM tmp_type; \
     SCM_VALIDATE_GOBJECT_CLASS (pos, scm); \
-    tmp_type = scm_slot_ref (scm, scm_sym_gtype); \
-    SCM_VALIDATE_GTYPE_COPY (0, tmp_type, cvar); \
+    SCM_VALIDATE_GTYPE_CLASS_COPY (pos, scm, cvar); \
   } while (0)
+
+#define SCM_GOBJECTP(scm) \
+  scm_c_gtype_instance_is_a_p (scm, G_TYPE_OBJECT)
+
+#define SCM_VALIDATE_GOBJECT(pos, scm) \
+  SCM_MAKE_VALIDATE (pos, scm, GOBJECTP)
+
+#define SCM_VALIDATE_GOBJECT_COPY(pos, scm, cvar) \
+  SCM_VALIDATE_GTYPE_INSTANCE_TYPE_COPY (pos, scm, G_TYPE_OBJECT, cvar)
 
 
 
-
-SCM scm_gobject_set_data_x (SCM object, SCM key, SCM val);
-SCM scm_gobject_get_data (SCM object, SCM key);
-
-SCM scm_gtype_register_static (SCM name, SCM parent_type);
-SCM scm_scheme_gclass_p (SCM class);
-SCM scm_gobject_class_install_property (SCM type, SCM param);
-
-SCM scm_gobject_type_get_properties (SCM type);
-SCM scm_gobject_primitive_create_instance (SCM class, SCM type, SCM object, SCM properties);
-SCM scm_gobject_primitive_get_property (SCM object, SCM name);
-SCM scm_gobject_primitive_set_property (SCM object, SCM name, SCM value);
 
 void scm_register_gobject_postmakefunc (GType type, gpointer (*postmakefunc) (gpointer));
 

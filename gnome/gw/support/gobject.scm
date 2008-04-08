@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2003,2004,2008 Andy Wingo <wingo at pobox dot com>
 ;; Copyright (C) 2004,2007 Andreas Rottmann <rotty at debian dot org>
 
 ;; This program is free software; you can redistribute it and/or    
@@ -59,7 +59,7 @@
             <gobject-classed-pointer-type>
             unwrap-null-checked
             
-            wrap-object!
+            wrap-instance!
             wrap-boxed!
             wrap-pointer!
             wrap-opaque-pointer!
@@ -198,8 +198,8 @@ the strings parsed out of the C header files."
    (if (slot-ref type 'define-class?)
        (list
         "gw_guile_make_latent_variable\n"
-        "  (scm_str2symbol (\"" (symbol->string (class-name type)) "\"), "
-        "scm_gtype_to_class, scm_c_register_gtype (" (gtype-id type) "));\n")
+        "  (scm_from_locale_symbol (\"" (symbol->string (class-name type)) "\"), "
+        "scm_sys_gtype_to_class, scm_from_ulong (" (gtype-id type) "));\n")
        '())))
 
 (define-method (add-type! (ws <gobject-wrapset-base>)
@@ -245,27 +245,28 @@ not @code{#f}, @var{code} is run instead."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Wrap objects.
 
-(define-class <gobject-object-type> (<gobject-classed-pointer-type>)
+(define-class <gobject-instance-type> (<gobject-classed-pointer-type>)
   #:allowed-options '(null-ok))
 
-(define-method (wrap-object! (ws <gobject-wrapset-base>) . args)
-  "Define a wrapper for a specific @code{<gobject>}-derived type in
-@var{ws}. Required keyword arguments are @code{#:ctype} and
-@code{#:gtype-id}. For example,
+(define-method (wrap-instance! (ws <gobject-wrapset-base>) . args)
+  "Define a wrapper for a specific
+instantiatable (@code{<gtype-instance>}-derived) type in @var{ws}.
+Required keyword arguments are @code{#:ctype} and @code{#:gtype-id}. For
+example,
 
 @lisp
- (wrap-object! ws #:ctype \"GtkWidget\"
-               #:gtype-id \"GTK_TYPE_WIDGET\")
+ (wrap-instance! ws #:ctype \"GtkWidget\"
+                    #:gtype-id \"GTK_TYPE_WIDGET\")
 @end lisp
 
 Normally only called from @code{load-defs}."
-  (let ((type (apply make <gobject-object-type> args)))
+  (let ((type (apply make <gobject-instance-type> args)))
     (set! (class-name type) (name type))
-    (slot-set! type 'how-wrapped "GObject")
+    (slot-set! type 'how-wrapped "GTypeInstance")
     (add-type! ws type)
     type))
 
-(define-method (unwrap-value-cg (type <gobject-object-type>)
+(define-method (unwrap-value-cg (type <gobject-instance-type>)
                                 (value <gw-value>)
                                 status-var)
   (let ((c-var (var value))
@@ -275,10 +276,10 @@ Normally only called from @code{load-defs}."
       value status-var
       (list
        "if (!(" c-var " = (" (c-type-name type) ") "
-       "scm_c_scm_to_gtype_instance (" scm-var ", " (gtype-id type) ")))\n"
+       "scm_c_scm_to_gtype_instance_typed (" scm-var ", " (gtype-id type) ")))\n"
        `(gw:error ,status-var type ,(wrapped-var value)))))))
 
-(define-method (wrap-value-cg (type <gobject-object-type>)
+(define-method (wrap-value-cg (type <gobject-instance-type>)
                               (value <gw-value>)
                               status-var)
   (let ((c-var (var value))
@@ -287,11 +288,11 @@ Normally only called from @code{load-defs}."
      "if (" c-var " == NULL)\n"
      "  " scm-var " = SCM_BOOL_F;\n"
      "else\n"
-     "  " scm-var " = scm_c_gtype_instance_to_scm ((GTypeInstance *)" c-var ");\n"
+     "  " scm-var " = scm_c_gtype_instance_to_scm (" c-var ");\n"
      (if-typespec-option value 'caller-owned
          ;; the _to_scm will ref the object; if the function is a
          ;; constructor, we don't need that ref
-          (list "if (" c-var ") scm_c_gtype_instance_unref ((GTypeInstance*)" c-var ");\n")))))
+          (list "if (" c-var ") scm_c_gtype_instance_unref (" c-var ");\n")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Wrap boxed types, represented on the scheme side by GValues.
@@ -312,7 +313,7 @@ Normally only called from @code{load-defs}."
 (define-method (wrap-boxed! (ws <gobject-wrapset-base>) . args)
   "Define a wrapper for a specific boxed type in @var{ws}. Required
 keyword arguments are @code{#:ctype} and @code{#:gtype-id}, as in
-@code{wrap-object!}."
+@code{wrap-instance!}."
   (let ((type (apply make <gobject-boxed-type> args)))
     (slot-set! type 'how-wrapped "GBoxed")
     (add-type! ws type)
@@ -329,14 +330,13 @@ keyword arguments are @code{#:ctype} and @code{#:gtype-id}, as in
       (unwrap-null-checked
        value status-var
        (list
-        "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
-        "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " (gtype-id type) ")) {\n"
+        "if (scm_c_gvalue_holds (" scm-var ", " (gtype-id type) ")) {\n"
         (if-typespec-option
          value 'callee-owned
          (list
-          "  " c-var " = (" ctype ") g_value_dup_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n")
+          "  " c-var " = scm_c_gvalue_dup_boxed (" scm-var ");\n")
          (list
-          "  " c-var " = (" ctype ") g_value_get_boxed ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"))
+          "  " c-var " = scm_c_gvalue_peek_boxed (" scm-var ");\n"))
         " } else {\n"
         "  " c-var " = NULL;\n"
         `(gw:error ,status-var type ,(wrapped-var value))
@@ -351,13 +351,12 @@ keyword arguments are @code{#:ctype} and @code{#:gtype-id}, as in
      "if (" c-var " == NULL) {\n"
      "  " scm-var " = SCM_BOOL_F;\n"
      "} else {\n"
-     "  " scm-var " = scm_c_make_gvalue (" (gtype-id type) ");\n"
      (if-typespec-option
       value 'callee-owned
       (list
-       "  g_value_set_boxed ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n")
+       "  " scm-var " = scm_c_gvalue_new_from_boxed (" (gtype-id type) ", " c-var ");\n")
       (list
-       "  g_value_take_boxed ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n"))
+       "  " scm-var " = scm_c_gvalue_new_take_boxed (" (gtype-id type) ", " c-var ");\n"))
      "}\n")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -368,7 +367,7 @@ keyword arguments are @code{#:ctype} and @code{#:gtype-id}, as in
 (define-method (wrap-pointer! (ws <gobject-wrapset-base>) . args)
   "Define a wrapper for a specific pointer type in @var{ws}. Required
 keyword arguments are @code{#:ctype} and @code{#:gtype-id}, as in
-@code{wrap-object!}."
+@code{wrap-instance!}."
   (let ((type (apply make <gobject-pointer-type> args)))
     (slot-set! type 'how-wrapped "GPointer")
     (add-type! ws type)
@@ -383,9 +382,8 @@ keyword arguments are @code{#:ctype} and @code{#:gtype-id}, as in
     (unwrap-null-checked
      value status-var
      (list                    
-      "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
-      "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " (gtype-id type) "))\n"
-      "  " c-var " = (" ctype ") g_value_get_pointer ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
+      "if (scm_c_gvalue_holds (" scm-var ", " (gtype-id type) "))\n"
+      "  " c-var " = g_value_get_pointer (scm_c_gvalue_peek_value (" scm-var "));\n"
       "else {\n"
       "  " c-var " = NULL;\n"
       `(gw:error ,status-var type ,(wrapped-var value))
@@ -401,7 +399,7 @@ keyword arguments are @code{#:ctype} and @code{#:gtype-id}, as in
      "  " scm-var " = SCM_BOOL_F;\n"
      "} else {\n"
      "  " scm-var " = scm_c_make_gvalue (" (gtype-id type) ");\n"
-     "  g_value_set_pointer ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n"
+     "  g_value_set_pointer (scm_c_gvalue_peek_value (" scm-var "), " c-var ");\n"
      "}\n")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -413,7 +411,7 @@ keyword arguments are @code{#:ctype} and @code{#:gtype-id}, as in
 (define-method (wrap-interface! (ws <gobject-wrapset-base>) . args)
   "Define a wrapper for an interface type in @var{ws}. Required keyword
 arguments are @code{#:ctype} and @code{#:gtype-id}, as in
-@code{wrap-object!}."
+@code{wrap-instance!}."
   (let ((type (apply make <gobject-interface-type> args)))
     (slot-set! type 'how-wrapped "GInterface")
     (add-type! ws type)
@@ -427,7 +425,7 @@ arguments are @code{#:ctype} and @code{#:gtype-id}, as in
     (unwrap-null-checked
      value status-var
      (list                    
-      c-var " = (" (c-type-name type) ") scm_c_scm_to_gtype_instance (" scm-var ", G_TYPE_OBJECT);\n"
+      c-var " = scm_c_scm_to_gtype_instance_typed (" scm-var ", G_TYPE_OBJECT);\n"
       
       "if (!" c-var " || !g_type_is_a (G_TYPE_FROM_INSTANCE (" c-var "), " (gtype-id type) "))\n"
       `(gw:error ,status-var type ,(wrapped-var value)))
@@ -497,16 +495,12 @@ possible values."
         (scm-var (scm-var value))
         (gtype-id (gtype-id type)))
     (list
-     "if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
-     "    && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " gtype-id "))\n"
-     "  " c-var " = g_value_get_enum ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
+     "if (scm_c_gvalue_holds (" scm-var ", " gtype-id "))\n"
+     "  " c-var " = g_value_get_enum (scm_c_gvalue_peek_value (" scm-var "));\n"
      "else {\n"
-     ;; will throw an exception if the conversion fails
-     ;; don't use scm_c_scm_to_gvalue because that will unecessarily
-     ;; create a new value
-     "  SCM newval = scm_scm_to_gvalue (scm_c_register_gtype (" gtype-id "),"
-                                        scm-var ");\n"
-     "  " c-var " = g_value_get_enum ((GValue*)SCM_SMOB_DATA (newval));\n"
+     "  GValue newval = {0,}; g_value_init (&newval, " gtype-id ");\n"
+     "  scm_c_gvalue_set (&newval, " scm-var ");\n"
+     "  " c-var " = g_value_get_enum (&newval);\n"
      "}\n")))
 
 (define-method (wrap-value-cg (type <gobject-enum-type>)
@@ -516,7 +510,7 @@ possible values."
         (scm-var (scm-var value)))
     (list
      scm-var " = scm_c_make_gvalue (" (gtype-id type)");\n"
-     "g_value_set_enum ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n")))
+     "g_value_set_enum (scm_c_gvalue_peek_value (" scm-var "), " c-var ");\n")))
 
 
 ;;;
@@ -557,16 +551,12 @@ as in @code{wrap-enum!}."
     (list
      "if (SCM_FALSEP (" scm-var "))\n"
      "  " c-var " = 0;\n"
-     "else if (SCM_TYP16_PREDICATE (scm_tc16_gvalue, " scm-var ")\n"
-     "         && G_VALUE_HOLDS ((GValue*)SCM_SMOB_DATA (" scm-var "), " gtype-id "))\n"
-     "  " c-var " = g_value_get_flags ((GValue*)SCM_SMOB_DATA (" scm-var "));\n"
-     "else {\n" ;; we can't use scm_make because we need the special allocate-instance
-     ;; will throw an exception if the conversion fails
-     ;; don't use scm_c_scm_to_gvalue because that will unecessarily
-     ;; create a new value
-     "  SCM newval = scm_scm_to_gvalue (scm_c_register_gtype (" gtype-id "),"
-                                        scm-var ");\n"
-     "  " c-var " = g_value_get_flags ((GValue*)SCM_SMOB_DATA (newval));\n"
+     "else if (scm_c_gvalue_holds (" scm-var ", " gtype-id "))\n"
+     "  " c-var " = g_value_get_flags (scm_c_gvalue_peek_value (" scm-var "));\n"
+     "else {\n"
+     "  GValue newval = {0,}; g_value_init (&newval, " gtype-id ");\n"
+     "  scm_c_gvalue_set (&newval, " scm-var ");\n"
+     "  " c-var " = g_value_get_flags (&newval);\n"
      "}\n")))
 
 (define-method (wrap-value-cg (type <gobject-flags-type>)
@@ -575,7 +565,7 @@ as in @code{wrap-enum!}."
   (let ((c-var (var value)) (scm-var (scm-var value)))
     (list
      scm-var " = scm_c_make_gvalue (" (gtype-id type) ");\n"
-     "g_value_set_flags ((GValue *) SCM_SMOB_DATA (" scm-var "), " c-var ");\n")))
+     "g_value_set_flags (scm_c_gvalue_peek_value (" scm-var "), " c-var ");\n")))
 
 
 (define-class <gobject-opaque-pointer> (<gw-wct> <gw-guile-rti-type>)
@@ -826,7 +816,7 @@ to the structure."
 (define-method (wrap-gobject-class! (ws <gobject-wrapset-base>) . args)
   "Define a wrapper for GObject class values @var{ws}. Required keyword
 arguments are @code{#:ctype} and @code{#:gtype-id}, as in
-@code{wrap-object!}.
+@code{wrap-instance!}.
 
 @code{#:ctype} should refer to the type of the class and not the
 instance; e.g. @code{\"GtkWidgetClass\"} and not @code{\"GtkWidget\"}.
@@ -848,8 +838,8 @@ invoked manually in a wrapset as needed."
     (unwrap-null-checked
      value status-var
      (list
-      "if (g_type_is_a (SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype)), " (gtype-id type) "))\n"
-      "  " c-var " = (" ctype ") SCM_SMOB_DATA (scm_slot_ref (" scm-var ", scm_sym_gtype_class));\n"
+      "if (g_type_is_a (scm_c_gtype_class_to_gtype (" scm-var "), " (gtype-id type) "))\n"
+      "  " c-var " = g_type_class_ref (scm_c_gtype_class_to_gtype (" scm-var "));\n"
       "else " `(gw:error ,status-var type ,(wrapped-var value))))))
 
 (define-method (wrap-value-cg (type <gobject-class-type>)
@@ -963,7 +953,7 @@ invoked manually in a wrapset as needed."
 FIXME: missing a wrapset argument!
 
 @var{ctype} and @var{gtype} are as @code{#:ctype} and @code{#:gtype-id}
-in @code{wrap-object!}. @var{wrap} and @var{unwrap} are G-Wrap forms in
+in @code{wrap-instance!}. @var{wrap} and @var{unwrap} are G-Wrap forms in
 which @code{scm-var} and @code{c-var} will be bound to the names of the
 SCM and C values, respectively. For example:
 
@@ -1039,7 +1029,7 @@ SCM and C values, respectively. For example:
 FIXME: missing a wrapset argument!
 
 @var{ctype} and @var{gtype} are as @code{#:ctype} and @code{#:gtype-id}
-in @code{wrap-object!}. @var{wrap-func } and @var{unwrap-func} are names
+in @code{wrap-instance!}. @var{wrap-func } and @var{unwrap-func} are names
 of functions to convert to and from Scheme values, respectively. For
 example:
 

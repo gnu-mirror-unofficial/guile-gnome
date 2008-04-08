@@ -31,7 +31,17 @@
 
 
 
-SCM scm_gsignal_vtable;
+static SCM _make;
+static SCM scm_class_gsignal;
+SCM_KEYWORD (k_id, "id");
+SCM_KEYWORD (k_name, "name");
+SCM_KEYWORD (k_interface_type, "interface-type");
+SCM_KEYWORD (k_return_type, "return-type");
+SCM_KEYWORD (k_param_types, "param-types");
+SCM_SYMBOL (sym_name, "name");
+SCM_SYMBOL (sym_interface_type, "interface-type");
+SCM_SYMBOL (sym_return_type, "return-type");
+SCM_SYMBOL (sym_param_types, "param-types");
 
 /* #define DEBUG_PRINT */
 
@@ -44,200 +54,189 @@ SCM scm_gsignal_vtable;
 
 
 static SCM
-print_gsignal_struct (SCM gsignal, SCM port)
+scm_c_gsignal_query (guint id)
 {
-    scm_display (scm_makfrom0str ("#<gsignal "), port);
-    scm_write (SCM_LIST6 (SCM_GSIGNAL_ID (gsignal),
-			  SCM_PACK (SCM_STRUCT_DATA (gsignal) [scm_si_gsignal_name]),
-			  SCM_PACK (SCM_STRUCT_DATA (gsignal) [scm_si_gsignal_interface_type]),
-			  SCM_PACK (SCM_STRUCT_DATA (gsignal) [scm_si_gsignal_return_type]),
-			  SCM_GSIGNAL_FLAGS (gsignal),
-			  SCM_GSIGNAL_PARAMS (gsignal)),
-	       port);
-    scm_display (scm_makfrom0str (">"), port);
+    SCM args, param_types = SCM_EOL;
+    GSignalQuery q;
+    gint i;
 
-    return SCM_UNSPECIFIED;
+    g_signal_query (id, &q);
+
+    for (i = q.n_params - 1; i >= 0; i--)
+        param_types = scm_cons (scm_c_gtype_to_class (q.param_types [i]),
+                                param_types);
+
+    args = scm_list_n (scm_class_gsignal,
+                       k_id, scm_from_uint (q.signal_id),
+                       k_name, scm_from_locale_string (q.signal_name),
+                       k_interface_type, scm_c_gtype_to_class (q.itype),
+                       k_return_type, q.return_type == G_TYPE_NONE
+                       ? SCM_BOOL_F : scm_c_gtype_to_class (q.return_type),
+                       k_param_types, param_types,
+                       SCM_UNDEFINED);
+    scm_write (args, scm_current_error_port ());
+    scm_newline (scm_current_error_port ());
+    return scm_apply_0 (_make, args);
 }
 
-
-
-SCM_DEFINE (scm_gtype_get_signals, "gtype-get-signals", 1, 0, 0,
-	    (SCM type),
-            "Returns a vector of signal names belonging to @var{type} and all "
-            "parent types.")
-#define FUNC_NAME s_scm_gtype_get_signals
+SCM_DEFINE (scm_gsignal_query, "gsignal-query", 2, 0, 0,
+	    (SCM class, SCM name),
+	    "")
+#define FUNC_NAME s_scm_gsignal_query
 {
-    guint *ids, n_ids, i;
-    GTypeClass *type_class = NULL;
-    GType gtype;
-    SCM vector;
+    GType type;
+    guint id;
 
-    SCM_VALIDATE_GTYPE_COPY (1, type, gtype);
+    SCM_VALIDATE_GTYPE_CLASS_COPY (1, class, type);
+    SCM_VALIDATE_SYMBOL (2, name);
+    
+    id = g_signal_lookup (SCM_SYMBOL_CHARS (name), type);
+    if (!id)
+        scm_c_gruntime_error (FUNC_NAME, "Unknown signal ~A on class ~A",
+                              SCM_LIST2 (name, class));
 
-    if (!G_TYPE_IS_FUNDAMENTAL (gtype)
-        && G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_INTERFACE)
-        /* will add signals and properties to the type */
-        type_class = g_type_default_interface_ref (gtype);    
-    else if (G_TYPE_IS_CLASSED (gtype))
-        type_class = g_type_class_ref (gtype);
+    return scm_c_gsignal_query (id);
+}
+#undef FUNC_NAME
 
-    ids = g_signal_list_ids (gtype, &n_ids);
+SCM_DEFINE (scm_gtype_class_get_signals, "gtype-class-get-signals", 1, 1, 0,
+	    (SCM class, SCM tail),
+            "Returns a list of signals belonging to @var{class} and all "
+            "parent types.")
+#define FUNC_NAME s_scm_gtype_class_get_signals
+{
+    GType type;
+    SCM supers;
+    guint *ids, n_ids;
+    glong i;
 
-    vector = scm_make_vector (SCM_MAKINUM (n_ids), SCM_UNDEFINED);
+    SCM_VALIDATE_GTYPE_CLASS_COPY (1, class, type);
+    if (SCM_UNBNDP (tail))
+        tail = SCM_EOL;
 
-    for (i = 0; i < n_ids; i++) {
-	GSignalQuery query;
-	SCM this, param_types;
-	guint j;
+    if (!type)
+        return tail;
 
-	g_signal_query (ids [i], &query);
+    ids = g_signal_list_ids (type, &n_ids);
 
-	this = scm_make_struct (scm_gsignal_vtable, SCM_INUM0, SCM_EOL);
-
-	SCM_SET_GSIGNAL_ID (this, SCM_MAKINUM (query.signal_id));
-	SCM_SET_GSIGNAL_NAME (this, scm_makfrom0str (query.signal_name));
-	SCM_SET_GSIGNAL_INTERFACE_TYPE (this, scm_c_register_gtype (query.itype));
-	SCM_SET_GSIGNAL_RETURN_TYPE (this, scm_c_register_gtype (query.return_type));
-	SCM_SET_GSIGNAL_FLAGS (this, SCM_BOOL_F);
-
-	param_types = scm_make_vector (SCM_MAKINUM (query.n_params), SCM_UNDEFINED);
-
-	for (j = 0; j < query.n_params; j++) {
-	    SCM current = scm_c_register_gtype (query.param_types [j]);
-
-	    scm_vector_set_x (param_types, SCM_MAKINUM (j), current);
-	}
-
-	SCM_SET_GSIGNAL_PARAMS (this, param_types);
-
-	scm_vector_set_x (vector, SCM_MAKINUM (i), this);
-    }
-
-    if (!G_TYPE_IS_FUNDAMENTAL (gtype)
-        && G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_INTERFACE)
-        g_type_default_interface_unref (type_class);
-    else if (G_TYPE_IS_CLASSED (gtype))
-        g_type_class_unref (type_class);
+    for (i = ((glong)n_ids) - 1; i >= 0; i--)
+        tail = scm_cons (scm_c_gsignal_query (ids[i]), tail);
 
     g_free (ids);
+
+    for (supers = scm_class_direct_supers (class); SCM_CONSP (supers);
+         supers = scm_cdr (supers))
+        if (SCM_GTYPE_CLASSP (scm_car (supers)))
+            tail = scm_gtype_class_get_signals (scm_car (supers), tail);
     
-    return vector;
+    return tail;
 }
 #undef FUNC_NAME
 
 
 
-SCM_DEFINE (scm_gsignal_primitive_create, "gsignal-primitive-create", 2, 0, 0,
+SCM_DEFINE (scm_gsignal_create, "gsignal-create", 2, 0, 0,
 	    (SCM signal, SCM closure),
 	    "")
-#define FUNC_NAME s_scm_gsignal_primitive_create
+#define FUNC_NAME s_scm_gsignal_create
 {
     GClosure *gclosure;
     GValue *gvalue;
     gulong i, length;
     GType *param_types;
-    SCM params;
+    SCM params, rtype;
     guint id;
 
-    SCM_VALIDATE_GSIGNAL (1, signal);
+#define REF(slot) scm_slot_ref (signal, sym_##slot)
+
     SCM_VALIDATE_GVALUE_TYPE_COPY (2, closure, G_TYPE_CLOSURE, gvalue);
     gclosure = g_value_get_boxed (gvalue);
 
-    params = SCM_GSIGNAL_PARAMS (signal);
-    length = SCM_INUM (scm_vector_length (params));
-    for (i = 0; i < length; i++) {
-	SCM this = scm_vector_ref (params, SCM_MAKINUM (i));
-
-	SCM_VALIDATE_GTYPE (0, this);
-    }
-
+    params = REF(param_types);
+    length = scm_ilength (params);
     param_types = g_new0 (GType, length);
-    for (i = 0; i < length; i++) {
-	SCM this = scm_vector_ref (params, SCM_MAKINUM (i));
+    for (i = 0; i < length; i++, params = scm_cdr (params))
+	param_types[i] = scm_c_gtype_class_to_gtype (scm_car (params));
+    rtype = REF (return_type);
 
-	SCM_VALIDATE_GTYPE_COPY (0, this, param_types [i]);
-    }
-
-    id = g_signal_newv (SCM_GSIGNAL_NAME (signal),
-			SCM_GSIGNAL_INTERFACE_TYPE (signal),
+    id = g_signal_newv (SCM_SYMBOL_CHARS (REF (name)),
+			scm_c_gtype_class_to_gtype (REF (interface_type)),
 			G_SIGNAL_RUN_LAST,
 			gclosure,
 			NULL, NULL, NULL,
-			SCM_GSIGNAL_RETURN_TYPE (signal),
+			SCM_FALSEP (rtype)
+                        ? G_TYPE_NONE : scm_c_gtype_class_to_gtype (rtype),
 			length, param_types);
 
     return SCM_MAKINUM (id);
+#undef REF
 }
 #undef FUNC_NAME
 
 
 
-SCM_DEFINE (scm_gtype_instance_primitive_signal_emit, "gtype-instance-primitive-signal-emit", 3, 0, 0,
-	    (SCM object, SCM id, SCM args),
+SCM_DEFINE (scm_gtype_instance_signal_emit, "gtype-instance-signal-emit", 2, 0, 1,
+	    (SCM object, SCM name, SCM args),
 	    "")
-#define FUNC_NAME s_scm_gtype_instance_primitive_signal_emit
+#define FUNC_NAME s_scm_gtype_instance_signal_emit
 {
-  GValue *params;
-  GType gtype, signal_return_type;
-  SCM retval = SCM_UNSPECIFIED;
-  GTypeInstance *instance;
-  GValue ret = { 0, };
-  GSignalQuery query;
-  guint i;
+    GValue *params;
+    GType gtype;
+    SCM walk, retval;
+    GTypeInstance *instance;
+    GValue ret = { 0, };
+    GSignalQuery query;
+    guint i, id;
 
-  SCM_VALIDATE_GTYPE_INSTANCE_COPY (1, object, instance);
-  SCM_VALIDATE_INUM (2, id);
+    SCM_VALIDATE_GTYPE_INSTANCE_COPY (1, object, instance);
+    SCM_VALIDATE_SYMBOL (2, name);
                                                                                                                                       
-  gtype = G_TYPE_FROM_INSTANCE (instance);
-  g_signal_query (SCM_INUM (id), &query);
-  signal_return_type = query.return_type;
+    gtype = G_TYPE_FROM_INSTANCE (instance);
+    id = g_signal_lookup (SCM_SYMBOL_CHARS (name), gtype);
   
-  params = g_new0(GValue, query.n_params + 1);
-  g_value_init(&params[0], gtype);
-  if (g_type_is_a (gtype, G_TYPE_OBJECT))
-      g_value_set_object (&params[0], G_OBJECT (SCM_SMOB_DATA (object)));
-  else
-      scm_c_gruntime_error
-          (FUNC_NAME, "Don't know what to do with object of type ~A: ~S",
-           SCM_LIST2 (scm_makfrom0str (g_type_name (gtype)), object));
-      
+    if (!id)
+        scm_c_gruntime_error (FUNC_NAME, "Unknown signal ~A on object ~A",
+                              SCM_LIST2 (name, object));
 
-  for (i = 0; i < query.n_params; i++){
-    SCM this = scm_vector_ref (args, SCM_MAKINUM (i));
-    const GValue *value = (const GValue *) SCM_SMOB_DATA (this);
-    g_value_init(&params[i + 1],
-		 query.param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE);
-    g_value_copy (value, &params[i+1]);
-  }
-  for (i = 0; i < query.n_params; i++) {
-    SCM this = scm_vector_ref (args, SCM_MAKINUM (i));
-    const GValue *value;
-    
-    SCM_VALIDATE_GVALUE_TYPE_COPY (i + 1, this, query.param_types [i], value);
-  }
+    g_signal_query (id, &query);
   
-  if (query.return_type != G_TYPE_NONE) {
-    g_value_init(&ret, query.return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
-    g_signal_emitv (params, SCM_INUM (id), 0, &ret);
-  } else {
-    g_signal_emitv (params, SCM_INUM (id), 0, NULL);
-  }
-  
+    params = g_new0 (GValue, query.n_params + 1);
+    g_value_init (&params[0], gtype);
+    scm_c_gvalue_set (&params[0], object);
 
-  for (i = 0; i < query.n_params + 1; i++)
-    g_value_unset(&params[i]);
-  g_free(params);
+    for (walk = args, i = 0; i < query.n_params && SCM_CONSP (walk);
+         i++, walk = scm_cdr (walk)) {
+        g_value_init (&params[i+1],
+                      query.param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE);
+        scm_c_gvalue_set (&params[i+1], scm_car (walk));
+    }
+    SCM_ASSERT (i == query.n_params && SCM_NULLP (walk), args, 3, FUNC_NAME);
+  
+    if (query.return_type != G_TYPE_NONE) {
+        g_value_init (&ret, query.return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
+        g_signal_emitv (params, id, 0, &ret);
+        retval = scm_c_gvalue_ref (&ret);
+        g_value_unset (&ret);
+    } else {
+        g_signal_emitv (params, id, 0, NULL);
+        retval = SCM_UNSPECIFIED;
+    }
+  
+    for (i = 0; i < query.n_params + 1; i++)
+        g_value_unset (&params[i]);
+    g_free(params);
 	
-  return retval;
+    return retval;
 }
 #undef FUNC_NAME
 
 
 
-SCM_DEFINE (scm_gtype_instance_primitive_signal_connect, "gtype-instance-primitive-signal-connect", 4, 0, 0,
+SCM_DEFINE (scm_gtype_instance_signal_connect_closure,
+            "gtype-instance-signal-connect-closure", 4, 0, 0,
 	    (SCM object, SCM id, SCM closure, SCM after),
 	    "")
-#define FUNC_NAME s_scm_gtype_instance_primitive_signal_connect
+#define FUNC_NAME s_scm_gtype_instance_signal_connect_closure
 {
     GClosure *gclosure;
     GValue *gvalue;
@@ -274,10 +273,10 @@ SCM_DEFINE (scm_gtype_instance_primitive_signal_connect, "gtype-instance-primiti
 
 
 
-SCM_DEFINE (scm_gsignal_primitive_handler_block, "gsignal-primitive-handler-block", 2, 0, 0,
+SCM_DEFINE (scm_gsignal_handler_block, "gsignal-handler-block", 2, 0, 0,
 	    (SCM instance, SCM handler_id),
 	    "")
-#define FUNC_NAME s_scm_gsignal_primitive_handler_block
+#define FUNC_NAME s_scm_gsignal_handler_block
 {
     GTypeInstance *ginstance;
     gulong id;
@@ -293,10 +292,10 @@ SCM_DEFINE (scm_gsignal_primitive_handler_block, "gsignal-primitive-handler-bloc
 
 
 
-SCM_DEFINE (scm_gsignal_primitive_handler_unblock, "gsignal-primitive-handler-unblock", 2, 0, 0,
+SCM_DEFINE (scm_gsignal_handler_unblock, "gsignal-handler-unblock", 2, 0, 0,
 	    (SCM instance, SCM handler_id),
 	    "")
-#define FUNC_NAME s_scm_gsignal_primitive_handler_unblock
+#define FUNC_NAME s_scm_gsignal_handler_unblock
 {
     GTypeInstance *ginstance;
     gulong id;
@@ -312,10 +311,10 @@ SCM_DEFINE (scm_gsignal_primitive_handler_unblock, "gsignal-primitive-handler-un
 
 
 
-SCM_DEFINE (scm_gsignal_primitive_handler_disconnect, "gsignal-primitive-handler-disconnect", 2, 0, 0,
+SCM_DEFINE (scm_gsignal_handler_disconnect, "gsignal-handler-disconnect", 2, 0, 0,
 	    (SCM instance, SCM handler_id),
 	    "")
-#define FUNC_NAME s_scm_gsignal_primitive_handler_disconnect
+#define FUNC_NAME s_scm_gsignal_handler_disconnect
 {
     GTypeInstance *ginstance;
     gulong id;
@@ -331,10 +330,10 @@ SCM_DEFINE (scm_gsignal_primitive_handler_disconnect, "gsignal-primitive-handler
 
 
 
-SCM_DEFINE (scm_gsignal_primitive_handler_connected_p, "gsignal-primitive-handler-connected?", 2, 0, 0,
+SCM_DEFINE (scm_gsignal_handler_connected_p, "gsignal-handler-connected?", 2, 0, 0,
 	    (SCM instance, SCM handler_id),
 	    "")
-#define FUNC_NAME s_scm_gsignal_primitive_handler_connected_p
+#define FUNC_NAME s_scm_gsignal_handler_connected_p
 {
     GTypeInstance *ginstance;
     gulong id;
@@ -351,25 +350,11 @@ SCM_DEFINE (scm_gsignal_primitive_handler_connected_p, "gsignal-primitive-handle
 void
 scm_init_gnome_gobject_signals (void)
 {
-    SCM gsubr;
-
 #ifndef SCM_MAGIC_SNARFER
 #include "gsignal.x"
 #endif
-
-    gsubr = scm_c_make_gsubr ("%print-gsignal", 2, 0, 0, print_gsignal_struct);
-
-    scm_gsignal_vtable = scm_permanent_object
-	(scm_make_vtable_vtable (scm_makfrom0str ("pwpwpwpwpwpw"),
-				 SCM_INUM0, SCM_LIST1 (gsubr)));
-
-    scm_c_define ("<gsignal>", scm_gsignal_vtable);
-
-    scm_c_define ("gsignal-id", SCM_MAKINUM (scm_si_gsignal_id));
-    scm_c_define ("gsignal-name", SCM_MAKINUM (scm_si_gsignal_name));
-    scm_c_define ("gsignal-interface_type", SCM_MAKINUM (scm_si_gsignal_interface_type));
-    scm_c_define ("gsignal-return-type", SCM_MAKINUM (scm_si_gsignal_return_type));
-    scm_c_define ("gsignal-flags", SCM_MAKINUM (scm_si_gsignal_flags));
-    scm_c_define ("gsignal-param-types", SCM_MAKINUM (scm_si_gsignal_params));
-    scm_c_define ("gsignal-struct-vtable", scm_gsignal_vtable);
+    scm_class_gsignal =
+        scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("<gsignal>")));
+    _make =
+        scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("make")));
 }

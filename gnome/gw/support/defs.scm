@@ -351,7 +351,7 @@ point of an @code{(include overrides)} form."
       (define defs-handlers
         `((define-enum      ,(th wrap-enum! #t))
           (define-flags     ,(th wrap-flags! #t))
-          (define-object    ,(th wrap-object! #f))
+          (define-object    ,(th wrap-instance! #f))
           (define-interface ,(th wrap-interface! #f))
           (define-pointer   ,(th wrap-pointer! #f))
           (define-boxed     ,(th wrap-boxed! #f))

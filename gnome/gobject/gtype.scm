@@ -28,17 +28,12 @@
 ;; subclassed, such as integers. Others can form the root of complicated
 ;; object hierarchies, such as @code{<gobject>}.
 ;;
-;; One can obtain the @code{<gtype>} object for a type if you know its
-;; name. For example,
+;; One can obtain the class for a type if you know its name. For
+;; example,
 ;;
 ;; @lisp
-;;  (gtype-from-name "guint64") @result{} #<gtype guint64>
+;;  (gtype-name->class "guint64") @result{} #<<gvalue-class> <guint64>>
 ;; @end lisp
-;;
-;; @code{<gtype>} objects are low-level constructs. In Scheme, it is
-;; more usual to work with GOOPS type objects. Each @code{<gtype>}
-;; corresponds to one GOOPS object, which may be obtained
-;; programmatically using @code{gtype->class}.
 ;;
 ;; A more detailed reference on the GLib type system may be had at
 ;; @uref{http://library.gnome.org/devel/gobject/stable/}.
@@ -49,29 +44,17 @@
   #:use-module (oop goops)
   #:use-module (gnome gobject utils)
   #:use-module (gnome gobject config)
-  #:export     ( ;; From C:
+  #:export     (<gtype-class> <gtype-instance>
+                gtype-name->class class-name->gtype-name
+                gruntime-error
 
-                ;; GType
-                gtype? gtype-is-a? gtype-basic? gtype-classed?
-                gtype-instantiatable? gtype-fundamental?
-                gtype->fundamental gtype-parent gtype-children
-                gtype-interfaces
-                gtype-name gtype-from-name gtype-from-instance
-                ;; GTypeInstance
-                %gtype-instance-primitive-destroy!
-                gtype-instance-primitive->type
-                ;; Misc
-                especify-metaclass!
+                ;; Evil
+                %gtype-instance-destroy! especify-metaclass!))
 
-                ;; From Scheme:
-
-                ;; Base Classes
-                <gtype-class> <gtype-instance-class> <gtype-instance>
-                ;; GType <-> GTypeClass
-                gtype->class gtype-class->type
-                %gtype-lookup-class %gtype-bind-to-class
-                ;; Misc
-                gtype-instance:write gruntime-error class-name->gtype-name))
+(dynamic-call "scm_init_gnome_gobject_gc"
+              (dynamic-link *guile-gnome-gobject-lib-path*))
+(dynamic-call "scm_init_gnome_gobject_types"
+              (dynamic-link *guile-gnome-gobject-lib-path*))
 
 (define (gruntime-error format-string . args)
   "Signal a runtime error. The error will be thrown to the key
@@ -79,67 +62,55 @@
   (save-stack)
   (scm-error 'gruntime-error #f format-string args '()))
 
+
 ;;;
 ;;; {Base Class Hierarchy]
 ;;;
 
-(define (create-set-once-g-n-s class s class-slot?)
-  (let* ((already-allocated (slot-ref class 'nfields))
-         (name (slot-definition-name s))
-         (get (lambda (x) (%get-struct-slot (if class-slot? class x)
-                                            already-allocated)))
-         (set (lambda (x o) (if (not (get x))
-                                (%set-struct-slot! (if class-slot? class x)
-                                                   already-allocated
-                                                   o)
-                                (gruntime-error "set-once slot already set: ~S=~A"
-                                                name (get x))))))
-    (slot-set! class 'nfields (1+ already-allocated))
-    (list get set)))
 
-(define-class <set-once-class> (<class>))
-(define-method (compute-get-n-set (class <set-once-class>) s)
-  (case (slot-definition-allocation s)
-    ((#:set-once)
-     (create-set-once-g-n-s class s #f))
+(define-class-with-docs <gtype-class> (<class>)
+  "The metaclass of all GType classes. Ensures that GType classes have a
+@code{gtype} slot, which records the primitive GType information for
+this class.{<%gtype-class>}
+objects that wrap the C values."
+  (gtype #:class <read-only-slot>))
 
-    ((#:set-once-each-subclass)
-     (create-set-once-g-n-s class s #t))
+(define-method (initialize (class <gtype-class>) initargs)
+  (let ((gtype-name (or (get-keyword #:gtype-name initargs #f)
+                        (gruntime-error "Need #:gtype-name initarg: ~a"
+                                        (pk initargs)))))
+    ;; allow gtype-name of #t for base classes without gtypes (e.g.
+    ;; <gtype-instance>)
+    (%gtype-class-bind class (if (eq? gtype-name #t)
+                                 #f
+                                 gtype-name))
+    (next-method)))
 
-    ;; Chain up for the default allocation methods...
-    (else (next-method))))
+(define-method (write (class <gtype-class>) file)
+  (format file "#<~a ~a>" (class-name (class-of class)) (class-name class)))
 
-;; We have to inherit from class because we're a metaclass. We do that
-;; via <set-once-class>. We have #:set-once slots, so we also need to
-;; have <set-once-class> as our metaclass.
-(define-class-with-docs <gtype-class> (<set-once-class>)
-  "The metaclass of all GType classes. Ensures that GType classes have
-@code{gtype} and @code{gtype-class} slots, which point to the primitive
-@code{<gtype>} and @code{<%gtype-class>} objects that wrap the C
-values."
-  (gtype #:allocation #:set-once)
-  (gtype-class #:allocation #:set-once)
-  #:metaclass <set-once-class>)
+(dynamic-call "scm_init_gnome_gobject_types_gtype_class"
+              (dynamic-link *guile-gnome-gobject-lib-path*))
 
-;; FIXME: not sure if this is necessary; why not just make
-;; <gtype-instance>'s metaclass be <gtype-class>?
-(define-class-with-docs <gtype-instance-class> (<gtype-class>)
-  "The metaclass of all instantiatable GType classes.")
 (define-class-with-docs <gtype-instance> ()
   "The root class of all instantiatable GType classes. Adds a slot,
-@code{gtype-instance}, to instances. This slot will point to the
-primitive @code{<%gtype-instance>} object that wraps the C value."
-  (gtype-instance #:allocation #:set-once)
-  #:metaclass <gtype-instance-class>)
+@code{gtype-instance}, to instances, which holds a pointer to the C
+value."
+  (gtype-instance #:class <read-only-slot>)
+  #:gtype-name #t
+  #:metaclass <gtype-class>)
 
-(dynamic-call "scm_init_gnome_gobject_gc"
-              (dynamic-link *guile-gnome-gobject-lib-path*))
-(dynamic-call "scm_init_gnome_gobject_types"
+(define-method (initialize (instance <gtype-instance>) initargs)
+  (next-method)
+  (%gtype-instance-construct instance initargs))
+
+(dynamic-call "scm_init_gnome_gobject_types_gtype_instance"
               (dynamic-link *guile-gnome-gobject-lib-path*))
 
 ;;;
-;;; {Class Allocation and Initialization}
+;;; {Misc]
 ;;;
+
 
 (define (class-name->gtype-name class-name)
   "Convert the name of a class into a suitable name for a GType. For
@@ -165,87 +136,3 @@ example:
               #f))
        (else
         (loop (cdr to-process) ret #t)))))))
-
-(define-method (initialize (class <gtype-class>) initargs)
-  (next-method)
-  (cond
-   ((slot-ref class 'gtype)
-    ;; A superclass already did the work, nothing to do
-    )
-   ((get-keyword #:gtype initargs #f)
-    => (lambda (gtype)
-         (if (%gtype-lookup-class gtype)
-             (gruntime-error "~A already has a GOOPS class, use gtype->class" gtype))
-         (%gtype-bind-to-class class gtype)))
-   (else
-    (gruntime-error "Don't know how to make subclass ~A" class))))
-
-(define (get-direct-supers type)
-  (if (not (gtype-parent type))
-      (if (gtype-instantiatable? type)
-          (list <gtype-instance>)
-          '())
-      (let* ((direct-super (gtype->class (gtype-parent type)))
-             (cpl (class-precedence-list direct-super)))
-        (let loop ((supers (list direct-super))
-                   (interfaces (map gtype->class (gtype-interfaces type))))
-          (if (null? interfaces)
-              supers
-              (loop
-               (if (memq (car interfaces) cpl) supers (cons (car interfaces) supers))
-               (cdr interfaces)))))))
-
-(define (gtype->class type)
-  "If there is already a GOOPS class associated with the GType @var{type},
-return this class.
-
-Otherwise, create a new GOOPS class and bind it to this type. The
-created class is an immortal, persistent object which is bound in some
-magic way to its GType.
-"
-  (or (%gtype-lookup-class type)
-      (let* ((class-name (gtype-name->class-name (gtype-name type)))
-	     (direct-supers (get-direct-supers type)))
-        (if (null? direct-supers)
-            ;; Need to set the metaclass on base classes.
-            (make-class '() '()
-                        #:gtype type
-                        #:name class-name
-                        #:metaclass <gtype-class>)
-            (make-class direct-supers '()
-                        #:gtype type
-                        #:name class-name)))))
-
-(define (gtype-class->type class)
-  "Returns the @code{<gtype>} associated with a @code{<gtype-class>}."
-  (if (slot-bound? class 'gtype)
-      (slot-ref class 'gtype)
-      (gruntime-error "Can't get type of unknown class: ~S" class)))
-
-;;;
-;;; {Methods for Writing}
-;;;
-
-(define-generic-with-docs gtype-instance:write
-  "Generic function, defined so we can define @code{write} functions for
-instances of @code{<gtype-class>} in Scheme. A bit of a hack.")
-
-(define (display-address o file)
-  (display (number->string (object-address o) 16) file))
-
-(define-method (gtype-instance:write (class <gtype-class>) (obj <%gtype-instance>) file)
-  (display "#<%gtype-instance " file)
-  (display (class-name class) file)
-  (display #\space file)
-  (display-address obj file)
-  (let* ((type (gtype-instance-primitive->type obj))
-	 (fundamental (gtype->fundamental type))
-	 (is-fundamental (eq? type fundamental)))
-    (cond
-     ((eq? fundamental gtype:gparam)
-      (display #\space file)
-      (display (gparam-primitive->pspec-struct obj) file))))
-
-  (display #\> file))
-
-(%gnome-gobject-types-post-init)

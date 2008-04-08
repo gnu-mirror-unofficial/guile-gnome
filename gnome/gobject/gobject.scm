@@ -64,6 +64,7 @@
 ;;; Code:
 
 (define-module (gnome gobject gobject)
+  #:use-module ((srfi srfi-1) #:select (filter-map))
   #:use-module (oop goops)
   #:use-module (gnome gobject utils)
   #:use-module (gnome gobject config)
@@ -73,18 +74,14 @@
   #:use-module (gnome gobject gsignal)
 
   #:export     (;; Classes
-                <gobject> <ginterface>
+                <gobject> <ginterface> <gparam-object>
                 ;; Low-level subclassing
                 gtype-register-static
                 ;; Methods to override
                 gobject:get-property gobject:set-property
-                make-gobject-instance
                 ;; Properties
                 gobject-class-get-properties gobject-class-find-property
                 gobject-class-get-property-names
-                gobject-interface-get-properties
-                gobject-interface-find-property
-                gobject-interface-get-property-names
                 gobject-get-property gobject-set-property))
 
 (dynamic-call "scm_init_gnome_gobject"
@@ -94,59 +91,42 @@
 ;;; {Class Initialization}
 ;;;
 
-(define (vector-map proc vector)
-  (let* ((length (vector-length vector))
-	 (result-vector (make-vector length)))
-    (do ((index 0 (+ index 1)))
-	((>= index length) result-vector)
-      (vector-set! result-vector index (proc (vector-ref vector index))))))
+(define-class <gobject-class> (<gtype-class>))
 
-(define (gtype-class-get-vector-slot class name root-class)
-  (define (class-slot-ref-default class name default)
-    (if (class-slot-definition class name)
-        (class-slot-ref class name)
-        default))
-  (list->vector
-   (let loop ((ancestry (class-precedence-list class)) (ret '()))
-     (if (or (null? ancestry) (eq? (car ancestry) root-class))
-         ret
-         (loop (cdr ancestry)
-               (append ret (vector->list (class-slot-ref-default (car ancestry) name #()))))))))
+(define-method (compute-slots (class <gobject-class>))
+  (define (compute-extra-slots props slots)
+    (filter-map (lambda (prop)
+                  (and (not (assq prop slots))
+                       `(,prop #:allocation #:gproperty)))
+                props))
+  (let ((slots (next-method)))
+    (append slots
+            (compute-extra-slots (gobject-class-get-property-names class)
+                                 slots))))
 
-;; Needed by C.
-(define (gobject-class-set-properties! class)
-  ;; should also work for interfaces.
-  (let* ((type (gtype-class->type class))
-         (properties-vector (gobject-type-get-properties type))
-         (properties
-          (vector-map
-           (lambda (x)
-             (let* ((param-struct (gparam->param-struct x))
-                    (param-type (gparam-struct:param-type param-struct))
-                    (param-class (gtype->class param-type)))
-               (make param-class #:param-struct param-struct)))
-           properties-vector)))
-    (class-slot-set! class 'gobject-properties properties)))
-    
-(define-class <gobject-class> (<gtype-instance-class>))
+(define-method (compute-get-n-set (class <gobject-class>) slotdef)
+  (let ((name (slot-definition-name slotdef)))
+    (case (slot-definition-allocation slotdef)
+      ((#:gproperty) (list (lambda (o) (gobject-get-property o name))
+                           (lambda (o v) (gobject-set-property o name v))))
+      (else (next-method)))))
+
 (define-method (initialize (class <gobject-class>) initargs)
-  (define (init-gobject-class type)
-    (class-slot-set! class 'gsignals (gtype-get-signals type))
-    (gobject-class-set-properties! class)
-    
+  (define (install-properties!)
     ;; To expose slots as gobject properties, <gobject> will process a
     ;; #:gparam slot option to create a new gobject property.
-    (let loop ((slots (class-direct-slots class)))
-      (if (not (null? slots))
-          (let ((pspec (get-keyword #:gparam
-                                    (slot-definition-options (car slots))
-                                    #f)))
-            (if pspec
-                (let* ((name (slot-definition-name (car slots)))
-                       (property (apply make (append pspec (list #:name name)))))
-                  (gobject-class-install-property class property)))
-            (loop (cdr slots)))))
+    (for-each
+     (lambda (slot)
+       (let ((pspec (get-keyword #:gparam (slot-definition-options slot) #f)))
+         (if pspec
+             (gobject-class-install-property
+              class
+              (apply make
+                     (car pspec) #:name (slot-definition-name slot)
+                     (cdr pspec))))))
+     (class-direct-slots class)))
     
+  (define (install-signals!)
     ;; We parse a #:gsignal initialization argument to install signals.
     (let loop ((args initargs))
       (if (not (null? args))
@@ -155,54 +135,37 @@
                 (if (not (and (list? signal) (>= (length signal) 2)))
                     (gruntime-error "Invalid signal specification: ~A" signal))
                 (let* ((name (car signal))
-                       (return-type (or (cadr signal) gtype:void))
+                       (return-type (cadr signal))
                        (param-types (cddr signal))
                        (generic (gtype-class-create-signal class name return-type param-types)))
                   ;; Some magic to define the generic
-                  (module-define!
-                   (current-module)
-                   (gtype-name->method-name (gtype-name type) name) generic)))
+                  (module-define! (current-module)
+                                  (generic-function-name generic) generic)))
               (loop (cddr args))))))
 
-  (define (first-gobject-class cpl)
-    (cond
-     ((null? cpl) #f)
-     ((memq <gobject> (class-precedence-list (car cpl))) (car cpl))
-     (else (first-gobject-class (cdr cpl)))))
+  (define (first pred list)
+    (cond ((null? list) #f)
+          ((pred (car list)) (car list))
+          (else (first pred (cdr list)))))
+  (define (gobject-class? c)
+    (memq <gobject> (class-precedence-list c)))
 
   ;; real work starts here
-  (let ((gtype (cond
-                ((get-keyword #:gtype initargs #f)
-                 => noop)
-                ((get-keyword #:gtype-name initargs #f)
-                 => gtype-from-name)
-                (else
-                 (gtype-register-static
-                  (or (get-keyword #:gtype-name initargs #f)
-                      (class-name->gtype-name (get-keyword #:name initargs #f)))
-                  (gtype-class->type
-                   (first-gobject-class
-                    (apply append
-                           (map class-precedence-list
-                                (get-keyword #:dsupers initargs '()))))))))))
-    (if (%gtype-lookup-class gtype)
-        (gruntime-error "<gtype> ~A already has a GOOPS class, use gtype->class" gtype))
 
-    (%gtype-bind-to-class class gtype)
-    (next-method)
-    (init-gobject-class gtype)))
-
-;; <gobject> offers a form of slot allocation where properties are set
-;; on the GObject directly, not the GOOPS object.
-(define-method (compute-get-n-set (class <gobject-class>) s)
-  (case (slot-definition-allocation s)
-    ((#:instance)
-     (let ((sym (slot-definition-name s)))
-       (list
-        (lambda (o) (gobject-get-data o sym))
-        (lambda (o v) (gobject-set-data! o sym v)))))
-    (else
-     (next-method))))
+  (next-method
+   class
+   (cons*
+    #:gtype-name
+    (or (get-keyword #:gtype-name initargs #f)
+        (gtype-register-static
+         (class-name->gtype-name (get-keyword #:name initargs #f))
+         (first gobject-class?
+                (apply append
+                       (map class-precedence-list
+                            (get-keyword #:dsupers initargs '()))))))
+    initargs))
+  (install-properties!)
+  (install-signals!))
 
 (define-class-with-docs <gobject> (<gtype-instance>)
   "The base class for GLib's default object system.
@@ -243,199 +206,39 @@ For example:
  (define-class <hungry> (<test>))
 @end lisp
 "
-  (gsignals #:allocation #:each-subclass)
-  (gobject-properties #:allocation #:each-subclass)
+  ;; add a slot for signal generics instead of module-define! ?
   #:metaclass <gobject-class>
-  #:gtype gtype:gobject)
+  #:gtype-name "GObject")
 
 (define-class-with-docs <ginterface> (<gtype-instance>)
   "The base class for GLib's interface types. Not derivable in Scheme."
-  (gsignals #:allocation #:each-subclass)
-  (gobject-properties #:allocation #:each-subclass)
   #:metaclass <gobject-class>
-  #:gtype gtype:ginterface)
+  #:gtype-name "GInterface")
 
-;;;
-;;; {Instance Allocation and Initialization}
-;;;
+(define (class-is-a? x is-a)
+  (memq is-a (class-precedence-list x)))
 
-;; By the time this function exits, the object should be initialized.
-(define-generic-with-docs make-gobject-instance
-  "A generic defined to initialize a newly created @code{<gobject>}
-instance. @code{make-gobject-instance} takes four arguments: the class
-of the object, its @code{<gtype>}, the object itself, and the options,
-which is a list of keyword arguments.
-
-This operation is a generic function so that subclasses can override it,
-e.g. so that @code{<gtk-object>} can implement explicit destruction.")
-(define-method (make-gobject-instance class type object options)
-  "The default implementation of @code{make-gobject-instance}."
-  (let* ((class-properties (gobject-class-get-properties class))
-	 (init-properties '())
-         (init-keywords (map slot-definition-init-keyword (class-slots class)))
-         (kwargs '()))
-    (define (last l)
-      (if (null? (cdr l))
-          (car l)
-          (last (cdr l))))
-    (let loop ((options options) (res '()))
-      (cond ((null? options)
-             ;; We want to set the keyword args using the <object>
-             ;; initialize. Kindof hacky, but doesn't really break any
-             ;; rules...
-             (set! kwargs res))
-	    ((null? (cdr options))
-	     (goops-error "malformed argument list" options))
-	    ((not (keyword? (car options)))
-	     (goops-error "malformed argument list" options))
-            ((memq (car options) init-keywords)
-             (loop (cddr options) (cons* (car options) (cadr options) res)))
-	    (else
-	     (let* ((option-value (cadr options))
-		    (param-name (keyword->symbol (car options)))
-		    (param (or (find-property class-properties param-name)
-			       (gruntime-error
-                                "No such property or init-keyword in class ~S: ~S"
-                                class param-name)))
-		    (pspec (gparam->param-struct param))
-		    (pspec-value-type (gparam-struct:value-type pspec))
-		    (pspec-value (scm->gvalue pspec-value-type option-value)))
-	       (set! init-properties
-		     (append
-		      init-properties (list (cons param-name pspec-value))))
-	       (loop (cddr options) res)))))
-    (with-fluids ((%gobject-initargs kwargs))
-       (gobject-primitive-create-instance class type object
-                                          (list->vector init-properties))
-       ;; If the object was a scheme-derived type, `initialize' was
-       ;; already called on the object by the callback from
-       ;; scm_c_gtype_instance_instance_init. Otherwise, although I know
-       ;; from looking at the source that all it does is process keyword
-       ;; arguments (which we know to be null from the above
-       ;; option-filtering code), we should (and do) call the <object>
-       ;; initializer on the instance.
-       (if (not (scheme-gclass? class))
-           (initialize object kwargs)))))
-
-(define (make-ginterface-instance class type instance initargs)
-  (let ((value (get-keyword #:value initargs *unspecified*)))
-    (if (unspecified? value)
-        (gruntime-error "Missing #:value argument initializing an interface"))
-    (if (not (is-a? value <gobject>))
-        (gruntime-error "Only interfaces implemented by objects are allowed (~A)" value))
-    (if (not (gtype-is-a? (gtype-class->type (class-of value))
-                          type))
-        (gruntime-error "~A's class (~A) does not implement ~A."
-                        value (class-of value) class))
-    (slot-set! instance 'gtype-instance (slot-ref value 'gtype-instance))))
-
-;; The MOP specifies that make-instance normally calls
-;; `allocate-instance' and then `initialize'. We call
-;; `allocate-instance', but then we don't call `initialize' for
-;; objects, because it is called by the gobject system.
-(define-method (make-instance (class <gobject-class>) . initargs)
-  (let ((instance (allocate-instance class initargs)))
-    (if (get-keyword #:%real-instance initargs #f)
-        (slot-set! instance 'gtype-instance (get-keyword #:%real-instance initargs #f))
-        (let* ((type (gtype-class->type class))
-               (fundamental (gtype->fundamental type)))
-          (cond
-           ;; GObject
-           ((eq? fundamental gtype:gobject)
-            (make-gobject-instance class type instance initargs))
-           
-           ;; GInterface
-           ((eq? fundamental gtype:ginterface)
-            (make-ginterface-instance class type instance initargs)
-            (initialize instance initargs))
-
-           (else (error "yikes!")))))
-    instance))
+(define-class-with-docs <gparam-object> (<gparam>)
+  "Parameter for @code{<gobject>} values."
+  (object-type
+   #:init-keyword #:object-type #:allocation #:checked
+   #:pred (lambda (x) (class-is-a? x <gobject>)))
+  #:value-type <gobject>
+  #:gtype-name "GParamObject")
 
 ;;;
 ;;; {GObject Properties}
 ;;;
 
-(define (find-property vtable name)
-  (let loop ((l (vector->list vtable)))
-    (if (null? l)
-      #f
-      (let* ((param-struct (gparam->param-struct (car l)))
-	     (pspec-name (gparam-struct:name param-struct)))
-	(if (equal? pspec-name name)
-	  (car l)
-	  (loop (cdr l)))))))
-
-(define (gobject-class-get-properties class)
-  "Returns a vector of properties belonging to @var{class} and all
-parent classes."
-  (or (memq <gobject> (class-precedence-list class))
-      (gruntime-error "Not a subclass of <gobject>: ~S" class))
-  (gtype-class-get-vector-slot class 'gobject-properties <gobject>))
-
-(define (gobject-class-get-property-names class)
-  "Returns a vector of property names belonging to @var{class} and all
-parent classes."
-  (let* ((properties (gobject-class-get-properties class)))
-    (vector-map (lambda (x) (gparam-struct:name (gparam->param-struct x)))
-		properties)))
-
 (define (gobject-class-find-property class name)
-  "Returns a property named @var{name} (a symbol), belonging to
+  "Returns a property named @var{propname} (a symbol), belonging to
 @var{class} or one of its parent classes, or @code{#f} if not found."
-  (let* ((properties (gobject-class-get-properties class)))
-    (find-property properties name)))
-
-(define (gobject-interface-get-properties class)
-  "Returns a vector of properties belonging to @var{class} and all
-parent classes."
-  (or (memq <ginterface> (class-precedence-list class))
-      (gruntime-error "Not a subclass of <ginterface>: ~S" class))
-  (gtype-class-get-vector-slot class 'gobject-properties <ginterface>))
-
-(define (gobject-interface-get-property-names class)
-  "Returns a vector of property names belonging to @var{class} and all
-parent classes."
-  (let* ((properties (gobject-interface-get-properties class)))
-    (vector-map (lambda (x) (gparam-struct:name (gparam->param-struct x)))
-		properties)))
-
-(define (gobject-interface-find-property class name)
-  "Returns a property named @var{name} (a symbol), belonging to
-@var{class} or one of its parent classes, or @code{#f} if not found."
-  (let* ((properties (gobject-interface-get-properties class)))
-    (find-property properties name)))
-
-(define (gobject-get-property object name)
-  "Gets a the property named @var{name} (a symbol) from @var{object}."
-  (if (not (is-a? object <gobject>))
-      (gruntime-error "Not a <gobject>: ~A" object))
-  (if (not (symbol? name))
-      (gruntime-error "Not a symbol: ~A" name))
-  (let* ((class (class-of object))
-         (instance (slot-ref object 'gtype-instance))
-	 (pspec-vector (gobject-class-get-properties class))
-	 (pspec (or (find-property pspec-vector name)
-		     (gruntime-error "No such property in class ~S: ~S" class name)))
-	 (retval (gobject-primitive-get-property instance name)))
-    (gvalue->scm retval)))
-
-(define (gobject-set-property object name init-value)
-  "Sets the property named @var{name} (a symbol) on @var{object} to
-@var{init-value}."
-  (if (not (is-a? object <gobject>))
-      (gruntime-error "Not a <gobject>: ~A" object))
-  (if (not (symbol? name))
-      (gruntime-error "Not a symbol: ~A" name))
-  (let* ((class (class-of object))
-         (instance (slot-ref object 'gtype-instance))
-	 (pspec-vector (gobject-class-get-properties class))
-	 (param (or (find-property pspec-vector name)
-		    (gruntime-error "No such property in class ~S: ~S" class name)))
-	 (param-struct (gparam->param-struct param))
-	 (value-type (gparam-struct:value-type param-struct))
-	 (value (scm->gvalue value-type init-value)))
-    (gobject-primitive-set-property instance name value)))
+  (let ((propname name))
+    (with-accessors (name)
+      (let lp ((props (gobject-class-get-properties class)))
+        (cond ((null? props) #f)
+              ((eq? (name (car props)) propname) (car props))
+              (else (lp (cdr props))))))))
 
 (define-generic-with-docs gobject:set-property
   "Called to set a gobject property. Only properties directly belonging

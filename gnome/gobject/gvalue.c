@@ -44,20 +44,22 @@ typedef struct {
     SCMGValueSetTypeInstanceFunc setter;
 } gtype_instance_wrap_funcs;
 
-scm_t_bits scm_tc16_gvalue;
+static guint scm_c_scm_to_flags_value (GFlagsClass *flags_class, SCM value);
+static gint scm_c_scm_to_enum_value (GEnumClass *enum_class, SCM value);
 
+SCM scm_class_gvalue;
+static SCM _allocate_instance;
+
+SCM_SYMBOL (sym_primitive_value, "primitive-value");
 SCM_SYMBOL (sym_closure, "closure");
 SCM_KEYWORD (k_value, "value");
 
 static GHashTable *gvalue_wrappers = NULL;
 static GHashTable *gtype_instance_wrappers = NULL;
 
-static SCM _make;
-static SCM _gtype_instance_write;
-
 
 
-/* #define DEBUG_PRINT */
+#define DEBUG_PRINT
 
 #ifdef DEBUG_PRINT
 #define DEBUG_ALLOC(str, args...) g_print ("I: " str "\n", ##args)
@@ -67,158 +69,218 @@ static SCM _gtype_instance_write;
 
 
 
-static gpointer
-copy_gboxed_scm (gpointer boxed)
-{
-    DEBUG_ALLOC (G_STRLOC ": copying gboxed %p", boxed);
-    scm_glib_gc_protect_object ((SCM) boxed);
-    return boxed;
-}
-
-static void
-free_gboxed_scm (gpointer boxed)
-{
-    DEBUG_ALLOC (G_STRLOC ": freeing gboxed %p", boxed);
-    scm_glib_gc_unprotect_object (boxed);
-}
-
-GType
-gboxed_scm_get_type (void)
-{
-    static GType boxed_type = 0;
-
-    if (!boxed_type)
-        boxed_type = g_boxed_type_register_static
-            ("GBoxedSCM", copy_gboxed_scm, free_gboxed_scm);
-
-    return boxed_type;
-}
-
-
-
-static int
-scm_gvalue_print (SCM smob, SCM port, scm_print_state *pstate)
-{
-    GValue *value = (GValue *) SCM_SMOB_DATA (smob);
-    SCM class;
-
-    class = scm_c_gtype_lookup_class (G_VALUE_TYPE (value));
-    if (SCM_FALSEP (class))
-        class = scm_c_register_gtype (G_VALUE_TYPE (value));
-
-    scm_call_3 (_gtype_instance_write, class, smob, port);
-    return 1;
-}
+/**********************************************************************
+ * SCM representation of GValue*
+ **********************************************************************/
 
 static size_t
-scm_gvalue_free (SCM smob)
+scm_gvalue_struct_free (scm_t_bits * vtable, scm_t_bits * data)
 {
-    GValue *value = (GValue *) SCM_SMOB_DATA (smob);
+    GValue *value = (GValue *) data[0];
 
-    DEBUG_ALLOC ("freeing SMOB %p's GValue %p", smob, value);
-    g_value_unset (value);
-    scm_gc_free (value, sizeof (GValue), "%gvalue");
-
+    if (value) {
+        DEBUG_ALLOC ("freeing GValue %p", value);
+        g_value_unset (value);
+        scm_gc_free (value, sizeof (GValue), "%gvalue");
+    }
+    scm_struct_free_light (vtable, data);
     return 0;
 }
 
-SCM_DEFINE (scm_gvalue_p, "gvalue?", 1, 0, 0,
-	    (SCM value),
-	    "Returns @code{#t} if @var{value} is a @code{<gvalue>}, "
-            "@code{#f} otherwise.")
-#define FUNC_NAME s_scm_gvalue_p
+SCM_DEFINE (scm_sys_bless_gvalue_class, "%bless-gvalue-class", 1, 0, 0,
+            (SCM class), "")
 {
-    return SCM_TYP16_PREDICATE (scm_tc16_gvalue, value) ? SCM_BOOL_T : SCM_BOOL_F;
+    scm_t_bits *slots = SCM_STRUCT_DATA (class);
+    scm_class_gvalue = scm_permanent_object (class);
+    slots[scm_struct_i_free] = (scm_t_bits)scm_gvalue_struct_free;
+    return SCM_UNSPECIFIED;
 }
-#undef FUNC_NAME
 
-
-
-SCM_DEFINE (scm_gvalue_to_type, "gvalue->type", 1, 0, 0,
-	    (SCM value),
-	    "Returns the @code{<gtype>} of the value held by @var{value}.")
-#define FUNC_NAME s_scm_gvalue_to_type
+SCM_DEFINE (scm_sys_allocate_gvalue, "%allocate-gvalue", 2, 0, 0,
+            (SCM class, SCM instance), "")
 {
-    GValue *gvalue;
+    GValue *value;
 
-    SCM_VALIDATE_GVALUE_COPY (1, value, gvalue);
-
-    return scm_c_register_gtype (G_VALUE_TYPE (gvalue));
+    value = scm_gc_malloc (sizeof (GValue), "%gvalue");
+    value->g_type = 0;
+    SCM_STRUCT_DATA (instance)[0] = (scm_t_bits)value;
+    if (class != scm_class_gvalue) {
+        GType type = scm_c_gtype_class_to_gtype (class);
+        g_value_init (value, type);
+        DEBUG_ALLOC ("Bound SCM %p to GValue %p (%s)", instance, value, g_type_name (type));
+    } else {
+        DEBUG_ALLOC ("Bound SCM %p to generic GValue %p", instance, value);
+    }
+    
+    return SCM_UNSPECIFIED;
 }
-#undef FUNC_NAME
-
-
 
 SCM
 scm_c_make_gvalue (GType gtype)
 {
-    GValue *gvalue;
-    SCM ret;
+    SCM ret, class;
+    
+    class = scm_c_gtype_to_class (gtype);
+    if (scm_is_false (scm_memq (scm_class_gvalue,
+                                scm_class_precedence_list (class))))
+        /* it's not a <gvalue> class; use the generic code */
+        class = scm_class_gvalue;
 
-    gvalue = scm_gc_malloc (sizeof (GValue), "%gvalue");
-    gvalue->g_type = 0;
-    g_value_init (gvalue, gtype);
+    ret = scm_call_2 (_allocate_instance, class, SCM_EOL);
 
-    SCM_NEWSMOB (ret, scm_tc16_gvalue, gvalue);
-    DEBUG_ALLOC ("New GValue SMOB %p for %p of type %s", ret, gvalue, g_type_name (gtype));
+    if (class == scm_class_gvalue)
+        /* generic code needs a bit of help.. */
+        g_value_init (scm_c_gvalue_peek_value (ret), gtype);
+
+    /* no need to `initialize' */
     return ret;
 }
 
-SCM_DEFINE (scm_gvalue_primitive_new, "gvalue-primitive-new", 1, 0, 0,
-	    (SCM type),
-	    "")
-#define FUNC_NAME s_scm_gvalue_primitive_new
+/* assume that something on the stack will reference scm */
+GValue*
+scm_c_gvalue_peek_value (SCM scm)
+#define FUNC_NAME "%gvalue-peek-value"
 {
-    GType gtype;
-
-    SCM_VALIDATE_GTYPE_COPY (1, type, gtype);
-
-    return scm_c_make_gvalue (gtype);
+    SCM_VALIDATE_GVALUE (1, scm);
+    return (GValue*)SCM_STRUCT_DATA (scm)[0];
 }
 #undef FUNC_NAME
 
 
 
-SCM_DEFINE (scm_gtype_valued_p, "gtype-valued?", 1, 0, 0,
-	    (SCM type),
-	    "Returns @code{#t} if @var{type} is a valued type. For valued types,\n"
-            "Scheme values can be made into GValues by\n"
-            "@code{make (gtype->class @var{type}) #:value @var{val}}.\n"
-            "Note that valued types are a strict superset of basic types, adding\n"
-            "on certain types that can have multiple representations in Scheme.")
-#define FUNC_NAME s_scm_gtype_valued_p
+/**********************************************************************
+ * get/set primitives
+ **********************************************************************/
+
+/* not threadsafe */
+void
+scm_c_register_gvalue_wrappers (GType type,
+                                SCM (*wrap) (const GValue*),
+                                void (*unwrap) (SCM, GValue*))
 {
-    GType gtype;
+    wrap_funcs* w = g_new (wrap_funcs, 1);
 
-    SCM_VALIDATE_GTYPE_COPY (1, type, gtype);
+    if (!gvalue_wrappers)
+        gvalue_wrappers = g_hash_table_new (NULL, NULL);
+    
+    w->wrap = wrap;
+    w->unwrap = unwrap;
 
-    if (SCM_NFALSEP (scm_gtype_basic_p (type)))
-        return SCM_BOOL_T;
+    g_hash_table_insert (gvalue_wrappers, GINT_TO_POINTER (type), w);
+}
 
-    switch (G_TYPE_FUNDAMENTAL (gtype)) {
+void
+scm_c_register_gtype_instance_gvalue_wrappers (GType type,
+    SCMGValueGetTypeInstanceFunc getter, SCMGValueSetTypeInstanceFunc setter)
+{
+    gtype_instance_wrap_funcs* w = g_new (gtype_instance_wrap_funcs, 1);
+
+    if (!gtype_instance_wrappers)
+        gtype_instance_wrappers = g_hash_table_new (NULL, NULL);
+    
+    w->getter = getter;
+    w->setter = setter;
+    
+    g_hash_table_insert (gtype_instance_wrappers, GINT_TO_POINTER (type), w);
+}
+
+SCM
+scm_c_gvalue_ref (const GValue *gvalue)
+#define FUNC_NAME "%gvalue-ref"
+{
+    GType type, fundamental;
+
+    type = G_VALUE_TYPE (gvalue);
+    fundamental = G_TYPE_FUNDAMENTAL (type);
+
+    switch (fundamental) {
+    case G_TYPE_CHAR:
+	return SCM_MAKE_CHAR (g_value_get_char (gvalue));
+
+    case G_TYPE_UCHAR:
+	return SCM_MAKE_CHAR (g_value_get_uchar (gvalue));
+
+    case G_TYPE_BOOLEAN:
+	return SCM_BOOL (g_value_get_boolean (gvalue));
+
+    case G_TYPE_INT:
+	return SCM_MAKINUM (g_value_get_int (gvalue));
+
+    case G_TYPE_UINT:
+	return SCM_MAKINUM (g_value_get_uint (gvalue));
+
+    case G_TYPE_LONG:
+	return scm_long2num (g_value_get_long (gvalue));
+
+    case G_TYPE_ULONG:
+	return scm_ulong2num (g_value_get_ulong (gvalue));
+
+    case G_TYPE_INT64:
+	return scm_long_long2num (g_value_get_int64 (gvalue));
+
+    case G_TYPE_UINT64:
+	return scm_ulong_long2num (g_value_get_uint64 (gvalue));
+
+    case G_TYPE_FLOAT:
+	return scm_make_real ((double) g_value_get_float (gvalue));
+
+    case G_TYPE_DOUBLE:
+	return scm_make_real (g_value_get_double (gvalue));
+
     case G_TYPE_ENUM:
+	return SCM_MAKINUM (g_value_get_enum (gvalue));
+
     case G_TYPE_FLAGS:
-	return SCM_BOOL_T;
+	return SCM_MAKINUM (g_value_get_flags (gvalue));
+
+    case G_TYPE_STRING:
+	return scm_makfrom0str (g_value_get_string (gvalue));
+
     default:
-	return SCM_BOOL_F;
+        {
+            gtype_instance_wrap_funcs* w1;
+            wrap_funcs* w2;
+            if ((w1 = g_hash_table_lookup (gtype_instance_wrappers,
+                                           GINT_TO_POINTER (fundamental)))) {
+                return scm_c_gtype_instance_to_scm (w1->getter (gvalue));
+            } else if ((w2 = g_hash_table_lookup (gvalue_wrappers,
+                                                  GINT_TO_POINTER (type)))) {
+                return w2->wrap (gvalue);
+            } else {
+                SCM ret = scm_c_make_gvalue (type);
+
+                /* Enums and flags are natively represented as GValues. Boxed
+                 * and pointer values also fall through here, unless there is a
+                 * custom wrapper registered. */
+                g_value_copy (gvalue, scm_c_gvalue_peek_value (ret));
+                return ret;
+            }
+        }
     }
 }
 #undef FUNC_NAME
 
-
-
-SCM_DEFINE (scm_gvalue_primitive_set, "gvalue-primitive-set", 2, 0, 0,
-	    (SCM instance, SCM value),
-	    "")
-#define FUNC_NAME s_scm_gvalue_primitive_set
+void
+scm_c_gvalue_set (GValue *gvalue, SCM value)
+#define FUNC_NAME "%gvalue-set!"
 {
-    GValue *gvalue;
-    GType fundamental;
-    gtype_instance_wrap_funcs *w;
+    GType gtype, fundamental;
+    
+    gtype = G_VALUE_TYPE (gvalue);
+    fundamental = G_TYPE_FUNDAMENTAL (gtype);    
 
-    SCM_VALIDATE_GVALUE_COPY (1, instance, gvalue);
-
-    fundamental = G_TYPE_FUNDAMENTAL (G_VALUE_TYPE (gvalue));
+    if (SCM_GVALUEP (value)) {
+        if (g_type_is_a (scm_c_gtype_class_to_gtype (scm_class_of (value)),
+                         gtype)) {
+            GValue *v = scm_c_gvalue_peek_value (value);
+            g_value_copy (v, gvalue);
+            return;
+        } else {
+            scm_c_gruntime_error (FUNC_NAME, "Can't make ~a into ~a",
+                                  SCM_LIST2 (value, scm_c_gtype_to_class (gtype)));
+            return;
+        }
+    }
     
     switch (fundamental) {
     case G_TYPE_CHAR:
@@ -282,268 +344,188 @@ SCM_DEFINE (scm_gvalue_primitive_set, "gvalue-primitive-set", 2, 0, 0,
 
     case G_TYPE_ENUM: {
         GEnumClass *enum_class = g_type_class_ref (G_VALUE_TYPE (gvalue));
-
-        SCM_ASSERT (SCM_INUMP (value) &&
-                    (SCM_INUM (value) >= enum_class->minimum) &&
-                    (SCM_INUM (value) <= enum_class->maximum),
-                    value, SCM_ARG2, FUNC_NAME);
-
-        g_value_set_enum (gvalue, SCM_INUM (value));
-
+        g_value_set_enum (gvalue, scm_c_scm_to_enum_value (enum_class, value));
         g_type_class_unref (enum_class);
         break;
     }
 
     case G_TYPE_FLAGS: {
         GFlagsClass *flags_class = g_type_class_ref (G_VALUE_TYPE (gvalue));
-
-        SCM_ASSERT (SCM_INUMP (value) &&
-                    ((SCM_INUM (value) & flags_class->mask) == SCM_INUM (value)),
-                    value, SCM_ARG2, FUNC_NAME);
-
-        g_value_set_flags (gvalue, SCM_INUM (value));
-
+        g_value_set_flags (gvalue, scm_c_scm_to_flags_value (flags_class, value));
         g_type_class_unref (flags_class);
         break;
     }
 
-    case G_TYPE_BOXED:
-        if (G_VALUE_TYPE (gvalue) == G_TYPE_BOXED_SCM) {
-            /* the copy func will protect the scm_value from GC */
-            g_value_set_boxed (gvalue, SCM_TO_GPOINTER (value));
-        } else if (G_VALUE_TYPE (gvalue) == G_TYPE_VALUE_ARRAY) {
-            GValueArray *arr;
-            gint len;
-            
-            SCM_ASSERT (SCM_BOOL (scm_list_p (value)),
-                        value, SCM_ARG2, FUNC_NAME);
-
-            len = SCM_INUM (scm_length (value));
-            arr = g_value_array_new (len);
-            while (len--) {
-                GType value_type;
-                SCM v;
-
-                v = SCM_CAR (value);
-                
-                if (SCM_STRINGP (v))
-                    value_type = G_TYPE_STRING;
-                else if (SCM_BOOLP (v))
-                    value_type = G_TYPE_BOOLEAN;
-                else if (SCM_INUMP (v))
-                    value_type = G_TYPE_LONG;
-                else if (SCM_REALP (v))
-                    value_type = G_TYPE_DOUBLE;
-                else if (SCM_CHARP (v))
-                    value_type = G_TYPE_CHAR;
-                else if (SCM_GOBJECTP (v)) {
-                    GObject *gobject;
-                    SCM_VALIDATE_GOBJECT_COPY (1, v, gobject);
-                    value_type = G_OBJECT_TYPE (gobject);
-                }
-                else if (SCM_BOOL (scm_list_p (v)))
-                    value_type = G_TYPE_VALUE_ARRAY;
-                else
-                    scm_wrong_type_arg (FUNC_NAME, SCM_ARG1, v);
-
-                /* will copy the val */
-                g_value_array_append (arr, scm_c_scm_to_gvalue (value_type, v));
-                value = SCM_CDR (value);
-            }
-                
-            g_value_set_boxed_take_ownership (gvalue, arr);
-        } else {
-            scm_wrong_type_arg (FUNC_NAME, SCM_ARG1, instance);
-        }
-        break;
-
     default:
-        if ((w = g_hash_table_lookup (gtype_instance_wrappers,
-                                      GINT_TO_POINTER (fundamental)))) {
-            if (SCM_FALSEP (value)) {
-                w->setter (gvalue, NULL);
-            } else {
-                gpointer ginstance;
-                GType gtype;
+        {
+            gtype_instance_wrap_funcs *w;
+            w = g_hash_table_lookup (gtype_instance_wrappers,
+                                     GINT_TO_POINTER (fundamental));
 
-                if (SCM_GOBJECTP (value)) {
-                    SCM_VALIDATE_GOBJECT_COPY (2, value, ginstance);
+            if (w) {
+                if (SCM_FALSEP (value)) {
+                    w->setter (gvalue, NULL);
+                } else {
+                    gpointer ginstance;
+
+                    SCM_VALIDATE_GTYPE_INSTANCE_TYPE_COPY (2, value,
+                                                           G_VALUE_TYPE (gvalue),
+                                                           ginstance);
+
+                    w->setter (gvalue, ginstance);
                 }
-                else {
-                    SCM_VALIDATE_GTYPE_INSTANCE_COPY (2, value, ginstance);
-                }
-                gtype = G_TYPE_FROM_INSTANCE (ginstance);
-
-                SCM_ASSERT (g_type_is_a (gtype, G_VALUE_TYPE (gvalue)),
-                            value, SCM_ARG2, FUNC_NAME);
-
-                w->setter (gvalue, ginstance);
+                break;
             }
-        } else {
-            scm_wrong_type_arg (FUNC_NAME, SCM_ARG1, instance);
         }
-	break;
+        {
+            wrap_funcs *w;
+            w = g_hash_table_lookup (gvalue_wrappers,
+                                     GINT_TO_POINTER (gtype));
+    
+            if (w) {
+                w->unwrap (value, gvalue);
+                break;
+            }
+        }
+        
+        scm_c_gruntime_error (FUNC_NAME,
+                              "Don't know how to make values of type ~A",
+                              SCM_LIST1 (scm_c_gtype_to_class (gtype)));
     }
+}
+#undef FUNC_NAME
 
+static gint
+scm_c_scm_to_enum_value (GEnumClass *enum_class, SCM value)
+#define FUNC_NAME "%scm->enum-value"
+{
+    guint i;
+
+#define ERROR(x)                                                        \
+    scm_c_gruntime_error                                                \
+        (FUNC_NAME, "Bad enum value for enumerated type `~a': ~a",      \
+         SCM_LIST2 (scm_from_locale_string                              \
+                    (g_type_name (G_TYPE_FROM_CLASS (enum_class))), x))
+
+    if (scm_is_signed_integer (value, SCM_T_INT32_MIN, SCM_T_INT32_MAX)) {
+        gint v = scm_to_int (value);
+        for (i = 0; i < enum_class->n_values; i++)
+            if (enum_class->values[i].value == v)
+                return v;
+        ERROR (value);
+    } else if (scm_is_symbol (value)) {
+        const char *v = SCM_SYMBOL_CHARS (value);
+        for (i = 0; i < enum_class->n_values; i++)
+            if (strcmp (enum_class->values[i].value_nick, v) == 0)
+                return enum_class->values[i].value;
+        ERROR (value);
+    } else if (scm_is_string (value)) {
+        char *v = scm_to_locale_string (value);
+        for (i = 0; i < enum_class->n_values; i++)
+            if (strcmp (enum_class->values[i].value_name, v) == 0) {
+                free (v);
+                return enum_class->values[i].value;
+            }
+        free (v);
+        ERROR (value);
+    }
+    ERROR (value);
+    return 0; /* not reached */
+#undef ERROR
+}
+#undef FUNC_NAME
+
+static guint
+scm_c_scm_to_flags_value (GFlagsClass *flags_class, SCM value)
+#define FUNC_NAME "%scm->flags-value"
+{
+#define ERROR(x)                                                        \
+    scm_c_gruntime_error                                                \
+        (FUNC_NAME, "Bad value for flags type `~a': ~a",                \
+         SCM_LIST2 (scm_from_locale_string                              \
+                    (g_type_name (G_TYPE_FROM_CLASS (flags_class))), x))
+
+    if (scm_is_unsigned_integer (value, 0, SCM_T_UINT32_MAX)) {
+        guint v = scm_to_uint (value);
+        if ((v & flags_class->mask) == v)
+            return v;
+        ERROR (value);
+        return 0; /* not reached */
+    } else if (scm_is_true (scm_list_p (value))) {
+        guint ret = 0;
+        guint i;
+        SCM s;
+        for (; !scm_is_null (value); value = scm_cdr (value)) {
+            s = scm_car (value);
+            if (scm_is_unsigned_integer (s, 0, SCM_T_UINT32_MAX)) {
+                guint v = scm_to_uint (s);
+                for (i = 0; i < flags_class->n_values; i++)
+                    if (flags_class->values[i].value == v) {
+                        ret |= v;
+                        break;
+                    }
+                if (i == flags_class->n_values)
+                    ERROR (s);
+            } else if (scm_is_symbol (s)) {
+                const char *v = SCM_SYMBOL_CHARS (s);
+                for (i = 0; i < flags_class->n_values; i++)
+                    if (strcmp (flags_class->values[i].value_nick, v) == 0) {
+                        ret |= flags_class->values[i].value;
+                        break;
+                    }
+                if (i == flags_class->n_values)
+                    ERROR (s);
+            } else if (scm_is_string (s)) {
+                char *v = scm_to_locale_string (s);
+                for (i = 0; i < flags_class->n_values; i++)
+                    if (strcmp (flags_class->values[i].value_name, v) == 0) {
+                        ret |= flags_class->values[i].value;
+                        break;
+                    }
+                free (v);
+                if (i == flags_class->n_values)
+                    ERROR (s);
+            } else {
+                ERROR (s);
+            }
+        }
+        return ret;
+    } else {
+        ERROR (value);
+        return 0; /* not reached */
+    }
+#undef ERROR
+}
+#undef FUNC_NAME
+
+SCM_DEFINE (scm_sys_gvalue_set_x, "%gvalue-set!", 2, 0, 0,
+            (SCM instance, SCM value), "")
+{
+    scm_c_gvalue_set (scm_c_gvalue_peek_value (instance),
+                      value);
     return SCM_UNSPECIFIED;
 }
-#undef FUNC_NAME
 
 
 
-SCM_DEFINE (scm_gvalue_primitive_get, "gvalue-primitive-get", 1, 0, 0,
-	    (SCM value),
-	    "")
-#define FUNC_NAME s_scm_gvalue_primitive_get
-{
-    GValue *gvalue;
-
-    SCM_VALIDATE_GVALUE_COPY (1, value, gvalue);
-
-    switch (G_TYPE_FUNDAMENTAL (G_VALUE_TYPE (gvalue))) {
-    case G_TYPE_CHAR:
-	return SCM_MAKE_CHAR (g_value_get_char (gvalue));
-
-    case G_TYPE_UCHAR:
-	return SCM_MAKE_CHAR (g_value_get_uchar (gvalue));
-
-    case G_TYPE_BOOLEAN:
-	return SCM_BOOL (g_value_get_boolean (gvalue));
-
-    case G_TYPE_INT:
-	return SCM_MAKINUM (g_value_get_int (gvalue));
-
-    case G_TYPE_UINT:
-	return SCM_MAKINUM (g_value_get_uint (gvalue));
-
-    case G_TYPE_LONG:
-	return scm_long2num (g_value_get_long (gvalue));
-
-    case G_TYPE_ULONG:
-	return scm_ulong2num (g_value_get_ulong (gvalue));
-
-    case G_TYPE_INT64:
-	return scm_long_long2num (g_value_get_int64 (gvalue));
-
-    case G_TYPE_UINT64:
-	return scm_ulong_long2num (g_value_get_uint64 (gvalue));
-
-    case G_TYPE_FLOAT:
-	return scm_make_real ((double) g_value_get_float (gvalue));
-
-    case G_TYPE_DOUBLE:
-	return scm_make_real (g_value_get_double (gvalue));
-
-    case G_TYPE_ENUM:
-	return SCM_MAKINUM (g_value_get_enum (gvalue));
-
-    case G_TYPE_FLAGS:
-	return SCM_MAKINUM (g_value_get_flags (gvalue));
-
-    case G_TYPE_STRING:
-	return scm_makfrom0str (g_value_get_string (gvalue));
-
-    case G_TYPE_BOXED: {
-        gpointer p = g_value_get_boxed (gvalue);
-        
-        if (G_VALUE_TYPE (gvalue) == G_TYPE_BOXED_SCM) {
-            if (!p)
-                return SCM_UNSPECIFIED;
-            return GPOINTER_TO_SCM (p);
-        } else if (G_VALUE_TYPE (gvalue) == G_TYPE_VALUE_ARRAY) {
-            GValueArray *arr = p;
-            gint i = arr ? arr->n_values : 0;
-            SCM l = SCM_EOL;
-            
-            while (i--) {
-                /* have to copy -- could fix this with a helper
-                   scm_c_gvalue_primitive_get, but I'm lazy */
-                SCM val = scm_c_make_gvalue (G_VALUE_TYPE (&arr->values[i]));
-                g_value_copy (&arr->values[i], (GValue*)SCM_SMOB_DATA (val));
-                /* maybe should somehow use scm_c_gvalue_to_scm */
-                l = scm_cons (scm_gvalue_primitive_get (val), l);
-            }
-            return l;
-        } else {
-            scm_wrong_type_arg (FUNC_NAME, SCM_ARG1, value);
-        }
-        break;
-    }
-
-        /* FIXME: why are these here? */
-    case G_TYPE_OBJECT:
-        /* scm_c_gtype_instance_to_scm will ref the object for us */
-	return scm_c_gtype_instance_to_scm (g_value_get_object (gvalue));
-
-    case G_TYPE_PARAM:
-        /* scm_c_make_gtype_instance will ref the object for us */
-	return scm_c_make_gtype_instance (g_value_get_param (gvalue));
-
-    default:
-	scm_wrong_type_arg (FUNC_NAME, SCM_ARG1, value);
-	break;
-    }
-
-    return SCM_UNDEFINED;
-}
-#undef FUNC_NAME
-
-
+/**********************************************************************
+ * SCM <-> GValue*
+ **********************************************************************/
 
 SCM
-scm_c_gboxed_to_scm (GType boxed_type, gpointer boxed_value)
+scm_c_gvalue_to_scm (const GValue *gvalue)
 {
-    SCM svalue;
-    GValue *gvalue = g_new0 (GValue, 1);
-
-    g_value_init (gvalue, boxed_type);
-    g_value_take_boxed (gvalue, boxed_value);
-    SCM_NEWSMOB (svalue, scm_tc16_gvalue, gvalue);
-    return svalue;
+    return scm_c_gvalue_ref (gvalue);
 }
 
-SCM
-scm_c_dup_gboxed_to_scm (GType boxed_type, gconstpointer boxed_value)
+GValue*
+scm_c_scm_to_gvalue (GType gtype, SCM scm)
 {
-    SCM svalue;
-    GValue *gvalue = g_new0 (GValue, 1);
-
-    g_value_init (gvalue, boxed_type);
-    g_value_set_boxed (gvalue, boxed_value);
-    SCM_NEWSMOB (svalue, scm_tc16_gvalue, gvalue);
-    return svalue;
-}
-
-/* not threadsafe */
-void
-scm_c_register_gvalue_wrappers (GType type,
-                                SCM (*wrap) (const GValue*),
-                                void (*unwrap) (SCM, GValue*))
-{
-    wrap_funcs* w = g_new (wrap_funcs, 1);
-
-    if (!gvalue_wrappers)
-        gvalue_wrappers = g_hash_table_new (NULL, NULL);
+    GValue *new = g_new0 (GValue, 1);
     
-    w->wrap = wrap;
-    w->unwrap = unwrap;
-
-    g_hash_table_insert (gvalue_wrappers, GINT_TO_POINTER (type), w);
-}
-
-void
-scm_c_register_gtype_instance_gvalue_wrappers (GType type,
-    SCMGValueGetTypeInstanceFunc getter, SCMGValueSetTypeInstanceFunc setter)
-{
-    gtype_instance_wrap_funcs* w = g_new (gtype_instance_wrap_funcs, 1);
-
-    if (!gtype_instance_wrappers)
-        gtype_instance_wrappers = g_hash_table_new (NULL, NULL);
-    
-    w->getter = getter;
-    w->setter = setter;
-    
-    g_hash_table_insert (gtype_instance_wrappers, GINT_TO_POINTER (type), w);
+    g_value_init (new, gtype);
+    scm_c_gvalue_set (new, scm);
+    return new;
 }
 
 SCM_DEFINE (scm_gvalue_to_scm, "gvalue->scm", 1, 0, 0,
@@ -552,155 +534,140 @@ SCM_DEFINE (scm_gvalue_to_scm, "gvalue->scm", 1, 0, 0,
             "for example unboxing characters into Scheme characters. Note "
             "that the Scheme form for some values is the @code{<gvalue>} "
             "form, for example with boxed or enumerated values.")
-#define FUNC_NAME s_scm_gvalue_to_scm
 {
-    GValue *gvalue;
-
-    GType type, fundamental;
-    SCM stype;
-    gtype_instance_wrap_funcs* w;
-
-    SCM_VALIDATE_GVALUE_COPY (1, value, gvalue);
-
-    type = G_VALUE_TYPE (gvalue);
-    fundamental = G_TYPE_FUNDAMENTAL (type);
-
-    stype = scm_c_register_gtype (type);
-
-    if (SCM_NFALSEP (scm_gtype_basic_p (stype))) {
-        return scm_gvalue_primitive_get (value);
-    } 
-    else if ((w = g_hash_table_lookup (gtype_instance_wrappers,
-                                       GINT_TO_POINTER (fundamental)))) {
-        return scm_c_gtype_instance_to_scm (w->getter (gvalue));
-    }
-    else if (gvalue_wrappers) {
-        wrap_funcs* w;
-        w = g_hash_table_lookup (gvalue_wrappers,
-                                 GINT_TO_POINTER (G_VALUE_TYPE (gvalue)));
-        
-        if (w)
-            return w->wrap (gvalue);
-        else
-            return value;
-    }
-    else {
-        /* Enums and flags are natively represented as GValues. Boxed and
-         * pointer values also fall through here, unless there is a custom
-         * wrapper registered. */
-        return value;
-    }
-}
-#undef FUNC_NAME
-
-SCM scm_c_gvalue_to_scm (const GValue *gvalue)
-{
-    GType fundamental = G_TYPE_FUNDAMENTAL (G_VALUE_TYPE (gvalue));
-    gtype_instance_wrap_funcs* w;
-    
-    /* try to avoid needless allocation of a gvalue smob */
-    if ((w = g_hash_table_lookup (gtype_instance_wrappers,
-                                  GINT_TO_POINTER (fundamental)))) {
-        return scm_c_gtype_instance_to_scm (w->getter (gvalue));
-    }
-    else {
-        /* fall back on the normal version */
-        SCM svalue;
-        GValue *new;
-
-        new = g_new0 (GValue, 1);
-        g_value_init (new, G_VALUE_TYPE (gvalue));
-        g_value_copy (gvalue, new);
-        SCM_NEWSMOB (svalue, scm_tc16_gvalue, new);
-
-        return scm_gvalue_to_scm (svalue);
-    }
+    /* FIXME: needlessly creates a new value in the e.g. boxed case */
+    GValue *v = scm_c_gvalue_peek_value (value);
+    return scm_c_gvalue_ref (v);
 }
 
 SCM_DEFINE (scm_scm_to_gvalue, "scm->gvalue", 2, 0, 0,
-	    (SCM type, SCM scm),
+	    (SCM class, SCM scm),
 	    "Convert a Scheme value into a @code{<gvalue>} of type "
-            "@var{type}. If the conversion is not possible, raise a "
+            "@var{class}. If the conversion is not possible, raise a "
             "@code{gruntime-error}.")
-#define FUNC_NAME s_scm_scm_to_gvalue
 {
-    GType gtype, fundamental;
+    SCM ret;
+    GValue *gvalue;
     
-    SCM_VALIDATE_GTYPE_COPY (1, type, gtype);
-    fundamental = G_TYPE_FUNDAMENTAL (gtype);    
+    /* fixme the noop case */
+    ret = scm_c_make_gvalue (scm_c_gtype_class_to_gtype (class));
+    gvalue = scm_c_gvalue_peek_value (ret);
+    scm_c_gvalue_set (gvalue, scm);
 
-    if (SCM_NFALSEP (scm_gvalue_p (scm))) {
-        return scm;
-    }
-    else if (SCM_EQ_P (scm, SCM_UNSPECIFIED) || gtype == G_TYPE_NONE) {
-        /* Make things easy when you're ignoring a return val. */
-        return SCM_UNSPECIFIED;
-    }
-    else if (SCM_NFALSEP (scm_gtype_valued_p (type))) {
-        /* Some types can be converted to GValues with the same incantation. */
-        return scm_call_3 (_make, scm_c_gtype_to_class (gtype), k_value, scm);
-    }
-    else if (g_hash_table_lookup (gtype_instance_wrappers,
-                                  GINT_TO_POINTER (fundamental))) {
-        SCM ret = scm_gvalue_primitive_new (type);
-        scm_gvalue_primitive_set (ret, (SCM_FALSEP (scm) 
-                                        ? scm
-                                        : scm_slot_ref (scm, scm_sym_gtype_instance)));
-        return ret;
-    }
-    else if (gtype == G_TYPE_CLOSURE) {
-        /* GOOPS closures only -- the primitive ones were already caught
-           above with the <gvalue> check. */
-        /* this is a hack. really, this function should be a primitive generic,
-           and then closures.scm specializes for closures. */
-        if (!SCM_NFALSEP (scm_slot_exists_p (scm, sym_closure)))
-            scm_wrong_type_arg (FUNC_NAME, 2, scm);
-        return scm_slot_ref (scm, sym_closure);
-    }
-    else if (gvalue_wrappers) {
-        wrap_funcs* w;
-        w = g_hash_table_lookup (gvalue_wrappers, GINT_TO_POINTER (gtype));
-    
-        if (w) {
-            GValue *v = g_new0 (GValue, 1);
+    return ret;
+}
+
+
+
+/**********************************************************************
+ * custom SCM wrappers for some boxed types
+ **********************************************************************/
+
+static gpointer
+copy_gboxed_scm (gpointer boxed)
+{
+    DEBUG_ALLOC (G_STRLOC ": copying gboxed %p", boxed);
+    scm_glib_gc_protect_object ((SCM) boxed);
+    return boxed;
+}
+
+static void
+free_gboxed_scm (gpointer boxed)
+{
+    DEBUG_ALLOC (G_STRLOC ": freeing gboxed %p", boxed);
+    scm_glib_gc_unprotect_object (boxed);
+}
+
+GType
+gboxed_scm_get_type (void)
+{
+    static GType boxed_type = 0;
+
+    if (!boxed_type)
+        boxed_type = g_boxed_type_register_static
+            ("GBoxedSCM", copy_gboxed_scm, free_gboxed_scm);
+
+    return boxed_type;
+}
+
+SCM
+wrap_boxed_scm (const GValue *value)
+{
+    gpointer val = g_value_get_boxed (value);
+    return val ? GPOINTER_TO_SCM (g_value_get_boxed (value)) : SCM_UNSPECIFIED;
+}
+
+void
+unwrap_boxed_scm (SCM scm, GValue *value)
+{
+    g_value_set_boxed (value, SCM_TO_GPOINTER (scm));
+}
+
+SCM
+wrap_gvalue_array (const GValue *value)
+{
+    GValueArray *arr = g_value_get_boxed (value);
+    gint i = arr ? arr->n_values : 0;
+    SCM l = SCM_EOL;
             
-            w->unwrap (scm, v);
-            if (G_IS_VALUE (v)) {
-                SCM svalue;
-                SCM_NEWSMOB (svalue, scm_tc16_gvalue, v);
-                return svalue;
-            } else {
-                g_free (v);
-                scm_wrong_type_arg (FUNC_NAME, 2, scm);
-            }
-        }
-        /* might fall through */
-    }
-    
-    /* otherwise... */
-    scm_c_gruntime_error (FUNC_NAME,
-                          "Don't know how to make values of type ~A",
-                          SCM_LIST1 (type));
-    return SCM_UNSPECIFIED; /* won't get here */
+    while (i--)
+        l = scm_cons (scm_c_gvalue_ref (&arr->values[i]), l);
+    return l;
 }
-#undef FUNC_NAME
 
-GValue* scm_c_scm_to_gvalue (GType gtype, SCM scm)
+void
+unwrap_gvalue_array (SCM scm, GValue *value)
+#define FUNC_NAME "%unwrap-gvalue-array"
 {
-    SCM type, ret;
-    GValue *value, *new = g_new0 (GValue, 1);
-    
-    type = scm_c_register_gtype (gtype);
-    ret = scm_scm_to_gvalue (type, scm);
-    
-    /* doesn't actually copy the value. rather disingenuous i would say :P */
-#define FUNC_NAME "%scm->gvalue"
-    SCM_VALIDATE_GVALUE_COPY (0, ret, value);
-#undef FUNC_NAME
-    g_value_init (new, G_VALUE_TYPE (value));
-    g_value_copy (value, new);
-    return new;
+    GValueArray *arr;
+    gint len;
+            
+    SCM_ASSERT (SCM_BOOL (scm_list_p (scm)), scm, SCM_ARG2, FUNC_NAME);
+
+    len = scm_ilength (scm);
+    arr = g_value_array_new (len);
+    while (len--) {
+        GType value_type;
+        SCM v;
+
+        v = SCM_CAR (scm);
+                
+        if (SCM_GVALUEP (v))
+            value_type = G_VALUE_TYPE (scm_c_gvalue_peek_value (v));
+        if (SCM_STRINGP (v))
+            value_type = G_TYPE_STRING;
+        else if (SCM_BOOLP (v))
+            value_type = G_TYPE_BOOLEAN;
+        else if (scm_is_signed_integer (v, SCM_T_INT32_MIN, SCM_T_INT32_MAX))
+            value_type = G_TYPE_INT;
+        else if (SCM_REALP (v))
+            value_type = G_TYPE_DOUBLE;
+        else if (SCM_CHARP (v))
+            value_type = G_TYPE_CHAR;
+        else if (SCM_GOBJECTP (v)) {
+            GObject *gobject;
+            SCM_VALIDATE_GOBJECT_COPY (1, v, gobject);
+            value_type = G_OBJECT_TYPE (gobject);
+        }
+        else if (SCM_BOOL (scm_list_p (v)))
+            value_type = G_TYPE_VALUE_ARRAY;
+        else
+            scm_wrong_type_arg (FUNC_NAME, SCM_ARG2, v);
+
+        {
+            GValue tmp = { 0, };
+            g_value_init (&tmp, value_type);
+            scm_c_gvalue_set (&tmp, v);
+            /* copies the val */
+            g_value_array_append (arr, &tmp);
+            g_value_unset (&tmp);
+        }
+        scm = SCM_CDR (scm);
+    }
+                
+    g_value_take_boxed (value, arr);
 }
+#undef FUNC_NAME
 
 
 
@@ -712,8 +679,7 @@ SCM_DEFINE (scm_genum_register_static, "genum-register-static", 2, 0, 0,
 	    (SCM name, SCM vtable),
 	    "Creates and registers a new enumerated type with name @var{name} with the C runtime. "
 	    "There must be no type with name @var{name} when this function is called.\n\n"
-	    "The new type can be accessed from C either by passing the returned @code{<gtype>} "
-	    "object back to a C function or by using @code{g-type-from-name}.\n\n"
+	    "The new type can be accessed by using @code{g-type-class-from-name}.\n\n"
 	    "@var{vtable} is a vector describing the new enum type. Each vector element describes "
 	    "one enum element and must be a list of 3 elements: the element's nick name as a symbol, "
 	    "its name as a string, and its integer value.\n\n"
@@ -765,13 +731,13 @@ SCM_DEFINE (scm_genum_register_static, "genum-register-static", 2, 0, 0,
 
     scm_dynwind_end ();
 
-    return scm_c_register_gtype (type);
+    return SCM_UNSPECIFIED;
 }
 #undef FUNC_NAME
 
 SCM_DEFINE (scm_gflags_register_static, "gflags-register-static", 2, 0, 0,
 	    (SCM name, SCM vtable),
-	    "Creates and registers a new flags @code{<gtype>} with name "
+	    "Creates and registers a new flags @code{<gtype-class>} with name "
             "var{name} with the C runtime.\n\n"
 	    "See @code{genum-register-static} for details.")
 #define FUNC_NAME s_scm_gflags_register_static
@@ -817,7 +783,7 @@ SCM_DEFINE (scm_gflags_register_static, "gflags-register-static", 2, 0, 0,
 
     scm_dynwind_end ();
 
-    return scm_c_register_gtype (type);
+    return SCM_UNSPECIFIED;
 }
 #undef FUNC_NAME
 
@@ -827,19 +793,19 @@ SCM_DEFINE (scm_gflags_register_static, "gflags-register-static", 2, 0, 0,
  * GEnum and GFlags class support
  **********************************************************************/
 
-SCM_DEFINE (scm_genum_type_get_values, "genum-type-get-values", 1, 0, 0,
-	    (SCM type),
-	    "Return a vtable of the values supported by the enumerated "
-            "@code{<gtype>} @var{type}. The return value will be in the "
+SCM_DEFINE (scm_genum_class_to_value_table, "genum-class->value-table", 1, 0, 0,
+	    (SCM class),
+	    "Return a table of the values supported by the enumerated "
+            "@code{<gtype-class>} @var{class}. The return value will be in the "
             "format described in @code{genum-register-static}.")
-#define FUNC_NAME s_scm_genum_type_get_values
+#define FUNC_NAME s_scm_genum_class_to_value_table
 {
     GType gtype;
     GEnumClass *enum_class;
     SCM vector;
     guint i;
 
-    SCM_VALIDATE_GTYPE_IS_A (1, type, G_TYPE_ENUM, gtype);
+    SCM_VALIDATE_GTYPE_CLASS_IS_A (1, class, G_TYPE_ENUM, gtype);
 
     enum_class = g_type_class_ref (gtype);
 
@@ -863,19 +829,19 @@ SCM_DEFINE (scm_genum_type_get_values, "genum-type-get-values", 1, 0, 0,
 }
 #undef FUNC_NAME
 
-SCM_DEFINE (scm_gflags_type_get_values, "gflags-type-get-values", 1, 0, 0,
-	    (SCM type),
-	    "Return a vtable of the values supported by the flag "
-            "@code{<gtype>} @var{type}. The return value will be in the "
+SCM_DEFINE (scm_gflags_class_to_value_table, "gflags-class->value-table", 1, 0, 0,
+	    (SCM class),
+	    "Return a table of the values supported by the flag "
+            "@code{<gtype-class>} @var{class}. The return value will be in the "
             "format described in @code{gflags-register-static}.")
-#define FUNC_NAME s_scm_gflags_type_get_values
+#define FUNC_NAME s_scm_gflags_class_to_value_table
 {
     GType gtype;
     GFlagsClass *flags_class;
     SCM vector;
     guint i;
 
-    SCM_VALIDATE_GTYPE_IS_A (1, type, G_TYPE_FLAGS, gtype);
+    SCM_VALIDATE_GTYPE_CLASS_IS_A (1, class, G_TYPE_FLAGS, gtype);
 
     flags_class = g_type_class_ref (gtype);
 
@@ -899,6 +865,73 @@ SCM_DEFINE (scm_gflags_type_get_values, "gflags-type-get-values", 1, 0, 0,
 }
 #undef FUNC_NAME
 
+gboolean
+scm_c_gvalue_holds (SCM maybe_gvalue, GType type)
+{
+    return (SCM_GVALUEP (maybe_gvalue)
+            && G_TYPE_CHECK_VALUE_TYPE (scm_c_gvalue_peek_value (maybe_gvalue),
+                                        type));
+}
+
+SCM
+scm_c_gvalue_new_from_boxed (GType type, const gpointer boxed)
+{
+    SCM ret = scm_c_make_gvalue (type);
+    g_value_set_boxed (scm_c_gvalue_peek_value (ret), boxed);
+    return ret;
+}
+
+SCM
+scm_c_gvalue_new_take_boxed (GType type, gpointer boxed)
+{
+    SCM ret = scm_c_make_gvalue (type);
+    g_value_take_boxed (scm_c_gvalue_peek_value (ret), boxed);
+    return ret;
+}
+
+gpointer
+scm_c_gvalue_peek_boxed (SCM value)
+{
+    return g_value_get_boxed (scm_c_gvalue_peek_value (value));
+}
+
+gpointer
+scm_c_gvalue_dup_boxed (SCM value)
+{
+    return g_value_dup_boxed (scm_c_gvalue_peek_value (value));
+}
+    
+GValue*
+scm_c_gvalue_dup_value (SCM scm)
+{
+    GValue *ret = g_new0 (GValue, 1);
+    g_value_init (ret, G_VALUE_TYPE (scm_c_gvalue_peek_value (scm)));
+    g_value_copy (scm_c_gvalue_peek_value (scm), ret);
+    return ret;
+}
+
+SCM
+scm_c_gvalue_from_value (const GValue *value)
+{
+    SCM ret = scm_c_make_gvalue (G_VALUE_TYPE (value));
+    g_value_copy (value, scm_c_gvalue_peek_value (ret));
+    return ret;
+}
+
+SCM
+scm_c_gvalue_take_value (GValue *value)
+{
+    /* erm... suboptimal :) */
+    SCM ret;
+    GValue *trash;
+    ret = scm_c_make_gvalue (G_VALUE_TYPE (value));
+    g_return_val_if_fail (value != NULL, ret);
+    trash = (GValue*)SCM_STRUCT_DATA (ret)[0];
+    SCM_STRUCT_DATA (ret)[0] = (scm_t_bits)value;
+    g_free (trash);
+    return ret;
+}
+    
 
 
 void
@@ -907,30 +940,11 @@ scm_init_gnome_gobject_values (void)
 #ifndef SCM_MAGIC_SNARFER
 #include "gvalue.x"
 #endif
+    _allocate_instance =
+        scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("allocate-instance")));
 
-    scm_tc16_gvalue = scm_make_smob_type ("gvalue", 0);
-    scm_set_smob_free (scm_tc16_gvalue, scm_gvalue_free);
-    scm_set_smob_print (scm_tc16_gvalue, scm_gvalue_print);
-
-    _gtype_instance_write =
-        scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("gtype-instance:write")));
-    _make =
-        scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("make")));
-
-    scm_c_define_and_export_gtype_x (G_TYPE_CHAR);
-    scm_c_define_and_export_gtype_x (G_TYPE_UCHAR); 				
-    scm_c_define_and_export_gtype_x (G_TYPE_BOOLEAN);
-    scm_c_define_and_export_gtype_x (G_TYPE_INT);
-    scm_c_define_and_export_gtype_x (G_TYPE_UINT);
-    scm_c_define_and_export_gtype_x (G_TYPE_LONG);
-    scm_c_define_and_export_gtype_x (G_TYPE_ULONG);
-    scm_c_define_and_export_gtype_x (G_TYPE_INT64);
-    scm_c_define_and_export_gtype_x (G_TYPE_UINT64);
-    scm_c_define_and_export_gtype_x (G_TYPE_FLOAT);
-    scm_c_define_and_export_gtype_x (G_TYPE_DOUBLE);
-    scm_c_define_and_export_gtype_x (G_TYPE_STRING);
-    scm_c_define_and_export_gtype_x (G_TYPE_POINTER);
-    scm_c_define_and_export_gtype_x (G_TYPE_BOXED);
-    scm_c_define_and_export_gtype_x (gboxed_scm_get_type());
-    scm_c_define_and_export_gtype_x (G_TYPE_VALUE_ARRAY);
+    scm_c_register_gvalue_wrappers (G_TYPE_BOXED_SCM,
+                                    wrap_boxed_scm, unwrap_boxed_scm);
+    scm_c_register_gvalue_wrappers (G_TYPE_VALUE_ARRAY,
+                                    wrap_gvalue_array, unwrap_gvalue_array);
 }

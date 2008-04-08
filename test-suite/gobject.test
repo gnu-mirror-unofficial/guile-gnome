@@ -30,27 +30,6 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
   #:use-module (test-suite lib)
   #:use-module (test-suite exceptions))
 
-(pass-if "basic types defined"
-	 (and (defined? 'gtype:gchar)
-	      (defined? 'gtype:guchar)
-	      (defined? 'gtype:gboolean)
-	      (defined? 'gtype:gint)
-	      (defined? 'gtype:guint)
-	      (defined? 'gtype:glong)
-	      (defined? 'gtype:gulong)
-	      (defined? 'gtype:gfloat)
-	      (defined? 'gtype:gdouble)
-	      (defined? 'gtype:gchararray)))
-
-(pass-if "extended types defined"
-	 (and (defined? 'gtype:genum)
-	      (defined? 'gtype:gflags)
-	      (defined? 'gtype:gboxed)
-	      (defined? 'gtype:gboxed-scm)
-	      (defined? 'gtype:gclosure)
-	      (defined? 'gtype:gobject)
-              (defined? 'gtype:gvalue-array)))
-
 (with-test-prefix "basic values"
   (define (test class value)
     (equal? (gvalue->scm (make class #:value value)) value))
@@ -112,30 +91,23 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
 (with-test-prefix "creating genum and gflags types"
   
   (pass-if "creating genum type"
-           (let* ((class (make-class (list <genum>) '()
-                           #:name '<enum-test>
-                           #:vtable #((a "Foo" 1) (b "Hello" 2))))
-                  (type (gtype-class->type class)))
-             (and (eq? (gtype->fundamental type)
-                       gtype:genum)
-                  (eq? type (gtype-from-name "EnumTest")))))
+           (let ((class (make-class (list <genum>) '()
+                          #:name '<enum-test>
+                          #:vtable #((a "Foo" 1) (b "Hello" 2)))))
+             (eq? class (gtype-name->class "EnumTest"))))
 
   (pass-if "creating gflags type"
-           (let* ((class (make-class (list <gflags>) '()
-                           #:name '<flags-test>
-                           #:vtable #((c "AAAA" 4) (d "BBBB" 8))))
-                  (type (gtype-class->type class)))
-             (and (eq? (gtype->fundamental type)
-                       gtype:gflags)
-                  (eq? type (gtype-from-name "FlagsTest")))))
+           (let ((class (make-class (list <gflags>) '()
+                          #:name '<flags-test>
+                          #:vtable #((c "AAAA" 4) (d "BBBB" 8)))))
+             (eq? class (gtype-name->class "FlagsTest"))))
   )
+
+(define (gvalue? x) (is-a? x <gvalue>))
 
 (with-test-prefix "genum values"
   
-  (define enum-class (gtype->class (gtype-from-name "EnumTest")))
-  
-  (pass-if "getting enum type from class"
-           (is-a? (gtype-class->type enum-class) <gtype>))
+  (define enum-class (gtype-name->class "EnumTest"))
   
   (pass-if "getting enum type class"
            (is-a? enum-class <gtype-class>))
@@ -162,11 +134,8 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
 
 (with-test-prefix "gflags values"
 
-  (define flags-class (gtype->class (gtype-from-name "FlagsTest")))
+  (define flags-class (gtype-name->class "FlagsTest"))
   
-  (pass-if "getting flags type from class"
-           (is-a? (gtype-class->type flags-class) <gtype>))
-
   (pass-if "getting flags type class"
            (is-a? flags-class <gtype-class>))
 
@@ -209,16 +178,16 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
   
   (pass-if "creating gclosure with return type"
            (my-closure? (make <gclosure> #:func func-without-args
-                              #:return-type gtype:gchararray)))
+                              #:return-type <gchararray>)))
   
   (pass-if "creating gclosure with arg"
            (my-closure? (make <gclosure> #:func func-without-args
-                              #:return-type gtype:gchararray
-                              #:param-types (list gtype:glong))))
+                              #:return-type <gchararray>
+                              #:param-types (list <glong>))))
   )
 
 (with-test-prefix "invoking gclosure"
-  (define long-arg (list->vector (list (make <glong> #:value 82))))
+  (define long-arg (make <glong> #:value 82))
   
   (define closure-without-args
     (make <gclosure> #:func (lambda () "Hello World")))
@@ -232,21 +201,22 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
           #:return-type <gclosure>))
   
   (pass-if "invoking gclosure"
-           (unspecified? (gclosure-invoke closure-without-args)))
+           (unspecified? (gclosure-invoke closure-without-args #f)))
   
-  (pass-if-exception "invoking gclosure with incorrect arguments"
-                     exception:wrong-number-of-args
-                     (gclosure-invoke closure-without-args long-arg))
+  ;; crosses a with/without barrier, not possible to get an exception...
+  ;;(pass-if-exception "invoking gclosure with incorrect arguments"
+  ;;                   exception:wrong-number-of-args
+  ;;                   (gclosure-invoke closure-without-args #f long-arg))
   
   (pass-if "invoking gclosure with retval"
-           (string? (gclosure-invoke closure-with-retval)))
+           (string? (gclosure-invoke closure-with-retval <gchararray>)))
   
   (pass-if "invoking gclosure checking retval"
-           (equal? (gclosure-invoke closure-with-retval)
+           (equal? (gclosure-invoke closure-with-retval <gchararray>)
                    "Hello World"))
   
   (pass-if "invoking gclosure with boxed retval"
-           (gvalue? (gclosure-invoke closure-with-boxed-retval)))
+           (gvalue? (gclosure-invoke closure-with-boxed-retval <gclosure>)))
   )
 
 

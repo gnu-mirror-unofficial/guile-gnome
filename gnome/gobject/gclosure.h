@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2003,2008 Andy Wingo <wingo at pobox dot com>
  *
  * gclosure.h: Support for GClosure
  *
@@ -28,14 +28,7 @@
 
 G_BEGIN_DECLS
 
-extern SCM scm_class_gclosure;
-
-#define SCM_GCLOSUREP(x) SCM_HACKY_IS_A_P (x, scm_class_gclosure)
-
-/* Although closures are stored as GValues, they cannot be manipulated with the
-   gvalue-primitive API. */
-SCM scm_gclosure_primitive_new (SCM func);
-SCM scm_gclosure_primitive_invoke (SCM instance, SCM return_type, SCM args);
+SCM scm_gclosure_invoke (SCM instance, SCM return_type, SCM args);
 
 G_END_DECLS
 

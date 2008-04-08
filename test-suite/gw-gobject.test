@@ -37,19 +37,18 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
            (let ((obj (make <test-obj> #:arr '(1 2 3))))
              (is-a? obj <test-obj>)))
 
-  (pass-if "getting the param spec args for the value array property"
-           (let ((args (gparam-struct:args
-                        (gparam->param-struct
-                         (gobject-class-find-property <test-obj> 'arr)))))
-             (and (list? args)
-                  (= (length args) 1))))
-
+  (pass-if "getting the element spec for the value array property"
+           (is-a? (slot-ref
+                   (gobject-class-find-property <test-obj> 'arr)
+                   'element-spec)
+                  <gparam-int>))
+  
   (pass-if "calling foo"
            (= (foo (make <test-obj>) 65000) 65000))
 
   (pass-if "gvalue conversion"
            (let ((obj (make <test-obj>)))
-             (eq? (gvalue->scm (scm->gvalue gtype:gobject obj)) obj)))
+             (eq? (gvalue->scm (scm->gvalue <gobject> obj)) obj)))
 
   (pass-if "gvalue array conversion"
            (let* ((obj (make <test-obj>))

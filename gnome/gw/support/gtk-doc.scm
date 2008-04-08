@@ -117,6 +117,7 @@
   #:use-module (g-wrap)
   #:use-module (g-wrap guile) ;; for the `module' generic
   #:use-module (gnome gobject)
+  #:use-module (gnome gobject utils)
   #:use-module (oop goops)
 
   #:use-module (gnome gobject utils)
@@ -578,35 +579,36 @@ created using @code{gtk-doc->texi-defuns}."
        (signal-refsect2-list sdocbook)))
 
 (define (signal-stexi-args s)
-    (define (gtype->texi t)
-      `(code ,(symbol->string (class-name (gtype->class t)))))
-  (define (arg-texinfo name type)
-    `(" (" ,name (tie) ,(gtype->texi type) ")"))
-  (let ((inputs (append-map arg-texinfo
-                            (map (lambda (i)
-                                   (string-append "arg" (number->string i)))
-                                 (iota (vector-length
-                                        (gsignal:param-types s))))
-                            (vector->list (gsignal:param-types s))))
-        (outputs (let ((type (gsignal:return-type s)))
-                   (if (eq? type gtype:void)
-                       '()
-                       (list (gtype->texi type))))))
-    (if (null? outputs)
-        inputs
-        (append inputs '(" " (result) (tie)) outputs))))
+  (define (class->texi class)
+    `(code ,(symbol->string (class-name class))))
+  (define (arg-texinfo name class)
+    `(" (" ,name (tie) ,(class->texi class) ")"))
+  (with-accessors (param-types return-type)
+    (let ((inputs (append-map arg-texinfo
+                              (map (lambda (i)
+                                     (string-append "arg" (number->string i)))
+                                   (iota (length (param-types s))))
+                              (param-types s)))
+          (outputs (let ((type (return-type s)))
+                     (if (not type)
+                         '()
+                         (list (class->texi type))))))
+      (if (null? outputs)
+          inputs
+          (append inputs '(" " (result) (tie)) outputs)))))
 
 (define (class-signal-stexi-docs class sdocbook)
   (let ((alist (signal-docs-alist sdocbook)))
     (map
      (lambda (s)
-       `(defop (% (category "Signal")
-                  (name ,(gsignal:name s))
-                  (class ,(symbol->string (class-name class)))
-                  (arguments ,@(signal-stexi-args s)))
-          ,@(or (assoc-ref alist (gsignal:name s)) '("undocumented"))))
-     (if (and (is-a? class <class>) (assq 'gsignals (class-slots class)))
-         (vector->list (class-slot-ref class 'gsignals))
+       (with-accessors (name)
+         `(defop (% (category "Signal")
+                    (name ,(name s))
+                    (class ,(symbol->string (class-name class)))
+                    (arguments ,@(signal-stexi-args s)))
+            ,@(or (assoc-ref alist (name s)) '("undocumented")))))
+     (if (is-a? class <gtype-class>)
+         (gtype-class-get-signals class)
          '()))))
 
 (define (superclasses class)
@@ -629,36 +631,33 @@ created using @code{gtk-doc->texi-defuns}."
     '(para "Opaque pointer."))))
 
 (define (gobject-class-stexi-docs module-name class-name sdocbook)
-  (define (doc-properties class)
-    ;; Using undocumented interfaces...
-    (let ((props (and (is-a? class <class>)
-                      (assq 'gobject-properties (class-slots class))
-                      (map gparam->param-struct
-                           (vector->list
-                            (class-slot-ref class 'gobject-properties))))))
-      (cond
-       ((not props)
-        '())
-       ((null? props)
-        '((para "This class defines no properties, "
+  (define (doc-slots class)
+    (define (doc-slot slot)
+      (let ((name (slot-definition-name slot)))
+        `(entry
+          (% (heading ,(symbol->string name)))
+          (para
+           ,(case (slot-definition-allocation slot)
+              ((#:gproperty #:gparam)
+               (with-accessors (blurb)
+                 (blurb (gobject-class-find-property class name))))
+              (else
+               "Scheme slot."))))))
+    (let ((slots (class-direct-slots class)))
+       ((null? slots)
+        '((para "This class defines no direct slots, "
                 "other than those defined by its superclasses.")))
        (else
-        `((para "This class defines the following "
-                "properties:")
+        `((para "This class defines the following slots:")
           (table (% (formatter (code)))
-                 ,@(map 
-                    (lambda (prop)
-                      `(entry (% (heading ,(symbol->string
-                                            (gparam-struct:name prop))))
-                              (para ,(gparam-struct:blurb prop))))
-                    props)))))))
+                 ,@(map doc-slot slots))))))
   (let ((v (module-variable (resolve-interface module-name) class-name)))
     (cond
      (v
       `((deftp (% (name ,(symbol->string class-name))
                   (category "Class"))
           ,(superclasses (variable-ref v))
-          ,@(doc-properties (variable-ref v)))
+          ,@(doc-slots (variable-ref v)))
         ,@(class-signal-stexi-docs (variable-ref v) sdocbook)))
      (else
       '()))))

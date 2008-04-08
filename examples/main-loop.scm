@@ -1,4 +1,5 @@
 #! /bin/sh
+# -*- scheme -*-
 exec guile-gnome-0 -s $0
 !#
 
@@ -12,17 +13,17 @@ exec guile-gnome-0 -s $0
 (define main-loop (g-main-loop-new #f #f))
 
 (define closure-true (make <gclosure>
-                       #:return-type gtype:gboolean
+                       #:return-type <gboolean>
                        #:func (lambda ()
                                 (display "Called all the time, because I return #t\n")
                                 #t)))
 (define closure-false (make <gclosure>
-                        #:return-type gtype:gboolean
+                        #:return-type <gboolean>
                         #:func (lambda ()
                                  (display "Called only once, because I return #f\n")
                                  #f)))
 (define closure-countdown (make <gclosure>
-                            #:return-type gtype:gboolean
+                            #:return-type <gboolean>
                             #:func (let ((c 5))
                                      (lambda ()
                                        (set! c (1- c))

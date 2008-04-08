@@ -28,6 +28,18 @@
 G_BEGIN_DECLS
 
 
+#define SCM_DEFINE_STATIC(FNAME, PRIMNAME, REQ, OPT, VAR, ARGLIST) \
+SCM_SNARF_HERE(\
+static const char s_ ## FNAME [] = PRIMNAME; \
+static SCM FNAME ARGLIST\
+)\
+SCM_SNARF_INIT(\
+scm_c_define_gsubr (s_ ## FNAME, REQ, OPT, VAR, \
+                    (SCM_FUNC_CAST_ARBITRARY_ARGS) FNAME); \
+)\
+SCM_SNARF_DOCS(primitive, FNAME, PRIMNAME, ARGLIST, REQ, OPT, VAR, "")
+
+
 typedef struct _GuileGTypeClass GuileGTypeClass;
 struct _GuileGTypeClass {
     /*< private >*/

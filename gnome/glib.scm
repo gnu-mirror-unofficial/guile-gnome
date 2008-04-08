@@ -37,7 +37,7 @@
 
 (define-public (g-idle-add proc)
   (let ((closure (make <gclosure>
-                   #:return-type gtype:gboolean
+                   #:return-type <gboolean>
                    #:func proc))
         (source (g-idle-source-new)))
     (g-source-set-closure source closure)
@@ -46,7 +46,7 @@
 
 (define-public (g-timeout-add milliseconds proc)
   (let ((closure (make <gclosure>
-                   #:return-type gtype:gboolean
+                   #:return-type <gboolean>
                    #:func proc))
         (source (g-timeout-source-new milliseconds)))
     (g-source-set-closure source closure)

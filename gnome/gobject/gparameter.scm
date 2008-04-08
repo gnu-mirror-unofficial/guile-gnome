@@ -26,13 +26,8 @@
 ;; defining C classes such that parameters may be manipulated and
 ;; created from Scheme.
 ;;
-;; As a technical detail, the C structure @code{GParamSpec} is wrapped
-;; at two levels. One is a mapping of the C structure to a Guile
-;; structure. The other is a GOOPS representation. The low level is
-;; called @code{gparam-struct}, and the high level is called
-;; @code{<gparam>}. @code{gparam-struct} is a generic container of any
-;; type. @code{<gparam>} has subclasses for the various kinds of
-;; parameter types: @code{<gparam-int>}, @code{<gparam-object>}, etc.
+;; There is a parameter class for each type of parameter:
+;; @code{<gparam-int>}, @code{<gparam-object>}, etc.
 
 ;;
 ;;; Code:
@@ -50,17 +45,10 @@
                 <gparam-char> <gparam-uchar> <gparam-boolean> <gparam-int>
                 <gparam-uint> <gparam-long> <gparam-ulong> <gparam-int64>
                 <gparam-uint64> <gparam-float> <gparam-double>
-                <gparam-pointer> <gparam-string> <gparam-object>
+                <gparam-pointer> <gparam-string>
                 <gparam-boxed> <gparam-enum> <gparam-flags>
                 ;; Helper class
                 <gparam-spec-flags>
-                ;; Param structs
-                gparam-struct:name gparam-struct:nick gparam-struct:blurb
-                gparam-struct:flags gparam-struct:param-type
-                gparam-struct:value-type gparam-struct:owner-type
-                gparam-struct:args
-                ;; From C:
-                gparam->param-struct gparam->value-type
                 ;; Limits
                 gparameter:uint-max gparameter:int-min gparameter:int-max
                 gparameter:ulong-max gparameter:long-min
@@ -69,218 +57,7 @@
                 gparameter:float-max gparameter:float-min
                 gparameter:double-max gparameter:double-min
                 gparameter:byte-order
-
-                ;; FIXME: there are also gtypes being exported by the C
-                ;; code.
                 ))
-
-(use-modules ((srfi srfi-1) #:select (zip)))
-
-;; The C code needs to reference <gparam> for use in its predicates.
-;; Define it now before loading the library.
-(define-class <gparam-class> (<gtype-instance-class>))
-(define-class-with-docs <gparam> (<gtype-instance>)
-  "The base class for GLib parameter objects."
-  #:gtype gtype:gparam
-  #:metaclass <gparam-class>)
-
-(dynamic-call "scm_init_gnome_gobject_parameters"
-              (dynamic-link *guile-gnome-gobject-lib-path*))
-
-(define parameters-module (current-module))
-(define gparam-struct-arg-info
-  '(("GParamChar"    . (gtype:gchar
-                        (#:minimum char? (integer->char 0))
-                        (#:maximum char? (integer->char 127))
-                        (#:default-value char? (integer->char 127))))
-    ("GParamUChar"   . (gtype:guchar
-                        (#:minimum char? (integer->char 0))
-                        (#:maximum char? (integer->char 255))
-                        (#:default-value char? (integer->char 255))))
-    ("GParamBoolean" . (gtype:gboolean
-                        (#:default-value boolean? #f)))
-    ("GParamInt"     . (gtype:gint
-                        (#:minimum integer? gparameter:int-min)
-                        (#:maximum integer? gparameter:int-max)
-                        (#:default-value integer? 0)))
-    ("GParamUInt"    . (gtype:guint
-                        (#:minimum integer? 0)
-                        (#:maximum integer? gparameter:uint-max)
-                        (#:default-value integer? 0)))
-    ("GParamLong"    . (gtype:glong
-                        (#:minimum integer? gparameter:long-min)
-                        (#:maximum integer? gparameter:long-max)
-                        (#:default-value integer? 0)))
-    ("GParamULong"   . (gtype:gulong
-                        (#:minimum integer? 0)
-                        (#:maximum integer? gparameter:ulong-max)
-                        (#:default-value integer? 0)))
-    ("GParamInt64"   . (gtype:gint
-                        (#:minimum integer? gparameter:int64-min)
-                        (#:maximum integer? gparameter:int64-max)
-                        (#:default-value integer? 0)))
-    ("GParamUInt64"  . (gtype:guint
-                        (#:minimum integer? 0)
-                        (#:maximum integer? gparameter:uint64-max)
-                        (#:default-value integer? 0)))
-    ("GParamFloat"   . (gtype:gfloat
-                        (#:minimum real? (- 0 gparameter:float-max))
-                        (#:maximum real? gparameter:float-max)
-                        (#:default-value real? 0.0)))
-    ("GParamDouble"  . (gtype:gdouble
-                        (#:minimum real? (- 0 gparameter:double-max))
-                        (#:maximum real? gparameter:double-max)
-                        (#:default-value real? 0.0)))
-    ("GParamPointer" . (gtype:gpointer))
-    ("GParamString"  . (gtype:gchararray
-                        (#:default-value string? "")))
-    ("GParamObject"  . (gtype:gobject
-                        (#:object-type gtype? *unspecified*)))
-    ("GParamBoxed"   . (gtype:gboxed
-                        (#:boxed-type gtype? *unspecified*)))
-    ("GParamEnum"    . (gtype:genum
-                        (#:enum-type gtype? *unspecified*)
-                        (#:default-value number? *unspecified*)))
-    ("GParamFlags"   . (gtype:gflags
-                        (#:flags-type gtype? *unspecified*)
-                        (#:default-value number? *unspecified*)))
-    ("GParamValueArray"   . (gtype:gvalue-array
-                             (#:flags-type gtype? *unspecified*)
-                             (#:element-param gparam-struct? *unspecified*)))
-    ))
-
-(define (gparam-struct:name param-struct)
-  "Retrieve the name from a @code{gparam-struct}."
-  (struct-ref param-struct gparam-struct-name))
-
-(define (gparam-struct:nick param-struct)
-  "Retrieve the `nickname' from a @code{gparam-struct}."
-  (struct-ref param-struct gparam-struct-nick))
-
-(define (gparam-struct:blurb param-struct)
-  "Retrieve the `blurb', a short descriptive string, from a
-@code{gparam-struct}."
-  (struct-ref param-struct gparam-struct-blurb))
-
-(define (gparam-struct:flags param-struct)
-  "Retrieve the flags from a @code{gparam-struct}."
-  (struct-ref param-struct gparam-struct-flags))
-
-(define (gparam-struct:param-type param-struct)
-  "Retrieve the GParam type from a @code{gparam-struct}, for example
-@code{gtype:gparam-uint64}."
-  (struct-ref param-struct gparam-struct-param-type))
-
-(define (gparam-struct:value-type param-struct)
-  "Retrieve the value type from a @code{gparam-struct}, for example
-@code{gtype:guint64}."
-  (struct-ref param-struct gparam-struct-value-type))
-
-(define (gparam-struct:owner-type param-struct)
-  "Retrieve the `owner type' from a @code{gparam-struct}. Appears to be
-stored into GLib param specs, but never used."
-  (struct-ref param-struct gparam-struct-owner-type))
-
-(define (gparam-struct:args param-struct)
-  "Retrieve the arguments from a @code{gparam-struct}, as a list. The
-length and composition of the arguments depends on the parameter type."
-  (let ((n-args (struct-ref param-struct gparam-struct-n-args))
-        (offset gparam-struct-args)
-        (param-type (gparam-struct:param-type param-struct)))
-    (zip
-     (map car (cdr (assoc-ref gparam-struct-arg-info (gtype-name param-type))))
-     (let loop ((arg (+ offset (1- n-args))) (ret '()))
-       (if (>= arg offset)
-           (loop (1- arg) (cons (struct-ref param-struct arg) ret))
-           ret)))))
-
-(define-with-docs <gparam-char>
-  "Parameter for @code{<gchar>} values. 3 arguments: minimum, maximum,
-and default values."
-  (gtype->class gtype:gparam-char))
-(define-with-docs <gparam-uchar>
-  "Parameter for @code{<guchar>} values. 3 arguments: minimum, maximum,
-and default values."
-  (gtype->class gtype:gparam-uchar))
-(define-with-docs <gparam-boolean>
-  "Parameter for @code{<gboolean>} values. 1 argument: default value."
-  (gtype->class gtype:gparam-boolean))
-(define-with-docs <gparam-int>
-  "Parameter for @code{<gint>} values. 3 arguments: minimum, maximum,
-and default values."
-  (gtype->class gtype:gparam-int))
-(define-with-docs <gparam-uint>
-  "Parameter for @code{<guint>} values. 3 arguments: minimum, maximum,
-and default values."
-  (gtype->class gtype:gparam-uint))
-(define-with-docs <gparam-long>
-  "Parameter for @code{<glong>} values. 3 arguments: minimum, maximum,
-and default values."
-  (gtype->class gtype:gparam-long))
-(define-with-docs <gparam-ulong>
-  "Parameter for @code{<gulong>} values. 3 arguments: minimum, maximum,
-and default values."
-  (gtype->class gtype:gparam-ulong))
-(define-with-docs <gparam-int64>
-  "Parameter for @code{<gint64>} values. 3 arguments: minimum, maximum,
-and default values."
-  (gtype->class gtype:gparam-int64))
-(define-with-docs <gparam-uint64>
-  "Parameter for @code{<guint64>} values. 3 arguments: minimum, maximum,
-and default values."
-  (gtype->class gtype:gparam-uint64))
-(define-with-docs <gparam-float>
-  "Parameter for @code{<gfloat>} values. 3 arguments: minimum, maximum,
-and default values."
-  (gtype->class gtype:gparam-float))
-(define-with-docs <gparam-double>
-  "Parameter for @code{<gdouble>} values. 3 arguments: minimum, maximum,
-and default values."
-  (gtype->class gtype:gparam-double))
-(define-with-docs <gparam-pointer>
-  "Parameter for @code{<gpointer>} values. No arguments."
-  (gtype->class gtype:gparam-pointer))
-(define-with-docs <gparam-string>
-  "Parameter for @code{<gchararray>} values. 1 argument: the default
-value, which may be @code{#f}."
-  (gtype->class gtype:gparam-string))
-(define-with-docs <gparam-object>
-  "Parameter for @code{<gobject>} values. 1 argument: the @code{<gtype>}
-of the value."
-  (gtype->class gtype:gparam-object))
-(define-with-docs <gparam-boxed>
-  "Parameter for @code{<gboxed>} values. 1 argument: the @code{<gtype>}
-of the value."
-  (gtype->class gtype:gparam-boxed))
-(define-with-docs <gparam-enum>
-  "Parameter for @code{<genum>} values. 2 arguments: the @code{<gtype>}
-of the value, and the default value."
-  (gtype->class gtype:gparam-enum))
-(define-with-docs <gparam-flags>
-  "Parameter for @code{<gflags>} values. 2 arguments: the @code{<gtype>}
-of the value, and the default value."
-  (gtype->class gtype:gparam-flags))
-
-;;;
-;;; {Instance Initialization}
-;;;
-
-(define (make-param-struct-args type initargs)
-  (let* ((args (or (assoc-ref gparam-struct-arg-info (gtype-name type))
-		   (gruntime-error "Unknown type: ~A" type))))
-    (map (lambda (argdesc)
-	   (let* ((value (get-keyword (car argdesc) initargs
-				      (eval (caddr argdesc) parameters-module))))
-	     (if (unspecified? value)
-                 (gruntime-error "Missing init keyword: ~A " (car argdesc)))
-	     (or (eval (list (cadr argdesc) value) parameters-module)
-                 ;; Accept gtype-classes where we can take gtypes
-                 (if (and (eq? (eval (cadr argdesc) parameters-module) gtype?)
-                          (is-a? value <gtype-class>))
-                     (begin (set! value (gtype-class->type value)) #t)
-                     (gruntime-error "Wrong init keyword ~A: ~A" (car argdesc) value)))
-	     value))
-	 (cdr args))))
 
 (define-class-with-docs <gparam-spec-flags> (<gflags>)
   "A @code{<gflags>} type for the flags allowable on a @code{<gparam>}:
@@ -293,54 +70,259 @@ of the value, and the default value."
     (construct-only "Only set on object construction" 8)
     (lax-validation "Don't require strict validation on parameter conversion" 16)))
 
-(define-method (initialize (instance <gparam>) initargs)
-  (cond
-   ((get-keyword #:%real-instance initargs #f)
-    => (lambda (gtype-instance)
-         (slot-set! instance 'gtype-instance gtype-instance)))
-   (else
-    ;; nothing for next-method to do
-    (let* ((class (class-of instance))
-           (type (gtype-class->type class))
-           (struct (or (get-keyword #:param-struct initargs #f)
-                       (let* ((args (make-param-struct-args type initargs))
-                              (name (or (get-keyword #:name initargs #f)
-                                        (gruntime-error "Missing #:name keyword")))
-                              (nick (get-keyword #:nick initargs #f))
-                              (blurb (get-keyword #:blurb initargs #f))
-                              (arg-info (or (assoc-ref gparam-struct-arg-info (gtype-name type))
-                                            (gruntime-error "Unknown type: ~A" type)))
-                              (value-type (eval (car arg-info) parameters-module))
-                              (flags (apply
-                                      +
-                                      (gflags->value-list
-                                       (make <gparam-spec-flags> #:value
-                                             (get-keyword #:flags initargs '(read write))))))
-                              (owner-type type))
-                         (or (symbol? name)
-                             (gruntime-error "Wrong #:name keyword"))
-                         (or (or (eq? nick #f) (string? nick))
-                             (gruntime-error "Wrong #:nick keyword"))
-                         (or (or (eq? blurb #f) (string? blurb))
-                             (gruntime-error "Wrong #:blurb keyword"))
-                         (apply make-struct gparam-struct-vtable (length args) #f #f
-                                name nick blurb flags type value-type owner-type args)))))
-      (gparam-primitive-create class type instance struct)))))
+;; The C code needs to reference <gparam> for use in its predicates.
+;; Define it now before loading the library.
+(define-class <gparam-class> (<gtype-class>)
+  (value-type #:init-keyword #:value-type))
 
-(define (display-address o file)
-  (display (number->string (object-address o) 16) file))
+(define-method (compute-get-n-set (class <gparam-class>) s)
+  (case (slot-definition-allocation s)
+    ((#:checked)
+     (let ((already-allocated (slot-ref class 'nfields))
+           (pred (get-keyword #:pred (slot-definition-options s) #f))
+           (trans (get-keyword #:trans (slot-definition-options s) #f)))
+       (or pred (gruntime-error "Missing #:pred for #:checked slot"))
+       ;; allocate a field in the struct
+       (slot-set! class 'nfields (+ already-allocated 1))
+       (list (lambda (instance)
+               (struct-ref instance already-allocated))
+             (lambda (instance value)
+               (let ((value (if trans (trans value) value)))
+                 (if (pred value)
+                     (struct-set! instance already-allocated value)
+                     (gruntime-error
+                      "Bad value for slot ~A on instance ~A: ~A"
+                      (slot-definition-name s) instance value)))))))
 
+    (else (next-method))))
+
+(define-class-with-docs <gparam> (<gtype-instance>)
+  "The base class for GLib parameter objects. (Doc slots)"
+  (name #:init-keyword #:name #:allocation #:checked #:pred symbol?)
+  (nick #:init-keyword #:nick #:allocation #:checked #:pred string?)
+  (blurb #:init-keyword #:blurb #:allocation #:checked #:pred string?)
+  (flags #:init-keyword #:flags #:init-value '(read write)
+         #:allocation #:checked #:pred number?
+         #:trans (lambda (x)
+                   (apply + (gflags->value-list
+                             (make <gparam-spec-flags> #:value x)))))
+  #:gtype-name "GParam"
+  #:metaclass <gparam-class>)
+
+(dynamic-call "scm_init_gnome_gobject_parameters"
+              (dynamic-link *guile-gnome-gobject-lib-path*))
+
+(define-class-with-docs <gparam-char> (<gparam>)
+  "Parameter for @code{<gchar>} values."
+  (minimum
+   #:init-keyword #:minimum #:init-value (integer->char 0)
+   #:allocation #:checked #:pred char?)
+  (maximum
+   #:init-keyword #:maximum #:init-value (integer->char 127)
+   #:allocation #:checked #:pred char?)
+  (default-value
+   #:init-keyword #:default-value #:init-value (integer->char 127)
+   #:allocation #:checked #:pred char?)
+  #:value-type <gchar>
+  #:gtype-name "GParamChar")
+
+(define-class-with-docs <gparam-uchar> (<gparam>)
+  "Parameter for @code{<guchar>} values."
+  (minimum
+   #:init-keyword #:minimum #:init-value (integer->char 0)
+   #:allocation #:checked #:pred char?)
+  (maximum
+   #:init-keyword #:maximum #:init-value (integer->char 255)
+   #:allocation #:checked #:pred char?)
+  (default-value
+   #:init-keyword #:default-value #:init-value (integer->char 255)
+   #:allocation #:checked #:pred char?)
+  #:value-type <guchar>
+  #:gtype-name "GParamUChar")
+
+(define-class-with-docs <gparam-boolean> (<gparam>)
+  "Parameter for @code{<gboolean>} values."
+  (default-value
+   #:init-keyword #:default-value #:init-value #f
+   #:allocation #:checked #:pred boolean?)
+  #:value-type <gboolean>
+  #:gtype-name "GParamBoolean")
+
+(define-class-with-docs <gparam-int> (<gparam>)
+  "Parameter for @code{<gint>} values."
+  (minimum
+   #:init-keyword #:minimum #:init-value gparameter:int-min
+   #:allocation #:checked #:pred integer?)
+  (maximum
+   #:init-keyword #:maximum #:init-value gparameter:int-max
+   #:allocation #:checked #:pred integer?)
+  (default-value
+   #:init-keyword #:default-value #:init-value 0
+   #:allocation #:checked #:pred integer?)
+  #:value-type <gint>
+  #:gtype-name "GParamInt")
+
+(define-class-with-docs <gparam-uint> (<gparam>)
+  "Parameter for @code{<guint>} values."
+  (minimum
+   #:init-keyword #:minimum #:init-value 0
+   #:allocation #:checked #:pred integer?)
+  (maximum
+   #:init-keyword #:maximum #:init-value gparameter:uint-max
+   #:allocation #:checked #:pred integer?)
+  (default-value
+   #:init-keyword #:default-value #:init-value 0
+   #:allocation #:checked #:pred integer?)
+  #:value-type <guint>
+  #:gtype-name "GParamUInt")
+
+(define-class-with-docs <gparam-long> (<gparam>)
+  "Parameter for @code{<glong>} values."
+  (minimum
+   #:init-keyword #:minimum #:init-value gparameter:long-min
+   #:allocation #:checked #:pred integer?)
+  (maximum
+   #:init-keyword #:maximum #:init-value gparameter:long-max
+   #:allocation #:checked #:pred integer?)
+  (default-value
+   #:init-keyword #:default-value #:init-value 0
+   #:allocation #:checked #:pred integer?)
+  #:value-type <glong>
+  #:gtype-name "GParamLong")
+
+(define-class-with-docs <gparam-ulong> (<gparam>)
+  "Parameter for @code{<gulong>} values."
+  (minimum
+   #:init-keyword #:minimum #:init-value 0
+   #:allocation #:checked #:pred integer?)
+  (maximum
+   #:init-keyword #:maximum #:init-value gparameter:ulong-max
+   #:allocation #:checked #:pred integer?)
+  (default-value
+   #:init-keyword #:default-value #:init-value 0
+   #:allocation #:checked #:pred integer?)
+  #:value-type <gulong>
+  #:gtype-name "GParamULong")
+
+(define-class-with-docs <gparam-int64> (<gparam>)
+  "Parameter for @code{<gint64>} values."
+  (minimum
+   #:init-keyword #:minimum #:init-value gparameter:int64-min
+   #:allocation #:checked #:pred integer?)
+  (maximum
+   #:init-keyword #:maximum #:init-value gparameter:int64-max
+   #:allocation #:checked #:pred integer?)
+  (default-value
+   #:init-keyword #:default-value #:init-value 0
+   #:allocation #:checked #:pred integer?)
+  #:value-type <gint64>
+  #:gtype-name "GParamInt64")
+
+(define-class-with-docs <gparam-uint64> (<gparam>)
+  "Parameter for @code{<guint64>} values."
+  (minimum
+   #:init-keyword #:minimum #:init-value 0
+   #:allocation #:checked #:pred integer?)
+  (maximum
+   #:init-keyword #:maximum #:init-value gparameter:uint64-max
+   #:allocation #:checked #:pred integer?)
+  (default-value
+   #:init-keyword #:default-value #:init-value 0
+   #:allocation #:checked #:pred integer?)
+  #:value-type <guint64>
+  #:gtype-name "GParamUInt64")
+
+(define-class-with-docs <gparam-float> (<gparam>)
+  "Parameter for @code{<gfloat>} values."
+  (minimum
+   #:init-keyword #:minimum #:init-value (- gparameter:float-max)
+   #:allocation #:checked #:pred real?)
+  (maximum
+   #:init-keyword #:maximum #:init-value gparameter:float-max
+   #:allocation #:checked #:pred real?)
+  (default-value
+   #:init-keyword #:default-value #:init-value 0.0
+   #:allocation #:checked #:pred real?)
+  #:value-type <gfloat>
+  #:gtype-name "GParamFloat")
+
+(define-class-with-docs <gparam-double> (<gparam>)
+  "Parameter for @code{<gdouble>} values."
+  (minimum
+   #:init-keyword #:minimum #:init-value (- gparameter:double-max)
+   #:allocation #:checked #:pred real?)
+  (maximum
+   #:init-keyword #:maximum #:init-value gparameter:double-max
+   #:allocation #:checked #:pred real?)
+  (default-value
+   #:init-keyword #:default-value #:init-value 0.0
+   #:allocation #:checked #:pred real?)
+  #:value-type <gdouble>
+  #:gtype-name "GParamDouble")
+
+(define-class-with-docs <gparam-pointer> (<gparam>)
+  "Parameter for @code{<gpointer>} values."
+  #:value-type <gpointer>
+  #:gtype-name "GParamPointer")
+
+(define-class-with-docs <gparam-string> (<gparam>)
+  "Parameter for @code{<gchararray>} values."
+  (default-value
+   #:init-keyword #:default-value #:init-value ""
+   #:allocation #:checked #:pred (lambda (x) (or (not x) (string? x))))
+  #:value-type <gchararray>
+  #:gtype-name "GParamString")
+
+(define (class-is-a? x is-a)
+  (memq is-a (class-precedence-list x)))
+
+(define-class-with-docs <gparam-boxed> (<gparam>)
+  "Parameter for @code{<gboxed>} values."
+  (boxed-type
+   #:init-keyword #:boxed-type #:allocation #:checked
+   #:pred (lambda (x) (class-is-a? x <gboxed>)))
+  #:value-type <gboxed>
+  #:gtype-name "GParamBoxed")
+
+(define-class-with-docs <gparam-enum> (<gparam>)
+  "Parameter for @code{<genum>} values."
+  (enum-type
+   #:init-keyword #:enum-type #:allocation #:checked
+   #:pred (lambda (x) (class-is-a? x <genum>)))
+  (default-value
+   #:init-keyword #:default-value #:init-value 0
+   #:allocation #:checked #:pred number?)
+  #:value-type <genum>
+  #:gtype-name "GParamEnum")
+
+(define-class-with-docs <gparam-flags> (<gparam>)
+  "Parameter for @code{<gflags>} values."
+  (flags-type
+   #:init-keyword #:flags-type #:allocation #:checked
+   #:pred (lambda (x) (class-is-a? x <gflags>)))
+  (default-value
+   #:init-keyword #:default-value #:init-value 0
+   #:allocation #:checked #:pred number?)
+  #:value-type <gflags>
+  #:gtype-name "GParamFlags")
+
+(define-class-with-docs <gparam-value-array> (<gparam>)
+  "Parameter for @code{<gvalue-array>} values."
+  (element-spec
+   #:init-keyword #:element-spec #:allocation #:checked
+   #:pred (lambda (x) (is-a? x <gparam>)))
+  #:value-type <gvalue-array>
+  #:gtype-name "GParamValueArray")
+
+;;;
+;;; {Instance Initialization}
+;;;
+
+;; fixme, make me more useful
 (define-method (write (param <gparam>) file)
-  (let ((class (class-of param)))
+  (let ((class (class-of param))
+        (loc (number->string (object-address param) 16)))
     (if (slot-bound? class 'name)
-        (begin
-          (display "#<" file)
-          (display (class-name class) file)
-          (display #\space file)
-          (display-address param file)
-          (display #\space file)
-          (if (slot-ref param 'gtype-instance)
-              (write (gparam->param-struct param) file)
-              (display "(uninitialized)" file))
-          (display #\> file))
-        (next-method))))
+        (with-accessors (name)
+          (format file "<~a ~a ~a>" (class-name class) (name param) loc))
+        (format file "<~a (uninitialized) ~a>" (class-name class) loc))))

@@ -26,14 +26,16 @@
 ;;; Code:
 
 (define-module (gnome gobject utils)
+  #:use-module (oop goops)
   #:use-module (srfi srfi-13)
   #:use-module (ice-9 documentation)
   #:export     (GStudlyCapsExpand
                 gtype-name->scheme-name-alist gtype-name->scheme-name
-                gtype-name->class-name gtype-name->method-name
+                gtype-name->class-name gtype-class-name->method-name
                 re-export-modules
                 define-macro-with-docs define-with-docs
-                define-generic-with-docs define-class-with-docs))
+                define-generic-with-docs define-class-with-docs
+                unless with-accessors))
 
 ;;;
 ;;; {Miscellaneous}
@@ -162,15 +164,17 @@ suitable name of a Scheme class, such as @code{<gtk-window>}. Uses
   (string->symbol
    (string-append "<" (gtype-name->scheme-name type-name) ">")))
 
-(define (gtype-name->method-name type-name name)
+(define (gtype-class-name->method-name class-name name)
   "Generate the name of a method given the name of a @code{<gtype>} and
 the name of the operation. For example:
 @lisp
  (gtype-name->method-name \"GtkFoo\" \"bar\") @result{} gtk-foo:bar
 @end lisp
 Uses @code{gtype-name->scheme-name}."
-  (string->symbol
-   (string-append type-name ":" (symbol->string name))))
+  (let ((class-string (symbol->string class-name)))
+    (string->symbol
+     (string-append (substring class-string 1 (1- (string-length class-string)))
+                    ":" (symbol->string name)))))
 
 (define-macro-with-docs (re-export-modules . args)
   "Re-export the public interface of a module or modules. Invoked as
@@ -183,3 +187,14 @@ Uses @code{gtype-name->scheme-name}."
            (module-use! (module-public-interface (current-module))
                         (resolve-interface ',(car args)))
            (re-export-modules ,@(cdr args))))))
+
+(define-macro (unless test . body)
+  `(if (not ,test) (begin ,@body)))
+
+(define-macro (with-accessors names . body)
+  `(let (,@(map (lambda (name)
+                  `(,name ,(make-procedure-with-setter
+                            (lambda (x) (slot-ref x name))
+                            (lambda (x y) (slot-set! x name y)))))
+                names))
+     ,@body))

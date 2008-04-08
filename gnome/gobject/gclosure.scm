@@ -54,100 +54,18 @@
 (dynamic-call "scm_init_gnome_gobject_closures"
               (dynamic-link *guile-gnome-gobject-lib-path*))
 
-(define-class <gclosure-class> (<gtype-class>))
-(define-class-with-docs <gclosure> ()
+(define-class-with-docs <gclosure> (<gvalue>)
   "The Scheme representation of a GLib closure: a typed procedure
-object that can be passed to other languages."
-  closure
-  return-type
-  param-types
-  #:gtype gtype:gclosure
-  #:metaclass <gclosure-class>)
+object that can be passed to other languages." ;; FIXME say something about initargs
+  #:gtype-name "GClosure")
 
 ;;;
 ;;; {Instance Allocation and Initialization}
 ;;;
 
-(define-method (allocate-instance (class <gclosure-class>) initargs)
-  (next-method))
-
 (define-method (initialize (closure <gclosure>) initargs)
-  (let* ((func (get-keyword #:func initargs *unspecified*))
-	 (rettype (get-keyword #:return-type initargs gtype:void))
-	 (paramtypes (get-keyword #:param-types initargs '())))
-    (if (unspecified? func)
-        (gruntime-error "Missing #:func argument"))
-    (or (procedure? func)
-	(gruntime-error "Wrong type argument: ~S" func))
-    (if (not (unspecified? rettype))
-        (if (not (is-a? rettype <gtype>))
-            (if (is-a? rettype <gtype-class>)
-                (set! rettype (gtype-class->type rettype))
-                (gruntime-error "#:rettype must be a <gtype> or a <gtype-class>: ~A"
-                                rettype))))
-    (set! paramtypes
-          (list->vector
-           (map
-            (lambda (ptype)
-              (cond
-               ((is-a? ptype <gtype>)
-                ptype)
-               ((is-a? ptype <gtype-class>)
-                (gtype-class->type ptype))
-               (else
-                (gruntime-error "Invalid closure parameter type: ~A" ptype))))
-            paramtypes)))
-
-    (let* ((newfunc (lambda (. args)
-		      (let* ((newargs (map (lambda (x) (gvalue->scm x)) args))
-			     (retval (apply func newargs)))
-                        (if (and (not (eq? rettype gtype:void))
-                                 (unspecified? retval))
-                            (gruntime-error
-                             "Function returned no value, but expected ~S" rettype)
-                            (scm->gvalue rettype retval))))))
-      (slot-set! closure 'closure (gclosure-primitive-new newfunc)))
-    (slot-set! closure 'return-type rettype)
-    (slot-set! closure 'param-types paramtypes)
-    (next-method)))
-    
-;;;
-;;; {Methods for Writing}
-;;;
-
-(define-method (write (closure <gclosure>) file)
-  (let* ((class (class-of closure)))
-    (display "#<gclosure " file)
-    (display (class-name class) file)
-    (display #\space file)
-    (display (slot-ref closure 'return-type) file)
-    (display " - " file)
-    (display (slot-ref closure 'param-types) file)
-    (display #\> file)))
-
-;;;
-;;; {Miscellaneous}
-;;;
-
-(define (gclosure-invoke closure . args)
-  "Invoke a closure. The arguments @var{args} will be converted to
-@code{<gvalue>} objects of the appropriate type, and the return value
-will be run through @code{gvalue->scm}. For all practical purposes, this
-function is like @code{apply}."
-  (let* ((primitive-closure (slot-ref closure 'closure))
-	 (return-type (slot-ref closure 'return-type))
-	 (param-types (slot-ref closure 'param-types))
-	 (num-params (vector-length param-types)))
-    (or (eq? (length args) (vector-length param-types))
-	(gruntime-error "Wrong number of arguments"))
-    (let* ((params (do ((index 0 (+ index 1))
-			(params (make-vector num-params #f)))
-		       ((>= index num-params) params)
-		     (let* ((value-type (vector-ref param-types index))
-			    (init-value (list-ref args index))
-			    (value (scm->gvalue value-type init-value)))
-		       (vector-set! params index value))))
-	   (retval (gclosure-primitive-invoke primitive-closure
-                                              return-type params)))
-      (if (not (unspecified? retval))
-          (gvalue->scm retval)))))
+  ;; don't chain up, we do our own init
+  (let ((return-type (get-keyword #:return-type initargs #f))
+        (param-types (get-keyword #:param-types initargs '()))
+        (func (get-keyword #:func initargs #f)))
+    (%gclosure-construct closure return-type param-types func)))
