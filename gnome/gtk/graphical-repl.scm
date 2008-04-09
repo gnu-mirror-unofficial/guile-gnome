@@ -381,6 +381,7 @@
             (loop (cdr l) next-col))))))
 
 (define-method (initialize (obj <guile-gtk-repl>) initargs)
+  (next-method)
   (slot-set! obj 'entry (make <guile-gtk-repl-entry>))
   (slot-set! obj 'output (make <gtk-buffer-output-port>))
   (slot-set! obj 'scrolled (make <gtk-scrolled-window>

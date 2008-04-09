@@ -1,3 +1,10 @@
+2008-04-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gtk/graphical-repl.scm (initialize): Chain up.
+
+	* gnome/contrib/texinfo-buffer.scm (<stexi-ref-tag>): Fix the
+	fixes.
+
 2008-04-08  Andy Wingo  <wingo@pobox.com>
 
 	Updates for (gnome gobject) api change

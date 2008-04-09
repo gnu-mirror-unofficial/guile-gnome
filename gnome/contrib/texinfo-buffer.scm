@@ -158,9 +158,9 @@ manual."
   `(smallexample ,@body #\newline (small #\newline)))
 
 (define-class <stexi-ref-tag> (<gtk-text-tag>)
-  (node #:gparam `(,<gparam-boxed> #:boxed-type <gboxed-scm>
+  (node #:gparam `(,<gparam-boxed> #:boxed-type ,<gboxed-scm>
                                    #:flags (read write)))
-  (manual #:gparam `(,<gparam-boxed> #:boxed-type <gboxed-scm>
+  (manual #:gparam `(,<gparam-boxed> #:boxed-type ,<gboxed-scm>
                                      #:flags (read write))))
 
 (define-method (initialize (obj <stexi-ref-tag>) initargs)
