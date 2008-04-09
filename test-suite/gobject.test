@@ -121,6 +121,9 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
   (pass-if "creating enum by value"
            (gvalue? (make enum-class #:value 1)))
   
+  (pass-if "gvalue->scm on an enum is a <gvalue>"
+           (gvalue? (gvalue->scm (make enum-class #:value 'a))))
+
   (pass-if "getting enum nick"
            (eq? (genum->symbol (make enum-class #:value 'a)) 'a))
   
@@ -153,6 +156,13 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
 
   (pass-if "creating flags by mixed list"
            (gvalue? (make flags-class #:value '(c "BBBB"))))
+
+  (pass-if "gvalue->scm on a flags is a <gvalue>"
+           (gvalue? (gvalue->scm (make flags-class #:value '(4 8)))))
+
+  (pass-if "getting flags as one int value"
+           (equal? (gflags->value (make flags-class #:value '(4 8)))
+                   12))
 
   (pass-if "getting flags nicks"
            (equal? (gflags->symbol-list

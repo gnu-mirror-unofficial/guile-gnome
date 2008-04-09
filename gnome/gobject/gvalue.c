@@ -227,12 +227,6 @@ scm_c_gvalue_ref (const GValue *gvalue)
     case G_TYPE_DOUBLE:
 	return scm_make_real (g_value_get_double (gvalue));
 
-    case G_TYPE_ENUM:
-	return SCM_MAKINUM (g_value_get_enum (gvalue));
-
-    case G_TYPE_FLAGS:
-	return SCM_MAKINUM (g_value_get_flags (gvalue));
-
     case G_TYPE_STRING:
 	return scm_makfrom0str (g_value_get_string (gvalue));
 
@@ -435,6 +429,19 @@ scm_c_scm_to_enum_value (GEnumClass *enum_class, SCM value)
 }
 #undef FUNC_NAME
 
+SCM_DEFINE (scm_genum_to_value, "genum->value", 1, 0, 0,
+            (SCM value),
+            "Convert the enumerated value @var{obj} from a @code{<gvalue>} to "
+            "its representation as an integer.")
+#define FUNC_NAME s_scm_genum_to_value
+{
+    SCM_ASSERT (scm_c_gvalue_holds (value, G_TYPE_ENUM), value, SCM_ARG1,
+                FUNC_NAME);
+
+    return scm_from_int (g_value_get_enum (scm_c_gvalue_peek_value (value)));
+}
+#undef FUNC_NAME
+
 static guint
 scm_c_scm_to_flags_value (GFlagsClass *flags_class, SCM value)
 #define FUNC_NAME "%scm->flags-value"
@@ -495,6 +502,19 @@ scm_c_scm_to_flags_value (GFlagsClass *flags_class, SCM value)
         return 0; /* not reached */
     }
 #undef ERROR
+}
+#undef FUNC_NAME
+
+SCM_DEFINE (scm_gflags_to_value, "gflags->value", 1, 0, 0,
+            (SCM value),
+            "Convert the flags value @var{obj} from a @code{<gvalue>} to "
+            "its representation as an integer.")
+#define FUNC_NAME s_scm_gflags_to_value
+{
+    SCM_ASSERT (scm_c_gvalue_holds (value, G_TYPE_FLAGS), value, SCM_ARG1,
+                FUNC_NAME);
+
+    return scm_from_int (g_value_get_flags (scm_c_gvalue_peek_value (value)));
 }
 #undef FUNC_NAME
 

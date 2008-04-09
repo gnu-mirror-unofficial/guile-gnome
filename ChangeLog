@@ -1,5 +1,16 @@
 2008-04-09  Andy Wingo  <wingo@pobox.com>
 
+	* test-suite/gobject.test ("genum values", "gflags values"): Add
+	some tests.
+
+	* gnome/gobject/gvalue.scm: (gflags->element-list, genum->enum):
+	Use the ->value functions defined in C.
+
+	* gnome/gobject/gvalue.c (scm_c_gvalue_ref): Don't turn <genum>
+	and <gflags> values into ints, leave them as gvalues.
+	(genum->value, gflags->value): Implemented in C. The latter
+	function is new.
+
 	* gnome/gobject/private.h:
 	* gnome/gobject/gtype.c (scm_sys_gtype_instance_construct): Export
 	scm_c_gtype_instance_bind_to_object instead. Allow for the

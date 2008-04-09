@@ -70,6 +70,7 @@
                 scm->gvalue gvalue->scm
                 ;; Enums and Flags
                 genum->symbol genum->name genum->value
+                gflags->value
                 gflags->symbol-list gflags->name-list gflags->value-list))
 
 ;;;
@@ -256,7 +257,8 @@ in a format suitable for passing to @code{genum-register-static}."
 
 (define (genum->enum obj)
   (vtable-by-value (genum-class->value-table (class-of obj))
-                   (gvalue->scm obj)))
+                   (genum->value obj)))
+
 (define (genum->symbol obj)
   "Convert the enumerated value @var{obj} from a @code{<gvalue>} to its
 symbol representation (its ``nickname'')."
@@ -266,11 +268,6 @@ symbol representation (its ``nickname'')."
   "Convert the enumerated value @var{obj} from a @code{<gvalue>} to its
 representation as a string (its ``name'')."
   (vtable-name (genum->enum obj)))
-
-(define (genum->value obj)
-  "Convert the enumerated value @var{obj} from a @code{<gvalue>} to its
-representation as an integer."
-  (vtable-index (genum->enum obj)))
 
 ;;;
 ;;; {Flags}
@@ -302,7 +299,7 @@ in a format suitable for passing to @code{gflags-register-static}."
 
 (define (gflags->element-list obj)
   (let ((vtable (gflags-class->value-table (class-of obj)))
-        (value (gvalue->scm obj)))
+        (value (gflags->value obj)))
     (filter (lambda (v)
               (= (logand value (vtable-index v)) (vtable-index v)))
             (vector->list vtable))))
