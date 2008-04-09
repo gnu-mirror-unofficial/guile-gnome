@@ -1,3 +1,8 @@
+2007-12-17  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/gw/libgnomecanvas-support.c ("guile-gnome-scm-to-canvas-points"):
+	Compile fix.
+
 2008-04-08  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/libgnomecanvas-support.c
