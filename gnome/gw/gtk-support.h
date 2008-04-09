@@ -115,3 +115,4 @@ guint _wrap_gtk_ui_manager_add_ui_from_string (GtkUIManager *ui, const gchar *st
 GdkWindow* gtk_widget_get_window (GtkWidget *widget);
 GdkRectangle* gtk_widget_get_allocation (GtkWidget *widget);
 void _wrap_gtk_drag_dest_set (GtkWidget *widget, GtkDestDefaults flags, const GList *types, GdkDragAction actions);
+GtkStateType gtk_widget_get_state (GtkWidget *widget);

@@ -1,3 +1,10 @@
+2007-12-17  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/gw/gtk-support.h: 
+	* gnome/gw/gtk-support.c (gtk_widget_get_state): New function.
+
+	* gnome/overrides/gtk.defs (get_state): New method.
+
 2008-04-09  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gtk/graphical-repl.scm (initialize): Chain up.

@@ -836,6 +836,12 @@
   (c-name "gtk_widget_get_allocation")
   (return-type "GdkRectangle*")) ;; same as GtkAllocation
 
+(define-method get_state
+  (of-object "GtkWidget")
+  (c-name "gtk_widget_get_state")
+  (return-type "GtkStateType")
+)
+
 (ignore-glob  "*_get_type"
               "_*"
               "*_ref"
