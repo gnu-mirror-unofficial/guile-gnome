@@ -296,7 +296,7 @@ scm_with_c_gtype_instance_instance_init (GTypeInstance *g_instance,
                instance is alive */
             scm_c_gtype_instance_to_scm_typed (g_instance, type);
         else
-            scm_c_gtype_instance_set_cached (g_instance, under_construction);
+            scm_c_gtype_instance_bind_to_object (g_instance, under_construction);
             
 	break;
     }

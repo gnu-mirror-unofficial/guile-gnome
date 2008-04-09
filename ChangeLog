@@ -1,5 +1,15 @@
 2008-04-09  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gobject/private.h:
+	* gnome/gobject/gtype.c (scm_sys_gtype_instance_construct): Export
+	scm_c_gtype_instance_bind_to_object instead. Allow for the
+	possibility that construct() bound the instance.
+
+	* gnome/gobject/gobject.c
+	(scm_with_c_gtype_instance_instance_init): Use bind_to_object; the
+	incomplete set_cached() is insufficient if e.g. the
+	gobject:set-property calls API on the object.
+
 	* test-suite/gobject.test ("defining custom gobject type"): Add a
 	test for the construct arg behaviour.
 

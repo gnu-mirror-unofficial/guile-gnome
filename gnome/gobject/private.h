@@ -52,7 +52,7 @@ struct _GuileGTypeClass {
 };
 
 SCM scm_c_gtype_instance_to_scm_typed (gpointer ginstance, GType type);
-void scm_c_gtype_instance_set_cached (gpointer instance, SCM scm);
+void scm_c_gtype_instance_bind_to_object (gpointer ginstance, SCM object);
 
 
 G_END_DECLS

@@ -378,7 +378,7 @@ scm_c_gtype_instance_get_cached (gpointer instance)
     return SCM_BOOL_F;
 }
 
-void
+static void
 scm_c_gtype_instance_set_cached (gpointer instance, SCM scm)
 {
     scm_t_gtype_instance_funcs *funcs;
@@ -477,7 +477,7 @@ scm_gtype_instance_unbind (scm_t_bits *slots)
     }
 }
 
-static void
+void
 scm_c_gtype_instance_bind_to_object (gpointer ginstance, SCM object)
 {
     scm_t_bits *slots = SCM_STRUCT_DATA (object);
@@ -504,9 +504,16 @@ SCM_DEFINE_STATIC (scm_sys_gtype_instance_construct, "%gtype-instance-construct"
     if (ginstance && ginstance != (gpointer)SCM_UNBOUND) {
         scm_c_gtype_instance_initialize_scm (instance, ginstance);
     } else {
-        ginstance = scm_c_gtype_instance_construct (instance, initargs);
-        scm_c_gtype_instance_bind_to_object (ginstance, instance);
-        scm_c_gtype_instance_unref (ginstance);
+        gpointer new_ginstance;
+        new_ginstance = scm_c_gtype_instance_construct (instance, initargs);
+        ginstance = (gpointer)SCM_STRUCT_DATA (instance)[0];
+        
+        /* it's possible the construct function bound the object already, as is
+         * the case for scheme-defined gobjects */
+        if (new_ginstance != ginstance)
+            scm_c_gtype_instance_bind_to_object (new_ginstance, instance);
+
+        scm_c_gtype_instance_unref (new_ginstance);
     }
         
     return SCM_UNSPECIFIED;
