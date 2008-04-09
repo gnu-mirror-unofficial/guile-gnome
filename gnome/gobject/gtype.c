@@ -378,7 +378,7 @@ scm_c_gtype_instance_get_cached (gpointer instance)
     return SCM_BOOL_F;
 }
 
-static void
+void
 scm_c_gtype_instance_set_cached (gpointer instance, SCM scm)
 {
     scm_t_gtype_instance_funcs *funcs;

@@ -169,23 +169,24 @@ is_init_keyword (SCM slots, SCM kw)
 }
 
 static void
-push_in_construction_from_scheme (void)
+push_in_construction_from_scheme (SCM instance)
 {
-    int val = scm_to_int (scm_fluid_ref (_in_construction_from_scheme));
-    scm_fluid_set_x (_in_construction_from_scheme, scm_from_int (val + 1));
+    SCM stack = scm_fluid_ref (_in_construction_from_scheme);
+    scm_fluid_set_x (_in_construction_from_scheme, scm_cons (instance, stack));
 }
 
 static void
 pop_in_construction_from_scheme (void)
 {
-    int val = scm_to_int (scm_fluid_ref (_in_construction_from_scheme));
-    scm_fluid_set_x (_in_construction_from_scheme, scm_from_int (val - 1));
+    SCM stack = scm_fluid_ref (_in_construction_from_scheme);
+    scm_fluid_set_x (_in_construction_from_scheme, scm_cdr (stack));
 }
 
-static gboolean
+static SCM
 in_construction_from_scheme (void)
 {
-    return scm_to_int (scm_fluid_ref (_in_construction_from_scheme)) >= 0;
+    SCM stack = scm_fluid_ref (_in_construction_from_scheme);
+    return scm_is_null (stack) ? SCM_BOOL_F : scm_car (stack);
 }
 
 static gpointer
@@ -241,7 +242,7 @@ scm_c_gobject_construct (SCM instance, SCM initargs)
         i++;
     }
     
-    push_in_construction_from_scheme ();
+    push_in_construction_from_scheme (instance);
     gobject = g_object_newv (gtype, i, params);
     pop_in_construction_from_scheme ();
 
@@ -282,17 +283,20 @@ scm_with_c_gtype_instance_instance_init (GTypeInstance *g_instance,
     switch (G_TYPE_FUNDAMENTAL (type)) {
     case G_TYPE_OBJECT: {
 	GuileGTypeClass *guile_class;
+        SCM under_construction = in_construction_from_scheme ();
 
 	guile_class = g_type_get_qdata (type, quark_guile_gtype_class);
 	guile_class->first_instance_created = TRUE;
 
-        if (!in_construction_from_scheme ())
+        if (scm_is_false (under_construction))
             /* not strictly necessary from the pov of c code, but we want to
                make sure that g_object_new () causes `initialize' to be called
                on a new scheme object -- hence this call that just serves to
                associate a scheme object with the instance as long as the
                instance is alive */
             scm_c_gtype_instance_to_scm_typed (g_instance, type);
+        else
+            scm_c_gtype_instance_set_cached (g_instance, under_construction);
             
 	break;
     }
@@ -718,11 +722,7 @@ scm_init_gnome_gobject (void)
          (SCMGValueSetTypeInstanceFunc)g_value_set_object);
 
     _in_construction_from_scheme = scm_permanent_object (scm_make_fluid ());
-    /* there is a case where the fluid won't be set before entering
-       scm_c_gtype_instance_instance_init: if the class is instantiated from C
-       via g_object_new instead of from scheme via `make'. Give the initargs a
-       sane value in that case. */
-    scm_fluid_set_x (_in_construction_from_scheme, scm_from_int (0));
+    scm_fluid_set_x (_in_construction_from_scheme, SCM_EOL);
 
     quark_guile_gtype_class = g_quark_from_static_string ("%scm-guile-gtype-class");
 }

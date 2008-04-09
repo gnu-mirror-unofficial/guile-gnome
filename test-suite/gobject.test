@@ -219,7 +219,37 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
            (gvalue? (gclosure-invoke closure-with-boxed-retval <gclosure>)))
   )
 
+(define-class <my-object> (<gobject>)
+  (int #:gparam `(,<gparam-int> #:minimum 2 #:maximum 100 #:default-value 3
+                                #:flags (read write construct)))
+  scm)
+(define-method (gobject:set-property (object <my-object>) key val)
+  (next-method)
+  (case key
+    ((int) (slot-set! object 'scm val))
+    (else (error "unknown property" key))))
 
+(with-test-prefix "defining custom gobject type"
+ (pass-if "construction succeeds"
+          (is-a? (make <my-object>) <my-object>))
+
+ (pass-if "construct arg set correctly"
+          (let ((o (make <my-object>)))
+            (= (gobject-get-property o 'int) 3)))
+
+ (pass-if "construct arg overridable"
+          (let ((o (make <my-object> #:int 4)))
+            (= (gobject-get-property o 'int) 4)))
+
+ (pass-if "arg settable"
+          (let ((o (make <my-object>)))
+            (gobject-set-property o 'int 10)
+            (= (gobject-get-property o 'int) 10)))
+
+ (pass-if "the same object is seen in construct gobject:set-property and afterwards"
+          (let ((o (make <my-object>)))
+            (= (slot-ref o 'scm) 3))))
+ 
 ;; Local Variables:
 ;; mode: scheme
 ;; End:

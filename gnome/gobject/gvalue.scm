@@ -169,11 +169,11 @@ generic C structures. Use @code{gvalue->type} on an instance of this
 class to determine what type it holds."
   #:gtype-name "GBoxed")
 
-(define-class-with-docs <gvalue-array> (<gvalue>)
+(define-class-with-docs <gvalue-array> (<gboxed>)
   "A @code{<gvalue>} class for arrays of @code{<gvalue>}."
   #:gtype-name "GValueArray")
 
-(define-class-with-docs <gboxed-scm> (<gvalue>)
+(define-class-with-docs <gboxed-scm> (<gboxed>)
   "A @code{<gboxed>} class for holding arbitrary Scheme objects."
   #:gtype-name "GBoxedSCM")
 

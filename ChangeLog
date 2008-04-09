@@ -1,3 +1,24 @@
+2008-04-09  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/gobject.test ("defining custom gobject type"): Add a
+	test for the construct arg behaviour.
+
+	* gnome/gobject/private.h:
+	* gnome/gobject/gtype.c (scm_c_gtype_instance_set_cached): Expose
+	this internal piece to gobject.c.
+
+	* gnome/gobject/gobject.c (push_in_construction_from_scheme)
+	(pop_in_construction_from_scheme, in_construction_from_scheme):
+	Keep a stack of SCM objects under construction.
+	(scm_with_c_gtype_instance_instance_init): If there is an object
+	under construction, associate it with the GTypeInstance*, so that
+	gobject:set-property calls for construct properties see the same
+	SCM as the one under construction.
+
+	* gnome/gobject/gvalue.scm (<gboxed-scm>, <gvalue-array>):
+	* gnome/gobject/gclosure.scm (<gclosure>): Inherit from <gboxed>,
+	because that's how they roll.
+
 2008-04-08  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gobject/gtype.h:

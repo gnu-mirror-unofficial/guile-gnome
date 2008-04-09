@@ -54,7 +54,7 @@
 (dynamic-call "scm_init_gnome_gobject_closures"
               (dynamic-link *guile-gnome-gobject-lib-path*))
 
-(define-class-with-docs <gclosure> (<gvalue>)
+(define-class-with-docs <gclosure> (<gboxed>)
   "The Scheme representation of a GLib closure: a typed procedure
 object that can be passed to other languages." ;; FIXME say something about initargs
   #:gtype-name "GClosure")
