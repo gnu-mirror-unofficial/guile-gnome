@@ -245,6 +245,23 @@ SCM_DEFINE_STATIC (scm_sys_gtype_class_bind, "%gtype-class-bind", 2, 0, 0,
     g_type_set_qdata (gtype, quark_class, scm_permanent_object (class));
     slots = SCM_STRUCT_DATA (class);
     slots[gtype_struct_offset (class)] = gtype;
+        
+    scm_dynwind_end ();
+
+    return SCM_UNSPECIFIED;
+}
+#undef FUNC_NAME
+
+SCM_DEFINE_STATIC (scm_sys_gtype_class_inherit_magic, "%gtype-class-inherit-magic", 1, 0, 0,
+                   (SCM class))
+#define FUNC_NAME s_scm_sys_gtype_class_inherit_magic
+{
+    GType gtype;
+    scm_t_bits *slots;
+
+    SCM_VALIDATE_GTYPE_CLASS_COPY (1, class, gtype);
+
+    slots = SCM_STRUCT_DATA (class);
     /* inherit class free function */
     if (g_type_parent (gtype)) {
         SCM parent = scm_c_gtype_to_class (g_type_parent (gtype));
@@ -255,10 +272,9 @@ SCM_DEFINE_STATIC (scm_sys_gtype_class_bind, "%gtype-class-bind", 2, 0, 0,
         SCM parent = scm_cadr (scm_class_precedence_list (class));
         slots[scm_struct_i_free] = SCM_STRUCT_DATA (parent)[scm_struct_i_free];
     } else {
-        /* carp? */
+        scm_c_gruntime_error (FUNC_NAME, "No free function for SCM class %s!",
+                              SCM_LIST1 (class));
     }
-        
-    scm_dynwind_end ();
 
     return SCM_UNSPECIFIED;
 }

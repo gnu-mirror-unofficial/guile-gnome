@@ -80,7 +80,7 @@
 (define-class <gvalue-class> (<gtype-class>))
 
 (define-class <gvalue> ()
-  (value #:class <opaque-slot>)
+  (value #:class <read-only-slot>)
   #:gtype-name #t
   #:metaclass <gvalue-class>)
 

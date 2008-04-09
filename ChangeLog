@@ -1,5 +1,14 @@
 2008-04-09  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gobject/gtype.c (%gtype-class-bind)
+	(%gtype-class-inherit-magic)
+	* gnome/gobject/gtype.scm (initialize on <gtype-class>): We do
+	need to bind the gtype to the class before calling next-method,
+	but also we have to munge the class' free function after the
+	next-method. Therefore split %gtype-class-inherit-magic out of
+	%gtype-class-bind. Fixes things not being freed because the base
+	%inherit-magic overwrite our struct free function.
+
 	* test-suite/gobject.test ("genum values", "gflags values"): Add
 	some tests.
 

@@ -71,8 +71,7 @@
 (define-class-with-docs <gtype-class> (<class>)
   "The metaclass of all GType classes. Ensures that GType classes have a
 @code{gtype} slot, which records the primitive GType information for
-this class.{<%gtype-class>}
-objects that wrap the C values."
+this class."
   (gtype #:class <read-only-slot>))
 
 (define-method (initialize (class <gtype-class>) initargs)
@@ -84,7 +83,8 @@ objects that wrap the C values."
     (%gtype-class-bind class (if (eq? gtype-name #t)
                                  #f
                                  gtype-name))
-    (next-method)))
+    (next-method)
+    (%gtype-class-inherit-magic class)))
 
 (define-method (write (class <gtype-class>) file)
   (format file "#<~a ~a>" (class-name (class-of class)) (class-name class)))
