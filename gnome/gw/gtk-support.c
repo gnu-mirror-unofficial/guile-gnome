@@ -413,6 +413,33 @@ _wrap_gtk_list_store_append (GtkListStore *store)
     return new;
 }
 
+static void
+menu_position_fn (GtkMenu *menu, gint *x, gint *y, gboolean *push_in,
+                  gpointer data)
+{
+    SCM ret, proc = GPOINTER_TO_SCM (data);
+  
+    ret = scm_call_1 (proc, scm_c_gtype_instance_to_scm (menu));
+
+    *x = scm_to_int32 (scm_car (ret));
+    *y = scm_to_int32 (scm_cadr (ret));
+    *push_in = scm_is_true (scm_caddr (ret));
+}
+
+void
+_wrap_gtk_menu_popup (GtkMenu *menu, GtkWidget *parent_menu_shell,
+                      GtkWidget *parent_menu_item, SCM func,
+                      guint button, guint32 activate_time)
+{
+    if (scm_is_true (func))
+        gtk_menu_popup (menu, parent_menu_shell, parent_menu_item,
+                        menu_position_fn, SCM_TO_GPOINTER (func),
+                        button, activate_time);
+    else
+        gtk_menu_popup (menu, parent_menu_shell, parent_menu_item,
+                        NULL, NULL, button, activate_time);
+}
+
 /* FIXME: is this still necessary? */
 SCM
 _wrap_gtk_message_dialog_new (GtkWindow* parent, GtkDialogFlags flags, GtkMessageType type,

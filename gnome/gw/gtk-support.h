@@ -59,6 +59,10 @@ GtkTreeIter* _wrap_gtk_list_store_insert_after (GtkListStore *store, GtkTreeIter
 GtkTreeIter* _wrap_gtk_list_store_prepend (GtkListStore *store);
 GtkTreeIter* _wrap_gtk_list_store_append (GtkListStore *store);
 
+void _wrap_gtk_menu_popup (GtkMenu *menu, GtkWidget *parent_menu_shell,
+                           GtkWidget *parent_menu_item, SCM func,
+                           guint button, guint32 activate_time);
+
 SCM _wrap_gtk_message_dialog_new (GtkWindow* parent, GtkDialogFlags flags, GtkMessageType type, GtkButtonsType buttons, const gchar *text);
 
 gchar* _gtk_selection_data_get_as_string (GtkSelectionData *data);

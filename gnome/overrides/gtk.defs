@@ -303,6 +303,21 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkMenu
+(define-method popup
+  (of-object "GtkMenu")
+  (c-name "_wrap_gtk_menu_popup")
+  (overrides "gtk_menu_popup")
+  (return-type "none")
+  (leave-guile-mode #f)
+  (parameters
+    '("GtkWidget*" "parent_menu_shell" (null-ok))
+    '("GtkWidget*" "parent_menu_item" (null-ok))
+    '("SCM" "menu_position_func")
+    '("guint" "button")
+    '("guint32" "activate_time")
+  )
+)
+
 (define-function gtk_menu_get_for_attach_widget
   (c-name "gtk_menu_get_for_attach_widget")
   (overrides "gtk_menu_get_for_attach_widget")
@@ -1100,7 +1115,6 @@
  "gtk_list_unselect_child"
  "gtk_list_unselect_item"
  "gtk_menu_attach_to_widget"
- "gtk_menu_popup"
  "gtk_message_dialog_format_secondary_markup"
  "gtk_message_dialog_format_secondary_text"
  "gtk_notebook_query_tab_label_packing"
