@@ -1,12 +1,49 @@
 guile-gnome-glib NEWS --- history of user-visible changes.
-Copyright (C) 2004,2005,2006,2007 Free Software Foundation, Inc.
+Copyright (C) 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 10 Dec 2007.
+Last updated 10 Apr 2008.
 
 
 guile-gnome-glib is a Guile binding for GLib and GObject, including a
 bindings generator. It is part of GNU guile-gnome. This file documents
 the user-visible changes in guile-gnome-glib only.
+
+
+guile-gnome-glib 2.15.97 - Andy Wingo, 2008-04-10
+=================================================
+
+* Major rewrite of low-level (gnome gobject) code. 
+
+GTypes are no longer exposed to Scheme. Instead, types are represented
+directly as <gtype-class> instances.
+
+Internally, <gtype-class> instances know their GType, because is stored
+in a <read-only-slot>, which stores a raw (untagged) word -- the perfect
+size for a GType.
+
+Similarly, I also removed the need for <%gtype-instance> smobs as well,
+through interesting trickery: the GOOPS objects directly store the
+GTypeInstance* pointer in a <read-only-slot>. The trickery is that we
+can be notified when the struct is collected, via monkeypatching the
+<gtype-class> objects to free via a custom function,
+scm_gtype_instance_struct_free. This allows us to unref the object.
+
+The same strategy was applied to GValue wrappers. With this change,
+Guile-GNOME no longer holds C data in SMOBs.
+
+Removing the <gtype>, <%gtype-class>, <%gtype-instance>, and primitive
+<gvalue> types has allowed for the removal of much useless,
+non-orthogonal glue API.
+
+Signals and parameters are also represented natively with GOOPS objects,
+not structures. There is no overhead for this, as GOOPS objects are in
+fact structures, whose VTable is their class.
+
+This is an incompatible change, but one which allows me to commit to a
+stable API/ABI, perhaps in the next release.
+
+Please test your programs against this version, so that I can help you
+port, and so that we can make sure that the API is fine.
 
 
 guile-gnome-glib 2.15.96 - Andy Wingo, 2007-12-10
