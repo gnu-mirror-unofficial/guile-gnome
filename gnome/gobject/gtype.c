@@ -286,7 +286,11 @@ scm_c_gtype_class_to_gtype (SCM klass)
 {
     SCM_VALIDATE_GTYPE_CLASS (1, klass);
     
-    return scm_to_ulong (scm_slot_ref (klass, scm_sym_gtype));
+    /* FIXME: the following code should work, but slot-ref on 'u' slots was
+       busted until guile 1.8.5 
+       return scm_to_ulong (scm_slot_ref (klass, scm_sym_gtype));
+    */
+    return SCM_STRUCT_DATA (klass)[gtype_struct_offset (klass)];
 }
 #undef FUNC_NAME
 
@@ -570,7 +574,11 @@ scm_c_scm_to_gtype_instance (SCM instance)
     if (!SCM_IS_A_P (instance, scm_class_gtype_instance))
 	return NULL;
 
-    ulong = scm_slot_ref (instance, scm_sym_gtype_instance);
+    /* FIXME: the following code should work, but slot-ref on 'u' slots was
+       busted until guile 1.8.5 
+       ulong = scm_slot_ref (instance, scm_sym_gtype_instance);
+    */
+    ulong = scm_from_ulong (SCM_STRUCT_DATA (instance)[0]);
 
     if (ulong == SCM_UNBOUND)
         scm_c_gruntime_error ("%scm->gtype-instance",

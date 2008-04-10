@@ -1,3 +1,24 @@
+2008-04-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.c (scm_c_gtype_class_to_gtype)
+	(scm_c_scm_to_gtype_instance): Avoid scm_slot_ref on 'u' slots on
+	broken versions of Guile.
+
+	* gnome/gobject/gparameter.scm (compute-get-n-set): Use our new
+	%hacky-* struct accessors. (The accessors are not exported.)
+
+	* gnome/gobject/gparameter.c (scm_sys_hacky_struct_ref)
+	(scm_sys_hacky_struct_set_x): New functions, equivalent to
+	struct-ref and struct-set! from guile, except that they don't
+	check permissions or allocation, because we know them, and, more
+	crucially, they understand how to calculate n_fields for the
+	so-called "light structs". Should be unnecessary once the patches
+	submitted to guile-devel on 10 April 2008 are accepted.
+
+	Reminiscent of %get-struct-slot and %set-struct-slot! from gtype.c
+	before my rewrite, which were probably written in part to
+	compensate for this problem, under the haze of ignorance.
+
 2008-04-09  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gobject/gtype.c (%gtype-class-bind)

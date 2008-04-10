@@ -84,12 +84,17 @@
        (or pred (gruntime-error "Missing #:pred for #:checked slot"))
        ;; allocate a field in the struct
        (slot-set! class 'nfields (+ already-allocated 1))
+       ;; struct-ref and struct-set! don't work on the structs that back
+       ;; GOOPS objects, because they are "light structs", without the
+       ;; hidden word that says how many fields are in the struct.
+       ;; Patches submitted to guile-devel on 10 April 2008. Until then,
+       ;; use our own struct accessors.
        (list (lambda (instance)
-               (struct-ref instance already-allocated))
+               (%hacky-struct-ref instance already-allocated))
              (lambda (instance value)
                (let ((value (if trans (trans value) value)))
                  (if (pred value)
-                     (struct-set! instance already-allocated value)
+                     (%hacky-struct-set! instance already-allocated value)
                      (gruntime-error
                       "Bad value for slot ~A on instance ~A: ~A"
                       (slot-definition-name s) instance value)))))))

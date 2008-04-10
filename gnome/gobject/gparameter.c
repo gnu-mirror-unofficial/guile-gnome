@@ -394,6 +394,71 @@ scm_c_gparam_construct (SCM instance, SCM initargs)
     return pspec;
 }
 
+/* These next two functions are exactly equivalent to struct-ref and struct-set!
+ * from guile, except that they don't check permissions or allocation, because
+ * we know them, and, more crucially, they understand how to calculate n_fields
+ * for the so-called "light structs". Should be unnecessary once the patches
+ * submitted to guile-devel on 10 April 2008 are accepted. */
+SCM_DEFINE (scm_sys_hacky_struct_ref, "%hacky-struct-ref",
+            2, 0, 0, (SCM handle, SCM pos), "")
+#define FUNC_NAME s_scm_sys_hacky_struct_ref
+{
+  scm_t_bits * data;
+  SCM layout;
+  size_t layout_len;
+  size_t p;
+  scm_t_bits n_fields;
+
+  SCM_VALIDATE_STRUCT (1, handle);
+
+  layout = SCM_STRUCT_LAYOUT (handle);
+  data = SCM_STRUCT_DATA (handle);
+  p = scm_to_size_t (pos);
+
+  layout_len = scm_i_symbol_length (layout);
+  if (SCM_STRUCT_VTABLE_FLAGS (handle) & SCM_STRUCTF_LIGHT)
+    /* no extra words */
+    n_fields = layout_len / 2;
+  else
+    n_fields = data[scm_struct_i_n_words];
+  
+  SCM_ASSERT_RANGE(1, pos, p < n_fields);
+
+  return SCM_PACK (data[p]);
+}
+#undef FUNC_NAME
+
+SCM_DEFINE (scm_sys_hacky_struct_set_x, "%hacky-struct-set!",
+            3, 0, 0, (SCM handle, SCM pos, SCM val), "")
+#define FUNC_NAME s_scm_sys_hacky_struct_set_x
+{
+  scm_t_bits * data;
+  SCM layout;
+  size_t layout_len;
+  size_t p;
+  scm_t_bits n_fields;
+
+  SCM_VALIDATE_STRUCT (1, handle);
+
+  layout = SCM_STRUCT_LAYOUT (handle);
+  data = SCM_STRUCT_DATA (handle);
+  p = scm_to_size_t (pos);
+
+  layout_len = scm_i_symbol_length (layout);
+  if (SCM_STRUCT_VTABLE_FLAGS (handle) & SCM_STRUCTF_LIGHT)
+    /* no extra words */
+    n_fields = layout_len / 2;
+  else
+    n_fields = data[scm_struct_i_n_words];
+  
+  SCM_ASSERT_RANGE(1, pos, p < n_fields);
+
+  data[p] = SCM_UNPACK (val);
+
+  return SCM_UNDEFINED;
+}
+#undef FUNC_NAME
+
 void
 scm_init_gnome_gobject_parameters (void)
 {
