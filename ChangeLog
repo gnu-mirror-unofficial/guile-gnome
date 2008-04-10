@@ -1,3 +1,8 @@
+2008-04-10  Andy Wingo  <wingo@pobox.com>
+
+	* tests/wrapset.api: Update for corba-typecode->gtype-class
+	change.
+
 2008-04-08  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/corba/guile-gnome-corba-types.c: Update for (gnome

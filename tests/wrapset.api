@@ -90,7 +90,9 @@
      (corba-struct-set! procedure (arity 3 0 #f))
      (corba-struct-type procedure (arity 1 0 #f))
      (corba-struct? procedure (arity 1 0 #f))
-     (corba-typecode->gtype procedure (arity 1 0 #f))
+     (corba-typecode->gtype-class
+       procedure
+       (arity 1 0 #f))
      (gnome-corba-error procedure (arity 1 0 #t))
      (make-corba-sequence procedure (arity 2 0 #t))
      (make-corba-struct procedure (arity 2 1 #f))))
