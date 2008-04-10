@@ -1,5 +1,13 @@
 2008-04-10  Andy Wingo  <wingo@unquote>
 
+	* == Released guile-gnome-platform version 2.15.97 ==
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* VERSION: Bumped to 2.15.97.
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
 	* NEWS: Update NEWS.
 
 2008-04-10  Andy Wingo  <wingo@pobox.com>

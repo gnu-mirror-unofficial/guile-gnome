@@ -32,6 +32,7 @@ install-data-local: Makefile
 
 uninstall-local:
 	rm -f $(DESTDIR)$(moduledir)/config.scm
+	rm -f $(DESTDIR)$(guilesite)/gnome-@API_VERSION@.scm
 
 EXTRA_DIST = guile-gnome-glib.pc.in guile-gnome-glib-uninstalled.pc.in \
 	AUTHORS NEWS TODO WARTS REFCOUNTING THREADING NEWS.guile-gobject \
