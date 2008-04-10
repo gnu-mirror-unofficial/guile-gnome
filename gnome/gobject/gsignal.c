@@ -74,8 +74,6 @@ scm_c_gsignal_query (guint id)
                        ? SCM_BOOL_F : scm_c_gtype_to_class (q.return_type),
                        k_param_types, param_types,
                        SCM_UNDEFINED);
-    scm_write (args, scm_current_error_port ());
-    scm_newline (scm_current_error_port ());
     return scm_apply_0 (_make, args);
 }
 

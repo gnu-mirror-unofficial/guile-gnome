@@ -59,7 +59,7 @@ static GHashTable *gtype_instance_wrappers = NULL;
 
 
 
-#define DEBUG_PRINT
+/* #define DEBUG_PRINT */
 
 #ifdef DEBUG_PRINT
 #define DEBUG_ALLOC(str, args...) g_print ("I: " str "\n", ##args)

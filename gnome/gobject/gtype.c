@@ -67,7 +67,7 @@ static GQuark guile_gobject_quark_wrapper;
 
 
 
-#define DEBUG_PRINT
+/* #define DEBUG_PRINT */
 
 #ifdef DEBUG_PRINT
 #define DEBUG_ALLOC(str, args...) g_print ("I: " str "\n", ##args)
@@ -520,7 +520,6 @@ SCM_DEFINE_STATIC (scm_sys_gtype_instance_construct, "%gtype-instance-construct"
 {
     gpointer ginstance = (gpointer)SCM_STRUCT_DATA (instance)[0];
 
-    g_message ("%p", ginstance);
     if (ginstance && ginstance != (gpointer)SCM_UNBOUND) {
         scm_c_gtype_instance_initialize_scm (instance, ginstance);
     } else {

@@ -1,5 +1,11 @@
 2008-04-10  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gobject/gvalue.c:
+	* gnome/gobject/gtype.c:
+	* gnome/gobject/gsignal.c (scm_c_gsignal_query):
+	* gnome/gobject/gparameter.c:
+	* gnome/gobject/gobject.c: Disable debugging printouts.
+
 	* gnome/gobject/gtype.c (scm_c_gtype_class_to_gtype)
 	(scm_c_scm_to_gtype_instance): Avoid scm_slot_ref on 'u' slots on
 	broken versions of Guile.

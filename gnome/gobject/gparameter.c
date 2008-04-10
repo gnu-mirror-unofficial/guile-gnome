@@ -70,7 +70,7 @@ SCM_SYMBOL (sym_element_spec, "element-spec");
 
 
 
-#define DEBUG_PRINT
+/* #define DEBUG_PRINT */
 
 #ifdef DEBUG_PRINT
 #define DEBUG_ALLOC(str, args...) g_print ("I: " str "\n", ##args)

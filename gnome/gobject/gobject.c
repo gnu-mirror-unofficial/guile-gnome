@@ -41,7 +41,7 @@ static GQuark quark_guile_gtype_class = 0;
 
 SCM_SYMBOL  (sym_gruntime_error,"gruntime-error");
 
-#define DEBUG_PRINT
+/* #define DEBUG_PRINT */
 
 #ifdef DEBUG_PRINT
 #define DEBUG_ALLOC(str, args...) g_print ("I: " str "\n", ##args)
