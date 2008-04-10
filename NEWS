@@ -1,12 +1,18 @@
 guile-gnome-gnome-vfs NEWS --- history of user-visible changes.
-Copyright (C) 2004,2005,2006,2007 Free Software Foundation, Inc.
+Copyright (C) 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 10 Dec 2007.
+Last updated 10 Apr 2008.
 
 
 guile-gnome-gnome-vfs is a Guile binding for gnome-vfs. It is part of GNU
 guile-gnome. This file documents the user-visible changes in
 guile-gnome-gnome-vfs only.
+
+
+guile-gnome-gnome-vfs 2.15.97 - Andy Wingo, 2008-04-10
+======================================================
+
+* Adapt to changes in (gnome gobject).
 
 
 guile-gnome-gnome-vfs 2.15.96 - Andy Wingo, 2007-12-10
