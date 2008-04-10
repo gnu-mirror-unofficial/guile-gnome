@@ -1,3 +1,7 @@
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* NEWS: Update NEWS.
+
 2008-04-08  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/glade-support.c (connect_one): Remove needless cast.
