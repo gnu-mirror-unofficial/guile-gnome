@@ -711,7 +711,7 @@ SCM_DEFINE (scm_genum_register_static, "genum-register-static", 2, 0, 0,
 	    (SCM name, SCM vtable),
 	    "Creates and registers a new enumerated type with name @var{name} with the C runtime. "
 	    "There must be no type with name @var{name} when this function is called.\n\n"
-	    "The new type can be accessed by using @code{g-type-class-from-name}.\n\n"
+	    "The new type can be accessed by using @code{gtype-name->class}.\n\n"
 	    "@var{vtable} is a vector describing the new enum type. Each vector element describes "
 	    "one enum element and must be a list of 3 elements: the element's nick name as a symbol, "
 	    "its name as a string, and its integer value.\n\n"
@@ -771,8 +771,9 @@ SCM_DEFINE (scm_genum_register_static, "genum-register-static", 2, 0, 0,
 SCM_DEFINE (scm_gflags_register_static, "gflags-register-static", 2, 0, 0,
 	    (SCM name, SCM vtable),
 	    "Creates and registers a new flags @code{<gtype-class>} with name "
-            "var{name} with the C runtime.\n\n"
-	    "See @code{genum-register-static} for details.")
+            "@var{name} with the C runtime.\n\n"
+	    "The @var{vtable} should be in the format described in the "
+            "documentation for @code{genum-register-static}.")
 #define FUNC_NAME s_scm_gflags_register_static
 {
     size_t length, i;

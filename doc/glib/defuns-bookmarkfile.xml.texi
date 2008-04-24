@@ -4,6 +4,9 @@
 @deftp Class <g-bookmark-file>
 Opaque pointer.
 
+This class defines no direct slots, other than those defined by its
+superclasses.
+
 @end deftp
 
 @deffn Function g-bookmark-file-new  @result{}@tie{} (ret@tie{}@code{<g-bookmark-file>})
@@ -12,9 +15,13 @@ Creates a new empty @code{<g-bookmark-file>} object.
 Use @code{g-bookmark-file-load-from-file}, @code{g-bookmark-file-load-from-data}
 or @code{g-bookmark-file-load-from-data-dirs} to read an existing bookmark file.
 
+
+
 @table @var
+
 @item ret
 an empty @code{<g-bookmark-file>}
+
 
 @end table
 
@@ -27,18 +34,28 @@ Loads a desktop bookmark file into an empty @code{<g-bookmark-file>} structure.
 If the file could not be loaded then @var{error} is set to either a
 @code{<g-file-error>} or @code{<g-bookmark-file-error>}.
 
+
+
 @table @var
+
 @item bookmark
+
 an empty @code{<g-bookmark-file>} struct
 
+
 @item filename
+
 the path of a filename to load, in the GLib file name encoding
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 @samp{@code{#t}} if a desktop bookmark file could be loaded
+
 
 @end table
 
@@ -51,21 +68,33 @@ Loads a bookmark file from memory into an empty @code{<g-bookmark-file>}
 structure. If the object cannot be created then @var{error} is set to a
 @code{<g-bookmark-file-error>}.
 
+
+
 @table @var
+
 @item bookmark
+
 an empty @code{<g-bookmark-file>} struct
 
+
 @item data
+
 desktop bookmarks loaded in memory
 
+
 @item length
+
 the length of @var{data} in bytes
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 @samp{@code{#t}} if a desktop bookmark could be loaded.
+
 
 @end table
 
@@ -80,22 +109,34 @@ loads the file into @var{bookmark} and returns the file's full path in
 @var{full-path}. If the file could not be loaded then an @samp{error} is set to
 either a @code{<g-file-error>} or @code{<g-bookmark-file-error>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item file
+
 a relative path to a filename to open and parse
 
+
 @item full-path
+
 return location for a string containing the full path of the file, or
 @samp{@code{#f}}
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 @samp{@code{#t}} if a key file could be loaded, @samp{@code{#f}} othewise
+
 
 @end table
 
@@ -106,18 +147,28 @@ Since 2.12
 @deffn Function g-bookmark-file-to-data  (bookmark@tie{}@code{<g-bookmark-file>}) @result{}@tie{} (ret@tie{}@code{mchars})
 This function outputs @var{bookmark} as a string.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item length
+
 return location for the length of the returned string, or @samp{@code{#f}}
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 a newly allocated string holding the contents of the @code{<g-bookmark-file>}
+
 
 @end table
 
@@ -129,18 +180,28 @@ Since 2.12
 This function outputs @var{bookmark} into a file. The write process is
 guaranteed to be atomic by using @code{g-file-set-contents} internally.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item filename
+
 path of the output file
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 @samp{@code{#t}} if the file was successfully written.
+
 
 @end table
 
@@ -151,16 +212,24 @@ Since 2.12
 @deffn Function g-bookmark-file-has-item  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Looks whether the desktop bookmark has an item with its URI set to @var{uri}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
+
 
 @item ret
 @samp{@code{#t}} if @var{uri} is inside @var{bookmark}, @samp{@code{#f}}
 otherwise
+
 
 @end table
 
@@ -175,21 +244,33 @@ for @var{uri} belongs to.
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
 @var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item group
+
 the group name to be searched
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 @samp{@code{#t}} if @var{group} was found.
+
 
 @end table
 
@@ -204,21 +285,33 @@ registered by application @var{name}.
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
 @var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item name
+
 the name of the application
 
+
 @item error
+
 return location for a @code{<g-error>} or @samp{@code{#f}}
+
 
 @item ret
 @samp{@code{#t}} if the application @var{name} was found
+
 
 @end table
 
@@ -229,12 +322,18 @@ Since 2.12
 @deffn Function g-bookmark-file-get-size  (bookmark@tie{}@code{<g-bookmark-file>}) @result{}@tie{} (ret@tie{}@code{int})
 Gets the number of bookmarks inside @var{bookmark}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
+
 
 @item ret
 the number of bookmarks
+
 
 @end table
 
@@ -247,16 +346,24 @@ Returns all URIs of the bookmarks in the bookmark file @var{bookmark}. The array
 of returned URIs will be @samp{@code{#f}}-terminated, so @var{length} may
 optionally be @samp{@code{#f}}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item length
+
 return location for the number of returned URIs, or @samp{@code{#f}}
+
 
 @item ret
 a newly allocated @samp{@code{#f}}-terminated array of strings. Use
 @code{g-strfreev} to free it.
+
 
 @end table
 
@@ -272,19 +379,29 @@ If @var{uri} is @samp{@code{#f}}, the title of @var{bookmark} is returned.
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
 @var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI or @samp{@code{#f}}
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 a newly allocated string or @samp{@code{#f}} if the specified URI cannot be
 found.
+
 
 @end table
 
@@ -298,19 +415,29 @@ Retrieves the description of the bookmark for @var{uri}.
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
 @var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 a newly allocated string or @samp{@code{#f}} if the specified URI cannot be
 found.
+
 
 @end table
 
@@ -326,19 +453,29 @@ In the event the URI cannot be found, @samp{@code{#f}} is returned and
 that the MIME type cannot be found, @samp{@code{#f}} is returned and @var{error}
 is set to @code{<g-bookmark-file-error-invalid-value>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 a newly allocated string or @samp{@code{#f}} if the specified URI cannot be
 found.
+
 
 @end table
 
@@ -354,18 +491,28 @@ In the event the URI cannot be found, @samp{@code{#f}} is returned and
 that the private flag cannot be found, @samp{@code{#f}} is returned and
 @var{error} is set to @code{<g-bookmark-file-error-invalid-value>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 @samp{@code{#t}} if the private flag is set, @samp{@code{#f}} otherwise.
+
 
 @end table
 
@@ -379,25 +526,39 @@ Gets the icon of the bookmark for @var{uri}.
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
 @var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item href
+
 return location for the icon's location or @samp{@code{#f}}
 
+
 @item mime-type
+
 return location for the icon's MIME type or @samp{@code{#f}}
 
+
 @item error
+
 return location for a @code{<g-error>} or @samp{@code{#f}}
+
 
 @item ret
 @samp{@code{#t}} if the icon for the bookmark for the URI was found. You should
 free the returned strings.
+
 
 @end table
 
@@ -411,18 +572,28 @@ Gets the time the bookmark for @var{uri} was added to @var{bookmark}
 In the event the URI cannot be found, -1 is returned and @var{error} is set to
 @code{<g-bookmark-file-error-uri-not-found>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 a timestamp
+
 
 @end table
 
@@ -436,18 +607,28 @@ Gets the time when the bookmark for @var{uri} was last modified.
 In the event the URI cannot be found, -1 is returned and @var{error} is set to
 @code{<g-bookmark-file-error-uri-not-found>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 a timestamp
+
 
 @end table
 
@@ -461,18 +642,28 @@ Gets the time the bookmark for @var{uri} was last visited.
 In the event the URI cannot be found, -1 is returned and @var{error} is set to
 @code{<g-bookmark-file-error-uri-not-found>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 a timestamp.
+
 
 @end table
 
@@ -489,22 +680,34 @@ In the event the URI cannot be found, @samp{@code{#f}} is returned and
 The returned array is @samp{@code{#f}} terminated, so @var{length} may
 optionally be @samp{@code{#f}}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item length
+
 return location for the length of the returned string, or @samp{@code{#f}}
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 a newly allocated @samp{@code{#f}}-terminated array of group names. Use
 @code{g-strfreev} to free it.
+
 
 @end table
 
@@ -519,22 +722,34 @@ Retrieves the names of the applications that have registered the bookmark for
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
 @var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item length
+
 return location of the length of the returned list, or @samp{@code{#f}}
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 a newly allocated @samp{@code{#f}}-terminated array of strings. Use
 @code{g-strfreev} to free it.
+
 
 @end table
 
@@ -555,30 +770,48 @@ that no application with name @var{app-name} has registered a bookmark for
 @var{uri}, @samp{@code{#f}} is returned and error is set to
 @code{<g-bookmark-file-error-app-not-registered>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item name
+
 an application's name
 
+
 @item exec
+
 location for the command line of the application, or @samp{@code{#f}}
 
+
 @item count
+
 return location for the registration count, or @samp{@code{#f}}
 
+
 @item stamp
+
 return location for the last registration time, or @samp{@code{#f}}
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 @samp{@code{#t}} on success.
+
 
 @end table
 
@@ -594,15 +827,24 @@ If @var{uri} is @samp{@code{#f}}, the title of @var{bookmark} is set.
 
 If a bookmark for @var{uri} cannot be found then it is created.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI or @samp{@code{#f}}
 
+
 @item title
+
 a UTF-8 encoded string
+
 
 @end table
 
@@ -617,15 +859,24 @@ If @var{uri} is @samp{@code{#f}}, the description of @var{bookmark} is set.
 
 If a bookmark for @var{uri} cannot be found then it is created.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI or @samp{@code{#f}}
 
+
 @item description
+
 a string
+
 
 @end table
 
@@ -638,15 +889,24 @@ Sets @var{mime-type} as the MIME type of the bookmark for @var{uri}.
 
 If a bookmark for @var{uri} cannot be found then it is created.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item mime-type
+
 a MIME type
+
 
 @end table
 
@@ -659,15 +919,24 @@ Sets the private flag of the bookmark for @var{uri}.
 
 If a bookmark for @var{uri} cannot be found then it is created.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item is-private
+
 @samp{@code{#t}} if the bookmark should be marked as private
+
 
 @end table
 
@@ -681,18 +950,29 @@ unsets the currently set icon.
 
 If no bookmark for @var{uri} is found it is created.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item href
+
 the URI of the icon for the bookmark, or @samp{@code{#f}}
 
+
 @item mime-type
+
 the MIME type of the icon for the bookmark
+
 
 @end table
 
@@ -705,15 +985,24 @@ Sets the time the bookmark for @var{uri} was added into @var{bookmark}.
 
 If no bookmark for @var{uri} is found then it is created.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item added
+
 a timestamp or -1 to use the current time
+
 
 @end table
 
@@ -731,15 +1020,24 @@ actually changed. Every function of @code{<g-bookmark-file>} that modifies a
 bookmark also changes the modification time, except for
 @code{g-bookmark-file-set-visited}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item modified
+
 a timestamp or -1 to use the current time
+
 
 @end table
 
@@ -758,15 +1056,24 @@ default application for the bookmark's MIME type, retrieved using
 @code{g-bookmark-file-get-mime-type}. Changing the "visited" time does not
 affect the "modified" time.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item visited
+
 a timestamp or -1 to use the current time
+
 
 @end table
 
@@ -800,30 +1107,48 @@ in the event that no application @var{name} has registered a bookmark for
 @code{<g-bookmark-file-error-app-not-registered>}. Otherwise, if no bookmark for
 @var{uri} is found, one is created.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item name
+
 an application's name
 
+
 @item exec
+
 an application's command line
 
+
 @item count
+
 the number of registrations done for this application
 
+
 @item stamp
+
 the time of the last registration for this application
 
+
 @item error
+
 return location for a @code{<g-error>} or @samp{@code{#f}}
+
 
 @item ret
 @samp{@code{#t}} if the application's meta-data was successfully changed.
+
 
 @end table
 
@@ -837,15 +1162,24 @@ belongs to.
 
 If no bookmark for @var{uri} is found then it is created.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item group
+
 the group name to be added
+
 
 @end table
 
@@ -875,18 +1209,29 @@ registered a bookmark for @var{uri} inside @var{bookmark}.
 
 If no bookmark for @var{uri} is found, one is created.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item name
+
 the name of the application registering the bookmark or @samp{@code{#f}}
 
+
 @item exec
+
 command line to be used to launch the bookmark or @samp{@code{#f}}
+
 
 @end table
 
@@ -903,21 +1248,33 @@ In the event the URI cannot be found, @samp{@code{#f}} is returned and
 no group was defined, @samp{@code{#f}} is returned and @var{error} is set to
 @code{<g-bookmark-file-error-invalid-value>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item group
+
 the group name to be removed
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 @samp{@code{#t}} if @var{group} was successfully removed.
+
 
 @end table
 
@@ -935,21 +1292,33 @@ that no application with name @var{app-name} has registered a bookmark for
 @var{uri}, @samp{@code{#f}} is returned and error is set to
 @code{<g-bookmark-file-error-app-not-registered>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item name
+
 the name of the application
 
+
 @item error
+
 return location for a @code{<g-error>} or @samp{@code{#f}}
+
 
 @item ret
 @samp{@code{#t}} if the application was successfully removed.
+
 
 @end table
 
@@ -960,18 +1329,28 @@ Since 2.12
 @deffn Function g-bookmark-file-remove-item  (bookmark@tie{}@code{<g-bookmark-file>}) (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
 Removes the bookmark for @var{uri} from the bookmark file @var{bookmark}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item uri
+
 a valid URI
 
+
 @item error
+
 return location for a @code{<g-error>}, or @samp{@code{#f}}
+
 
 @item ret
 @samp{@code{#t}} if the bookmark was removed successfully.
+
 
 @end table
 
@@ -987,21 +1366,33 @@ existing bookmark for @var{new-uri} will be overwritten. If @var{new-uri} is
 In the event the URI cannot be found, @samp{@code{#f}} is returned and
 @var{error} is set to @code{<g-bookmark-file-error-uri-not-found>}.
 
+
+
 @table @var
+
 @item bookmark
+
 a @code{<g-bookmark-file>}
 
+
 @item old-uri
+
 a valid URI
 
+
 @item new-uri
+
 a valid URI, or @samp{@code{#f}}
 
+
 @item error
+
 return location for a @code{<g-error>} or @samp{@code{#f}}
+
 
 @item ret
 @samp{@code{#t}} if the URI was successfully changed
+
 
 @end table
 

@@ -4,11 +4,14 @@
 @settitle Guile-GNOME: GObject
 @c %**end of header
 
-@copying 
-This manual is for Guile-GNOME: GObject (version 2.15.93, updated 25 August
-2007)
+@set VERSION 2.15.98
+@set UPDATED 24 April 2008
 
-Copyright 2003,2004,2005,2006,2007 Free Software Foundation
+@copying 
+This manual is for Guile-GNOME: GObject (version @value{VERSION},
+updated @value{UPDATED})
+
+Copyright 2003,2004,2005,2006,2007,2008 Free Software Foundation
 
 @quotation 
 Permission is granted to copy, distribute and/or modify this document under the
@@ -26,7 +29,7 @@ published by the Free Software Foundation.
 
 @titlepage 
 @title Guile-GNOME: GObject
-@subtitle version 2.15.93, updated 25 August 2007
+@subtitle version @value{VERSION}, updated @value{UPDATED}
 @author Andy Wingo (@email{wingo at pobox.com})
 @author Martin Baulig (@email{baulig at suse.de})
 @page 
@@ -53,7 +56,6 @@ published by the Free Software Foundation.
 * gnome gw support gtk-doc::  Parse C documentation from gtk-doc into texinfo
 * gnome gw support modules::  Fondling Guile's module system
 
-* Type Index::       
 * Function Index::       
 @end menu
 
@@ -69,182 +71,37 @@ published by the Free Software Foundation.
 Base support for the GLib type system.
 
 The GLib runtime type system is broken into a number of modules, of which GType
-is the base. A @code{<gtype>} is a named type that has a number of properties.
-Some types are fundamental and cannot be subclassed, such as integers. Others
-can form the root of complicated object hierarchies, such as @code{<gobject>}.
+is the base. A GType is a simply a named type. Some types are fundamental and
+cannot be subclassed, such as integers. Others can form the root of complicated
+object hierarchies, such as @code{<gobject>}.
 
-One can obtain the @code{<gtype>} object for a type if you know its name. For
-example,
+One can obtain the class for a type if you know its name. For example,
 
 @lisp 
-  (gtype-from-name "guint64") @result{} #<gtype guint64>
+  (gtype-name->class "guint64") @result{} #<<gvalue-class> <guint64>>
  
 @end lisp
-
-@code{<gtype>} objects are low-level constructs. In Scheme, it is more usual to
-work with GOOPS type objects. Each @code{<gtype>} corresponds to one GOOPS
-object, which may be obtained programmatically using @code{gtype->class}.
 
 A more detailed reference on the GLib type system may be had at
 @uref{http://library.gnome.org/devel/gobject/stable/}.
 
 @section Usage
-@anchor{gnome gobject gtype gtype?}@deffn Primitive gtype? type
-Returns @code{#t} if @var{type} is a GType and @code{#f} if not.
-
-@end deffn
-
-@anchor{gnome gobject gtype gtype-is-a?}@deffn Primitive gtype-is-a? type is_a_type
-Returns @code{#t} if @var{type} is a subtype of @var{is_a_type}.
-
-@end deffn
-
-@anchor{gnome gobject gtype gtype-basic?}@deffn Primitive gtype-basic? type
-Returns @code{#t} if @var{type} is a basic type. Basic types have only one
-possible representation in Scheme. Unless the user means to deal in GValues,
-values of basic types should be manipulated as Scheme values.
-
-@end deffn
-
-@anchor{gnome gobject gtype gtype-classed?}@deffn Primitive gtype-classed? type
-Returns @code{#t} if @var{type} is a classed type.
-
-@end deffn
-
-@anchor{gnome gobject gtype gtype-instantiatable?}@deffn Primitive gtype-instantiatable? type
-Returns @code{#t} if @var{type} is an instantiatable type.
-
-@end deffn
-
-@anchor{gnome gobject gtype gtype-fundamental?}@deffn Primitive gtype-fundamental? type
-Returns @code{#t} if @var{type} is a fundamental type and @code{#f} if not. This
-is the same as @code{(eq? type (gtype->fundamental type))}, but slightly faster.
-
-@end deffn
-
-@anchor{gnome gobject gtype gtype->fundamental}@deffn Primitive gtype->fundamental type
-Returns the fundamental type of @var{type} (possibly @var{type} itself).
-
-@end deffn
-
-@anchor{gnome gobject gtype gtype-parent}@deffn Primitive gtype-parent type
-Returns the parent type of @var{type} (possibly @var{type} itself).
-
-@end deffn
-
-@anchor{gnome gobject gtype gtype-children}@deffn Primitive gtype-children type
-Returns the @code{<gtype>}'s of @var{type}'s direct children, as a list.
-
-@end deffn
-
-@anchor{gnome gobject gtype gtype-interfaces}@deffn Primitive gtype-interfaces type
-Returns the set of @code{<gtype>}'s that @var{type} implements, as a list.
-
-@end deffn
-
-@anchor{gnome gobject gtype gtype-name}@deffn Primitive gtype-name type
-Returns the name of @var{type}.
-
-@end deffn
-
-@anchor{gnome gobject gtype gtype-from-name}@deffn Primitive gtype-from-name name
-Returns the type named @var{name}, or @code{#f} if none exists.
-
-@end deffn
-
-@anchor{gnome gobject gtype gtype-from-instance}@deffn Primitive gtype-from-instance instance
-Returns the type of @var{instance}, which should be a primitive
-@code{<%gtype-instance>}.
-
-@end deffn
-
-@anchor{gnome gobject gtype %gtype-instance-primitive-destroy!}@deffn Primitive %gtype-instance-primitive-destroy! instance
-Release all references that the Scheme wrapper @var{instance} has on the
-underlying C value, and release pointers associated with the C value that point
-back to Scheme.
-
-Normally not necessary. Used by the implementations of some instantiatable types
-that have @code{destroy} methods, notably @code{<gtk-object>}.
-
-@end deffn
-
-@anchor{gnome gobject gtype gtype-instance-primitive->type}@deffn Primitive gtype-instance-primitive->type instance
-Retrieve the @code{<gtype>} object associated with the primitive
-@code{<%gtype-instance>} value, @var{instance}.
-
-@end deffn
-
-@anchor{gnome gobject gtype especify-metaclass!}@deffn Primitive especify-metaclass! class metaclass
-A terrible hack that takes a class @var{class} and sets its metaclass, in-place,
-to @var{metaclass}. @var{metaclass} must be a subclass of @var{class}' existing
-metaclass.
-
-This method is useful if you want to define a method that on a particular
-@code{<gtype-class>}, such as @code{make-instance}. However, it would be cleaner
-to devise a way of making these ``class methods'' without molesting GOOPS in
-this way.
-
-@end deffn
-
 @anchor{gnome gobject gtype <gtype-class>}@deftp Class <gtype-class>
-The metaclass of all GType classes. Ensures that GType classes have @code{gtype}
-and @code{gtype-class} slots, which point to the primitive @code{<gtype>} and
-@code{<%gtype-class>} objects that wrap the C values.
-
-@end deftp
-
-@anchor{gnome gobject gtype <gtype-instance-class>}@deftp Class <gtype-instance-class>
-The metaclass of all instantiatable GType classes.
+The metaclass of all GType classes. Ensures that GType classes have a
+@code{gtype} slot, which records the primitive GType information for this class.
 
 @end deftp
 
 @anchor{gnome gobject gtype <gtype-instance>}@deftp Class <gtype-instance>
 The root class of all instantiatable GType classes. Adds a slot,
-@code{gtype-instance}, to instances. This slot will point to the primitive
-@code{<%gtype-instance>} object that wraps the C value.
+@code{gtype-instance}, to instances, which holds a pointer to the C value.
 
 @end deftp
 
-@anchor{gnome gobject gtype gtype->class}@defun gtype->class type
-If there is already a GOOPS class associated with the GType @var{type}, return
-this class.
-
-Otherwise, create a new GOOPS class and bind it to this type. The created class
-is an immortal, persistent object which is bound in some magic way to its GType.
-
-@end defun
-
-@anchor{gnome gobject gtype gtype-class->type}@defun gtype-class->type class
-Returns the @code{<gtype>} associated with a @code{<gtype-class>}.
-
-@end defun
-
-@anchor{gnome gobject gtype %gtype-lookup-class}@deffn Primitive %gtype-lookup-class type
-Returns the @code{<gtype-class>} registered for @var{type}, or @code{#f} if none
-has been registered.
+@anchor{gnome gobject gtype gtype-name->class}@deffn Primitive gtype-name->class name
+Return the @code{<gtype-class>} associated with the GType, @var{name}.
 
 @end deffn
-
-@anchor{gnome gobject gtype %gtype-bind-to-class}@deffn Primitive %gtype-bind-to-class class type
-A low-level procedure to bind the newly-created @code{<gtype-class>} @var{class}
-to @var{type}. Users should not need to call this function.
-
-@end deffn
-
-@anchor{gnome gobject gtype gtype-instance:write}@deffn Generic gtype-instance:write
-Generic function, defined so we can define @code{write} functions for instances
-of @code{<gtype-class>} in Scheme. A bit of a hack.
-
-@end deffn
-
-@deffn Method gtype-instance:write  (@var{class} @code{<gtype-class>}) (@var{obj} @code{<%gtype-instance>}) (@var{file} @code{<top>})
-@end deffn
-
-@anchor{gnome gobject gtype gruntime-error}@defun gruntime-error format-string . args
-Signal a runtime error. The error will be thrown to the key
-@code{gruntime-error}.
-
-@end defun
 
 @anchor{gnome gobject gtype class-name->gtype-name}@defun class-name->gtype-name class-name
 Convert the name of a class into a suitable name for a GType. For example:
@@ -255,23 +112,25 @@ Convert the name of a class into a suitable name for a GType. For example:
 
 @end defun
 
-@anchor{gnome gobject gtype gtype:genum}@defvar gtype:genum
-@end defvar
+@anchor{gnome gobject gtype gruntime-error}@defun gruntime-error format-string . args
+Signal a runtime error. The error will be thrown to the key
+@code{gruntime-error}.
 
-@anchor{gnome gobject gtype gtype:gflags}@defvar gtype:gflags
-@end defvar
+@end defun
 
-@anchor{gnome gobject gtype gtype:ginterface}@defvar gtype:ginterface
-@end defvar
+@anchor{gnome gobject gtype gtype-instance-destroy!}@deffn Primitive gtype-instance-destroy! instance
+Release all references that the Scheme wrapper @var{instance} has on the
+underlying C value, and release pointers associated with the C value that point
+back to Scheme.
 
-@anchor{gnome gobject gtype gtype:gobject}@defvar gtype:gobject
-@end defvar
+Normally, you don't need to call this function, because garbage collection will
+take care of resource management. However some @code{<gtype-class>} instances
+have semantics that require this function. The canonical example is that when a
+@code{<gtk-object>} emits the @code{destroy} signal, all code should drop their
+references to the object. This is, of course, handled internally in the
+@code{(gnome gtk)} module.
 
-@anchor{gnome gobject gtype gtype:gparam}@defvar gtype:gparam
-@end defvar
-
-@anchor{gnome gobject gtype gtype:void}@defvar gtype:void
-@end defvar
+@end deffn
 
 @node gnome gobject gvalue
 @chapter (gnome gobject gvalue)
@@ -280,7 +139,7 @@ GLib supports generic typed values via its GValue module. These values are
 wrapped in Scheme as instances of @code{<gvalue-class>} classes, such as
 @code{<gint>}, @code{<gfloat>}, etc.
 
-In most cases, use of @code{<gvalue>} are transparent to the Scheme user. Values
+In most cases, use of @code{<gvalue>} is transparent to the Scheme user. Values
 which can be represented directly as Scheme values are normally given to the
 user in their Scheme form, e.g. @code{#\a} instead of @code{#<gvalue <gchar>
 3020c708 a>}. However, when dealing with low-level routines it is sometimes
@@ -302,15 +161,8 @@ flags), or the string ``nickname'' (or string list) of the enumerated/flags
 value.
 
 @section Usage
-@anchor{gnome gobject gvalue gvalue?}@deffn Primitive gvalue? value
-Returns @code{#t} if @var{value} is a @code{<gvalue>}, @code{#f} otherwise.
-
-@end deffn
-
-@anchor{gnome gobject gvalue gvalue->type}@deffn Primitive gvalue->type value
-Returns the @code{<gtype>} of the value held by @var{value}.
-
-@end deffn
+@anchor{gnome gobject gvalue <gvalue>}@deftp Class <gvalue>
+@end deftp
 
 @anchor{gnome gobject gvalue <gboolean>}@deftp Class <gboolean>
 A @code{<gvalue>} class for boolean values.
@@ -374,8 +226,7 @@ A @code{<gvalue>} class for arrays of 8-bit values (C strings).
 
 @anchor{gnome gobject gvalue <gboxed>}@deftp Class <gboxed>
 A @code{<gvalue>} class for ``boxed'' types, a way of wrapping generic C
-structures. Use @code{gvalue->type} on an instance of this class to determine
-what type it holds.
+structures. You won't see instances of this class, only of its subclasses.
 
 @end deftp
 
@@ -386,6 +237,11 @@ A @code{<gboxed>} class for holding arbitrary Scheme objects.
 
 @anchor{gnome gobject gvalue <gvalue-array>}@deftp Class <gvalue-array>
 A @code{<gvalue>} class for arrays of @code{<gvalue>}.
+
+@end deftp
+
+@anchor{gnome gobject gvalue <gpointer>}@deftp Class <gpointer>
+A @code{<gvalue>} class for opaque pointers.
 
 @end deftp
 
@@ -410,8 +266,7 @@ Creates and registers a new enumerated type with name @var{name} with the C
 runtime. There must be no type with name @var{name} when this function is
 called.
 
-The new type can be accessed from C either by passing the returned
-@code{<gtype>} object back to a C function or by using @code{g-type-from-name}.
+The new type can be accessed by using @code{gtype-name->class}.
 
 @var{vtable} is a vector describing the new enum type. Each vector element
 describes one enum element and must be a list of 3 elements: the element's nick
@@ -425,41 +280,30 @@ name as a symbol, its name as a string, and its integer value.
 @end deffn
 
 @anchor{gnome gobject gvalue gflags-register-static}@deffn Primitive gflags-register-static name vtable
-Creates and registers a new flags @code{<gtype>} with name var@{name@} with the
-C runtime.
+Creates and registers a new flags @code{<gtype-class>} with name @var{name} with
+the C runtime.
 
-See @code{genum-register-static} for details.
-
-@end deffn
-
-@anchor{gnome gobject gvalue genum-class->value-table}@defun genum-class->value-table class
-Return the vtable of possible values for @var{class}. The same as
-@code{genum-type-get-values}, but operates on classes.
-
-@end defun
-
-@anchor{gnome gobject gvalue gflags-class->value-table}@defun gflags-class->value-table class
-Return the vtable of possible values for @var{class}. The same as
-@code{gflags-type-get-values}, but operates on classes.
-
-@end defun
-
-@anchor{gnome gobject gvalue genum-type-get-values}@deffn Primitive genum-type-get-values type
-Return a vtable of the values supported by the enumerated @code{<gtype>}
-@var{type}. The return value will be in the format described in
+The @var{vtable} should be in the format described in the documentation for
 @code{genum-register-static}.
 
 @end deffn
 
-@anchor{gnome gobject gvalue gflags-type-get-values}@deffn Primitive gflags-type-get-values type
-Return a vtable of the values supported by the flag @code{<gtype>} @var{type}.
-The return value will be in the format described in
+@anchor{gnome gobject gvalue genum-class->value-table}@deffn Primitive genum-class->value-table class
+Return a table of the values supported by the enumerated @code{<gtype-class>}
+@var{class}. The return value will be in the format described in
+@code{genum-register-static}.
+
+@end deffn
+
+@anchor{gnome gobject gvalue gflags-class->value-table}@deffn Primitive gflags-class->value-table class
+Return a table of the values supported by the flag @code{<gtype-class>}
+@var{class}. The return value will be in the format described in
 @code{gflags-register-static}.
 
 @end deffn
 
-@anchor{gnome gobject gvalue scm->gvalue}@deffn Primitive scm->gvalue type scm
-Convert a Scheme value into a @code{<gvalue>} of type @var{type}. If the
+@anchor{gnome gobject gvalue scm->gvalue}@deffn Primitive scm->gvalue class scm
+Convert a Scheme value into a @code{<gvalue>} of type @var{class}. If the
 conversion is not possible, raise a @code{gruntime-error}.
 
 @end deffn
@@ -483,11 +327,17 @@ representation as a string (its ``name'').
 
 @end defun
 
-@anchor{gnome gobject gvalue genum->value}@defun genum->value obj
+@anchor{gnome gobject gvalue genum->value}@deffn Primitive genum->value value
 Convert the enumerated value @var{obj} from a @code{<gvalue>} to its
 representation as an integer.
 
-@end defun
+@end deffn
+
+@anchor{gnome gobject gvalue gflags->value}@deffn Primitive gflags->value value
+Convert the flags value @var{obj} from a @code{<gvalue>} to its representation
+as an integer.
+
+@end deffn
 
 @anchor{gnome gobject gvalue gflags->symbol-list}@defun gflags->symbol-list obj
 Convert the flags value @var{obj} from a @code{<gvalue>} to a list of the
@@ -507,171 +357,99 @@ which when @code{logand}'d together yield the flags' value.
 
 @end defun
 
-@anchor{gnome gobject gvalue gtype:gboolean}@defvar gtype:gboolean
-@end defvar
-
-@anchor{gnome gobject gvalue gtype:gboxed}@defvar gtype:gboxed
-@end defvar
-
-@anchor{gnome gobject gvalue gtype:gboxed-scm}@defvar gtype:gboxed-scm
-@end defvar
-
-@anchor{gnome gobject gvalue gtype:gchar}@defvar gtype:gchar
-@end defvar
-
-@anchor{gnome gobject gvalue gtype:gchararray}@defvar gtype:gchararray
-@end defvar
-
-@anchor{gnome gobject gvalue gtype:gdouble}@defvar gtype:gdouble
-@end defvar
-
-@anchor{gnome gobject gvalue gtype:gfloat}@defvar gtype:gfloat
-@end defvar
-
-@anchor{gnome gobject gvalue gtype:gint}@defvar gtype:gint
-@end defvar
-
-@anchor{gnome gobject gvalue gtype:gint64}@defvar gtype:gint64
-@end defvar
-
-@anchor{gnome gobject gvalue gtype:glong}@defvar gtype:glong
-@end defvar
-
-@anchor{gnome gobject gvalue gtype:gpointer}@defvar gtype:gpointer
-@end defvar
-
-@anchor{gnome gobject gvalue gtype:guchar}@defvar gtype:guchar
-@end defvar
-
-@anchor{gnome gobject gvalue gtype:guint}@defvar gtype:guint
-@end defvar
-
-@anchor{gnome gobject gvalue gtype:guint64}@defvar gtype:guint64
-@end defvar
-
-@anchor{gnome gobject gvalue gtype:gulong}@defvar gtype:gulong
-@end defvar
-
-@anchor{gnome gobject gvalue gtype:gvalue-array}@defvar gtype:gvalue-array
-@end defvar
-
 @node gnome gobject gparameter
 @chapter (gnome gobject gparameter)
 @section Overview
 Parameters are constraints for values, both in type and in range. This module
-wraps the parameters code of the GLib type system, defining C classes such that
-parameters may be manipulated and created from Scheme.
+wraps the parameters code of the GLib type system, allowing parameters to be
+manipulated and created from Scheme.
 
-As a technical detail, the C structure @code{GParamSpec} is wrapped at two
-levels. One is a mapping of the C structure to a Guile structure. The other is a
-GOOPS representation. The low level is called @code{gparam-struct}, and the high
-level is called @code{<gparam>}. @code{gparam-struct} is a generic container of
-any type. @code{<gparam>} has subclasses for the various kinds of parameter
-types: @code{<gparam-int>}, @code{<gparam-object>}, etc.
+There is a parameter class for each type of parameter: @code{<gparam-int>},
+@code{<gparam-object>}, etc.
 
 @section Usage
 @anchor{gnome gobject gparameter <gparam>}@deftp Class <gparam>
-The base class for GLib parameter objects.
+The base class for GLib parameter objects. (Doc slots)
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-char>}@deftp Class <gparam-char>
-Parameter for @code{<gchar>} values. 3 arguments: minimum, maximum, and default
-values.
+Parameter for @code{<gchar>} values.
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-uchar>}@deftp Class <gparam-uchar>
-Parameter for @code{<guchar>} values. 3 arguments: minimum, maximum, and default
-values.
+Parameter for @code{<guchar>} values.
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-boolean>}@deftp Class <gparam-boolean>
-Parameter for @code{<gboolean>} values. 1 argument: default value.
+Parameter for @code{<gboolean>} values.
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-int>}@deftp Class <gparam-int>
-Parameter for @code{<gint>} values. 3 arguments: minimum, maximum, and default
-values.
+Parameter for @code{<gint>} values.
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-uint>}@deftp Class <gparam-uint>
-Parameter for @code{<guint>} values. 3 arguments: minimum, maximum, and default
-values.
+Parameter for @code{<guint>} values.
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-long>}@deftp Class <gparam-long>
-Parameter for @code{<glong>} values. 3 arguments: minimum, maximum, and default
-values.
+Parameter for @code{<glong>} values.
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-ulong>}@deftp Class <gparam-ulong>
-Parameter for @code{<gulong>} values. 3 arguments: minimum, maximum, and default
-values.
+Parameter for @code{<gulong>} values.
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-int64>}@deftp Class <gparam-int64>
-Parameter for @code{<gint64>} values. 3 arguments: minimum, maximum, and default
-values.
+Parameter for @code{<gint64>} values.
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-uint64>}@deftp Class <gparam-uint64>
-Parameter for @code{<guint64>} values. 3 arguments: minimum, maximum, and
-default values.
+Parameter for @code{<guint64>} values.
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-float>}@deftp Class <gparam-float>
-Parameter for @code{<gfloat>} values. 3 arguments: minimum, maximum, and default
-values.
+Parameter for @code{<gfloat>} values.
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-double>}@deftp Class <gparam-double>
-Parameter for @code{<gdouble>} values. 3 arguments: minimum, maximum, and
-default values.
+Parameter for @code{<gdouble>} values.
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-pointer>}@deftp Class <gparam-pointer>
-Parameter for @code{<gpointer>} values. No arguments.
+Parameter for @code{<gpointer>} values.
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-string>}@deftp Class <gparam-string>
-Parameter for @code{<gchararray>} values. 1 argument: the default value, which
-may be @code{#f}.
-
-@end deftp
-
-@anchor{gnome gobject gparameter <gparam-object>}@deftp Class <gparam-object>
-Parameter for @code{<gobject>} values. 1 argument: the @code{<gtype>} of the
-value.
+Parameter for @code{<gchararray>} values.
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-boxed>}@deftp Class <gparam-boxed>
-Parameter for @code{<gboxed>} values. 1 argument: the @code{<gtype>} of the
-value.
+Parameter for @code{<gboxed>} values.
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-enum>}@deftp Class <gparam-enum>
-Parameter for @code{<genum>} values. 2 arguments: the @code{<gtype>} of the
-value, and the default value.
+Parameter for @code{<genum>} values.
 
 @end deftp
 
 @anchor{gnome gobject gparameter <gparam-flags>}@deftp Class <gparam-flags>
-Parameter for @code{<gflags>} values. 2 arguments: the @code{<gtype>} of the
-value, and the default value.
+Parameter for @code{<gflags>} values.
 
 @end deftp
 
@@ -681,61 +459,6 @@ A @code{<gflags>} type for the flags allowable on a @code{<gparam>}:
 @code{lax-validation}.
 
 @end deftp
-
-@anchor{gnome gobject gparameter gparam-struct:name}@defun gparam-struct:name param-struct
-Retrieve the name from a @code{gparam-struct}.
-
-@end defun
-
-@anchor{gnome gobject gparameter gparam-struct:nick}@defun gparam-struct:nick param-struct
-Retrieve the `nickname' from a @code{gparam-struct}.
-
-@end defun
-
-@anchor{gnome gobject gparameter gparam-struct:blurb}@defun gparam-struct:blurb param-struct
-Retrieve the `blurb', a short descriptive string, from a @code{gparam-struct}.
-
-@end defun
-
-@anchor{gnome gobject gparameter gparam-struct:flags}@defun gparam-struct:flags param-struct
-Retrieve the flags from a @code{gparam-struct}.
-
-@end defun
-
-@anchor{gnome gobject gparameter gparam-struct:param-type}@defun gparam-struct:param-type param-struct
-Retrieve the GParam type from a @code{gparam-struct}, for example
-@code{gtype:gparam-uint64}.
-
-@end defun
-
-@anchor{gnome gobject gparameter gparam-struct:value-type}@defun gparam-struct:value-type param-struct
-Retrieve the value type from a @code{gparam-struct}, for example
-@code{gtype:guint64}.
-
-@end defun
-
-@anchor{gnome gobject gparameter gparam-struct:owner-type}@defun gparam-struct:owner-type param-struct
-Retrieve the `owner type' from a @code{gparam-struct}. Appears to be stored into
-GLib param specs, but never used.
-
-@end defun
-
-@anchor{gnome gobject gparameter gparam-struct:args}@defun gparam-struct:args param-struct
-Retrieve the arguments from a @code{gparam-struct}, as a list. The length and
-composition of the arguments depends on the parameter type.
-
-@end defun
-
-@anchor{gnome gobject gparameter gparam->param-struct}@deffn Primitive gparam->param-struct param
-Retrieve the primitive @code{gparam-struct} for the GOOPS parameter object,
-@var{param}.
-
-@end deffn
-
-@anchor{gnome gobject gparameter gparam->value-type}@deffn Primitive gparam->value-type param
-Retrieve the value type of the @code{<gparam>} object @var{param}.
-
-@end deffn
 
 @anchor{gnome gobject gparameter gparameter:uint-max}@defvar gparameter:uint-max
 @end defvar
@@ -779,74 +502,27 @@ Retrieve the value type of the @code{<gparam>} object @var{param}.
 @anchor{gnome gobject gparameter gparameter:byte-order}@defvar gparameter:byte-order
 @end defvar
 
-@anchor{gnome gobject gparameter gtype:gparam-boolean}@defvar gtype:gparam-boolean
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-boxed}@defvar gtype:gparam-boxed
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-char}@defvar gtype:gparam-char
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-double}@defvar gtype:gparam-double
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-enum}@defvar gtype:gparam-enum
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-flags}@defvar gtype:gparam-flags
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-float}@defvar gtype:gparam-float
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-int}@defvar gtype:gparam-int
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-int64}@defvar gtype:gparam-int64
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-long}@defvar gtype:gparam-long
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-object}@defvar gtype:gparam-object
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-pointer}@defvar gtype:gparam-pointer
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-string}@defvar gtype:gparam-string
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-uchar}@defvar gtype:gparam-uchar
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-uint}@defvar gtype:gparam-uint
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-uint64}@defvar gtype:gparam-uint64
-@end defvar
-
-@anchor{gnome gobject gparameter gtype:gparam-ulong}@defvar gtype:gparam-ulong
-@end defvar
-
 @node gnome gobject gclosure
 @chapter (gnome gobject gclosure)
 @section Overview
 The GLib type system supports the creation and invocation of ``closures'',
 objects which can be invoked like procedures. Its infrastructure allows one to
-pass a Scheme function to C, and have C call into Scheme, and vice versa. This
-module exports a GOOPS class wrapping closures on the Scheme level,
-@code{<gclosure>}. @code{<gclosure>} holds a Scheme procedure, the
-@code{<gtype>} of its return value, and a list of the @code{<gtype>}'s of its
-arguments. Closures can be invoked with @code{gclosure-invoke}. For example:
+pass a Scheme function to C, and have C call into Scheme, and vice versa. In
+Scheme, @code{<gclosure>} holds a Scheme procedure, the @code{<gtype>} of its
+return value, and a list of the @code{<gtype>}'s of its arguments. Closures can
+be invoked with @code{gclosure-invoke}.
+
+However since on the C level, closures do not carry a description of their
+argument and return types, when we invoke a closure we have to be very explicit
+about the types involved. For example:
 
 @lisp 
  (gclosure-invoke (make <gclosure>
                    #:return-type <gint>
                    #:param-types (list <gulong>)
                    #:func (lambda (x) (* x x)))
-                  10)
+                  <gulong>
+                  (scm->gvalue <gulong> 10))
  @result{} 100
  
 @end lisp
@@ -858,16 +534,18 @@ be passed to other languages.
 
 @end deftp
 
-@anchor{gnome gobject gclosure gclosure-invoke}@defun gclosure-invoke closure . args
-Invoke a closure. The arguments @var{args} will be converted to @code{<gvalue>}
-objects of the appropriate type, and the return value will be run through
-@code{gvalue->scm}. For all practical purposes, this function is like
-@code{apply}.
+@anchor{gnome gobject gclosure gclosure-invoke}@deffn Primitive gclosure-invoke closure return_type args
+Invoke a closure.
 
-@end defun
+A @code{<gclosure>} in GLib's abstraction for a callable object. This
+abstraction carries no type information, so the caller must supply all arguments
+as typed <gvalue> instances, which may be obtained by the scheme procedure,
+@code{scm->gvalue}.
 
-@anchor{gnome gobject gclosure gtype:gclosure}@defvar gtype:gclosure
-@end defvar
+As you can see, this is a low-level function. In fact, it is not used internally
+by the @code{guile-gobject} bindings.
+
+@end deffn
 
 @node gnome gobject gsignal
 @chapter (gnome gobject gsignal)
@@ -881,52 +559,21 @@ certain well-documented points.
 Signals are typed. They specify the types of their return value, and the types
 of their arguments.
 
-This module defines routines for instrospecting, emitting, connecting to,
+This module defines routines for introspecting, emitting, connecting to,
 disconnecting from, blocking, and unblocking signals. Additionally it defines
 routines to define new signal types on instantiatable types.
 
 @section Usage
-@anchor{gnome gobject gsignal <gsignal>}@defvar <gsignal>
-The structure vtable for @code{<gsignal>} instances.
+@anchor{gnome gobject gsignal <gsignal>}@deftp Class <gsignal>
+A @code{<gsignal>} describes a signal on a @code{<gtype-instance>}: its name,
+and how it should be called.
 
-@end defvar
+@end deftp
 
-@anchor{gnome gobject gsignal gsignal:id}@defun gsignal:id signal
-Access the ``id'' of a @code{<gsignal>} structure, an integer.
-
-@end defun
-
-@anchor{gnome gobject gsignal gsignal:name}@defun gsignal:name signal
-Access the name of a @code{<gsignal>} structure, a string.
-
-@end defun
-
-@anchor{gnome gobject gsignal gsignal:interface-type}@defun gsignal:interface-type signal
-Access the type to which a @code{<gsignal>} structure is associated, a
-@code{<gtype>}.
-
-@end defun
-
-@anchor{gnome gobject gsignal gsignal:return-type}@defun gsignal:return-type signal
-Access the return type from a a @code{<gsignal>} structure, a @code{<gtype>}.
-
-@end defun
-
-@anchor{gnome gobject gsignal gsignal:param-types}@defun gsignal:param-types signal
-Access the parameter types from a a @code{<gsignal>} structure, a list of
-@code{<gtype>}.
-
-@end defun
-
-@anchor{gnome gobject gsignal gtype-get-signals}@deffn Primitive gtype-get-signals type
-Returns a vector of signal names belonging to @var{type} and all parent types.
+@anchor{gnome gobject gsignal gtype-class-get-signals}@deffn Primitive gtype-class-get-signals class tail
+Returns a list of signals belonging to @var{class} and all parent types.
 
 @end deffn
-
-@anchor{gnome gobject gsignal gtype-class-get-signals}@defun gtype-class-get-signals class
-Returns a vector of signals belonging to @var{class} and all parent classes.
-
-@end defun
 
 @anchor{gnome gobject gsignal gtype-class-get-signal-names}@defun gtype-class-get-signal-names class
 Returns a vector of signal names belonging to @var{class} and all parent
@@ -934,13 +581,10 @@ classes.
 
 @end defun
 
-@anchor{gnome gobject gsignal gtype-instance-signal-emit}@defun gtype-instance-signal-emit object name . args
-Emits signal @var{name} with arguments @var{args} on the @code{<gtype-instance>}
-@var{object}. @var{name} should be a symbol.
+@anchor{gnome gobject gsignal gtype-instance-signal-emit}@deffn Primitive gtype-instance-signal-emit object name args
+@end deffn
 
-@end defun
-
-@anchor{gnome gobject gsignal gtype-instance-signal-connect-data}@defun gtype-instance-signal-connect-data object name func after
+@anchor{gnome gobject gsignal gtype-instance-signal-connect}@defun gtype-instance-signal-connect object name func . after?
 Connects @var{func} as handler for the @code{<gtype-instance>} @var{object}'s
 signal @var{name}.
 
@@ -954,48 +598,29 @@ Returns an integer number which can be used as arugment of
 
 @end defun
 
-@anchor{gnome gobject gsignal gtype-instance-signal-connect}@defun gtype-instance-signal-connect object name func
-Convenience function for calling @code{gtype-instance-signal-connect-data} with
-@var{after} = @code{#f}.
-
-@end defun
-
 @anchor{gnome gobject gsignal gtype-instance-signal-connect-after}@defun gtype-instance-signal-connect-after object name func
-Convenience function for calling @code{gtype-instance-signal-connect-data} with
+Convenience function for calling @code{gtype-instance-signal-connect} with
 @var{after} = @code{#t}.
 
 @end defun
 
-@anchor{gnome gobject gsignal gsignal-handler-block}@defun gsignal-handler-block obj id
-Block invocation of the signal handler identified by @var{id} from high-level
-GOOPS object @var{object}.
+@anchor{gnome gobject gsignal gsignal-handler-block}@deffn Primitive gsignal-handler-block instance handler_id
+@end deffn
 
-@end defun
+@anchor{gnome gobject gsignal gsignal-handler-unblock}@deffn Primitive gsignal-handler-unblock instance handler_id
+@end deffn
 
-@anchor{gnome gobject gsignal gsignal-handler-unblock}@defun gsignal-handler-unblock obj id
-Unblock invocation of the signal handler identified by @var{id} from high-level
-GOOPS object @var{object}.
+@anchor{gnome gobject gsignal gsignal-handler-disconnect}@deffn Primitive gsignal-handler-disconnect instance handler_id
+@end deffn
 
-@end defun
-
-@anchor{gnome gobject gsignal gsignal-handler-disconnect}@defun gsignal-handler-disconnect obj id
-Disconnect the signal handler identified by @var{id} from high-level GOOPS
-object @var{object}.
-
-@end defun
-
-@anchor{gnome gobject gsignal gsignal-handler-connected?}@defun gsignal-handler-connected? obj id
-Returns @code{#t} if the signal handler identified by @var{id} is connected on
-the high-level GOOPS object @var{object}, or @code{#f} otherwise.
-
-@end defun
+@anchor{gnome gobject gsignal gsignal-handler-connected?}@deffn Primitive gsignal-handler-connected? instance handler_id
+@end deffn
 
 @anchor{gnome gobject gsignal gtype-class-create-signal}@defun gtype-class-create-signal class name return-type param-types
 Create a new signal associated with the @code{<gtype-class>} @var{class}.
 
 @var{name} should be a symbol, the name of the signal. @var{return-type} should
-be either a @code{<gtype>} or a @code{<gtype-class>} object. Similarly,
-@var{param-types} should be a list of either @code{<gtype>} or
+be a @code{<gtype-class>} object. @var{param-types} should be a list of
 @code{<gtype-class>} objects.
 
 In a bit of an odd interface, this function will return a new generic function,
@@ -1004,37 +629,6 @@ silently return an unspecified value. The user may define new methods on this
 generic to provide alternative default handler implementations.
 
 @end defun
-
-@anchor{gnome gobject gsignal gtype-class-define-signal}@defspec gtype-class-define-signal 
-A macro invoked as:
-
-@lisp 
- (gtype-class-define-signal @var{class} @var{name} @var{return-type}
-                            . @var{param-types})
-@end lisp
-
-All arguments will be passed to @code{gtype-class-create-signal}.
-
-This form is a macro because it will actually take the generic returned from
-@code{gtype-class-create-signal} and bind it to a name in the toplevel
-environment.
-
-The name of the new generic function is the concatenation of the type name, a
-colon, and the signal name.
-
-For example:
-
-@lisp 
- (gtype-class-define-signal <foo> 'roswell #f)
- (define-method (foo:roswell (obj <foo>))
-   *unspecified*)
-
- (gtype-class-define-signal <foo> 'berlin <glong> <gint>)
- (define-method (foo:berlin (obj <foo>) (x <number>))
-   85)
-@end lisp
-
-@end defspec
 
 @node gnome gobject gobject
 @chapter (gnome gobject gobject)
@@ -1117,6 +711,9 @@ For example:
  (define-class <hungry> (<test>))
 @end lisp
 
+@code{<gobject>} classes also expose a slot for each GObject property defined on
+the class, if such a slot is not already defined.
+
 @end deftp
 
 @anchor{gnome gobject gobject <ginterface>}@deftp Class <ginterface>
@@ -1124,10 +721,15 @@ The base class for GLib's interface types. Not derivable in Scheme.
 
 @end deftp
 
-@anchor{gnome gobject gobject gtype-register-static}@deffn Primitive gtype-register-static name parent_type
-Derive a new type named @var{name} from @var{parent_type}. Returns the new
-@code{<gtype>}. This function is called when deriving from @code{<gobject>};
-users do not normally call this function directly.
+@anchor{gnome gobject gobject <gparam-object>}@deftp Class <gparam-object>
+Parameter for @code{<gobject>} values.
+
+@end deftp
+
+@anchor{gnome gobject gobject gtype-register-static}@deffn Primitive gtype-register-static name parent_class
+Derive a new type named @var{name} from @var{parent_class}. Returns the new
+@code{<gtype-class>}. This function is called when deriving from
+@code{<gobject>}; users do not normally call this function directly.
 
 @end deffn
 
@@ -1165,26 +767,8 @@ the object.
 
 @end deffn
 
-@anchor{gnome gobject gobject make-gobject-instance}@deffn Generic make-gobject-instance
-A generic defined to initialize a newly created @code{<gobject>} instance.
-@code{make-gobject-instance} takes four arguments: the class of the object, its
-@code{<gtype>}, the object itself, and the options, which is a list of keyword
-arguments.
-
-This operation is a generic function so that subclasses can override it, e.g. so
-that @code{<gtk-object>} can implement explicit destruction.
-
+@anchor{gnome gobject gobject gobject-class-get-properties}@deffn Primitive gobject-class-get-properties class
 @end deffn
-
-@deffn Method make-gobject-instance  (@var{class} @code{<top>}) (@var{type} @code{<top>}) (@var{object} @code{<top>}) (@var{options} @code{<top>})
-The default implementation of @code{make-gobject-instance}.
-
-@end deffn
-
-@anchor{gnome gobject gobject gobject-class-get-properties}@defun gobject-class-get-properties class
-Returns a vector of properties belonging to @var{class} and all parent classes.
-
-@end defun
 
 @anchor{gnome gobject gobject gobject-class-find-property}@defun gobject-class-find-property class name
 Returns a property named @var{name} (a symbol), belonging to @var{class} or one
@@ -1192,39 +776,19 @@ of its parent classes, or @code{#f} if not found.
 
 @end defun
 
-@anchor{gnome gobject gobject gobject-class-get-property-names}@defun gobject-class-get-property-names class
-Returns a vector of property names belonging to @var{class} and all parent
-classes.
+@anchor{gnome gobject gobject gobject-class-get-property-names}@deffn Primitive gobject-class-get-property-names class
+@end deffn
 
-@end defun
-
-@anchor{gnome gobject gobject gobject-interface-get-properties}@defun gobject-interface-get-properties class
-Returns a vector of properties belonging to @var{class} and all parent classes.
-
-@end defun
-
-@anchor{gnome gobject gobject gobject-interface-find-property}@defun gobject-interface-find-property class name
-Returns a property named @var{name} (a symbol), belonging to @var{class} or one
-of its parent classes, or @code{#f} if not found.
-
-@end defun
-
-@anchor{gnome gobject gobject gobject-interface-get-property-names}@defun gobject-interface-get-property-names class
-Returns a vector of property names belonging to @var{class} and all parent
-classes.
-
-@end defun
-
-@anchor{gnome gobject gobject gobject-get-property}@defun gobject-get-property object name
+@anchor{gnome gobject gobject gobject-get-property}@deffn Primitive gobject-get-property object name
 Gets a the property named @var{name} (a symbol) from @var{object}.
 
-@end defun
+@end deffn
 
-@anchor{gnome gobject gobject gobject-set-property}@defun gobject-set-property object name init-value
+@anchor{gnome gobject gobject gobject-set-property}@deffn Primitive gobject-set-property object name value
 Sets the property named @var{name} (a symbol) on @var{object} to
 @var{init-value}.
 
-@end defun
+@end deffn
 
 @node gnome gobject generics
 @chapter (gnome gobject generics)
@@ -1479,7 +1043,7 @@ a Scheme class, such as @code{<gtk-window>}. Uses
 
 @end defun
 
-@anchor{gnome gobject utils gtype-name->method-name}@defun gtype-name->method-name type-name name
+@anchor{gnome gobject utils gtype-class-name->method-name}@defun gtype-class-name->method-name class-name name
 Generate the name of a method given the name of a @code{<gtype>} and the name of
 the operation. For example:
 
@@ -1514,6 +1078,12 @@ Define a generic named @var{name}, with documentation @var{documentation}.
 Define a class named @var{name}, with superclasses @var{supers}, with
 documentation @var{docs}.
 
+@end defspec
+
+@anchor{gnome gobject utils unless}@defspec unless test . body
+@end defspec
+
+@anchor{gnome gobject utils with-accessors}@defspec with-accessors names . body
 @end defspec
 
 @node gnome gw generics
@@ -1620,7 +1190,7 @@ A base G-Wrap type class for classed GLib types (see @code{gtype-classed?}).
 @deffn Method gtype-id  (@var{o} @code{<gobject-boxed-type>})
 @end deffn
 
-@deffn Method gtype-id  (@var{o} @code{<gobject-object-type>})
+@deffn Method gtype-id  (@var{o} @code{<gobject-instance-type>})
 @end deffn
 
 @deffn Method gtype-id  (@var{o} @code{<gobject-classed-pointer-type>})
@@ -1648,17 +1218,17 @@ is unset, or the value is not @code{#f}, @var{code} is run instead.
 
 @end deffn
 
-@anchor{gnome gw support gobject wrap-object!}@deffn Generic wrap-object!
+@anchor{gnome gw support gobject wrap-instance!}@deffn Generic wrap-instance!
 @end deffn
 
-@deffn Method wrap-object!  (@var{ws} @code{<gobject-wrapset-base>}) (@var{args} @code{<top>})...
-Define a wrapper for a specific @code{<gobject>}-derived type in @var{ws}.
-Required keyword arguments are @code{#:ctype} and @code{#:gtype-id}. For
-example,
+@deffn Method wrap-instance!  (@var{ws} @code{<gobject-wrapset-base>}) (@var{args} @code{<top>})...
+Define a wrapper for a specific instantiatable (@code{<gtype-instance>}-derived)
+type in @var{ws}. Required keyword arguments are @code{#:ctype} and
+@code{#:gtype-id}. For example,
 
 @lisp 
- (wrap-object! ws #:ctype "GtkWidget"
-               #:gtype-id "GTK_TYPE_WIDGET")
+ (wrap-instance! ws #:ctype "GtkWidget"
+                    #:gtype-id "GTK_TYPE_WIDGET")
 @end lisp
 
 Normally only called from @code{load-defs}.
@@ -1670,7 +1240,7 @@ Normally only called from @code{load-defs}.
 
 @deffn Method wrap-boxed!  (@var{ws} @code{<gobject-wrapset-base>}) (@var{args} @code{<top>})...
 Define a wrapper for a specific boxed type in @var{ws}. Required keyword
-arguments are @code{#:ctype} and @code{#:gtype-id}, as in @code{wrap-object!}.
+arguments are @code{#:ctype} and @code{#:gtype-id}, as in @code{wrap-instance!}.
 
 @end deffn
 
@@ -1679,7 +1249,7 @@ arguments are @code{#:ctype} and @code{#:gtype-id}, as in @code{wrap-object!}.
 
 @deffn Method wrap-pointer!  (@var{ws} @code{<gobject-wrapset-base>}) (@var{args} @code{<top>})...
 Define a wrapper for a specific pointer type in @var{ws}. Required keyword
-arguments are @code{#:ctype} and @code{#:gtype-id}, as in @code{wrap-object!}.
+arguments are @code{#:ctype} and @code{#:gtype-id}, as in @code{wrap-instance!}.
 
 @end deffn
 
@@ -1690,12 +1260,35 @@ library, and passed as arguments to other calls into the library.
 
 @end defun
 
+@anchor{gnome gw support gobject wrap-freeable-pointer!}@defun wrap-freeable-pointer! ws ctype free
+foo
+
+@end defun
+
+@anchor{gnome gw support gobject wrap-refcounted-pointer!}@defun wrap-refcounted-pointer! ws ctype ref unref
+foo
+
+@end defun
+
+@anchor{gnome gw support gobject wrap-structure!}@defun wrap-structure! ws ctype wrap unwrap
+Define a wrapper for structure values of type @var{ctype}.
+
+@var{wrap} and @var{unwrap} are the names of C functions to convert a C
+structure to Scheme and vice versa, respectively. When in a function call,
+parameters of this type of the form `@var{StructName}*' are interpreted as `out'
+parameters, while `const-@var{StructName}*' are treated as `in' parameters.
+
+Note that @var{ctype} should be the type of the structure, not a pointer to the
+structure.
+
+@end defun
+
 @anchor{gnome gw support gobject wrap-interface!}@deffn Generic wrap-interface!
 @end deffn
 
 @deffn Method wrap-interface!  (@var{ws} @code{<gobject-wrapset-base>}) (@var{args} @code{<top>})...
 Define a wrapper for an interface type in @var{ws}. Required keyword arguments
-are @code{#:ctype} and @code{#:gtype-id}, as in @code{wrap-object!}.
+are @code{#:ctype} and @code{#:gtype-id}, as in @code{wrap-instance!}.
 
 @end deffn
 
@@ -1714,7 +1307,7 @@ Define a wrapper for a flags type in @var{ws}. Required keyword arguments are
 
 @deffn Method wrap-gobject-class!  (@var{ws} @code{<gobject-wrapset-base>}) (@var{args} @code{<top>})...
 Define a wrapper for GObject class values @var{ws}. Required keyword arguments
-are @code{#:ctype} and @code{#:gtype-id}, as in @code{wrap-object!}.
+are @code{#:ctype} and @code{#:gtype-id}, as in @code{wrap-instance!}.
 
 @code{#:ctype} should refer to the type of the class and not the instance; e.g.
 @code{"GtkWidgetClass"} and not @code{"GtkWidget"}. This function will not be
@@ -1729,7 +1322,7 @@ Wrap a boxed type using custom wrappers and unwrappers.
 FIXME: missing a wrapset argument!
 
 @var{ctype} and @var{gtype} are as @code{#:ctype} and @code{#:gtype-id} in
-@code{wrap-object!}. @var{wrap} and @var{unwrap} are G-Wrap forms in which
+@code{wrap-instance!}. @var{wrap} and @var{unwrap} are G-Wrap forms in which
 @code{scm-var} and @code{c-var} will be bound to the names of the SCM and C
 values, respectively. For example:
 
@@ -1750,7 +1343,7 @@ Wrap a GValue type using custom wrap and unwrap functions.
 FIXME: missing a wrapset argument!
 
 @var{ctype} and @var{gtype} are as @code{#:ctype} and @code{#:gtype-id} in
-@code{wrap-object!}. @var{wrap-func} and @var{unwrap-func} are names of
+@code{wrap-instance!}. @var{wrap-func} and @var{unwrap-func} are names of
 functions to convert to and from Scheme values, respectively. For example:
 
 @lisp 
@@ -1836,7 +1429,7 @@ generate these sections when updating the manuals, or whether this "stub"
 generation should be run only once when the documentation is initially
 generated, and thereafter maintained by hand. Your call!
 
-@code{gtk-doc->texi-defuns} is slightly more complicated, as it you have the
+@code{gtk-doc->texi-defuns} is slightly more complicated, because you have the
 choice as to whether to use heuristics or the g-wrap method for determining the
 arguments. See its documentation for more information.
 
@@ -1915,6 +1508,27 @@ the name of the module to load to check the existence of procedures, e.g.
 
 @end defun
 
+@anchor{gnome gw support gtk-doc check-documentation-coverage}@defun check-documentation-coverage modules texi
+Check the coverage of generated documentation.
+
+@var{modules} is a list of module names, and @var{texi} is a path to a texinfo
+file. The set of exports of @var{modules} is checked against the set of
+procedures defined in @var{texi}, resulting in a calculation of documentation
+coverage, and the output of any missing documentation to the current output
+port.
+
+@end defun
+
+@anchor{gnome gw support gtk-doc generate-undocumented-texi}@defun generate-undocumented-texi modules texi
+Verify the bindings exported by @var{modules} against the documentation in
+@var{texi}, writing documentation for any undocumented symbol to
+@code{undocumented.texi}.
+
+@var{modules} is a list of module names, and @var{texi} is a path to a texinfo
+file.
+
+@end defun
+
 @node gnome gw support modules
 @chapter (gnome gw support modules)
 @section Overview
@@ -1941,9 +1555,6 @@ Re-export the public interface of a module; used like @code{use-modules}.
 
 @end defspec
 
-@node Type Index
-@unnumbered Type Index
-@printindex tp
 @node Function Index
 @unnumbered Function Index
 @printindex fn

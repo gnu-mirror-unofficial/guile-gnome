@@ -24,7 +24,7 @@
 ;; values are wrapped in Scheme as instances of @code{<gvalue-class>}
 ;; classes, such as @code{<gint>}, @code{<gfloat>}, etc.
 ;;
-;; In most cases, use of @code{<gvalue>} are transparent to the Scheme
+;; In most cases, use of @code{<gvalue>} is transparent to the Scheme
 ;; user. Values which can be represented directly as Scheme values are
 ;; normally given to the user in their Scheme form, e.g. @code{#\a}
 ;; instead of @code{#<gvalue <gchar> 3020c708 a>}. However, when dealing
@@ -166,8 +166,8 @@ values."
 
 (define-class-with-docs <gboxed> (<gvalue>)
   "A @code{<gvalue>} class for ``boxed'' types, a way of wrapping
-generic C structures. Use @code{gvalue->type} on an instance of this
-class to determine what type it holds."
+generic C structures. You won't see instances of this class, only of its
+subclasses."
   #:gtype-name "GBoxed")
 
 (define-class-with-docs <gvalue-array> (<gboxed>)

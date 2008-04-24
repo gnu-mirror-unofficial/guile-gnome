@@ -205,6 +205,9 @@ For example:
  ;; deriving from <test> -- also inherits properties and signals
  (define-class <hungry> (<test>))
 @end lisp
+
+@code{<gobject>} classes also expose a slot for each GObject property
+defined on the class, if such a slot is not already defined.
 "
   ;; add a slot for signal generics instead of module-define! ?
   #:metaclass <gobject-class>
@@ -231,7 +234,7 @@ For example:
 ;;;
 
 (define (gobject-class-find-property class name)
-  "Returns a property named @var{propname} (a symbol), belonging to
+  "Returns a property named @var{name} (a symbol), belonging to
 @var{class} or one of its parent classes, or @code{#f} if not found."
   (let ((propname name))
     (with-accessors (name)

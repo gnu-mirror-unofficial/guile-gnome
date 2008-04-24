@@ -1,3 +1,34 @@
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gtk-doc.scm (gobject-class-stexi-docs): Cope
+	with gw:wct, which is not a <class>. Sigh.
+
+	* gnome/gobject/gtype.h: Remove unimplemented foo
+
+	* gnome/gobject/gtype.c (gtype-instance-destroy!): Renamed from
+	%gtype-instance-destroy!, because really it's not that private;
+	its semantics are necessary.
+	(especify-metaclass!): Removed, as the only user --
+	<gtk-message-dialog> -- was fixed. yay1
+
+	* gnome/gw/support/gtk-doc.scm: 
+	* gnome/gobject/gvalue.scm: 
+	(<gboxed>): 
+	* gnome/gobject/gvalue.c (genum-register-static)
+	(gflags-register-static):
+	* gnome/gobject/gtype.scm: 
+	* gnome/gobject/gtype.c (gtype-name->class):
+	* gnome/gobject/gsignal.scm: 
+	(gtype-class-create-signal): 
+	* gnome/gobject/gparameter.scm: 
+	* gnome/gobject/gobject.scm (<gobject>)
+	(gobject-class-find-property): 
+	* gnome/gobject/gclosure.scm: Updated docs.
+
+	* doc/glib/defuns-*.texi: Regenerated. Lots of extra crap
+	whitespace because SSAX changed to not ignore whitespace-only
+	strings.
+
 2008-04-24  Andy Wingo  <wingo@pobox.com>
 
 	* test-suite/gobject.test ("gflags values"): Add test for

@@ -23,10 +23,10 @@
 ;; Base support for the GLib type system.
 ;;
 ;; The GLib runtime type system is broken into a number of modules, of
-;; which GType is the base. A @code{<gtype>} is a named type that has a
-;; number of properties. Some types are fundamental and cannot be
-;; subclassed, such as integers. Others can form the root of complicated
-;; object hierarchies, such as @code{<gobject>}.
+;; which GType is the base. A GType is a simply a named type. Some types
+;; are fundamental and cannot be subclassed, such as integers. Others
+;; can form the root of complicated object hierarchies, such as
+;; @code{<gobject>}.
 ;;
 ;; One can obtain the class for a type if you know its name. For
 ;; example,
@@ -47,9 +47,7 @@
   #:export     (<gtype-class> <gtype-instance>
                 gtype-name->class class-name->gtype-name
                 gruntime-error
-
-                ;; Evil
-                %gtype-instance-destroy! especify-metaclass!))
+                gtype-instance-destroy!))
 
 (dynamic-call "scm_init_gnome_gobject_gc"
               (dynamic-link *guile-gnome-gobject-lib-path*))

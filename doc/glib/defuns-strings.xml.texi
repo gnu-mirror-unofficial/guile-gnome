@@ -5,11 +5,15 @@
 Creates a new @code{<g-string>}, initialized with the given string.
 
 @table @var
+
 @item init
+
 the initial text to copy into the string.
+
 
 @item ret
 the new @code{<g-string>}.
+
 
 @end table
 

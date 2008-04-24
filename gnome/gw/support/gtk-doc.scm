@@ -53,7 +53,7 @@
 ;; should be run only once when the documentation is initially
 ;; generated, and thereafter maintained by hand. Your call!
 ;;
-;; @code{gtk-doc->texi-defuns} is slightly more complicated, as it you
+;; @code{gtk-doc->texi-defuns} is slightly more complicated, because you
 ;; have the choice as to whether to use heuristics or the g-wrap method
 ;; for determining the arguments. See its documentation for more
 ;; information.
@@ -643,14 +643,17 @@ created using @code{gtk-doc->texi-defuns}."
                  (blurb (gobject-class-find-property class name))))
               (else
                "Scheme slot."))))))
-    (let ((slots (class-direct-slots class)))
+    (let ((slots (if (is-a? class <class>)
+                     (class-direct-slots class)
+                     '()))) ;; silliness regardings wcts...
+      (cond
        ((null? slots)
         '((para "This class defines no direct slots, "
                 "other than those defined by its superclasses.")))
        (else
         `((para "This class defines the following slots:")
           (table (% (formatter (code)))
-                 ,@(map doc-slot slots))))))
+                 ,@(map doc-slot slots)))))))
   (let ((v (module-variable (resolve-interface module-name) class-name)))
     (cond
      (v

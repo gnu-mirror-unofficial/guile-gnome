@@ -26,18 +26,22 @@
 ;; infrastructure allows one to pass a Scheme function to C, and have C
 ;; call into Scheme, and vice versa.
 ;; 
-;; This module exports a GOOPS class wrapping closures on the Scheme
-;; level, @code{<gclosure>}. @code{<gclosure>} holds a Scheme procedure,
-;; the @code{<gtype>} of its return value, and a list of the
+;; In Scheme, @code{<gclosure>} holds a Scheme procedure, the
+;; @code{<gtype>} of its return value, and a list of the
 ;; @code{<gtype>}'s of its arguments. Closures can be invoked with
-;; @code{gclosure-invoke}. For example:
+;; @code{gclosure-invoke}.
+;;
+;; However since on the C level, closures do not carry a description of
+;; their argument and return types, when we invoke a closure we have to
+;; be very explicit about the types involved. For example:
 ;; 
 ;; @lisp
 ;; (gclosure-invoke (make <gclosure>
 ;;                   #:return-type <gint>
 ;;                   #:param-types (list <gulong>)
 ;;                   #:func (lambda (x) (* x x)))
-;;                  10)
+;;                  <gulong>
+;;                  (scm->gvalue <gulong> 10))
 ;; @result{} 100
 ;; @end lisp
 ;;; Code:

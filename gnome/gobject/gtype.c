@@ -169,7 +169,7 @@ SCM_DEFINE_STATIC (_gtype_to_class, "%gtype->class", 1, 0, 0,
 
 SCM_DEFINE (scm_gtype_name_to_class, "gtype-name->class", 1, 0, 0,
             (SCM name),
-            "foo")
+            "Return the @code{<gtype-class>} associated with the GType, @var{name}.")
 #define FUNC_NAME s_scm_gtype_name_to_class
 {
     GType type;
@@ -546,15 +546,20 @@ scm_gtype_instance_struct_free (scm_t_bits * vtable, scm_t_bits * data)
     return 0;
 }
 
-SCM_DEFINE (scm_sys_gtype_instance_destroy_x, "%gtype-instance-destroy!", 1, 0, 0,
+SCM_DEFINE (scm_gtype_instance_destroy_x, "gtype-instance-destroy!", 1, 0, 0,
 	    (SCM instance),
 	    "Release all references that the Scheme wrapper @var{instance} "
             "has on the underlying C value, and release pointers associated "
             "with the C value that point back to Scheme.\n\n"
-            "Normally not necessary. Used by the implementations of some "
-            "instantiatable types that have @code{destroy} methods, "
-            "notably @code{<gtk-object>}.")
-#define FUNC_NAME s_scm_sys_gtype_instance_destroy_x
+            "Normally, you don't need to call this function, because garbage "
+            "collection will take care of resource management. "
+            "However some @code{<gtype-class>} instances have semantics that "
+            "require this function. The canonical example is that when a "
+            "@code{<gtk-object>} emits the @code{destroy} signal, all "
+            "code should drop their references to the object. This is, "
+            "of course, handled internally in the @code{(gnome gtk)} "
+            "module.")
+#define FUNC_NAME s_scm_gtype_instance_destroy_x
 {
     SCM_VALIDATE_GTYPE_INSTANCE (1, instance);
 
@@ -658,45 +663,6 @@ void scm_c_gruntime_error (const char *subr, const char *message,
     scm_error (sym_gruntime_error, subr, message,
                args, SCM_EOL);
 }
-
-SCM_DEFINE (scm_especify_metaclass_x,
-            "especify-metaclass!", 2, 0, 0,
-	    (SCM class, SCM metaclass),
-	    "A terrible hack that takes a class @var{class} and sets its "
-            "metaclass, in-place, to @var{metaclass}. @var{metaclass} must "
-            "be a subclass of @var{class}' existing metaclass.\n\n"
-            "This method is useful if you want to define a method that "
-            "on a particular @code{<gtype-class>}, such as "
-            "@code{make-instance}. However, it would be cleaner to "
-            "devise a way of making these ``class methods'' without "
-            "molesting GOOPS in this way.")
-#define FUNC_NAME s_scm_especify_metaclass_x
-{
-    SCM new_class;
-    GType gtype;
-    
-    SCM_VALIDATE_GTYPE_CLASS_COPY (1, class, gtype);
-
-    if (!SCM_SUBCLASSP (metaclass, SCM_CLASS_OF (class)))
-        scm_c_gruntime_error (FUNC_NAME,
-                              "New metaclass ~A is not a subclass of old metaclass ~S",
-                              SCM_LIST2 (metaclass, SCM_CLASS_OF (class)));
-
-    /* unbind the type and the class */
-    g_type_set_qdata (gtype, quark_class, NULL);
-    
-    new_class = scm_apply_0 (_make_class,
-                             SCM_LIST8 (scm_class_direct_supers (class),
-                                        scm_class_direct_slots (class),
-                                        k_name, scm_class_name (class),
-                                        k_gtype_name,
-                                        scm_from_locale_string (g_type_name (gtype)),
-                                        k_metaclass, metaclass));
-    scm_call_2 (_class_redefinition, class, new_class);
-
-    return SCM_UNSPECIFIED;
-}
-#undef FUNC_NAME
 
 
 

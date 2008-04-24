@@ -23,8 +23,7 @@
 ;;
 ;; Parameters are constraints for values, both in type and in range.
 ;; This module wraps the parameters code of the GLib type system,
-;; defining C classes such that parameters may be manipulated and
-;; created from Scheme.
+;; allowing parameters to be manipulated and created from Scheme.
 ;;
 ;; There is a parameter class for each type of parameter:
 ;; @code{<gparam-int>}, @code{<gparam-object>}, etc.

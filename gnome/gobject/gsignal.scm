@@ -30,7 +30,7 @@
 ;; Signals are typed. They specify the types of their return value, and
 ;; the types of their arguments.
 ;;
-;; This module defines routines for instrospecting, emitting, connecting
+;; This module defines routines for introspecting, emitting, connecting
 ;; to, disconnecting from, blocking, and unblocking signals.
 ;; Additionally it defines routines to define new signal types on
 ;; instantiatable types.
@@ -147,9 +147,8 @@ Returns an integer number which can be used as arugment of
 @var{class}.
 
 @var{name} should be a symbol, the name of the signal. @var{return-type}
-should be either a @code{<gtype>} or a @code{<gtype-class>} object.
-Similarly, @var{param-types} should be a list of either @code{<gtype>}
-or @code{<gtype-class>} objects.
+should be a @code{<gtype-class>} object. @var{param-types} should be a
+list of @code{<gtype-class>} objects.
 
 In a bit of an odd interface, this function will return a new generic
 function, which will be run as the signal's default handler, whose

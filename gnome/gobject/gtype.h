@@ -101,12 +101,7 @@ extern SCM scm_sys_gtype_to_class;
 /* SCM API */
 
 /* GTypeInstance */
-SCM scm_sys_gtype_instance_primitive_destroy_x (SCM instance);
-
-/* Misc */
-SCM scm_especify_metaclass_x (SCM class, SCM metaclass);
-SCM scm_sys_function_to_method_public (SCM proc, SCM of_object,
-                                       SCM generic_name);
+SCM scm_gtype_instance_destroy_x (SCM instance);
 
 
 
