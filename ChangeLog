@@ -1,3 +1,8 @@
+2008-04-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/libgnomecanvas-support.c
+	(guile_gnome_scm_to_canvas_points): Fix some deprecation warnings.
+
 2008-04-10  Andy Wingo  <wingo@unquote>
 
 	* == Released guile-gnome-platform version 2.15.97 ==

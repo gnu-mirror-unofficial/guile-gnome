@@ -79,15 +79,6 @@ typedef struct {
 } GnomeCanvasPoints;
 */
 
-#if SCM_MINOR_VERSION < 7
-/* guile-1.6.x compatibility */
-#define SCM_VECTOR_REF(v, i) (SCM_VELTS ((v))[(i)])
-#define scm_is_number(x) (scm_number_p (x) ==SCM_BOOL_T)
-#define scm_to_double(x) (scm_num2dbl (x, "scm_to_double"))
-#define scm_from_int(x) SCM_MAKINUM (x)
-#define scm_from_double(x) (scm_make_real (x))
-#endif
-
 GnomeCanvasPoints *
 guile_gnome_scm_to_canvas_points (SCM scm)
 #define FUNC_NAME "guile-gnome-scm-to-canvas-points"
@@ -100,7 +91,7 @@ guile_gnome_scm_to_canvas_points (SCM scm)
       points = gnome_canvas_points_new (length);
       for (i = 0; i < length; i++)
 	{
-	  SCM s = SCM_VECTOR_REF (scm, i);
+	  SCM s = scm_c_vector_ref (scm, i);
 	  /* Just return NULL? */
 	  SCM_ASSERT_TYPE (scm_is_number (s), s, SCM_ARG1, FUNC_NAME, "points");
 	  (points->coords)[i] = scm_to_double (s);
