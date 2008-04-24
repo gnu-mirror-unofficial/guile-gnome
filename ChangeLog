@@ -1,3 +1,9 @@
+2008-04-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gconf-support.c (scm_c_gconf_value_to_scm)
+	(sniff_list_type, scm_c_scm_to_gconf_value, notify_proc): Fix
+	deprecation warnings.
+
 2008-04-10  Andy Wingo  <wingo@unquote>
 
 	* == Released guile-gnome-platform version 2.15.97 ==

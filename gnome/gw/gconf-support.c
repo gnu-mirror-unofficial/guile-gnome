@@ -100,7 +100,7 @@ scm_c_gconf_value_to_scm (const GConfValue *value)
                 break;
             default:
                 scm_throw (scm_str2symbol ("unknown-value"),
-                           SCM_LIST1 (SCM_MAKINUM (t)));
+                           SCM_LIST1 (scm_from_int (t)));
             }
         }
         g_slist_free (head);
@@ -111,7 +111,7 @@ scm_c_gconf_value_to_scm (const GConfValue *value)
                          scm_c_gconf_value_to_scm (gconf_value_get_cdr (value)));
     default:
         scm_throw (scm_str2symbol ("unknown-value"),
-                   SCM_LIST1 (SCM_MAKINUM (value->type)));
+                   SCM_LIST1 (scm_from_int (value->type)));
     }
     return SCM_BOOL_F; /* shouldn't get here */
 }
@@ -135,11 +135,10 @@ sniff_list_type (SCM l)
         }
         return GCONF_VALUE_BOOL;
     }
-    /* I'm being lazy here -- bignums can be ints, but I don't want to check. */
-    if (SCM_INUMP (value)) {
+    if (scm_is_signed_integer (value, SCM_T_INT32_MIN, SCM_T_INT32_MAX)) {
         for (walk=l; SCM_NNULLP (walk); walk = SCM_CDR (walk)) {
             value = SCM_CAR (walk);
-            if (!(SCM_INUMP (value)))
+            if (!(scm_is_signed_integer (value, SCM_T_INT32_MIN, SCM_T_INT32_MAX)))
                 scm_misc_error (FUNC_NAME, "Invalid subelement", scm_list_1 (value));
         }
         return GCONF_VALUE_INT;
@@ -152,10 +151,10 @@ sniff_list_type (SCM l)
         }
         return GCONF_VALUE_FLOAT;
     }
-    if (SCM_STRINGP (value)) {
+    if (scm_is_string (value)) {
         for (walk=l; SCM_NNULLP (walk); walk = SCM_CDR (walk)) {
             value = SCM_CAR (walk);
-            if (!(SCM_STRINGP (value)))
+            if (!(scm_is_string (value)))
                 scm_misc_error (FUNC_NAME, "Invalid subelement", scm_list_1 (value));
         }
         return GCONF_VALUE_STRING;
@@ -181,9 +180,9 @@ scm_c_scm_to_gconf_value (SCM value)
     if (SCM_FALSEP (value) || SCM_EQ_P (value, SCM_BOOL_T)) {
         ret = gconf_value_new (GCONF_VALUE_BOOL);
         gconf_value_set_bool (ret, SCM_NFALSEP (value));
-    } else if (SCM_INUMP (value)) {
+    } else if (scm_is_signed_integer (value, SCM_T_INT32_MIN, SCM_T_INT32_MAX)) {
         ret = gconf_value_new (GCONF_VALUE_INT);
-        gconf_value_set_int (ret, SCM_INUM (value));
+        gconf_value_set_int (ret, scm_to_int (value));
     } else if (SCM_NFALSEP (scm_exact_p (value))) {
         if (SCM_NFALSEP (scm_leq_p (value, scm_uint2num (G_MAXINT)))) {
             ret = gconf_value_new (GCONF_VALUE_INT);
@@ -194,9 +193,12 @@ scm_c_scm_to_gconf_value (SCM value)
     } else if (SCM_NFALSEP (scm_inexact_p (value))) {
         ret = gconf_value_new (GCONF_VALUE_FLOAT);
         gconf_value_set_float (ret, scm_num2float (value, 1, FUNC_NAME));
-    } else if (SCM_STRINGP (value)) {
+    } else if (scm_is_string (value)) {
+        char *chars;
         ret = gconf_value_new (GCONF_VALUE_STRING);
-        gconf_value_set_string (ret, SCM_STRING_CHARS (value));
+        chars = scm_to_locale_string (value);
+        gconf_value_set_string (ret, chars);
+        free (chars);
     } else if (scm_pair_p (value)) {
         if (scm_pair_p (SCM_CDR (value))) {
             GConfValueType t = sniff_list_type (value);
@@ -235,7 +237,7 @@ notify_proc (GConfClient *client, guint cnxn_id, GConfEntry *entry,
     key = scm_str2symbol (gconf_entry_get_key (entry));
     val = scm_c_gconf_value_to_scm (gconf_entry_get_value (entry));
 
-    scm_call_4 (proc, sclient, SCM_MAKINUM (cnxn_id), key, val);
+    scm_call_4 (proc, sclient, scm_from_uint (cnxn_id), key, val);
 }
 
 guint
