@@ -29,16 +29,16 @@ _wrap_gnome_program_init (const gchar *app_id, const gchar *app_version)
 {
     GnomeProgram *program;
     char **argv, **cwalk;
-    int argc;
+    int argc, i;
     SCM args, walk;
     
     args = scm_program_arguments ();
-    argc = SCM_INUM (scm_length (args));
+    argc = scm_to_int (scm_length (args));
     argv = g_new0 (char*, argc);
     walk = args;
     cwalk = argv;
     while (walk != SCM_EOL) {
-        *cwalk = SCM_STRING_CHARS (SCM_CAR (walk));
+        *cwalk = scm_to_locale_string (SCM_CAR (walk));
         cwalk++;
         walk = SCM_CDR (walk);
     }
@@ -46,7 +46,8 @@ _wrap_gnome_program_init (const gchar *app_id, const gchar *app_version)
     program = gnome_program_init (app_id, app_version, LIBGNOME_MODULE,
                                   argc, argv, NULL);
 
-
+    for (i = 0; i < argc; i++)
+        free (argv[i]);
     g_free (argv);
     
     return program;

@@ -1,3 +1,8 @@
+2008-04-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gnome-support.c (_wrap_gnome_program_init): Fix some
+	deprecation warnings.
+
 2008-04-10  Andy Wingo  <wingo@unquote>
 
 	* == Released guile-gnome-platform version 2.15.97 ==
