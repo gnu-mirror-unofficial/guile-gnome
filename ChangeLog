@@ -1,3 +1,17 @@
+2008-04-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/guile-gtk-tree-model.c
+	(_with_guile_gtk_generic_tree_model_get_column_type)
+	(_with_guile_gtk_generic_tree_model_get_value)
+	(_with_guile_gtk_generic_tree_model_iter_nth_child):
+	* gnome/gw/gtk-support.c (guile_gtk_tree_path_to_scm)
+	(guile_gtk_scm_to_tree_path, GET_ACTION_STR, GET_ACTION_BOOL)
+	(GET_ACTION_INT, _wrap_gtk_action_group_add_actions)
+	(_wrap_gtk_list_store_set_value, _wrap_gtk_stock_add)
+	(_wrap_gtk_tree_store_set_value):
+	* gnome/gw/gdk-support.c (scm_scm_to_gdk_color): Fix deprecation
+	warnings.
+
 2008-04-10  Andy Wingo  <wingo@unquote>
 
 	* == Released guile-gnome-platform version 2.15.97 ==

@@ -234,8 +234,14 @@ scm_scm_to_gdk_color (SCM scm)
 {
     GdkColor *ret = g_new0 (GdkColor, 1);
     
-    if (SCM_STRINGP (scm)) {
-        if (gdk_color_parse (SCM_STRING_CHARS (scm), ret))
+    if (scm_is_string (scm)) {
+        char *chars;
+        gboolean success;
+
+        chars = scm_to_locale_string (scm);
+        success = gdk_color_parse (chars, ret);
+        free (chars);
+        if (success)
             return ret;
         /* FIXME: give a proper error */
     }

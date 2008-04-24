@@ -49,7 +49,7 @@ guile_gtk_tree_path_to_scm (GtkTreePath *path)
     indices = gtk_tree_path_get_indices(path);
     ret = SCM_EOL;
     for (i = len - 1; i >= 0; i--)
-	ret = scm_cons (SCM_MAKINUM (indices[i]), ret);
+	ret = scm_cons (scm_from_int (indices[i]), ret);
     return ret;
 }
 
@@ -57,15 +57,15 @@ GtkTreePath*
 guile_gtk_scm_to_tree_path (SCM scm)
 #define FUNC_NAME "guile-gtk-scm-to-tree-path"
 {
-    if (SCM_STRINGP (scm)) {
+    if (scm_is_string (scm)) {
         GtkTreePath *ret;
         scm_dynwind_begin (0);
         ret = gtk_tree_path_new_from_string (scm_to_locale_string_dynwind (scm));
         scm_dynwind_end ();
         return ret;
-    } else if (SCM_INUMP (scm)) {
+    } else if (scm_is_unsigned_integer (scm, 0, SCM_T_UINT32_MAX)) {
         GtkTreePath *ret = gtk_tree_path_new ();
-        gtk_tree_path_append_index (ret, SCM_INUM (scm));
+        gtk_tree_path_append_index (ret, scm_to_uint (scm));
         return ret;
     } else if (SCM_EQ_P (scm, SCM_EOL)) {
         return NULL;
@@ -73,7 +73,7 @@ guile_gtk_scm_to_tree_path (SCM scm)
 	GtkTreePath *path = gtk_tree_path_new ();
         
         for (; !SCM_EQ_P (scm, SCM_EOL); scm = SCM_CDR (scm))
-            gtk_tree_path_append_index (path, SCM_NUM2INT (0, SCM_CAR (scm)));
+            gtk_tree_path_append_index (path, scm_to_uint (scm_car (scm)));
 
 	return path;
     }
@@ -84,10 +84,10 @@ guile_gtk_scm_to_tree_path (SCM scm)
 #define GET_ACTION_STR(var,n)\
 do {\
     if (n < l) {\
-        SCM x = scm_list_ref (entry, SCM_MAKINUM (n));\
-        SCM_ASSERT (SCM_FALSEP (x) || SCM_STRINGP (x), entry,\
+        SCM x = scm_list_ref (entry, scm_from_uint16 (n));              \
+        SCM_ASSERT (scm_is_false (x) || scm_is_string (x), entry,\
                     2, FUNC_NAME);\
-        var = SCM_FALSEP (x) ? NULL : scm_to_locale_string_dynwind (x);\
+        var = scm_is_false (x) ? NULL : scm_to_locale_string_dynwind (x);\
     } else {\
         var = NULL;\
     }\
@@ -95,20 +95,21 @@ do {\
 #define GET_ACTION_BOOL(var,n)\
 do {\
     if (n < l) {\
-        var = SCM_NFALSEP (scm_list_ref (entry, SCM_MAKINUM (n)));\
+        var = SCM_NFALSEP (scm_list_ref (entry, scm_from_uint16 (n)));  \
     } else {\
         var = FALSE;\
     }\
 }while (0)
-#define GET_ACTION_INUM(var,n)\
+#define GET_ACTION_INT(var,n)\
 do {\
     if (n < l) {\
-        SCM x = scm_list_ref (entry, SCM_MAKINUM (n));\
-        SCM_ASSERT (SCM_INUMP (x), entry,\
-                    2, FUNC_NAME);\
-        var = SCM_INUM (x);\
+        SCM x = scm_list_ref (entry, scm_from_uint16 (n));              \
+        SCM_ASSERT (scm_is_signed_integer (x, SCM_T_INT32_MIN,          \
+                                           SCM_T_INT32_MAX),            \
+                    entry, 2, FUNC_NAME);\
+        var = scm_to_int (x);\
     } else {\
-        var = FALSE;\
+        var = 0;\
     }\
 }while (0)
 
@@ -147,7 +148,7 @@ _wrap_gtk_action_group_add_actions (GtkActionGroup *action_group,
                                "name", name, "label", label, "tooltip", tooltip,
                                "stock_id", stock_id, NULL);
 
-        if (5 < l && SCM_NFALSEP ((x = scm_list_ref (entry, SCM_MAKINUM (5)))))
+        if (5 < l && SCM_NFALSEP ((x = scm_list_ref (entry, scm_from_uint16 (5)))))
             scm_call_3 (connect,
                         scm_c_gtype_instance_to_scm ((GTypeInstance*)action),
                         scm_str2symbol ("activate"), x);
@@ -194,7 +195,7 @@ _wrap_gtk_action_group_add_toggle_actions (GtkActionGroup *action_group,
                                "name", name, "label", label, "tooltip", tooltip,
                                "stock_id", stock_id, NULL);
 
-        if (5 < l && SCM_NFALSEP ((x = scm_list_ref (entry, SCM_MAKINUM (5)))))
+        if (5 < l && SCM_NFALSEP ((x = scm_list_ref (entry, scm_from_uint16 (5)))))
             scm_call_3 (connect,
                         scm_c_gtype_instance_to_scm ((GTypeInstance*)action),
                         scm_str2symbol ("activate"), x);
@@ -252,7 +253,7 @@ _wrap_gtk_action_group_add_radio_actions (GtkActionGroup *action_group,
         GET_ACTION_STR (raes[i].label, 2);
         GET_ACTION_STR (raes[i].accelerator, 3);
         GET_ACTION_STR (raes[i].tooltip, 4);
-        GET_ACTION_INUM (raes[i].value, 5);
+        GET_ACTION_INT (raes[i].value, 5);
     }
 
     gtk_action_group_add_radio_actions (action_group, raes, len, value,
@@ -356,7 +357,7 @@ _wrap_gtk_list_store_set_value (GtkListStore *store, GtkTreeIter *iter,
     GType type;
 
     SCM_ASSERT (column < gtk_tree_model_get_n_columns (GTK_TREE_MODEL (store)),
-                SCM_MAKINUM (column), 3, "gtk-list-store-set-value");
+                scm_from_int (column), 3, "gtk-list-store-set-value");
     type = gtk_tree_model_get_column_type (GTK_TREE_MODEL (store), column);
     value = scm_c_scm_to_gvalue (type, scm);
 
@@ -477,18 +478,18 @@ _wrap_gtk_stock_add (SCM items)
 
         SCM_ASSERT (SCM_NIMP (item) && SCM_CONSP (item) &&
                     scm_ilength(item) == 5 &&
-                    SCM_STRINGP (SCM_CAR (item)) &&
-                    SCM_STRINGP (SCM_CADR (item)) &&
-                    SCM_INUMP   (SCM_CADDR (item)) &&
-                    SCM_INUMP   (SCM_CADDDR (item)),
+                    scm_is_string (SCM_CAR (item)) &&
+                    scm_is_string (SCM_CADR (item)) &&
+                    scm_is_unsigned_integer (SCM_CADDR (item), 0, SCM_T_UINT32_MAX) &&
+                    scm_is_unsigned_integer (SCM_CADDDR (item), 0, SCM_T_UINT32_MAX),
                     item, 1, FUNC_NAME);
 
         stockitems[i].stock_id = scm_to_locale_string_dynwind (SCM_CAR (item));
         stockitems[i].label    = scm_to_locale_string_dynwind (SCM_CADR (item));
-        stockitems[i].modifier = SCM_INUM (SCM_CADDR (item));
-        stockitems[i].keyval   = (guint) SCM_INUM (SCM_CADDDR (item));
+        stockitems[i].modifier = scm_to_uint (SCM_CADDR (item));
+        stockitems[i].keyval   = scm_to_uint (SCM_CADDDR (item));
         stockitems[i].translation_domain =
-            SCM_STRINGP (SCM_CADDDR (SCM_CDR (item))) ?
+            scm_is_string (SCM_CADDDR (SCM_CDR (item))) ?
             scm_to_locale_string_dynwind (SCM_CADDDR (SCM_CDR (item))) : NULL;
 		
         items = SCM_CDR(items);
@@ -509,8 +510,8 @@ _wrap_gtk_stock_lookup (const gchar *stock_id)
     if (gtk_stock_lookup (stock_id, &item)) {
         return SCM_LIST5 (scm_makfrom0str (item.stock_id),
                           scm_makfrom0str (item.label),
-                          SCM_MAKINUM (item.modifier),
-                          SCM_MAKINUM (item.keyval),
+                          scm_from_uint (item.modifier),
+                          scm_from_uint (item.keyval),
                           scm_makfrom0str (item.translation_domain));
     }
 
@@ -873,7 +874,7 @@ _wrap_gtk_tree_store_set_value (GtkTreeStore *store, GtkTreeIter *iter,
     GType type;
 
     SCM_ASSERT (column < gtk_tree_model_get_n_columns (GTK_TREE_MODEL (store)),
-                SCM_MAKINUM (column), 3, "gtk-tree-store-set-value");
+                scm_from_int (column), 3, "gtk-tree-store-set-value");
     type = gtk_tree_model_get_column_type (GTK_TREE_MODEL (store), column);
     value = scm_c_scm_to_gvalue (type, scm);
 
