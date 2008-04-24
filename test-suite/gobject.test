@@ -157,6 +157,9 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
   (pass-if "creating flags by mixed list"
            (gvalue? (make flags-class #:value '(c "BBBB"))))
 
+  (pass-if "creating flags by single symbol"
+           (gvalue? (make flags-class #:value 'c)))
+
   (pass-if "gvalue->scm on a flags is a <gvalue>"
            (gvalue? (gvalue->scm (make flags-class #:value '(4 8)))))
 

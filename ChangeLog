@@ -1,5 +1,14 @@
 2008-04-24  Andy Wingo  <wingo@pobox.com>
 
+	* test-suite/gobject.test ("gflags values"): Add test for
+	scm_c_scm_to_flags_value fix.
+
+	* gnome/gobject/gvalue.c (scm_c_gvalue_ref): Whoops, handle the
+	string-is-null case.
+	(scm_c_scm_to_flags_value): Accept single 'foo or "foo" to mean
+	'(foo) or '("foo"), respectively. Thanks to Gregory Benison for
+	the report.
+
 	* gnome/gobject/guile-support.h: 
 	* gnome/gobject/guile-support.c (scm_symbol_chars)
 	(scm_symbol_chars_dynwind, scm_keyword_chars)

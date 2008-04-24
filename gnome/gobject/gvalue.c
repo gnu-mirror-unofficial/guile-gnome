@@ -228,7 +228,10 @@ scm_c_gvalue_ref (const GValue *gvalue)
 	return scm_make_real (g_value_get_double (gvalue));
 
     case G_TYPE_STRING:
-	return scm_from_locale_string (g_value_get_string (gvalue));
+        {
+            const char *s = g_value_get_string (gvalue);
+            return s ? scm_from_locale_string (s) : SCM_BOOL_F;
+        }
 
     default:
         {
@@ -461,10 +464,18 @@ scm_c_scm_to_flags_value (GFlagsClass *flags_class, SCM value)
             return v;
         ERROR (value);
         return 0; /* not reached */
-    } else if (scm_is_true (scm_list_p (value))) {
+    } else {
         guint ret = 0;
         guint i;
         SCM s;
+
+        if (!scm_is_true (scm_list_p (value))) {
+            if (scm_is_symbol (value) || scm_is_string (value))
+                value = scm_list_1 (value);
+            else
+                ERROR (value);
+        }
+
         for (; !scm_is_null (value); value = scm_cdr (value)) {
             s = scm_car (value);
             if (scm_is_unsigned_integer (s, 0, SCM_T_UINT32_MAX)) {
@@ -501,9 +512,6 @@ scm_c_scm_to_flags_value (GFlagsClass *flags_class, SCM value)
             }
         }
         return ret;
-    } else {
-        ERROR (value);
-        return 0; /* not reached */
     }
 #undef ERROR
 }
