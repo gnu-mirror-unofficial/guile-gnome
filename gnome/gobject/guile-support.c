@@ -49,6 +49,32 @@ scm_to_locale_string_dynwind (SCM s)
     return ret;
 }
 
+char*
+scm_symbol_chars (SCM s)
+{
+    return scm_to_locale_string (scm_symbol_to_string (s));
+}
+
+char*
+scm_symbol_chars_dynwind (SCM s)
+{
+    char *ret = scm_symbol_chars (s);
+    scm_dynwind_free (ret);
+    return ret;
+}
+
+char*
+scm_keyword_chars (SCM s)
+{
+    return scm_symbol_chars (scm_keyword_to_symbol (s));
+}
+
+char*
+scm_keyword_chars_dynwind (SCM s)
+{
+    return scm_symbol_chars_dynwind (scm_keyword_to_symbol (s));
+}
+
 typedef struct {
     void *func;
     void *p[4];

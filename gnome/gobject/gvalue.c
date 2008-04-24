@@ -204,22 +204,22 @@ scm_c_gvalue_ref (const GValue *gvalue)
 	return SCM_BOOL (g_value_get_boolean (gvalue));
 
     case G_TYPE_INT:
-	return SCM_MAKINUM (g_value_get_int (gvalue));
+	return scm_from_int (g_value_get_int (gvalue));
 
     case G_TYPE_UINT:
-	return SCM_MAKINUM (g_value_get_uint (gvalue));
+	return scm_from_uint (g_value_get_uint (gvalue));
 
     case G_TYPE_LONG:
-	return scm_long2num (g_value_get_long (gvalue));
+	return scm_from_long (g_value_get_long (gvalue));
 
     case G_TYPE_ULONG:
-	return scm_ulong2num (g_value_get_ulong (gvalue));
+	return scm_from_ulong (g_value_get_ulong (gvalue));
 
     case G_TYPE_INT64:
-	return scm_long_long2num (g_value_get_int64 (gvalue));
+	return scm_from_long_long (g_value_get_int64 (gvalue));
 
     case G_TYPE_UINT64:
-	return scm_ulong_long2num (g_value_get_uint64 (gvalue));
+	return scm_from_ulong_long (g_value_get_uint64 (gvalue));
 
     case G_TYPE_FLOAT:
 	return scm_make_real ((double) g_value_get_float (gvalue));
@@ -228,7 +228,7 @@ scm_c_gvalue_ref (const GValue *gvalue)
 	return scm_make_real (g_value_get_double (gvalue));
 
     case G_TYPE_STRING:
-	return scm_makfrom0str (g_value_get_string (gvalue));
+	return scm_from_locale_string (g_value_get_string (gvalue));
 
     default:
         {
@@ -328,7 +328,7 @@ scm_c_gvalue_set (GValue *gvalue, SCM value)
 	break;
 
     case G_TYPE_STRING:
-	SCM_ASSERT (SCM_STRINGP (value) || SCM_FALSEP (value),
+	SCM_ASSERT (scm_is_string (value) || SCM_FALSEP (value),
 		    value, SCM_ARG2, FUNC_NAME);
 	if (SCM_FALSEP (value))
 	    g_value_set_string (gvalue, NULL);
@@ -408,10 +408,13 @@ scm_c_scm_to_enum_value (GEnumClass *enum_class, SCM value)
                 return v;
         ERROR (value);
     } else if (scm_is_symbol (value)) {
-        const char *v = SCM_SYMBOL_CHARS (value);
+        char *v = scm_symbol_chars (value);
         for (i = 0; i < enum_class->n_values; i++)
-            if (strcmp (enum_class->values[i].value_nick, v) == 0)
+            if (strcmp (enum_class->values[i].value_nick, v) == 0) {
+                free (v);
                 return enum_class->values[i].value;
+            }
+        free (v);
         ERROR (value);
     } else if (scm_is_string (value)) {
         char *v = scm_to_locale_string (value);
@@ -474,12 +477,13 @@ scm_c_scm_to_flags_value (GFlagsClass *flags_class, SCM value)
                 if (i == flags_class->n_values)
                     ERROR (s);
             } else if (scm_is_symbol (s)) {
-                const char *v = SCM_SYMBOL_CHARS (s);
+                char *v = scm_symbol_chars (s);
                 for (i = 0; i < flags_class->n_values; i++)
                     if (strcmp (flags_class->values[i].value_nick, v) == 0) {
                         ret |= flags_class->values[i].value;
                         break;
                     }
+                free (v);
                 if (i == flags_class->n_values)
                     ERROR (s);
             } else if (scm_is_string (s)) {
@@ -654,7 +658,7 @@ unwrap_gvalue_array (SCM scm, GValue *value)
                 
         if (SCM_GVALUEP (v))
             value_type = G_VALUE_TYPE (scm_c_gvalue_peek_value (v));
-        if (SCM_STRINGP (v))
+        if (scm_is_string (v))
             value_type = G_TYPE_STRING;
         else if (SCM_BOOLP (v))
             value_type = G_TYPE_BOOLEAN;
@@ -709,7 +713,7 @@ SCM_DEFINE (scm_genum_register_static, "genum-register-static", 2, 0, 0,
 	    "@end lisp\n")
 #define FUNC_NAME s_scm_genum_register_static
 {
-    gulong length, i;
+    size_t length, i;
     GEnumValue *values;
     GType type;
 
@@ -725,26 +729,27 @@ SCM_DEFINE (scm_genum_register_static, "genum-register-static", 2, 0, 0,
                               "There is already a type with this name: ~S",
                               SCM_LIST1 (name));
 
-    length = SCM_INUM (scm_vector_length (vtable));
+    length = scm_c_vector_length (vtable);
 
     for (i = 0; i < length; i++) {
-	SCM this = scm_vector_ref (vtable, SCM_MAKINUM (i));
+	SCM this = scm_c_vector_ref (vtable, i);
 
 	SCM_ASSERT ((scm_ilength (this) == 3) &&
-		    SCM_SYMBOLP (scm_list_ref (this, SCM_MAKINUM (0))) &&
-		    SCM_STRINGP (scm_list_ref (this, SCM_MAKINUM (1))) &&
-		    SCM_INUMP (scm_list_ref (this, SCM_MAKINUM (2))),
+		    SCM_SYMBOLP (scm_car (this)) && 
+		    scm_is_string (scm_cadr (this)) &&
+		    scm_is_signed_integer (scm_caddr (this),
+                                           SCM_T_INT32_MIN, SCM_T_INT32_MAX),
 		    vtable, SCM_ARG2, FUNC_NAME);
     }
 
     values = g_new0 (GEnumValue, length + 1);
 
     for (i = 0; i < length; i++) {
-	SCM this = scm_vector_ref (vtable, SCM_MAKINUM (i));
+	SCM this = scm_c_vector_ref (vtable, i);
 
-	values [i].value_nick  = g_strdup (SCM_SYMBOL_CHARS (scm_list_ref (this, SCM_MAKINUM (0))));
-	values [i].value_name  = g_strdup (scm_to_locale_string_dynwind (scm_list_ref (this, SCM_MAKINUM (1))));
-	values [i].value       = SCM_INUM (scm_list_ref (this, SCM_MAKINUM (2)));
+	values [i].value_nick  = scm_symbol_chars (scm_car (this));
+        values [i].value_name  = scm_to_locale_string (scm_cadr (this));
+	values [i].value       = scm_to_int (scm_caddr (this));
     }
 
     type = g_enum_register_static (scm_to_locale_string_dynwind (name), values);
@@ -762,7 +767,7 @@ SCM_DEFINE (scm_gflags_register_static, "gflags-register-static", 2, 0, 0,
 	    "See @code{genum-register-static} for details.")
 #define FUNC_NAME s_scm_gflags_register_static
 {
-    gulong length, i;
+    size_t length, i;
     GFlagsValue *values;
     GType type;
 
@@ -777,26 +782,27 @@ SCM_DEFINE (scm_gflags_register_static, "gflags-register-static", 2, 0, 0,
                               "There is already a type with this name: ~S",
                               SCM_LIST1 (name));
 
-    length = SCM_INUM (scm_vector_length (vtable));
+    length = scm_c_vector_length (vtable);
 
     for (i = 0; i < length; i++) {
-	SCM this = scm_vector_ref (vtable, SCM_MAKINUM (i));
+	SCM this = scm_c_vector_ref (vtable, i);
 
 	SCM_ASSERT ((scm_ilength (this) == 3) &&
-		    SCM_SYMBOLP (scm_list_ref (this, SCM_MAKINUM (0))) &&
-		    SCM_STRINGP (scm_list_ref (this, SCM_MAKINUM (1))) &&
-		    SCM_INUMP (scm_list_ref (this, SCM_MAKINUM (2))),
+		    SCM_SYMBOLP (scm_car (this)) &&
+		    scm_is_string (scm_cadr (this)) &&
+		    scm_is_unsigned_integer (scm_caddr (this),
+                                             0, SCM_T_UINT32_MAX),
 		    vtable, SCM_ARG2, FUNC_NAME);
     }
 
     values = g_new0 (GFlagsValue, length + 1);
 
     for (i = 0; i < length; i++) {
-	SCM this = scm_vector_ref (vtable, SCM_MAKINUM (i));
+	SCM this = scm_c_vector_ref (vtable, i);
 
-	values [i].value_nick  = g_strdup (SCM_SYMBOL_CHARS (scm_list_ref (this, SCM_MAKINUM (0))));
-	values [i].value_name  = g_strdup (scm_to_locale_string_dynwind (scm_list_ref (this, SCM_MAKINUM (1))));
-	values [i].value       = SCM_INUM (scm_list_ref (this, SCM_MAKINUM (2)));
+	values [i].value_nick  = scm_symbol_chars (scm_car (this));
+        values [i].value_name  = scm_to_locale_string (scm_cadr (this));
+	values [i].value       = scm_to_uint (scm_caddr (this));
     }
 
     type = g_flags_register_static (scm_to_locale_string_dynwind (name), values);
@@ -835,12 +841,11 @@ SCM_DEFINE (scm_genum_class_to_value_table, "genum-class->value-table", 1, 0, 0,
 	GEnumValue *current = &enum_class->values [i];
 	SCM this;
 
-	this = scm_list_3 (scm_mem2symbol (current->value_nick,
-					   strlen (current->value_nick)),
-			   scm_makfrom0str (current->value_name),
-			   SCM_MAKINUM (current->value));
+	this = scm_list_3 (scm_from_locale_symbol (current->value_nick),
+			   scm_from_locale_string (current->value_name),
+			   scm_from_int (current->value));
 
-	scm_vector_set_x (vector, SCM_MAKINUM (i), this);
+	scm_c_vector_set_x (vector, i, this);
     }
 
     g_type_class_unref (enum_class);
@@ -871,12 +876,11 @@ SCM_DEFINE (scm_gflags_class_to_value_table, "gflags-class->value-table", 1, 0, 
 	GFlagsValue *current = &flags_class->values [i];
 	SCM this;
 
-	this = scm_list_3 (scm_mem2symbol (current->value_nick,
-					   strlen (current->value_nick)),
-			   scm_makfrom0str (current->value_name),
-			   SCM_MAKINUM (current->value));
+	this = scm_list_3 (scm_from_locale_symbol (current->value_nick),
+			   scm_from_locale_string (current->value_name),
+			   scm_from_uint (current->value));
 
-	scm_vector_set_x (vector, SCM_MAKINUM (i), this);
+	scm_c_vector_set_x (vector, i, this);
     }
 
     g_type_class_unref (flags_class);

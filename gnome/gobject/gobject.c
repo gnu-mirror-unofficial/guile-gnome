@@ -70,53 +70,6 @@ static inline void post_make_object (GObject *obj);
 
 
 
-SCM_DEFINE (scm_gobject_set_data_x, "gobject-set-data!", 3, 0, 0,
-	    (SCM object, SCM key, SCM val),
-	    "")
-#define FUNC_NAME s_scm_gobject_set_data_x
-{
-    GObject *gobject;
-    gchar *sym;
-
-    SCM_VALIDATE_GOBJECT_COPY (1, object, gobject);
-    SCM_VALIDATE_SYMBOL (2, key);
-
-    sym = g_strndup (SCM_SYMBOL_CHARS (key), SCM_SYMBOL_LENGTH (key));
-
-    if (SCM_EQ_P (val, SCM_UNBOUND))
-        g_object_set_qdata (gobject, g_quark_from_string (sym), NULL);
-    else
-        g_object_set_qdata_full (gobject, g_quark_from_string (sym),
-                                 scm_glib_gc_protect_object (val),
-                                 scm_glib_gc_unprotect_object);
-        
-    return SCM_UNSPECIFIED;
-}
-#undef FUNC_NAME
-
-SCM_DEFINE (scm_gobject_get_data, "gobject-get-data", 2, 0, 0,
-	    (SCM object, SCM key),
-	    "")
-#define FUNC_NAME s_scm_gobject_get_data
-{
-    GObject *gobject;
-    gchar *sym;
-    gpointer data;
-
-    SCM_VALIDATE_GOBJECT_COPY (1, object, gobject);
-    SCM_VALIDATE_SYMBOL (2, key);
-
-    sym = g_strndup (SCM_SYMBOL_CHARS (key), SCM_SYMBOL_LENGTH (key));
-
-    data = g_object_get_qdata (gobject, g_quark_from_string (sym));
-    
-    if (data)
-        return GPOINTER_TO_SCM (data);
-    else
-        return SCM_UNBOUND;
-}
-#undef FUNC_NAME
-
 static void
 scm_with_c_gobject_get_property (GObject *gobject, guint param_id,
                                     GValue *dest_gvalue, GParamSpec *pspec)
@@ -223,12 +176,11 @@ scm_c_gobject_construct (SCM instance, SCM initargs)
         if (is_init_keyword (slots, kw))
             continue;
         
-	current = &params [i];
+        current = &params [i];
 
-	current->name = SCM_SYMBOL_CHARS (scm_keyword_to_symbol (kw));
+        current->name = scm_keyword_chars_dynwind (kw);
         propclass = g_type_class_ref (gtype);
-        pspec = g_object_class_find_property (propclass,
-                                              SCM_SYMBOL_CHARS (propname));
+        pspec = g_object_class_find_property (propclass, current->name);
         g_type_class_unref (propclass);
 
         if (!pspec)
@@ -236,7 +188,7 @@ scm_c_gobject_construct (SCM instance, SCM initargs)
                                   "No property named ~S in object ~A",
                                   SCM_LIST2 (propname, instance));
         
-	g_value_init (&current->value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+        g_value_init (&current->value, G_PARAM_SPEC_VALUE_TYPE (pspec));
         scm_c_gvalue_set (&current->value, val);
 
         i++;
@@ -282,11 +234,11 @@ scm_with_c_gtype_instance_instance_init (GTypeInstance *g_instance,
 
     switch (G_TYPE_FUNDAMENTAL (type)) {
     case G_TYPE_OBJECT: {
-	GuileGTypeClass *guile_class;
+        GuileGTypeClass *guile_class;
         SCM under_construction = in_construction_from_scheme ();
 
-	guile_class = g_type_get_qdata (type, quark_guile_gtype_class);
-	guile_class->first_instance_created = TRUE;
+        guile_class = g_type_get_qdata (type, quark_guile_gtype_class);
+        guile_class->first_instance_created = TRUE;
 
         if (scm_is_false (under_construction))
             /* not strictly necessary from the pov of c code, but we want to
@@ -298,11 +250,11 @@ scm_with_c_gtype_instance_instance_init (GTypeInstance *g_instance,
         else
             scm_c_gtype_instance_bind_to_object (g_instance, under_construction);
             
-	break;
+        break;
     }
 
     default:
-	break;
+        break;
     }
 }
 
@@ -344,8 +296,8 @@ scm_with_c_gtype_instance_class_init (gpointer g_class, gpointer class_data)
      * for gtype-instance-class. */
 
     if (G_TYPE_IS_OBJECT (G_TYPE_FROM_CLASS (g_class))) {
-	((GObjectClass *) g_class)->get_property = scm_c_gobject_get_property;
-	((GObjectClass *) g_class)->set_property = scm_c_gobject_set_property;
+        ((GObjectClass *) g_class)->get_property = scm_c_gobject_get_property;
+        ((GObjectClass *) g_class)->set_property = scm_c_gobject_set_property;
     }
 }
 
@@ -358,8 +310,8 @@ scm_c_gtype_instance_class_init (gpointer g_class, gpointer class_data)
 }
 
 SCM_DEFINE (scm_scheme_gclass_p, "scheme-gclass?", 1, 0, 0,
-	    (SCM class),
-	    "")
+            (SCM class),
+            "")
 #define FUNC_NAME s_scm_scheme_gclass_p
 {
     GType gtype;
@@ -374,8 +326,8 @@ SCM_DEFINE (scm_scheme_gclass_p, "scheme-gclass?", 1, 0, 0,
 
 // FIXME: remove?
 SCM_DEFINE (scm_gtype_register_static, "gtype-register-static", 2, 0, 0,
-	    (SCM name, SCM parent_class),
-	    "Derive a new type named @var{name} from @var{parent_class}. "
+            (SCM name, SCM parent_class),
+            "Derive a new type named @var{name} from @var{parent_class}. "
             "Returns the new @code{<gtype-class>}. This function is called "
             "when deriving from @code{<gobject>}; users do not normally "
             "call this function directly.")
@@ -396,7 +348,7 @@ SCM_DEFINE (scm_gtype_register_static, "gtype-register-static", 2, 0, 0,
     gtype = g_type_from_name (utf8);
 
     if (gtype)
-	scm_c_gruntime_error (FUNC_NAME,
+        scm_c_gruntime_error (FUNC_NAME,
                               "There is already a type with this name: ~S",
                               SCM_LIST1 (name));
 
@@ -432,8 +384,8 @@ SCM_DEFINE (scm_gtype_register_static, "gtype-register-static", 2, 0, 0,
 #undef FUNC_NAME
 
 SCM_DEFINE (scm_gobject_class_get_properties, "gobject-class-get-properties", 1, 0, 0,
-	    (SCM class),
-	    "")
+            (SCM class),
+            "")
 #define FUNC_NAME s_scm_gobject_class_get_properties
 {
     gpointer gclass = 0;
@@ -461,7 +413,7 @@ SCM_DEFINE (scm_gobject_class_get_properties, "gobject-class-get-properties", 1,
     }
 
     for (i = n_properties - 1; i >= 0; i--)
-	ret = scm_cons (scm_c_gtype_instance_to_scm (properties[i]),
+        ret = scm_cons (scm_c_gtype_instance_to_scm (properties[i]),
                         ret);
 
     if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_OBJECT)
@@ -477,8 +429,8 @@ SCM_DEFINE (scm_gobject_class_get_properties, "gobject-class-get-properties", 1,
 #undef FUNC_NAME
 
 SCM_DEFINE (scm_gobject_class_get_property_names, "gobject-class-get-property-names", 1, 0, 0,
-	    (SCM class),
-	    "")
+            (SCM class),
+            "")
 #define FUNC_NAME s_scm_gobject_class_get_property_names
 {
     gpointer gclass = 0;
@@ -506,7 +458,7 @@ SCM_DEFINE (scm_gobject_class_get_property_names, "gobject-class-get-property-na
     }
 
     for (i = n_properties - 1; i >= 0; i--)
-	ret = scm_cons (scm_from_locale_symbol (properties[i]->name), ret);
+        ret = scm_cons (scm_from_locale_symbol (properties[i]->name), ret);
 
     if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_OBJECT)
         g_type_class_unref (gclass);
@@ -521,8 +473,8 @@ SCM_DEFINE (scm_gobject_class_get_property_names, "gobject-class-get-property-na
 #undef FUNC_NAME
 
 SCM_DEFINE (scm_gobject_class_install_property, "gobject-class-install-property", 2, 0, 0,
-	    (SCM class, SCM param),
-	    "")
+            (SCM class, SCM param),
+            "")
 #define FUNC_NAME s_scm_gobject_class_install_property
 {
     GType gtype;
@@ -536,20 +488,20 @@ SCM_DEFINE (scm_gobject_class_install_property, "gobject-class-install-property"
 
     gclass = g_type_class_ref (gtype);
     if (g_object_class_find_property (gclass, gparam->name))
-	scm_error (sym_gruntime_error, FUNC_NAME,
-		   "There is already a property with this name in class ~S: ~S",
-		   SCM_LIST2 (class, scm_makfrom0str (gparam->name)), SCM_EOL);
+        scm_error (sym_gruntime_error, FUNC_NAME,
+                   "There is already a property with this name in class ~S: ~S",
+                   SCM_LIST2 (class, scm_makfrom0str (gparam->name)), SCM_EOL);
 
     guile_class = g_type_get_qdata (gtype, quark_guile_gtype_class);
     if (!guile_class)
-	scm_error (sym_gruntime_error, FUNC_NAME,
-		   "Can't add properties to non-derived type: ~S",
-		   SCM_LIST1 (class), SCM_EOL);
+        scm_error (sym_gruntime_error, FUNC_NAME,
+                   "Can't add properties to non-derived type: ~S",
+                   SCM_LIST1 (class), SCM_EOL);
 
     if (guile_class->first_instance_created)
-	scm_error (sym_gruntime_error, FUNC_NAME,
-		   "Can't add properties after intances have been created: ~S",
-		   SCM_LIST1 (class), SCM_EOL);
+        scm_error (sym_gruntime_error, FUNC_NAME,
+                   "Can't add properties after intances have been created: ~S",
+                   SCM_LIST1 (class), SCM_EOL);
 
     id = ++guile_class->last_property_id;
     g_object_class_install_property (gclass, id, gparam);
@@ -557,14 +509,14 @@ SCM_DEFINE (scm_gobject_class_install_property, "gobject-class-install-property"
     DEBUG_ALLOC ("  protecting param %p of %s gparam %p", param,
                  g_type_name (G_TYPE_FROM_INSTANCE (gparam)), gparam);
     g_hash_table_insert (guile_class->properties_hash, GINT_TO_POINTER (id),
-			 scm_glib_gc_protect_object (param));
+                         scm_glib_gc_protect_object (param));
 
     return SCM_UNSPECIFIED;
 }
 #undef FUNC_NAME
 
 SCM_DEFINE (scm_gobject_get_property, "gobject-get-property", 2, 0, 0,
-	    (SCM object, SCM name),
+            (SCM object, SCM name),
             "Gets a the property named @var{name} (a symbol) from @var{object}.")
 #define FUNC_NAME s_scm_gobject_get_property
 {
@@ -576,18 +528,22 @@ SCM_DEFINE (scm_gobject_get_property, "gobject-get-property", 2, 0, 0,
     SCM_VALIDATE_GOBJECT_COPY (1, object, gobject);
     SCM_VALIDATE_SYMBOL (2, name);
 
+    scm_dynwind_begin (0);
+
     pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (gobject),
-                                          SCM_SYMBOL_CHARS (name));
+                                          scm_symbol_chars_dynwind (name));
 
     if (!pspec)
-	scm_error (sym_gruntime_error, FUNC_NAME,
-		   "No such property ~S in class ~S",
-		   SCM_LIST2 (name, scm_class_of (object)), SCM_EOL);
+        scm_error (sym_gruntime_error, FUNC_NAME,
+                   "No such property ~S in class ~S",
+                   SCM_LIST2 (name, scm_class_of (object)), SCM_EOL);
 
     g_value_init (&value, pspec->value_type);
-    g_object_get_property (gobject, SCM_SYMBOL_CHARS (name), &value);
+    g_object_get_property (gobject, pspec->name, &value);
     retval = scm_c_gvalue_ref (&value);
     g_value_unset (&value);
+
+    scm_dynwind_end ();
 
     return retval;
 }
@@ -596,7 +552,7 @@ SCM_DEFINE (scm_gobject_get_property, "gobject-get-property", 2, 0, 0,
 
 
 SCM_DEFINE (scm_gobject_set_property, "gobject-set-property", 3, 0, 0,
-	    (SCM object, SCM name, SCM value),
+            (SCM object, SCM name, SCM value),
             "Sets the property named @var{name} (a symbol) on @var{object} to "
             "@var{init-value}.")
 #define FUNC_NAME s_scm_gobject_set_property
@@ -608,17 +564,21 @@ SCM_DEFINE (scm_gobject_set_property, "gobject-set-property", 3, 0, 0,
     SCM_VALIDATE_GOBJECT_COPY (1, object, gobject);
     SCM_VALIDATE_SYMBOL (2, name);
 
+    scm_dynwind_begin (0);
+
     pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (gobject),
-                                          SCM_SYMBOL_CHARS (name));
+                                          scm_symbol_chars_dynwind (name));
     if (!pspec)
-	scm_error (sym_gruntime_error, FUNC_NAME,
-		   "No such property ~S in class ~S",
-		   SCM_LIST2 (name, scm_class_of (object)), SCM_EOL);
+        scm_error (sym_gruntime_error, FUNC_NAME,
+                   "No such property ~S in class ~S",
+                   SCM_LIST2 (name, scm_class_of (object)), SCM_EOL);
 
     gvalue = scm_c_scm_to_gvalue (pspec->value_type, value);
-    g_object_set_property (gobject, SCM_SYMBOL_CHARS (name), gvalue);
+    g_object_set_property (gobject, pspec->name, gvalue);
     g_value_unset (gvalue);    
     
+    scm_dynwind_end ();
+
     return SCM_UNSPECIFIED;
 }
 #undef FUNC_NAME
@@ -636,18 +596,18 @@ static inline void
 post_make_object (GObject *obj)
 {
     if (post_make_funcs) {
-	gint i;
+        gint i;
 
-	for (i = 0; i < post_make_funcs->len; i++) {
-	    if (g_type_is_a (G_OBJECT_TYPE (obj),
+        for (i = 0; i < post_make_funcs->len; i++) {
+            if (g_type_is_a (G_OBJECT_TYPE (obj),
                              g_array_index (post_make_funcs, PostMakeFunc, i).type)) {
-		g_array_index (post_make_funcs, PostMakeFunc, i).postmakefunc (obj);
+                g_array_index (post_make_funcs, PostMakeFunc, i).postmakefunc (obj);
                 DEBUG_ALLOC ("post-made gobject (%p) of type %s, ->%u",
                              obj, g_type_name (G_TYPE_FROM_INSTANCE (obj)),
                              obj->ref_count);
-		break;
-	    }
-	}
+                break;
+            }
+        }
     }
 }
 
@@ -669,7 +629,7 @@ scm_register_gobject_postmakefunc (GType type, gpointer (*postmakefunc) (gpointe
     PostMakeFunc pmf;
 
     if (!post_make_funcs)
-	post_make_funcs = g_array_new (FALSE, FALSE, sizeof(PostMakeFunc));
+        post_make_funcs = g_array_new (FALSE, FALSE, sizeof(PostMakeFunc));
 
     pmf.type = type;
     pmf.postmakefunc = postmakefunc;
@@ -678,15 +638,15 @@ scm_register_gobject_postmakefunc (GType type, gpointer (*postmakefunc) (gpointe
 
 #ifdef DEBUG_REFCOUNTING
 SCM_DEFINE (scm_sys_gobject_get_refcount, "%gobject-get-refcount", 1, 0, 0,
-	    (SCM object),
-	    "Get the refcount of an object (for debugging purposes)")
+            (SCM object),
+            "Get the refcount of an object (for debugging purposes)")
 #define FUNC_NAME s_scm_sys_gobject_get_refcount
 {
     GObject *gobject;
 
     SCM_VALIDATE_GOBJECT_COPY (1, object, gobject);
 
-    return SCM_MAKINUM (gobject->ref_count);
+    return scm_from_uint (gobject->ref_count);
 }
 #undef FUNC_NAME
 #endif

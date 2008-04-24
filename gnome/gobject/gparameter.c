@@ -33,7 +33,7 @@
 
 #define SCM_ERROR_NOT_YET_IMPLEMENTED(what) \
   scm_c_gruntime_error (FUNC_NAME, "Not yet implemented: file ~S line ~S: ~A", \
-			SCM_LIST3 (scm_makfrom0str (__FILE__), SCM_MAKINUM (__LINE__), what))
+			SCM_LIST3 (scm_makfrom0str (__FILE__), scm_from_uint (__LINE__), what))
 
 
 

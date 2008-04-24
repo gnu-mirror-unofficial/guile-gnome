@@ -84,11 +84,14 @@ SCM_DEFINE (scm_gsignal_query, "gsignal-query", 2, 0, 0,
 {
     GType type;
     guint id;
+    char *cname;
 
     SCM_VALIDATE_GTYPE_CLASS_COPY (1, class, type);
     SCM_VALIDATE_SYMBOL (2, name);
     
-    id = g_signal_lookup (SCM_SYMBOL_CHARS (name), type);
+    cname = scm_symbol_chars (name);
+    id = g_signal_lookup (cname, type);
+    free (cname);
     if (!id)
         scm_c_gruntime_error (FUNC_NAME, "Unknown signal ~A on class ~A",
                               SCM_LIST2 (name, class));
@@ -157,7 +160,9 @@ SCM_DEFINE (scm_gsignal_create, "gsignal-create", 2, 0, 0,
 	param_types[i] = scm_c_gtype_class_to_gtype (scm_car (params));
     rtype = REF (return_type);
 
-    id = g_signal_newv (SCM_SYMBOL_CHARS (REF (name)),
+    scm_dynwind_begin (0);
+
+    id = g_signal_newv (scm_symbol_chars_dynwind (REF (name)),
 			scm_c_gtype_class_to_gtype (REF (interface_type)),
 			G_SIGNAL_RUN_LAST,
 			gclosure,
@@ -166,7 +171,9 @@ SCM_DEFINE (scm_gsignal_create, "gsignal-create", 2, 0, 0,
                         ? G_TYPE_NONE : scm_c_gtype_class_to_gtype (rtype),
 			length, param_types);
 
-    return SCM_MAKINUM (id);
+    scm_dynwind_end ();
+
+    return scm_from_uint (id);
 #undef REF
 }
 #undef FUNC_NAME
@@ -185,12 +192,15 @@ SCM_DEFINE (scm_gtype_instance_signal_emit, "gtype-instance-signal-emit", 2, 0, 
     GValue ret = { 0, };
     GSignalQuery query;
     guint i, id;
+    char *cname;
 
     SCM_VALIDATE_GTYPE_INSTANCE_COPY (1, object, instance);
     SCM_VALIDATE_SYMBOL (2, name);
                                                                                                                                       
     gtype = G_TYPE_FROM_INSTANCE (instance);
-    id = g_signal_lookup (SCM_SYMBOL_CHARS (name), gtype);
+    cname = scm_symbol_chars (name);
+    id = g_signal_lookup (cname, gtype);
+    free (cname);
   
     if (!id)
         scm_c_gruntime_error (FUNC_NAME, "Unknown signal ~A on object ~A",
@@ -241,31 +251,31 @@ SCM_DEFINE (scm_gtype_instance_signal_connect_closure,
     GTypeInstance *instance;
     GSignalQuery query;
     GType gtype;
-    gulong signal_id;
+    gulong signal_id, handler_id;
 #ifdef DEBUG_PRINT
     guint old_ref_count;
 #endif
 
     SCM_VALIDATE_GTYPE_INSTANCE_COPY (1, object, instance);
-    SCM_VALIDATE_INUM (2, id);
+    SCM_VALIDATE_UINT_COPY (2, id, signal_id);
     SCM_VALIDATE_GVALUE_TYPE_COPY (3, closure, G_TYPE_CLOSURE, gvalue);
     SCM_VALIDATE_BOOL (4, after);
 
     gtype = G_TYPE_FROM_INSTANCE (instance);
     gclosure = g_value_get_boxed (gvalue);
 
-    g_signal_query (SCM_INUM (id), &query);
+    g_signal_query (scm_to_ulong (id), &query);
     SCM_ASSERT (g_type_is_a (gtype, query.itype), object, SCM_ARG1, FUNC_NAME);
 
 #ifdef DEBUG_PRINT
     old_ref_count = gclosure->ref_count;
 #endif
-    signal_id = g_signal_connect_closure_by_id (instance, SCM_INUM (id), 0, gclosure,
-						SCM_NFALSEP (after));
+    handler_id = g_signal_connect_closure_by_id (instance, scm_to_ulong (id), 0,
+                                                 gclosure, SCM_NFALSEP (after));
     DEBUG_ALLOC ("GClosure %p connecting: %u->%u",
                  gclosure, old_ref_count, gclosure->ref_count);
 
-    return scm_ulong2num (signal_id);
+    return scm_from_ulong (handler_id);
 }
 #undef FUNC_NAME
 

@@ -1,3 +1,28 @@
+2008-04-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-support.h: 
+	* gnome/gobject/guile-support.c (scm_symbol_chars)
+	(scm_symbol_chars_dynwind, scm_keyword_chars)
+	(scm_keyword_chars_dynwind): New functions.
+
+	* gnome/gobject/gvalue.c (scm_c_gvalue_ref, scm_c_gvalue_set)
+	(scm_c_scm_to_enum_value, scm_c_scm_to_flags_value)
+	(unwrap_gvalue_array, genum-register-static)
+	(genum-class->value-table, gflags-register-static)
+	(gflags-class->value-table):
+	* gnome/gobject/gsignal.c (gsignal-query, gsignal-create)
+	(gtype-instance-signal-emit)
+	(gtype-instance-signal-connect-closure): 
+	* gnome/gobject/gparameter.c (SCM_ERROR_NOT_YET_IMPLEMENTED):
+	Fix deprecation warnings.
+
+	* gnome/gobject/gobject.c (gobject-get-data, gobject-set-data!):
+	Remove unused functions.
+	(scm_c_gobject_construct)
+	(scm_with_c_gtype_instance_instance_init, gobject-get-property)
+	(gobject-set-property)
+	(SCM_DEFINE): Fix deprecation warnings. Untabify the file.
+
 2008-04-10  Andy Wingo  <wingo@unquote>
 
 	* == Released guile-gnome-platform version 2.15.97 ==
