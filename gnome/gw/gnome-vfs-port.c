@@ -177,7 +177,7 @@ vport_print (SCM exp, SCM port, scm_print_state *pstate SCM_UNUSED)
     scm_print_port_mode (exp, port);    
     if (SCM_OPVPORTP (exp)) {
         SCM name = SCM_FILENAME (exp);
-        if (SCM_STRINGP (name) || SCM_SYMBOLP (name))
+        if (scm_is_string (name) || SCM_SYMBOLP (name))
             scm_display (name, port);
         else
             scm_puts (SCM_PTOBNAME (SCM_PTOBNUM (exp)), port);
