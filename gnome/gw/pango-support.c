@@ -31,10 +31,10 @@ scm_pango_rectangle_to_scm (PangoRectangle *rect)
 {
     SCM ret = scm_c_make_vector (4, SCM_BOOL_F);
 
-    scm_vector_set_x (ret, SCM_MAKINUM(0), scm_int2num (rect->x));
-    scm_vector_set_x (ret, SCM_MAKINUM(1), scm_int2num (rect->y));
-    scm_vector_set_x (ret, SCM_MAKINUM(2), scm_int2num (rect->width));
-    scm_vector_set_x (ret, SCM_MAKINUM(3), scm_int2num (rect->height));
+    scm_c_vector_set_x (ret, 0, scm_int2num (rect->x));
+    scm_c_vector_set_x (ret, 1, scm_int2num (rect->y));
+    scm_c_vector_set_x (ret, 2, scm_int2num (rect->width));
+    scm_c_vector_set_x (ret, 3, scm_int2num (rect->height));
 
     return ret;
 }
@@ -44,7 +44,7 @@ scm_scm_to_pango_rectangle (SCM scm, PangoRectangle* rect)
 #define FUNC_NAME "%scm->pango-rectangle"
 {
 #define GET_VINT(v,i) \
-  scm_num2int (scm_vector_ref (v, SCM_MAKINUM(i)), 0, FUNC_NAME)
+    scm_num2int (scm_c_vector_ref (v, i), 0, FUNC_NAME)
 
     rect->x = GET_VINT (scm, 0);
     rect->y = GET_VINT (scm, 1);
