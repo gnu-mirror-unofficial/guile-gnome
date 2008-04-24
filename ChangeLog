@@ -1,5 +1,15 @@
 2008-04-24  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/gtk-support.c (_wrap_gtk_text_buffer_set_text): In this
+	and friendly functions, remove SCM_STRING_LENGTH for good justice.
+
+	* gnome/gw/gtk.scm: Rework so as to have a more standard module
+	header. Remove the empty method definitions on the poorly-named
+	<guile-gtk-tree-model>, just have the generics -- the
+	no-applicable-method should be sufficient. Remove the crack
+	message-dialog wrapper, as it seems that the message dialog now
+	has sufficient properties for it to be used without hacks.
+
 	* gnome/gw/guile-gtk-tree-model.c
 	(_with_guile_gtk_generic_tree_model_get_column_type)
 	(_with_guile_gtk_generic_tree_model_get_value)

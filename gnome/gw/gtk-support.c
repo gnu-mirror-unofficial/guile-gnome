@@ -526,7 +526,7 @@ _wrap_gtk_text_buffer_set_text (GtkTextBuffer *buf, SCM stext)
 {
     SCM_VALIDATE_STRING (2, stext);
     scm_dynwind_begin (0);
-    gtk_text_buffer_set_text (buf, scm_to_locale_string_dynwind (stext), SCM_STRING_LENGTH (stext));
+    gtk_text_buffer_set_text (buf, scm_to_locale_string_dynwind (stext), scm_c_string_length (stext));
     scm_dynwind_end ();
 }
 #undef FUNC_NAME
@@ -537,7 +537,7 @@ _wrap_gtk_text_buffer_insert (GtkTextBuffer *buf, GtkTextIter* iter, SCM stext)
 {
     SCM_VALIDATE_STRING (3, stext);
     scm_dynwind_begin (0);
-    gtk_text_buffer_insert (buf, iter, scm_to_locale_string_dynwind (stext), SCM_STRING_LENGTH (stext));
+    gtk_text_buffer_insert (buf, iter, scm_to_locale_string_dynwind (stext), scm_c_string_length (stext));
     scm_dynwind_end ();
 }
 #undef FUNC_NAME
@@ -548,7 +548,7 @@ _wrap_gtk_text_buffer_insert_at_cursor (GtkTextBuffer *buf, SCM stext)
 {
     SCM_VALIDATE_STRING (2, stext);
     scm_dynwind_begin (0);
-    gtk_text_buffer_insert_at_cursor (buf, scm_to_locale_string_dynwind (stext), SCM_STRING_LENGTH (stext));
+    gtk_text_buffer_insert_at_cursor (buf, scm_to_locale_string_dynwind (stext), scm_c_string_length (stext));
     scm_dynwind_end ();
 }
 #undef FUNC_NAME
@@ -563,7 +563,7 @@ _wrap_gtk_text_buffer_insert_interactive (GtkTextBuffer *buf, GtkTextIter* iter,
     SCM_VALIDATE_STRING (3, stext);
     scm_dynwind_begin (0);
     ret = gtk_text_buffer_insert_interactive (buf, iter, scm_to_locale_string_dynwind (stext),
-                                              SCM_STRING_LENGTH (stext), default_editable);
+                                              scm_c_string_length (stext), default_editable);
     scm_dynwind_end ();
     return ret;
 }
@@ -578,7 +578,7 @@ _wrap_gtk_text_buffer_insert_interactive_at_cursor (GtkTextBuffer *buf, SCM stex
     SCM_VALIDATE_STRING (2, stext);
     scm_dynwind_begin (0);
     ret = gtk_text_buffer_insert_interactive_at_cursor (buf, scm_to_locale_string_dynwind (stext),
-                                                        SCM_STRING_LENGTH (stext),
+                                                        scm_c_string_length (stext),
                                                         default_editable);
     scm_dynwind_end ();
     return ret;
@@ -600,7 +600,7 @@ _wrap_gtk_text_buffer_insert_with_tags (GtkTextBuffer *buf, GtkTextIter* iter,
     scm_dynwind_begin (0);
     start_offset = gtk_text_iter_get_offset (iter);
     gtk_text_buffer_insert (buf, iter, scm_to_locale_string_dynwind (stext),
-                            SCM_STRING_LENGTH (stext));
+                            scm_c_string_length (stext));
     gtk_text_buffer_get_iter_at_offset (buf, &start, start_offset);
     
     for (walk = tag_list; walk; walk = walk->next)
@@ -625,7 +625,7 @@ _wrap_gtk_text_buffer_insert_with_tags_by_name (GtkTextBuffer *buf, GtkTextIter*
     scm_dynwind_begin (0);
     start_offset = gtk_text_iter_get_offset (iter);
     gtk_text_buffer_insert (buf, iter, scm_to_locale_string_dynwind (stext),
-                            SCM_STRING_LENGTH (stext));
+                            scm_c_string_length (stext));
     gtk_text_buffer_get_iter_at_offset (buf, &start, start_offset);
     
     for (walk = tag_list; walk; walk = walk->next)

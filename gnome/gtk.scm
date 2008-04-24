@@ -24,72 +24,80 @@
 ;;
 ;;; Code:
 
-(define-module (gnome gtk))
+(define-module (gnome gtk)
+  #:use-module (oop goops)
+  #:use-module (gnome gobject)
+  #:use-module (gnome gobject generics)
+  #:use-module (gnome gobject utils)
+  #:use-module (gnome gw support modules)
+  #:export (<guile-gtk-tree-model>
+            on-get-flags on-get-n-columns on-get-column-type
+            on-get-iter on-get-path on-get-value on-iter-next
+            on-iter-children on-iter-has-child on-iter-n-children
+            on-iter-nth-child on-iter-parent
+
+            gtk-tree-or-list-store-set
+            gtk-text-buffer-create-tag create-tag
+            gtk-stock-id))
 
 (if (getenv "GUILE_GTK_DEBUG")
-    (define progress display)
-    (define progress identity))
+    (define-macro (time-debug . forms)
+      `(begin
+         (define %before (tms:clock (times)))
+         ,@forms
+         (let ((diff (/ (- (tms:clock (times)) %before)
+                        internal-time-units-per-second)))
+           (format (current-error-port)
+                   "(gnome gtk): ~a: ~as" ',forms diff))))
+    (define-macro (time-debug . forms)
+      `(begin ,@forms)))
 
-(progress "(gnome gtk): [")
-
-(progress "goops ")
-(use-modules (oop goops))
-(progress "gobject ")
-(use-modules (gnome gobject) (gnome gobject generics))
-(progress "glib ")
-(use-modules (gnome glib))
-(progress "atk ")
-(use-modules (gnome gw atk))
-(progress "pango ")
-(use-modules (gnome gw pango))
-(progress "gdk ")
-(use-modules (gnome gw gdk))
-(progress "gtk ")
-(use-modules (gnome gw gtk))
-(progress "support")
+(time-debug (use-modules (gnome gw gdk)))
+(time-debug (use-modules (gnome gw gtk)))
+(re-export-modules (gnome gw gdk)
+                   (gnome gw gtk))
 
 ;; Support explicit object destruction.
 (define-method (initialize (instance <gtk-object>) initargs)
   (next-method)
   (connect instance 'destroy
            (lambda args
-             (%gtype-instance-destroy! instance))))
+             (gtype-instance-destroy! instance))))
 
-(define-public <guile-gtk-tree-model> <guile-gtk-generic-tree-model>)
+(define <guile-gtk-tree-model> <guile-gtk-generic-tree-model>)
+
+;; FIXME: doc me!
+(define-generic-with-docs on-get-flags
+  "")
+(define-generic-with-docs on-get-n-columns
+  "")
+(define-generic-with-docs on-get-column-type
+  "")
+(define-generic-with-docs on-get-iter
+  "")
+(define-generic-with-docs on-get-path
+  "")
+(define-generic-with-docs on-get-value
+  "")
+(define-generic-with-docs on-iter-next
+  "")
+(define-generic-with-docs on-iter-children
+  "")
+(define-generic-with-docs on-iter-has-child
+  "")
+(define-generic-with-docs on-iter-n-children
+  "")
+(define-generic-with-docs on-iter-nth-child
+  "")
+(define-generic-with-docs on-iter-parent
+  "")
 
 ;; Support tree models written in guile.
 (define-method (on-get-flags (obj <guile-gtk-tree-model>))
   (make <gtk-tree-model-flags> #:value 0))
-(define-method (on-get-n-columns (obj <guile-gtk-tree-model>))
-  (error "This method needs to be overridden by a subclass."))
-(define-method (on-get-column-type (obj <guile-gtk-tree-model>) index)
-  (error "This method needs to be overridden by a subclass."))
-(define-method (on-get-iter (obj <guile-gtk-tree-model>) path)
-  (error "This method needs to be overridden by a subclass."))
-(define-method (on-get-path (obj <guile-gtk-tree-model>) iter)
-  (error "This method needs to be overridden by a subclass."))
-(define-method (on-get-value (obj <guile-gtk-tree-model>) iter index)
-  (error "This method needs to be overridden by a subclass."))
-(define-method (on-iter-next (obj <guile-gtk-tree-model>) iter)
-  (error "This method needs to be overridden by a subclass."))
-(define-method (on-iter-children (obj <guile-gtk-tree-model>) parent)
-  (error "This method needs to be overridden by a subclass."))
-(define-method (on-iter-has-child (obj <guile-gtk-tree-model>) iter)
-  (error "This method needs to be overridden by a subclass."))
-(define-method (on-iter-n-children (obj <guile-gtk-tree-model>) iter)
-  (error "This method needs to be overridden by a subclass."))
-(define-method (on-iter-nth-child (obj <guile-gtk-tree-model>) parent n)
-  (error "This method needs to be overridden by a subclass."))
-(define-method (on-iter-parent (obj <guile-gtk-tree-model>) iter)
-  (error "This method needs to be overridden by a subclass."))
-
-(export on-get-flags on-get-n-columns on-get-column-type
-        on-get-iter on-get-path on-get-value on-iter-next
-        on-iter-children on-iter-has-child on-iter-n-children
-        on-iter-nth-child on-iter-parent)
 
 ;; Miscellany.
-(define-public (gtk-tree-or-list-store-set store iter . args)
+(define (gtk-tree-or-list-store-set store iter . args)
   (or (even? (length args)) (scm-error 'gruntime-error "Invalid arguments"))
   (let loop ((args args))
     (if (eq? args '())
@@ -104,7 +112,7 @@
 (define-method (set (store <gtk-tree-store>) (iter <gtk-tree-iter>) . args)
   (apply gtk-tree-or-list-store-set store iter args))
 
-(define-public (gtk-text-buffer-create-tag buffer tag-name . properties)
+(define (gtk-text-buffer-create-tag buffer tag-name . properties)
   (let ((tag (make <gtk-text-tag> #:name tag-name)))
     (if (not (even? (length properties)))
         (scm-error 'gruntime-error "Invalid property list: ~A" properties))
@@ -119,24 +127,6 @@
   (apply gtk-text-buffer-create-tag buffer tag-name properties))
 (export create-tag)
 
-;; Make <gtk-message-dialog> have a specific metaclass so we can do
-;; class methods.
-(define-class <gtk-message-dialog-class> ((class-of <gtk-message-dialog>)))
-(especify-metaclass! <gtk-message-dialog> <gtk-message-dialog-class>)
-(define-method (make-instance (class <gtk-message-dialog-class>) . initargs)
-  (let ((parent (get-keyword #:parent initargs #f))
-        (flags (get-keyword #:flags initargs #f))
-        (message-type (get-keyword #:message-type initargs 'error))
-        (buttons (get-keyword #:buttons initargs 'close))
-        (text (get-keyword #:text initargs "Error")))
-    (%gtk-message-dialog-new parent flags message-type buttons text)))
-
-(define-public (gtk-stock-id nick)
+(define (gtk-stock-id nick)
   (string-append "gtk-" (symbol->string nick)))
 
-(use-modules (gnome gw support modules))
-
-(re-export-modules (gnome gw gdk)
-                   (gnome gw gtk))
-
-(progress "]\n")
