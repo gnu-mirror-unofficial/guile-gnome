@@ -4,8 +4,8 @@
 @settitle Guile-GConf
 @c %**end of header
 
-@set VERSION 2.15.93
-@set UPDATED 1 November 2007
+@set VERSION 2.15.98
+@set UPDATED 24 April 2008
 
 @copying 
 This manual is for @code{(gnome gconf)} (version @value{VERSION}, updated

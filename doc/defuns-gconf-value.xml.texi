@@ -4,6 +4,8 @@
 @deftp Class <g-conf-value>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 

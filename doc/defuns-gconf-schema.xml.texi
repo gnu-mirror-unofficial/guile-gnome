@@ -4,6 +4,8 @@
 @deftp Class <g-conf-schema>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deffn Function gconf-schema-new  @result{}@tie{} (ret@tie{}@code{<g-conf-schema>})
