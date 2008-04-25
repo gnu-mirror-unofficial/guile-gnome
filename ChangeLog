@@ -1,5 +1,13 @@
 2008-04-25  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.98 ==
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.15.98.
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
 	* test-suite/wrapset.api: Regenerate.
 	* test-suite/gobject.api: Regenerate.
 
