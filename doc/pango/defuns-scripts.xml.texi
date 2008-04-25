@@ -4,6 +4,8 @@
 @deftp Class <pango-script-iter>
 Opaque pointer.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deffn Function pango-script-for-unichar  (ch@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{<pango-script>})

@@ -4,6 +4,8 @@
 @deftp Class <pango-coverage>
 Opaque pointer.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deffn Function pango-coverage-new  @result{}@tie{} (ret@tie{}@code{<pango-coverage>})

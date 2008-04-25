@@ -1,3 +1,8 @@
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* doc/pango/*.texi:
+	* doc/pangocairo/*.texi: Update docs.
+
 2008-04-24  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/pango-support.c (scm_pango_rectangle_to_scm)

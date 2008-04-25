@@ -4,10 +4,14 @@
 @deftp Class <pango-matrix>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deftp Class <pango-glyph-string>
 Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
 
 @end deftp
 

@@ -4,25 +4,35 @@
 @deftp Class <pango-attribute>
 Opaque pointer.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deftp Class <pango-color>
 Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
 
 @end deftp
 
 @deftp Class <pango-language>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deftp Class <pango-attr-list>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deftp Class <pango-attr-iterator>
 Opaque pointer.
+
+This class defines no direct slots.
 
 @end deftp
 
