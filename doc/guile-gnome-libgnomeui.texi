@@ -4,8 +4,8 @@
 @settitle Guile-Libgnomeui
 @c %**end of header
 
-@set VERSION 2.15.93
-@set UPDATED 1 November 2007
+@set VERSION 2.15.98
+@set UPDATED 24 April 2008
 
 @copying 
 This manual is for @code{(gnome libgnomeui)} (version @value{VERSION}, updated
@@ -46,37 +46,12 @@ later version published by the Free Software Foundation.
 @menu
 * Overview::             About libgnomeui and its Guile bindings.
 
-* GnomeAbout::           Display author, documenter and translator credits for an application.
-* GnomeAppBar::          An application status and progress bar widget
-* gnome-app-helper::     Useful functions for populating menus and toolbars.
-* GnomeApp::             The main application widget.
 * GnomeAuthentication:: 
 * GnomeClient::          Interactions with the session manager.
 * GnomeDateEdit:: 
-* GnomeDruidPageEdge::   A widget used to implement first and last pages in a druid's sequence.
-* GnomeDruidPageStandard:: A widget used to implement the middle pages in a druid's sequence.
-* GnomeDruidPage::       A widget representing a single page inside a druid.
-* GnomeDruid::           Widget for sequentially stepping through some pages.
-* GnomeFileEntry:: 
-* GnomeHRef:: 
-* gnome-ice::            Interface between ICE and gtk.
-* GnomeIconEntry:: 
-* GnomeIconTextItem:: 
-* GnomeIconList:: 
-* GnomeIconLookup:: 
-* GnomeIconSelection:: 
 * GnomeMultiScreen:: 
 * GnomePassword:: 
-* GnomeScores:: 
-* gnome-stock-icons::    Stock icons used across GNOME applications.
-* GnomeThumbnail:: 
-* gnometypebuiltins:: 
-* gnome-types:: 
-* gnome-uidefs::         Standard defines used throughout libgnomeui.
-* gnome-ui-init::        Parameters (and deprecated functions) for initializing libgnomeui applications.
 * gnome-vfs-util:: 
-* gnome-window-icon:: 
-* gnome-window::         Convenience functions for setting window attributes.
 
 * Undocumented::         Undocumented functions.
 
@@ -92,37 +67,12 @@ later version published by the Free Software Foundation.
 
 @include overview.texi
 
-@include section-gnome-about.xml.texi
-@include section-gnome-appbar.xml.texi
-@include section-gnome-app-helper.xml.texi
-@include section-gnome-app.xml.texi
 @include section-gnome-authentication.xml.texi
 @include section-gnome-client.xml.texi
 @include section-gnome-dateedit.xml.texi
-@include section-gnome-druid-page-edge.xml.texi
-@include section-gnome-druid-page-standard.xml.texi
-@include section-gnome-druid-page.xml.texi
-@include section-gnome-druid.xml.texi
-@include section-gnome-file-entry.xml.texi
-@include section-gnome-href.xml.texi
-@include section-gnome-ice.xml.texi
-@include section-gnome-icon-entry.xml.texi
-@include section-gnome-icon-item.xml.texi
-@include section-gnome-icon-list.xml.texi
-@include section-gnome-icon-lookup.xml.texi
-@include section-gnome-icon-sel.xml.texi
 @include section-gnome-multi-screen.xml.texi
 @include section-gnome-password.xml.texi
-@include section-gnome-scores.xml.texi
-@include section-gnome-stock-icons.xml.texi
-@include section-gnome-thumbnail.xml.texi
-@include section-gnometypebuiltins.xml.texi
-@include section-gnome-types.xml.texi
-@include section-gnome-uidefs.xml.texi
-@include section-gnome-ui-init.xml.texi
 @include section-gnome-vfs-util.xml.texi
-@include section-gnome-window-icon.xml.texi
-@include section-gnome-window.xml.texi
 
 @include undocumented.texi
 
