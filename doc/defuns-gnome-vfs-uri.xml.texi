@@ -4,6 +4,8 @@
 @deftp Class <gnome-vfsuri>
 Opaque pointer.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deffn Function gnome-vfs-uri-new  (text_uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gnome-vfsuri>})

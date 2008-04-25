@@ -4,8 +4,8 @@
 @settitle Guile-GNOME-VFS
 @c %**end of header
 
-@set VERSION 2.15.95
-@set UPDATED 8 November 2007
+@set VERSION 2.15.98
+@set UPDATED 24 April 2008
 
 @copying 
 This manual is for @code{(gnome vfs)} (version @value{VERSION}, updated
@@ -52,31 +52,16 @@ Basic Data Types
 * GnomeVFSURI:: A uniform resource identifier.
 * gnome-vfs-utils:: various utilities functions to manipulate uris
 * GnomeVFSFileInfo:: stores information about files, GnomeVFS equivalent of stat
-* GnomeVFSFileSize:: Data types used for specifying file sizes and seek positions
 
 File Operations
 
 * Basic File Operations:: Essential VFS operations. This includes creating, moving and deleting files,
-* Reading and Writing Files:: Reading from and writing to open file handles.
 * Truncating Files:: Force files to a particular length
 * Getting and Setting File Information:: Convenient high-level abstraction for obtaining and setting file information,
 
 Directory-Specific Operations
 
 * Basic Directory Operations:: Creating and removing directories.
-* Listing Directory Contents:: Listing the contents of directories.
-* Locating Standard Directories:: Utilities for locating standard directories such as the desktop and trash
-
-Advanced File/Directory Operations
-
-* File Transfers:: Conveniently copy/move/delete files en masse
-* Monitoring:: watch files for changes, and get called back if they do
-* Backend-Specific Operations:: Execute backend-specific operations
-
-Asynchronous Operations
-
-* Asynchronous File Operations:: POSIX-style file operations that run outside your main loop
-* Cancellation:: halt in-progress operations
 
 Volumes and Drives Handling
 
@@ -84,21 +69,11 @@ Volumes and Drives Handling
 * GnomeVFSDrive:: Container for GnomeVFSVolume (floppy drive, CD reader, ...)
 * GnomeVFSVolumeMonitor:: Monitors volume mounts and unmounts
 
-Networking
-
-* Zeroconf networking support:: Gets information about available Zeroconf (aka RendezVous) services on a local network.
-* DNS Resolution:: Generic thread-safe address resolution functions.
-* SSL support functions:: Functions to send and receive encrypted data over a socket.
-* Unified network I/O:: Posix style network input/output functions.
-* Unified bufferd network I/O:: Posix style buffered network input/output.
-* Internet connection:: Simple TCP/IP connection functions.
-
 MIME Registry
 
 * MIME typing:: functions to get a mime-type for a file using its name or its content
 * gnome-vfs-mime-utils:: 
 * MIME Database:: functions for getting information about applications and components associated
-* gnome-vfs-mime-monitor:: 
 
 * Undocumented::           Undocumented functions.
 
@@ -118,39 +93,20 @@ MIME Registry
 @include section-gnome-vfs-uri.xml.texi
 @include section-gnome-vfs-utils.xml.texi
 @include section-gnome-vfs-file-info.xml.texi
-@include section-gnome-vfs-file-size.xml.texi
 
 @include section-gnome-vfs-file-basic-ops.xml.texi
-@include section-gnome-vfs-file-rw-ops.xml.texi
 @include section-gnome-vfs-file-trunc-ops.xml.texi
 @include section-gnome-vfs-file-info-ops.xml.texi
 
 @include section-gnome-vfs-directory-basic-ops.xml.texi
-@include section-gnome-vfs-directory-list-ops.xml.texi
-@include section-gnome-vfs-directory-find-ops.xml.texi
-
-@include section-gnome-vfs-xfer.xml.texi
-@include section-gnome-vfs-monitor.xml.texi
-@include section-gnome-vfs-file-advanced-ops.xml.texi
-
-@include section-gnome-vfs-async-ops.xml.texi
-@include section-gnome-vfs-cancellation.xml.texi
 
 @include section-gnome-vfs-volume.xml.texi
 @include section-gnome-vfs-drive.xml.texi
 @include section-gnome-vfs-volume-monitor.xml.texi
 
-@include section-gnome-vfs-dns-sd.xml.texi
-@include section-gnome-vfs-resolve.xml.texi
-@include section-gnome-vfs-ssl.xml.texi
-@include section-gnome-vfs-socket.xml.texi
-@include section-gnome-vfs-socket-buffer.xml.texi
-@include section-gnome-vfs-inet-connection.xml.texi
-
 @include section-gnome-vfs-mime.xml.texi
 @include section-gnome-vfs-mime-utils.xml.texi
 @include section-gnome-vfs-mime-database.xml.texi
-@include section-gnome-vfs-mime-monitor.xml.texi
 
 @include undocumented.texi
 

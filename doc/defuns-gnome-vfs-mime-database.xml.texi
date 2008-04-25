@@ -4,6 +4,8 @@
 @deftp Class <gnome-vfs-mime-application>
 Opaque pointer.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deffn Function gnome-vfs-mime-get-all-applications  (mime_type@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{glist-of})
