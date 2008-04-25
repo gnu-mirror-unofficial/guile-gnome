@@ -1,6 +1,6 @@
 #! /bin/sh
 # -*- scheme -*-
-exec guile-gnome-0 -s $0
+exec guile-gnome-1 -s $0
 !#
 ;; guile-gnome
 ;; Copyright (C) 2003,2004 Free Software Foundation, Inc.

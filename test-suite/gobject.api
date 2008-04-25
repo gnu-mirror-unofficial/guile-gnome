@@ -75,6 +75,7 @@
      (<gparam-uint64> class)
      (<gparam-uint> class)
      (<gparam-ulong> class)
+     (<gparam-unichar> class)
      (<gparam> class)
      (gparameter:byte-order <integer>)
      (gparameter:double-max <real>)
@@ -125,14 +126,13 @@
   ((gnome gobject gtype)
    (uses-interfaces)
    (typed-exports
-     (%gtype-instance-destroy!
-       procedure
-       (arity 1 0 #f))
      (<gtype-class> class)
      (<gtype-instance> class)
      (class-name->gtype-name procedure (arity 1 0 #f))
-     (especify-metaclass! procedure (arity 2 0 #f))
      (gruntime-error procedure (arity 1 0 #t))
+     (gtype-instance-destroy!
+       procedure
+       (arity 1 0 #f))
      (gtype-name->class procedure (arity 1 0 #f))))
   ((gnome gobject gvalue)
    (uses-interfaces)
@@ -165,6 +165,7 @@
      (genum-register-static procedure (arity 2 0 #f))
      (gflags->name-list procedure (arity 1 0 #f))
      (gflags->symbol-list procedure (arity 1 0 #f))
+     (gflags->value procedure (arity 1 0 #f))
      (gflags->value-list procedure (arity 1 0 #f))
      (gflags-class->value-table
        procedure

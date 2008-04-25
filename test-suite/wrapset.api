@@ -288,6 +288,7 @@
        procedure
        (arity 1 0 #f))
      (g-io-channel-new-file procedure (arity 2 0 #f))
+     (g-io-channel-read-line procedure (arity 1 0 #f))
      (g-io-channel-seek-position
        procedure
        (arity 2 1 #f))

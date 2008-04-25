@@ -1,5 +1,11 @@
 2008-04-25  Andy Wingo  <wingo@pobox.com>
 
+	* test-suite/wrapset.api: Regenerate.
+	* test-suite/gobject.api: Regenerate.
+
+	* examples/main-loop.scm: 
+	* examples/example-1.scm: Update examples to gnome-2.
+
 	* gnome/gw/support/gtk-doc.scm (zap-whitespace)
 	(docbook->sdocbook): Zap any whitespace-only strings coming out of
 	xml->sxml.
