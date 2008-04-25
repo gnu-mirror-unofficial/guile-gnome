@@ -1,5 +1,9 @@
 2008-04-25  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.98 ==
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
 	* doc/*.texi: Update docs.
 
 2008-04-24  Andy Wingo  <wingo@pobox.com>
