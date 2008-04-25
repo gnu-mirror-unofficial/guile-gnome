@@ -4,7 +4,7 @@
 @deftp Class <atk-gobject-accessible>
 Derives from @code{<atk-object>}.
 
-This class defines no properties, other than those defined by its superclasses.
+This class defines no direct slots.
 
 @end deftp
 

@@ -4,7 +4,7 @@
 @deftp Class <atk-object>
 Derives from @code{<gobject>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item accessible-name
@@ -97,7 +97,7 @@ focus changes.
 @deftp Class <atk-implementor>
 Derives from @code{<ginterface>}.
 
-This class defines no properties, other than those defined by its superclasses.
+This class defines no direct slots.
 
 @end deftp
 

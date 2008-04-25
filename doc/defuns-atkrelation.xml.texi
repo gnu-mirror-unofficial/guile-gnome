@@ -4,7 +4,7 @@
 @deftp Class <atk-relation>
 Derives from @code{<gobject>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item relation-type
