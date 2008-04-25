@@ -22,7 +22,7 @@ exec guile --debug -s $0 "$@"
 ;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
 ;; Boston, MA  02111-1307,  USA       gnu@gnu.org
 
-(use-modules (gnome-0) 
+(use-modules (gnome-2) 
              (oop goops)
              (gnome gtk)
              (srfi srfi-8)
