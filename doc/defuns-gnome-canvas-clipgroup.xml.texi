@@ -4,7 +4,7 @@
 @deftp Class <gnome-canvas-clipgroup>
 Derives from @code{<gnome-canvas-group>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item path

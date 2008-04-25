@@ -4,7 +4,7 @@
 @deftp Class <gnome-canvas-group>
 Derives from @code{<gnome-canvas-item>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item x
