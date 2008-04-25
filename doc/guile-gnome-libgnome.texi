@@ -4,8 +4,8 @@
 @settitle Guile-Libgnome
 @c %**end of header
 
-@set VERSION 2.15.93
-@set UPDATED 2 September 2007
+@set VERSION 2.15.98
+@set UPDATED 24 April 2008
 
 @copying 
 This manual is for @code{(gnome libgnome)} (version @value{VERSION}, updated
@@ -46,19 +46,11 @@ later version published by the Free Software Foundation.
 @menu
 * Overview::             About libgnome and its Guile bindings.
 
-* gnome-exec::           Execution of programs from within GNOME applications.
-* gnome-gconf::          Provides access to the gconf module.
 * gnome-help::           Display application and GNOME system help.
-* gnome-i18n::           Support for localization and internationalization.
 * gnome-init::           Functions used during initialisation of libgnome and other platform libraries.
 * gnome-program::        Initialize and retrieve information about a GNOME application.
-* gnome-score::          Tracking best scores for games
 * gnome-sound::          Sound playing routines.
-* gnome-triggers::       Hierarchical signal mechanism for GNOME events.
 * gnome-url::            Display urls using appropriate viewers.
-* gnome-util::           Miscellaneous utility functions.
-* libgnometypebuiltins:: Some type macros defined by libgnome.
-* libgnome:: 
 
 * Undocumented::        Undocumented functions.
 
@@ -74,19 +66,11 @@ later version published by the Free Software Foundation.
 
 @include overview.texi
 
-@include section-gnome-exec.xml.texi
-@include section-gnome-gconf.xml.texi
 @include section-gnome-help.xml.texi
-@include section-gnome-i18n.xml.texi
 @include section-gnome-init.xml.texi
 @include section-gnome-program.xml.texi
-@include section-gnome-score.xml.texi
 @include section-gnome-sound.xml.texi
-@include section-gnome-triggers.xml.texi
 @include section-gnome-url.xml.texi
-@include section-gnome-util.xml.texi
-@include section-libgnometypebuiltins.xml.texi
-@include section-libgnome.xml.texi
 
 @include undocumented.texi
 

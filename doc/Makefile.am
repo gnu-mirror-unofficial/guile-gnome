@@ -5,7 +5,15 @@ include $(top_srcdir)/generate-docs.mk
 
 docbook_xml_wildcard = ~/src/gnome2/libgnome/doc/reference/xml/*.xml
 docbook_xml_ignore_files = \
-	%gnome-config.xml
+	%gnome-config.xml \
+	%gnome-exec.xml \
+	%gnome-gconf.xml \
+	%gnome-i18n.xml \
+	%gnome-score.xml \
+	%gnome-triggers.xml \
+	%gnome-util.xml \
+	%libgnometypebuiltins.xml \
+	%libgnome.xml
 docbook_xml_files = $(filter-out $(docbook_xml_ignore_files), $(wildcard $(docbook_xml_wildcard)))
 
 wrapset_stem = libgnome
