@@ -4,7 +4,7 @@
 @deftp Class <gtk-cell-view>
 Derives from @code{<gtk-cell-layout>}, @code{<gtk-widget>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item background

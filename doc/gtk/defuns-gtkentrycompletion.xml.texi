@@ -4,7 +4,7 @@
 @deftp Class <gtk-entry-completion>
 Derives from @code{<gtk-buildable>}, @code{<gtk-cell-layout>}, @code{<gobject>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item model

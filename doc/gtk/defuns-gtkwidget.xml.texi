@@ -5,7 +5,7 @@
 Derives from @code{<atk-implementor-iface>}, @code{<gtk-buildable>},
 @code{<gtk-object>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item name
@@ -507,10 +507,14 @@ handling for determining whether an accelerator can be activated.
 @deftp Class <gtk-requisition>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deftp Class <gtk-selection-data>
 Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
 
 @end deftp
 

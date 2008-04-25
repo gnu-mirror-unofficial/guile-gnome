@@ -5,7 +5,7 @@
 Derives from @code{<gtk-tree-model>}, @code{<gtk-tree-drag-source>},
 @code{<gobject>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item child-model

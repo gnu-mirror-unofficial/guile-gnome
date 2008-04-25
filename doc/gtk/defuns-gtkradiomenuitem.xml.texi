@@ -4,7 +4,7 @@
 @deftp Class <gtk-radio-menu-item>
 Derives from @code{<gtk-check-menu-item>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item group

@@ -5,7 +5,7 @@
 Derives from @code{<gtk-buildable>}, @code{<gtk-cell-layout>},
 @code{<gtk-object>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item visible

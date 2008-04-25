@@ -4,7 +4,7 @@
 @deftp Class <gtk-separator-tool-item>
 Derives from @code{<gtk-tool-item>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item draw

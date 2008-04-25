@@ -4,7 +4,7 @@
 @deftp Class <gtk-recent-chooser-menu>
 Derives from @code{<gtk-recent-chooser>}, @code{<gtk-menu>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item show-numbers

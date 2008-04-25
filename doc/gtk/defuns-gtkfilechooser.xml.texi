@@ -4,42 +4,42 @@
 @deftp Class <gtk-file-chooser>
 Derives from @code{<ginterface>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
-@item file-system-backend
-Name of file system backend to use
-
-@item preview-widget-active
-Whether the application supplied widget for custom previews should be shown.
-
-@item do-overwrite-confirmation
-Whether a file chooser in save mode will present an overwrite confirmation
-dialog if necessary.
-
-@item select-multiple
-Whether to allow multiple files to be selected
-
-@item action
-The type of operation that the file selector is performing
-
-@item show-hidden
-Whether the hidden files and folders should be displayed
-
 @item filter
 The current filter for selecting which files are displayed
-
-@item extra-widget
-Application supplied widget for extra options.
-
-@item preview-widget
-Application supplied widget for custom previews.
 
 @item local-only
 Whether the selected file(s) should be limited to local file: URLs
 
 @item use-preview-label
 Whether to display a stock label with the name of the previewed file.
+
+@item preview-widget-active
+Whether the application supplied widget for custom previews should be shown.
+
+@item preview-widget
+Application supplied widget for custom previews.
+
+@item show-hidden
+Whether the hidden files and folders should be displayed
+
+@item do-overwrite-confirmation
+Whether a file chooser in save mode will present an overwrite confirmation
+dialog if necessary.
+
+@item extra-widget
+Application supplied widget for extra options.
+
+@item file-system-backend
+Name of file system backend to use
+
+@item action
+The type of operation that the file selector is performing
+
+@item select-multiple
+Whether to allow multiple files to be selected
 
 @end table
 

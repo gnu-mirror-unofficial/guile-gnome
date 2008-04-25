@@ -4,6 +4,8 @@
 @deftp Class <gtk-text-iter>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deffn Function gtk-text-iter-get-buffer  (self@tie{}@code{<gtk-text-iter>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-buffer>})

@@ -4,6 +4,8 @@
 @deftp Class <gdk-atom>
 Opaque pointer.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deffn Function gdk-atom-intern  (atom_name@tie{}@code{mchars}) (only_if_exists@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<gdk-atom>})

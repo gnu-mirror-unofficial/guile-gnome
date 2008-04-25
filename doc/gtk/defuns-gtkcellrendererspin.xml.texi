@@ -4,7 +4,7 @@
 @deftp Class <gtk-cell-renderer-spin>
 Derives from @code{<gtk-cell-renderer-text>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item adjustment

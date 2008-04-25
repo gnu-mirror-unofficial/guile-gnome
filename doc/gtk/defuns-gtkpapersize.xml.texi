@@ -4,6 +4,8 @@
 @deftp Class <gtk-paper-size>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deffn Function gtk-paper-size-new  (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-paper-size>})

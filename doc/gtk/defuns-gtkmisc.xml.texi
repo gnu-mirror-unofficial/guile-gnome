@@ -4,7 +4,7 @@
 @deftp Class <gtk-misc>
 Derives from @code{<gtk-widget>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item xalign

@@ -5,7 +5,7 @@
 Derives from @code{<gtk-cell-layout>}, @code{<gtk-cell-editable>},
 @code{<gtk-bin>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item model

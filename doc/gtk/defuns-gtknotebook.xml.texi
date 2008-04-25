@@ -4,7 +4,7 @@
 @deftp Class <gtk-notebook>
 Derives from @code{<gtk-container>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item tab-pos

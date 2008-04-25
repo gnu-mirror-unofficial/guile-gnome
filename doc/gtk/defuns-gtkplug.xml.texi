@@ -4,7 +4,7 @@
 @deftp Class <gtk-plug>
 Derives from @code{<gtk-window>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item embedded

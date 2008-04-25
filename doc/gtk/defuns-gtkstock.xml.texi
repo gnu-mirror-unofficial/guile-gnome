@@ -4,6 +4,8 @@
 @deftp Class <gtk-stock-item>
 Opaque pointer.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deffn Function gtk-stock-add  (items@tie{}@code{scm})

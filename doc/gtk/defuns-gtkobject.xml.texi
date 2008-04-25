@@ -4,7 +4,7 @@
 @deftp Class <gtk-object>
 Derives from @code{<g-initially-unowned>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item user-data

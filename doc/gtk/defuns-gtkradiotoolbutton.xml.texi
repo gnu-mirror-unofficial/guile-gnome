@@ -4,7 +4,7 @@
 @deftp Class <gtk-radio-tool-button>
 Derives from @code{<gtk-toggle-tool-button>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item group

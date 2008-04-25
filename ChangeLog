@@ -1,3 +1,8 @@
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* doc/gdk/*.texi:
+	* doc/gtk/*.texi: Update docs.
+
 2008-04-24  Andy Wingo  <wingo@pobox.com>
 
 	* gnome/gw/gtk-support.c (_wrap_gtk_text_buffer_set_text): In this

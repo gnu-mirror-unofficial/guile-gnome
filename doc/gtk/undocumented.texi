@@ -27,9 +27,6 @@ The following symbols, if any, have not been properly documented.
 @deffn Generic on-get-column-type
 @end deffn
 
-@deffn Method on-get-column-type  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{index} @code{<top>})
-@end deffn
-
 @deffn Generic on-get-flags
 @end deffn
 
@@ -39,61 +36,31 @@ The following symbols, if any, have not been properly documented.
 @deffn Generic on-get-iter
 @end deffn
 
-@deffn Method on-get-iter  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{path} @code{<top>})
-@end deffn
-
 @deffn Generic on-get-n-columns
-@end deffn
-
-@deffn Method on-get-n-columns  (@var{obj} @code{<guile-gtk-generic-tree-model>})
 @end deffn
 
 @deffn Generic on-get-path
 @end deffn
 
-@deffn Method on-get-path  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{iter} @code{<top>})
-@end deffn
-
 @deffn Generic on-get-value
-@end deffn
-
-@deffn Method on-get-value  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{iter} @code{<top>}) (@var{index} @code{<top>})
 @end deffn
 
 @deffn Generic on-iter-children
 @end deffn
 
-@deffn Method on-iter-children  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{parent} @code{<top>})
-@end deffn
-
 @deffn Generic on-iter-has-child
-@end deffn
-
-@deffn Method on-iter-has-child  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{iter} @code{<top>})
 @end deffn
 
 @deffn Generic on-iter-n-children
 @end deffn
 
-@deffn Method on-iter-n-children  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{iter} @code{<top>})
-@end deffn
-
 @deffn Generic on-iter-next
-@end deffn
-
-@deffn Method on-iter-next  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{iter} @code{<top>})
 @end deffn
 
 @deffn Generic on-iter-nth-child
 @end deffn
 
-@deffn Method on-iter-nth-child  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{parent} @code{<top>}) (@var{n} @code{<top>})
-@end deffn
-
 @deffn Generic on-iter-parent
-@end deffn
-
-@deffn Method on-iter-parent  (@var{obj} @code{<guile-gtk-generic-tree-model>}) (@var{iter} @code{<top>})
 @end deffn
 
 @section (gnome gw gtk)
@@ -1442,6 +1409,9 @@ The following symbols, if any, have not been properly documented.
 @end defun
 
 @defvar gtk-widget-get-allocation
+@end defvar
+
+@defvar gtk-widget-get-state
 @end defvar
 
 @defvar gtk-widget-get-window

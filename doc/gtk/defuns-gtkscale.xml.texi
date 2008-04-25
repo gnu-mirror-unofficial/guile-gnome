@@ -4,7 +4,7 @@
 @deftp Class <gtk-scale>
 Derives from @code{<gtk-range>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item digits

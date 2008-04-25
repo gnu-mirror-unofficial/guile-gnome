@@ -4,8 +4,8 @@
 @settitle Guile-Gdk
 @c %**end of header
 
-@set VERSION 2.15.93
-@set UPDATED 2 September 2007
+@set VERSION 2.15.98
+@set UPDATED 24 April 2008
 
 @copying 
 This manual is for @code{(gnome gdk)} (version @value{VERSION}, updated
@@ -118,29 +118,20 @@ GDK
 * Drag and Drop:: Functions for controlling drag and drop handling
 * Properties and Atoms:: Functions to manipulate properties on windows
 * Threads:: Functions for using GDK in multi-threaded programs
-* Input:: Callbacks on file descriptors
 * Input Devices:: Functions for handling extended input devices
 * Pango Interaction:: Using Pango in GDK
 * Cairo Interaction:: Functions to support using Cairo
 * X Window System Interaction:: X backend-specific functions
 
 GDK-Pixbuf
-* Initialization and Versions:: Library version numbers.
 * The GdkPixbuf Structure:: Information that describes an image.
-* Reference Counting and Memory Mangement:: Functions for reference counting and memory management on pixbufs.
 * File Loading:: Loading a pixbuf from a file.
-* File saving:: Saving a pixbuf to a file.
 * Image Data in Memory:: Creating a pixbuf from image data that is already in memory.
-* Inline data:: Functions for inlined pixbuf handling.
 * Scaling:: Scaling pixbufs and scaling and compositing pixbufs
 * Utilities:: Utility and miscellaneous convenience functions.
 * Animations:: Animated images.
 * GdkPixbufLoader:: Application-driven progressive image loading.
 * Module Interface:: Extending gdk-pixbuf
-* gdk-pixbuf Xlib initialization:: Initializing the gdk-pixbuf Xlib library.
-* Xlib Rendering:: Rendering a pixbuf to an X drawable.
-* X Drawables to Pixbufs:: Getting parts of an X drawable's image data into a pixbuf.
-* XlibRGB:: Rendering RGB buffers to X drawables.
 
 * Undocumented::      Undocumented functions.
 
@@ -179,28 +170,19 @@ GDK-Pixbuf
 @include section-dnd.xml.texi
 @include section-properties.xml.texi
 @include section-threads.xml.texi
-@include section-input.xml.texi
 @include section-input_devices.xml.texi
 @include section-pango_interaction.xml.texi
 @include section-cairo_interaction.xml.texi
 @include section-x_interaction.xml.texi
 
-@include section-initialization_versions.xml.texi
 @include section-gdk-pixbuf.xml.texi
-@include section-refcounting.xml.texi
 @include section-file-loading.xml.texi
-@include section-file-saving.xml.texi
 @include section-creating.xml.texi
-@include section-inline.xml.texi
 @include section-scaling.xml.texi
 @include section-util.xml.texi
 @include section-animation.xml.texi
 @include section-gdk-pixbuf-loader.xml.texi
 @include section-module_interface.xml.texi
-@include section-gdk-pixbuf-xlib-init.xml.texi
-@include section-gdk-pixbuf-xlib-rendering.xml.texi
-@include section-gdk-pixbuf-xlib-from-drawables.xml.texi
-@include section-gdk-pixbuf-xlib-rgb.xml.texi
 
 @include undocumented.texi
 

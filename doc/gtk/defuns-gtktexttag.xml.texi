@@ -4,7 +4,7 @@
 @deftp Class <gtk-text-tag>
 Derives from @code{<gobject>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item name
@@ -217,6 +217,8 @@ Whether this tag affects the paragraph background color
 
 @deftp Class <gtk-text-attributes>
 Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
 
 @end deftp
 

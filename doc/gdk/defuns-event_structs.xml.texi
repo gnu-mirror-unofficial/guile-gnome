@@ -4,90 +4,126 @@
 @deftp Class <gdk-event-any>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deftp Class <gdk-event-key>
 Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
 
 @end deftp
 
 @deftp Class <gdk-event-button>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deftp Class <gdk-event-scroll>
 Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
 
 @end deftp
 
 @deftp Class <gdk-event-motion>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deftp Class <gdk-event-expose>
 Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
 
 @end deftp
 
 @deftp Class <gdk-event-visibility>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deftp Class <gdk-event-crossing>
 Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
 
 @end deftp
 
 @deftp Class <gdk-event-focus>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deftp Class <gdk-event-configure>
 Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
 
 @end deftp
 
 @deftp Class <gdk-event-property>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deftp Class <gdk-event-selection>
 Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
 
 @end deftp
 
 @deftp Class <gdk-event-dnd>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deftp Class <gdk-event-proximity>
 Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
 
 @end deftp
 
 @deftp Class <gdk-event-client>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deftp Class <gdk-event-no-expose>
 Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
 
 @end deftp
 
 @deftp Class <gdk-event-window-state>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deftp Class <gdk-event-setting>
 Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
 
 @end deftp
 

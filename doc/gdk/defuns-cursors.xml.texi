@@ -4,6 +4,8 @@
 @deftp Class <gdk-cursor>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deffn Function gdk-cursor-new  (cursor_type@tie{}@code{<gdk-cursor-type>}) @result{}@tie{} (ret@tie{}@code{<gdk-cursor>})

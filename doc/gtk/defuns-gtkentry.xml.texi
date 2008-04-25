@@ -5,7 +5,7 @@
 Derives from @code{<gtk-editable>}, @code{<gtk-cell-editable>},
 @code{<gtk-widget>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item cursor-position

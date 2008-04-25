@@ -4,10 +4,14 @@
 @deftp Class <gdk-rectangle>
 Derives from @code{<gboxed>}.
 
+This class defines no direct slots.
+
 @end deftp
 
 @deftp Class <gdk-region>
 Opaque pointer.
+
+This class defines no direct slots.
 
 @end deftp
 

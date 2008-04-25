@@ -4,7 +4,7 @@
 @deftp Class <gtk-recent-manager>
 Derives from @code{<gobject>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item filename
@@ -29,6 +29,8 @@ Since 2.10
 
 @deftp Class <gtk-recent-info>
 Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
 
 @end deftp
 

@@ -2,10 +2,10 @@
 @c %start of fragment
 
 @deftp Class <gtk-tree-model-sort>
-Derives from @code{<gtk-tree-model>}, @code{<gtk-tree-drag-source>},
-@code{<gtk-tree-sortable>}, @code{<gobject>}.
+Derives from @code{<gtk-tree-model>}, @code{<gtk-tree-sortable>},
+@code{<gtk-tree-drag-source>}, @code{<gobject>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item model

@@ -4,7 +4,7 @@
 @deftp Class <gtk-aspect-frame>
 Derives from @code{<gtk-frame>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item xalign

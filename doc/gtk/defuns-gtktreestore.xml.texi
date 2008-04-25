@@ -2,11 +2,11 @@
 @c %start of fragment
 
 @deftp Class <gtk-tree-store>
-Derives from @code{<gtk-buildable>}, @code{<gtk-tree-model>},
-@code{<gtk-tree-drag-source>}, @code{<gtk-tree-drag-dest>},
-@code{<gtk-tree-sortable>}, @code{<gobject>}.
+Derives from @code{<gtk-tree-model>}, @code{<gtk-tree-sortable>},
+@code{<gtk-buildable>}, @code{<gtk-tree-drag-dest>},
+@code{<gtk-tree-drag-source>}, @code{<gobject>}.
 
-This class defines no properties, other than those defined by its superclasses.
+This class defines no direct slots.
 
 @end deftp
 

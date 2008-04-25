@@ -4,7 +4,7 @@
 @deftp Class <gtk-menu-bar>
 Derives from @code{<gtk-menu-shell>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item pack-direction

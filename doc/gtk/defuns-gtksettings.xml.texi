@@ -4,7 +4,7 @@
 @deftp Class <gtk-settings>
 Derives from @code{<gobject>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item gtk-double-click-time
@@ -148,8 +148,20 @@ Whether menu items should have accelerators
 @item gtk-recent-files-limit
 Number of recently used files
 
+@item gtk-im-module
+Which IM module should be used by default
+
 @item gtk-label-select-on-focus
 Whether to select the contents of a selectable label when it is focused
+
+@item gtk-can-change-accels
+Whether menu accelerators can be changed by pressing a key over the menu item
+
+@item gtk-menu-popup-delay
+Minimum time the pointer must stay over a menu item before the submenu appear
+
+@item gtk-menu-popdown-delay
+The time before hiding a submenu when the pointer is moving towards the submenu
 
 @item gtk-button-images
 Whether stock icons should be shown in buttons
@@ -162,15 +174,6 @@ Whether to select the contents of an entry when it is focused
 
 @item gtk-entry-password-hint-timeout
 How long to show the last input character in hidden entries
-
-@item gtk-can-change-accels
-Whether menu accelerators can be changed by pressing a key over the menu item
-
-@item gtk-menu-popup-delay
-Minimum time the pointer must stay over a menu item before the submenu appear
-
-@item gtk-menu-popdown-delay
-The time before hiding a submenu when the pointer is moving towards the submenu
 
 @item gtk-menu-images
 Whether images should be shown in menus

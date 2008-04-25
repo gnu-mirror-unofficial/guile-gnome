@@ -4,38 +4,38 @@
 @deftp Class <gtk-recent-chooser>
 Derives from @code{<ginterface>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
-@item sort-type
-The sorting order of the items displayed
+@item recent-manager
+The RecentManager object to use
 
 @item show-private
 Whether the private items should be displayed
 
+@item show-not-found
+Whether the items pointing to unavailable resources should be displayed
+
+@item show-tips
+Whether there should be a tooltip on the item
+
 @item show-icons
 Whether there should be an icon near the item
 
-@item local-only
-Whether the selected resource(s) should be limited to local file: URIs
+@item sort-type
+The sorting order of the items displayed
 
 @item select-multiple
 Whether to allow multiple items to be selected
 
-@item recent-manager
-The RecentManager object to use
+@item filter
+The current filter for selecting which resources are displayed
 
 @item limit
 The maximum number of items to be displayed
 
-@item show-not-found
-Whether the items pointing to unavailable resources should be displayed
-
-@item filter
-The current filter for selecting which resources are displayed
-
-@item show-tips
-Whether there should be a tooltip on the item
+@item local-only
+Whether the selected resource(s) should be limited to local file: URIs
 
 @end table
 

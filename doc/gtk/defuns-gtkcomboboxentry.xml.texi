@@ -4,7 +4,7 @@
 @deftp Class <gtk-combo-box-entry>
 Derives from @code{<gtk-combo-box>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item text-column

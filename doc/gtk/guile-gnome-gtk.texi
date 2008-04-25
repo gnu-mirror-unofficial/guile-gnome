@@ -4,8 +4,8 @@
 @settitle Guile-Gtk
 @c %**end of header
 
-@set VERSION 2.15.93
-@set UPDATED 2 September 2007
+@set VERSION 2.15.98
+@set UPDATED 24 April 2008
 
 @copying 
 This manual is for @code{(gnome gtk)} (version @value{VERSION}, updated
@@ -210,10 +210,6 @@ Printing
 * GtkPrintSettings:: Stores print settings
 * GtkPageSetup:: Stores page setup information
 * GtkPaperSize:: Support for named paper sizes
-* GtkPrinter:: Represents a printer
-* GtkPrintJob:: Represents a print job
-* GtkPrintUnixDialog:: A print dialog
-* GtkPageSetupUnixDialog:: A page setup dialog
 
 Miscellaneous
 * GtkAdjustment:: A GtkObject representing an adjustable bounded value
@@ -414,10 +410,6 @@ Recently Used Documents
 @include section-gtkprintsettings.xml.texi
 @include section-gtkpagesetup.xml.texi
 @include section-gtkpapersize.xml.texi
-@include section-gtkprinter.xml.texi
-@include section-gtkprintjob.xml.texi
-@include section-gtkprintunixdialog.xml.texi
-@include section-gtkpagesetupunixdialog.xml.texi
 
 @c Miscellaneous
 @include section-gtkadjustment.xml.texi

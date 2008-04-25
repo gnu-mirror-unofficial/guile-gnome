@@ -4,7 +4,7 @@
 @deftp Class <gtk-curve>
 Derives from @code{<gtk-drawing-area>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item curve-type

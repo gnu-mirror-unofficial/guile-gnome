@@ -4,7 +4,7 @@
 @deftp Class <gtk-event-box>
 Derives from @code{<gtk-bin>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item visible-window

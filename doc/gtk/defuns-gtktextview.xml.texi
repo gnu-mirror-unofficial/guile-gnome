@@ -4,7 +4,7 @@
 @deftp Class <gtk-text-view>
 Derives from @code{<gtk-container>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item pixels-above-lines
@@ -108,7 +108,7 @@ undocumented
 @deftp Class <gtk-text-child-anchor>
 Derives from @code{<gobject>}.
 
-This class defines no properties, other than those defined by its superclasses.
+This class defines no direct slots.
 
 @end deftp
 

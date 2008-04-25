@@ -4,7 +4,7 @@
 @deftp Class <gtk-progress-bar>
 Derives from @code{<gtk-progress>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item fraction

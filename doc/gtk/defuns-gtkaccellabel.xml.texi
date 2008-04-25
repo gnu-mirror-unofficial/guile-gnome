@@ -4,7 +4,7 @@
 @deftp Class <gtk-accel-label>
 Derives from @code{<gtk-label>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item accel-closure

@@ -4,21 +4,21 @@
 @deftp Class <gdk-pixbuf-animation>
 Derives from @code{<gobject>}.
 
-This class defines no properties, other than those defined by its superclasses.
+This class defines no direct slots.
 
 @end deftp
 
 @deftp Class <gdk-pixbuf-animation-iter>
 Derives from @code{<gobject>}.
 
-This class defines no properties, other than those defined by its superclasses.
+This class defines no direct slots.
 
 @end deftp
 
 @deftp Class <gdk-pixbuf-simple-anim>
 Derives from @code{<gdk-pixbuf-animation>}.
 
-This class defines no properties, other than those defined by its superclasses.
+This class defines no direct slots.
 
 @end deftp
 

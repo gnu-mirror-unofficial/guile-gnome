@@ -4,7 +4,7 @@
 @deftp Class <gtk-cell-renderer>
 Derives from @code{<gtk-object>}.
 
-This class defines the following properties:
+This class defines the following slots:
 
 @table @code
 @item mode
