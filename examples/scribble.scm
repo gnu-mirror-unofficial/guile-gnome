@@ -1,6 +1,6 @@
 #! /bin/sh
 # -*- scheme -*-
-exec guile-gnome-0 -s $0 "$@"
+exec guile-gnome-2 -s $0 "$@"
 !#
 ;;;A translation of the GTK scribble example
 ;;;It features a resizable canvas that can be drawn on with the mouse

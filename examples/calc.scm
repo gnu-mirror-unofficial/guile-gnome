@@ -1,5 +1,5 @@
 #! /bin/sh
-exec guile-gnome-0 -s $0 "$@"
+exec guile-gnome-2 -s $0 "$@"
 !#
 
 ;; Time-stamp: <07-sep-2004 11:42:38 pat>

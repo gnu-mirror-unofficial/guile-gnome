@@ -1,5 +1,17 @@
 2008-04-25  Andy Wingo  <wingo@pobox.com>
 
+	* examples/tic-tac-toe.scm: 
+	* examples/texinfo-browser.scm: 
+	* examples/test-gdk.scm: 
+	* examples/scribble.scm: 
+	* examples/repl.scm: 
+	* examples/metaspline.scm: 
+	* examples/hello.scm: 
+	* examples/hello-generics.scm: 
+	* examples/guile-gtk-demo/guile-gtk-demo.scm: 
+	* examples/calendar.scm: 
+	* examples/calc.scm: Update examples to use gnome-2.
+
 	* doc/gdk/*.texi:
 	* doc/gtk/*.texi: Update docs.
 
