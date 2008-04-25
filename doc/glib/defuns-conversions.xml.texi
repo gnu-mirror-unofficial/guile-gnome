@@ -93,44 +93,30 @@ The converted string. If the conversion fails, an exception will be raised.
 Converts a string from UTF-8 to the encoding GLib uses for filenames. Note that
 on Windows GLib uses UTF-8 for filenames.
 
-
-
 @table @var
-
 @item utf8string
-
 a UTF-8 encoded string.
 
-
 @item len
-
 the length of the string, or -1 if the string is nul-terminated.
 
-
 @item bytes-read
-
 location to store the number of bytes in the input string that were successfully
 converted, or @samp{@code{#f}}. Even if the conversion was successful, this may
 be less than @var{len} if there were partial characters at the end of the input.
 If the error @code{<g-convert-error-illegal-sequence>} occurs, the value stored
 will the byte offset after the last valid input sequence.
 
-
 @item bytes-written
-
 the number of bytes stored in the output buffer (not including the terminating
 nul).
 
-
 @item error
-
 location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
 of the errors in @code{<g-convert-error>} may occur.
 
-
 @item ret
 The converted string, or @samp{@code{#f}} on an error.
-
 
 @end table
 
@@ -140,31 +126,21 @@ The converted string, or @samp{@code{#f}} on an error.
 Converts an escaped ASCII-encoded URI to a local filename in the encoding used
 for filenames.
 
-
-
 @table @var
-
 @item uri
-
 a uri describing a filename (escaped, encoded in ASCII).
 
-
 @item hostname
-
 Location to store hostname for the URI, or @samp{@code{#f}}. If there is no
 hostname in the URI, @samp{@code{#f}} will be stored in this location.
 
-
 @item error
-
 location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
 of the errors in @code{<g-convert-error>} may occur.
-
 
 @item ret
 a newly-allocated string holding the resulting filename, or @samp{@code{#f}} on
 an error.
-
 
 @end table
 
@@ -174,31 +150,21 @@ an error.
 Converts an absolute filename to an escaped ASCII-encoded URI, with the path
 component following Section 3.3. of RFC 2396.
 
-
-
 @table @var
-
 @item filename
-
 an absolute filename specified in the GLib file name encoding, which is the
 on-disk file name bytes on Unix, and UTF-8 on Windows
 
-
 @item hostname
-
 A UTF-8 encoded hostname, or @samp{@code{#f}} for none.
 
-
 @item error
-
 location to store the error occuring, or @samp{@code{#f}} to ignore errors. Any
 of the errors in @code{<g-convert-error>} may occur.
-
 
 @item ret
 a newly-allocated string holding the resulting URI, or @samp{@code{#f}} on an
 error.
-
 
 @end table
 
@@ -221,18 +187,12 @@ If you know the whole pathname of the file you should use
 @code{g-filename-display-basename}, since that allows location-based translation
 of filenames.
 
-
-
 @table @var
-
 @item filename
-
 a pathname hopefully in the GLib file name encoding
-
 
 @item ret
 a newly allocated string containing a rendition of the filename in valid UTF-8
-
 
 @end table
 
@@ -258,19 +218,13 @@ of well known locations can be done.
 This function is preferred over @code{g-filename-display-name} if you know the
 whole path, as it allows translation.
 
-
-
 @table @var
-
 @item filename
-
 an absolute pathname in the GLib file name encoding
-
 
 @item ret
 a newly allocated string containing a rendition of the basename of the filename
 in valid UTF-8
-
 
 @end table
 

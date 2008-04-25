@@ -4,50 +4,39 @@
 @deftp Class <g-main-loop>
 Opaque pointer.
 
-This class defines no direct slots, other than those defined by its
-superclasses.
+This class defines no direct slots.
 
 @end deftp
 
 @deftp Class <g-main-context>
 Opaque pointer.
 
-This class defines no direct slots, other than those defined by its
-superclasses.
+This class defines no direct slots.
 
 @end deftp
 
 @deftp Class <g-source>
 Opaque pointer.
 
-This class defines no direct slots, other than those defined by its
-superclasses.
+This class defines no direct slots.
 
 @end deftp
 
 @deffn Function g-main-loop-new  (context@tie{}@code{<g-main-context>}) (is_running@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<g-main-loop>})
 Creates a new @code{<g-main-loop>} structure.
 
-
-
 @table @var
-
 @item context
-
 a @code{<g-main-context>} (if @samp{@code{#f}}, the default context will be
 used).
 
-
 @item is-running
-
 set to @samp{@code{#t}} to indicate that the loop is running. This is not very
 important since calling @code{g-main-loop-run} will set this to @samp{@code{#t}}
 anyway.
 
-
 @item ret
 a new @code{<g-main-loop>}.
-
 
 @end table
 
@@ -58,14 +47,9 @@ Runs a main loop until @code{g-main-loop-quit} is called on the loop. If this is
 called for the thread of the loop's @code{<g-main-context>}, it will process
 events from the loop, otherwise it will simply wait.
 
-
-
 @table @var
-
 @item loop
-
 a @code{<g-main-loop>}
-
 
 @end table
 
@@ -75,14 +59,9 @@ a @code{<g-main-loop>}
 Stops a @code{<g-main-loop>} from running. Any calls to @code{g-main-loop-run}
 for the loop will return.
 
-
-
 @table @var
-
 @item loop
-
 a @code{<g-main-loop>}
-
 
 @end table
 
@@ -92,18 +71,12 @@ a @code{<g-main-loop>}
 Checks to see if the main loop is currently being run via
 @code{g-main-loop-run}.
 
-
-
 @table @var
-
 @item loop
-
 a @code{<g-main-loop>}.
-
 
 @item ret
 @samp{@code{#t}} if the mainloop is currently being run.
-
 
 @end table
 
@@ -112,18 +85,12 @@ a @code{<g-main-loop>}.
 @deffn Function g-main-loop-get-context  (loop@tie{}@code{<g-main-loop>}) @result{}@tie{} (ret@tie{}@code{<g-main-context>})
 Returns the @code{<g-main-context>} of @var{loop}.
 
-
-
 @table @var
-
 @item loop
-
 a @code{<g-main-loop>}.
-
 
 @item ret
 the @code{<g-main-context>} of @var{loop}
-
 
 @end table
 
@@ -132,13 +99,9 @@ the @code{<g-main-context>} of @var{loop}
 @deffn Function g-main-context-new  @result{}@tie{} (ret@tie{}@code{<g-main-context>})
 Creates a new @code{<g-main-context>} strcuture
 
-
-
 @table @var
-
 @item ret
 the new @code{<g-main-context>}
-
 
 @end table
 
@@ -148,13 +111,9 @@ the new @code{<g-main-context>}
 Returns the default main context. This is the main context used for main loop
 functions when a main loop is not explicitly specified.
 
-
-
 @table @var
-
 @item ret
 the default main context.
-
 
 @end table
 
@@ -169,24 +128,16 @@ that even when @var{may-block} is @samp{@code{#t}}, it is still possible for
 @code{g-main-context-iteration} to return @samp{@code{#f}}, since the the wait
 may be interrupted for other reasons than an event source becoming ready.
 
-
-
 @table @var
-
 @item context
-
 a @code{<g-main-context>} (if @samp{@code{#f}}, the default context will be
 used)
 
-
 @item may-block
-
 whether the call may block.
-
 
 @item ret
 @samp{@code{#t}} if events were dispatched.
-
 
 @end table
 
@@ -195,19 +146,13 @@ whether the call may block.
 @deffn Function g-main-context-pending  (context@tie{}@code{<g-main-context>}) @result{}@tie{} (ret@tie{}@code{bool})
 Checks if any sources have pending events for the given context.
 
-
-
 @table @var
-
 @item context
-
 a @code{<g-main-context>} (if @samp{@code{#f}}, the default context will be
 used)
 
-
 @item ret
 @samp{@code{#t}} if events are pending.
-
 
 @end table
 
@@ -216,24 +161,16 @@ used)
 @deffn Function g-main-context-find-source-by-id  (context@tie{}@code{<g-main-context>}) (source_id@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{<g-source>})
 Finds a @code{<g-source>} given a pair of context and ID.
 
-
-
 @table @var
-
 @item context
-
 a @code{<g-main-context>} (if @samp{@code{#f}}, the default context will be
 used)
 
-
 @item source-id
-
 the source ID, as returned by @code{g-source-get-id}.
-
 
 @item ret
 the @code{<g-source>} if found, otherwise, @samp{@code{#f}}
-
 
 @end table
 
@@ -243,14 +180,9 @@ the @code{<g-source>} if found, otherwise, @samp{@code{#f}}
 If @var{context} is currently waiting in a @code{poll}, interrupt the
 @code{poll}, and continue the iteration process.
 
-
-
 @table @var
-
 @item context
-
 a @code{<g-main-context>}
-
 
 @end table
 
@@ -267,19 +199,13 @@ You must be the owner of a context before you can call
 @code{g-main-context-prepare}, @code{g-main-context-query},
 @code{g-main-context-check}, @code{g-main-context-dispatch}.
 
-
-
 @table @var
-
 @item context
-
 a @code{<g-main-context>}
-
 
 @item ret
 @samp{@code{#t}} if the operation succeeded, and this thread is now the owner of
 @var{context}.
-
 
 @end table
 
@@ -291,14 +217,9 @@ Releases ownership of a context previously acquired by this thread with
 only release ownership when @code{g-main-context-release} is called as many
 times as it was acquired.
 
-
-
 @table @var
-
 @item context
-
 a @code{<g-main-context>}
-
 
 @end table
 
@@ -309,18 +230,12 @@ Determines whether this thread holds the (recursive) ownership of this
 @code{<g-maincontext>}. This is useful to know before waiting on another thread
 that may be blocking to get ownership of @var{context}.
 
-
-
 @table @var
-
 @item context
-
 a @code{<g-main-context>}
-
 
 @item ret
 @samp{@code{#t}} if current thread is owner of @var{context}.
-
 
 @end table
 
@@ -332,23 +247,15 @@ Since 2.10
 Prepares to poll sources within a main loop. The resulting information for
 polling is determined by calling @code{g-main-context-query}.
 
-
-
 @table @var
-
 @item context
-
 a @code{<g-main-context>}
 
-
 @item priority
-
 location to store priority of highest priority source already ready.
-
 
 @item ret
 @samp{@code{#t}} if some source is ready to be dispatched prior to polling.
-
 
 @end table
 
@@ -379,13 +286,9 @@ there is more work to do.
 @deffn Function g-main-current-source  @result{}@tie{} (ret@tie{}@code{<g-source>})
 Returns the currently firing source for this thread.
 
-
-
 @table @var
-
 @item ret
 The currently firing source or @samp{@code{#f}}.
-
 
 @end table
 
@@ -399,18 +302,12 @@ Creates a new timeout source.
 The source will not initially be associated with any @code{<g-main-context>} and
 must be added to one with @code{g-source-attach} before it will be executed.
 
-
-
 @table @var
-
 @item interval
-
 the timeout interval in milliseconds.
-
 
 @item ret
 the newly-created timeout source
-
 
 @end table
 
@@ -425,13 +322,9 @@ Note that the default priority for idle sources is
 @samp{G_PRIORITY_DEFAULT_IDLE}, as compared to other sources which have a
 default priority of @samp{G_PRIORITY_DEFAULT}.
 
-
-
 @table @var
-
 @item ret
 the newly-created idle source
-
 
 @end table
 
@@ -455,19 +348,13 @@ Note further that using @code{g-child-watch-source-new} is not compatible with
 calling @samp{waitpid(-1)} in the application. Calling @code{waitpid} for
 individual pids will still work fine.
 
-
-
 @table @var
-
 @item pid
-
 process id of a child process to watch. On Windows, a HANDLE for the process to
 watch (which actually doesn't have to be a child).
 
-
 @item ret
 the newly-created child watch source
-
 
 @end table
 
@@ -479,24 +366,16 @@ Since 2.4
 Adds a @code{<g-source>} to a @var{context} so that it will be executed within
 that context.
 
-
-
 @table @var
-
 @item source
-
 a @code{<g-source>}
 
-
 @item context
-
 a @code{<g-main-context>} (if @samp{@code{#f}}, the default context will be
 used)
 
-
 @item ret
 the ID (greater than 0) for the source within the @code{<g-main-context>}.
-
 
 @end table
 
@@ -506,14 +385,9 @@ the ID (greater than 0) for the source within the @code{<g-main-context>}.
 Removes a source from its @code{<g-main-context>}, if any, and mark it as
 destroyed. The source cannot be subsequently added to another context.
 
-
-
 @table @var
-
 @item source
-
 a @code{<g-source>}
-
 
 @end table
 
@@ -524,8 +398,6 @@ Returns whether @var{source} has been destroyed.
 
 This is important when you operate upon your objects from within idle handlers,
 but may have freed the object before the dispatch of your idle handler.
-
-
 
 @example 
 
@@ -565,8 +437,6 @@ the idle handler fires due to the use after free in the callback. A solution, to
 this particular problem, is to check to if the source has already been destroy
 within the callback.
 
-
-
 @example 
 
 static gboolean 
@@ -585,18 +455,12 @@ idle_callback (gpointer data)
 @}
 @end example
 
-
-
 @table @var
-
 @item source
-
 a @code{<g-source>}
-
 
 @item ret
 @samp{@code{#t}} if the source has been destroyed
-
 
 @end table
 
@@ -609,19 +473,12 @@ Sets the priority of a source. While the main loop is being run, a source will
 be dispatched if it is ready to be dispatched and no sources at a higher
 (numerically smaller) priority are ready to be dispatched.
 
-
-
 @table @var
-
 @item source
-
 a @code{<g-source>}
 
-
 @item priority
-
 the new priority.
-
 
 @end table
 
@@ -630,18 +487,12 @@ the new priority.
 @deffn Function g-source-get-priority  (source@tie{}@code{<g-source>}) @result{}@tie{} (ret@tie{}@code{int})
 Gets the priority of a source.
 
-
-
 @table @var
-
 @item source
-
 a @code{<g-source>}
-
 
 @item ret
 the priority of the source
-
 
 @end table
 
@@ -653,19 +504,12 @@ Sets whether a source can be called recursively. If @var{can-recurse} is
 will be processed normally. Otherwise, all processing of this source is blocked
 until the dispatch function returns.
 
-
-
 @table @var
-
 @item source
-
 a @code{<g-source>}
 
-
 @item can-recurse
-
 whether recursion is allowed for this source
-
 
 @end table
 
@@ -675,18 +519,12 @@ whether recursion is allowed for this source
 Checks whether a source is allowed to be called recursively. see
 @code{g-source-set-can-recurse}.
 
-
-
 @table @var
-
 @item source
-
 a @code{<g-source>}
-
 
 @item ret
 whether recursion is allowed.
-
 
 @end table
 
@@ -697,18 +535,12 @@ Returns the numeric ID for a particular source. The ID of a source is a positive
 integer which is unique within a particular main loop context. The reverse
 mapping from ID to source is done by @code{g-main-context-find-source-by-id}.
 
-
-
 @table @var
-
 @item source
-
 a @code{<g-source>}
-
 
 @item ret
 the ID (greater than 0) for the source
-
 
 @end table
 
@@ -718,19 +550,13 @@ the ID (greater than 0) for the source
 Gets the @code{<g-main-context>} with which the source is associated. Calling
 this function on a destroyed source is an error.
 
-
-
 @table @var
-
 @item source
-
 a @code{<g-source>}
-
 
 @item ret
 the @code{<g-main-context>} with which the source is associated, or
 @samp{@code{#f}} if the context has not yet been added to a source.
-
 
 @end table
 
@@ -746,18 +572,12 @@ functions @code{g-source-attach}, @code{g-idle-add}, @code{g-idle-add-full},
 
 See also @code{g-source-destroy}.
 
-
-
 @table @var
-
 @item tag
-
 the ID of the source to remove.
-
 
 @item ret
 @samp{@code{#t}} if the source was found and removed.
-
 
 @end table
 

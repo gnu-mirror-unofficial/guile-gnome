@@ -99,10 +99,12 @@
                   (and (not (assq prop slots))
                        `(,prop #:allocation #:gproperty)))
                 props))
-  (let ((slots (next-method)))
-    (append slots
-            (compute-extra-slots (gobject-class-get-property-names class)
-                                 slots))))
+  (let* ((slots (next-method))
+         (extra (compute-extra-slots
+                 (gobject-class-get-property-names class) slots)))
+    (with-accessors (direct-slots)
+      (set! (direct-slots class) (append (direct-slots class) extra)))
+    (append slots extra)))
 
 (define-method (compute-get-n-set (class <gobject-class>) slotdef)
   (let ((name (slot-definition-name slotdef)))
@@ -225,7 +227,7 @@ defined on the class, if such a slot is not already defined.
   "Parameter for @code{<gobject>} values."
   (object-type
    #:init-keyword #:object-type #:allocation #:checked
-   #:pred (lambda (x) (class-is-a? x <gobject>)))
+   #:pred (lambda (x) (is-a? x <gobject-class>)))
   #:value-type <gobject>
   #:gtype-name "GParamObject")
 

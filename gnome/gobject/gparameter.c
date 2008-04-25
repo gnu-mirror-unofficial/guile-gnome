@@ -212,10 +212,17 @@ static void scm_c_gparam_initialize_scm (SCM param, gpointer ppspec)
                             : SCM_BOOL_F));
     }
     
-    /* borken! */
-    /* if (G_IS_PARAM_SPEC_UNICHAR (pspec)) */
-    else
+    else if (G_IS_PARAM_SPEC_UNICHAR (pspec)) {
+        GParamSpecUnichar *p = (GParamSpecUnichar *) pspec;
+        /* borken! */
+        SET (default_value, scm_from_uint (p->default_value));
+    }
+    
+    else {
+        g_warning ("param type not implemented: %s",
+                   g_type_name (G_TYPE_FROM_INSTANCE (pspec)));
         SCM_ERROR_NOT_YET_IMPLEMENTED (SCM_BOOL_F);
+    }
 
 #undef SET
 }
@@ -379,6 +386,11 @@ scm_c_gparam_construct (SCM instance, SCM initargs)
                                           scm_c_scm_to_gtype_instance_typed
                                           (REF (element_spec), G_TYPE_PARAM),
                                           flags);
+    }
+    else if (param_type == G_TYPE_PARAM_UNICHAR) {
+        pspec = g_param_spec_unichar (name, nick, blurb,
+                                      scm_to_uint (REF (default_value)),
+                                      flags);
     }
     else {
         scm_c_gruntime_error ("%gparam-construct",

@@ -11,18 +11,12 @@ Normally a @code{<g-file-error>} value goes into a @code{<g-error>} returned
 from a function that manipulates files. So you would use
 @code{g-file-error-from-errno} when constructing a @code{<g-error>}.
 
-
-
 @table @var
-
 @item err-no
-
 an "errno" value
-
 
 @item ret
 @code{<g-file-error>} corresponding to the given @var{errno}
-
 
 @end table
 

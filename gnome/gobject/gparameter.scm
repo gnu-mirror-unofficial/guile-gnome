@@ -44,7 +44,7 @@
                 <gparam-char> <gparam-uchar> <gparam-boolean> <gparam-int>
                 <gparam-uint> <gparam-long> <gparam-ulong> <gparam-int64>
                 <gparam-uint64> <gparam-float> <gparam-double>
-                <gparam-pointer> <gparam-string>
+                <gparam-unichar> <gparam-pointer> <gparam-string>
                 <gparam-boxed> <gparam-enum> <gparam-flags>
                 ;; Helper class
                 <gparam-spec-flags>
@@ -180,6 +180,15 @@
   #:value-type <guint>
   #:gtype-name "GParamUInt")
 
+(define-class-with-docs <gparam-unichar> (<gparam>)
+  "Parameter for Unicode codepoints, represented as @code{<guint>}
+values."
+  (default-value
+   #:init-keyword #:default-value #:init-value 0
+   #:allocation #:checked #:pred integer?)
+  #:value-type <guint>
+  #:gtype-name "GParamUnichar")
+
 (define-class-with-docs <gparam-long> (<gparam>)
   "Parameter for @code{<glong>} values."
   (minimum
@@ -314,7 +323,7 @@
   "Parameter for @code{<gvalue-array>} values."
   (element-spec
    #:init-keyword #:element-spec #:allocation #:checked
-   #:pred (lambda (x) (is-a? x <gparam>)))
+   #:pred (lambda (x) (or (not x) (is-a? x <gparam>))))
   #:value-type <gvalue-array>
   #:gtype-name "GParamValueArray")
 

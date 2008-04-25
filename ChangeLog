@@ -1,5 +1,35 @@
 2008-04-25  Andy Wingo  <wingo@pobox.com>
 
+	* gnome/gw/support/gtk-doc.scm (zap-whitespace)
+	(docbook->sdocbook): Zap any whitespace-only strings coming out of
+	xml->sxml.
+	(class-signal-stexi-docs): Only doc the class' own signals.
+	(gobject-class-stexi-docs): Reword.
+
+	* gnome/gobject/gsignal.c (gtype-class-get-signals): Only query
+	instantiatable types.
+
+	* gnome/gobject/gparameter.scm (<gparam-value-array>): Allow #f
+	for the element-spec.
+	(<gparam-unichar>):
+	* gnome/gobject/gparameter.c (scm_c_gparam_initialize_scm)
+	(scm_c_gparam_construct): Re-add unichar param support.
+
+	* gnome/gobject/gobject.scm (compute-slots): A bit of a hack to
+	make sure that the direct-slots slot mentions the GObject
+	properties.
+	(<gparam-object>): Change to accept <ginterface> as well.
+
+	* doc/gobject/guile-gnome-gobject.texi: Update version.
+
+	* doc/gobject/guile-gnome-gobject.scm (*updated*, *version*)
+	(*years*); Updated.
+
+	* doc/glib/defuns-*.texi: Regenerated. Lost the whitespace due to
+	change in gtk-doc.scm.
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
 	* gnome/gw/support/gtk-doc.scm (gobject-class-stexi-docs): Cope
 	with gw:wct, which is not a <class>. Sigh.
 

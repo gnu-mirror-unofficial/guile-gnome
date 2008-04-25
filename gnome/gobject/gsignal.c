@@ -118,6 +118,9 @@ SCM_DEFINE (scm_gtype_class_get_signals, "gtype-class-get-signals", 1, 1, 0,
     if (!type)
         return tail;
 
+    if (!(G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_INTERFACE (type)))
+        return tail;
+    
     ids = g_signal_list_ids (type, &n_ids);
 
     for (i = ((glong)n_ids) - 1; i >= 0; i--)

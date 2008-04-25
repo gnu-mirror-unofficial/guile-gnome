@@ -4,8 +4,7 @@
 @deftp Class <gio-channel>
 Opaque pointer.
 
-This class defines no direct slots, other than those defined by its
-superclasses.
+This class defines no direct slots.
 
 @end deftp
 
@@ -31,15 +30,11 @@ function happens to be both a valid file descriptor and socket. If that happens
 a warning is issued, and GLib assumes that it is the file descriptor you mean.
 
 @table @var
-
 @item fd
-
 a file descriptor.
-
 
 @item ret
 a new @code{<gio-channel>}.
-
 
 @end table
 
@@ -52,15 +47,11 @@ On Windows this function returns the file descriptor or socket of the
 @code{<gio-channel>}.
 
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}, created with @code{g-io-channel-unix-new}.
-
 
 @item ret
 the file descriptor of the @code{<gio-channel>}.
-
 
 @end table
 
@@ -72,29 +63,19 @@ channel will be closed when the last reference to it is dropped, so there is no
 need to call @code{g-io-channel-close} (though doing so will not cause problems,
 as long as no attempt is made to access the channel after it is closed).
 
-
-
 @table @var
-
 @item filename
-
 A string containing the name of a file.
 
-
 @item mode
-
 One of "r", "w", "a", "r+", "w+", "a+". These have the same meaning as in
 @code{fopen}.
 
-
 @item error
-
 A location to return an error of type @samp{G_FILE_ERROR}.
-
 
 @item ret
 A @code{<gio-channel>} on success, @samp{@code{#f}} on failure.
-
 
 @end table
 
@@ -105,42 +86,28 @@ Reads a line, including the terminating character(s), from a
 @code{<gio-channel>} into a newly-allocated string. @var{str-return} will
 contain allocated memory if the return is @samp{G_IO_STATUS_NORMAL}.
 
-
-
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}
 
-
 @item str-return
-
 The line read from the @code{<gio-channel>}, including the line terminator. This
 data should be freed with @code{g-free} when no longer needed. This is a
 nul-terminated string. If a @var{length} of zero is returned, this will be
 @samp{@code{#f}} instead.
 
-
 @item length
-
 location to store length of the read data, or @samp{@code{#f}}
 
-
 @item terminator-pos
-
 location to store position of line terminator, or @samp{@code{#f}}
 
-
 @item error
-
 A location to return an error of type @code{<g-convert-error>} or
 @code{<gio-channel-error>}
 
-
 @item ret
 the status of the operation.
-
 
 @end table
 
@@ -149,24 +116,16 @@ the status of the operation.
 @deffn Function g-io-channel-flush  (channel@tie{}@code{<gio-channel>}) @result{}@tie{} (ret@tie{}@code{<gio-status>})
 Flushes the write buffer for the GIOChannel.
 
-
-
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}
 
-
 @item error
-
 location to store an error of type @code{<gio-channel-error>}
-
 
 @item ret
 the status of the operation: One of @code{<g-io-channel-normal>},
 @code{<g-io-channel-again>}, or @code{<g-io-channel-error>}.
-
 
 @end table
 
@@ -175,35 +134,23 @@ the status of the operation: One of @code{<g-io-channel-normal>},
 @deffn Function g-io-channel-seek-position  (self@tie{}@code{<gio-channel>}) (offset@tie{}@code{int64}) (type@tie{}@code{<g-seek-type>}) @result{}@tie{} (ret@tie{}@code{<gio-status>})
 Replacement for @code{g-io-channel-seek} with the new API.
 
-
-
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}
 
-
 @item offset
-
 The offset in bytes from the position specified by @var{type}
 
-
 @item type
-
 a @code{<g-seek-type>}. The type @samp{G_SEEK_CUR} is only allowed in those
 cases where a call to @code{g-io-channel-set-encoding} is allowed. See the
 documentation for @code{g-io-channel-set-encoding} for details.
 
-
 @item error
-
 A location to return an error of type @code{<gio-channel-error>}
-
 
 @item ret
 the status of the operation.
-
 
 @end table
 
@@ -214,28 +161,18 @@ Close an IO channel. Any pending data to be written will be flushed if
 @var{flush} is @samp{@code{#t}}. The channel will not be freed until the last
 reference is dropped using @code{g-io-channel-unref}.
 
-
-
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}
 
-
 @item flush
-
 if @samp{@code{#t}}, flush pending
 
-
 @item err
-
 location to store a @code{<gio-channel-error>}
-
 
 @item ret
 the status of the operation.
-
 
 @end table
 
@@ -244,18 +181,12 @@ the status of the operation.
 @deffn Function g-io-channel-error-from-errno  (en@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gio-channel-error>})
 Converts an @samp{errno} error number to a @code{<gio-channel-error>}.
 
-
-
 @table @var
-
 @item en
-
 an @samp{errno} error number, e.g. @samp{EINVAL}.
-
 
 @item ret
 a @code{<gio-channel-error>} error number, e.g. @samp{G_IO_CHANNEL_ERROR_INVAL}.
-
 
 @end table
 
@@ -274,20 +205,14 @@ puts the socket in non-blocking mode. This is a side-effect of the
 implementation and unavoidable.
 
 @table @var
-
 @item channel
-
 a @code{<gio-channel>} to watch
 
-
 @item condition
-
 conditions to watch for
-
 
 @item ret
 a new @code{<g-source>}
-
 
 @end table
 
@@ -298,30 +223,20 @@ Adds the @code{<gio-channel>} into the main event loop with the default
 priority.
 
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}.
 
-
 @item condition
-
 the condition to watch for.
 
-
 @item func
-
 the function to call when the condition is satisfied.
 
-
 @item user-data
-
 user data to pass to @var{func}.
-
 
 @item ret
 the event source id.
-
 
 @end table
 
@@ -330,18 +245,12 @@ the event source id.
 @deffn Function g-io-channel-get-buffer-size  (channel@tie{}@code{<gio-channel>}) @result{}@tie{} (ret@tie{}@code{size_t})
 Gets the buffer size.
 
-
-
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}
-
 
 @item ret
 the size of the buffer.
-
 
 @end table
 
@@ -350,19 +259,12 @@ the size of the buffer.
 @deffn Function g-io-channel-set-buffer-size  (channel@tie{}@code{<gio-channel>}) (size@tie{}@code{size_t})
 Sets the buffer size.
 
-
-
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}
 
-
 @item size
-
 the size of the buffer. 0 == pick a good size
-
 
 @end table
 
@@ -374,18 +276,12 @@ data to be read/space to write data in the internal buffers in the
 @code{<gio-channel>}. Only the flags @samp{G_IO_IN} and @samp{G_IO_OUT} may be
 set.
 
-
-
 @table @var
-
 @item channel
-
 A @code{<gio-channel>}
-
 
 @item ret
 A @code{<gio-condition>}
-
 
 @end table
 
@@ -401,18 +297,12 @@ is created. If they should change at some later point (e.g. partial shutdown of
 a socket with the UNIX @code{shutdown} function), the user should immediately
 call @code{g-io-channel-get-flags} to update the internal values of these flags.
 
-
-
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}
-
 
 @item ret
 the flags which are set on the channel
-
 
 @end table
 
@@ -422,28 +312,18 @@ the flags which are set on the channel
 Sets the (writeable) flags in @var{channel} to (@var{flags} &
 @samp{G_IO_CHANNEL_SET_MASK}).
 
-
-
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}.
 
-
 @item flags
-
 the flags to set on the IO channel.
 
-
 @item error
-
 A location to return an error of type @code{<gio-channel-error>}.
-
 
 @item ret
 the status of the operation.
-
 
 @end table
 
@@ -453,23 +333,15 @@ the status of the operation.
 This returns the string that @code{<gio-channel>} uses to determine where in the
 file a line break occurs. A value of @samp{@code{#f}} indicates auto detection.
 
-
-
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}
 
-
 @item length
-
 a location to return the length of the line terminator
-
 
 @item ret
 The line termination string. This value is owned by GLib and must not be freed.
-
 
 @end table
 
@@ -479,28 +351,19 @@ The line termination string. This value is owned by GLib and must not be freed.
 This sets the string that @code{<gio-channel>} uses to determine where in the
 file a line break occurs.
 
-
-
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}
 
-
 @item line-term
-
 The line termination string. Use @samp{@code{#f}} for auto detect. Auto
 detection breaks on "\n", "\r\n", "\r", "\0", and the Unicode paragraph
 separator. Auto detection should not be used for anything other than file-based
 channels.
 
-
 @item length
-
 The length of the termination string. If -1 is passed, the string is assumed to
 be nul-terminated. This option allows termination strings with embeded nuls.
-
 
 @end table
 
@@ -509,18 +372,12 @@ be nul-terminated. This option allows termination strings with embeded nuls.
 @deffn Function g-io-channel-get-buffered  (channel@tie{}@code{<gio-channel>}) @result{}@tie{} (ret@tie{}@code{bool})
 Returns whether @var{channel} is buffered.
 
-
-
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}.
-
 
 @item ret
 @samp{@code{#t}} if the @var{channel} is buffered.
-
 
 @end table
 
@@ -544,19 +401,12 @@ old APIs, if this is necessary for maintaining old code.
 
 The default state of the channel is buffered.
 
-
-
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}
 
-
 @item buffered
-
 whether to set the channel buffered or unbuffered
-
 
 @end table
 
@@ -567,19 +417,13 @@ Gets the encoding for the input/output of the channel. The internal encoding is
 always UTF-8. The encoding @samp{@code{#f}} makes the channel safe for binary
 data.
 
-
-
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}
-
 
 @item ret
 A string containing the encoding, this string is owned by GLib and must not be
 freed.
-
 
 @end table
 
@@ -618,28 +462,18 @@ Channels which do not meet one of the above conditions cannot call
 they are "seekable", cannot call @code{g-io-channel-write-chars} after calling
 one of the API "read" functions.
 
-
-
 @table @var
-
 @item channel
-
 a @code{<gio-channel>}
 
-
 @item encoding
-
 the encoding type
 
-
 @item error
-
 location to store an error of type @code{<g-convert-error>}.
-
 
 @item ret
 @samp{G_IO_STATUS_NORMAL} if the encoding was successfully set.
-
 
 @end table
 
@@ -653,14 +487,9 @@ Close an IO channel. Any pending data to be written will be flushed, ignoring
 errors. The channel will not be freed until the last reference is dropped using
 @code{g-io-channel-unref}.
 
-
-
 @table @var
-
 @item channel
-
 A @code{<gio-channel>}
-
 
 @end table
 

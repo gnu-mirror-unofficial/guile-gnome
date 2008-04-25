@@ -6,18 +6,12 @@ Checks whether @var{ch} is a valid Unicode character. Some possible integer
 values of @var{ch} will not be valid. 0 is considered a valid character, though
 it's normally a string terminator.
 
-
-
 @table @var
-
 @item ch
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#t}} if @var{ch} is a valid Unicode character
-
 
 @end table
 
@@ -27,18 +21,12 @@ a Unicode character
 Determines whether a character is alphanumeric. Given some UTF-8 text, obtain a
 character value with @code{g-utf8-get-char}.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#t}} if @var{c} is an alphanumeric character
-
 
 @end table
 
@@ -48,18 +36,12 @@ a Unicode character
 Determines whether a character is alphabetic (i.e. a letter). Given some UTF-8
 text, obtain a character value with @code{g-utf8-get-char}.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#t}} if @var{c} is an alphabetic character
-
 
 @end table
 
@@ -69,18 +51,12 @@ a Unicode character
 Determines whether a character is a control character. Given some UTF-8 text,
 obtain a character value with @code{g-utf8-get-char}.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#t}} if @var{c} is a control character
-
 
 @end table
 
@@ -91,18 +67,12 @@ Determines whether a character is numeric (i.e. a digit). This covers ASCII 0-9
 and also digits in other languages/scripts. Given some UTF-8 text, obtain a
 character value with @code{g-utf8-get-char}.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#t}} if @var{c} is a digit
-
 
 @end table
 
@@ -114,18 +84,12 @@ Determines whether a character is printable and not a space (returns
 @code{g-unichar-isprint} is similar, but returns @samp{@code{#t}} for spaces.
 Given some UTF-8 text, obtain a character value with @code{g-utf8-get-char}.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#t}} if @var{c} is printable unless it's a space
-
 
 @end table
 
@@ -135,18 +99,12 @@ a Unicode character
 Determines whether a character is a lowercase letter. Given some UTF-8 text,
 obtain a character value with @code{g-utf8-get-char}.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#t}} if @var{c} is a lowercase letter
-
 
 @end table
 
@@ -157,18 +115,12 @@ Determines whether a character is printable. Unlike @code{g-unichar-isgraph},
 returns @samp{@code{#t}} for spaces. Given some UTF-8 text, obtain a character
 value with @code{g-utf8-get-char}.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#t}} if @var{c} is printable
-
 
 @end table
 
@@ -178,18 +130,12 @@ a Unicode character
 Determines whether a character is punctuation or a symbol. Given some UTF-8
 text, obtain a character value with @code{g-utf8-get-char}.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#t}} if @var{c} is a punctuation or symbol character
-
 
 @end table
 
@@ -203,18 +149,12 @@ carriage return, etc.). Given some UTF-8 text, obtain a character value with
 (Note: don't use this to do word breaking; you have to use Pango or equivalent
 to get word breaking right, the algorithm is fairly complex.)
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#t}} if @var{c} is a space character
-
 
 @end table
 
@@ -223,18 +163,12 @@ a Unicode character
 @deffn Function g-unichar-isupper  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines if a character is uppercase.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#t}} if @var{c} is an uppercase character
-
 
 @end table
 
@@ -243,18 +177,12 @@ a Unicode character
 @deffn Function g-unichar-isxdigit  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines if a character is a hexidecimal digit.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character.
-
 
 @item ret
 @samp{@code{#t}} if the character is a hexadecimal digit
-
 
 @end table
 
@@ -267,18 +195,12 @@ The titlecase form is used at the beginning of a word where only the first
 letter is capitalized. The titlecase form of the DZ digraph is U+01F2 LATIN
 CAPITAL LETTTER D WITH SMALL LETTER Z.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#t}} if the character is titlecase
-
 
 @end table
 
@@ -287,18 +209,12 @@ a Unicode character
 @deffn Function g-unichar-isdefined  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines if a given character is assigned in the Unicode standard.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#t}} if the character has an assigned value
-
 
 @end table
 
@@ -307,18 +223,12 @@ a Unicode character
 @deffn Function g-unichar-iswide  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{bool})
 Determines if a character is typically rendered in a double-width cell.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#t}} if the character is wide
-
 
 @end table
 
@@ -331,18 +241,12 @@ legacy East Asian locales. If a character is wide according to
 the converse is not necessarily true. See the
 @uref{http://www.unicode.org/reports/tr11/,Unicode Standard Annex } for details.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#t}} if the character is wide in legacy East Asian locales
-
 
 @end table
 
@@ -353,20 +257,14 @@ Since 2.12
 @deffn Function g-unichar-toupper  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
 Converts a character to uppercase.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 the result of converting @var{c} to uppercase. If @var{c} is not an lowercase or
 titlecase character, or has no upper case equivalent @var{c} is returned
 unchanged.
-
 
 @end table
 
@@ -375,20 +273,14 @@ unchanged.
 @deffn Function g-unichar-tolower  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
 Converts a character to lower case.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character.
-
 
 @item ret
 the result of converting @var{c} to lower case. If @var{c} is not an upperlower
 or titlecase character, or has no lowercase equivalent @var{c} is returned
 unchanged.
-
 
 @end table
 
@@ -397,19 +289,13 @@ unchanged.
 @deffn Function g-unichar-totitle  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
 Converts a character to the titlecase.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 the result of converting @var{c} to titlecase. If @var{c} is not an uppercase or
 lowercase character, @var{c} is returned unchanged.
-
 
 @end table
 
@@ -418,19 +304,13 @@ lowercase character, @var{c} is returned unchanged.
 @deffn Function g-unichar-digit-value  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{int})
 Determines the numeric value of a character as a decimal digit.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 If @var{c} is a decimal digit (according to @code{g-unichar-isdigit}), its
 numeric value. Otherwise, -1.
-
 
 @end table
 
@@ -439,19 +319,13 @@ numeric value. Otherwise, -1.
 @deffn Function g-unichar-xdigit-value  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{int})
 Determines the numeric value of a character as a hexidecimal digit.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 If @var{c} is a hex digit (according to @code{g-unichar-isxdigit}), its numeric
 value. Otherwise, -1.
-
 
 @end table
 
@@ -460,18 +334,12 @@ value. Otherwise, -1.
 @deffn Function g-unichar-type  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{<g-unicode-type>})
 Classifies a Unicode character by type.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 the type of the character.
-
 
 @end table
 
@@ -485,18 +353,12 @@ implements the Unicode boundary resolution algorithms and normally you would use
 a function such as @code{pango-break} instead of caring about break types
 yourself.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character
-
 
 @item ret
 the break type of @var{c}
-
 
 @end table
 
@@ -512,24 +374,16 @@ character that typically has a glyph that is the mirror image of @var{ch}'s
 glyph and @var{mirrored-ch} is set, it puts that character in the address
 pointed to by @var{mirrored-ch}. Otherwise the original character is put.
 
-
-
 @table @var
-
 @item ch
-
 a Unicode character
 
-
 @item mirrored-ch
-
 location to store the mirrored character
-
 
 @item ret
 @samp{@code{#t}} if @var{ch} has a mirrored character, @samp{@code{#f}}
 otherwise
-
 
 @end table
 
@@ -543,18 +397,12 @@ does not point to a valid UTF-8 encoded character, results are undefined. If you
 are not sure that the bytes are complete valid Unicode characters, you should
 use @code{g-utf8-get-char-validated} instead.
 
-
-
 @table @var
-
 @item p
-
 a pointer to Unicode character encoded as UTF-8
-
 
 @item ret
 the resulting character
-
 
 @end table
 
@@ -567,24 +415,16 @@ Finds the start of the next UTF-8 character in the string after @var{p}.
 made to see if the character found is actually valid other than it starts with
 an appropriate byte.
 
-
-
 @table @var
-
 @item p
-
 a pointer to a position within a UTF-8 encoded string
 
-
 @item end
-
 a pointer to the end of the string, or @samp{@code{#f}} to indicate that the
 string is nul-terminated, in which case the returned value will be
 
-
 @item ret
 a pointer to the found character or @samp{@code{#f}}
-
 
 @end table
 
@@ -593,25 +433,17 @@ a pointer to the found character or @samp{@code{#f}}
 @deffn Function g-utf8-strlen  (p@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{long})
 Returns the length of the string in characters.
 
-
-
 @table @var
-
 @item p
-
 pointer to the start of a UTF-8 encoded string.
 
-
 @item max
-
 the maximum number of bytes to examine. If @var{max} is less than 0, then the
 string is assumed to be nul-terminated. If @var{max} is 0, @var{p} will not be
 examined and may be @samp{@code{#f}}.
 
-
 @item ret
 the length of the string in characters
-
 
 @end table
 
@@ -622,29 +454,19 @@ Finds the leftmost occurrence of the given Unicode character in a UTF-8 encoded
 string, while limiting the search to @var{len} bytes. If @var{len} is -1, allow
 unbounded search.
 
-
-
 @table @var
-
 @item p
-
 a nul-terminated UTF-8 encoded string
 
-
 @item len
-
 the maximum length of @var{p}
 
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#f}} if the string does not contain the character, otherwise, a
 pointer to the start of the leftmost occurrence of the character in the string.
-
 
 @end table
 
@@ -655,29 +477,19 @@ Find the rightmost occurrence of the given Unicode character in a UTF-8 encoded
 string, while limiting the search to @var{len} bytes. If @var{len} is -1, allow
 unbounded search.
 
-
-
 @table @var
-
 @item p
-
 a nul-terminated UTF-8 encoded string
 
-
 @item len
-
 the maximum length of @var{p}
 
-
 @item c
-
 a Unicode character
-
 
 @item ret
 @samp{@code{#f}} if the string does not contain the character, otherwise, a
 pointer to the start of the rightmost occurrence of the character in the string.
-
 
 @end table
 
@@ -691,24 +503,16 @@ with it.)
 Note that unlike @code{g-strreverse}, this function returns newly-allocated
 memory, which should be freed with @code{g-free} when no longer needed.
 
-
-
 @table @var
-
 @item str
-
 a UTF-8 encoded string
 
-
 @item len
-
 the maximum length of @var{str} to use. If @var{len} < 0, then the string is
 nul-terminated.
 
-
 @item ret
 a newly-allocated string which is the reverse of @var{str}.
-
 
 @end table
 
@@ -732,28 +536,18 @@ routines @emph{require} valid UTF-8 as input; so data read from a file or the
 network should be checked with @code{g-utf8-validate} before doing anything else
 with it.
 
-
-
 @table @var
-
 @item str
-
 a pointer to character data
 
-
 @item max-len
-
 max bytes to validate, or -1 to go until NUL
 
-
 @item end
-
 return location for end of valid data
-
 
 @item ret
 @samp{@code{#t}} if the text was valid UTF-8
-
 
 @end table
 
@@ -765,23 +559,15 @@ exact manner that this is done depends on the current locale, and may result in
 the number of characters in the string increasing. (For instance, the German
 ess-zet will be changed to SS.)
 
-
-
 @table @var
-
 @item str
-
 a UTF-8 encoded string
 
-
 @item len
-
 length of @var{str}, in bytes, or -1 if @var{str} is nul-terminated.
-
 
 @item ret
 a newly allocated string, with all characters converted to uppercase.
-
 
 @end table
 
@@ -792,23 +578,15 @@ Converts all Unicode characters in the string that have a case to lowercase. The
 exact manner that this is done depends on the current locale, and may result in
 the number of characters in the string changing.
 
-
-
 @table @var
-
 @item str
-
 a UTF-8 encoded string
 
-
 @item len
-
 length of @var{str}, in bytes, or -1 if @var{str} is nul-terminated.
-
 
 @item ret
 a newly allocated string, with all characters converted to lowercase.
-
 
 @end table
 
@@ -825,23 +603,15 @@ though it is a fairly good one. Getting this exactly right would require a more
 sophisticated collation function that takes case sensitivity into account. GLib
 does not currently provide such a function.
 
-
-
 @table @var
-
 @item str
-
 a UTF-8 encoded string
 
-
 @item len
-
 length of @var{str}, in bytes, or -1 if @var{str} is nul-terminated.
-
 
 @item ret
 a newly allocated string, that is a case independent form of @var{str}.
-
 
 @end table
 
@@ -867,28 +637,18 @@ with composed forms rather than a maximally decomposed form. This is often
 useful if you intend to convert the string to a legacy encoding or pass it to a
 system with less capable Unicode handling.
 
-
-
 @table @var
-
 @item str
-
 a UTF-8 encoded string.
 
-
 @item len
-
 length of @var{str}, in bytes, or -1 if @var{str} is nul-terminated.
 
-
 @item mode
-
 the type of normalization to perform.
-
 
 @item ret
 a newly allocated string, that is the normalized form of @var{str}.
-
 
 @end table
 
@@ -900,24 +660,16 @@ current locale. When sorting a large number of strings, it will be significantly
 faster to obtain collation keys with @code{g-utf8-collate-key} and compare the
 keys with @code{strcmp} when sorting instead of sorting the original strings.
 
-
-
 @table @var
-
 @item str1
-
 a UTF-8 encoded string
-
 
 @item str2
-
 a UTF-8 encoded string
-
 
 @item ret
 < 0 if @var{str1} compares before @var{str2}, 0 if they compare equal, > 0 if
 @var{str1} compares after @var{str2}.
-
 
 @end table
 
@@ -929,24 +681,16 @@ keys produced by the same function using @code{strcmp}. The results of comparing
 the collation keys of two strings with @code{strcmp} will always be the same as
 comparing the two original keys with @code{g-utf8-collate}.
 
-
-
 @table @var
-
 @item str
-
 a UTF-8 encoded string.
 
-
 @item len
-
 length of @var{str}, in bytes, or -1 if @var{str} is nul-terminated.
-
 
 @item ret
 a newly allocated string. This string should be freed with @code{g-free} when
 you are done with it.
-
 
 @end table
 
@@ -963,24 +707,16 @@ producing the ordering "event.c" "eventgenerator.c" "event.h" instead of
 intelligently so that "file1" "file10" "file5" is sorted as "file1" "file5"
 "file10".
 
-
-
 @table @var
-
 @item str
-
 a UTF-8 encoded string.
 
-
 @item len
-
 length of @var{str}, in bytes, or -1 if @var{str} is nul-terminated.
-
 
 @item ret
 a newly allocated string. This string should be freed with @code{g-free} when
 you are done with it.
-
 
 @end table
 
@@ -991,25 +727,17 @@ Since 2.8
 @deffn Function g-unichar-to-utf8  (c@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{mchars})
 Converts a single character to UTF-8.
 
-
-
 @table @var
-
 @item c
-
 a Unicode character code
 
-
 @item outbuf
-
 output buffer, must have at least 6 bytes of space. If @samp{@code{#f}}, the
 length will be computed and returned and nothing will be written to
 @var{outbuf}.
 
-
 @item ret
 number of bytes written
-
 
 @end table
 

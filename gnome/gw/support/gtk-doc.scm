@@ -101,7 +101,7 @@
 
 (define-module (gnome gw support gtk-doc)
   #:use-module (sxml ssax)
-  #:use-module (sxml xpath)
+  #:use-module ((sxml xpath) #:select (sxpath))
   #:use-module (sxml transform)
   #:use-module (ice-9 regex)
   #:use-module ((srfi srfi-1) #:select (append-map
@@ -152,12 +152,23 @@
    (rdquo . "”")
    (hash . "#")))
 
+(define (zap-whitespace sxml)
+  (define (not-whitespace x)
+    (or (not (string? x))
+        (not (string-every char-whitespace? x))))
+  (pre-post-order sxml
+                  `((*default* . ,(lambda (tag . body)
+                                    (cons tag
+                                          (filter not-whitespace body))))
+                    (*text* . ,(lambda (tag text) text)))))
+                                                     
 (define (docbook->sdocbook docbook-fragment)
   "Parse a docbook file @var{docbook-fragment} into SXML. Simply calls
 SSAX's @code{xml->sxml}, but having made sure that @samp{&nbsp;} 
 elements are interpreted correctly. Does not deal with XInclude."
-  (call-with-input-file docbook-fragment
-    (lambda (port) (ssax:xml->sxml port '()))))
+  (zap-whitespace
+   (call-with-input-file docbook-fragment
+     (lambda (port) (ssax:xml->sxml port '())))))
 
 (define (sdocbook-fold-defuns proc seed sdocbook-fragment)
   "Fold over the defuns in the gtk-doc-generated docbook fragment
@@ -608,7 +619,9 @@ created using @code{gtk-doc->texi-defuns}."
                     (arguments ,@(signal-stexi-args s)))
             ,@(or (assoc-ref alist (name s)) '("undocumented")))))
      (if (is-a? class <gtype-class>)
-         (gtype-class-get-signals class)
+         (with-accessors (interface-type)
+           (filter (lambda (signal) (eq? (interface-type signal) class))
+                   (gtype-class-get-signals class)))
          '()))))
 
 (define (superclasses class)
@@ -648,8 +661,7 @@ created using @code{gtk-doc->texi-defuns}."
                      '()))) ;; silliness regardings wcts...
       (cond
        ((null? slots)
-        '((para "This class defines no direct slots, "
-                "other than those defined by its superclasses.")))
+        '((para "This class defines no direct slots.")))
        (else
         `((para "This class defines the following slots:")
           (table (% (formatter (code)))

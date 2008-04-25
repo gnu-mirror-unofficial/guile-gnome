@@ -8,18 +8,12 @@ you should first quote it with this function. The return value must be freed
 with @code{g-free}. The quoting style used is undefined (single or double quotes
 may be used).
 
-
-
 @table @var
-
 @item unquoted-string
-
 a literal string
-
 
 @item ret
 quoted string
-
 
 @end table
 
@@ -45,23 +39,15 @@ quoted text, you have to do something like 'foo'\''bar'. Double quotes allow $,
 `, ", \, and newline to be escaped with backslash. Otherwise double quotes
 preserve things literally.
 
-
-
 @table @var
-
 @item quoted-string
-
 shell-quoted string
 
-
 @item error
-
 error return location or NULL
-
 
 @item ret
 an unquoted string
-
 
 @end table
 
