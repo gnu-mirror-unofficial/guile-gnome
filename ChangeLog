@@ -1,5 +1,11 @@
 2008-04-25  Andy Wingo  <wingo@pobox.com>
 
+	* == Released guile-gnome-platform version 2.15.98 ==
+
+	* tests/gtk/wrapset.api: Updated.
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
 	* examples/tic-tac-toe.scm: 
 	* examples/texinfo-browser.scm: 
 	* examples/test-gdk.scm: 

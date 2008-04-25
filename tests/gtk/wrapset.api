@@ -47,42 +47,20 @@
      (gtk-tree-or-list-store-set
        procedure
        (arity 2 0 #t))
-     (on-get-column-type
-       generic
-       (<guile-gtk-generic-tree-model> <top>))
+     (on-get-column-type generic)
      (on-get-flags
        generic
        (<guile-gtk-generic-tree-model>))
-     (on-get-iter
-       generic
-       (<guile-gtk-generic-tree-model> <top>))
-     (on-get-n-columns
-       generic
-       (<guile-gtk-generic-tree-model>))
-     (on-get-path
-       generic
-       (<guile-gtk-generic-tree-model> <top>))
-     (on-get-value
-       generic
-       (<guile-gtk-generic-tree-model> <top> <top>))
-     (on-iter-children
-       generic
-       (<guile-gtk-generic-tree-model> <top>))
-     (on-iter-has-child
-       generic
-       (<guile-gtk-generic-tree-model> <top>))
-     (on-iter-n-children
-       generic
-       (<guile-gtk-generic-tree-model> <top>))
-     (on-iter-next
-       generic
-       (<guile-gtk-generic-tree-model> <top>))
-     (on-iter-nth-child
-       generic
-       (<guile-gtk-generic-tree-model> <top> <top>))
-     (on-iter-parent
-       generic
-       (<guile-gtk-generic-tree-model> <top>))))
+     (on-get-iter generic)
+     (on-get-n-columns generic)
+     (on-get-path generic)
+     (on-get-value generic)
+     (on-iter-children generic)
+     (on-iter-has-child generic)
+     (on-iter-n-children generic)
+     (on-iter-next generic)
+     (on-iter-nth-child generic)
+     (on-iter-parent generic)))
   ((gnome gw gdk)
    (uses-interfaces (gnome gw generics))
    (typed-exports
@@ -957,7 +935,6 @@
        (arity 1 4 #f))
      (<gtk-binding-set*> <gw:wct>)
      (<gtk-list-store> class)
-     (<gtk-message-dialog> class)
      (<gtk-object> class)
      (<gtk-radio-group*> <gw:wct>)
      (<gtk-text-buffer> class)
@@ -3118,6 +3095,7 @@
        (arity 1 0 #f))
      (gtk-menu-new procedure (arity 0 0 #t))
      (gtk-menu-popdown procedure (arity 0 0 #t))
+     (gtk-menu-popup procedure (arity 0 0 #t))
      (gtk-menu-reorder-child procedure (arity 0 0 #t))
      (gtk-menu-reposition procedure (arity 0 0 #t))
      (gtk-menu-set-accel-group
@@ -5899,6 +5877,9 @@
      (gtk-ui-manager-add-ui-from-file
        procedure
        (arity 2 0 #f))
+     (gtk-ui-manager-add-ui-from-string
+       procedure
+       (arity 2 0 #f))
      (gtk-ui-manager-ensure-update
        procedure
        (arity 0 0 #t))
@@ -6069,6 +6050,7 @@
      (gtk-widget-get-size-request
        procedure
        (arity 1 0 #f))
+     (gtk-widget-get-state procedure (arity 0 0 #t))
      (gtk-widget-get-style procedure (arity 0 0 #t))
      (gtk-widget-get-toplevel
        procedure
