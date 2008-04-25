@@ -1,12 +1,18 @@
 guile-gnome-atk NEWS --- history of user-visible changes.
 Copyright (C) 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 10 Apr 2008.
+Last updated 25 Apr 2008.
 
 
 guile-gnome-atk is a Guile binding for ATK. It is part of GNU
 guile-gnome. This file documents the user-visible changes in
 guile-gnome-atk only.
+
+
+guile-gnome-atk 2.15.98 - Andy Wingo, 2008-04-25
+================================================
+
+* Documentation updated.
 
 
 guile-gnome-atk 2.15.97 - Andy Wingo, 2008-04-10
