@@ -1,3 +1,9 @@
+2008-04-27  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/corba.scm: Fold the CORBA tutorial foo into here.
+
+	* doc/guile-gnome-corba.scm (*name*): Update dates.
+
 2008-04-25  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.98 ==

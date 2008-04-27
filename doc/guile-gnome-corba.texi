@@ -9,9 +9,9 @@ initializing corba primitives... done.
 @c %**end of header
 
 @copying 
-This manual is for Guile-GNOME: CORBA (version 2.15.96, updated 6 December 2007)
+This manual is for Guile-GNOME: CORBA (version 2.15.98, updated 27 April 2008)
 
-Copyright 2001,2003,2004 Free Software Foundation
+Copyright 2001,2003,2004,2008 Free Software Foundation
 
 @quotation 
 Permission is granted to copy, distribute and/or modify this document under the
@@ -29,7 +29,7 @@ published by the Free Software Foundation.
 
 @titlepage 
 @title Guile-GNOME: CORBA
-@subtitle version 2.15.96, updated 6 December 2007
+@subtitle version 2.15.98, updated 27 April 2008
 @author Andy Wingo (@email{wingo at pobox.com})
 @author Martin Baulig (@email{baulig at suse.de})
 @page 
@@ -59,6 +59,180 @@ published by the Free Software Foundation.
 @chapter (gnome corba)
 @section Overview
 A CORBA wrapper for Guile.
+
+@section Opening CORBA modules
+@code{(gnome corba)} allows full integration between Scheme and remote CORBA
+objects. However, the problem is how to get type information about these remote
+objects -- it's not very useful to have an opaque @code{<CORBA:Object>} in
+Scheme. It's also not very useful if you can't write your own CORBA servants in
+Scheme.
+
+Basically, there are two ways to solve this problem. You can parse the type's
+interface description language (IDL) at runtime, or you can get the necessary
+information from some other source. @code{(gnome corba)} does the latter, via
+so-called "imodules".
+
+Imodules are a feature of ORBit2, the ORB used in GNOME. ORBit2 is a CORBA
+2.4-compliant Object Request Broker (ORB), which is of course interoperable with
+other ORB implementations. An imodule is a shared library, installed as
+@code{$(libdir)/<modulename>_imodule.la}. To create such a library for your own
+IDL, you need to run ORBit2's IDL compiler, @code{orbit-idl}, with the
+@option{--imodule} argument. See the @code{demos/corba/} directory in this
+distribution for an example.
+
+As an example, the rest of this section will refer to the sample IDL which can
+be found in @code{demos/corba/Foo.idl} in this distribution.
+
+Once you have installed the @code{Foo} CORBA library (including its imodule),
+you can load its type information into Scheme by calling:
+
+@example 
+ (corba-primitive-open-module "Foo")
+ 
+@end example
+
+As a side effect, this call will define all of the GOOPS classes and methods
+associated with the @code{Foo} module.
+
+If there is a CORBA interface @code{Foo::Hello},
+@code{corba-primitive-open-module} will create a GOOPS class @code{<Foo:Hello>}
+which serves as stub class and another GOOPS class @code{<POA:Foo:Hello>} which
+serves as skeleton class.
+
+All stub classes are derived from @code{<CORBA:Object>} and their CORBA class
+hierarchy is preserved in Scheme.
+
+All skeleton classes are derived from @code{<PortableServer-ServantBase>} and
+their CORBA class hierarchy is preserved as well.
+
+@section Calling CORBA Methods
+To call a CORBA method, all you need to do is to invoke the corresponding method
+in the stub class. Let's assume @code{hello} is an instance of the
+@code{<Foo:Hello>} class. We may invoke the @code{Foo::Hello::doHello} method
+directly, in a most Schemely fashion:
+
+@example 
+ (Foo:Hello:doHello hello)
+ 
+@end example
+
+So to call CORBA methods, you don't even need to know that it's CORBA.
+
+If a CORBA exception is signalled, a Scheme error will be thrown to the key
+@code{corba-system-exception} or @code{corba-user-exception}, as appropriate.
+
+@section Implementing CORBA servants
+The interesting part is to implement CORBA servants in Scheme. Let's assume you
+want to write a servant for the @code{Foo::Hello} interface.
+
+The first thing you need to do is to derive its POA class
+
+@example 
+ (define-class <hello> (<POA:Foo:Hello>))
+ 
+@end example
+
+Then, you define methods:
+
+@example 
+ (define-method (Foo:Hello:doHello (hello <hello>))
+   (display (list "Hello World!" hello)) (newline))
+ 
+@end example
+
+If you call @code{(next-method)}, the POA class' method will be run, which by
+default will throw a @code{CORBA::NO_IMPLEMENT} system exception.
+
+However, you can override this:
+
+@example 
+ (define-method (Foo:Bar:Baz:haveFun (object <POA:Foo:Bar:Baz>) a b)
+   (display (list "Default Foo:Bar:Baz:haveFun handler!" a b))
+   (newline))
+ 
+@end example
+
+If you created all the methods, you can create servants and call
+@code{corba-servant->reference} to get a @code{CORBA::Object} reference:
+
+@example 
+ (define servant (make <hello>))
+ (define hello (corba-servant->reference servant))
+ 
+@end example
+
+Now you have a CORBA Object @code{hello}, and can invoke methods on it:
+
+@example 
+ (Foo:Hello:doHello hello)
+ 
+@end example
+
+Although this looks like a normal Scheme procedural application, this is a
+"real" CORBA call: @code{hello} is a "normal" CORBA Object.
+
+Note of course that any CORBA Objects which you create in Guile are "owned" by
+Guile's garbage collector, so make sure to @code{CORBA_Object_duplicate()} in a
+C function before you store it somewhere.
+
+@section Multiple inheritance
+Like in C, you can also create servants for CORBA interfaces which are derived
+from other interfaces:
+
+@example 
+ (define-class <maximum> (<hello> <POA:Foo:MaximumHello>))
+ (define-method (Foo:Hello:doHello (hello <maximum>))
+   (display (list "Hello Maximum World!" hello))
+   (newline)
+   (next-method))
+
+ (define maximum-servant (make <maximum>))
+ (define maximum (corba-servant->reference maximum-servant))
+ 
+@end example
+
+This creates a new servant for the CORBA interface @code{Foo::MaximumHello}
+which is derived from @code{Foo::Hello} and @code{Foo::Bar::Baz}. This
+inheritance is reflected in Scheme.
+
+@example 
+ ;; Calls method `Foo:Hello:doHello' in class <maximum> and then
+ ;; in <hello> because of the (next-method).
+ (Foo:Hello:doHello maximum)
+
+ ;; Calls method `Foo:Bar:Baz:haveFun' in class <POA:Foo:Bar:Baz>,
+ ;; the default handler.
+ (Foo:Bar:Baz:haveFun maximum 1 2)
+ 
+@end example
+
+Since we're using real CORBA calls, all of this also works for calls which are
+coming "from the outside", i.e. from C or from a remote process.
+
+@section An important limitation
+CORBA servants can be implemented either in C or in Scheme, but you cannot mix
+them.
+
+For example, in the example above, you learned how to create a CORBA servant for
+the @code{Foo::MaximumHello} CORBA interface in Scheme. Now let's assume you
+already have an implementation for the @code{Foo::Hello} interface in C.
+
+Even if @code{Foo::MaximumHello} is derived from @code{Foo::Hello}, you cannot
+use the @code{Foo::Hello} C implementation in Scheme.
+
+This limitation may sound obvious, but it's not so obvious at all if you're a
+bit familiar with CORBA. In C, you would normally expect to have a @code{vepv}
+and a @code{epv} vector in a CORBA servant, and to be able to poke around in the
+vepv to override methods.
+
+As an ORBit2 specific implementation detail, servants which you create from
+Scheme don't have a @code{vepv} at all and the @code{epv} is not what you'd
+expect -- the @code{epv} entries are Scheme vectors and not pointers to C
+functions.
+
+@section CORBA structs / sequences
+There is also support to access CORBA structs / sequences from Scheme, including
+a special record type for structs. See the source code for details.
 
 @section Usage
 @anchor{gnome corba <CORBA:Object>}@deftp Class <CORBA:Object>
@@ -220,7 +394,7 @@ A CORBA wrapper for Guile.
 @anchor{gnome corba types corba-struct?}@deffn Primitive corba-struct? corba_struct
 @end deffn
 
-@anchor{gnome corba types corba-typecode->gtype}@deffn Primitive corba-typecode->gtype typecode
+@anchor{gnome corba types corba-typecode->gtype-class}@deffn Primitive corba-typecode->gtype-class typecode
 @end deffn
 
 @anchor{gnome corba types make-corba-sequence}@deffn Primitive make-corba-sequence typecode num_tail_elts init_smob

@@ -1,15 +1,15 @@
 ;; About the package
 (define *name* "Guile-GNOME: CORBA")
 (define *description* "Remote objects with CORBA in Scheme")
-(define *version* "2.15.96")
-(define *updated* "6 December 2007")
+(define *version* "2.15.98")
+(define *updated* "27 April 2008")
 (define *authors*
   '(("Andy Wingo" . "wingo at pobox.com")
     ("Martin Baulig" . "baulig at suse.de")))
 
 ;; Copying the documentation
 (define *copyright-holder* "Free Software Foundation")
-(define *years* '(2001 2003 2004))
+(define *years* '(2001 2003 2004 2008))
 (define *permissions*
   "Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU General Public License, Version 2 or any
