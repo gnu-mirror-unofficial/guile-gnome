@@ -1,3 +1,8 @@
+2008-04-27  Andy Wingo  <wingo@pobox.com>
+
+	* doc/gtk/overview.texi (Overview): Flesh out with content from
+	the tutorial.
+
 2008-04-25  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.98 ==
