@@ -1,3 +1,20 @@
+2008-04-27  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm: Flesh out docs, from the tutorial.
+	(load-defs): Remove logfile-writing foo.
+
+	* gnome/gobject/generics.scm: Fix docs.
+
+	* gnome/gobject.scm: Add tutorial-style docs to the module
+	commentary, taken from the tutorial.
+
+	* gnome.scm.in: Add the API_VERSION docs from the tutorial into
+	the gnome-N module commentary, so they will end up in the
+	reference documentation.
+
+	* doc/gobject/guile-gnome-gobject.scm: Add a type index. Add
+	(gnome-2) and (gnome gobject).
+
 2008-04-25  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.98 ==

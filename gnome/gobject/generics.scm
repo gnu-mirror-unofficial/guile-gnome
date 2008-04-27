@@ -73,7 +73,7 @@
 ;; ;; defining a generic function, and one method implementation
 ;; (define-generic show)
 ;; (define-method (show (widget <gtk-widget>))
-;;   (gtk-widget-show))
+;;   (gtk-widget-show widget))
 ;;
 ;; ;; invoking the generic function
 ;; (show my-widget)

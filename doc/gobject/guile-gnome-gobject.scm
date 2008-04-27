@@ -19,9 +19,13 @@ later version published by the Free Software Foundation.")
 (define *texinfo-basename* "guile-gnome-gobject")
 (define *texinfo-category* "The Algorithmic Language Scheme")
 (define *extra-texinfo-menu-entries*
-  '(("Function Index")))
+  '(("Type Index")
+    ("Function Index")))
 (define *texinfo-epilogue*
-  `((node (% (name "Function Index")))
+  `((node (% (name "Type Index")))
+    (unnumbered "Type Index")
+    (printindex (% (type "tp")))
+    (node (% (name "Function Index")))
     (unnumbered "Function Index")
     (printindex (% (type "fn")))))
 
@@ -33,7 +37,11 @@ later version published by the Free Software Foundation.")
 
 ;; The modules to document
 (define *modules*
-  '(((gnome gobject gtype)
+  '(((gnome-2)
+     "Guile-GNOME is stable and parallel-installable")
+    ((gnome gobject)
+     "One module to bind them")
+    ((gnome gobject gtype)
      "The base of the GObject type system")
     ((gnome gobject gvalue)
      "Generic boxed values")

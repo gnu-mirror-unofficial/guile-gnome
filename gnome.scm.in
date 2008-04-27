@@ -1,5 +1,5 @@
 ;; guile-gnome        -*- scheme -*-
-;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2003,2004,2008 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -20,8 +20,77 @@
 
 ;;; Commentary:
 ;;
-;;API version @API_VERSION@ of guile-gnome. Use this module before using
-;;any other guile-gnome modules.
+;; Selects version @API_VERSION@ of the Guile-GNOME libraries. This
+;; module is used for its side effects; it exports no procedures.
+;;
+;; @section Rationale
+;;
+;; Early in the development of guile-gnome, we realized that at some
+;; point we might need to make incompatible changes. Of course, we would
+;; not want to force a correctly-written program to break when
+;; guile-gnome gets upgraded. For this reason, we decided to make
+;; guile-gnome parallel-installable. A program is completely specified
+;; when it indicates which version of guile-gnome it should use.
+;;
+;; Guile-gnome has the concept of an API version, which indicates a
+;; stable API series. For example, a program written against API version
+;; 2 of guile-gnome will continue to work against all future releases of
+;; that API version. It is permitted to add interfaces within a stable
+;; series, but never to remove or change them incompatibly.
+;;
+;; Changing the API version is expected to be a relatively infrequent
+;; operation. The current API version is @API_VERSION@.
+;;
+;; There are two manners for a program to specify the guile-gnome
+;; version:
+;;
+;; @enumerate
+;; @item
+;; Via importing the @code{(gnome-@var{version})} module.
+;;
+;; This special module alters guile's load path to include the path of
+;; the specified API version of guile-gnome. For example:
+;;
+;; @lisp
+;; (use-modules (gnome-@API_VERSION@))
+;; @end lisp
+;;
+;; @item
+;; Via invoking guile as guile-gnome-@var{version}.
+;;
+;; This shell script is installed when building a particular version of
+;; guile-gnome, and serves to automatically load the
+;; @code{(gnome-@var{apiversion})} module. For example, to get a repl
+;; ready for guile-gnome:
+;;
+;; @example
+;; $ guile-gnome-@API_VERSION@
+;; @end example
+;;
+;; To load a script with a particular version of guile-gnome:
+;;
+;; @example
+;; $ guile-gnome-@API_VERSION@ -s @var{script} @var{args...}
+;; @end example
+;;
+;; To specify the guile-gnome version in a script, you might begin the
+;; file with:
+;;
+;; @example
+;; #! /bin/sh
+;; # -*- scheme -*-
+;; exec guile-gnome-@API_VERSION@ -s $0
+;; !#
+;; ;; scheme code here...
+;; @end example
+;; @end enumerate
+;;
+;; A program must select the guile-gnome version before importing any
+;; guile-gnome modules. Indeed, one cannot even import @code{(gnome
+;; gobject)} before doing so.
+;;
+;; For a further rationale on parallel installability, see
+;; @uref{http://ometer.com/parallel.html}.
 ;;
 ;;; Code:
 
@@ -41,7 +110,7 @@
 
 ;; Add path to the load path, preserving any modification that the user
 ;; already made via environment variables. Necessary so that
-;; GUILE_LOAD_PATH munging during build works even after (gnome-0)
+;; GUILE_LOAD_PATH munging during build works even after (gnome-2)
 ;; munges the path itself.
 (define (add-to-load-path! path)
   (let ((first-std-path (in-vicinity

@@ -5,10 +5,9 @@
 @c %**end of header
 
 @copying 
-This manual is for Guile-GNOME: GObject (version 2.15.93, updated 25 August
-2007)
+This manual is for Guile-GNOME: GObject (version 2.15.98, updated 24 April 2008)
 
-Copyright 2003,2004,2005,2006,2007 Free Software Foundation
+Copyright 2003,2004,2005,2006,2007,2008 Free Software Foundation
 
 @quotation 
 Permission is granted to copy, distribute and/or modify this document under the
@@ -26,7 +25,7 @@ published by the Free Software Foundation.
 
 @titlepage 
 @title Guile-GNOME: GObject
-@subtitle version 2.15.93, updated 25 August 2007
+@subtitle version 2.15.98, updated 24 April 2008
 @author Andy Wingo (@email{wingo at pobox.com})
 @author Martin Baulig (@email{baulig at suse.de})
 @page 
@@ -39,6 +38,8 @@ published by the Free Software Foundation.
 @top Guile-GNOME: GObject
 @insertcopying 
 @menu 
+* gnome-2::              Guile-GNOME is stable and parallel-installable
+* gnome gobject::        One module to bind them
 * gnome gobject gtype::  The base of the GObject type system
 * gnome gobject gvalue::  Generic boxed values
 * gnome gobject gparameter::  Parameters with constraints and default values
@@ -53,6 +54,7 @@ published by the Free Software Foundation.
 * gnome gw support gtk-doc::  Parse C documentation from gtk-doc into texinfo
 * gnome gw support modules::  Fondling Guile's module system
 
+* Type Index::           
 * Function Index::       
 @end menu
 
@@ -62,6 +64,304 @@ published by the Free Software Foundation.
 @shortcontents 
 @end iftex
 
+@node gnome-2
+@chapter (gnome-2)
+@section Overview
+Selects version 2 of the Guile-GNOME libraries. This module is used for its side
+effects; it exports no procedures.
+
+@section Rationale
+Early in the development of guile-gnome, we realized that at some point we might
+need to make incompatible changes. Of course, we would not want to force a
+correctly-written program to break when guile-gnome gets upgraded. For this
+reason, we decided to make guile-gnome parallel-installable. A program is
+completely specified when it indicates which version of guile-gnome it should
+use.
+
+Guile-gnome has the concept of an API version, which indicates a stable API
+series. For example, a program written against API version 2 of guile-gnome will
+continue to work against all future releases of that API version. It is
+permitted to add interfaces within a stable series, but never to remove or
+change them incompatibly.
+
+Changing the API version is expected to be a relatively infrequent operation.
+The current API version is 2.
+
+There are two manners for a program to specify the guile-gnome version:
+
+@enumerate 
+@item
+Via importing the @code{(gnome-@var{version})} module.
+
+This special module alters guile's load path to include the path of the
+specified API version of guile-gnome. For example:
+
+@lisp 
+ (use-modules (gnome-2))
+ 
+@end lisp
+
+@item
+Via invoking guile as guile-gnome-@var{version}.
+
+This shell script is installed when building a particular version of
+guile-gnome, and serves to automatically load the
+@code{(gnome-@var{apiversion})} module. For example, to get a repl ready for
+guile-gnome:
+
+@example 
+ $ guile-gnome-2
+ 
+@end example
+
+To load a script with a particular version of guile-gnome:
+
+@example 
+ $ guile-gnome-2 -s @var{script} @var{args...}
+@end example
+
+To specify the guile-gnome version in a script, you might begin the file with:
+
+@example 
+ #! /bin/sh
+ # -*- scheme -*-
+ exec guile-gnome-2 -s $0
+ !#
+ ;; scheme code here...
+ 
+@end example
+
+@end enumerate
+
+A program must select the guile-gnome version before importing any guile-gnome
+modules. Indeed, one cannot even import @code{(gnome gobject)} before doing so.
+
+For a further rationale on parallel installability, see
+@uref{http://ometer.com/parallel.html}.
+
+@section Usage
+@node gnome gobject
+@chapter (gnome gobject)
+@section Overview
+This is the Guile wrapper of @code{libgobject}, an implementation of a runtime,
+dynamic type system for C. Besides providing an object system to C,
+@code{libgobject}'s main design goal was to increase the ease with which C code
+can be wrapped by interpreted languages, such as Guile or Perl.
+
+This module, @code{(gnome gobject)}, just re-exports procedures from other
+modules, so its documentation seems an opportune spot for a more tutorial-like
+introduction. So open up a Guile session and let's begin.
+
+First, if you haven't done it, load the appropriate version of Guile-GNOME:
+
+@lisp 
+ guile> (use-modules (gnome-2))
+ 
+@end lisp
+
+@code{(gnome gobject)} is based heavily on GOOPS, Guile's object system, so go
+ahead and load up that too:
+
+@lisp 
+ guile> (use-modules (oop goops))
+ 
+@end lisp
+
+We will leave off the @code{guile>} prompt in the rest of this tutorial. When we
+want to show the value of an expression, we use @result{}:
+
+@lisp 
+ (+ 3 5)
+ @result{} 8
+ 
+@end lisp
+
+@section Basic types
+When communicating with @code{libgobject}, most values need to be
+strictly-typed. There is a type class corresponding to each basic type in C:
+@code{<gchar>}, @code{<guchar>}, @code{<gboolean>}, @code{<gint>},
+@code{<guint>}, @code{<glong>}, @code{<gulong>}, @code{<gint64>},
+@code{<guint64>}, @code{<gfloat>}, @code{<gdouble>}, and @code{<gchararray>}.
+
+You can make instances of these class with @code{make}:
+
+@lisp 
+ (make <gboolean> #:value #f)
+ @result{} #<gvalue <gboolean> 40529040 #f>
+
+ (make <guint> #:value 85)
+ @result{} #<gvalue <guint> 4054f040 85>
+
+ (make <gfloat> #:value 3.1415)
+ @result{} #<gvalue <gfloat> 40556af0 3.1414999961853>
+
+ (make <gchararray> #:value "Hello World!")
+ @result{} #<gvalue <gchararray> 4055af90 Hello World!>
+ 
+@end lisp
+
+You can get the normal Scheme values back with @code{gvalue->scm}:
+
+@lisp 
+ (gvalue->scm (make <gchararray> #:value "Hello World!"))
+ @result{} "Hello World!"
+ 
+@end lisp
+
+@section Enums and flags
+Enumerated values and bitflags are an essential part of many C APIs, and so they
+are specially wrapped in the GLib type system. You can create new enumerated
+types in Scheme by subclassing @code{<genum>}:
+
+@lisp 
+ (define-class <foo> (<genum>)
+   #:vtable '#((hello "Hello World" 1) (test "Test" 2)))
+ 
+@end lisp
+
+Instances are created with @code{make}, just like with the other types:
+
+@lisp 
+ (make <foo> #:value 'hello)
+ (make <foo> #:value "Hello World")
+ (make <foo> #:value 1)
+
+ ;; These three all do the same thing
+ @result{} #<gvalue <foo> 406275f8 (hello Hello World 1)>
+ 
+@end lisp
+
+If there is an already existing enum or flags class, you can get information
+about it:
+
+@lisp 
+ (genum-class->value-table <foo>)
+ @result{} #((hello "Hello World" 1) (test "Test" 2))
+ 
+@end lisp
+
+Enums and flags have a special representation on the Scheme side. You can
+convert them to Scheme values as symbols, names, or as a numeric value.
+
+@lisp 
+ (define foo (make <foo> #:value 'hello))
+ (genum->symbol foo)
+ @result{} hello
+ (genum->name foo)
+ @result{} "Hello World"
+ (genum->value foo)
+ @result{} 1
+ 
+@end lisp
+
+@section GType
+All of the types that GLib knows about are available to Guile, regardless of
+which language defined them. GLib implements this via a type system, where every
+type has a name. So if you make a type called ``Foo'' in C, you can get to it in
+Scheme via @code{gtype-name->class}:
+
+@lisp 
+ ;; Retrieve the type for the foo enum we made earlier in the tutorial
+ (define copy-of-<foo> (gtype-name->class "Foo"))
+ (eq? <foo> copy-of-<foo>)
+ @result{} #t
+
+ (make copy-of-<foo> #:value 2)
+ @result{} #<gvalue <foo> 40535e50 (test Test 2)>
+ 
+@end lisp
+
+@section GObject
+@code{<gobject>} (@code{GObject} in C) is the basic object type in
+@code{libgobject}. @code{(gnome gobject)} allows you to access existing GObject
+types, as well as to create new GObject types in Scheme.
+
+Before we start, let's pull in some generic functions that reduce the amount of
+typing we have to do:
+
+@lisp 
+ (use-modules (gnome gobject generics))
+ 
+@end lisp
+
+Let's assume we start with @code{<gtk-window>} from @code{(gnome gtk)}. The
+keyword arguments to @code{make} are interpreted as GObject properties to set:
+
+@lisp 
+ (define window (make <gtk-window>
+                  #:type 'toplevel #:title "Hello, World!"))
+ 
+@end lisp
+
+You can connect to signals on the new instance:
+
+@lisp 
+ (connect window 'delete-event
+          (lambda (window event)
+            ;; Returns #t to ignore this event
+            #t))
+
+ ;; connect is a generic function implemented by
+ ;; gtype-instance-signal-connect
+ 
+@end lisp
+
+And get and set properties...
+
+@lisp 
+ (get window 'title)
+ @result{} "Hello, World!"
+ (set window 'resizable #f)
+
+ ;; get and set are also generics, implemented by gobject-get-property
+ ;; and gobject-set-property
+ 
+@end lisp
+
+@section Deriving your own GObject types
+You can create new GObject types directly from Scheme, deriving either from a C
+object type or one you made in Scheme.
+
+@lisp 
+ ;; deriving from <gobject>
+ (define-class <test> (<gobject>)
+   ;; a normal object slot
+   my-data
+
+   ;; an object slot exported as a gobject property
+   (pub-data #:gparam (list <gparam-long> #:name 'test))
+
+   ;; a signal with no arguments and no return value
+   #:gsignal '(frobate #f))
+
+ ;; deriving from <test> -- also inherits properties and signals
+ (define-class <hungry> (<test>))
+ 
+@end lisp
+
+Adding a signal automatically defines the default method:
+
+@lisp 
+ ;; This is the default handler for this signal.
+ (define-method (test:frobate (object <test>))
+   (format #t "Frobating ~A\n" object))
+
+ ;; We can override it for subclasses
+ (define-method (test:frobate (object <hungry>))
+   (next-method) ;; chain up
+   (format #t "I'm hungry\n"))
+
+ (emit (make <hungry>) 'frobate)
+ ;; Try it!
+ 
+@end lisp
+
+You can override the @code{initialize}, @code{gobject:get-property}, and
+@code{gobject:set-property} methods. For an extended example, see
+@code{tic-tac-toe.scm} in the @code{gtk/examples/gtk} directory of the
+distribution.
+
+@section Usage
 @node gnome gobject gtype
 @chapter (gnome gobject gtype)
 @section Overview
@@ -422,6 +722,11 @@ Parameter for @code{<gfloat>} values.
 
 @anchor{gnome gobject gparameter <gparam-double>}@deftp Class <gparam-double>
 Parameter for @code{<gdouble>} values.
+
+@end deftp
+
+@anchor{gnome gobject gparameter <gparam-unichar>}@deftp Class <gparam-unichar>
+Parameter for Unicode codepoints, represented as @code{<guint>} values.
 
 @end deftp
 
@@ -836,7 +1141,7 @@ the following:
  ;; defining a generic function, and one method implementation
  (define-generic show)
  (define-method (show (widget <gtk-widget>))
-   (gtk-widget-show))
+   (gtk-widget-show widget))
 
  ;; invoking the generic function
  (show my-widget)
@@ -1354,12 +1659,63 @@ functions to convert to and from Scheme values, respectively. For example:
 @node gnome gw support defs
 @chapter (gnome gw support defs)
 @section Overview
-Support for populating G-Wrap wrapsets using information parsed out of
-@code{.defs} files. See the API scanner script, @code{h2defs.py}, included in
-the Guile-GNOME source distribution.
+This module serves as a way to automatically populate G-Wrap wrapsets using
+information parsed out of C header files.
+
+First, the C header files are parsed into S-expression API description forms and
+written into @code{.defs} files. These files are typically included in the
+distribution, and regenerated infrequently. Then, the binding author includes a
+call to @code{load-defs} in their G-Wrap wrapset definition, which loads those
+API definitions into the wrapset.
+
+The @code{.defs} files are usually produced using the API scanner script,
+@code{h2defs.py}, included in the Guile-GNOME source distribution.
 
 Code in this module is only loaded when generating wrapsets; as such, it is not
 for end users.
+
+As an example, ATK is wrapped with the following code, from
+@code{atk/gnome/gw/atk-spec.scm}:
+
+@example 
+ (define-module (gnome gw atk-spec)
+   #:use-module (oop goops)
+   #:use-module (gnome gw support g-wrap)
+   #:use-module (gnome gw gobject-spec)
+   #:use-module (gnome gw support gobject)
+   #:use-module (gnome gw support defs))
+
+ (define-class <atk-wrapset> (<gobject-wrapset-base>)
+   #:id 'gnome-atk
+   #:dependencies '(standard gnome-glib gnome-gobject))
+
+ (define-method (global-declarations-cg (self <atk-wrapset>))
+   (list
+    (next-method)
+    "#include <atk/atk.h>\n"
+    "#include <atk/atk-enum-types.h>\n"))
+
+ (define-method (initialize (ws <atk-wrapset>) initargs)
+   (next-method ws (append '(#:module (gnome gw atk)) initargs))
+   ;; manually wrap AtkState as a 64 bit uint
+   (add-type-alias! ws "AtkState" 'unsigned-int64)
+   (load-defs-with-overrides ws "gnome/defs/atk.defs"))
+ 
+@end example
+
+The wrapper-specifiction modules are actually installed, along with the .defs
+files, so that other wrappers which use ATK's types, such as GTK+, can have them
+available.
+
+A full discussion of the Makefile mechanics of how to generate and compile the C
+file, or how to interact with the wrapset objects, is probably prone to bitrot
+here. Your best bet is to poke at Guile-GNOME's source, or especially the source
+of a module distributed independently of @code{guile-gnome-platform}, such as
+@code{guile-gnome-libwnck}.
+
+Further details about the procedural API available for use e.g. within the
+wrapset's @code{initialize} function can be found in the documentation for
+@code{(gnome gw support gobject)}, and in G-Wrap's documentation.
 
 @section Usage
 @anchor{gnome gw support defs load-defs}@defun load-defs ws file [overrides = #f]
@@ -1552,6 +1908,9 @@ Re-export the public interface of a module; used like @code{use-modules}.
 
 @end defspec
 
+@node Type Index
+@unnumbered Type Index
+@printindex tp
 @node Function Index
 @unnumbered Function Index
 @printindex fn

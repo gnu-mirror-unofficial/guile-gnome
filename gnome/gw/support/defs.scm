@@ -21,12 +21,66 @@
 
 ;;; Commentary:
 ;;
-;; Support for populating G-Wrap wrapsets using information parsed out
-;; of @code{.defs} files. See the API scanner script, @code{h2defs.py},
-;; included in the Guile-GNOME source distribution.
+;; This module serves as a way to automatically populate G-Wrap wrapsets
+;; using information parsed out of C header files.
+;;
+;; First, the C header files are parsed into S-expression API
+;; description forms and written into @code{.defs} files. These files
+;; are typically included in the distribution, and regenerated
+;; infrequently. Then, the binding author includes a call to
+;; @code{load-defs} in their G-Wrap wrapset definition, which loads
+;; those API definitions into the wrapset.
+;;
+;; The @code{.defs} files are usually produced using the API scanner
+;; script, @code{h2defs.py}, included in the Guile-GNOME source
+;; distribution.
 ;;
 ;; Code in this module is only loaded when generating wrapsets; as such,
 ;; it is not for end users.
+;;
+;; As an example, ATK is wrapped with the following code, from
+;; @code{atk/gnome/gw/atk-spec.scm}:
+;;
+;; @example
+;; (define-module (gnome gw atk-spec)
+;;   #:use-module (oop goops)
+;;   #:use-module (gnome gw support g-wrap)
+;;   #:use-module (gnome gw gobject-spec)
+;;   #:use-module (gnome gw support gobject)
+;;   #:use-module (gnome gw support defs))
+;;
+;; (define-class <atk-wrapset> (<gobject-wrapset-base>)
+;;   #:id 'gnome-atk
+;;   #:dependencies '(standard gnome-glib gnome-gobject))
+;;
+;; (define-method (global-declarations-cg (self <atk-wrapset>))
+;;   (list
+;;    (next-method)
+;;    "#include <atk/atk.h>\n"
+;;    "#include <atk/atk-enum-types.h>\n"))
+;;
+;; (define-method (initialize (ws <atk-wrapset>) initargs)
+;;   (next-method ws (append '(#:module (gnome gw atk)) initargs))
+;;   ;; manually wrap AtkState as a 64 bit uint
+;;   (add-type-alias! ws "AtkState" 'unsigned-int64)
+;;   (load-defs-with-overrides ws "gnome/defs/atk.defs"))
+;; @end example
+;;
+;; The wrapper-specifiction modules are actually installed, along with
+;; the .defs files, so that other wrappers which use ATK's types, such
+;; as GTK+, can have them available.
+;;
+;; A full discussion of the Makefile mechanics of how to generate and
+;; compile the C file, or how to interact with the wrapset objects, is
+;; probably prone to bitrot here. Your best bet is to poke at
+;; Guile-GNOME's source, or especially the source of a module
+;; distributed independently of @code{guile-gnome-platform}, such as
+;; @code{guile-gnome-libwnck}.
+;;
+;; Further details about the procedural API available for use e.g.
+;; within the wrapset's @code{initialize} function can be found in the
+;; documentation for @code{(gnome gw support gobject)}, and in G-Wrap's
+;; documentation.
 ;;
 ;;; Code:
 
@@ -167,18 +221,16 @@ The following forms are understood: @code{define-enum},
 The optional argument, @var{overrides}, specifies the location of an
 overrides file that will be spliced into the @code{.defs} file at the
 point of an @code{(include overrides)} form."
-  (let* ((log-file-name (string-append (symbol->string (name ws)) ".log"))
-         (log-file (open-output-file log-file-name))
-         (abs-path (or (search-path %load-path file)
-                       (error "Could not find file in path" file %load-path)))
-         (already-included '())
-         (overridden '())
-         (bad-methods '())
-         (num-types 0)
-         (num-functions 0)
-         (ignore-matchers '())
-         (ignored-types '())
-         (methods-used? #f))
+  (let ((abs-path (or (search-path %load-path file)
+                      (error "Could not find file in path" file %load-path)))
+        (already-included '())
+        (overridden '())
+        (bad-methods '())
+        (num-types 0)
+        (num-functions 0)
+        (ignore-matchers '())
+        (ignored-types '())
+        (methods-used? #f))
 
     ;; The handlers...
     (define (scan-type! wrap-function immediate? args)
@@ -402,25 +454,7 @@ point of an @code{(include overrides)} form."
           (guard
            (c
             (#t (raise-stacked c "while processing defs `~A'" abs-path)))
-           (with-input-from-file abs-path scan-defs)
-           (format log-file "Opaque types in the ~A wrapset: c-name scm-name\n\n"
-                   (name ws))
-           (for-each-type (lambda (type)
-                            (if (is-a? type <gw-wct>)
-                                (format log-file "~A ~A\n" (c-type-name type) (name type))))
-                          ws)
-           (format log-file "\n\nBad method names in the ~A wrapset: c-name of-object\n\n"
-                   (name ws))
-           (for-each
-            (lambda (pair)
-              (format log-file "~A ~A\n" (car pair) (cadr pair)))
-            bad-methods)
-           (close log-file)
-           ;;     (format #t "\n\nWrapped ~A types (~A opaque) and ~A functions.\n"
-           ;;             (+ num-types (length opaque-types)) (length opaque-types) num-functions)
-           (format #t "\nA list of opaque types and bad method names has been written to ~A.\n\n"
-                   log-file-name)))
-
+           (with-input-from-file abs-path scan-defs)))
         (lambda () (pop %load-path)))))
 
 (define (load-defs-with-overrides ws defs)
