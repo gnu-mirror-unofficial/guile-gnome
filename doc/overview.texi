@@ -1,5 +1,53 @@
 @node Overview
 @chapter Overview
 
-The GNOME-VFS wrapper for Guile is a part of Guile-GNOME. Maybe write more
-here at some point.
+@code{(gnome vfs)} wraps the GNOME Virtual Filesystem library for
+Guile. It is a part of Guile-GNOME.
+
+The basic idea in this module is to map, as transparently as possible,
+GNOME-VFS files onto Scheme ports. Once you have a Scheme port, the
+native Scheme API is the preferred API. Other GNOME-VFS library
+procedures are defined that have no counterpart on the Scheme level,
+such as the MIME database procedures.
+
+So, for example, to write to a file over SCP, you might do this:
+
+@lisp
+(define (with-output-to-port/dynamic make-port thunk)
+  (let ((port #f))
+    (dynamic-wind (lambda () (set! port (make-port)))
+                  (lambda () (with-output-to-port port thunk))
+                  (lambda () (close-port port) (set! port #f)))))
+
+(define (make-output-port uri-string exclusive?)
+  (gnome-vfs-create
+   (gnome-vfs-make-uri-from-input uri-string)
+   'write exclusive? #o644))
+
+(with-output-to-port/dynamic
+    (lambda ()
+      (make-output-port "sftp://me@@example.com/tmp/foo.txt" #t))
+  (lambda ()
+    (write "Hello world!")))
+@end lisp
+
+The @code{dynamic-wind} trickery is to ensure that the port is closed
+after execution leaves the thunk, and not left for GC to close in the
+future.
+
+Exceptions raised during I/O are thrown to the @code{gnome-vfs-error}
+key, with the second argument being a symbol corresponding to a
+particular @code{<gnome-vfs-result>} value, such as
+@code{error-file-exists}.
+
+To enable integration with the GNOME keyring, for SSH keys and the
+like, you will need to call
+@code{(gnome-authentication-manager-init)}, which is a procedure
+defined in the @code{(gnome gnome-ui)} library.
+
+This manual is admittedly a bit incomplete. Patches are accepted, of
+course, but the best thing to do would be eventually to wrap GIO, the
+new VFS layer that was pushed down into GLib.
+
+See the documentation for @code{(gnome gobject)} for more information
+on Guile-GNOME.
