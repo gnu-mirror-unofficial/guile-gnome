@@ -225,7 +225,6 @@ point of an @code{(include overrides)} form."
                       (error "Could not find file in path" file %load-path)))
         (already-included '())
         (overridden '())
-        (bad-methods '())
         (num-types 0)
         (num-functions 0)
         (ignore-matchers '())
@@ -299,7 +298,7 @@ point of an @code{(include overrides)} form."
          ((string-prefix? (string-append sanitized-of-obj "-") func-name)
           (string->symbol (substring func-name (1+ (string-length sanitized-of-obj)))))
          (else
-          (push (list func-name of-object) bad-methods)
+          ;; (warn "bad method name" ws func-name of-object sanitized-of-obj looked-up)
           #f))))
     (define (scan-function! is-method? name args)
       (catch
