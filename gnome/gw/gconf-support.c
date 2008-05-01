@@ -21,6 +21,7 @@
  * Boston, MA  02111-1307,  USA       gnu@gnu.org
  */
 
+#include "guile-support.h"
 #include "gconf-support.h"
 #include "guile-gnome-gobject.h"
 
@@ -227,7 +228,7 @@ scm_c_scm_to_gconf_value (SCM value)
 #undef FUNC_NAME
 
 static void
-notify_proc (GConfClient *client, guint cnxn_id, GConfEntry *entry,
+with_notify_proc (GConfClient *client, guint cnxn_id, GConfEntry *entry,
              gpointer user_data) 
 {
     SCM sclient, key, val, proc;
@@ -238,6 +239,14 @@ notify_proc (GConfClient *client, guint cnxn_id, GConfEntry *entry,
     val = scm_c_gconf_value_to_scm (gconf_entry_get_value (entry));
 
     scm_call_4 (proc, sclient, scm_from_uint (cnxn_id), key, val);
+}
+
+static void
+notify_proc (GConfClient *client, guint cnxn_id, GConfEntry *entry,
+             gpointer user_data) 
+{
+    scm_dynwind_guile_v__p_u_p_p (scm_with_guile, with_notify_proc,
+                                  client, cnxn_id, entry, user_data);
 }
 
 guint
