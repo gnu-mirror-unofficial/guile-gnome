@@ -1,5 +1,22 @@
 @node Overview
 @chapter Overview
 
-The ATK wrapper for Guile is a part of Guile-GNOME. Maybe write more
-here at some point.
+@code{(gnome atk)} wraps the Accessibility Toolkit (ATK) for Guile. It
+is a part of Guile-GNOME.
+
+ATK is a technology to allow user interface elements to be
+traversable, readable, and writable by users that do not use the
+traditional combination of keyboard, screen, and mouse. This
+encompasses screen readers, text-to-speech, braille displays, etc.
+
+Technically, ATK is implemented as a set of GObject interfaces that
+can be implemented by user interface toolkits. This is transparently
+translated into multiple inheritance on the Scheme level; if a class
+derives from @code{<atk-hyperlink>}, then the @code{<atk-hyperlink>}
+methods will apply to it.
+
+The GTK+ toolkit interfaces with ATK via the
+@code{gtk-widget-get-accessible} method.
+
+See the documentation for @code{(gnome gobject)} for more information
+on Guile-GNOME.
