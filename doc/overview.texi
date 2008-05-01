@@ -1,5 +1,16 @@
 @node Overview
 @chapter Overview
 
-The libgnomecanvas wrapper for Guile is a part of Guile-GNOME. Maybe
-write more here at some point.
+@code{(gnome canvas)} wraps the Gnome-Canvas library for Guile. It is
+a part of Guile-GNOME.
+
+Libgnomecanvas is a retained-mode canvas: you tell it what should be
+on it, and it handles redraw operations for you. It is a bit dated, in
+that it is backed by a library called ``libart'' and not Cairo, but no
+clear successor has emerged yet.
+
+The source distribution has a fairly comprehensive example; see
+@code{examples/canvas.scm} for more information.
+
+See the documentation for @code{(gnome gobject)} for more information
+on Guile-GNOME.
