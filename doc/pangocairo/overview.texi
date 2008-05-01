@@ -1,5 +1,8 @@
 @node Overview
 @chapter Overview
 
-The Pango wrapper for Guile is a part of Guile-GNOME. Maybe write more
-here at some point.
+@code{(gnome pangocairo)} wraps the Cairo integration layer of the
+Pango text rendering library for guile. It is a part of Guile-GNOME.
+
+See the documentation for @code{(gnome gobject)} for more information
+on Guile-GNOME.

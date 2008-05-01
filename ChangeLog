@@ -1,3 +1,12 @@
+2008-05-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/Makefile.am: 
+	* gnome/pangocairo.scm: Add (gnome pangocairo) module.
+
+	* doc/pangocairo/overview.texi (Overview): 
+	* doc/pango/overview.texi (Overview): Add a minimal conceit of
+	documentation.
+
 2008-04-25  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.98 ==
