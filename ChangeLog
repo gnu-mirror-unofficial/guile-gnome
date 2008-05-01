@@ -1,3 +1,7 @@
+2008-05-01  Andy Wingo  <wingo@pobox.com>
+
+	* doc/gdk/overview.texi (Overview): Add some foo.
+
 2008-04-27  Andy Wingo  <wingo@pobox.com>
 
 	* doc/gtk/overview.texi (Overview): Flesh out with content from
