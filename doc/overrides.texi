@@ -1,0 +1,44 @@
+@deffn Function glade-xml-signal-connect  (self@tie{}@code{<glade-xml>}) (handlername@tie{}@code{mchars}) (proc@tie{}@code{scm})
+In the glade interface descriptions, signal handlers are specified for
+widgets by name. This function allows you to connect a Scheme function
+to all signals in the GladeXML file with the given signal handler
+name.
+
+@table @var
+@item self
+the GladeXML object
+
+@item handlername
+the signal handler name
+
+@item func
+the signal handler function
+
+@end table
+
+@end deffn
+
+@deffn Function glade-xml-signal-autoconnect  (self@tie{}@code{<glade-xml>}) (module@tie{}@code{scm})
+This function is a variation of @code{glade-xml-signal-autoconnect}.
+It will bind signal handers to the result of evaluating each signal
+handler name within @var{module}. So for example, if you have ten
+widgets defining a handler as the string @code{"on-clicked"}, you
+might do this:
+
+@lisp
+(define (on-clicked . args)
+  (display "Doing me thing...\n"))
+(signal-autoconnect glade-xml (current-module))
+;; now the on-clicked handlers are connected
+@end lisp
+
+@table @var
+@item self
+the GladeXML object.
+
+@item module
+A scheme module in which to evaluate the signal handlers definitions.
+
+@end table
+
+@end deffn

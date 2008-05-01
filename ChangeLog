@@ -1,3 +1,11 @@
+2008-05-01  Andy Wingo  <wingo@pobox.com>
+
+	* doc/overview.texi (Overview): Add overview with example.
+
+	* doc/overrides.texi: Add some overrides, yay.
+
+	* doc/defuns-glade-xml.xml.texi: Regenerate.
+
 2008-04-25  Andy Wingo  <wingo@pobox.com>
 
 	* == Released guile-gnome-platform version 2.15.98 ==
