@@ -5,7 +5,7 @@
 @c %**end of header
 
 @copying 
-This manual is for Guile-GNOME: GObject (version 2.15.98, updated 24 April 2008)
+This manual is for Guile-GNOME: GObject (version 2.16.0, updated 12 June 2008)
 
 Copyright 2003,2004,2005,2006,2007,2008 Free Software Foundation
 
@@ -25,7 +25,7 @@ published by the Free Software Foundation.
 
 @titlepage 
 @title Guile-GNOME: GObject
-@subtitle version 2.15.98, updated 24 April 2008
+@subtitle version 2.16.0, updated 12 June 2008
 @author Andy Wingo (@email{wingo at pobox.com})
 @author Martin Baulig (@email{baulig at suse.de})
 @page 
