@@ -2,7 +2,7 @@ include $(top_srcdir)/common.mk
 
 SUBDIRS = gnome tools
 
-EXTRA_DIST = ChangeLog NEWS README AUTHORS $(wildcard *.ac) \
+EXTRA_DIST = ChangeLog.pre-2.16 NEWS README AUTHORS $(wildcard *.ac) \
 	guile-gnome-defs.pc.in guile-gnome-defs-uninstalled.pc.in
 
 all-local: $(pcifiles) $(pcufiles)
