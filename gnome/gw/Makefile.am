@@ -2,6 +2,8 @@ include $(top_srcdir)/common.mk
 
 guilegwmodule_DATA = atk-spec.scm atk.scm
 
+EXTRA_DIST = atk-spec.scm
+
 # There is one shared library for each wrapset. Each is produced by
 # g-wrap, but also may contain some hand-coded routines.
 
