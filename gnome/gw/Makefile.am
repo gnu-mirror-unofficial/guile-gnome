@@ -12,7 +12,7 @@ endif
 
 # Make sure the user isn't compiling with -O, because it makes gcc 3.3
 # and up break
-CFLAGS=-g 
+#CFLAGS=-g 
 
 guilegwmodule_DATA = $(GTKMODULES)
 
