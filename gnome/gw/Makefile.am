@@ -18,6 +18,6 @@ libgw_guile_gnome_atk_la_LIBADD = $(ATK_LIBS) $(GUILE_LIBS) \
 	$(G_WRAP_LIBS) $(GUILE_GLIB_LIBS)
 libgw_guile_gnome_atk_la_LDFLAGS = -module
 
-CLEANFILES += $(wildcard guile-gnome-gw-atk.*) atk.scm
+CLEANFILES = $(wildcard guile-gnome-gw-atk.*) atk.scm
 
 BUILT_SOURCES = guile-gnome-gw-atk.c
