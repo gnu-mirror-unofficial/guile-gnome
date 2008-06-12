@@ -4,8 +4,7 @@
 @settitle Guile-Libgnomeui
 @c %**end of header
 
-@set VERSION 2.15.98
-@set UPDATED 24 April 2008
+@include version.texi
 
 @copying 
 This manual is for @code{(gnome libgnomeui)} (version @value{VERSION}, updated
