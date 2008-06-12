@@ -775,8 +775,6 @@ scm_pre_init_gnome_corba_primitives (void)
     gchar *my_argv[] = { "guile-corba", NULL };
     int my_argc = 1;
  
-    g_print ("\n\ninitializing corba primitives... ");
-
     // g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL);
 
     scm_tc16_guile_corba_interface = scm_make_smob_type ("%guile-corba-interface", 0);
@@ -808,8 +806,6 @@ scm_pre_init_gnome_corba_primitives (void)
     CORBA_exception_free (&ev);
 
     guile_corba_main_loop = g_main_loop_new (NULL, FALSE);
-
-    g_print ("done.\n\n");
 }
 
 void
