@@ -40,6 +40,7 @@ static SCM _in_construction_from_scheme;
 static GQuark quark_guile_gtype_class = 0;
 
 SCM_SYMBOL  (sym_gruntime_error,"gruntime-error");
+SCM_KEYWORD (kw_init_keyword, "init-keyword");
 
 /* #define DEBUG_PRINT */
 
@@ -115,7 +116,8 @@ is_init_keyword (SCM slots, SCM kw)
     for (; SCM_CONSP (slots); slots = scm_cdr (slots))
         for (defs = scm_cdar (slots); SCM_CONSP (defs);
              defs = scm_cddr (defs))
-            if (scm_is_eq (scm_car (defs), kw))
+            if (scm_is_eq (scm_car (defs), kw_init_keyword)
+                && scm_is_eq (scm_cadr (defs), kw))
                 return TRUE;
 
     return FALSE;
@@ -665,6 +667,14 @@ SCM_DEFINE (scm_sys_gnome_gobject_object_post_init,
 }
 #undef FUNC_NAME
 
+static void
+sink_initially_unowned (gpointer i)
+{
+    GObject *object = i;
+    if (g_object_is_floating (object))
+        g_object_ref_sink (object);
+}
+
 void
 scm_init_gnome_gobject (void)
 {
@@ -683,6 +693,9 @@ scm_init_gnome_gobject (void)
 
     _in_construction_from_scheme = scm_permanent_object (scm_make_fluid ());
     scm_fluid_set_x (_in_construction_from_scheme, SCM_EOL);
+
+    scm_register_gtype_instance_sinkfunc (G_TYPE_INITIALLY_UNOWNED,
+                                          sink_initially_unowned);
 
     quark_guile_gtype_class = g_quark_from_static_string ("%scm-guile-gtype-class");
 }

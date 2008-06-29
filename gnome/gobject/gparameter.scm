@@ -120,13 +120,13 @@
   "Parameter for @code{<gchar>} values."
   (minimum
    #:init-keyword #:minimum #:init-value (integer->char 0)
-   #:allocation #:checked #:pred char?)
+   #:allocation #:checked #:pred (lambda (x) (or (char? x) (integer? x))))
   (maximum
    #:init-keyword #:maximum #:init-value (integer->char 127)
-   #:allocation #:checked #:pred char?)
+   #:allocation #:checked #:pred (lambda (x) (or (char? x) (integer? x))))
   (default-value
    #:init-keyword #:default-value #:init-value (integer->char 127)
-   #:allocation #:checked #:pred char?)
+   #:allocation #:checked #:pred (lambda (x) (or (char? x) (integer? x))))
   #:value-type <gchar>
   #:gtype-name "GParamChar")
 
@@ -134,13 +134,13 @@
   "Parameter for @code{<guchar>} values."
   (minimum
    #:init-keyword #:minimum #:init-value (integer->char 0)
-   #:allocation #:checked #:pred char?)
+   #:allocation #:checked #:pred (lambda (x) (or (char? x) (integer? x))))
   (maximum
    #:init-keyword #:maximum #:init-value (integer->char 255)
-   #:allocation #:checked #:pred char?)
+   #:allocation #:checked #:pred (lambda (x) (or (char? x) (integer? x))))
   (default-value
    #:init-keyword #:default-value #:init-value (integer->char 255)
-   #:allocation #:checked #:pred char?)
+   #:allocation #:checked #:pred (lambda (x) (or (char? x) (integer? x))))
   #:value-type <guchar>
   #:gtype-name "GParamUChar")
 

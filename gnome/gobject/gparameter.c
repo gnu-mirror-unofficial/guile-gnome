@@ -221,7 +221,7 @@ static void scm_c_gparam_initialize_scm (SCM param, gpointer ppspec)
     else {
         g_warning ("param type not implemented: %s",
                    g_type_name (G_TYPE_FROM_INSTANCE (pspec)));
-        SCM_ERROR_NOT_YET_IMPLEMENTED (SCM_BOOL_F);
+        /* SCM_ERROR_NOT_YET_IMPLEMENTED (SCM_BOOL_F); */
     }
 
 #undef SET

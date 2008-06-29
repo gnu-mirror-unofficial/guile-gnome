@@ -281,13 +281,25 @@ scm_c_gvalue_set (GValue *gvalue, SCM value)
     
     switch (fundamental) {
     case G_TYPE_CHAR:
-	SCM_VALIDATE_CHAR (2, value);
-	g_value_set_char (gvalue, SCM_CHAR (value));
+        if (SCM_CHARP (value))
+            g_value_set_char (gvalue, SCM_CHAR (value));
+        else if (SCM_INUMP (value)
+                 && SCM_INUM (value) >= 0 && SCM_INUM (value) <= 127)
+            g_value_set_char (gvalue, SCM_INUM (value));
+        else
+            scm_c_gruntime_error (FUNC_NAME, "Bad char value: ~A",
+                                  SCM_LIST1 (value));
 	break;
 
     case G_TYPE_UCHAR:
-	SCM_VALIDATE_CHAR (2, value);
-	g_value_set_uchar (gvalue, SCM_CHAR (value));
+        if (SCM_CHARP (value))
+            g_value_set_uchar (gvalue, SCM_CHAR (value));
+        else if (SCM_INUMP (value)
+                 && SCM_INUM (value) >= 0 && SCM_INUM (value) <= 255)
+            g_value_set_uchar (gvalue, SCM_INUM (value));
+        else
+            scm_c_gruntime_error (FUNC_NAME, "Bad uchar value: ~A",
+                                  SCM_LIST1 (value));
 	break;
 
     case G_TYPE_BOOLEAN:

@@ -914,7 +914,6 @@ invoked manually in a wrapset as needed."
         "static void " unwrap-func " (SCM " scm-var ", GValue* gvalue) {\n"
         "  " ctype " " c-var " = NULL;\n"
         ,unwrap-form
-        "  g_value_init (gvalue, " (gtype-id ,type) ");\n"
         "  g_value_take_boxed (gvalue, " c-var ");\n"
         "}\n"))))
      
@@ -927,6 +926,7 @@ invoked manually in a wrapset as needed."
      value status-var
      (list
       "GValue lvalue = { 0, };\n"
+      "g_value_init (&lvalue, " (gtype-id type) ");\n"
       (unwrap-func type) " (" scm-var ", &lvalue);\n"
       "if (G_IS_VALUE (&lvalue)) {"
       ;; leaks memory... need to write a destructor for c-var in the
