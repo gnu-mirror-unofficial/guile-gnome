@@ -1,12 +1,32 @@
 guile-gnome-glib NEWS --- history of user-visible changes.
 Copyright (C) 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 12 Jun 2008.
+Last updated 03 Jul 2008.
 
 
 guile-gnome-glib is a Guile binding for GLib and GObject, including a
 bindings generator. It is part of GNU guile-gnome. This file documents
 the user-visible changes in guile-gnome-glib only.
+
+
+guile-gnome-glib 2.16.1 - Andy Wingo, 2008-07-03
+================================================
+
+* Recognize GInitiallyUnowned as a sinkable object.
+
+This doesn't affect e.g. GTK+, for which we already recognize GtkObject
+as sinkable, but it does affect e.g. Clutter.
+
+* Don't error when constructing parameter types of which we are unaware.
+
+Affects e.g. ClutterUnit parameters; the precise nature of this fix will
+change in the future.
+  
+* Accept integers as init values for <gchar> or <guchar> values.
+
+* Bugfix for custom-wrapped boxed values, like GdkRectangle.
+
+* Fix regressions on x86-64.
 
 
 guile-gnome-glib 2.16.0 - Andy Wingo, 2008-06-12
