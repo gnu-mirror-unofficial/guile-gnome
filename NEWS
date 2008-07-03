@@ -1,7 +1,7 @@
 guile-gnome-gconf NEWS --- history of user-visible changes.
 Copyright (C) 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 12 Jun 2008.
+Last updated 03 Jul 2008.
 
 
 guile-gnome-gconf is a Guile binding for gconf. It is part of GNU
@@ -9,10 +9,16 @@ guile-gnome. This file documents the user-visible changes in
 guile-gnome-gconf only.
 
 
+guile-gnome-gconf 2.16.1 - Andy Wingo, 2008-07-03
+=================================================
+
+* New platform release, no change.
+
+
 guile-gnome-gconf 2.16.0 - Andy Wingo, 2008-06-12
 =================================================
 
-* Imroved documentation, with example.
+* Improved documentation, with example.
 
 * Fixed a bug regarding GConfClient notification.
 
