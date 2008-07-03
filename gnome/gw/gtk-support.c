@@ -48,8 +48,8 @@ guile_gtk_tree_path_to_scm (GtkTreePath *path)
     len = gtk_tree_path_get_depth(path);
     indices = gtk_tree_path_get_indices(path);
     ret = SCM_EOL;
-    for (i = len - 1; i >= 0; i--)
-	ret = scm_cons (scm_from_int (indices[i]), ret);
+    for (i = len; i > 0; i--)
+	ret = scm_cons (scm_from_int (indices[i-1]), ret);
     return ret;
 }
 
