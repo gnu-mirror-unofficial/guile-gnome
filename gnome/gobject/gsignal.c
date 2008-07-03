@@ -58,12 +58,12 @@ scm_c_gsignal_query (guint id)
 {
     SCM args, param_types = SCM_EOL;
     GSignalQuery q;
-    gint i;
+    guint i;
 
     g_signal_query (id, &q);
 
-    for (i = q.n_params - 1; i >= 0; i--)
-        param_types = scm_cons (scm_c_gtype_to_class (q.param_types [i]),
+    for (i = q.n_params; i > 0; i--)
+        param_types = scm_cons (scm_c_gtype_to_class (q.param_types [i-1]),
                                 param_types);
 
     args = scm_list_n (scm_class_gsignal,
@@ -108,8 +108,7 @@ SCM_DEFINE (scm_gtype_class_get_signals, "gtype-class-get-signals", 1, 1, 0,
 {
     GType type;
     SCM supers;
-    guint *ids, n_ids;
-    glong i;
+    guint *ids, n_ids, i;
 
     SCM_VALIDATE_GTYPE_CLASS_COPY (1, class, type);
     if (SCM_UNBNDP (tail))
@@ -123,8 +122,8 @@ SCM_DEFINE (scm_gtype_class_get_signals, "gtype-class-get-signals", 1, 1, 0,
     
     ids = g_signal_list_ids (type, &n_ids);
 
-    for (i = ((glong)n_ids) - 1; i >= 0; i--)
-        tail = scm_cons (scm_c_gsignal_query (ids[i]), tail);
+    for (i = n_ids; i > 0; i--)
+        tail = scm_cons (scm_c_gsignal_query (ids[i-1]), tail);
 
     g_free (ids);
 

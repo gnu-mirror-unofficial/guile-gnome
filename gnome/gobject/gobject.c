@@ -392,8 +392,7 @@ SCM_DEFINE (scm_gobject_class_get_properties, "gobject-class-get-properties", 1,
 {
     gpointer gclass = 0;
     GParamSpec **properties;
-    guint n_properties;
-    glong i;
+    guint n_properties, i;
     GType gtype;
     SCM ret = SCM_EOL;
 
@@ -414,8 +413,8 @@ SCM_DEFINE (scm_gobject_class_get_properties, "gobject-class-get-properties", 1,
         scm_wrong_type_arg (FUNC_NAME, 1, class);
     }
 
-    for (i = n_properties - 1; i >= 0; i--)
-        ret = scm_cons (scm_c_gtype_instance_to_scm (properties[i]),
+    for (i = n_properties; i > 0; i--)
+        ret = scm_cons (scm_c_gtype_instance_to_scm (properties[i-1]),
                         ret);
 
     if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_OBJECT)
@@ -437,8 +436,7 @@ SCM_DEFINE (scm_gobject_class_get_property_names, "gobject-class-get-property-na
 {
     gpointer gclass = 0;
     GParamSpec **properties;
-    guint n_properties;
-    glong i;
+    guint n_properties, i;
     GType gtype;
     SCM ret = SCM_EOL;
 
@@ -459,8 +457,8 @@ SCM_DEFINE (scm_gobject_class_get_property_names, "gobject-class-get-property-na
         scm_wrong_type_arg (FUNC_NAME, 1, class);
     }
 
-    for (i = n_properties - 1; i >= 0; i--)
-        ret = scm_cons (scm_from_locale_symbol (properties[i]->name), ret);
+    for (i = n_properties; i > 0; i--)
+        ret = scm_cons (scm_from_locale_symbol (properties[i-1]->name), ret);
 
     if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_OBJECT)
         g_type_class_unref (gclass);

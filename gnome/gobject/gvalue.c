@@ -166,7 +166,7 @@ scm_c_register_gvalue_wrappers (GType type,
     w->wrap = wrap;
     w->unwrap = unwrap;
 
-    g_hash_table_insert (gvalue_wrappers, GINT_TO_POINTER (type), w);
+    g_hash_table_insert (gvalue_wrappers, (gpointer)type, w);
 }
 
 void
@@ -181,7 +181,7 @@ scm_c_register_gtype_instance_gvalue_wrappers (GType type,
     w->getter = getter;
     w->setter = setter;
     
-    g_hash_table_insert (gtype_instance_wrappers, GINT_TO_POINTER (type), w);
+    g_hash_table_insert (gtype_instance_wrappers, (gpointer)type, w);
 }
 
 SCM
@@ -238,10 +238,10 @@ scm_c_gvalue_ref (const GValue *gvalue)
             gtype_instance_wrap_funcs* w1;
             wrap_funcs* w2;
             if ((w1 = g_hash_table_lookup (gtype_instance_wrappers,
-                                           GINT_TO_POINTER (fundamental)))) {
+                                           (gpointer)fundamental))) {
                 return scm_c_gtype_instance_to_scm (w1->getter (gvalue));
             } else if ((w2 = g_hash_table_lookup (gvalue_wrappers,
-                                                  GINT_TO_POINTER (type)))) {
+                                                  (gpointer)type))) {
                 return w2->wrap (gvalue);
             } else {
                 SCM ret = scm_c_make_gvalue (type);
@@ -369,7 +369,7 @@ scm_c_gvalue_set (GValue *gvalue, SCM value)
         {
             gtype_instance_wrap_funcs *w;
             w = g_hash_table_lookup (gtype_instance_wrappers,
-                                     GINT_TO_POINTER (fundamental));
+                                     (gpointer)fundamental);
 
             if (w) {
                 if (SCM_FALSEP (value)) {
@@ -388,8 +388,7 @@ scm_c_gvalue_set (GValue *gvalue, SCM value)
         }
         {
             wrap_funcs *w;
-            w = g_hash_table_lookup (gvalue_wrappers,
-                                     GINT_TO_POINTER (gtype));
+            w = g_hash_table_lookup (gvalue_wrappers, (gpointer)gtype);
     
             if (w) {
                 w->unwrap (value, gvalue);
