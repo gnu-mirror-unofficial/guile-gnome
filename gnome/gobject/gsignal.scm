@@ -38,6 +38,7 @@
 ;;; Code:
 
 (define-module (gnome gobject gsignal)
+  #:use-module (ice-9 optargs)
   #:use-module (oop goops)
   #:use-module (gnome gobject utils)
   #:use-module (gnome gobject config)
@@ -110,13 +111,18 @@ parent classes."
 ;;; {Connecting, Disconnecting, Blocking, Unblocking}
 ;;;
 
-(define (gtype-instance-signal-connect object name func . after?)
+(define* (gtype-instance-signal-connect object name func
+                                        #:optional after? detail)
   "Connects @var{func} as handler for the @code{<gtype-instance>}
 @var{object}'s signal @var{name}.
 
 @var{name} should be a symbol. @var{after} is boolean specifying whether
 the handler is run before (@code{#f}) or after (@code{#t}) the signal's
-default handler.
+default handler, and @var{detail} is the optional \"detail\" parameter
+to signal connection, which defaults to @code{#f}. @var{detail} is
+mostly used when connecting to the @code{notify} signal of
+@code{<gobject>}, in which case it should be the symbolic name of the
+property whose change notifications you are interested in.
 
 Returns an integer number which can be used as arugment of
 @code{gsignal-handler-block}, @code{gsignal-handler-unblock},
@@ -130,12 +136,13 @@ Returns an integer number which can be used as arugment of
        object (id signal)
        (make <gclosure> #:func func #:return-type (return-type signal)
              #:param-types (param-types signal))
-       (and (pair? after?) (car after?) #t)))))
+       after? detail))))
 
-(define (gtype-instance-signal-connect-after object name func)
+(define* (gtype-instance-signal-connect-after object name func
+                                              #:optional detail)
   "Convenience function for calling
 @code{gtype-instance-signal-connect} with @var{after} = @code{#t}."
-  (gtype-instance-signal-connect object name func #t))
+  (gtype-instance-signal-connect object name func #t detail))
 
 ;;;
 ;;; {Creation and Definition}

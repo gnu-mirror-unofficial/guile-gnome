@@ -235,11 +235,14 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
 (define-class <my-object> (<gobject>)
   (int #:gparam `(,<gparam-int> #:minimum 2 #:maximum 100 #:default-value 3
                                 #:flags (read write construct)))
+  (float #:gparam `(,<gparam-float> #:minimum 2.0 #:maximum 100.0 #:default-value 3.0
+                                    #:flags (read write construct)))
   scm)
 (define-method (gobject:set-property (object <my-object>) key val)
   (next-method)
   (case key
     ((int) (slot-set! object 'scm val))
+    ((float) #t) ; pass
     (else (error "unknown property" key))))
 
 (with-test-prefix "defining custom gobject type"
@@ -261,7 +264,16 @@ exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
 
  (pass-if "the same object is seen in construct gobject:set-property and afterwards"
           (let ((o (make <my-object>)))
-            (= (slot-ref o 'scm) 3))))
+            (= (slot-ref o 'scm) 3)))
+
+ (pass-if "notify works, with the detail argument"
+          (let* ((o (make <my-object>))
+                 (got-notify 0)
+                 (notify (lambda (obj pspec) (set! got-notify (1+ got-notify))))
+                 (id (gtype-instance-signal-connect o 'notify notify #t 'int)))
+            (gobject-set-property o 'int 40)
+            (gobject-set-property o 'float 42)
+            (= got-notify 1))))
  
 ;; Local Variables:
 ;; mode: scheme

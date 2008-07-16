@@ -243,8 +243,8 @@ SCM_DEFINE (scm_gtype_instance_signal_emit, "gtype-instance-signal-emit", 2, 0, 
 
 
 SCM_DEFINE (scm_gtype_instance_signal_connect_closure,
-            "gtype-instance-signal-connect-closure", 4, 0, 0,
-	    (SCM object, SCM id, SCM closure, SCM after),
+            "gtype-instance-signal-connect-closure", 4, 1, 0,
+	    (SCM object, SCM id, SCM closure, SCM after, SCM detail),
 	    "")
 #define FUNC_NAME s_scm_gtype_instance_signal_connect_closure
 {
@@ -254,6 +254,7 @@ SCM_DEFINE (scm_gtype_instance_signal_connect_closure,
     GSignalQuery query;
     GType gtype;
     gulong signal_id, handler_id;
+    GQuark detail_quark = 0;
 #ifdef DEBUG_PRINT
     guint old_ref_count;
 #endif
@@ -262,6 +263,10 @@ SCM_DEFINE (scm_gtype_instance_signal_connect_closure,
     SCM_VALIDATE_UINT_COPY (2, id, signal_id);
     SCM_VALIDATE_GVALUE_TYPE_COPY (3, closure, G_TYPE_CLOSURE, gvalue);
     SCM_VALIDATE_BOOL (4, after);
+    if (!SCM_UNBNDP (detail) && SCM_NFALSEP (detail)) {
+        SCM_VALIDATE_SYMBOL (5, detail);
+        detail_quark = g_quark_from_string (scm_symbol_chars (detail));
+    }
 
     gtype = G_TYPE_FROM_INSTANCE (instance);
     gclosure = g_value_get_boxed (gvalue);
@@ -272,8 +277,9 @@ SCM_DEFINE (scm_gtype_instance_signal_connect_closure,
 #ifdef DEBUG_PRINT
     old_ref_count = gclosure->ref_count;
 #endif
-    handler_id = g_signal_connect_closure_by_id (instance, scm_to_ulong (id), 0,
-                                                 gclosure, SCM_NFALSEP (after));
+    handler_id = g_signal_connect_closure_by_id (instance, scm_to_ulong (id),
+                                                 detail_quark, gclosure,
+                                                 SCM_NFALSEP (after));
     DEBUG_ALLOC ("GClosure %p connecting: %u->%u",
                  gclosure, old_ref_count, gclosure->ref_count);
 

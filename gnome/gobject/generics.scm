@@ -147,6 +147,11 @@
   "A shorthand for @code{gtype-instance-signal-connect}."
   (gtype-instance-signal-connect object name func))
 
+(define-method (connect (object <gtype-instance>) (name <symbol>) (func <procedure>)
+                        (after? <boolean>) (detail <symbol>))
+  "A shorthand for @code{gtype-instance-signal-connect}, with all arguments."
+  (gtype-instance-signal-connect object name func after? detail))
+
 (define-method (connect-after (object <gtype-instance>) (name <symbol>) (func <procedure>))
   "A shorthand for @code{gtype-instance-signal-connect-after}."
   (gtype-instance-signal-connect-after object name func))
