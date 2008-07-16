@@ -41,6 +41,9 @@ SCM scm_class_gtype_class;
 SCM scm_class_gtype_instance;
 SCM scm_sys_gtype_to_class;
 
+/* bummer */
+extern SCM scm_class_gvalue;
+
 
 
 SCM_SYMBOL  (sym_gruntime_error,"gruntime-error");
@@ -115,6 +118,8 @@ scm_c_gtype_get_direct_supers (GType type)
     if (!parent) {
         if (G_TYPE_IS_INSTANTIATABLE (type))
             ret = scm_cons (scm_class_gtype_instance, ret);
+        else
+            ret = scm_cons (scm_class_gvalue, ret);
     } else {
         SCM direct_super, cpl;
         GType *interfaces;
