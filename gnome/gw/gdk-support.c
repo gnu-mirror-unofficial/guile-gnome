@@ -228,11 +228,22 @@ scm_gdk_color_to_scm (GdkColor *c)
     return ret;
 }
 
+/*
+ * Allocate a new GdkColor* which must be freed using
+ * gdk_color_free().
+ */
+static GdkColor*
+gdk_color_new()
+{
+  GdkColor tmp;
+  return gdk_color_copy(&tmp);
+}
+
 GdkColor*
 scm_scm_to_gdk_color (SCM scm)
 #define FUNC_NAME "%scm->gdk-rectangle"
 {
-    GdkColor *ret = g_new0 (GdkColor, 1);
+    GdkColor *ret = gdk_color_new();
     
     if (scm_is_string (scm)) {
         char *chars;
