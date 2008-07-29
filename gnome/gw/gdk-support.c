@@ -198,11 +198,18 @@ scm_gdk_rectangle_to_scm (GdkRectangle *rect)
     return ret;
 }
 
+static GdkRectangle*
+gdk_rectangle_new (void)
+{
+  GdkRectangle tmp;
+  return g_boxed_copy (GDK_TYPE_RECTANGLE, &tmp);
+}
+
 GdkRectangle*
 scm_scm_to_gdk_rectangle (SCM scm)
 #define FUNC_NAME "%scm->gdk-rectangle"
 {
-    GdkRectangle *ret = g_new0 (GdkRectangle, 1);
+    GdkRectangle *ret = gdk_rectangle_new ();
     
 #define GET_VINT(v,i) \
   scm_num2int (scm_vector_ref (v, scm_from_int(i)), 0, FUNC_NAME)
@@ -233,10 +240,10 @@ scm_gdk_color_to_scm (GdkColor *c)
  * gdk_color_free().
  */
 static GdkColor*
-gdk_color_new()
+gdk_color_new (void)
 {
   GdkColor tmp;
-  return gdk_color_copy(&tmp);
+  return gdk_color_copy (&tmp);
 }
 
 GdkColor*
