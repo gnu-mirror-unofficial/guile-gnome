@@ -39,6 +39,12 @@
 ;; guile> (use-modules (gnome-2))
 ;; @end lisp
 ;;
+;; Import @code{(gnome gobject)} also:
+;;
+;; @lisp
+;; guile> (use-modules (gnome gobject))
+;; @end lisp
+;;
 ;; @code{(gnome gobject)} is based heavily on GOOPS, Guile's object
 ;; system, so go ahead and load up that too:
 ;;
