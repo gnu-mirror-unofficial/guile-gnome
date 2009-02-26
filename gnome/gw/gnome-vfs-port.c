@@ -391,13 +391,8 @@ vport_flush (SCM port)
                 pt->write_pos = pt->write_buf + remaining;
             }
             if (scm_i_terminating) {
-                const char *msg = "Error: could not flush gnome-vfs handle ";
-                char buf[11];
-
-                write (2, msg, strlen (msg));
-                sprintf (buf, "%p\n", handle);
-                write (2, buf, strlen (buf));
-
+                fprintf (stderr, "Error: could not flush gnome-vfs handle %p",
+                         handle);
                 count = remaining;
             } else if (scm_gc_running_p) {
                 /* silently ignore the error.  scm_error would abort if we
