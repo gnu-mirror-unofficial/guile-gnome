@@ -1,6 +1,6 @@
 /* -*- Mode: C; c-basic-offset: 4 -*- */
 /* guile-gnome
- * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
+ * Copyright (C) 2001, 2009 Martin Baulig <martin@gnome.org>
  * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
  *
  * gvalue.c: Support for GValue-based types
@@ -73,6 +73,8 @@ static GHashTable *gtype_instance_wrappers = NULL;
  * SCM representation of GValue*
  **********************************************************************/
 
+#if SCM_MAJOR_VERSION == 1 && SCM_MINOR_VERSION < 9
+#define scm_vtable_index_instance_finalize
 static size_t
 scm_gvalue_struct_free (scm_t_bits * vtable, scm_t_bits * data)
 {
@@ -86,13 +88,26 @@ scm_gvalue_struct_free (scm_t_bits * vtable, scm_t_bits * data)
     scm_struct_free_light (vtable, data);
     return 0;
 }
+#else
+static void
+scm_gvalue_struct_free (SCM object)
+{
+    GValue *value = (GValue *) SCM_STRUCT_DATA_REF (object, 0);
+
+    if (value) {
+        DEBUG_ALLOC ("freeing GValue %p", value);
+        g_value_unset (value);
+        scm_gc_free (value, sizeof (GValue), "%gvalue");
+    }
+}
+#endif
 
 SCM_DEFINE (scm_sys_bless_gvalue_class, "%bless-gvalue-class", 1, 0, 0,
             (SCM class), "")
 {
     scm_t_bits *slots = SCM_STRUCT_DATA (class);
     scm_class_gvalue = scm_permanent_object (class);
-    slots[scm_struct_i_free] = (scm_t_bits)scm_gvalue_struct_free;
+    slots[scm_vtable_index_instance_finalize] = (scm_t_bits)scm_gvalue_struct_free;
     return SCM_UNSPECIFIED;
 }
 
@@ -283,23 +298,15 @@ scm_c_gvalue_set (GValue *gvalue, SCM value)
     case G_TYPE_CHAR:
         if (SCM_CHARP (value))
             g_value_set_char (gvalue, SCM_CHAR (value));
-        else if (SCM_INUMP (value)
-                 && SCM_INUM (value) >= 0 && SCM_INUM (value) <= 127)
-            g_value_set_char (gvalue, SCM_INUM (value));
         else
-            scm_c_gruntime_error (FUNC_NAME, "Bad char value: ~A",
-                                  SCM_LIST1 (value));
+            g_value_set_char (gvalue, scm_to_int8 (value));
 	break;
 
     case G_TYPE_UCHAR:
         if (SCM_CHARP (value))
             g_value_set_uchar (gvalue, SCM_CHAR (value));
-        else if (SCM_INUMP (value)
-                 && SCM_INUM (value) >= 0 && SCM_INUM (value) <= 255)
-            g_value_set_uchar (gvalue, SCM_INUM (value));
         else
-            scm_c_gruntime_error (FUNC_NAME, "Bad uchar value: ~A",
-                                  SCM_LIST1 (value));
+            g_value_set_uchar (gvalue, scm_to_uint8 (value));
 	break;
 
     case G_TYPE_BOOLEAN:

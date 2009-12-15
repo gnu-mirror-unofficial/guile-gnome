@@ -1,6 +1,6 @@
 /* -*- Mode: C; c-basic-offset: 4 -*- */
 /* guile-gnome
- * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
+ * Copyright (C) 2001, 2009 Martin Baulig <martin@gnome.org>
  * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
  *
  * gtype.c: Base support for the GLib type system
@@ -80,8 +80,7 @@ static GQuark guile_gobject_quark_wrapper;
 
 
 
-static size_t scm_gtype_instance_struct_free (scm_t_bits * vtable,
-                                              scm_t_bits * data);
+static void scm_gtype_instance_unbind (scm_t_bits *slots);
 
 /* would be nice to assume everything uses InitiallyUnowned, but that's not the
  * case... */
@@ -257,6 +256,23 @@ SCM_DEFINE_STATIC (scm_sys_gtype_class_bind, "%gtype-class-bind", 2, 0, 0,
 }
 #undef FUNC_NAME
 
+#if SCM_MAJOR_VERSION == 1 && SCM_MINOR_VERSION < 9
+# define scm_vtable_index_instance_finalize scm_struct_i_free
+static size_t
+scm_gtype_instance_struct_free (scm_t_bits * vtable, scm_t_bits * data)
+{
+    scm_gtype_instance_unbind (data);
+    scm_struct_free_light (vtable, data);
+    return 0;
+}
+#else
+static void
+scm_gtype_instance_struct_free (SCM object)
+{
+    scm_gtype_instance_unbind (SCM_STRUCT_DATA (object));
+}
+#endif
+
 SCM_DEFINE_STATIC (scm_sys_gtype_class_inherit_magic, "%gtype-class-inherit-magic", 1, 0, 0,
                    (SCM class))
 #define FUNC_NAME s_scm_sys_gtype_class_inherit_magic
@@ -270,15 +286,26 @@ SCM_DEFINE_STATIC (scm_sys_gtype_class_inherit_magic, "%gtype-class-inherit-magi
     /* inherit class free function */
     if (g_type_parent (gtype)) {
         SCM parent = scm_c_gtype_to_class (g_type_parent (gtype));
-        slots[scm_struct_i_free] = SCM_STRUCT_DATA (parent)[scm_struct_i_free];
+        slots[scm_vtable_index_instance_finalize] =
+            SCM_STRUCT_DATA (parent)[scm_vtable_index_instance_finalize];
     } else if (G_TYPE_IS_INSTANTIATABLE (gtype)) {
-        slots[scm_struct_i_free] = (scm_t_bits)scm_gtype_instance_struct_free;
-    } else if (slots[scm_struct_i_free] == (scm_t_bits)scm_struct_free_light) {
+        slots[scm_vtable_index_instance_finalize] =
+            (scm_t_bits)scm_gtype_instance_struct_free;
+#if SCM_MAJOR_VERSION == 1 && SCM_MINOR_VERSION < 9
+    } else if (slots[scm_vtable_index_instance_finalize] == (scm_t_bits)scm_struct_free_light) {
         SCM parent = scm_cadr (scm_class_precedence_list (class));
-        slots[scm_struct_i_free] = SCM_STRUCT_DATA (parent)[scm_struct_i_free];
+        slots[scm_vtable_index_instance_finalize] =
+            SCM_STRUCT_DATA (parent)[scm_vtable_index_instance_finalize];
     } else {
         scm_c_gruntime_error (FUNC_NAME, "No free function for SCM class %s!",
                               SCM_LIST1 (class));
+#else
+    } else {
+        SCM parent = scm_cadr (scm_class_precedence_list (class));
+        /* is this right? layout might not be the same. */
+        slots[scm_vtable_index_instance_finalize] =
+            SCM_STRUCT_DATA (parent)[scm_vtable_index_instance_finalize];
+#endif
     }
 
     return SCM_UNSPECIFIED;
@@ -541,14 +568,6 @@ SCM_DEFINE_STATIC (scm_sys_gtype_instance_construct, "%gtype-instance-construct"
     }
         
     return SCM_UNSPECIFIED;
-}
-
-static size_t
-scm_gtype_instance_struct_free (scm_t_bits * vtable, scm_t_bits * data)
-{
-    scm_gtype_instance_unbind (data);
-    scm_struct_free_light (vtable, data);
-    return 0;
 }
 
 SCM_DEFINE (scm_gtype_instance_destroy_x, "gtype-instance-destroy!", 1, 0, 0,

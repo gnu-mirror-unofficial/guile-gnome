@@ -1,6 +1,6 @@
 /* -*- Mode: C; c-basic-offset: 4 -*- */
 /* guile-gnome
- * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
+ * Copyright (C) 2001, 2009 Martin Baulig <martin@gnome.org>
  * Copyright (C) 2003,2004,2008 Andy Wingo <wingo at pobox dot com>
  *
  * gparameter.c: Support for GParamSpec
@@ -428,11 +428,15 @@ SCM_DEFINE (scm_sys_hacky_struct_ref, "%hacky-struct-ref",
   p = scm_to_size_t (pos);
 
   layout_len = scm_i_symbol_length (layout);
+#if SCM_MAJOR_VERSION == 1 && SCM_MINOR_VERSION < 9
   if (SCM_STRUCT_VTABLE_FLAGS (handle) & SCM_STRUCTF_LIGHT)
     /* no extra words */
     n_fields = layout_len / 2;
   else
     n_fields = data[scm_struct_i_n_words];
+#else
+  n_fields = layout_len / 2;
+#endif
   
   SCM_ASSERT_RANGE(1, pos, p < n_fields);
 
@@ -457,11 +461,15 @@ SCM_DEFINE (scm_sys_hacky_struct_set_x, "%hacky-struct-set!",
   p = scm_to_size_t (pos);
 
   layout_len = scm_i_symbol_length (layout);
+#if SCM_MAJOR_VERSION == 1 && SCM_MINOR_VERSION < 9
   if (SCM_STRUCT_VTABLE_FLAGS (handle) & SCM_STRUCTF_LIGHT)
     /* no extra words */
     n_fields = layout_len / 2;
   else
     n_fields = data[scm_struct_i_n_words];
+#else
+  n_fields = layout_len / 2;
+#endif
   
   SCM_ASSERT_RANGE(1, pos, p < n_fields);
 
