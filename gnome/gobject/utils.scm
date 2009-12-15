@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2003,2004,2009 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -41,10 +41,20 @@
 ;;; {Miscellaneous}
 ;;;
 
-(define-macro (define-macro-with-docs form docs . body)
+(cond-expand
+ (guile-2
+  (define-syntax define-macro-with-docs
+    (lambda (x)
+      "Define a defmacro with documentation."
+      (syntax-case x ()
+        ((_ (f . args) doc b0 b* ...)
+         #'(define-macro (f . args)
+             doc b0 b* ...))))))
+ (else
+  (define-macro (define-macro-with-docs form docs . body)
   `(begin
      (define-macro ,form ,@body)
-     (set-object-property! ,(car form) 'documentation ,docs)))
+     (set-object-property! ,(car form) 'documentation ,docs)))))
 
 (define-macro-with-docs (define-with-docs name docs val)
   "Define @var{name} as @var{val}, documenting the value with

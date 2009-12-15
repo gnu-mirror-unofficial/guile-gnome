@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2003,2004,2009 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -31,17 +31,17 @@
   #:export (export-all-lazy!))
 
 (define-macro (re-export-modules . args)
-  (if (not (null? args))
-      (begin
-        (or (list? (car args))
-            (error "Invalid module specification" (car args)))
-        `(begin
-           (module-use! (module-public-interface (current-module))
-                        (resolve-interface ',(car args)))
-           (re-export-modules ,@(cdr args))))))
-(set-object-property! re-export-modules 'documentation
   "Re-export the public interface of a module; used like
-@code{use-modules}.")
+@code{use-modules}."
+   (if (null? args)
+       '(if #f #f)
+       `(begin
+          ,@(map (lambda (mod)
+                   (or (list? mod)
+                       (error "Invalid module specification" mod))
+                   `(module-use! (module-public-interface (current-module))
+                                 (resolve-interface ',mod)))
+                 args))))
 
 (define (export-all-lazy! symbols)
   "Export the @var{symbols} from the current module.

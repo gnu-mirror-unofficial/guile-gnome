@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2005 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2005, 2009 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -33,6 +33,12 @@
 (define (require feature) #f) ; noop
 (define (require-if condition feature) #f) ; noop
 
-(load "glob.scm")
-(load "genwrite.scm")
-(load "printf.scm")
+(cond-expand
+ (guile-2
+  (include-from-path "gnome/gw/support/glob.scm")
+  (include-from-path "gnome/gw/support/genwrite.scm")
+  (include-from-path "gnome/gw/support/printf.scm"))
+ (else
+  (load "glob.scm")
+  (load "genwrite.scm")
+  (load "printf.scm")))

@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2003,2004,2008 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2003,2004,2008,2009 Andy Wingo <wingo at pobox dot com>
 ;; Copyright (C) 2004,2007 Andreas Rottmann <rotty at debian dot org>
 
 ;; This program is free software; you can redistribute it and/or    
@@ -970,15 +970,18 @@ SCM and C values, respectively. For example:
                                  (GStudlyCapsExpand ctype)))
          (wrap-func (string-append "gw__gvalue_" func-infix "_wrap"))
          (unwrap-func (string-append "gw__gvalue_" func-infix "_unwrap")))
-    `(let ((t (make ,<gobject-custom-boxed-type>
+    `(let ((t (make (@@ (gnome gw support gobject)
+                        <gobject-custom-boxed-type>)
                 #:ctype ,ctype
                 #:gtype-id ,gtype
                 #:c-type-name ,pname
                 #:wrapped "Custom"
                 #:wrap-func ,wrap-func
                 #:unwrap-func ,unwrap-func)))
-       (slot-set! t 'wrap (,make-custom-wrapper t ,wrap))
-       (slot-set! t 'unwrap (,make-custom-unwrapper t ,unwrap))
+       (slot-set! t 'wrap ((@@ (gnome gw support gobject) make-custom-wrapper)
+                           t ,wrap))
+       (slot-set! t 'unwrap ((@@ (gnome gw support gobject) make-custom-unwrapper)
+                             t ,unwrap))
        (add-type! ws t)
        (add-type-alias! ws ,pname (name t)))))
 
@@ -1038,7 +1041,7 @@ example:
                       \"scm_from_gst_fraction\"
                       \"scm_to_gst_fraction\")
 @end lisp"
-  `(let ((t (make ,<gobject-custom-gvalue-type>
+  `(let ((t (make (@@ (gnome gw support gobject) <gobject-custom-gvalue-type>)
               #:ctype ,ctype
               #:gtype-id ,gtype
               #:c-type-name "GValue*"
