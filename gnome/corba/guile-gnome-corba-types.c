@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
+ * Copyright (C) 2001, 2009 Martin Baulig <martin@gnome.org>
  * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
  *
  * guile-gnome-corba-types.c: Support routines for the GLib wrapper
@@ -26,7 +26,6 @@
 #include <guile-gnome-corba-generic.h>
 #include <guile-gnome-corba.h>
 #include <guile-gnome-gobject.h>
-#include <guile/gh.h>
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo-exception.h>
 #include <string.h>
@@ -133,7 +132,7 @@ scm_c_make_corba_struct (CORBA_TypeCode tc, guint nfields,
 
     members = DynamicAny_DynStruct_get_members (dyn, &ev);
 
-    type = scm_make_struct (scm_corba_struct_vtable, SCM_MAKINUM (nfields), SCM_EOL);
+    type = scm_make_struct (scm_corba_struct_vtable, scm_from_int (nfields), SCM_EOL);
     SCM_SET_CORBA_STRUCT_TYPECODE (type, tc);
     SCM_SET_CORBA_STRUCT_DATA (type, dyn);
     SCM_SET_CORBA_STRUCT_MEMBERS (type, members);
@@ -143,7 +142,7 @@ scm_c_make_corba_struct (CORBA_TypeCode tc, guint nfields,
     fields = scm_corba_struct_fields (typecode_smob);
 
     SCM_SET_CORBA_STRUCT_FIELDS (type, fields);
-    SCM_SET_CORBA_STRUCT_N_FIELDS (type, SCM_MAKINUM (tc->sub_parts));
+    SCM_SET_CORBA_STRUCT_N_FIELDS (type, scm_from_int (tc->sub_parts));
 
     return type;
 }
@@ -157,9 +156,10 @@ SCM_DEFINE (scm_make_corba_struct, "make-corba-struct", 2, 1, 0,
 {
     CORBA_TypeCode tc, real_tc;
     DynamicAny_DynStruct dyn = NULL;
+    int n_tail_elts;
 
     SCM_VALIDATE_CORBA_TYPECODE_COPY (1, typecode, tc);
-    SCM_VALIDATE_INUM (2, num_tail_elts);
+    SCM_VALIDATE_INT_COPY (2, num_tail_elts, n_tail_elts);
     SCM_ASSERT (SCM_UNBNDP (init_struct) ||
 		SCM_CORBA_STRUCTP (init_struct), init_struct,
 		SCM_ARG3, FUNC_NAME);
@@ -180,7 +180,7 @@ SCM_DEFINE (scm_make_corba_struct, "make-corba-struct", 2, 1, 0,
 	dyn = (DynamicAny_DynStruct) SCM_CORBA_STRUCT_DATA (init_struct);
     }
 
-    return scm_c_make_corba_struct (tc, SCM_INUM (num_tail_elts), dyn);
+    return scm_c_make_corba_struct (tc, n_tail_elts, dyn);
 }
 #undef FUNC_NAME
 
@@ -220,10 +220,10 @@ scm_c_make_corba_sequence (CORBA_TypeCode tc, guint nfields, gpointer data)
     elements = DynamicAny_DynSequence_get_elements (dyn, &ev);
     g_assert (!BONOBO_EX (&ev));
 
-    type = scm_make_struct (scm_corba_sequence_vtable, SCM_MAKINUM (nfields), SCM_EOL);
+    type = scm_make_struct (scm_corba_sequence_vtable, scm_from_int (nfields), SCM_EOL);
     SCM_SET_CORBA_SEQUENCE_TYPECODE (type, tc);
     SCM_SET_CORBA_SEQUENCE_DATA (type, dyn);
-    SCM_SET_CORBA_SEQUENCE_LENGTH (type, SCM_MAKINUM (length));
+    SCM_SET_CORBA_SEQUENCE_LENGTH (type, scm_from_int (length));
     SCM_SET_CORBA_SEQUENCE_MEMBERS (type, elements);
 
     return type;
@@ -238,9 +238,10 @@ SCM_DEFINE (scm_make_corba_sequence, "make-corba-sequence", 2, 0, 1,
 {
     CORBA_TypeCode tc, real_tc;
     gpointer data = NULL;
+    int n_tail_elts;
 
     SCM_VALIDATE_CORBA_TYPECODE_COPY (1, typecode, tc);
-    SCM_VALIDATE_INUM (2, num_tail_elts);
+    SCM_VALIDATE_INT_COPY (2, num_tail_elts, n_tail_elts);
     SCM_ASSERT (SCM_UNBNDP (init_smob) || scm_list_p (init_smob) ||
 		SCM_TYP16_PREDICATE (scm_tc16_corba_data, init_smob), init_smob,
 		SCM_ARG3, FUNC_NAME);
@@ -286,7 +287,7 @@ SCM_DEFINE (scm_make_corba_sequence, "make-corba-sequence", 2, 0, 1,
 	    this->_type = real_tc->subtypes [0];
 	    this->_value = ORBit_alloc_tcval (this->_type, 1);
 	    this->_release = TRUE;
-	    value = scm_list_ref (init_smob, SCM_MAKINUM (i));
+	    value = scm_list_ref (init_smob, scm_from_int (i));
 	    scm_c_corba_marshal_any (this, value);
 	}
 
@@ -299,7 +300,7 @@ SCM_DEFINE (scm_make_corba_sequence, "make-corba-sequence", 2, 0, 1,
 	data = any->_value;
     }
 
-    return scm_c_make_corba_sequence (tc, SCM_INUM (num_tail_elts), data);
+    return scm_c_make_corba_sequence (tc, n_tail_elts, data);
 }
 #undef FUNC_NAME
 
@@ -328,11 +329,11 @@ SCM_DEFINE (scm_corba_sequence_set_length_x, "corba-sequence-set-length!", 2, 0,
     CORBA_Environment ev;
 
     SCM_VALIDATE_CORBA_SEQUENCE (1, corba_sequence);
-    SCM_ASSERT (SCM_INUMP (length) && SCM_INUM (length) >= 0, length, SCM_ARG1, FUNC_NAME);
+    SCM_ASSERT (scm_to_int (length) >= 0, length, SCM_ARG1, FUNC_NAME);
 
     CORBA_exception_init (&ev);
     dyn = (DynamicAny_DynSequence) SCM_CORBA_SEQUENCE_DATA (corba_sequence);
-    DynamicAny_DynSequence_set_length (dyn, SCM_INUM (length), &ev);
+    DynamicAny_DynSequence_set_length (dyn, scm_to_int (length), &ev);
     g_assert (!BONOBO_EX (&ev));
 
     elements = DynamicAny_DynSequence_get_elements (dyn, &ev);
@@ -358,12 +359,12 @@ SCM_DEFINE (scm_corba_sequence_ref, "corba-sequence-ref", 2, 0, 0,
     SCM_VALIDATE_CORBA_SEQUENCE (1, corba_sequence);
     SCM_ASSERT (SCM_CORBA_SEQUENCEP (corba_sequence), corba_sequence,
 		SCM_ARG1, FUNC_NAME);
-    SCM_ASSERT (SCM_INUMP (index) && (SCM_INUM (index) >= 0) &&
-		(SCM_INUM (index) < SCM_INUM (SCM_CORBA_SEQUENCE_LENGTH (corba_sequence))),
+    SCM_ASSERT (scm_to_int (index) >= 0 &&
+		(scm_to_int (index) < scm_to_int (SCM_CORBA_SEQUENCE_LENGTH (corba_sequence))),
 		 index, SCM_ARG2, FUNC_NAME);
 
     elements = SCM_CORBA_SEQUENCE_MEMBERS (corba_sequence);
-    any = &elements->_buffer [SCM_INUM (index)];
+    any = &elements->_buffer [scm_to_int (index)];
 
     return scm_c_corba_demarshal_any (any);
 }
@@ -382,12 +383,12 @@ SCM_DEFINE (scm_corba_sequence_set_x, "corba-sequence-set!", 3, 0, 0,
     CORBA_any *any;
 
     SCM_VALIDATE_CORBA_SEQUENCE (1, corba_sequence);
-    SCM_ASSERT (SCM_INUMP (index) && (SCM_INUM (index) >= 0) &&
-		(SCM_INUM (index) < SCM_INUM (SCM_CORBA_SEQUENCE_LENGTH (corba_sequence))),
+    SCM_ASSERT (scm_to_int (index) >= 0 &&
+		(scm_to_int (index) < scm_to_int (SCM_CORBA_SEQUENCE_LENGTH (corba_sequence))),
 		 index, SCM_ARG2, FUNC_NAME);
 
     elements = SCM_CORBA_SEQUENCE_MEMBERS (corba_sequence);
-    any = &elements->_buffer [SCM_INUM (index)];
+    any = &elements->_buffer [scm_to_int (index)];
 
     scm_c_corba_marshal_any (any, value);
 
@@ -523,17 +524,18 @@ void
 scm_c_corba_marshal_any (CORBA_any *any, SCM value)
 {
     switch (any->_type->kind) {
+        char *_s;
 #define _HANDLE_BASIC_VALUE(k,t,f)						\
 case CORBA_tk_ ## k:								\
 	(*(CORBA_ ## t *) any->_value) = f (value);				\
 	break;
 
-	_HANDLE_BASIC_VALUE (short,     short,              gh_scm2int);
-	_HANDLE_BASIC_VALUE (long,      long,               gh_scm2long);
-	_HANDLE_BASIC_VALUE (ushort,    unsigned_short,     gh_scm2int);
-	_HANDLE_BASIC_VALUE (ulong,     unsigned_long,      gh_scm2long);
-	_HANDLE_BASIC_VALUE (float,     float,              gh_scm2double);
-	_HANDLE_BASIC_VALUE (double,    double,             gh_scm2double);
+	_HANDLE_BASIC_VALUE (short,     short,              scm_to_short);
+	_HANDLE_BASIC_VALUE (long,      long,               scm_to_long);
+	_HANDLE_BASIC_VALUE (ushort,    unsigned_short,     scm_to_int);
+	_HANDLE_BASIC_VALUE (ulong,     unsigned_long,      scm_to_long);
+	_HANDLE_BASIC_VALUE (float,     float,              scm_to_double);
+	_HANDLE_BASIC_VALUE (double,    double,             scm_to_double);
 
 #undef _HANDLE_BASIC_VALUE
 
@@ -545,9 +547,11 @@ case CORBA_tk_ ## k:								\
 	break;
 
     case CORBA_tk_string:
-	SCM_ASSERT (SCM_STRINGP (value), value, SCM_ARG2, "%marshal-any");
+	SCM_ASSERT (scm_is_string (value), value, SCM_ARG2, "%marshal-any");
 
-	(* (CORBA_char **) any->_value) = CORBA_string_dup (SCM_STRING_CHARS (value));
+        _s = scm_to_locale_string (value);
+	(* (CORBA_char **) any->_value) = CORBA_string_dup (_s);
+        free (_s);
 	break;
 
     default:
@@ -567,12 +571,12 @@ SCM_DEFINE (scm_corba_struct_ref, "corba-struct-ref", 2, 0, 0,
     DynamicAny_NameValuePair *this;
 
     SCM_VALIDATE_CORBA_STRUCT (1, corba_struct);
-    SCM_ASSERT (SCM_INUMP (index) && (SCM_INUM (index) >= 0) &&
-		(SCM_INUM (index) < SCM_INUM (SCM_CORBA_STRUCT_N_FIELDS (corba_struct))),
+    SCM_ASSERT (scm_to_int (index) >= 0 &&
+		(scm_to_int (index) < scm_to_int (SCM_CORBA_STRUCT_N_FIELDS (corba_struct))),
 		 index, SCM_ARG2, FUNC_NAME);
 
     members = SCM_CORBA_STRUCT_MEMBERS (corba_struct);
-    this = &members->_buffer [SCM_INUM (index)];
+    this = &members->_buffer [scm_to_int (index)];
 
     return scm_c_corba_demarshal_any (&this->value);
 }
@@ -589,12 +593,12 @@ SCM_DEFINE (scm_corba_struct_set_x, "corba-struct-set!", 3, 0, 0,
     DynamicAny_NameValuePair *this;
 
     SCM_VALIDATE_CORBA_STRUCT (1, corba_struct);
-    SCM_ASSERT (SCM_INUMP (index) && (SCM_INUM (index) >= 0) &&
-		(SCM_INUM (index) < SCM_INUM (SCM_CORBA_STRUCT_N_FIELDS (corba_struct))),
+    SCM_ASSERT (scm_to_int (index) >= 0 &&
+		(scm_to_int (index) < scm_to_int (SCM_CORBA_STRUCT_N_FIELDS (corba_struct))),
 		index, SCM_ARG2, FUNC_NAME);
 
     members = SCM_CORBA_STRUCT_MEMBERS (corba_struct);
-    this = &members->_buffer [SCM_INUM (index)];
+    this = &members->_buffer [scm_to_int (index)];
 
     scm_c_corba_marshal_any (&this->value, value);
 
@@ -810,19 +814,19 @@ scm_init_gnome_corba_types (void)
 
     gsubr = scm_c_make_gsubr ("%print-corba-struct", 2, 0, 0, print_corba_struct);
     scm_corba_struct_vtable = scm_permanent_object
-	(scm_make_vtable_vtable (scm_makfrom0str ("srprprprpopopW"), SCM_INUM0, SCM_LIST1 (gsubr)));
+        (scm_make_vtable_vtable (scm_makfrom0str ("srprprprpopopW"), scm_from_int (0), SCM_LIST1 (gsubr)));
     SCM_SET_CORBA_STRUCT_TYPECODE (scm_corba_struct_vtable, TC_CORBA_TypeCode);
     scm_c_define ("%corba-struct-vtable", scm_corba_struct_vtable);
-    scm_c_define ("%corba-struct-vtable-offset-user", SCM_MAKINUM (scm_corba_struct_vtable_offset_user));
-    scm_c_define ("%corba-struct-vtable-offset-printer", SCM_MAKINUM (scm_vtable_index_printer));
+    scm_c_define ("%corba-struct-vtable-offset-user", scm_from_int (scm_corba_struct_vtable_offset_user));
+    scm_c_define ("%corba-struct-vtable-offset-printer", scm_from_int (scm_vtable_index_printer));
 
     gsubr = scm_c_make_gsubr ("%print-corba-sequence", 2, 0, 0, print_corba_sequence);
     scm_corba_sequence_vtable = scm_permanent_object
-	(scm_make_vtable_vtable (scm_makfrom0str ("srprprprpopW"), SCM_INUM0, SCM_LIST1 (gsubr)));
+        (scm_make_vtable_vtable (scm_makfrom0str ("srprprprpopW"), scm_from_int (0), SCM_LIST1 (gsubr)));
     SCM_SET_CORBA_SEQUENCE_TYPECODE (scm_corba_sequence_vtable, TC_CORBA_TypeCode);
     scm_c_define ("%corba-sequence-vtable", scm_corba_sequence_vtable);
-    scm_c_define ("%corba-sequence-vtable-offset-user", SCM_MAKINUM (scm_corba_sequence_vtable_offset_user));
-    scm_c_define ("%corba-sequence-vtable-offset-printer", SCM_MAKINUM (scm_vtable_index_printer));
+    scm_c_define ("%corba-sequence-vtable-offset-user", scm_from_int (scm_corba_sequence_vtable_offset_user));
+    scm_c_define ("%corba-sequence-vtable-offset-printer", scm_from_int (scm_vtable_index_printer));
 
     scm_c_export ("%corba-struct-vtable",
 		  "%corba-struct-vtable-offset-user",

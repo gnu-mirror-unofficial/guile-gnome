@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
+ * Copyright (C) 2001, 2009 Martin Baulig <martin@gnome.org>
  * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
  *
  * guile-gnome-corba.c: Support routines for the GLib wrapper
@@ -26,7 +26,6 @@
 #include <guile-gnome-corba-types.h>
 #include <guile-gnome-corba-generic.h>
 #include <guile-gnome-gobject.h>
-#include <guile/gh.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-context.h>
 #include <bonobo/bonobo-moniker-util.h>
@@ -68,6 +67,7 @@ SCM_DEFINE (scm_bonobo_get_object, "bonobo-get-object", 2, 0, 0,
 	    "")
 #define FUNC_NAME s_scm_bonobo_get_object
 {
+    char *_s;
     CORBA_Object corba_objref;
     CORBA_Environment ev;
     CORBA_TypeCode tc;
@@ -76,14 +76,14 @@ SCM_DEFINE (scm_bonobo_get_object, "bonobo-get-object", 2, 0, 0,
     SCM_VALIDATE_CORBA_OBJECT_CLASS_COPY (1, class, tc);
     
     CORBA_exception_init (&ev);
-    corba_objref = bonobo_get_object (SCM_STRING_CHARS (moniker), tc->repo_id, &ev);
+    _s = scm_to_locale_string (moniker);
+    corba_objref = bonobo_get_object (_s, tc->repo_id, &ev);
+    free (_s);
     if (BONOBO_EX (&ev)) {
 	g_message (G_STRLOC ": %s", bonobo_exception_get_text (&ev));
 	CORBA_exception_free (&ev);
 	return SCM_UNSPECIFIED;
     }
-
-    gh_display (class); gh_newline ();
 
     return scm_c_make_corba_object (class, corba_objref);
 }

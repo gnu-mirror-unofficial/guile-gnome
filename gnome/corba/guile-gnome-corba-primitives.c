@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
+ * Copyright (C) 2001, 2009 Martin Baulig <martin@gnome.org>
  * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
  *
  * guile-gnome-corba-primitives.c:
@@ -42,7 +42,6 @@
 SCM scm_class_corba_object;
 SCM scm_class_portable_server_servant_base;
 SCM scm_class_slot_ref;
-SCM scm_f_skel_marshal_func;
 
 scm_t_bits scm_tc16_guile_corba_interface;
 scm_t_bits scm_tc16_guile_portable_server_servant;
@@ -52,6 +51,9 @@ PortableServer_POA guile_corba_poa;
 CORBA_ORB guile_corba_orb;
 static SCM _scm_make_class;
 static SCM scm_class_slot_set_x;
+static SCM make_marshal_func;
+static SCM make_method;
+static SCM add_method;
 
 static GMainLoop *guile_corba_main_loop = NULL;
 
@@ -161,7 +163,7 @@ SCM_DEFINE (scm_corba_primitive_invoke_method, "corba-primitive-invoke-method", 
 
     num_args = method->arguments._length ? method->arguments._length-1 : 0;
     if (scm_ilength (args) != num_args)
-	scm_error_num_args_subr (SCM_STRING_CHARS (method_name));
+	scm_wrong_num_args (method_name);
 
     CORBA_exception_init (&ev);
 
@@ -175,7 +177,7 @@ SCM_DEFINE (scm_corba_primitive_invoke_method, "corba-primitive-invoke-method", 
     for (i = 0; i < num_args; i++) {
 	CORBA_any any = { method->arguments._buffer [i].tc, arg [i], FALSE };
 
-	scm_c_corba_marshal_any (&any, scm_list_ref (args, SCM_MAKINUM (i)));
+	scm_c_corba_marshal_any (&any, scm_list_ref (args, scm_from_int (i)));
     }
 
     ORBit_small_invoke_stub (corba_objref, method, ret, arg,
@@ -370,17 +372,6 @@ SCM_DEFINE (scm_corba_typecode_primitive_to_name, "corba-typecode-primitive->nam
 
 
 static SCM
-scm_skel_marshal_func (SCM cclo)
-{
-    SCM proc, args;
-
-    proc = SCM_VELTS (cclo)[1];
-    args = SCM_VELTS (cclo)[2];
-
-    return scm_apply (proc, args, SCM_EOL);
-}
-
-static SCM
 scm_c_generic_skel_func_exception (void *data, SCM tag, SCM throw_args)
 {
     CORBA_Environment *ev = data;
@@ -409,7 +400,7 @@ scm_c_generic_skel_func (PortableServer_ServantBase *servant,
 {
     GuilePortableServer_Servant *gservant = (GuilePortableServer_Servant *) servant;
     ORBit_IMethod *imethod;
-    SCM poa_vector, generic, func, proc, args, thunk, retval;
+    SCM poa_vector, generic, func, proc, args, retval;
     struct scm_body_thunk_data thunk_data;
     gulong i, length;
     SCM cur_outp = scm_current_output_port();
@@ -420,8 +411,8 @@ scm_c_generic_skel_func (PortableServer_ServantBase *servant,
     scm_display (poa_vector, cur_outp); scm_newline (cur_outp);
     scm_display (gservant->this, cur_outp); scm_newline (cur_outp);
 
-    imethod = (ORBit_IMethod *) SCM_SMOB_DATA (SCM_VELTS (poa_vector)[1]);
-    generic = SCM_VELTS (poa_vector)[3];
+    imethod = (ORBit_IMethod *) SCM_SMOB_DATA (scm_c_vector_ref (poa_vector, 1));
+    generic = scm_c_vector_ref (poa_vector, 3);
 
     args = SCM_LIST1 (gservant->this);
 
@@ -450,12 +441,8 @@ scm_c_generic_skel_func (PortableServer_ServantBase *servant,
 	return;
     }
 
-    thunk = scm_makcclo (scm_f_skel_marshal_func, 3L);
-    SCM_VECTOR_SET (thunk, 1, generic);
-    SCM_VECTOR_SET (thunk, 2, args);
-
     thunk_data.tag = SCM_BOOL_T;
-    thunk_data.body_proc = thunk;
+    thunk_data.body_proc = scm_call_2 (make_marshal_func, generic, args);;
 
     retval = scm_internal_catch (SCM_BOOL_T, scm_body_thunk, &thunk_data,
 				 scm_c_generic_skel_func_exception, ev);
@@ -480,7 +467,7 @@ impl_finder_func (PortableServer_ServantBase *servant, const gchar *opname,
 
     poa_vector = (SCM) value;
 
-    *m_data = (ORBit_IMethod *) SCM_SMOB_DATA (SCM_VECTOR_REF (poa_vector, 1));
+    *m_data = (ORBit_IMethod *) SCM_SMOB_DATA (scm_c_vector_ref (poa_vector, 1));
     *impl = poa_vector;
 
     return scm_c_generic_skel_func;
@@ -614,10 +601,11 @@ guile_corba_sys_register_interface (ORBit_IInterface *iinterface)
 
     for (i = 0; i < iinterface->methods._length; i++) {
 	ORBit_IMethod *imethod = &iinterface->methods._buffer [i];
-	SCM method_name, method_gsubr, method_formals, method_args;
-	SCM imethod_smob, method_closure, method;
+	SCM method_name, method_gsubr, method_proc;
+	SCM imethod_smob, method;
 	SCM specializers, poa_vector;
 	gulong num_args;
+        char *_s;
 
 	{
 	    gchar *format = g_strdup_printf ("%%s:%s", imethod->name);
@@ -625,14 +613,15 @@ guile_corba_sys_register_interface (ORBit_IInterface *iinterface)
 	    g_free (format);
 	}
 
-	method_gsubr = scm_c_define_gsubr (SCM_SYMBOL_CHARS (method_name), 4, 0, 0,
+        _s = scm_to_locale_string (scm_symbol_to_string (method_name));
+	method_gsubr = scm_c_define_gsubr (_s, 4, 0, 0,
 					   scm_corba_primitive_invoke_method);
+        free (_s);
 
 	SCM_NEWSMOB (imethod_smob, scm_tc16_orbit_imethod, imethod);
 
-	method_formals = scm_cons (sym_object, sym_args);
-	method_args = SCM_LIST5 (method_gsubr, scm_symbol_to_string (method_name),
-				 imethod_smob, sym_object, sym_args);
+        method_proc = scm_call_3 (make_method, method_gsubr, 
+                                  scm_symbol_to_string (method_name), imethod_smob);
 
 	specializers = SCM_LIST1 (stub_class);
 
@@ -647,22 +636,20 @@ guile_corba_sys_register_interface (ORBit_IInterface *iinterface)
 	    specializers = scm_append_x (SCM_LIST2 (specializers, SCM_LIST1 (class)));
 	}
 
-	method_closure = scm_closure (SCM_LIST2 (method_formals, method_args),
-				      SCM_EOL);
-
 	method = scm_make (SCM_LIST3 (scm_class_generic,
 				      k_name, method_name));
 
-	scm_add_method (method, scm_make (SCM_LIST5 (scm_class_method,
-						     k_procedure, method_closure,
-						     k_specializers, specializers)));
+	scm_call_2 (add_method, method,
+                    scm_make (SCM_LIST5 (scm_class_method,
+                                         k_procedure, method_proc,
+                                         k_specializers, specializers)));
 	scm_define (method_name, method);
 	
 	poa_vector = scm_c_make_vector (4L, SCM_UNDEFINED);
-	SCM_VECTOR_SET (poa_vector, 0, iinterface_smob);
-	SCM_VECTOR_SET (poa_vector, 1, imethod_smob);
-	SCM_VECTOR_SET (poa_vector, 2, SCM_MAKINUM (i));
-	SCM_VECTOR_SET (poa_vector, 3, method);
+	scm_c_vector_set_x (poa_vector, 0, iinterface_smob);
+	scm_c_vector_set_x (poa_vector, 1, imethod_smob);
+	scm_c_vector_set_x (poa_vector, 2, scm_from_int (i));
+	scm_c_vector_set_x (poa_vector, 3, method);
 
 	interface->epv [i] = (gpointer)(scm_gc_protect_object (poa_vector));
 
@@ -703,19 +690,28 @@ SCM_DEFINE (scm_corba_primitive_open_module, "corba-primitive-open-module", 1, 0
 	    "")
 #define FUNC_NAME s_scm_corba_primitive_open_module
 {
+    char *_s;
     CORBA_sequence_ORBit_IInterface *iinterfaces;
     CORBA_sequence_CORBA_TypeCode *types;
     gulong i;
 
     SCM_VALIDATE_STRING (1, name);
 
-    if (!ORBit_small_load_typelib (SCM_STRING_CHARS (name)))
-	return SCM_BOOL_F;
+    _s = scm_to_locale_string (name);
+    if (!ORBit_small_load_typelib (_s)) { 
+        free (_s);
+        return SCM_BOOL_F;
+    }
+    free (_s);
 
-    types = ORBit_small_get_types (SCM_STRING_CHARS (name));
+    _s = scm_to_locale_string (name);
+    types = ORBit_small_get_types (_s);
+    free (_s);
     g_assert (types != NULL);
 
-    iinterfaces = ORBit_small_get_iinterfaces (SCM_STRING_CHARS (name));
+    _s = scm_to_locale_string (name);
+    iinterfaces = ORBit_small_get_iinterfaces (_s);
+    free (_s);
     g_assert (iinterfaces != NULL);
 
     for (i = 0; i < iinterfaces->_length; i++)
@@ -735,13 +731,16 @@ SCM_DEFINE (scm_corba_primitive_register_interface, "corba-primitive-register-in
 	    "")
 #define FUNC_NAME s_scm_corba_primitive_register_interface
 {
+    char *_s;
     ORBit_IInterface *iinterface;
     CORBA_Environment ev;
 
     SCM_VALIDATE_STRING (1, name);
 
     CORBA_exception_init (&ev);
-    iinterface = ORBit_small_get_iinterface (CORBA_OBJECT_NIL, SCM_STRING_CHARS (name), &ev);
+    _s = scm_to_locale_string (name);
+    iinterface = ORBit_small_get_iinterface (CORBA_OBJECT_NIL, _s, &ev);
+    free (_s);
     if (BONOBO_EX (&ev)) {
 	CORBA_exception_free (&ev);
 	return SCM_UNSPECIFIED;
@@ -813,8 +812,17 @@ scm_init_gnome_corba_primitives (void)
 {
 #include "guile-gnome-corba-primitives.x"
 
-    scm_f_skel_marshal_func = scm_c_make_subr ("skel-marshal-func", scm_tc7_subr_1,
-					       scm_skel_marshal_func);
+    make_marshal_func = scm_permanent_object
+      (scm_c_eval_string ("(lambda (proc args) (lambda () (apply proc args)))"));
+    make_method = scm_permanent_object
+      (scm_c_eval_string ("(lambda (gsubr name imethod)"
+                          "  (lambda (object . args)"
+                          "    (gsubr name imethod object args)))"));
+    add_method = scm_permanent_object
+      (scm_c_eval_string ("add-method!"));
+
+    make_method = scm_permanent_object
+      (scm_c_eval_string ("(lambda (proc args) (lambda () (apply proc args)))"));
 
     scm_class_corba_object = scm_permanent_object
 	(SCM_VARIABLE_REF (scm_c_lookup ("<CORBA:Object>")));
