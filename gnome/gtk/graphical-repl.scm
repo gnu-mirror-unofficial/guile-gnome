@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2001 Neil Jerram <neil@ossau.uklinux.net>
+;; Copyright (C) 2001, 2009 Neil Jerram <neil@ossau.uklinux.net>
 ;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
@@ -197,13 +197,14 @@
                                                   (lp (cdr in) (cons (car in) out))))))))))))
            noop)))
 
-(if (provided? 'regex)
-    (define (complete text)
-      (map symbol->string
-           (apropos-internal
-            (string-append "^" (regexp-quote text)))))
-    (define (complete text)
-      '()))
+(define complete
+  (if (provided? 'regex)
+      (lambda (text)
+        (map symbol->string
+             (apropos-internal
+              (string-append "^" (regexp-quote text)))))
+      (lambda (text)
+        '())))
 
 (define (do-completion entry)
   ;; `extended' is from r5rs
@@ -461,11 +462,13 @@
           (set! old-error-port (set-current-error-port out-port))
           (set! old-repl-reader repl-reader)
           (set! repl-reader
-                (lambda (prompt)
-                  (display prompt)
+                (lambda (prompt . reader)
+                  (display (if (string? prompt) prompt (prompt)))
                   (force-output)
                   (run-hook before-read-hook)
-                  (read))))
+                  ((or (and (pair? reader) (car reader))
+                       read)
+                   (current-input-port)))))
 
         top-repl
 

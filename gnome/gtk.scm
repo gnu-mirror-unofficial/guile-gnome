@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2003,2004,2009 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -40,17 +40,8 @@
             gtk-text-buffer-create-tag create-tag
             gtk-stock-id))
 
-(if (getenv "GUILE_GTK_DEBUG")
-    (define-macro (time-debug . forms)
-      `(begin
-         (define %before (tms:clock (times)))
-         ,@forms
-         (let ((diff (/ (- (tms:clock (times)) %before)
-                        internal-time-units-per-second)))
-           (format (current-error-port)
-                   "(gnome gtk): ~a: ~as" ',forms diff))))
-    (define-macro (time-debug . forms)
-      `(begin ,@forms)))
+(define-macro (time-debug . forms)
+  `(begin ,@forms))
 
 (time-debug (use-modules (gnome gw gdk)))
 (time-debug (use-modules (gnome gw gtk)))
