@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2004 Jan Nieuwenhuizen <janneke@gnu.org>
+ * Copyright (C) 2004, 2009 Jan Nieuwenhuizen <janneke@gnu.org>
  *
  * libgnomecanvas-support.c: Customizations for guile-libgnomecanvas
  *
@@ -86,7 +86,7 @@ guile_gnome_scm_to_canvas_points (SCM scm)
   GnomeCanvasPoints *points = NULL;
   if (scm_vector_p (scm) == SCM_BOOL_T)
     {
-      int length = SCM_VECTOR_LENGTH (scm);
+      int length = scm_c_vector_length (scm);
       int i;
       points = gnome_canvas_points_new (length);
       for (i = 0; i < length; i++)
