@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2003,2004,2009 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -122,7 +122,8 @@
   #:use-module (gnome gobject utils)
   #:use-module (gnome gobject)
   #:use-module (oop goops)
-  #:export (get set emit connect connect-after block unblock
+  #:replace (connect)
+  #:export (get set emit connect-after block unblock
             disconnect connected? invoke create-signal get-signals
             get-properties get-property-names find-property))
 
