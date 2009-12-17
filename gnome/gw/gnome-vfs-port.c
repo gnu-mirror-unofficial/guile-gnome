@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2004 Free Software Foundation, Inc.
+ * Copyright (C) 2004, 2009 Free Software Foundation, Inc.
  *
  * gnome-vfs-support.c: Support routines for the gnome-vfs wrapper
  *
@@ -32,6 +32,10 @@
 #if defined (SCM_MINOR_VERSION) && (SCM_MINOR_VERSION >= 7) && \
     defined (SCM_MAJOR_VERSION) && (SCM_MAJOR_VERSION >= 1)
 #define SCM_VERSION_17X 1
+#endif
+
+#if SCM_MAJOR_VERSION == 1 && SCM_MINOR_VERSION < 9
+typedef off_t scm_t_off;
 #endif
 
 /* Support for coding against Guile 1.7 */
@@ -216,8 +220,8 @@ vport_fill_input (SCM port)
         }
 }
 
-static off_t
-vport_seek (SCM port, off_t offset, int whence)
+static scm_t_off
+vport_seek (SCM port, scm_t_off offset, int whence)
 {
     GnomeVFSFileSize count;
     GnomeVFSResult res;
@@ -283,7 +287,7 @@ vport_seek (SCM port, off_t offset, int whence)
 }
 
 static void
-vport_truncate (SCM port, off_t length)
+vport_truncate (SCM port, scm_t_off length)
 {
     GnomeVFSResult res;
     GnomeVFSHandle *handle = (GnomeVFSHandle*)SCM_STREAM (port);
@@ -318,7 +322,7 @@ vport_write (SCM port, const void *data, size_t size)
 {
     /* this procedure tries to minimize the number of writes/flushes.  */
     scm_t_port *pt = SCM_PTAB_ENTRY (port);
-    off_t space = pt->write_end - pt->write_pos;
+    scm_t_off space = pt->write_end - pt->write_pos;
 
     if (pt->write_buf == &pt->shortbuf
         || (pt->write_pos == pt->write_buf && size >= pt->write_buf_size)) {
