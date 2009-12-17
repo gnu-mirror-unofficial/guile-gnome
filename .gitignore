@@ -14,3 +14,7 @@ gnome/corba/guile-gnome-corba.x
 gnome/gw/corba.scm
 guile-gnome-corba.info
 texinfo.tex
+*.lo
+*.la
+*.o
+gnome/corba/*.doc
