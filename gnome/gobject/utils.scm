@@ -186,25 +186,37 @@ Uses @code{gtype-name->scheme-name}."
      (string-append (substring class-string 1 (1- (string-length class-string)))
                     ":" (symbol->string name)))))
 
-(define-macro-with-docs (re-export-modules . args)
+(define-macro (re-export-modules . args)
   "Re-export the public interface of a module or modules. Invoked as
 @code{(re-export-modules (mod1) (mod2)...)}."
-  (if (not (null? args))
-      (begin
-        (or (list? (car args))
-            (error "Invalid module specification" (car args)))
-        `(begin
-           (module-use! (module-public-interface (current-module))
-                        (resolve-interface ',(car args)))
-           (re-export-modules ,@(cdr args))))))
+  (if (null? args)
+       '(if #f #f)
+       `(begin
+          ,@(map (lambda (mod)
+                   (or (list? mod)
+                       (error "Invalid module specification" mod))
+                   `(module-use! (module-public-interface (current-module))
+                                 (resolve-interface ',mod)))
+                 args))))
 
 (define-macro (unless test . body)
   `(if (not ,test) (begin ,@body)))
 
-(define-macro (with-accessors names . body)
-  `(let (,@(map (lambda (name)
-                  `(,name ,(make-procedure-with-setter
-                            (lambda (x) (slot-ref x name))
-                            (lambda (x y) (slot-set! x name y)))))
-                names))
-     ,@body))
+(cond-expand
+ (guile-2
+  (define-macro (with-accessors names . body)
+    `(let (,@(map (lambda (name)
+                    ;; Ew, fixme.
+                    `(,name (make-procedure-with-setter
+                             (lambda (x) (slot-ref x ',name))
+                             (lambda (x y) (slot-set! x ',name y)))))
+                  names))
+       ,@body)))
+ (else
+  (define-macro (with-accessors names . body)
+    `(let (,@(map (lambda (name)
+                    `(,name ,(make-procedure-with-setter
+                              (lambda (x) (slot-ref x name))
+                              (lambda (x y) (slot-set! x name y)))))
+                  names))
+       ,@body))))

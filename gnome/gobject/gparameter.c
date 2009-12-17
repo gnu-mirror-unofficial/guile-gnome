@@ -427,14 +427,15 @@ SCM_DEFINE (scm_sys_hacky_struct_ref, "%hacky-struct-ref",
   data = SCM_STRUCT_DATA (handle);
   p = scm_to_size_t (pos);
 
-  layout_len = scm_i_symbol_length (layout);
 #if SCM_MAJOR_VERSION == 1 && SCM_MINOR_VERSION < 9
+  layout_len = scm_i_symbol_length (layout);
   if (SCM_STRUCT_VTABLE_FLAGS (handle) & SCM_STRUCTF_LIGHT)
     /* no extra words */
     n_fields = layout_len / 2;
   else
     n_fields = data[scm_struct_i_n_words];
 #else
+  layout_len = scm_c_symbol_length (layout);
   n_fields = layout_len / 2;
 #endif
   
@@ -460,14 +461,15 @@ SCM_DEFINE (scm_sys_hacky_struct_set_x, "%hacky-struct-set!",
   data = SCM_STRUCT_DATA (handle);
   p = scm_to_size_t (pos);
 
-  layout_len = scm_i_symbol_length (layout);
 #if SCM_MAJOR_VERSION == 1 && SCM_MINOR_VERSION < 9
+  layout_len = scm_i_symbol_length (layout);
   if (SCM_STRUCT_VTABLE_FLAGS (handle) & SCM_STRUCTF_LIGHT)
     /* no extra words */
     n_fields = layout_len / 2;
   else
     n_fields = data[scm_struct_i_n_words];
 #else
+  layout_len = scm_c_symbol_length (layout);
   n_fields = layout_len / 2;
 #endif
   

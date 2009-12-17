@@ -423,7 +423,9 @@ scm_c_gtype_instance_get_cached (gpointer instance)
                                           guile_gobject_quark_wrapper);
         if (data) {
             ret = GPOINTER_TO_SCM (data);
+#if SCM_MAJOR_VERSION == 1 && SCM_MINOR_VERSION < 9
             scm_gc_mark (ret);
+#endif
             return ret;
         }
     }

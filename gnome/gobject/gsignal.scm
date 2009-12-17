@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2001 Martin Baulig <martin@gnome.org>
+;; Copyright (C) 2001, 2009 Martin Baulig <martin@gnome.org>
 ;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
@@ -130,7 +130,7 @@ Returns an integer number which can be used as arugment of
 @code{gsignal-handler-connected?}."
   (let ((signal (or (gsignal-query (class-of object) name)
                     (gruntime-error "No such signal in class ~S: ~S"
-                                    class name))))
+                                    (class-of object) name))))
     (with-accessors (id return-type param-types)
       (gtype-instance-signal-connect-closure
        object (id signal)
