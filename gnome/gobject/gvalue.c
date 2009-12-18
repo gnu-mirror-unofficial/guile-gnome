@@ -74,7 +74,7 @@ static GHashTable *gtype_instance_wrappers = NULL;
  **********************************************************************/
 
 #if SCM_MAJOR_VERSION == 1 && SCM_MINOR_VERSION < 9
-#define scm_vtable_index_instance_finalize
+#define scm_vtable_index_instance_finalize scm_struct_i_free
 static size_t
 scm_gvalue_struct_free (scm_t_bits * vtable, scm_t_bits * data)
 {
