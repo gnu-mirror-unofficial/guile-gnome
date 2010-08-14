@@ -26,9 +26,9 @@
 SCM
 scm_c_gerror_to_scm (GError *error)
 {
-  return scm_list_3 (scm_ulong2num(error->domain),
-                     scm_ulong2num(error->code),
-                     scm_makfrom0str(error->message));
+  return scm_list_3 (scm_from_ulong(error->domain),
+                     scm_from_ulong(error->code),
+                     scm_from_locale_string(error->message));
 }
 
 void
@@ -36,5 +36,5 @@ scm_c_raise_gerror (GError *error)
 {
   SCM scm_gerror = scm_c_gerror_to_scm (error);
   g_error_free (error);
-  scm_throw (scm_str2symbol("g-error"), scm_gerror);
+  scm_throw (scm_from_locale_symbol("g-error"), scm_gerror);
 }

@@ -78,7 +78,7 @@ scm_with_c_gobject_get_property (GObject *gobject, guint param_id,
     scm_c_gvalue_set (dest_gvalue,
                       scm_call_2 (_gobject_get_property,
                                   scm_c_gtype_instance_to_scm (gobject),
-                                  scm_str2symbol (pspec->name)));
+                                  scm_from_locale_symbol (pspec->name)));
 }
 
 static void
@@ -94,7 +94,7 @@ scm_with_c_gobject_set_property (GObject *gobject, guint param_id, const GValue 
 {
     scm_call_3 (_gobject_set_property,
                 scm_c_gtype_instance_to_scm (gobject),
-                scm_str2symbol (pspec->name),
+                scm_from_locale_symbol (pspec->name),
                 scm_c_gvalue_to_scm (src_value));
 }
 
@@ -490,7 +490,8 @@ SCM_DEFINE (scm_gobject_class_install_property, "gobject-class-install-property"
     if (g_object_class_find_property (gclass, gparam->name))
         scm_error (sym_gruntime_error, FUNC_NAME,
                    "There is already a property with this name in class ~S: ~S",
-                   SCM_LIST2 (class, scm_makfrom0str (gparam->name)), SCM_EOL);
+                   SCM_LIST2 (class, scm_from_locale_string (gparam->name)),
+		   SCM_EOL);
 
     guile_class = g_type_get_qdata (gtype, quark_guile_gtype_class);
     if (!guile_class)

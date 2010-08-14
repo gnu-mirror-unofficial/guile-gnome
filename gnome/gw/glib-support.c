@@ -260,7 +260,7 @@ _wrap_g_main_loop_run (GMainLoop *loop)
 SCM
 _wrap_g_string_get_str (GString *str)
 {
-    return scm_mem2string (str->str, str->len);
+    return scm_from_locale_stringn (str->str, str->len);
 }
 
 struct io_args {
@@ -277,7 +277,7 @@ _with_io_func (gpointer data)
 
     result = scm_call_2 (args->proc,
                          gw_wcp_assimilate_ptr (args->source, iochannel_type),
-                         scm_long2num (args->condition));
+                         scm_from_long (args->condition));
     return result != SCM_BOOL_F ? (void*)1 : (void*)0;
 }
     

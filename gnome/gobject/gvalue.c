@@ -237,10 +237,10 @@ scm_c_gvalue_ref (const GValue *gvalue)
 	return scm_from_ulong_long (g_value_get_uint64 (gvalue));
 
     case G_TYPE_FLOAT:
-	return scm_make_real ((double) g_value_get_float (gvalue));
+	return scm_from_double ((double) g_value_get_float (gvalue));
 
     case G_TYPE_DOUBLE:
-	return scm_make_real (g_value_get_double (gvalue));
+	return scm_from_double (g_value_get_double (gvalue));
 
     case G_TYPE_STRING:
         {
@@ -339,14 +339,14 @@ scm_c_gvalue_set (GValue *gvalue, SCM value)
 	break;
 
     case G_TYPE_FLOAT: {
-	double x = scm_num2dbl (value, FUNC_NAME);
+	double x = scm_to_double (value);
 	SCM_ASSERT_RANGE (2, value, (- G_MAXFLOAT < x) && (x < G_MAXFLOAT));
 	g_value_set_float (gvalue, (float) x);
 	break;
     }
 
     case G_TYPE_DOUBLE:
-	g_value_set_double (gvalue, scm_num2dbl (value, FUNC_NAME));
+	g_value_set_double (gvalue, scm_to_double (value));
 	break;
 
     case G_TYPE_STRING:
