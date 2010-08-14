@@ -26,9 +26,9 @@
 #include "guile-gnome-gobject.h"
 
 #define RESULT_ERROR(result) \
-  scm_throw (scm_str2symbol ("gnome-vfs-error"), \
+  scm_throw (scm_from_locale_symbol ("gnome-vfs-error"), \
              scm_list_1 \
-             (scm_str2symbol (g_enum_get_value \
+             (scm_from_locale_symbol (g_enum_get_value \
                               ((GEnumClass*)g_type_class_peek \
                                (GNOME_VFS_TYPE_VFS_RESULT), \
                                result)->value_nick)))

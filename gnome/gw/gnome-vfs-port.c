@@ -150,7 +150,7 @@ scm_gnome_vfs_handle_to_port (GnomeVFSHandle *handle, GnomeVFSOpenMode mode,
         scm_vport_buffer_add (port, 0, 0);
     else
         scm_vport_buffer_add (port, -1, -1);
-    SCM_SET_FILENAME (port, scm_makfrom0str (uri));
+    SCM_SET_FILENAME (port, scm_from_locale_string (uri));
 
     UNLOCK;
 
