@@ -64,7 +64,7 @@ print_corba_struct (SCM corba_struct, SCM port)
     tc = SCM_CORBA_STRUCT_TYPECODE (corba_struct);
 
     message = g_strdup_printf ("<CORBA-struct %p - %s>", corba_struct, tc->repo_id);
-    retval = scm_simple_format (port, scm_makfrom0str (message), SCM_EOL);
+    retval = scm_simple_format (port, scm_from_locale_string (message), SCM_EOL);
     g_free (message);
 
     return retval;
@@ -84,7 +84,7 @@ print_corba_sequence (SCM corba_sequence, SCM port)
     tc = SCM_CORBA_SEQUENCE_TYPECODE (corba_sequence);
 
     message = g_strdup_printf ("<CORBA-sequence %p - %s>", corba_sequence, tc->subtypes [0]->repo_id);
-    retval = scm_simple_format (port, scm_makfrom0str (message), SCM_EOL);
+    retval = scm_simple_format (port, scm_from_locale_string (message), SCM_EOL);
     g_free (message);
 
     return retval;
@@ -105,7 +105,7 @@ SCM_DEFINE (scm_corba_struct_fields, "corba-struct-fields", 1, 0, 0,
 
     fields = SCM_EOL;
     for (i = 0; i < tc->sub_parts; i++) {
-	SCM sym = scm_mem2symbol (tc->subnames [i], strlen (tc->subnames [i]));
+	SCM sym = scm_from_locale_symboln (tc->subnames [i], strlen (tc->subnames [i]));
 	fields = scm_append_x (SCM_LIST2 (fields, SCM_LIST1 (sym)));
     }
 
@@ -489,7 +489,7 @@ case CORBA_tk_ ## k:								\
     }
 
     case CORBA_tk_string:
-	retval = scm_mem2string (* (CORBA_char **) any->_value,
+	retval = scm_from_locale_stringn (* (CORBA_char **) any->_value,
 				 strlen (* (CORBA_char **) any->_value));
 	break;
 
@@ -666,7 +666,7 @@ guile_corba_typecode_print (SCM typecode_smob, SCM port, scm_print_state *pstate
     CORBA_TypeCode tc = (CORBA_TypeCode) SCM_SMOB_DATA (typecode_smob);
      
     scm_puts ("#<CORBA-TypeCode ", port);
-    scm_display (scm_makfrom0str (tc->repo_id), port);
+    scm_display (scm_from_locale_string (tc->repo_id), port);
     scm_puts (">", port);
      
     /* non-zero means success */
@@ -814,7 +814,8 @@ scm_init_gnome_corba_types (void)
 
     gsubr = scm_c_make_gsubr ("%print-corba-struct", 2, 0, 0, print_corba_struct);
     scm_corba_struct_vtable = scm_permanent_object
-        (scm_make_vtable_vtable (scm_makfrom0str ("srprprprpopopW"), scm_from_int (0), SCM_LIST1 (gsubr)));
+        (scm_make_vtable_vtable (scm_from_locale_string ("srprprprpopopW"),
+				 scm_from_int (0), SCM_LIST1 (gsubr)));
     SCM_SET_CORBA_STRUCT_TYPECODE (scm_corba_struct_vtable, TC_CORBA_TypeCode);
     scm_c_define ("%corba-struct-vtable", scm_corba_struct_vtable);
     scm_c_define ("%corba-struct-vtable-offset-user", scm_from_int (scm_corba_struct_vtable_offset_user));
@@ -822,7 +823,8 @@ scm_init_gnome_corba_types (void)
 
     gsubr = scm_c_make_gsubr ("%print-corba-sequence", 2, 0, 0, print_corba_sequence);
     scm_corba_sequence_vtable = scm_permanent_object
-        (scm_make_vtable_vtable (scm_makfrom0str ("srprprprpopW"), scm_from_int (0), SCM_LIST1 (gsubr)));
+        (scm_make_vtable_vtable (scm_from_locale_string ("srprprprpopW"),
+				 scm_from_int (0), SCM_LIST1 (gsubr)));
     SCM_SET_CORBA_SEQUENCE_TYPECODE (scm_corba_sequence_vtable, TC_CORBA_TypeCode);
     scm_c_define ("%corba-sequence-vtable", scm_corba_sequence_vtable);
     scm_c_define ("%corba-sequence-vtable-offset-user", scm_from_int (scm_corba_sequence_vtable_offset_user));

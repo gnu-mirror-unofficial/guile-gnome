@@ -90,7 +90,7 @@ make_scm_module_name (const gchar *module_name)
     parts = g_strsplit (module_name, ":", 0);
     for (ptr = parts; *ptr; ptr++)
 	scm_name = scm_append_x (SCM_LIST2 (scm_name, SCM_LIST1 (
-                                                    scm_str2symbol (*ptr))));
+                                                    scm_from_locale_symbol (*ptr))));
     g_strfreev (parts);
 
     return scm_name;
@@ -115,22 +115,22 @@ scm_c_corba_handle_exception (CORBA_Environment *ev)
 {
     SCM name;
 
-    name = scm_mem2string (ev->_id, strlen (ev->_id));
+    name = scm_from_locale_stringn (ev->_id, strlen (ev->_id));
 
     if (ev->_major == CORBA_SYSTEM_EXCEPTION) {
 	CORBA_SystemException *se = CORBA_exception_value (ev);
 	SCM minor, completed;
 
-	minor = scm_long2num (se->minor);;
+	minor = scm_from_long (se->minor);;
 	switch (se->completed) {
 	case CORBA_COMPLETED_YES:
-	    completed = scm_str2symbol ("completed");
+	    completed = scm_from_locale_symbol ("completed");
 	    break;
 	case CORBA_COMPLETED_NO:
-	    completed = scm_str2symbol ("not-completed");
+	    completed = scm_from_locale_symbol ("not-completed");
 	    break;
 	default:
-	    completed = scm_str2symbol ("maybe-completed");
+	    completed = scm_from_locale_symbol ("maybe-completed");
 	    break;
 	}
 
@@ -338,7 +338,7 @@ repo_id_to_symbol (const gchar *format, const gchar *repo_id)
     SCM retval;
 
     new_repo_id = guile_corba_generic_repo_id_to_name (format, repo_id);
-    retval = scm_mem2symbol (new_repo_id, strlen (new_repo_id));
+    retval = scm_from_locale_symboln (new_repo_id, strlen (new_repo_id));
     g_free (new_repo_id);
     return retval;
 }
