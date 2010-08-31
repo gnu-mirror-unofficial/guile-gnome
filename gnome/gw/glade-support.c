@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2003,2004,2010 Andy Wingo <wingo at pobox dot com>
  *
  * glade-support.c: Support routines for the libglade wrapper
  *
@@ -26,8 +26,8 @@
 #include "guile-gnome-gobject.h"
 
 #define GRUNTIME_ERROR(format, func_name, args...) \
-  scm_error_scm (scm_str2symbol ("gruntime-error"), scm_makfrom0str (func_name), \
-                 scm_simple_format (SCM_BOOL_F, scm_makfrom0str (format), \
+  scm_error_scm (scm_from_locale_symbol ("gruntime-error"), scm_from_locale_string (func_name), \
+                 scm_simple_format (SCM_BOOL_F, scm_from_locale_string (format), \
                                     scm_list_n (args, SCM_UNDEFINED)), \
                  SCM_EOL, SCM_EOL)
 
@@ -54,7 +54,7 @@ connect_one (const gchar *handler_name, GObject *object, const gchar *signal_nam
     proc = GPOINTER_TO_SCM (user_data);
     scm_call_4 (gtype_instance_signal_connect_data,
                 scm_c_gtype_instance_to_scm (object),
-                scm_str2symbol (signal_name),
+                scm_from_locale_symbol (signal_name),
                 proc,
                 after ? SCM_BOOL_T : SCM_BOOL_F);
 }
@@ -72,7 +72,7 @@ _wrap_glade_xml_signal_connect (GladeXML *xml, const char *handlername, SCM proc
 SCM handle_read_error (char *handler_name, SCM tag, SCM throw_args) 
 {
     GRUNTIME_ERROR ("Error while reading signal handler ~S: ~A: ~S",
-                    "glade-xml-signal-autoconnect", scm_makfrom0str (handler_name),
+                    "glade-xml-signal-autoconnect", scm_from_locale_string (handler_name),
                     tag, throw_args);
 }
 
@@ -92,8 +92,8 @@ connect_many (const gchar *handler_name, GObject *object, const gchar *signal_na
                      module);
     if (SCM_FALSEP (scm_procedure_p (proc)))
         GRUNTIME_ERROR ("Tried to set `~A' to handle signal `~A', but it's not a procedure",
-                        "glade-xml-signal-autoconnect", scm_makfrom0str (handler_name),
-                        scm_makfrom0str (signal_name));
+                        "glade-xml-signal-autoconnect", scm_from_locale_string (handler_name),
+                        scm_from_locale_string (signal_name));
 
     connect_one (NULL, object, signal_name, NULL, NULL, after,
                  SCM_TO_GPOINTER (proc));
