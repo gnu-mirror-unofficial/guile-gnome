@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2003,2004,2010 Andy Wingo <wingo at pobox dot com>
  *
  * gtk-support.h: Customizations for guile-gtk
  *
@@ -117,6 +117,6 @@ void _wrap_gtk_tree_view_column_set_cell_data_func (GtkTreeViewColumn *tree_colu
 guint _wrap_gtk_ui_manager_add_ui_from_string (GtkUIManager *ui, const gchar *string, GError **error);
 
 GdkWindow* gtk_widget_get_window (GtkWidget *widget);
-GdkRectangle* gtk_widget_get_allocation (GtkWidget *widget);
+GdkRectangle* _wrap_gtk_widget_get_allocation (GtkWidget *widget);
 void _wrap_gtk_drag_dest_set (GtkWidget *widget, GtkDestDefaults flags, const GList *types, GdkDragAction actions);
 GtkStateType gtk_widget_get_state (GtkWidget *widget);

@@ -1,6 +1,6 @@
 ;; -*- scheme -*-
 ;; guile-gnome
-;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2003,2004,2010 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -848,7 +848,7 @@
 
 (define-method get-allocation
   (of-object "GtkWidget")
-  (c-name "gtk_widget_get_allocation")
+  (c-name "_wrap_gtk_widget_get_allocation")
   (return-type "GdkRectangle*")) ;; same as GtkAllocation
 
 (define-method get_state

@@ -1006,10 +1006,14 @@ gtk_widget_get_window (GtkWidget *widget)
 }
 
 GdkRectangle*
-gtk_widget_get_allocation (GtkWidget *widget)
+_wrap_gtk_widget_get_allocation (GtkWidget *widget)
 {
     GdkRectangle *ret = g_new (GdkRectangle, 1);
-    *ret = widget->allocation;
+#if GTK_CHECK_VERSION(2,18,0)
+    gtk_widget_get_allocation (widget, (GtkAllocation*)ret);
+#else
+     *ret = widget->allocation;
+#endif
     return ret;
 }
 
