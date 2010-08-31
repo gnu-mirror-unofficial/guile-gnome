@@ -642,99 +642,93 @@ GtkTextIter*
 _wrap_gtk_text_buffer_get_iter_at_line_offset (GtkTextBuffer *buf, gint line_number,
                                                gint char_offset)
 {
-    GtkTextIter* iter = g_new0 (GtkTextIter, 1);
-    gtk_text_buffer_get_iter_at_line_offset (buf, iter, line_number, char_offset);
-    return iter;
+    GtkTextIter iter;
+    gtk_text_buffer_get_iter_at_line_offset (buf, &iter, line_number, char_offset);
+    return gtk_text_iter_copy (&iter);
 }
 
 GtkTextIter*
 _wrap_gtk_text_buffer_get_iter_at_line_index (GtkTextBuffer *buf, gint line_number,
                                               gint byte_index)
 {
-    GtkTextIter* iter = g_new0 (GtkTextIter, 1);
-    gtk_text_buffer_get_iter_at_line_index (buf, iter, line_number, byte_index);
-    return iter;
+    GtkTextIter iter;
+    gtk_text_buffer_get_iter_at_line_index (buf, &iter, line_number, byte_index);
+    return gtk_text_iter_copy (&iter);
 }
 
 GtkTextIter*
 _wrap_gtk_text_buffer_get_iter_at_offset (GtkTextBuffer *buf, gint char_offset)
 {
-    GtkTextIter* iter = g_new0 (GtkTextIter, 1);
-    gtk_text_buffer_get_iter_at_offset (buf, iter, char_offset);
-    return iter;
+    GtkTextIter iter;
+    gtk_text_buffer_get_iter_at_offset (buf, &iter, char_offset);
+    return gtk_text_iter_copy (&iter);
 }
 
 GtkTextIter*
 _wrap_gtk_text_buffer_get_iter_at_line (GtkTextBuffer *buf, gint line_number)
 {
-    GtkTextIter* iter = g_new0 (GtkTextIter, 1);
-    gtk_text_buffer_get_iter_at_line (buf, iter, line_number);
-    return iter;
+    GtkTextIter iter;
+    gtk_text_buffer_get_iter_at_line (buf, &iter, line_number);
+    return gtk_text_iter_copy (&iter);
 }
 
 GtkTextIter*
 _wrap_gtk_text_buffer_get_start_iter (GtkTextBuffer *buf)
 {
-    GtkTextIter* iter = g_new0 (GtkTextIter, 1);
-    gtk_text_buffer_get_start_iter (buf, iter);
-    return iter;
+    GtkTextIter iter;
+    gtk_text_buffer_get_start_iter (buf, &iter);
+    return gtk_text_iter_copy (&iter);
 }
 
 GtkTextIter*
 _wrap_gtk_text_buffer_get_end_iter (GtkTextBuffer *buf)
 {
-    GtkTextIter* iter = g_new0 (GtkTextIter, 1);
-    gtk_text_buffer_get_end_iter (buf, iter);
-    return iter;
+    GtkTextIter iter;
+    gtk_text_buffer_get_end_iter (buf, &iter);
+    return gtk_text_iter_copy (&iter);
 }
 
 SCM
 _wrap_gtk_text_buffer_get_bounds (GtkTextBuffer *buf)
 {
-    GtkTextIter *start, *end;
+    GtkTextIter start, end;
     SCM sstart, send;
     
-    start = g_new0 (GtkTextIter, 1);
-    end = g_new0 (GtkTextIter, 1);
-    gtk_text_buffer_get_bounds (buf, start, end);
-    sstart = scm_c_gvalue_new_take_boxed (GTK_TYPE_TEXT_ITER, start);
-    send = scm_c_gvalue_new_take_boxed (GTK_TYPE_TEXT_ITER, end);
+    gtk_text_buffer_get_bounds (buf, &start, &end);
+    sstart = scm_c_gvalue_new_from_boxed (GTK_TYPE_TEXT_ITER, &start);
+    send = scm_c_gvalue_new_from_boxed (GTK_TYPE_TEXT_ITER, &end);
     return scm_values (SCM_LIST2 (sstart, send));
 }
 
 SCM
 _wrap_gtk_text_buffer_get_selection_bounds (GtkTextBuffer *buf)
 {
-    GtkTextIter *start, *end;
+    GtkTextIter start, end;
     SCM sstart, send;
     
-    start = g_new0 (GtkTextIter, 1);
-    end = g_new0 (GtkTextIter, 1);
-    if (gtk_text_buffer_get_selection_bounds (buf, start, end)) {
-        sstart = scm_c_gvalue_new_take_boxed (GTK_TYPE_TEXT_ITER, start);
-        send = scm_c_gvalue_new_take_boxed (GTK_TYPE_TEXT_ITER, end);
+    if (gtk_text_buffer_get_selection_bounds (buf, &start, &end)) {
+        sstart = scm_c_gvalue_new_from_boxed (GTK_TYPE_TEXT_ITER, &start);
+        send = scm_c_gvalue_new_from_boxed (GTK_TYPE_TEXT_ITER, &end);
         return scm_values (SCM_LIST2 (sstart, send));
     }
-    g_free (start);
-    g_free (end);
     return scm_values (SCM_LIST2 (SCM_BOOL_F, SCM_BOOL_F));
 }
 
 GtkTextIter*
 _wrap_gtk_text_buffer_get_iter_at_mark (GtkTextBuffer *buf, GtkTextMark* mark)
 {
-    GtkTextIter* iter = g_new0 (GtkTextIter, 1);
-    gtk_text_buffer_get_iter_at_mark (buf, iter, mark);
-    return iter;
+    GtkTextIter iter;
+    gtk_text_buffer_get_iter_at_mark (buf, &iter, mark);
+    return gtk_text_iter_copy (&iter);
 }
 
 GtkTextIter*
 _wrap_gtk_text_buffer_get_iter_at_child_anchor (GtkTextBuffer *buf,
                                                 GtkTextChildAnchor* anchor)
 {
-    GtkTextIter* iter = g_new0 (GtkTextIter, 1);
-    gtk_text_buffer_get_iter_at_child_anchor (buf, iter, anchor);
-    return iter;
+    GtkTextIter iter;
+    gtk_text_buffer_get_iter_at_child_anchor (buf, &iter, anchor);
+    return gtk_text_iter_copy (&iter);
 }
 
 GtkTreeIter*
