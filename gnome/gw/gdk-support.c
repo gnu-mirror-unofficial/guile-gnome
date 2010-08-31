@@ -116,9 +116,9 @@ gdk_event_to_vector (GdkEvent *event)
             VSET (ret, 0, scm_from_int (event->type));
             VSET (ret, 1, scm_c_gtype_instance_to_scm (eselection.window));
             VSET (ret, 2, eselection.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            VSET (ret, 3, scm_take0str (gdk_atom_name (eselection.selection)));
-            VSET (ret, 4, scm_take0str (gdk_atom_name (eselection.target)));
-            VSET (ret, 5, scm_take0str (gdk_atom_name (eselection.property)));
+            VSET (ret, 3, scm_take_locale_string (gdk_atom_name (eselection.selection)));
+            VSET (ret, 4, scm_take_locale_string (gdk_atom_name (eselection.target)));
+            VSET (ret, 5, scm_take_locale_string (gdk_atom_name (eselection.property)));
             VSET (ret, 6, scm_from_ulong (eselection.time));
             VSET (ret, 7, scm_from_int (eselection.requestor));
 
@@ -265,7 +265,7 @@ scm_scm_to_gdk_color (SCM scm)
   }
     
 #define GET_VUSHORT(v,i)                                                \
-  scm_to_ushort (scm_vector_ref (v, scm_from_int (i)), 0, FUNC_NAME)
+  scm_to_ushort (scm_vector_ref (v, scm_from_int (i)))
 
   ret->red = GET_VUSHORT (scm, 0);
   ret->green = GET_VUSHORT (scm, 1);
