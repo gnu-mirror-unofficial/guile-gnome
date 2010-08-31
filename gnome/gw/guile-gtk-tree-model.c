@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2003, 2010 Andy Wingo <wingo at pobox dot com>
  *
  * guile-gtk-tree-model.c: A tree model for guile-gtk
  *
@@ -244,7 +244,7 @@ _with_guile_gtk_generic_tree_model_get_n_columns (void *p)
     scm_obj = scm_c_gtype_instance_to_scm ((GTypeInstance*)tree_model);
     scm_ret = scm_call_1 (PROC_FROM_INSTANCE (tree_model, on_get_n_columns), scm_obj);
 
-    a->i = SCM_NUM2INT (0, scm_ret);
+    a->i = scm_to_int (scm_ret);
     return NULL;
 }
 static gint
@@ -523,7 +523,7 @@ _with_guile_gtk_generic_tree_model_iter_n_children (void *p)
     scm_ret = scm_call_2 (PROC_FROM_INSTANCE (tree_model, on_iter_n_children),
                           scm_obj, GET_ITER_VAL_OR_FALSE (iter));
 
-    a->i = SCM_NUM2INT (0, scm_ret);
+    a->i = scm_to_int (scm_ret);
     return NULL;
 }
 static gint

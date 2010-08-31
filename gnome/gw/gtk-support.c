@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2003, 2010 Andy Wingo <wingo at pobox dot com>
  *
  * gtk-support.c: Customizations for guile-gtk
  *
@@ -151,7 +151,7 @@ _wrap_gtk_action_group_add_actions (GtkActionGroup *action_group,
         if (5 < l && SCM_NFALSEP ((x = scm_list_ref (entry, scm_from_uint16 (5)))))
             scm_call_3 (connect,
                         scm_c_gtype_instance_to_scm ((GTypeInstance*)action),
-                        scm_str2symbol ("activate"), x);
+                        scm_from_locale_string ("activate"), x);
 
         gtk_action_group_add_action_with_accel (action_group, action, accelerator);
         g_object_unref (action);
@@ -198,7 +198,7 @@ _wrap_gtk_action_group_add_toggle_actions (GtkActionGroup *action_group,
         if (5 < l && SCM_NFALSEP ((x = scm_list_ref (entry, scm_from_uint16 (5)))))
             scm_call_3 (connect,
                         scm_c_gtype_instance_to_scm ((GTypeInstance*)action),
-                        scm_str2symbol ("activate"), x);
+                        scm_from_locale_string ("activate"), x);
 
         GET_ACTION_BOOL (is_active, 6);
         gtk_toggle_action_set_active (action, is_active);
@@ -508,11 +508,11 @@ _wrap_gtk_stock_lookup (const gchar *stock_id)
     GtkStockItem item;
 	
     if (gtk_stock_lookup (stock_id, &item)) {
-        return SCM_LIST5 (scm_makfrom0str (item.stock_id),
-                          scm_makfrom0str (item.label),
+        return SCM_LIST5 (scm_from_locale_string (item.stock_id),
+                          scm_from_locale_string (item.label),
                           scm_from_uint (item.modifier),
                           scm_from_uint (item.keyval),
-                          scm_makfrom0str (item.translation_domain));
+                          scm_from_locale_string (item.translation_domain));
     }
 
     return SCM_BOOL_F;

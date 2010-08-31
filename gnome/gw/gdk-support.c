@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2003,2004,2010 Andy Wingo <wingo at pobox dot com>
  *
  * gdk-support.c: Support routines for the GDK wrapper
  *
@@ -43,7 +43,7 @@ gdk_event_to_vector (GdkEvent *event)
             VSET (ret, 0, scm_from_int (event->type));
             VSET (ret, 1, scm_c_gtype_instance_to_scm (ekey.window));
             VSET (ret, 2, ekey.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            VSET (ret, 3, scm_ulong2num (ekey.time));
+            VSET (ret, 3, scm_from_ulong (ekey.time));
             VSET (ret, 4, scm_from_int (ekey.state));
             VSET (ret, 5, scm_from_int (ekey.keyval));
             VSET (ret, 6, scm_from_int (ekey.hardware_keycode));
@@ -64,14 +64,14 @@ gdk_event_to_vector (GdkEvent *event)
             VSET (ret, 0, scm_from_int (event->type));
             VSET (ret, 1, scm_c_gtype_instance_to_scm (ebutton.window));
             VSET (ret, 2, ebutton.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            VSET (ret, 3, scm_ulong2num (ebutton.time));
-            VSET (ret, 4, scm_double2num (ebutton.x));
-            VSET (ret, 5, scm_double2num (ebutton.y));
+            VSET (ret, 3, scm_from_ulong (ebutton.time));
+            VSET (ret, 4, scm_from_double (ebutton.x));
+            VSET (ret, 5, scm_from_double (ebutton.y));
             VSET (ret, 6, scm_from_int (ebutton.state));
             VSET (ret, 7, scm_from_int (ebutton.button));
             VSET (ret, 8, scm_c_gtype_instance_to_scm (ebutton.device));
-            VSET (ret, 9, scm_double2num (ebutton.x_root));
-            VSET (ret, 10, scm_double2num (ebutton.y_root));
+            VSET (ret, 9, scm_from_double (ebutton.x_root));
+            VSET (ret, 10, scm_from_double (ebutton.y_root));
             return ret;
         }
     case GDK_ENTER_NOTIFY:
@@ -92,11 +92,11 @@ gdk_event_to_vector (GdkEvent *event)
 	    else
 	      VSET (ret, 3, SCM_BOOL_F);
 	      
-            VSET (ret, 4, scm_ulong2num (ecrossing.time));
-            VSET (ret, 5, scm_double2num (ecrossing.x));
-            VSET (ret, 6, scm_double2num (ecrossing.y));
-            VSET (ret, 7, scm_double2num (ecrossing.x_root));
-            VSET (ret, 8, scm_double2num (ecrossing.y_root));
+            VSET (ret, 4, scm_from_ulong (ecrossing.time));
+            VSET (ret, 5, scm_from_double (ecrossing.x));
+            VSET (ret, 6, scm_from_double (ecrossing.y));
+            VSET (ret, 7, scm_from_double (ecrossing.x_root));
+            VSET (ret, 8, scm_from_double (ecrossing.y_root));
             VSET (ret, 9, scm_from_int (ecrossing.mode));
             VSET (ret, 10, scm_from_int (ecrossing.detail));
             VSET (ret, 11, SCM_BOOL (ecrossing.focus));
@@ -119,7 +119,7 @@ gdk_event_to_vector (GdkEvent *event)
             VSET (ret, 3, scm_take0str (gdk_atom_name (eselection.selection)));
             VSET (ret, 4, scm_take0str (gdk_atom_name (eselection.target)));
             VSET (ret, 5, scm_take0str (gdk_atom_name (eselection.property)));
-            VSET (ret, 6, scm_ulong2num (eselection.time));
+            VSET (ret, 6, scm_from_ulong (eselection.time));
             VSET (ret, 7, scm_from_int (eselection.requestor));
 
             return ret;
@@ -135,15 +135,15 @@ gdk_event_to_vector (GdkEvent *event)
             VSET (ret, 0, scm_from_int (event->type));
             VSET (ret, 1, scm_c_gtype_instance_to_scm (emotion.window));
             VSET (ret, 2, emotion.send_event ? SCM_BOOL_T : SCM_BOOL_F);
-            VSET (ret, 3, scm_ulong2num (emotion.time));
-            VSET (ret, 4, scm_double2num (emotion.x));
-            VSET (ret, 5, scm_double2num (emotion.y));
+            VSET (ret, 3, scm_from_ulong (emotion.time));
+            VSET (ret, 4, scm_from_double (emotion.x));
+            VSET (ret, 5, scm_from_double (emotion.y));
             VSET (ret, 6, scm_from_int (emotion.state));
             VSET (ret, 7, emotion.is_hint ? SCM_BOOL_T : SCM_BOOL_F);
             VSET (ret, 8, 
                             scm_c_gtype_instance_to_scm (emotion.device));
-            VSET (ret, 9, scm_double2num (emotion.x_root));
-            VSET (ret, 10, scm_double2num (emotion.y_root));
+            VSET (ret, 9, scm_from_double (emotion.x_root));
+            VSET (ret, 10, scm_from_double (emotion.y_root));
             return ret;
         }
     case GDK_WINDOW_STATE:
@@ -190,10 +190,10 @@ scm_gdk_rectangle_to_scm (GdkRectangle *rect)
 {
     SCM ret = scm_c_make_vector (4, SCM_BOOL_F);
 
-    VSET (ret, 0, scm_int2num (rect->x));
-    VSET (ret, 1, scm_int2num (rect->y));
-    VSET (ret, 2, scm_int2num (rect->width));
-    VSET (ret, 3, scm_int2num (rect->height));
+    VSET (ret, 0, scm_from_int (rect->x));
+    VSET (ret, 1, scm_from_int (rect->y));
+    VSET (ret, 2, scm_from_int (rect->width));
+    VSET (ret, 3, scm_from_int (rect->height));
 
     return ret;
 }
@@ -209,17 +209,17 @@ GdkRectangle*
 scm_scm_to_gdk_rectangle (SCM scm)
 #define FUNC_NAME "%scm->gdk-rectangle"
 {
-    GdkRectangle *ret = gdk_rectangle_new ();
+  GdkRectangle *ret = gdk_rectangle_new ();
     
-#define GET_VINT(v,i) \
-  scm_num2int (scm_vector_ref (v, scm_from_int(i)), 0, FUNC_NAME)
+#define GET_VINT(v,i)                                                   \
+  scm_to_int (scm_vector_ref (v, scm_from_int(i)))
 
-    ret->x = GET_VINT (scm, 0);
-    ret->y = GET_VINT (scm, 1);
-    ret->width = GET_VINT (scm, 2);
-    ret->height = GET_VINT (scm, 3);
+  ret->x = GET_VINT (scm, 0);
+  ret->y = GET_VINT (scm, 1);
+  ret->width = GET_VINT (scm, 2);
+  ret->height = GET_VINT (scm, 3);
 
-    return ret;
+  return ret;
 }
 #undef FUNC_NAME
 
@@ -228,9 +228,9 @@ scm_gdk_color_to_scm (GdkColor *c)
 {
     SCM ret = scm_c_make_vector (3, SCM_BOOL_F);
 
-    VSET (ret, 0, scm_ushort2num (c->red));
-    VSET (ret, 1, scm_ushort2num (c->green));
-    VSET (ret, 2, scm_ushort2num (c->blue));
+    VSET (ret, 0, scm_from_ushort (c->red));
+    VSET (ret, 1, scm_from_ushort (c->green));
+    VSET (ret, 2, scm_from_ushort (c->blue));
 
     return ret;
 }
@@ -250,27 +250,27 @@ GdkColor*
 scm_scm_to_gdk_color (SCM scm)
 #define FUNC_NAME "%scm->gdk-rectangle"
 {
-    GdkColor *ret = gdk_color_new();
+  GdkColor *ret = gdk_color_new();
     
-    if (scm_is_string (scm)) {
-        char *chars;
-        gboolean success;
+  if (scm_is_string (scm)) {
+    char *chars;
+    gboolean success;
 
-        chars = scm_to_locale_string (scm);
-        success = gdk_color_parse (chars, ret);
-        free (chars);
-        if (success)
-            return ret;
-        /* FIXME: give a proper error */
-    }
+    chars = scm_to_locale_string (scm);
+    success = gdk_color_parse (chars, ret);
+    free (chars);
+    if (success)
+      return ret;
+    /* FIXME: give a proper error */
+  }
     
-#define GET_VUSHORT(v,i) \
-  scm_num2ushort (scm_vector_ref (v, scm_from_int (i)), 0, FUNC_NAME)
+#define GET_VUSHORT(v,i)                                                \
+  scm_to_ushort (scm_vector_ref (v, scm_from_int (i)), 0, FUNC_NAME)
 
-    ret->red = GET_VUSHORT (scm, 0);
-    ret->green = GET_VUSHORT (scm, 1);
-    ret->blue = GET_VUSHORT (scm, 2);
+  ret->red = GET_VUSHORT (scm, 0);
+  ret->green = GET_VUSHORT (scm, 1);
+  ret->blue = GET_VUSHORT (scm, 2);
 
-    return ret;
+  return ret;
 }
 #undef FUNC_NAME
