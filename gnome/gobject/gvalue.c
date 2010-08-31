@@ -1,6 +1,6 @@
 /* -*- Mode: C; c-basic-offset: 4 -*- */
 /* guile-gnome
- * Copyright (C) 2001, 2009 Martin Baulig <martin@gnome.org>
+ * Copyright (C) 2001, 2009, 2010 Martin Baulig <martin@gnome.org>
  * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
  *
  * gvalue.c: Support for GValue-based types
@@ -315,27 +315,27 @@ scm_c_gvalue_set (GValue *gvalue, SCM value)
 	break;
 
     case G_TYPE_INT:
-	g_value_set_int (gvalue, SCM_NUM2INT (2, value));
+	g_value_set_int (gvalue, scm_to_int (value));
 	break;
 
     case G_TYPE_UINT:
-	g_value_set_uint (gvalue, SCM_NUM2UINT (2, value));
+	g_value_set_uint (gvalue, scm_to_uint (value));
 	break;
 
     case G_TYPE_LONG:
-	g_value_set_long (gvalue, SCM_NUM2LONG (2, value));
+	g_value_set_long (gvalue, scm_to_long (value));
 	break;
 
     case G_TYPE_ULONG:
-	g_value_set_ulong (gvalue, SCM_NUM2ULONG (2, value));
+	g_value_set_ulong (gvalue, scm_to_ulong (value));
 	break;
 
     case G_TYPE_INT64:
-	g_value_set_int64 (gvalue, SCM_NUM2INT (2, value));
+	g_value_set_int64 (gvalue, scm_to_int64 (value));
 	break;
 
     case G_TYPE_UINT64:
-	g_value_set_uint64 (gvalue, SCM_NUM2UINT (2, value));
+	g_value_set_uint64 (gvalue, scm_to_uint64 (value));
 	break;
 
     case G_TYPE_FLOAT: {
