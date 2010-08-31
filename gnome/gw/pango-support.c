@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2007 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2007, 2010 Andy Wingo <wingo at pobox dot com>
  *
  * pango-support.c: Support routines for the Pango wrapper
  *
@@ -31,10 +31,10 @@ scm_pango_rectangle_to_scm (PangoRectangle *rect)
 {
     SCM ret = scm_c_make_vector (4, SCM_BOOL_F);
 
-    scm_c_vector_set_x (ret, 0, scm_int2num (rect->x));
-    scm_c_vector_set_x (ret, 1, scm_int2num (rect->y));
-    scm_c_vector_set_x (ret, 2, scm_int2num (rect->width));
-    scm_c_vector_set_x (ret, 3, scm_int2num (rect->height));
+    scm_c_vector_set_x (ret, 0, scm_from_int (rect->x));
+    scm_c_vector_set_x (ret, 1, scm_from_int (rect->y));
+    scm_c_vector_set_x (ret, 2, scm_from_int (rect->width));
+    scm_c_vector_set_x (ret, 3, scm_from_int (rect->height));
 
     return ret;
 }
@@ -44,7 +44,7 @@ scm_scm_to_pango_rectangle (SCM scm, PangoRectangle* rect)
 #define FUNC_NAME "%scm->pango-rectangle"
 {
 #define GET_VINT(v,i) \
-    scm_num2int (scm_c_vector_ref (v, i), 0, FUNC_NAME)
+    scm_to_int (scm_c_vector_ref (v, i));
 
     rect->x = GET_VINT (scm, 0);
     rect->y = GET_VINT (scm, 1);
