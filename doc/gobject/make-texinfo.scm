@@ -4,7 +4,7 @@ exec guile --debug -s $0 "$@"
 !#
 
 ;; guile-gnome
-;; Copyright (C) 2006 Free Software Foundation
+;; Copyright (C) 2006, 2010 Free Software Foundation
 ;; Copyright (C) 2007 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
@@ -36,11 +36,16 @@ exec guile --debug -s $0 "$@"
              (srfi srfi-13)
              (srfi srfi-14))
 
-(define (snarf-line? line)
-  "Return true if @var{line} (a string) can be considered a line produced by
-the @code{snarf.h} snarfing macros."
+(define (snarf-line-start? line)
+  "Return true if @var{line} (a string) can be considered to start a
+block produced by the @code{snarf.h} snarfing macros."
   (and (>= (string-length line) 4)
        (string=? (substring line 0 4) "^^ {")))
+
+(define (snarf-line-finish? line)
+  "Return true if @var{line} (a string) can be considered to end a
+block produced by the @code{snarf.h} snarfing macros."
+  (string-contains? line "^^ }"))
 
 (define (parse-c-argument-list arg-string)
   "Parse @var{arg-string} (a string representing a ANSI C argument list,
@@ -152,9 +157,12 @@ preprocessor output."
     ;;(format (current-error-port) "line: ~a~%" line)
     (if (eof-object? line)
         result
-        (cond ((snarf-line? line)
-               (loop (read-line port)
-                     (cons (parse-snarfed-line line) result)))
+        (cond ((snarf-line-start? line)
+               (let fill ((line line))
+                 (if (snarf-line-finish? line)
+                     (loop (read-line port)
+                           (cons (parse-snarfed-line line) result))
+                     (fill (string-append line (read-line port))))))
               (else
                (loop (read-line port) result))))))
 
