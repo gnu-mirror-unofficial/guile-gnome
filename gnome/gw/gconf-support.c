@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2004 Free Software Foundation, Inc.
+ * Copyright (C) 2004, 2010 Free Software Foundation, Inc.
  *
  * gconf-support.c: Support routines for the gconf wrapper
  *
@@ -26,8 +26,8 @@
 #include "guile-gnome-gobject.h"
 
 #define GRUNTIME_ERROR(format, func_name, args...) \
-  scm_error_scm (scm_str2symbol ("gruntime-error"), scm_makfrom0str (func_name), \
-                 scm_simple_format (SCM_BOOL_F, scm_makfrom0str (format), \
+  scm_error_scm (scm_from_locale_symbol ("gruntime-error"), scm_from_locale_string (func_name), \
+                 scm_simple_format (SCM_BOOL_F, scm_from_locale_string (format), \
                                     scm_list_n (args, SCM_UNDEFINED)), \
                  SCM_EOL, SCM_EOL)
 
@@ -57,15 +57,15 @@ SCM
 scm_c_gconf_value_to_scm (const GConfValue *value)
 {
     if (!value)
-        scm_throw (scm_str2symbol ("value-unset"), SCM_EOL);
+        scm_throw (scm_from_locale_symbol ("value-unset"), SCM_EOL);
     
     switch (value->type) {
     case GCONF_VALUE_STRING:
-        return scm_makfrom0str (gconf_value_get_string (value));
+        return scm_from_locale_string (gconf_value_get_string (value));
     case GCONF_VALUE_INT:
-        return scm_int2num (gconf_value_get_int (value));
+        return scm_from_int (gconf_value_get_int (value));
     case GCONF_VALUE_FLOAT:
-        return scm_float2num (gconf_value_get_float (value));
+        return scm_from_double (gconf_value_get_float (value));
     case GCONF_VALUE_BOOL:
         return SCM_BOOL (gconf_value_get_bool (value));
     case GCONF_VALUE_SCHEMA:
@@ -81,14 +81,14 @@ scm_c_gconf_value_to_scm (const GConfValue *value)
         for (walk = head; walk; walk = walk->next) {
             switch (t) {
             case GCONF_VALUE_STRING:
-                ret = scm_cons (scm_makfrom0str ((char*)walk->data), ret);
+                ret = scm_cons (scm_from_locale_string ((char*)walk->data), ret);
                 g_free (walk->data);
                 break;
             case GCONF_VALUE_INT:
-                ret = scm_cons (scm_int2num (GPOINTER_TO_INT (walk->data)), ret);
+                ret = scm_cons (scm_from_int (GPOINTER_TO_INT (walk->data)), ret);
                 break;
             case GCONF_VALUE_FLOAT:
-                ret = scm_cons (scm_float2num (*(float*)walk->data), ret);
+                ret = scm_cons (scm_from_double (*(float*)walk->data), ret);
                 g_free (walk->data);
                 break;
             case GCONF_VALUE_BOOL:
@@ -100,7 +100,7 @@ scm_c_gconf_value_to_scm (const GConfValue *value)
                                 ret);
                 break;
             default:
-                scm_throw (scm_str2symbol ("unknown-value"),
+                scm_throw (scm_from_locale_symbol ("unknown-value"),
                            SCM_LIST1 (scm_from_int (t)));
             }
         }
@@ -111,7 +111,7 @@ scm_c_gconf_value_to_scm (const GConfValue *value)
         return scm_cons (scm_c_gconf_value_to_scm (gconf_value_get_car (value)),
                          scm_c_gconf_value_to_scm (gconf_value_get_cdr (value)));
     default:
-        scm_throw (scm_str2symbol ("unknown-value"),
+        scm_throw (scm_from_locale_symbol ("unknown-value"),
                    SCM_LIST1 (scm_from_int (value->type)));
     }
     return SCM_BOOL_F; /* shouldn't get here */
@@ -185,15 +185,15 @@ scm_c_scm_to_gconf_value (SCM value)
         ret = gconf_value_new (GCONF_VALUE_INT);
         gconf_value_set_int (ret, scm_to_int (value));
     } else if (SCM_NFALSEP (scm_exact_p (value))) {
-        if (SCM_NFALSEP (scm_leq_p (value, scm_uint2num (G_MAXINT)))) {
+        if (SCM_NFALSEP (scm_leq_p (value, scm_from_uint (G_MAXINT)))) {
             ret = gconf_value_new (GCONF_VALUE_INT);
-            gconf_value_set_int (ret, scm_num2int (value, 1, FUNC_NAME));
+            gconf_value_set_int (ret, scm_to_int (value));
         } else {
             scm_misc_error (FUNC_NAME, "Invalid value: ~A", scm_list_1 (value));
         }
     } else if (SCM_NFALSEP (scm_inexact_p (value))) {
         ret = gconf_value_new (GCONF_VALUE_FLOAT);
-        gconf_value_set_float (ret, scm_num2float (value, 1, FUNC_NAME));
+        gconf_value_set_float (ret, scm_to_double (value));
     } else if (scm_is_string (value)) {
         char *chars;
         ret = gconf_value_new (GCONF_VALUE_STRING);
@@ -235,7 +235,7 @@ with_notify_proc (GConfClient *client, guint cnxn_id, GConfEntry *entry,
     
     proc = GPOINTER_TO_SCM (user_data);
     sclient = scm_c_gtype_instance_to_scm ((GTypeInstance*)client);
-    key = scm_str2symbol (gconf_entry_get_key (entry));
+    key = scm_from_locale_symbol (gconf_entry_get_key (entry));
     val = scm_c_gconf_value_to_scm (gconf_entry_get_value (entry));
 
     scm_call_4 (proc, sclient, scm_from_uint (cnxn_id), key, val);
