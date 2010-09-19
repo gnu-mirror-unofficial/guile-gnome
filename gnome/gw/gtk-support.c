@@ -370,41 +370,41 @@ _wrap_gtk_list_store_remove (GtkListStore *store, GtkTreeIter *iter)
 GtkTreeIter*
 _wrap_gtk_list_store_insert (GtkListStore *store, gint position)
 {
-    GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
-    gtk_list_store_insert (store, new, position);
-    return new;
+    GtkTreeIter new;
+    gtk_list_store_insert (store, &new, position);
+    return gtk_tree_iter_copy (&new);
 }
 
 GtkTreeIter*
 _wrap_gtk_list_store_insert_before (GtkListStore *store, GtkTreeIter *sibling)
 {
-    GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
-    gtk_list_store_insert_before (store, new, sibling);
-    return new;
+    GtkTreeIter new;
+    gtk_list_store_insert_before (store, &new, sibling);
+    return gtk_tree_iter_copy (&new);
 }
 
 GtkTreeIter*
 _wrap_gtk_list_store_insert_after (GtkListStore *store, GtkTreeIter *sibling)
 {
-    GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
-    gtk_list_store_insert_after (store, new, sibling);
-    return new;
+    GtkTreeIter new;
+    gtk_list_store_insert_after (store, &new, sibling);
+    return gtk_tree_iter_copy (&new);
 }
 
 GtkTreeIter*
 _wrap_gtk_list_store_prepend (GtkListStore *store)
 {
-    GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
-    gtk_list_store_prepend (store, new);
-    return new;
+    GtkTreeIter new;
+    gtk_list_store_prepend (store, &new);
+    return gtk_tree_iter_copy (&new);
 }
 
 GtkTreeIter*
 _wrap_gtk_list_store_append (GtkListStore *store)
 {
-    GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
-    gtk_list_store_append (store, new);
-    return new;
+    GtkTreeIter new;
+    gtk_list_store_append (store, &new);
+    return gtk_tree_iter_copy (&new);
 }
 
 static void
@@ -727,22 +727,20 @@ _wrap_gtk_text_buffer_get_iter_at_child_anchor (GtkTextBuffer *buf,
 GtkTreeIter*
 _wrap_gtk_tree_model_get_iter (GtkTreeModel *model, GtkTreePath *path)
 {
-    GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
+    GtkTreeIter new;
     
-    if (gtk_tree_model_get_iter (model, new, path))
-        return new;
-    g_free (new);
+    if (gtk_tree_model_get_iter (model, &new, path))
+        return gtk_tree_iter_copy (&new);
     return NULL;
 }
 
 GtkTreeIter*
 _wrap_gtk_tree_model_get_iter_first (GtkTreeModel *model) 
 {
-    GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
+    GtkTreeIter new;
     
-    if (gtk_tree_model_get_iter_first (model, new))
-        return new;
-    g_free (new);
+    if (gtk_tree_model_get_iter_first (model, &new))
+        return gtk_tree_iter_copy (&new);
     return NULL;
 }
 
@@ -771,59 +769,51 @@ GList*
 _wrap_gtk_tree_model_iter_children (GtkTreeModel *model, GtkTreeIter *iter)
 {
     GList *list = NULL;
-    GtkTreeIter *prev = g_new0 (GtkTreeIter, 1);
+    GtkTreeIter prev;
     
-    if (gtk_tree_model_iter_children (model, prev, iter)) {
+    if (gtk_tree_model_iter_children (model, &prev, iter)) {
         while (1) {
-            GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
+            list = g_list_prepend (list, gtk_tree_iter_copy (&prev));
 
-            list = g_list_prepend (list, prev);
-            *new = *prev;
-
-            if (!gtk_tree_model_iter_next (model, new)) {
-                g_free (new);
+            if (!gtk_tree_model_iter_next (model, &prev)) {
                 return g_list_reverse (list);
             }
-            prev = new;
         }
     }
-    g_free (prev);
     return NULL;
 }
 
 GtkTreeIter*
 _wrap_gtk_tree_model_iter_parent (GtkTreeModel *model, GtkTreeIter *iter)
 {
-    GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
+    GtkTreeIter new;
     
-    if (gtk_tree_model_iter_parent (model, new, iter))
-        return new;
-    g_free (new);
+    if (gtk_tree_model_iter_parent (model, &new, iter))
+        return gtk_tree_iter_copy (&new);
     return NULL;
 }
 
 GtkTreeIter*
 _wrap_gtk_tree_model_iter_nth_child (GtkTreeModel *model, GtkTreeIter *iter, gint n)
 {
-    GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
+    GtkTreeIter new;
     
-    if (gtk_tree_model_iter_nth_child (model, new, iter, n))
-        return new;
-    g_free (new);
+    if (gtk_tree_model_iter_nth_child (model, &new, iter, n))
+        return gtk_tree_iter_copy (&new);
     return NULL;
 }
 
 SCM
 _wrap_gtk_tree_selection_get_selected (GtkTreeSelection *selection)
 {
-    GtkTreeIter *iter = g_new0 (GtkTreeIter, 1);
+    GtkTreeIter iter;
     GtkTreeModel *model = NULL;
     
-    if (gtk_tree_selection_get_selected (selection, &model, iter)) {
+    if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
         SCM smodel, siter;
         g_object_ref (model);
         smodel = scm_c_gtype_instance_to_scm ((GTypeInstance*)model);
-        siter = scm_c_gvalue_new_take_boxed (GTK_TYPE_TREE_ITER, iter);
+        siter = scm_c_gvalue_new_from_boxed (GTK_TYPE_TREE_ITER, &iter);
         return scm_values (SCM_LIST2 (smodel, siter));
     }
     return scm_values (SCM_LIST2 (SCM_BOOL_F, SCM_BOOL_F));
@@ -881,43 +871,43 @@ _wrap_gtk_tree_store_remove (GtkTreeStore *store, GtkTreeIter *iter)
 GtkTreeIter*
 _wrap_gtk_tree_store_insert (GtkTreeStore *store, GtkTreeIter *parent, gint position)
 {
-    GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
-    gtk_tree_store_insert (store, new, parent, position);
-    return new;
+    GtkTreeIter new;
+    gtk_tree_store_insert (store, &new, parent, position);
+    return gtk_tree_iter_copy (&new);
 }
 
 GtkTreeIter*
 _wrap_gtk_tree_store_insert_before (GtkTreeStore *store, GtkTreeIter *parent,
                                     GtkTreeIter *sibling)
 {
-    GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
-    gtk_tree_store_insert_before (store, new, parent, sibling);
-    return new;
+    GtkTreeIter new;
+    gtk_tree_store_insert_before (store, &new, parent, sibling);
+    return gtk_tree_iter_copy (&new);
 }
 
 GtkTreeIter*
 _wrap_gtk_tree_store_insert_after (GtkTreeStore *store, GtkTreeIter *parent,
                                    GtkTreeIter *sibling)
 {
-    GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
-    gtk_tree_store_insert_after (store, new, parent, sibling);
-    return new;
+    GtkTreeIter new;
+    gtk_tree_store_insert_after (store, &new, parent, sibling);
+    return gtk_tree_iter_copy (&new);
 }
 
 GtkTreeIter*
 _wrap_gtk_tree_store_prepend (GtkTreeStore *store, GtkTreeIter *parent)
 {
-    GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
-    gtk_tree_store_prepend (store, new, parent);
-    return new;
+    GtkTreeIter new;
+    gtk_tree_store_prepend (store, &new, parent);
+    return gtk_tree_iter_copy (&new);
 }
 
 GtkTreeIter*
 _wrap_gtk_tree_store_append (GtkTreeStore *store, GtkTreeIter *parent)
 {
-    GtkTreeIter *new = g_new0 (GtkTreeIter, 1);
-    gtk_tree_store_append (store, new, parent);
-    return new;
+    GtkTreeIter new;
+    gtk_tree_store_append (store, &new, parent);
+    return gtk_tree_iter_copy (&new);
 }
 
 static void
