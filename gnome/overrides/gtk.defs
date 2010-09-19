@@ -801,6 +801,19 @@
     '("GtkTreeIter*" "parent" (null-ok))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkTreeView
+(define-method get_path_at_pos
+  (of-object "GtkTreeView")
+  (c-name "_wrap_gtk_tree_view_get_path_at_pos")
+  (overrides "gtk_tree_view_get_path_at_pos")
+  (return-type "SCM")
+  (parameters
+    '("gint" "x")
+    '("gint" "y")
+  )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GtkTreeViewColumn
 (define-method set_cell_data_func
   (of-object "GtkTreeViewColumn")
@@ -1281,7 +1294,6 @@
  "gtk_tree_view_get_cursor"
  "gtk_tree_view_get_dest_row_at_pos"
  "gtk_tree_view_get_drag_dest_row"
- "gtk_tree_view_get_path_at_pos"
  "gtk_tree_view_get_row_separator_func"
  "gtk_tree_view_get_search_equal_func"
  "gtk_tree_view_get_search_position_func"

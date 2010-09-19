@@ -112,6 +112,8 @@ GtkTreeIter* _wrap_gtk_tree_store_insert_after (GtkTreeStore *store, GtkTreeIter
 GtkTreeIter* _wrap_gtk_tree_store_prepend (GtkTreeStore *store, GtkTreeIter *parent);
 GtkTreeIter* _wrap_gtk_tree_store_append (GtkTreeStore *store, GtkTreeIter *parent);
 
+SCM _wrap_gtk_tree_view_get_path_at_pos (GtkTreeView *treeview, gint x, gint y);
+
 void _wrap_gtk_tree_view_column_set_cell_data_func (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell_renderer, SCM proc);
 
 guint _wrap_gtk_ui_manager_add_ui_from_string (GtkUIManager *ui, const gchar *string, GError **error);

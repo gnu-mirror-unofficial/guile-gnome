@@ -910,6 +910,29 @@ _wrap_gtk_tree_store_append (GtkTreeStore *store, GtkTreeIter *parent)
     return gtk_tree_iter_copy (&new);
 }
 
+SCM
+_wrap_gtk_tree_view_get_path_at_pos (GtkTreeView *treeview,
+                                     gint x, gint y)
+{
+    GtkTreePath *path;
+    GtkTreeViewColumn *column;
+    gint cell_x, cell_y;
+
+    if (gtk_tree_view_get_path_at_pos (treeview, x, y, &path, &column,
+                                       &cell_x, &cell_y)) {
+        SCM spath = guile_gtk_tree_path_to_scm (path);
+        SCM scolumn = scm_c_gtype_instance_to_scm (column);
+
+        gtk_tree_path_free (path);
+
+        return scm_values (SCM_LIST4 (spath, scolumn, scm_from_int (cell_x),
+                                      scm_from_int (cell_y)));
+    }
+
+    return scm_values (
+        SCM_LIST4 (SCM_BOOL_F, SCM_BOOL_F, SCM_BOOL_F, SCM_BOOL_F));
+}
+
 static void
 with_cell_data_func (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell,
                      GtkTreeModel *tree_model, GtkTreeIter *iter,
