@@ -24,16 +24,9 @@
  */
 
 #include <string.h>
+#include "guile-support.h"
 #include "gtk-support.h"
 
-static char*
-scm_to_locale_string_dynwind (SCM s)
-{
-    char *ret = scm_to_locale_string (s);
-    scm_dynwind_free (ret);
-    return ret;
-}
-    
 
 /* python-gtk defines a nice series of classes to access rows as elements of a
    sequence and to access their fields via a sequence interface. I wish we could
@@ -928,8 +921,9 @@ _wrap_gtk_tree_store_append (GtkTreeStore *store, GtkTreeIter *parent)
 }
 
 static void
-cell_data_func (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell,
-                GtkTreeModel *tree_model, GtkTreeIter *iter, gpointer data)
+with_cell_data_func (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell,
+                     GtkTreeModel *tree_model, GtkTreeIter *iter,
+                     gpointer data)
 {
     SCM proc, scolumn, scell, smodel, siter;
     proc = GPOINTER_TO_SCM (data);
@@ -939,6 +933,15 @@ cell_data_func (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell,
     siter = scm_c_gvalue_new_from_boxed (GTK_TYPE_TREE_ITER, iter);
     
     scm_call_4 (proc, scolumn, scell, smodel, siter);
+}
+
+static void
+cell_data_func (GtkTreeViewColumn *tree_column, GtkCellRenderer *cell,
+                GtkTreeModel *tree_model, GtkTreeIter *iter, gpointer data)
+{
+    scm_dynwind_guile_v__p_p_p_p_p (scm_with_guile, with_cell_data_func,
+                                    tree_column, cell, tree_model, iter,
+                                    data);
 }
 
 void
