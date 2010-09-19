@@ -858,6 +858,51 @@
   (return-type "GtkStateType")
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GtkPrintOperation
+(define-method set_default_page_setup
+  (of-object "GtkPrintOperation")
+  (c-name "gtk_print_operation_set_default_page_setup")
+  (overrides "gtk_print_operation_set_default_page_setup")
+  (return-type "none")
+  (parameters
+    '("GtkPageSetup*" "default_page_setup" (null-ok))))
+
+(define-method set_print_settings
+  (of-object "GtkPrintOperation")
+  (c-name "gtk_print_operation_set_print_settings")
+  (overrides "gtk_print_operation_set_print_settings")
+  (return-type "none")
+  (parameters
+    '("GtkPrintSettings*" "print_settings" (null-ok))))
+
+(define-method set_custom_tab_label
+  (of-object "GtkPrintOperation")
+  (c-name "gtk_print_operation_set_custom_tab_label")
+  (overrides "gtk_print_operation_set_custom_tab_label")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "label" (null-ok))))
+
+(define-method run
+  (of-object "GtkPrintOperation")
+  (c-name "gtk_print_operation_run")
+  (overrides "gtk_print_operation_run")
+  (return-type "GtkPrintOperationResult")
+  (parameters
+    '("GtkPrintOperationAction" "action")
+    '("GtkWindow*" "parent" (null-ok))
+    '("GError**" "error")))
+
+(define-function gtk_print_run_page_setup_dialog
+  (c-name "gtk_print_run_page_setup_dialog")
+  (overrides "gtk_print_run_page_setup_dialog")
+  (return-type "GtkPageSetup*")
+  (parameters
+    '("GtkWindow*" "parent" (null-ok))
+    '("GtkPageSetup*" "page_setup" (null-ok))
+    '("GtkPrintSettings*" "settings")))
+
 (ignore-glob  "*_get_type"
               "_*"
               "*_ref"
