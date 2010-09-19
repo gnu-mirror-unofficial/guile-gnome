@@ -849,6 +849,7 @@
 (define-method get-allocation
   (of-object "GtkWidget")
   (c-name "_wrap_gtk_widget_get_allocation")
+  (overrides "gtk_widget_get_allocation")
   (return-type "GdkRectangle*")) ;; same as GtkAllocation
 
 (define-method get_state
