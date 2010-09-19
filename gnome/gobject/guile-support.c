@@ -77,7 +77,7 @@ scm_keyword_chars_dynwind (SCM s)
 
 typedef struct {
     void *func;
-    void *p[4];
+    void *p[5];
     unsigned int u[3];
     int d[3];
     const void *c[4];
@@ -98,6 +98,24 @@ scm_dynwind_guile_v__p_p (void* (*dynwind)(void*(*)(void*), void*),
 {
     arg_data args = {func, {arg1, arg2,},};
     dynwind (_invoke_v__p_p, &args);
+}
+
+static void*
+_invoke_v__p_p_p_p_p (void *p)
+{
+    arg_data *a = p;
+    void (*func)(void*, void*, void*, void*, void*) = a->func;
+    func(a->p[0], a->p[1], a->p[2], a->p[3], a->p[4]);
+    return NULL;
+}
+
+void
+scm_dynwind_guile_v__p_p_p_p_p (void* (*dynwind)(void*(*)(void*), void*),
+                                void *func, void *arg1, void *arg2,
+                                void *arg3, void *arg4, void *arg5)
+{
+    arg_data args = {func, {arg1, arg2, arg3, arg4, arg5},};
+    dynwind (_invoke_v__p_p_p_p_p, &args);
 }
 
 static void*

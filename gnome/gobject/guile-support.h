@@ -62,6 +62,9 @@ char* scm_keyword_chars (SCM s);
 char* scm_keyword_chars_dynwind (SCM s);
 void scm_dynwind_guile_v__p_p (void* (*dynwind)(void*(*)(void*), void*), void *func,
                                void *arg1, void *arg2);
+void scm_dynwind_guile_v__p_p_p_p_p (void* (*dynwind)(void*(*)(void*), void*), void *func,
+                                     void *arg1, void *arg2, void *arg3,
+                                     void *arg4, void *arg5);
 void scm_dynwind_guile_v__p_u_p_p (void* (*dynwind)(void*(*)(void*), void*), void *func,
                                    void *arg1, unsigned int arg2, void *arg3,
                                    void *arg4);
