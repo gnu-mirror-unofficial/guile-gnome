@@ -43,16 +43,16 @@ connect_one (const gchar *handler_name, GObject *object, const gchar *signal_nam
              const gchar *signal_data, GObject *connect_object, gboolean after,
              gpointer user_data)
 {
-    static SCM gtype_instance_signal_connect_data = SCM_BOOL_F;
+    static SCM gtype_instance_signal_connect = SCM_BOOL_F;
     SCM proc;
 
-    if (SCM_FALSEP (gtype_instance_signal_connect_data))
-        gtype_instance_signal_connect_data =
+    if (SCM_FALSEP (gtype_instance_signal_connect))
+        gtype_instance_signal_connect =
             SCM_VARIABLE_REF (scm_c_module_lookup (scm_glade_module,
-                                                   "gtype-instance-signal-connect-data"));
+                                                   "gtype-instance-signal-connect"));
 
     proc = GPOINTER_TO_SCM (user_data);
-    scm_call_4 (gtype_instance_signal_connect_data,
+    scm_call_4 (gtype_instance_signal_connect,
                 scm_c_gtype_instance_to_scm (object),
                 scm_from_locale_symbol (signal_name),
                 proc,
