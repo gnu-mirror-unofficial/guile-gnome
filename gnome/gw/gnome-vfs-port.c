@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2004, 2009 Free Software Foundation, Inc.
+ * Copyright (C) 2004, 2009, 2011 Free Software Foundation, Inc.
  *
  * gnome-vfs-support.c: Support routines for the gnome-vfs wrapper
  *
@@ -28,47 +28,14 @@
 #include <string.h>
 
 
-/* Define this macro if Guile 1.7.x or better is in use. */
-#if defined (SCM_MINOR_VERSION) && (SCM_MINOR_VERSION >= 7) && \
-    defined (SCM_MAJOR_VERSION) && (SCM_MAJOR_VERSION >= 1)
-#define SCM_VERSION_17X 1
-#endif
-
 #if SCM_MAJOR_VERSION == 1 && SCM_MINOR_VERSION < 9
 typedef off_t scm_t_off;
 #endif
 
-/* Support for coding against Guile 1.7 */
-#ifndef SCM_VERSION_17X
-
-#define scm_gc_malloc(size, what) scm_must_malloc((size), (what))
-#define scm_gc_free(mem, size, what) \
-  do{ scm_must_free (mem); scm_done_free (size); } while (0)
-
-#define LOCK SCM_DEFER_INTS
-#define UNLOCK SCM_ALLOW_INTS
-
-static SCM
-scm_new_port_table_entry (scm_t_bits tag)
-#define FUNC_NAME "scm_new_port_table_entry"
-{
-    SCM port;
-    scm_t_port *pt;
-    
-    SCM_NEWCELL (port);
-    pt = scm_add_to_port_table (port);
-    SCM_SET_CELL_TYPE(port, tag);
-    SCM_SETPTAB_ENTRY (port, pt);
-    return port;
-}
-#undef FUNC_NAME
-
-#else /* SCM_VERSION_17X */
 
 #define LOCK scm_i_pthread_mutex_lock (&scm_i_port_table_mutex)
 #define UNLOCK scm_i_pthread_mutex_unlock (&scm_i_port_table_mutex)
 
-#endif /* SCM_VERSION_17X */
 
 static scm_t_bits scm_tc16_vport = 0;
 
