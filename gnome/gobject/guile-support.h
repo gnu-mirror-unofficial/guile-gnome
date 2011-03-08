@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2003,2004,2011 Andy Wingo <wingo at pobox dot com>
  *
  * guile-support.h: Support routines for old Guile versions
  *
@@ -30,30 +30,8 @@
 
 G_BEGIN_DECLS
 
-/* Define this macro if Guile 1.7.x or better is in use. */
-#if defined (SCM_MINOR_VERSION) && (SCM_MINOR_VERSION >= 7) && \
-    defined (SCM_MAJOR_VERSION) && (SCM_MAJOR_VERSION >= 1)
+/* We have Guile >= 1.8.0, so we certainly have Guile 1.7.x.  */
 #define SCM_VERSION_17X 1
-#endif
-
-/* Support for coding against Guile 1.7 */
-#ifndef SCM_VERSION_17X
-
-#define scm_gc_malloc(size, what) scm_must_malloc((size), (what))
-#define scm_gc_free(mem, size, what) \
-  do{ scm_must_free (mem); scm_done_free (size); } while (0)
-
-#define SCM_VECTOR_SET(x, idx, val) (SCM_VELTS(x)[(idx)] = (val))
-#define SCM_VECTOR_REF(x, idx) (SCM_VELTS(x)[(idx)])
-
-#define scm_gc_register_collectable_memory(mem, size, what)
-#define scm_gc_unregister_collectable_memory(mem, size, what)
-
-void *scm_with_guile (void*(*func)(void*), void *data);
-
-SCM scm_str2string (const char *src);
-
-#endif
 
 char* scm_to_locale_string_dynwind (SCM s);
 char* scm_symbol_chars (SCM s);

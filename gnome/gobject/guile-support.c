@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2003,2004,2011 Andy Wingo <wingo at pobox dot com>
  *
  * guile-support.c: Support routines for old Guile versions
  *
@@ -24,22 +24,6 @@
 #include <guile-support.h>
 #include <string.h>
 
-
-#ifndef SCM_VERSION_17X
-
-SCM 
-scm_str2string (const char *src)
-{
-  return scm_mem2string (src, strlen (src));
-}
-
-void *
-scm_with_guile (void*(*func)(void*), void *data)
-{
-    return func(data);
-}
-
-#endif
 
 char*
 scm_to_locale_string_dynwind (SCM s)
