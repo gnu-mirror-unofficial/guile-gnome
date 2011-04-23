@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2007 Free Software Foundation
+;; Copyright (C) 2007, 2011 Free Software Foundation
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -104,8 +104,8 @@
   #:use-module ((sxml xpath) #:select (sxpath))
   #:use-module (sxml transform)
   #:use-module (ice-9 regex)
-  #:use-module ((srfi srfi-1) #:select (append-map
-                                        lset-difference))
+  #:use-module ((srfi srfi-1)
+                #:select (append-map (fold . srfi-1:fold) lset-difference))
   #:use-module (srfi srfi-13)
 
   #:use-module (texinfo)
@@ -137,9 +137,13 @@
 ;; is
 (for-each
  (lambda (pair)
-   (set! ssax:predefined-parsed-entities
-         (assoc-set! ssax:predefined-parsed-entities
-                     (car pair) (cdr pair))))
+   (cond-expand
+    (guile-2
+     (define-parsed-entity! (car pair) (cdr pair)))
+    (else
+     (set! ssax:predefined-parsed-entities
+           (assoc-set! ssax:predefined-parsed-entities
+                       (car pair) (cdr pair))))))
  '((nbsp . " ")
    (percnt . "%")
    (oacute . "ó")
@@ -176,9 +180,7 @@ elements are interpreted correctly. Does not deal with XInclude."
 gtk-doc emits."
   (let lp ((in ((sxpath '(refentry
                           refsect1
-                          (refsect2 (title
-                                     anchor
-                                     @ 
+                          (refsect2 (@ 
                                      role
                                      (equal? "function")))))
                 sdocbook-fragment))
@@ -382,10 +384,11 @@ created using @code{gtk-doc->texi-defuns}."
                    . ,name)
                   (arguments
                    . ,(reverse
-                       (fold parse-arg
-                             '()
-                             (map string-trim-both
-                                  (string-split args #\,)))))))))
+                       (srfi-1:fold
+                        parse-arg
+                        '()
+                        (map string-trim-both
+                             (string-split args #\,)))))))))
 
 (define *immediate-types*
   '("double"))
@@ -770,16 +773,18 @@ procedures, e.g. @code{(cairo)}."
   (symbolcomp string<?))
 
 (define (extract-defs stexi)
-  (let ((commands (fold (lambda (def rest)
-                          (if (string-prefix? "def" (symbol->string (car def)))
-                              (cons (car def) rest)
-                              rest))
+  (let ((commands (srfi-1:fold
+                   (lambda (def rest)
+                     (if (string-prefix? "def" (symbol->string (car def)))
+                         (cons (car def) rest)
+                         rest))
                         '() texi-command-specs)))
-    (fold (lambda (x rest)
-            (if (and (pair? x) (memq (car x) commands))
-                (cons x rest)
-                rest))
-          '() stexi)))
+    (srfi-1:fold
+     (lambda (x rest)
+       (if (and (pair? x) (memq (car x) commands))
+           (cons x rest)
+           rest))
+     '() stexi)))
 
 (define (check-documentation-coverage modules texi)
   "Check the coverage of generated documentation.
