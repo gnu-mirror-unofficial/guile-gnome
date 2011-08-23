@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2003,2004,2009 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2003,2004,2009,2011 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -29,6 +29,16 @@
 (define-module (gnome gw support modules)
   #:export-syntax (re-export-modules)
   #:export (export-all-lazy!))
+
+(cond-expand
+ (guile-2)
+ (else
+  (define-macro (eval-when conditions . forms)
+    (if (or (memq 'eval conditions)
+            (memq 'load conditions))
+        `(begin . ,forms)
+        '(begin)))
+  (export eval-when)))
 
 (define-macro (re-export-modules . args)
   "Re-export the public interface of a module; used like

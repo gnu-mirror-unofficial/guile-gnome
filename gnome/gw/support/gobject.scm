@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2003,2004,2008,2009 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2003,2004,2008,2009,2011 Andy Wingo <wingo at pobox dot com>
 ;; Copyright (C) 2004,2007 Andreas Rottmann <rotty at debian dot org>
 
 ;; This program is free software; you can redistribute it and/or    
@@ -1108,18 +1108,20 @@ example:
               #:use-module (gnome gw support modules)
               ,@(if (slot-ref wrapset 'shlib-abs?)
                     '(#:use-module (g-wrap config))
-                    '()))
+                    '())
+              ,@(append-map (lambda (mod) `(#:use-module ,mod))
+                            (filter-map module (wrapsets-depended-on wrapset))))
 
            (let ((wrapset-name-c-sym (any-str->c-sym-str
                                       (symbol->string (name wrapset)))))
-             `(dynamic-call ,(++ "gw_init_wrapset_" wrapset-name-c-sym)
-                            (dynamic-link
-                             ,(if (slot-ref wrapset 'shlib-abs?)
-                                  `(string-append
-                                    *g-wrap-shlib-dir*
-                                    ,(slot-ref wrapset 'shlib-path))
-                                  (slot-ref wrapset 'shlib-path)))))
-           
+             `(eval-when (eval load compile)
+                (load-extension ,(if (slot-ref wrapset 'shlib-abs?)
+                                     `(string-append
+                                       *g-wrap-shlib-dir*
+                                       ,(slot-ref wrapset 'shlib-path))
+                                     (slot-ref wrapset 'shlib-path))
+                                ,(++ "gw_init_wrapset_" wrapset-name-c-sym))))
+
            ;; This is what we avoid:
            ;;   `(export ',@(module-exports wrapset))
            ;; Instead we do this lovely hack:
