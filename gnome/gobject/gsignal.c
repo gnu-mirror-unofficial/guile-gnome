@@ -1,5 +1,6 @@
 /* -*- Mode: C; c-basic-offset: 4 -*- */
 /* guile-gnome
+ * Copyright (C) 2011 Free Software Foundation, Inc.
  * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
  * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
  *
@@ -271,13 +272,13 @@ SCM_DEFINE (scm_gtype_instance_signal_connect_closure,
     gtype = G_TYPE_FROM_INSTANCE (instance);
     gclosure = g_value_get_boxed (gvalue);
 
-    g_signal_query (scm_to_ulong (id), &query);
+    g_signal_query (signal_id, &query);
     SCM_ASSERT (g_type_is_a (gtype, query.itype), object, SCM_ARG1, FUNC_NAME);
 
 #ifdef DEBUG_PRINT
     old_ref_count = gclosure->ref_count;
 #endif
-    handler_id = g_signal_connect_closure_by_id (instance, scm_to_ulong (id),
+    handler_id = g_signal_connect_closure_by_id (instance, signal_id,
                                                  detail_quark, gclosure,
                                                  SCM_NFALSEP (after));
     DEBUG_ALLOC ("GClosure %p connecting: %u->%u",
