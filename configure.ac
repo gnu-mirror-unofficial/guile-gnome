@@ -1,6 +1,28 @@
+define(GUILE_GNOME_PLATFORM_CONFIGURE_COPYRIGHT,[[
+
+Copyright (C) 2011  Free Software Foundation, Inc.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this program.  If not, see
+<http://www.gnu.org/licenses/>.
+
+]])
+
 AC_PREREQ(2.52)
 AC_INIT(guile-gnome-platform, 2.16.1)
 AC_CONFIG_SRCDIR(ChangeLog.pre-2.16)
+AC_CONFIG_AUX_DIR([build-aux])
+AC_COPYRIGHT(GUILE_GNOME_PLATFORM_CONFIGURE_COPYRIGHT)
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(-Wno-portability -Wno-syntax)
 
@@ -45,44 +67,34 @@ fi
 
 MK=""; AC_SUBST(MK)
 WARN_CFLAGS=-Wall
-AC_ARG_ENABLE([Werror], AC_HELP_STRING([--disable-Werror],[Don't stop the build on errors]),
-        [], WARN_CFLAGS="-Wall -Werror")
+AC_ARG_ENABLE([Werror], AC_HELP_STRING([--enable-Werror],[Stop the build on warnings]),
+        [WARN_CFLAGS="-Wall -Werror"], [])
 AC_SUBST(WARN_CFLAGS)
-
-DEBUG_CFLAGS=
-AC_ARG_ENABLE([debug], AC_HELP_STRING([--disable-debug],[Disable debugging information]),
-        [], DEBUG_CFLAGS=-g)
-AC_SUBST(DEBUG_CFLAGS)
 
 DISABLE_DEPRECATED=false
 AC_ARG_ENABLE([deprecated],
 AC_HELP_STRING([--disable-deprecated],[Disable wrapping of functions deprecated upstream]),
         DISABLE_DEPRECATED=true, DISABLE_DEPRECATED=false)
 
-# Optimize the DSO symbol hash table -- see ulrich drepper's paper,
-# "how to write shared libraries"
-GNULD_LDFLAGS=-Wl,-O1
-AC_SUBST(GNULD_LDFLAGS)
-AM_LDFLAGS='$(GNULD_LDFLAGS)'
-AC_SUBST(AM_LDFLAGS)
-
 #
 # Check for Guile
 #
-AC_MSG_CHECKING(for Guile)
-guile-config link > /dev/null || {
-   echo "configure: cannot find guile-config; is Guile installed?" 1>&2
-   exit 1
-}
-GUILE_VERSION=`guile-config info guileversion`
-if test "$GUILE_VERSION" \< 1.8.0; then
-   AC_MSG_ERROR([Guile 1.8.0 or newer is required, but you only have $GUILEVERSION.])
+GUILE_EFFECTIVE_VERSION=no
+all_versions="2.2 2.0 1.8"
+for v in $all_versions; do
+  if test $GUILE_EFFECTIVE_VERSION = no; then
+    AC_MSG_NOTICE([checking for Guile $v.x])
+    PKG_CHECK_MODULES(GUILE, guile-$v, [GUILE_EFFECTIVE_VERSION=$v], [true])
+  fi
+done
+
+AC_SUBST(GUILE_EFFECTIVE_VERSION)
+
+if test $GUILE_EFFECTIVE_VERSION = no; then
+  AC_MSG_ERROR([Failed to find Guile.  Is it installed?])
+else
+  AC_MSG_NOTICE([found Guile $GUILE_EFFECTIVE_VERSION.x])
 fi
-GUILE_CFLAGS="`guile-config compile`"
-GUILE_LIBS="`guile-config link`"
-AC_SUBST(GUILE_CFLAGS)
-AC_SUBST(GUILE_LIBS)
-AC_MSG_RESULT(yes)
 
 # Check for g-wrap
 
@@ -120,124 +132,78 @@ record_check()
     esac
 }
 
-report_checks()
-{
-    if test -z "$PACKAGES_TO_BUILD"; then
-        AC_MSG_ERROR([All wrappers failed their prerequisites.
-
-These following wrappers cannot be built:
-  $PACKAGES_NOT_BUILT
-
-Check the README files in the above subdirectories, install the necessary
-packages, and try again.
-])
-    elif test -z "$PACKAGES_NOT_BUILT"; then
-        AC_MSG_NOTICE([
-All available wrappers will be built:
-  $PACKAGES_TO_BUILD
-
-])
-    else
-        AC_MSG_NOTICE([Some packages will not be built.
-
-These wrappers will be built:
-  $PACKAGES_TO_BUILD
-
-These wrappers failed their prerequisites and will NOT be built:
-  $PACKAGES_NOT_BUILT
-
-Check the README files in the above subdirectories for more information
-on the prerequisites of a package.
-])
-    fi
-}
-
 # Per-package checks follow
 # atk
 PKG_CHECK_MODULES(ATK, atk >= 1.12, HAVE_ATK=true, HAVE_ATK=false)
 AC_SUBST(ATK_CFLAGS)
 AC_SUBST(ATK_LIBS)
 AM_CONDITIONAL(HAVE_ATK, $HAVE_ATK)
-
 record_check atk $HAVE_ATK
+
 # cairo
-PKG_CHECK_MODULES(GUILE_CAIRO, guile-cairo, HAVE_CAIRO=true, 
-                                             HAVE_CAIRO=false)
+PKG_CHECK_MODULES(GUILE_CAIRO, guile-cairo, HAVE_CAIRO=true, HAVE_CAIRO=false)
 AC_SUBST(GUILE_CAIRO_CFLAGS)
 AC_SUBST(GUILE_CAIRO_LIBS)
 AM_CONDITIONAL(HAVE_CAIRO, $HAVE_CAIRO)
-
 record_check cairo $HAVE_CAIRO
+
 # corba
 PKG_CHECK_MODULES(CORBA, libbonobo-2.0, HAVE_CORBA=true, HAVE_CORBA=false)
 AC_SUBST(CORBA_CFLAGS)
 AC_SUBST(CORBA_LIBS)
 AM_CONDITIONAL(HAVE_CORBA, $HAVE_CORBA)
-
-# orbit-idl
 ORBIT_IDL="`pkg-config --variable=orbit_idl ORBit-2.0`"
 AC_SUBST(ORBIT_IDL)
-
-# Activation idl files
 BONOBO_IDL_DIR="`pkg-config --variable=idldir libbonobo-2.0`"
 AC_SUBST(BONOBO_IDL_DIR)
-
 record_check corba $HAVE_CORBA
-# defs
+
 # gconf
-PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.18, HAVE_GCONF=true, 
-                                    HAVE_GCONF=false)
+PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.18, HAVE_GCONF=true, HAVE_GCONF=false)
 AC_SUBST(GCONF_CFLAGS)
 AC_SUBST(GCONF_LIBS)
 AM_CONDITIONAL(HAVE_GCONF, $HAVE_GCONF)
-
 record_check gconf $HAVE_GCONF
+
 # glib
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.10.0)
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
-
 PKG_CHECK_MODULES(GOBJECT, gobject-2.0)
 AC_SUBST(GOBJECT_CFLAGS)
 AC_SUBST(GOBJECT_LIBS)
-
 PKG_CHECK_MODULES(GTHREAD, gthread-2.0)
 AC_SUBST(GTHREAD_CFLAGS)
 AC_SUBST(GTHREAD_LIBS)
-
 GUILE_GLIB_CFLAGS='-I$(top_srcdir)/glib/gnome/gobject -I$(top_builddir)/glib/gnome/gobject'
 GUILE_GLIB_LIBS='$(top_builddir)/glib/gnome/gobject/libguile-gnome-gobject-$(API_VERSION).la'
 AC_SUBST(GUILE_GLIB_CFLAGS)
 AC_SUBST(GUILE_GLIB_LIBS)
-
 AC_CONFIG_COMMANDS([glib/gnome/gobject/guile-gnome-gobject],
 [
  rm -f glib/gnome/gobject/guile-gnome-gobject
  ln -s `cd $srcdir && pwd`/glib/gnome/gobject/ glib/gnome/gobject/guile-gnome-gobject
 ])
-
 record_check glib true
+
 # gnome-vfs
-PKG_CHECK_MODULES(GNOME_VFS, gnome-vfs-2.0 >= 2.16.0, HAVE_GNOME_VFS=true, 
-                                                     HAVE_GNOME_VFS=false)
+PKG_CHECK_MODULES(GNOME_VFS, gnome-vfs-2.0 >= 2.16.0, HAVE_GNOME_VFS=true, HAVE_GNOME_VFS=false)
 AC_SUBST(GNOME_VFS_CFLAGS)
 AC_SUBST(GNOME_VFS_LIBS)
 AM_CONDITIONAL(HAVE_GNOME_VFS, $HAVE_GNOME_VFS)
-
 if $DISABLE_DEPRECATED; then
   GNOME_VFS_DEPRECATED_CFLAGS=-DGNOME_VFS_DISABLE_DEPRECATED
 else
   GNOME_VFS_DEPRECATED_CFLAGS=
 fi
 AC_SUBST(GNOME_VFS_DEPRECATED_CFLAGS)
-
 record_check gnome-vfs $HAVE_GNOME_VFS
+
 # gtk
 PKG_CHECK_MODULES(GDK_PIXBUF, gdk-pixbuf-2.0 >= 2.10.0, HAVE_GDK_PIXBUF=true, HAVE_GDK_PIBXUF=false)
 AC_SUBST(GDK_PIXBUF_CFLAGS)
 AC_SUBST(GDK_PIXBUF_LIBS)
 AM_CONDITIONAL(HAVE_GDK_PIXBUF, $HAVE_GDK_PIXBUF)
-
 if $HAVE_CAIRO; then
   PKG_CHECK_MODULES(GDK, gdk-2.0 >= 2.10.0, HAVE_GDK=true, HAVE_GDK=false)
   AC_SUBST(GDK_CFLAGS)
@@ -258,60 +224,85 @@ else
   HAVE_GDK=false
   HAVE_GTK=false
 fi
-
 AM_CONDITIONAL(HAVE_GDK, $HAVE_GDK)
 AM_CONDITIONAL(HAVE_GTK, $HAVE_GTK)
-
 record_check gtk $HAVE_GTK
+
 # libglade
-PKG_CHECK_MODULES(LIBGLADE, libglade-2.0 >= 2.6, HAVE_LIBGLADE=true, 
-					  HAVE_LIBGLADE=false)
+PKG_CHECK_MODULES(LIBGLADE, libglade-2.0 >= 2.6, HAVE_LIBGLADE=true, HAVE_LIBGLADE=false)
 AC_SUBST(LIBGLADE_CFLAGS)
 AC_SUBST(LIBGLADE_LIBS)
 AM_CONDITIONAL(HAVE_LIBGLADE, $HAVE_LIBGLADE)
-
 record_check libglade $HAVE_LIBGLADE
+
 # libgnome
 PKG_CHECK_MODULES(LIBGNOME, libgnome-2.0 >= 2.16, HAVE_LIBGNOME=true, HAVE_LIBGNOME=false)
 AC_SUBST(LIBGNOME_CFLAGS)
 AC_SUBST(LIBGNOME_LIBS)
 AM_CONDITIONAL(HAVE_LIBGNOME, $HAVE_LIBGNOME)
-
 record_check libgnome $HAVE_LIBGNOME
+
 # libgnomecanvas
 PKG_CHECK_MODULES(CANVAS, libgnomecanvas-2.0 >= 2.14, HAVE_CANVAS=true, HAVE_CANVAS=false)
 AC_SUBST(CANVAS_CFLAGS)
 AC_SUBST(CANVAS_LIBS)
 AM_CONDITIONAL(HAVE_CANVAS, $HAVE_CANVAS)
-
 record_check libgnomecanvas $HAVE_CANVAS
+
 # libgnomeui
 PKG_CHECK_MODULES(LIBGNOMEUI, libgnomeui-2.0 >= 2.16.0, HAVE_LIBGNOMEUI=true, HAVE_LIBGNOMEUI=false)
 AC_SUBST(LIBGNOMEUI_CFLAGS)
 AC_SUBST(LIBGNOMEUI_LIBS)
 AM_CONDITIONAL(HAVE_LIBGNOMEUI, $HAVE_LIBGNOMEUI)
-
 if $DISABLE_DEPRECATED; then
   GNOMEUI_DEPRECATION_FLAGS=-DGNOME_DISABLE_DEPRECATED_SOURCE -DGNOME_DISABLE_DEPRECATED
 else
   GNOMEUI_DEPRECATION_FLAGS=
 fi
 AC_SUBST(GNOMEUI_DEPRECATION_FLAGS)
-
 record_check libgnomeui $HAVE_LIBGNOMEUI
+
 # pango
 PKG_CHECK_MODULES(PANGO, pango >= 1.14, HAVE_PANGO=true, HAVE_PANGO=false)
 AC_SUBST(PANGO_CFLAGS)
 AC_SUBST(PANGO_LIBS)
 AM_CONDITIONAL(HAVE_PANGO, $HAVE_PANGO)
-
 PKG_CHECK_MODULES(PANGOCAIRO, pangocairo >= 1.14, HAVE_PANGOCAIRO=true, HAVE_PANGOCAIRO=false)
 AC_SUBST(PANGOCAIRO_CFLAGS)
 AC_SUBST(PANGOCAIRO_LIBS)
 AM_CONDITIONAL(HAVE_PANGOCAIRO, $HAVE_PANGOCAIRO)
-
 record_check pango $HAVE_PANGO
-report_checks
+
+if test -z "$PACKAGES_TO_BUILD"; then
+    AC_MSG_ERROR([All wrappers failed their prerequisites.
+
+These following wrappers cannot be built:
+  $PACKAGES_NOT_BUILT
+
+Check the README files in the above subdirectories, install the necessary
+packages, and try again.
+])
+fi
+
+if test -z "$PACKAGES_NOT_BUILT"; then
+    AC_MSG_NOTICE([
+All available wrappers will be built:
+  $PACKAGES_TO_BUILD
+
+])
+else
+    AC_MSG_NOTICE([Some packages will not be built.
+
+These wrappers will be built:
+  $PACKAGES_TO_BUILD
+
+These wrappers failed their prerequisites and will NOT be built:
+  $PACKAGES_NOT_BUILT
+
+Check the README files in the above subdirectories for more information
+on the prerequisites of a package.
+])
+fi
 
 AC_CONFIG_FILES(dev-environ, [chmod +x ./dev-environ])
 AC_CONFIG_FILES(

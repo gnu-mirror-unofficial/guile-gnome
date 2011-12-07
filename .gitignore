@@ -20,3 +20,17 @@ autom4te.cache/
 /docs
 /log
 *stamp-*
+*-gw-*.[ch]
+.deps
+.libs
+*.log
+*.la
+*.lo
+/build-aux/config.guess
+/build-aux/config.sub
+/build-aux/depcomp
+/build-aux/install-sh
+/build-aux/ltmain.sh
+/build-aux/mdate-sh
+/build-aux/missing
+/build-aux/texinfo.tex
