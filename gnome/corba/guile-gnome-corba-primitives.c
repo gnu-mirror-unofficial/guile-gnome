@@ -39,6 +39,9 @@
 
 #include <string.h>
 
+#undef BONOBO_EX
+#define BONOBO_EX(ev) ((ev)->_major != CORBA_NO_EXCEPTION)
+
 SCM scm_class_corba_object;
 SCM scm_class_portable_server_servant_base;
 SCM scm_class_slot_ref;

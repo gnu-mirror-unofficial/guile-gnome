@@ -37,6 +37,9 @@
 
 #include <string.h>
 
+#undef BONOBO_EX
+#define BONOBO_EX(ev) ((ev)->_major != CORBA_NO_EXCEPTION)
+
 SCM_DEFINE (scm_corba_servant_to_reference, "corba-servant->reference", 1, 0, 0,
 	    (SCM servant),
 	    "")

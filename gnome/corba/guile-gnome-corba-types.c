@@ -31,6 +31,9 @@
 #include <string.h>
 #include <bonobo/bonobo-arg.h>
 
+#undef BONOBO_EX
+#define BONOBO_EX(ev) ((ev)->_major != CORBA_NO_EXCEPTION)
+
 SCM scm_corba_struct_vtable;
 SCM scm_corba_sequence_vtable;
 scm_t_bits scm_tc16_corba_typecode;
