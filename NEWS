@@ -1,23 +1,17 @@
-guile-gnome-pkg NEWS --- history of user-visible changes.
-Copyright (C) 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+guile-gnome-platform NEWS --- history of user-visible changes.
+Copyright (C) 2004,2005,2006,2007,2008,2011 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 03 Jul 2008.
 
 
-guile-gnome-pkg is the umbrella package for guile-gnome, which can
-contain any number of sub-packages. This file documents the user-visible
-changes in guile-gnome-pkg only.
+guile-gnome-platform is a binding between Guile Scheme and the Gnome
+stack of libraries.  See the README, for more information.
 
 
-guile-gnome-pkg 2.16.1 - Andy Wingo, 2008-07-03
-===============================================
+guile-gnome-platform 2.16.1 - Andy Wingo, 2008-07-03
+====================================================
 
-* Add guile-clutter to the set of configurable packages.
-
-
-guile-gnome-pkg 2.16.0 - Andy Wingo, 2008-06-12
-===============================================
-
+packaging changes
+-----------------
 * Removed the "docs" module; its content, the tutorial, is now folded
   into the documentation for all of the relevant modules (e.g. GLib,
   GTK+, CORBA, etc.)
@@ -27,10 +21,86 @@ guile-gnome-pkg 2.16.0 - Andy Wingo, 2008-06-12
 
 * Suppress some automake warnings.
 
+* Add guile-clutter to the set of configurable packages.
 
-guile-gnome-pkg 2.15.98 - Andy Wingo, 2008-04-25
-================================================
+atk
+---
+* Improved documentation.
 
+corba
+-----
+* Improved documentation, folding the tutorial text in to the (gnome
+  corba) module commentary.
+
+* Removed a printf.
+
+defs
+----
+* New platform release, no change.
+
+gconf
+-----
+* Imroved documentation, with example.
+
+* Fixed a bug regarding GConfClient notification.
+
+glib
+----
+* Improved documentation.
+
+* Build process is slightly less noisy.
+
+* Recognize GInitiallyUnowned as a sinkable object.
+
+This doesn't affect e.g. GTK+, for which we already recognize GtkObject
+as sinkable, but it does affect e.g. Clutter.
+
+* Don't error when constructing parameter types of which we are unaware.
+
+Affects e.g. ClutterUnit parameters; the precise nature of this fix will
+change in the future.
+  
+* Accept integers as init values for <gchar> or <guchar> values.
+
+* Bugfix for custom-wrapped boxed values, like GdkRectangle.
+
+* Fix regressions on x86-64.
+
+gnome-vfs
+---------
+* Improved documentation, with some example code.
+
+gtk
+---
+* Improved documentation, merging in content from the tutorial into the
+  main GTK+ docs.
+
+libglade
+--------
+* Improved documentation, with an example.
+
+libgnome
+--------
+* Improved documentation.
+
+libgnomecanvas
+--------------
+* Improved documentation.
+
+libgnomeui
+----------
+* Improved documentation.
+
+pango
+-----
+* Added (gnome pangocairo) module, along with documentation.
+
+
+guile-gnome-platform 2.15.98 - Andy Wingo, 2008-04-25
+=====================================================
+
+packaging changes
+-----------------
 * Formally require Guile 1.8, as has been the case for a while now.
 
 * Bump the API_VERSION to 2, as a test before going stable.
@@ -43,79 +113,660 @@ The purpose of this change is to shake out any bugs in the API_VERSION
 mechanism. The intention is for the next release to be 2.16.0, with
 API_VERSION=2.
 
+atk
+---
+* Documentation updated.
 
-guile-gnome-pkg 2.15.97 - Andy Wingo, 2008-04-10
-================================================
+gconf
+-----
+* Documentation updated.
 
-* No user-visible changes.
+* Don't use API deprecated in Guile 1.8.
+
+glib
+----
+* API changes: Made gtype-interface-destroy! public. Removed the
+  terrible %especify-metaclass! as it is not used.
+
+* Documentation updated.
+
+* Don't use API deprecated in Guile 1.8.
+
+* A few bugfixes after the large changes in 2.15.97.
+
+gnome-vfs
+---------
+* Documentation updated.
+
+* Don't use API deprecated in Guile 1.8.
+
+gtk
+---
+* Documentation updated.
+
+* Don't use API deprecated in Guile 1.8.
+
+* Remove special wrapper for <gtk-message-dialog>, as GTK+ 2.10 has
+  enough of a gobject property interface.
+
+libglade
+--------
+* Documentation updated.
+
+libgnome
+--------
+* Documentation updated.
+
+* Don't use API deprecated in Guile 1.8.
+
+libgnomecanvas
+--------------
+* Documentation updated.
+
+* Don't use API deprecated in Guile 1.8.
+
+libgnomeui
+----------
+* Documentation updated.
+
+pango
+-----
+* Documentation updated.
+
+* Don't use API deprecated in Guile 1.8.
 
 
-guile-gnome-pkg 2.15.96 - Andy Wingo, 2007-12-10
-================================================
+guile-gnome-platform 2.15.97 - Andy Wingo, 2008-04-10
+=====================================================
 
+corba
+-----
+* Adapt to changes in (gnome gobject). corba-typecode->gtype-class is
+  the new name for corba-typecode->gtype.
+
+* Compilation fix if BONOBO_EX is already defined.
+
+gconf
+-----
+* Adapt to changes in (gnome gobject).
+
+glib
+----
+* Major rewrite of low-level (gnome gobject) code. 
+
+GTypes are no longer exposed to Scheme. Instead, types are represented
+directly as <gtype-class> instances.
+
+Internally, <gtype-class> instances know their GType, because is stored
+in a <read-only-slot>, which stores a raw (untagged) word -- the perfect
+size for a GType.
+
+Similarly, I also removed the need for <%gtype-instance> smobs as well,
+through interesting trickery: the GOOPS objects directly store the
+GTypeInstance* pointer in a <read-only-slot>. The trickery is that we
+can be notified when the struct is collected, via monkeypatching the
+<gtype-class> objects to free via a custom function,
+scm_gtype_instance_struct_free. This allows us to unref the object.
+
+The same strategy was applied to GValue wrappers. With this change,
+Guile-GNOME no longer holds C data in SMOBs.
+
+Removing the <gtype>, <%gtype-class>, <%gtype-instance>, and primitive
+<gvalue> types has allowed for the removal of much useless,
+non-orthogonal glue API.
+
+Signals and parameters are also represented natively with GOOPS objects,
+not structures. There is no overhead for this, as GOOPS objects are in
+fact structures, whose VTable is their class.
+
+This is an incompatible change, but one which allows me to commit to a
+stable API/ABI, perhaps in the next release.
+
+Please test your programs against this version, so that I can help you
+port, and so that we can make sure that the API is fine.
+
+gnome-vfs
+---------
+* Adapt to changes in (gnome gobject).
+
+gtk
+---
+* New function wrapper: gtk-widget-get-state.
+
+* Reintroduce gtk-menu-popup wrapper, this time supporting the menu
+  positioning function.
+
+* Adapt to changes in (gnome gobject).
+
+* Interface changes: Tree models now deal in <gtype-class> instances,
+  now that there are no more GType objects. This applies to the list
+  store, tree store, and the generic tree model.
+
+* Make the texinfo viewer understand more kinds of @def commands.
+
+libglade
+--------
+* Adapt to changes in (gnome gobject).
+
+libgnomecanvas
+--------------
+* Compilation fixes with picky compilers.
+
+
+guile-gnome-platform 2.15.96 - Andy Wingo, 2007-12-10
+=====================================================
+
+packaging changes
+-----------------
 * Support a variant of check-coverage that generates a texinfo file with
   the missing functions.
 
 * Various buildfixes for building out-of-tree modules such as
   guile-gnome-gstreamer.
 
+atk
+---
+* API review. Lots of interface types actually declared.
 
-guile-gnome-pkg 2.15.95 - Andy Wingo, 2007-11-10
-================================================
+* Documentation changes: add type index, section for undocumented
+  exports, regenerated for changes resulting from API review.
 
+cairo
+-----
+* Remove (gnome cairo), as we have no actual public API.
+
+corba
+-----
+* Add automatically generated documentation and API regression tests.
+  The docs need some work, however.
+
+docs
+----
+* Minor updates.
+
+gconf
+-----
+* API review.
+
+* Documentation changes: add type index, section for undocumented
+  exports, regenerated for changes resulting from API review.
+
+glib
+----
+* API review.
+
+* Documentation changes: add type index, section for undocumented
+  exports, regenerated for changes resulting from API review.
+
+* Bugfix: avoid SCM_STRING_CHARS in core (gnome gobject) code, which
+  will raise an exception when called on shared substrings.
+
+* Fixes to the fifo.scm example, which uses GIOChannel.
+
+* Leave guile mode at the right time in g-main-loop-run, fixing some
+  hangs.
+
+* Change to the wrapset generator to no longer silently wrap opaque
+  types; instead, functions that reference unknown types are ignored,
+  and a warning is printed out. Requires more discipline when making
+  wrapsets, but reduces random crap being wrapped.
+
+* Add support for appending a list of undocumented functions to the
+  generated documentation.
+
+* Add support for wrapping more kinds of C structures: freeable
+  pointers, generic refcounted pointers, and destructurable values. See
+  the changes to (gnome gw support gobject) for more information.
+
+gnome-vfs
+---------
+* API review.
+
+* Documentation changes: add type index, section for undocumented
+  exports, regenerated for changes resulting from API review.
+
+gtk
+---
+* API review.
+
+* Documentation changes: add type index, section for undocumented
+  exports, regenerated for changes resulting from API review.
+
+* Fixes to make sure that all examples work.
+
+* Fix crasher in gtk-tree-model-iter-next.
+
+libglade
+--------
+* API review.
+
+* Documentation changes: add type index, section for undocumented
+  exports, regenerated for changes resulting from API review.
+
+libgnome
+--------
+* API review.
+
+* Documentation changes: add type index, section for undocumented
+  exports, regenerated for changes resulting from API review.
+
+libgnomecanvas
+--------------
+* API review.
+
+* Documentation changes: add type index, section for undocumented
+  exports, regenerated for changes resulting from API review.
+
+* Fix wrapper for GnomeCanvasPoints.
+
+libgnomeui
+----------
+* Documentation changes: add type index, section for undocumented
+ exports, regenerated for changes resulting from API review.
+
+* API review, resulting in a number of functions being ignored.
+  
+pango
+-----
+* Documentation changes: add type index, section for undocumented
+ exports, regenerated for changes resulting from API review.
+
+* API review, resulting in a number of functions being ignored.
+
+
+guile-gnome-platform 2.15.95 - Andy Wingo, 2007-11-10
+=====================================================
+
+packaging changes
+-----------------
 * Build system work: add common makefile include for unit tests and a
   new check-coverage target to documentation builds.
 
+atk
+---
+* Added API regression test suite.
 
-guile-gnome-pkg 2.15.94 - Andy Wingo, 2007-09-25
-================================================
+gconf
+-----
+* Add API regression test suite.
 
+* Add documentation, generated from upstream gtk-doc.
+
+glib
+----
+* Added API regression unit tests for (gnome gw glib); previously only
+  (gnome gobject) was tested.
+
+* Add new code to check documentation coverage, integrated with the
+  build system via the generate-docs.mk file in the `pkg' module.
+
+* Fix documentation of class properties.
+
+gnome-vfs
+---------
+* Add API regression test suite.
+
+* Add documentation, generated from upstream gtk-doc.
+
+The docs are suboptimal, as they do not talk at all the mapping between
+gnome-vfs handles and scheme ports.
+
+gtk
+---
+* Incompatible change: (gnome gtk) only exports GDK and GTK functions
+
+(gnome gtk) used to re-export (oop goops), (gnome gobject), and a number
+of other modules. This was changed so that we could guarantee a stable
+interface for (gnome gtk); if you want other modules, you should
+explicitly require them.
+
+* Added API regression test suite.
+
+libglade
+--------
+* Added documentation, generated from upstream gtk-doc.
+
+* Added API regression test suite.
+
+libgnome
+--------
+* Add documentation, generated from upstream gtk-doc.
+
+* Add API regression test suite.
+
+libgnomecanvas
+--------------
+* Add API regression test suite.
+
+* Add documentation, generated from upstream gtk-doc.
+
+libgnomeui
+----------
+* Add documentation, generated from upstream gtk-doc.
+
+* Add API regression test suite.
+
+pango
+-----
+* Fix linking errors that made pangocairo unusable.
+
+* Add API regression test suite.
+
+
+guile-gnome-platform 2.15.94 - Andy Wingo, 2007-09-25
+=====================================================
+
+packaging changes
+-----------------
 * Added infrastructure to make documentation.
 
+atk
+---
+* Add documentation.
 
-guile-gnome-pkg 2.15.93 - Andy Wingo, 2007-06-15
-================================================
+corba
+-----
+* Fix a compiler warning.
 
-* No user-visible changes.
+defs
+----
+* Remove .defs for libwnck, as they are not part of the platform.
+
+glib
+----
+* Added documentation for the gobject and glib wrappers.
+
+* Added unit tests which check that the (gnome gobject) and (gnome gw
+  glib) APIs do not unintentionally change incompatibly.
+
+* Added infrastructure for automatically producing documentation based
+  on upstream GTK-Doc documentation.
+
+* Fixed a number of API bugs; see the ChangeLog from 2006-09-01 and
+  before for more details. Should not affect user's applications.
+
+gtk
+---
+* Added documentation for the gtk and gdk wrappers.
+
+pango
+-----
+* Added documentation for the pango and pangocairo wrappers.
 
 
-guile-gnome-pkg 2.15.92 - Andy Wingo, 2007-05-24
-================================================
+guile-gnome-platform 2.15.93 - Andy Wingo, 2007-06-15
+=====================================================
 
+The most notable features of the release are that (1) it works, unlike
+2.15.92; and (2) load time is much faster with the latest Guile 1.8 CVS.
+
+cairo
+-----
+* Guile-Gnome-Cairo 2.15.92 was unusable; fixed. Unfortunately this
+  means that we have to make another small shared library.
+
+defs
+----
+* Fix pango defs to include pango-tabs.h.
+
+glib
+----
+* Fix parsing of some options on arguments, such as (callee-owned),
+  broken since 2007-05-05.
+
+* Fix wrapper name of g-string-get-str.
+
+* Fix some default values lost when glib.defs was autogenerated.
+
+* Large speedup in load time of wrapped modules if we detect that
+  Guile's module-make-local-var! is "lightweight", as is the case in the
+  latest Guile 1.8 and HEAD CVS.
+
+gtk
+---
+* Fix wrapping of GdkEvent, which had broken mysteriously.
+
+
+guile-gnome-platform 2.15.92 - Andy Wingo, 2007-05-24
+=====================================================
+
+packaging changes
+-----------------
 * Updates to h2defs.py to automatically handle more cases.
 
 * Add cairo to guile-gnome-platform.
 
+atk
+---
+* Update to wrap ATK 1.12, corresponding to GNOME 2.16.
 
-guile-gnome-pkg 2.15.91 - Andy Wingo, 2007-05-10
-================================================
+cairo
+-----
+* G-wrap integration for external guile-cairo module.
 
+corba
+-----
+* Fix bug caused by change in guile-gnome-glib a while back that
+  prevented CORBA from loading (#416570).
+
+defs
+----
+* Update all defs files to the library versions corresponding to the
+  GNOME 2.16 development platform. Defs files are now entirely
+  autogenerated.
+
+docs
+----
+* New platform release, no change.
+
+gconf
+-----
+* Update to wrap GConf 2.18, corresponding to GNOME 2.16.
+
+glib
+----
+* Update to GLib 2.10. Notably, this wraps the GBookmarkFile API, and
+  the g_unicode and g_utf8 functions.
+
+* Fix POSIX signal handling when running the main loop with Guile 1.8.
+
+gnome-vfs
+---------
+* Update to wrap GNOME-VFS 2.16.
+
+gtk
+---
+* Update to wrap GTK+ 2.10, part of GNOME 2.16.
+
+* Require guile-cairo.
+
+* Bugfixes.
+
+libglade
+--------
+* Update to wrap libglade 2.6.0, corresponding to GNOME 2.16.
+
+libgnome
+--------
+* Update to wrap libgnome 2.16.
+
+libgnomecanvas
+--------------
+* Update to wrap libgnomecanvas 2.14, corresponding to GNOME 2.16.
+
+libgnomeui
+----------
+* Update to wrap libgnomeui 2.16.
+
+pango
+-----
+* Wrap pangocairo if cairo is available.
+
+* Update pango wrappers to version 1.14.
+
+
+guile-gnome-platform 2.15.91 - Andy Wingo, 2007-05-10
+=====================================================
+
+packaging changes
+-----------------
 * Require G-Wrap 1.9.8.
 
+atk
+---
+* Update for defs parser changes.
 
-guile-gnome-pkg 2.15.90 - Andy Wingo, 2006-12-15
-================================================
+docs
+----
+* Add "Getting started" chapter to tutorial.
 
+gconf
+-----
+* Updates for defs parser changes.
+
+glib
+----
+* Leave guile mode when calling into C, and enter when calling back into
+  Guile, as in GClosures. Guile-gnome now supports multithreaded
+  operation on Guile 1.8.
+
+* The custom handler for g_warning() and friends was removed;
+  guile-gnome will no longer scm_error when GLib logs.
+
+* The defs parser automatically recognizes more output arguments, for
+  example guint64*.
+
+* Many bugfixes.
+
+gnome-vfs
+---------
+* Updates for defs parser changes.
+
+gtk
+---
+* Additions:
+  - gtk-menu-popup accepts #f for parent widget arguments.
+  - gdk-event-button: accessors now work on 2button and 3button events.
+  - New GDK event accessor: gdk-event-button:time
+
+* Bugfixes:
+  - Fix gtk-icon-size-lookup and gtk-icon-size-get-name wrappers.
+
+* Updates for defs parser changes.
+
+libglade
+--------
+* Update for changes to defs parser.
+
+libgnomecanvas
+--------------
+* Update for changes in the defs parser.
+
+
+
+guile-gnome-platform 2.15.90 - Andy Wingo, 2006-12-15
+=====================================================
+
+packaging changes
+-----------------
 * Require G-Wrap 1.9.7.
 
 * Update to use bzr as the version control system, instead of tla.
 
+atk
+---
+* Build fix for g-wrap.
 
-guile-gnome-pkg 2.7.99 - Andy Wingo, 2005-03-06
-===============================================
+corba
+-----
+* Build fix for g-wrap.
+
+gconf
+-----
+* Build fixes for g-wrap.
+
+glib
+----
+* Operate on GTypeInstances via a generic registry of fundamental type
+  operations. guile-gnome-glib comes with operations on GObject and
+  GParamSpec; wrappers can define other operations for other fundamental
+  types (such as GstMiniObject in GStreamer).
+
+* Require G-Wrap 1.9.7, so that we can place all of our generics in the
+  (gnome gw generics) module instead of in the root module.
+
+* Avoid calling scm_ functions while in GC sweep, fixes crashes on Guile
+  1.8.
+
+* Add support macro for wrapping custom unclassed GTypes, such as
+  GStreamer's fractions.
+
+* Don't ignore 'null-ok (or other options) in cases like this:
+  '("GMainContext*" "context" (null-ok) (default "NULL")).
+
+* Remove SLIB dependency by folding in the needed functionality.
+
+* Add support for gsize and gssize, both as input and output parameters.
+
+* Add accessors for fields of GError.
+
+* Other compile, memleak, and bug fixes.
+
+gnome-vfs
+---------
+* Build updates for g-wrap.
+
+* Don't attempt to wrap bonobo functions, they are not present in newer
+  gnome-vfs.
+
+* Fix locking, the --disable-deprecated mechanism, and some GCC 4
+  warnings.
+
+gtk
+---
+* Build updates for g-wrap, compile fixes for GCC 4.
+
+* Wrap GtkListStore (previously skipped by mistake).
+
+* Wrap gint* and guint* output args, and annotate some parameters as
+  null-ok.
+
+libglade
+--------
+* Build updates for g-wrap.
+
+libgnome
+--------
+* Build updates for g-wrap.
+
+libgnomecanvas
+--------------
+* Build updates for g-wrap and other compile fixes.
+
+libgnomeui
+----------
+* Build updates for g-wrap.
+
+pango
+-----
+* Build updates for g-wrap.
+
+
+guile-gnome-platform 2.7.99 - Andy Wingo, 2005-03-06
+====================================================
 
 * Require g-wrap >= 1.9.4.
 
 * Add a general option to disable wrapping deprecated functions.
 
 
-guile-gnome-pkg 2.7.98 - Andy Wingo, 2005-01-11
-===============================================
+guile-gnome-platforn 2.7.98 - Andy Wingo, 2005-01-11
+====================================================
 
 * Initial release with NEWS.
 
 
-Copyright (C) 2004,2005,2006,2007 Free Software Foundation, Inc.
+Copyright (C) 2004,2005,2006,2007,2008,2011 Free Software Foundation, Inc.
 
 Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice
