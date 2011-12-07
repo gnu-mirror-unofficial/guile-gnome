@@ -329,34 +329,34 @@
          (sub-item-c-type (c-type-name sub-type sub-typespec))
          (tmp-sub-item-c-var (gen-c-tmp "c_item"))
          (tmp-sub-item (make <gw-value>
-                     #:typespec sub-typespec
-                     #:var tmp-sub-item-c-var))
+                         #:typespec sub-typespec
+                         #:var tmp-sub-item-c-var))
          (tmp-cursor (gen-c-tmp "cursor"))
          (destroy-value (destroy-value-cg sub-type tmp-sub-item status-var)))
-    (cond
-     ((and (not (memq 'caller-owned options))
-           (null? destroy-value))
-      '())
-     (else
-      (list
-       "{\n"
-       "  " (c-type-name glist-type (typespec value)) tmp-cursor " = " c-var ";\n"
-       "  while(" tmp-cursor ")\n"
-       "  {\n"
-       "    " sub-item-c-type " " tmp-sub-item-c-var ";\n"
-       "    " tmp-sub-item-c-var " = ( " sub-item-c-type ") "
-       (string-append tmp-cursor "->data") ";\n"
-       destroy-value
-       tmp-cursor " = " (string-append tmp-cursor "->next") ";\n"
-       "  }\n"
-       (if (memq 'caller-owned options)
-           (list "  if(" c-var ")\n"
-                 "  {\n"
-                 "    " func-prefix "_free(" c-var ");\n"
-                 "    " c-var " = NULL;\n"
-                 "  }\n")
-           '())
-       "}\n")))))
+    (list
+     (if (not (null? destroy-value))
+         (list
+          "{\n"
+          "  " (c-type-name glist-type (typespec value)) tmp-cursor " = " c-var ";\n"
+          "  while(" tmp-cursor ")\n"
+          "  {\n"
+          "    " sub-item-c-type " " tmp-sub-item-c-var ";\n"
+          "    " tmp-sub-item-c-var " = ( " sub-item-c-type ") "
+          (string-append tmp-cursor "->data") ";\n"
+          destroy-value
+          tmp-cursor " = " (string-append tmp-cursor "->next") ";\n"
+          "  }\n")
+         '())
+     (if (memq 'caller-owned options)
+         (list "  if(" c-var ")\n"
+               "  {\n"
+               "    " func-prefix "_free(" c-var ");\n"
+               "    " c-var " = NULL;\n"
+               "  }\n")
+         '())
+     (if (not (null? destroy-value))
+         "}\n"
+         '()))))
 
 ;;; GError
 
