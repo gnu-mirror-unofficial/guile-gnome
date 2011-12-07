@@ -2,7 +2,7 @@
 
 SUBDIRS = defs glib cairo atk pango gtk libgnomeui libgnomecanvas libgnome libglade gnome-vfs gconf corba 
 EXTRA_DIST = dev-environ h2def.py Makefile.am.bottom \
-             autogen.sh autogen-pkg.sh autogen-support.sh HACKING
+             autogen.sh HACKING
 
 dist-gzip: distdir
 	$(AMTAR) --format=ustar -chf - $(distdir) | GZIP=$(GZIP_ENV) gzip -c >$(distdir).tar.gz
