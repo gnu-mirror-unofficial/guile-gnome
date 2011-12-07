@@ -1,9 +1,0 @@
-EXTRA_DIST = dev-environ h2def.py Makefile.am.bottom \
-             autogen.sh autogen-pkg.sh autogen-support.sh HACKING
-
-dist-gzip: distdir
-	$(AMTAR) --format=ustar -chf - $(distdir) | GZIP=$(GZIP_ENV) gzip -c >$(distdir).tar.gz
-	$(am__remove_distdir)
-dist dist-all: distdir
-	$(AMTAR) --format=ustar -chf - $(distdir) | GZIP=$(GZIP_ENV) gzip -c >$(distdir).tar.gz
-	$(am__remove_distdir)
