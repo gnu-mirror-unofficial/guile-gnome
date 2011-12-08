@@ -1,7 +1,7 @@
 Guile-GNOME HACKING
-Copyright (C) 2004,2006,2009,2010 Free Software Foundation, Inc.
+Copyright (C) 2004,2006,2009,2010,2011 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
-Last updated 13 August 2006.
+Last updated 7 December 2011.
 
 
 So, you want to hack Guile-GNOME?
@@ -19,28 +19,8 @@ retrieved as:
 
    $ git clone git://git.sv.gnu.org/guile-gnome.git
 
-Guile-GNOME is developed as a set of modular source packages; the above
-command fetches all of them, and then checks out the wrapper module. The
-set of packages that can be built is given in the PACKAGES file in the
-toplevel source directory. To configure the directory you just fetched
-as Guile-GNOME-platform, try the following script:
-
-   $ cd guile-gnome
-   $ scripts/configure-packages guile-gnome-platform
-
-That will check out the GNOME platform modules into the guile-gnome/
-directory. At that point you can run `./autogen.sh --prefix=/usr &&
-make' just like any normal project.
-
-After hacking, you can run the `push-packages' script to publish your
-code.
-
-  $ scripts/push-packages
-
-Later, to update from the Guile-GNOME's canonical archive, you can do
-the following:
-
-  $ scripts/pull-packages
+Note that when building from Git, you'll need to run autogen.sh to
+create "configure" and the rest of the build system.
 
 
 We are wildebeests
