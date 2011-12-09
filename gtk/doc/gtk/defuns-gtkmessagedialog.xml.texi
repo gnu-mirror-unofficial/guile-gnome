@@ -1,0 +1,71 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-message-dialog>
+Derives from @code{<gtk-dialog>}.
+
+This class defines the following slots:
+
+@table @code
+@item message-type
+The type of message
+
+@item buttons
+The buttons shown in the message dialog
+
+@item text
+The primary text of the message dialog
+
+@item use-markup
+The primary text of the title includes Pango markup.
+
+@item secondary-text
+The secondary text of the message dialog
+
+@item secondary-use-markup
+The secondary text includes Pango markup.
+
+@item image
+The image
+
+@end table
+
+@end deftp
+
+@deffn Function gtk-message-dialog-set-markup  (self@tie{}@code{<gtk-message-dialog>}) (str@tie{}@code{mchars})
+@deffnx Method set-markup
+Sets the text of the message dialog to be @var{str}, which is marked up with the
+Pango text markup language.
+
+@table @var
+@item message-dialog
+a @code{<gtk-message-dialog>}
+
+@item str
+markup string (see Pango markup format)
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-message-dialog-set-image  (self@tie{}@code{<gtk-message-dialog>}) (image@tie{}@code{<gtk-widget>})
+@deffnx Method set-image
+Sets the dialog's image to @var{image}.
+
+@table @var
+@item dialog
+a @code{<gtk-message-dialog>}
+
+@item image
+the image
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment

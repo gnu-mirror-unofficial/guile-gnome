@@ -1,0 +1,1220 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-text-buffer>
+Derives from @code{<gobject>}.
+
+This class defines the following slots:
+
+@table @code
+@item tag-table
+Text Tag Table
+
+@item text
+Current text of the buffer
+
+@item has-selection
+Whether the buffer has some text currently selected
+
+@item cursor-position
+The position of the insert mark (as offset from the beginning of the buffer)
+
+@item copy-target-list
+The list of targets this buffer supports for clipboard copying and DND source
+
+@item paste-target-list
+The list of targets this buffer supports for clipboard pasting and DND
+destination
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-text-buffer> changed 
+The changed signal is emitted when the content of a @code{<gtk-text-buffer>} has
+changed.
+
+@end defop
+
+@defop Signal <gtk-text-buffer> insert-text  (arg0@tie{}@code{<gtk-text-iter>}) (arg1@tie{}@code{<gchararray>}) (arg2@tie{}@code{<gint>})
+The insert_text signal is emitted to insert text in a @code{<gtk-text-buffer>}.
+Insertion actually occurs in the default handler.
+
+Note that if your handler runs before the default handler it must not invalidate
+the @var{location} iter (or has to revalidate it). The default signal handler
+revalidates it to point to the end of the inserted text.
+
+See also: @code{gtk-text-buffer-insert}, @code{gtk-text-buffer-insert-range}.
+
+@end defop
+
+@defop Signal <gtk-text-buffer> insert-pixbuf  (arg0@tie{}@code{<gtk-text-iter>}) (arg1@tie{}@code{<gdk-pixbuf>})
+The insert_pixbuf signal is emitted to insert a @code{<gdk-pixbuf>} in a
+@code{<gtk-text-buffer>}. Insertion actually occurs in the default handler.
+
+Note that if your handler runs before the default handler it must not invalidate
+the @var{location} iter (or has to revalidate it). The default signal handler
+revalidates it to be placed after the inserted @var{pixbuf}.
+
+See also: @code{gtk-text-buffer-insert-pixbuf}.
+
+@end defop
+
+@defop Signal <gtk-text-buffer> insert-child-anchor  (arg0@tie{}@code{<gtk-text-iter>}) (arg1@tie{}@code{<gtk-text-child-anchor>})
+The insert_child_anchor signal is emitted to insert a
+@code{<gtk-text-child-anchor>} in a @code{<gtk-text-buffer>}. Insertion actually
+occurs in the default handler.
+
+Note that if your handler runs before the default handler it must not invalidate
+the @var{location} iter (or has to revalidate it). The default signal handler
+revalidates it to be placed after the inserted @var{anchor}.
+
+See also: @code{gtk-text-buffer-insert-child-anchor}.
+
+@end defop
+
+@defop Signal <gtk-text-buffer> delete-range  (arg0@tie{}@code{<gtk-text-iter>}) (arg1@tie{}@code{<gtk-text-iter>})
+The delete_range signal is emitted to delete a range from a
+@code{<gtk-text-buffer>}.
+
+Note that if your handler runs before the default handler it must not invalidate
+the @var{start} and @var{end} iters (or has to revalidate them). The default
+signal handler revalidates the @var{start} and @var{end} iters to both point
+point to the location where text was deleted. Handlers which run after the
+default handler (see @code{g-signal-connect-after}) do not have access to the
+deleted text.
+
+See also: @code{gtk-text-buffer-delete}.
+
+@end defop
+
+@defop Signal <gtk-text-buffer> modified-changed 
+The modified_changed signal is emitted when the modified bit of a
+@code{<gtk-text-buffer>} flips.
+
+See also: @code{gtk-text-buffer-set-modified}.
+
+@end defop
+
+@defop Signal <gtk-text-buffer> mark-set  (arg0@tie{}@code{<gtk-text-iter>}) (arg1@tie{}@code{<gtk-text-mark>})
+The mark_set signal is emitted as notification after a @code{<gtk-text-mark>} is
+set.
+
+See also: @code{gtk-text-buffer-create-mark}, @code{gtk-text-buffer-move-mark}.
+
+@end defop
+
+@defop Signal <gtk-text-buffer> mark-deleted  (arg0@tie{}@code{<gtk-text-mark>})
+The mark_deleted signal is emitted as notification after a
+@code{<gtk-text-mark>} is deleted.
+
+See also: @code{gtk-text-buffer-delete-mark}.
+
+@end defop
+
+@defop Signal <gtk-text-buffer> apply-tag  (arg0@tie{}@code{<gtk-text-tag>}) (arg1@tie{}@code{<gtk-text-iter>}) (arg2@tie{}@code{<gtk-text-iter>})
+The apply_tag signal is emitted to apply a tag to a range of text in a
+@code{<gtk-text-buffer>}. Applying actually occurs in the default handler.
+
+Note that if your handler runs before the default handler it must not invalidate
+the @var{start} and @var{end} iters (or has to revalidate them).
+
+See also: @code{gtk-text-buffer-apply-tag},
+@code{gtk-text-buffer-insert-with-tags}, @code{gtk-text-buffer-insert-range}.
+
+@end defop
+
+@defop Signal <gtk-text-buffer> remove-tag  (arg0@tie{}@code{<gtk-text-tag>}) (arg1@tie{}@code{<gtk-text-iter>}) (arg2@tie{}@code{<gtk-text-iter>})
+The remove_tag signal is emitted to remove all occurrences of @var{tag} from a
+range of text in a @code{<gtk-text-buffer>}. Removal actually occurs in the
+default handler.
+
+Note that if your handler runs before the default handler it must not invalidate
+the @var{start} and @var{end} iters (or has to revalidate them).
+
+See also: @code{gtk-text-buffer-remove-tag}.
+
+@end defop
+
+@defop Signal <gtk-text-buffer> begin-user-action 
+The begin_user_action signal is emitted at the beginning of a single
+user-visible operation on a @code{<gtk-text-buffer>}.
+
+See also: @code{gtk-text-buffer-begin-user-action},
+@code{gtk-text-buffer-insert-interactive},
+@code{gtk-text-buffer-insert-range-interactive},
+@code{gtk-text-buffer-delete-interactive}, @code{gtk-text-buffer-backspace},
+@code{gtk-text-buffer-delete-selection}.
+
+@end defop
+
+@defop Signal <gtk-text-buffer> end-user-action 
+The end_user_action signal is emitted at the end of a single user-visible
+operation @code{<gtk-text-buffer>}.
+
+See also: @code{gtk-text-buffer-end-user-action},
+@code{gtk-text-buffer-insert-interactive},
+@code{gtk-text-buffer-insert-range-interactive},
+@code{gtk-text-buffer-delete-interactive}, @code{gtk-text-buffer-backspace},
+@code{gtk-text-buffer-delete-selection}, @code{gtk-text-buffer-backspace}.
+
+@end defop
+
+@deffn Function gtk-text-buffer-new  (table@tie{}@code{<gtk-text-tag-table>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-buffer>})
+Creates a new text buffer.
+
+@table @var
+@item table
+a tag table, or NULL to create a new one
+
+@item ret
+a new text buffer
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-line-count  (self@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-line-count
+Obtains the number of lines in the buffer. This value is cached, so the function
+is very fast.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item ret
+number of lines in the buffer
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-char-count  (self@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-char-count
+Gets the number of characters in the buffer; note that characters and bytes are
+not the same, you can't e.g. expect the contents of the buffer in string form to
+be this many bytes long. The character count is cached, so this function is very
+fast.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item ret
+number of characters in the buffer
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-tag-table  (self@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-tag-table>})
+@deffnx Method get-tag-table
+Get the @code{<gtk-text-tag-table>} associated with this buffer.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item ret
+the buffer's tag table
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-insert  (self@tie{}@code{<gtk-text-buffer>}) (iter@tie{}@code{<gtk-text-iter>}) (stext@tie{}@code{scm})
+@deffnx Method insert
+Inserts @var{len} bytes of @var{text} at position @var{iter}. If @var{len} is
+-1, @var{text} must be nul-terminated and will be inserted in its entirety.
+Emits the "insert_text" signal; insertion actually occurs in the default handler
+for the signal. @var{iter} is invalidated when insertion occurs (because the
+buffer contents change), but the default signal handler revalidates it to point
+to the end of the inserted text.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item iter
+a position in the buffer
+
+@item text
+UTF-8 format text to insert
+
+@item len
+length of text in bytes, or -1
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-insert-at-cursor  (self@tie{}@code{<gtk-text-buffer>}) (stext@tie{}@code{scm})
+@deffnx Method insert-at-cursor
+Simply calls @code{gtk-text-buffer-insert}, using the current cursor position as
+the insertion point.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item text
+some text in UTF-8 format
+
+@item len
+length of text, in bytes
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-insert-interactive  (self@tie{}@code{<gtk-text-buffer>}) (iter@tie{}@code{<gtk-text-iter>}) (stext@tie{}@code{scm}) (default_editable@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method insert-interactive
+Like @code{gtk-text-buffer-insert}, but the insertion will not occur if
+@var{iter} is at a non-editable location in the buffer. Usually you want to
+prevent insertions at ineditable locations if the insertion results from a user
+action (is interactive).
+
+@var{default-editable} indicates the editability of text that doesn't have a tag
+affecting editability applied to it. Typically the result of
+@code{gtk-text-view-get-editable} is appropriate here.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item iter
+a position in @var{buffer}
+
+@item text
+some UTF-8 text
+
+@item len
+length of text in bytes, or -1
+
+@item default-editable
+default editability of buffer
+
+@item ret
+whether text was actually inserted
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-insert-range  (self@tie{}@code{<gtk-text-buffer>}) (iter@tie{}@code{<gtk-text-iter>}) (start@tie{}@code{<gtk-text-iter>}) (end@tie{}@code{<gtk-text-iter>})
+@deffnx Method insert-range
+Copies text, tags, and pixbufs between @var{start} and @var{end} (the order of
+@var{start} and @var{end} doesn't matter) and inserts the copy at @var{iter}.
+Used instead of simply getting/inserting text because it preserves images and
+tags. If @var{start} and @var{end} are in a different buffer from @var{buffer},
+the two buffers must share the same tag table.
+
+Implemented via emissions of the insert_text and apply_tag signals, so expect
+those.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item iter
+a position in @var{buffer}
+
+@item start
+a position in a @code{<gtk-text-buffer>}
+
+@item end
+another position in the same buffer as @var{start}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-insert-with-tags  (self@tie{}@code{<gtk-text-buffer>}) (iter@tie{}@code{<gtk-text-iter>}) (stext@tie{}@code{scm}) (tag_list@tie{}@code{glist-of})
+@deffnx Method insert-with-tags
+Inserts @var{text} into @var{buffer} at @var{iter}, applying the list of tags to
+the newly-inserted text. The last tag specified must be NULL to terminate the
+list. Equivalent to calling @code{gtk-text-buffer-insert}, then
+@code{gtk-text-buffer-apply-tag} on the inserted text;
+@code{gtk-text-buffer-insert-with-tags} is just a convenience function.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item iter
+an iterator in @var{buffer}
+
+@item text
+UTF-8 text
+
+@item len
+length of @var{text}, or -1
+
+@item first-tag
+first tag to apply to @var{text}
+
+@item ...
+NULL-terminated list of tags to apply
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-delete  (self@tie{}@code{<gtk-text-buffer>}) (start@tie{}@code{<gtk-text-iter>}) (end@tie{}@code{<gtk-text-iter>})
+@deffnx Method delete
+Deletes text between @var{start} and @var{end}. The order of @var{start} and
+@var{end} is not actually relevant; @code{gtk-text-buffer-delete} will reorder
+them. This function actually emits the "delete_range" signal, and the default
+handler of that signal deletes the text. Because the buffer is modified, all
+outstanding iterators become invalid after calling this function; however, the
+@var{start} and @var{end} will be re-initialized to point to the location where
+text was deleted.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item start
+a position in @var{buffer}
+
+@item end
+another position in @var{buffer}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-delete-interactive  (self@tie{}@code{<gtk-text-buffer>}) (start_iter@tie{}@code{<gtk-text-iter>}) (end_iter@tie{}@code{<gtk-text-iter>}) (default_editable@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method delete-interactive
+Deletes all @emph{editable} text in the given range. Calls
+@code{gtk-text-buffer-delete} for each editable sub-range of
+[@var{start},@var{end}). @var{start} and @var{end} are revalidated to point to
+the location of the last deleted range, or left untouched if no text was
+deleted.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item start-iter
+start of range to delete
+
+@item end-iter
+end of range
+
+@item default-editable
+whether the buffer is editable by default
+
+@item ret
+whether some text was actually deleted
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-backspace  (self@tie{}@code{<gtk-text-buffer>}) (iter@tie{}@code{<gtk-text-iter>}) (interactive@tie{}@code{bool}) (default_editable@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method backspace
+Performs the appropriate action as if the user hit the delete key with the
+cursor at the position specified by @var{iter}. In the normal case a single
+character will be deleted, but when combining accents are involved, more than
+one character can be deleted, and when precomposed character and accent
+combinations are involved, less than one character will be deleted.
+
+Because the buffer is modified, all outstanding iterators become invalid after
+calling this function; however, the @var{iter} will be re-initialized to point
+to the location where text was deleted.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item iter
+a position in @var{buffer}
+
+@item interactive
+whether the deletion is caused by user interaction
+
+@item default-editable
+whether the buffer is editable by default
+
+@item ret
+@samp{@code{#t}} if the buffer was modified
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-text-buffer-set-text  (self@tie{}@code{<gtk-text-buffer>}) (stext@tie{}@code{scm})
+@deffnx Method set-text
+Deletes current contents of @var{buffer}, and inserts @var{text} instead. If
+@var{len} is -1, @var{text} must be nul-terminated. @var{text} must be valid
+UTF-8.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item text
+UTF-8 text to insert
+
+@item len
+length of @var{text} in bytes
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-text  (self@tie{}@code{<gtk-text-buffer>}) (start@tie{}@code{<gtk-text-iter>}) (end@tie{}@code{<gtk-text-iter>}) (include_hidden_chars@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-text
+Returns the text in the range [@var{start},@var{end}). Excludes undisplayed text
+(text marked with tags that set the invisibility attribute) if
+@var{include-hidden-chars} is @samp{@code{#f}}. Does not include characters
+representing embedded images, so byte and character indexes into the returned
+string do @emph{not} correspond to byte and character indexes into the buffer.
+Contrast with @code{gtk-text-buffer-get-slice}.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item start
+start of a range
+
+@item end
+end of a range
+
+@item include-hidden-chars
+whether to include invisible text
+
+@item ret
+an allocated UTF-8 string
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-slice  (self@tie{}@code{<gtk-text-buffer>}) (start@tie{}@code{<gtk-text-iter>}) (end@tie{}@code{<gtk-text-iter>}) (include_hidden_chars@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-slice
+Returns the text in the range [@var{start},@var{end}). Excludes undisplayed text
+(text marked with tags that set the invisibility attribute) if
+@var{include-hidden-chars} is @samp{@code{#f}}. The returned string includes a
+0xFFFC character whenever the buffer contains embedded images, so byte and
+character indexes into the returned string @emph{do} correspond to byte and
+character indexes into the buffer. Contrast with
+@code{gtk-text-buffer-get-text}. Note that 0xFFFC can occur in normal text as
+well, so it is not a reliable indicator that a pixbuf or widget is in the
+buffer.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item start
+start of a range
+
+@item end
+end of a range
+
+@item include-hidden-chars
+whether to include invisible text
+
+@item ret
+an allocated UTF-8 string
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-insert-pixbuf  (self@tie{}@code{<gtk-text-buffer>}) (iter@tie{}@code{<gtk-text-iter>}) (pixbuf@tie{}@code{<gdk-pixbuf>})
+@deffnx Method insert-pixbuf
+Inserts an image into the text buffer at @var{iter}. The image will be counted
+as one character in character counts, and when obtaining the buffer contents as
+a string, will be represented by the Unicode "object replacement character"
+0xFFFC. Note that the "slice" variants for obtaining portions of the buffer as a
+string include this character for pixbufs, but the "text" variants do not. e.g.
+see @code{gtk-text-buffer-get-slice} and @code{gtk-text-buffer-get-text}.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item iter
+location to insert the pixbuf
+
+@item pixbuf
+a @code{<gdk-pixbuf>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-insert-child-anchor  (self@tie{}@code{<gtk-text-buffer>}) (iter@tie{}@code{<gtk-text-iter>}) (anchor@tie{}@code{<gtk-text-child-anchor>})
+@deffnx Method insert-child-anchor
+Inserts a child widget anchor into the text buffer at @var{iter}. The anchor
+will be counted as one character in character counts, and when obtaining the
+buffer contents as a string, will be represented by the Unicode "object
+replacement character" 0xFFFC. Note that the "slice" variants for obtaining
+portions of the buffer as a string include this character for child anchors, but
+the "text" variants do not. e.g. see @code{gtk-text-buffer-get-slice} and
+@code{gtk-text-buffer-get-text}. Consider
+@code{gtk-text-buffer-create-child-anchor} as a more convenient alternative to
+this function. The buffer will add a reference to the anchor, so you can unref
+it after insertion.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item iter
+location to insert the anchor
+
+@item anchor
+a @code{<gtk-text-child-anchor>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-create-child-anchor  (self@tie{}@code{<gtk-text-buffer>}) (iter@tie{}@code{<gtk-text-iter>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-child-anchor>})
+@deffnx Method create-child-anchor
+This is a convenience function which simply creates a child anchor with
+@code{gtk-text-child-anchor-new} and inserts it into the buffer with
+@code{gtk-text-buffer-insert-child-anchor}. The new anchor is owned by the
+buffer; no reference count is returned to the caller of
+@code{gtk-text-buffer-create-child-anchor}.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item iter
+location in the buffer
+
+@item ret
+the created child anchor
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-create-mark  (self@tie{}@code{<gtk-text-buffer>}) (mark_name@tie{}@code{mchars}) (where@tie{}@code{<gtk-text-iter>}) (left_gravity@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<gtk-text-mark>})
+@deffnx Method create-mark
+Creates a mark at position @var{where}. If @var{mark-name} is @samp{@code{#f}},
+the mark is anonymous; otherwise, the mark can be retrieved by name using
+@code{gtk-text-buffer-get-mark}. If a mark has left gravity, and text is
+inserted at the mark's current location, the mark will be moved to the left of
+the newly-inserted text. If the mark has right gravity (@var{left-gravity} =
+@samp{@code{#f}}), the mark will end up on the right of newly-inserted text. The
+standard left-to-right cursor is a mark with right gravity (when you type, the
+cursor stays on the right side of the text you're typing).
+
+The caller of this function does @emph{not} own a reference to the returned
+@code{<gtk-text-mark>}, so you can ignore the return value if you like. Marks
+are owned by the buffer and go away when the buffer does.
+
+Emits the "mark_set" signal as notification of the mark's initial placement.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item mark-name
+name for mark, or @samp{@code{#f}}
+
+@item where
+location to place mark
+
+@item left-gravity
+whether the mark has left gravity
+
+@item ret
+the new @code{<gtk-text-mark>} object
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-move-mark  (self@tie{}@code{<gtk-text-buffer>}) (mark@tie{}@code{<gtk-text-mark>}) (where@tie{}@code{<gtk-text-iter>})
+@deffnx Method move-mark
+Moves @var{mark} to the new location @var{where}. Emits the "mark_set" signal as
+notification of the move.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item mark
+a @code{<gtk-text-mark>}
+
+@item where
+new location for @var{mark} in @var{buffer}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-move-mark-by-name  (self@tie{}@code{<gtk-text-buffer>}) (name@tie{}@code{mchars}) (where@tie{}@code{<gtk-text-iter>})
+@deffnx Method move-mark-by-name
+Moves the mark named @var{name} (which must exist) to location @var{where}. See
+@code{gtk-text-buffer-move-mark} for details.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item name
+name of a mark
+
+@item where
+new location for mark
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-delete-mark  (self@tie{}@code{<gtk-text-buffer>}) (mark@tie{}@code{<gtk-text-mark>})
+@deffnx Method delete-mark
+Deletes @var{mark}, so that it's no longer located anywhere in the buffer.
+Removes the reference the buffer holds to the mark, so if you haven't called
+@code{g-object-ref} on the mark, it will be freed. Even if the mark isn't freed,
+most operations on @var{mark} become invalid. There is no way to undelete a
+mark. @code{gtk-text-mark-get-deleted} will return TRUE after this function has
+been called on a mark; @code{gtk-text-mark-get-deleted} indicates that a mark no
+longer belongs to a buffer. The "mark_deleted" signal will be emitted as
+notification after the mark is deleted.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item mark
+a @code{<gtk-text-mark>} in @var{buffer}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-delete-mark-by-name  (self@tie{}@code{<gtk-text-buffer>}) (name@tie{}@code{mchars})
+@deffnx Method delete-mark-by-name
+Deletes the mark named @var{name}; the mark must exist. See
+@code{gtk-text-buffer-delete-mark} for details.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item name
+name of a mark in @var{buffer}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-mark  (self@tie{}@code{<gtk-text-buffer>}) (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-text-mark>})
+@deffnx Method get-mark
+Returns the mark named @var{name} in buffer @var{buffer}, or NULL if no such
+mark exists in the buffer.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item name
+a mark name
+
+@item ret
+a @code{<gtk-text-mark>}, or NULL
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-insert  (self@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-mark>})
+@deffnx Method get-insert
+Returns the mark that represents the cursor (insertion point). Equivalent to
+calling @code{gtk-text-buffer-get-mark} to get the mark named "insert", but very
+slightly more efficient, and involves less typing.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item ret
+insertion point mark
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-selection-bound  (self@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-mark>})
+@deffnx Method get-selection-bound
+Returns the mark that represents the selection bound. Equivalent to calling
+@code{gtk-text-buffer-get-mark} to get the mark named "selection_bound", but
+very slightly more efficient, and involves less typing.
+
+The currently-selected text in @var{buffer} is the region between the
+"selection_bound" and "insert" marks. If "selection_bound" and "insert" are in
+the same place, then there is no current selection.
+@code{gtk-text-buffer-get-selection-bounds} is another convenient function for
+handling the selection, if you just want to know whether there's a selection and
+what its bounds are.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item ret
+selection bound mark
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-has-selection  (self@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-has-selection
+Indicates whether the buffer has some text currently selected.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item ret
+@samp{@code{#t}} if the there is text selected
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-text-buffer-place-cursor  (self@tie{}@code{<gtk-text-buffer>}) (where@tie{}@code{<gtk-text-iter>})
+@deffnx Method place-cursor
+This function moves the "insert" and "selection_bound" marks simultaneously. If
+you move them to the same place in two steps with
+@code{gtk-text-buffer-move-mark}, you will temporarily select a region in
+between their old and new locations, which can be pretty inefficient since the
+temporarily-selected region will force stuff to be recalculated. This function
+moves them as a unit, which can be optimized.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item where
+where to put the cursor
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-select-range  (self@tie{}@code{<gtk-text-buffer>}) (ins@tie{}@code{<gtk-text-iter>}) (bound@tie{}@code{<gtk-text-iter>})
+@deffnx Method select-range
+This function moves the "insert" and "selection_bound" marks simultaneously. If
+you move them in two steps with @code{gtk-text-buffer-move-mark}, you will
+temporarily select a region in between their old and new locations, which can be
+pretty inefficient since the temporarily-selected region will force stuff to be
+recalculated. This function moves them as a unit, which can be optimized.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item ins
+where to put the "insert" mark
+
+@item bound
+where to put the "selection_bound" mark
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-text-buffer-apply-tag  (self@tie{}@code{<gtk-text-buffer>}) (tag@tie{}@code{<gtk-text-tag>}) (start@tie{}@code{<gtk-text-iter>}) (end@tie{}@code{<gtk-text-iter>})
+@deffnx Method apply-tag
+Emits the "apply_tag" signal on @var{buffer}. The default handler for the signal
+applies @var{tag} to the given range. @var{start} and @var{end} do not have to
+be in order.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item tag
+a @code{<gtk-text-tag>}
+
+@item start
+one bound of range to be tagged
+
+@item end
+other bound of range to be tagged
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-remove-tag  (self@tie{}@code{<gtk-text-buffer>}) (tag@tie{}@code{<gtk-text-tag>}) (start@tie{}@code{<gtk-text-iter>}) (end@tie{}@code{<gtk-text-iter>})
+@deffnx Method remove-tag
+Emits the "remove_tag" signal. The default handler for the signal removes all
+occurrences of @var{tag} from the given range. @var{start} and @var{end} don't
+have to be in order.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item tag
+a @code{<gtk-text-tag>}
+
+@item start
+one bound of range to be untagged
+
+@item end
+other bound of range to be untagged
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-apply-tag-by-name  (self@tie{}@code{<gtk-text-buffer>}) (name@tie{}@code{mchars}) (start@tie{}@code{<gtk-text-iter>}) (end@tie{}@code{<gtk-text-iter>})
+@deffnx Method apply-tag-by-name
+Calls @code{gtk-text-tag-table-lookup} on the buffer's tag table to get a
+@code{<gtk-text-tag>}, then calls @code{gtk-text-buffer-apply-tag}.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item name
+name of a named @code{<gtk-text-tag>}
+
+@item start
+one bound of range to be tagged
+
+@item end
+other bound of range to be tagged
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-remove-tag-by-name  (self@tie{}@code{<gtk-text-buffer>}) (name@tie{}@code{mchars}) (start@tie{}@code{<gtk-text-iter>}) (end@tie{}@code{<gtk-text-iter>})
+@deffnx Method remove-tag-by-name
+Calls @code{gtk-text-tag-table-lookup} on the buffer's tag table to get a
+@code{<gtk-text-tag>}, then calls @code{gtk-text-buffer-remove-tag}.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item name
+name of a @code{<gtk-text-tag>}
+
+@item start
+one bound of range to be untagged
+
+@item end
+other bound of range to be untagged
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-remove-all-tags  (self@tie{}@code{<gtk-text-buffer>}) (start@tie{}@code{<gtk-text-iter>}) (end@tie{}@code{<gtk-text-iter>})
+@deffnx Method remove-all-tags
+Removes all tags in the range between @var{start} and @var{end}. Be careful with
+this function; it could remove tags added in code unrelated to the code you're
+currently writing. That is, using this function is probably a bad idea if you
+have two or more unrelated code sections that add tags.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item start
+one bound of range to be untagged
+
+@item end
+other bound of range to be untagged
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-iter-at-offset  (self@tie{}@code{<gtk-text-buffer>}) (char_offset@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-text-iter>})
+@deffnx Method get-iter-at-offset
+Initializes @var{iter} to a position @var{char-offset} chars from the start of
+the entire buffer. If @var{char-offset} is -1 or greater than the number of
+characters in the buffer, @var{iter} is initialized to the end iterator, the
+iterator one past the last valid character in the buffer.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item iter
+iterator to initialize
+
+@item char-offset
+char offset from start of buffer, counting from 0, or -1
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-iter-at-line  (self@tie{}@code{<gtk-text-buffer>}) (line_number@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-text-iter>})
+@deffnx Method get-iter-at-line
+Initializes @var{iter} to the start of the given line.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item iter
+iterator to initialize
+
+@item line-number
+line number counting from 0
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-iter-at-mark  (self@tie{}@code{<gtk-text-buffer>}) (mark@tie{}@code{<gtk-text-mark>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-iter>})
+@deffnx Method get-iter-at-mark
+Initializes @var{iter} with the current position of @var{mark}.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item iter
+iterator to initialize
+
+@item mark
+a @code{<gtk-text-mark>} in @var{buffer}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-start-iter  (self@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-iter>})
+@deffnx Method get-start-iter
+Initialized @var{iter} with the first position in the text buffer. This is the
+same as using @code{gtk-text-buffer-get-iter-at-offset} to get the iter at
+character offset 0.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item iter
+iterator to initialize
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-end-iter  (self@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-iter>})
+@deffnx Method get-end-iter
+Initializes @var{iter} with the "end iterator," one past the last valid
+character in the text buffer. If dereferenced with
+@code{gtk-text-iter-get-char}, the end iterator has a character value of 0. The
+entire buffer lies in the range from the first position in the buffer (call
+@code{gtk-text-buffer-get-start-iter} to get character position 0) to the end
+iterator.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item iter
+iterator to initialize
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-bounds  (self@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (start@tie{}@code{<gtk-text-iter>}) (end@tie{}@code{<gtk-text-iter>}) 
+@deffnx Method get-bounds
+@deffnx Method get-bounds 
+Retrieves the first and last iterators in the buffer, i.e. the entire buffer
+lies within the range [@var{start},@var{end}).
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item start
+iterator to initialize with first position in the buffer
+
+@item end
+iterator to initialize with the end iterator
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-get-modified  (self@tie{}@code{<gtk-text-buffer>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-modified
+Indicates whether the buffer has been modified since the last call to
+@code{gtk-text-buffer-set-modified} set the modification flag to
+@samp{@code{#f}}. Used for example to enable a "save" function in a text editor.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item ret
+@samp{@code{#t}} if the buffer has been modified
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-set-modified  (self@tie{}@code{<gtk-text-buffer>}) (setting@tie{}@code{bool})
+@deffnx Method set-modified
+Used to keep track of whether the buffer has been modified since the last time
+it was saved. Whenever the buffer is saved to disk, call
+gtk_text_buffer_set_modified (@var{buffer}, FALSE). When the buffer is modified,
+it will automatically toggled on the modified bit again. When the modified bit
+flips, the buffer emits a "modified_changed" signal.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item setting
+modification flag setting
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-delete-selection  (self@tie{}@code{<gtk-text-buffer>}) (interactive@tie{}@code{bool}) (default_editable@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method delete-selection
+Deletes the range between the "insert" and "selection_bound" marks, that is, the
+currently-selected text. If @var{interactive} is @samp{@code{#t}}, the
+editability of the selection will be considered (users can't delete uneditable
+text).
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item interactive
+whether the deletion is caused by user interaction
+
+@item default-editable
+whether the buffer is editable by default
+
+@item ret
+whether there was a non-empty selection to delete
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-paste-clipboard  (self@tie{}@code{<gtk-text-buffer>}) (clipboard@tie{}@code{<gtk-clipboard>}) (override_location@tie{}@code{<gtk-text-iter>}) (default_editable@tie{}@code{bool})
+@deffnx Method paste-clipboard
+Pastes the contents of a clipboard at the insertion point, or at
+@var{override-location}. (Note: pasting is asynchronous, that is, we'll ask for
+the paste data and return, and at some point later after the main loop runs, the
+paste data will be inserted.)
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item clipboard
+the @code{<gtk-clipboard>} to paste from
+
+@item override-location
+location to insert pasted text, or @samp{@code{#f}} for at the cursor
+
+@item default-editable
+whether the buffer is editable by default
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-copy-clipboard  (self@tie{}@code{<gtk-text-buffer>}) (clipboard@tie{}@code{<gtk-clipboard>})
+@deffnx Method copy-clipboard
+Copies the currently-selected text to a clipboard.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item clipboard
+the @code{<gtk-clipboard>} object to copy to.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-cut-clipboard  (self@tie{}@code{<gtk-text-buffer>}) (clipboard@tie{}@code{<gtk-clipboard>}) (default_editable@tie{}@code{bool})
+@deffnx Method cut-clipboard
+Copies the currently-selected text to a clipboard, then deletes said text if
+it's editable.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@item clipboard
+the @code{<gtk-clipboard>} object to cut to.
+
+@item default-editable
+default editability of the buffer
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-begin-user-action  (self@tie{}@code{<gtk-text-buffer>})
+@deffnx Method begin-user-action
+Called to indicate that the buffer operations between here and a call to
+@code{gtk-text-buffer-end-user-action} are part of a single user-visible
+operation. The operations between @code{gtk-text-buffer-begin-user-action} and
+@code{gtk-text-buffer-end-user-action} can then be grouped when creating an undo
+stack. @code{<gtk-text-buffer>} maintains a count of calls to
+@code{gtk-text-buffer-begin-user-action} that have not been closed with a call
+to @code{gtk-text-buffer-end-user-action}, and emits the "begin_user_action" and
+"end_user_action" signals only for the outermost pair of calls. This allows you
+to build user actions from other user actions.
+
+The "interactive" buffer mutation functions, such as
+@code{gtk-text-buffer-insert-interactive}, automatically call begin/end user
+action around the buffer operations they perform, so there's no need to add
+extra calls if you user action consists solely of a single call to one of those
+functions.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-buffer-end-user-action  (self@tie{}@code{<gtk-text-buffer>})
+@deffnx Method end-user-action
+Should be paired with a call to @code{gtk-text-buffer-begin-user-action}. See
+that function for a full explanation.
+
+@table @var
+@item buffer
+a @code{<gtk-text-buffer>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

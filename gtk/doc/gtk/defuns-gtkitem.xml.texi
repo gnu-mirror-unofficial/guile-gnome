@@ -1,0 +1,63 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-item>
+Derives from @code{<gtk-bin>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@defop Signal <gtk-item> select 
+Emitted when the item is selected.
+
+@end defop
+
+@defop Signal <gtk-item> deselect 
+Emitted when the item is deselected.
+
+@end defop
+
+@defop Signal <gtk-item> toggle 
+Emitted when the item is toggled.
+
+@end defop
+
+@deffn Function gtk-item-select  (self@tie{}@code{<gtk-item>})
+@deffnx Method select
+Emits the "select" signal on the given item.
+
+@table @var
+@item item
+a @code{<gtk-item>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-item-deselect  (self@tie{}@code{<gtk-item>})
+@deffnx Method deselect
+Emits the "deselect" signal on the given item.
+
+@table @var
+@item item
+a @code{<gtk-item>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-item-toggle  (self@tie{}@code{<gtk-item>})
+@deffnx Method toggle
+Emits the "toggle" signal on the given item.
+
+@table @var
+@item item
+a @code{<gtk-item>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,51 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-im-context-simple>
+Derives from @code{<gtk-im-context>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-im-context-simple-new  @result{}@tie{} (ret@tie{}@code{<gtk-im-context>})
+Creates a new @code{<gtk-im-context-simple>}.
+
+@table @var
+@item ret
+a new @code{<gtk-im-context-simple>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-im-context-simple-add-table  (self@tie{}@code{<gtk-im-context-simple>}) (max_seq_len@tie{}@code{int}) (n_seqs@tie{}@code{int}) @result{}@tie{} (data@tie{}@code{unsigned-int16})
+@deffnx Method add-table
+Adds an additional table to search to the input context. Each row of the table
+consists of @var{max-seq-len} key symbols followed by two @code{<guint16>}
+interpreted as the high and low words of a @code{<gunicode>} value. Tables are
+searched starting from the last added.
+
+The table must be sorted in dictionary order on the numeric value of the key
+symbol fields. (Values beyond the length of the sequence should be zero.)
+
+@table @var
+@item context-simple
+A @code{<gtk-im-context-simple>}
+
+@item data
+the table
+
+@item max-seq-len
+Maximum length of a sequence in the table (cannot be greater than
+@code{<gtk-max-compose-len>})
+
+@item n-seqs
+number of sequences in the table
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,470 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename guile-gnome-gtk.info
+@settitle Guile-Gtk
+@c %**end of header
+
+@include version.texi
+
+@copying 
+This manual is for @code{(gnome gtk)} (version @value{VERSION}, updated
+@value{UPDATED})
+
+Copyright 1997-2007 Damon Chaplin and others
+
+@c from gtk+/docs/reference/COPYING
+@quotation 
+This work may be reproduced and distributed in whole or in part, in
+any medium, physical or electronic, so as long as this copyright
+notice remains intact and unchanged on all copies.  Commercial
+redistribution is permitted and encouraged, but you may not
+redistribute, in whole or in part, under terms more restrictive than
+those under which you received it. If you redistribute a modified or
+translated version of this work, you must also make the source code to
+the modified or translated version available in electronic form
+without charge.  However, mere aggregation as part of a larger work
+shall not count as a modification for this purpose.
+
+All code examples in this work are placed into the public domain,
+and may be used, modified and redistributed without restriction.
+
+BECAUSE THIS WORK IS LICENSED FREE OF CHARGE, THERE IS NO
+WARRANTY FOR THE WORK, TO THE EXTENT PERMITTED BY APPLICABLE LAW.
+EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR
+OTHER PARTIES PROVIDE THE WORK "AS IS" WITHOUT WARRANTY OF ANY
+KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE.  SHOULD THE WORK PROVE DEFECTIVE, YOU ASSUME
+THE COST OF ALL NECESSARY REPAIR OR CORRECTION.
+
+IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN
+WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY
+AND/OR REDISTRIBUTE THE WORK AS PERMITTED ABOVE, BE LIABLE TO YOU
+FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR
+CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE
+WORK, EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE 
+POSSIBILITY OF SUCH DAMAGES.
+@end quotation
+
+@end copying
+
+@dircategory The Algorithmic Language Scheme
+@direntry 
+* Guile-Gtk: (guile-gnome-gtk.info).  The GIMP ToolKit.
+@end direntry
+
+@titlepage 
+@title Guile-GNOME: Gtk
+@subtitle version @value{VERSION}, updated @value{UPDATED}
+@author Damon Chaplin
+@author many others
+@page 
+@vskip 0pt plus 1filll
+@insertcopying 
+@end titlepage
+
+@ifnottex 
+@node Top
+@top Guile-Gtk
+
+@insertcopying 
+@menu
+
+* Overview:: Overview
+
+Windows
+* GtkDialog:: Create popup windows
+* GtkInvisible:: A widget which is not displayed
+* GtkMessageDialog:: A convenient message window
+* GtkWindow:: Toplevel which can contain other widgets
+* GtkWindowGroup:: Limit the effect of grabs
+* GtkAboutDialog:: Display information about an application
+* GtkAssistant:: A widget used to guide users through multi-step operations
+
+Display Widgets
+* GtkAccelLabel:: A label which displays an accelerator key on the right of the text
+* GtkImage:: A widget displaying an image
+* GtkLabel:: A widget that displays a small to medium amount of text
+* GtkProgressBar:: A widget which indicates progress visually
+* GtkStatusbar:: Report messages of minor importance to the user
+* GtkStatusIcon:: Display an icon in the system tray
+
+Buttons and Toggles
+* GtkButton:: A widget that creates a signal when clicked on
+* GtkCheckButton:: Create widgets with a discrete toggle button
+* GtkRadioButton:: A choice from multiple check buttons
+* GtkToggleButton:: Create buttons which retain their state
+* GtkLinkButton:: Create buttons bound to a URL
+
+Numeric/Text Data Entry
+* GtkEntry:: A single line text entry field
+* GtkEntryCompletion:: Completion functionality for GtkEntry
+* GtkHScale:: A horizontal slider widget for selecting a value from a range
+* GtkVScale:: A vertical slider widget for selecting a value from a range
+* GtkSpinButton:: Retrieve an integer or floating-point number from the user
+* GtkEditable:: Interface for text-editing widgets
+
+Multiline Text Editor
+* GtkTextIter:: Text buffer iterator
+* GtkTextMark:: A position in the buffer preserved across buffer modifications
+* GtkTextBuffer:: Stores attributed text for display in a GtkTextView
+* GtkTextTag:: A tag that can be applied to text in a <a href="GtkTextBuffer.html" title="GtkTextBuffer">GtkTextBuffer</a>
+* GtkTextTagTable:: Collection of tags that can be used together
+* GtkTextView:: Widget that displays a <a href="GtkTextBuffer.html" title="GtkTextBuffer">GtkTextBuffer</a>
+
+Tree, List and Icon Grid Widgets
+* GtkTreeModel:: The tree interface used by <a href="GtkTreeView.html" title="GtkTreeView"><span class="type">GtkTreeView</a>
+* GtkTreeSelection:: The selection object for <a href="GtkTreeView.html" title="GtkTreeView"><span class="type">GtkTreeView</a>
+* GtkTreeViewColumn:: A visible column in a <a href="GtkTreeView.html" title="GtkTreeView"><span class="type">GtkTreeView</a> widget
+* GtkTreeView:: A widget for displaying both trees and lists
+* GtkTreeView drag-and-drop:: Interfaces for drag-and-drop support in GtkTreeView
+* GtkCellView:: A widget displaying a single row of a GtkTreeModel
+* GtkIconView:: A widget which displays a list of icons in a grid
+* GtkTreeSortable:: The interface for sortable models used by GtkTreeView
+* GtkTreeModelSort:: A GtkTreeModel which makes an underlying tree model sortable
+* GtkTreeModelFilter:: A GtkTreeModel which hides parts of an underlying tree model
+* GtkCellLayout:: An interface for packing cells
+* GtkCellRenderer:: An object for rendering a single cell on a <GTKDOCLINK HREF="GdkDrawable"><span class="type">GdkDrawable</GTKDOCLINK>
+* GtkCellEditable:: Interface for widgets which can are used for editing cells
+* GtkCellRendererAccel:: Renders a keyboard accelerator in a cell
+* GtkCellRendererCombo:: Renders a combobox in a cell
+* GtkCellRendererPixbuf:: Renders a pixbuf in a cell
+* GtkCellRendererProgress:: Renders numbers as progress bars
+* GtkCellRendererSpin:: Renders a spin button in a cell
+* GtkCellRendererText:: Renders text in a cell
+* GtkCellRendererToggle:: Renders a toggle button in a cell
+* GtkListStore:: A list-like data structure that can be used with the <a href="GtkTreeView.html" title="GtkTreeView"><span class="type">GtkTreeView</a>
+* GtkTreeStore:: A tree-like data structure that can be used with the <a href="GtkTreeView.html" title="GtkTreeView"><span class="type">GtkTreeView</a>
+
+Menus, Combo Box, Toolbar
+* GtkComboBox:: A widget used to choose from a list of items
+* GtkComboBoxEntry:: A text entry field with a dropdown list
+* GtkMenu:: A menu widget
+* GtkMenuBar:: A subclass widget for <a href="GtkMenuShell.html" title="GtkMenuShell"><span class="type">GtkMenuShell</a> which holds <a href="GtkMenuItem.html" title="GtkMenuItem"><span class="type">GtkMenuItem</a> widgets
+* GtkMenuItem:: The widget used for item in menus
+* GtkMenuShell:: A base class for menu objects
+* GtkImageMenuItem:: A menu item with an icon
+* GtkRadioMenuItem:: A choice from multiple check menu items
+* GtkCheckMenuItem:: A menu item with a check box
+* GtkSeparatorMenuItem:: A separator used in menus
+* GtkTearoffMenuItem:: A menu item used to tear off and reattach its menu
+* GtkToolbar:: Create bars of buttons and other widgets
+* GtkToolItem:: The base class of widgets that can be added to GtkToolbar
+* GtkSeparatorToolItem:: A toolbar item that separates groups of other toolbar items
+* GtkToolButton:: A GtkToolItem subclass that displays buttons
+* GtkMenuToolButton:: A GtkToolItem containing a button with an additional dropdown menu
+* GtkToggleToolButton:: A GtkToolItem containing a toggle button
+* GtkRadioToolButton:: A toolbar item that contains a radio button
+
+Action-based menus and toolbars
+* GtkUIManager:: Constructing menus and toolbars from an XML description
+* GtkActionGroup:: A group of actions
+* GtkAction:: An action which can be triggered by a menu or toolbar item
+* GtkToggleAction:: An action which can be toggled between two states
+* GtkRadioAction:: An action of which only one in a group can be active
+
+Selectors (File/Font/Color/Input Devices)
+* GtkColorButton:: A button to launch a color selection dialog
+* GtkColorSelection:: A widget used to select a color
+* GtkColorSelectionDialog:: A standard dialog box for selecting a color
+* GtkFileSelection:: Prompt the user for a file or directory name
+* GtkFileChooser:: File chooser interface used by GtkFileChooserWidget and GtkFileChooserDialog
+* GtkFileChooserButton:: A button to launch a file selection dialog
+* GtkFileChooserDialog:: A file chooser dialog, suitable for "File/Open" or "File/Save" commands
+* GtkFileChooserWidget:: File chooser widget that can be embedded in other widgets
+* GtkFileFilter:: A filter for selecting a file subset
+* GtkFontButton:: A button to launch a font selection dialog
+* GtkFontSelection:: A widget for selecting fonts
+* GtkFontSelectionDialog:: A dialog box for selecting fonts
+* GtkInputDialog:: Configure devices for the XInput extension
+
+Layout Containers
+* GtkAlignment:: A widget which controls the alignment and size of its child
+* GtkAspectFrame:: A frame that constrains its child to a particular aspect ratio
+* GtkHBox:: A horizontal container box
+* GtkVBox:: A vertical container box
+* GtkHButtonBox:: A container for arranging buttons horizontally
+* GtkVButtonBox:: A container for arranging buttons vertically
+* GtkFixed:: A container which allows you to position widgets at fixed coordinates
+* GtkHPaned:: A container with two panes arranged horizontally
+* GtkVPaned:: A container with two panes arranged vertically
+* GtkLayout:: Infinite scrollable area containing child widgets and/or custom drawing
+* GtkNotebook:: A tabbed notebook container
+* GtkTable:: Pack widgets in regular patterns
+* GtkExpander:: A container which can hide its child
+
+Ornaments
+* GtkFrame:: A bin with a decorative frame and optional label
+* GtkHSeparator:: A horizontal separator
+* GtkVSeparator:: A vertical separator
+
+Scrolling
+* GtkHScrollbar:: A horizontal scrollbar
+* GtkVScrollbar:: A vertical scrollbar
+* GtkScrolledWindow:: Adds scrollbars to its child widget
+
+Printing
+* GtkPrintOperation:: High-level Printing API
+* GtkPrintContext:: Encapsulates context for drawing pages
+* GtkPrintSettings:: Stores print settings
+* GtkPageSetup:: Stores page setup information
+* GtkPaperSize:: Support for named paper sizes
+
+Miscellaneous
+* GtkAdjustment:: A GtkObject representing an adjustable bounded value
+* GtkArrow:: Displays an arrow
+* GtkCalendar:: Displays a calendar and allows the user to select a date
+* GtkDrawingArea:: A widget for custom user interface elements
+* GtkEventBox:: A widget used to catch events for widgets which do not have their own window
+* GtkHandleBox:: a widget for detachable window portions
+* GtkIMContextSimple:: An input method context supporting table-based input methods
+* GtkIMMulticontext:: An input method context supporting multiple, loadable input methods
+* GtkSizeGroup:: Grouping widgets so they request the same size
+* GtkTooltips:: Add tips to your widgets
+* GtkViewport:: An adapter which makes widgets scrollable
+* GtkAccessible:: Accessibility support for widgets
+
+Abstract Base Classes
+* GtkBin:: A container with just one child
+* GtkBox:: Base class for box containers
+* GtkButtonBox:: Base class for <a href="GtkHButtonBox.html" title="GtkHButtonBox"><span class="type">GtkHButtonBox</a> and <a href="GtkVButtonBox.html" title="GtkVButtonBox"><span class="type">GtkVButtonBox</a>
+* GtkContainer:: Base class for widgets which contain other widgets
+* GtkItem:: Abstract base class for GtkMenuItem, GtkListItem and GtkTreeItem
+* GtkMisc:: Base class for widgets with alignments and padding
+* GtkObject:: The base class of the GTK+ type hierarchy
+* GtkPaned:: Base class for widgets with two adjustable panes
+* GtkRange:: Base class for widgets which visualize an adjustment
+* GtkScale:: Base class for GtkHScale and GtkVScale
+* GtkScrollbar:: Base class for GtkHScrollbar and GtkVScrollbar
+* GtkSeparator:: Base class for <a href="GtkHSeparator.html" title="GtkHSeparator"><span class="type">GtkHSeparator</a> and <a href="GtkVSeparator.html" title="GtkVSeparator"><span class="type">GtkVSeparator</a>
+* GtkWidget:: Base class for all widgets
+* GtkIMContext:: Base class for input method contexts
+
+Cross-process Embedding
+* GtkPlug:: Toplevel for embedding into other processes
+* GtkSocket:: Container for widgets from other processes
+
+Special-purpose features
+* GtkCurve:: Allows direct editing of a curve
+* GtkGammaCurve:: a subclass of <a href="GtkCurve.html" title="GtkCurve"><span class="type">GtkCurve</a> for editing gamma curves.
+* GtkRuler:: Base class for horizontal or vertical rulers
+* GtkHRuler:: A horizontal ruler.
+* GtkVRuler:: A vertical ruler.
+
+Recently Used Documents
+* GtkRecentManager:: Managing Recently Used Files
+* GtkRecentChooser:: Interface implemented by GtkRecentChooserWidget, GtkRecentChooserMenu and GtkRecentChooserDialog
+* GtkRecentChooserDialog:: Displays recently used files in a dialog
+* GtkRecentChooserMenu:: Displays recently used files in a menu
+* GtkRecentChooserWidget:: Displays recently used files
+* GtkRecentFilter:: A filter for selecting a subset of recently used files
+
+* Undocumented::    Undocumented functions.
+
+* Type Index::
+* Function Index::
+@end menu
+
+@end ifnottex
+
+@iftex 
+@shortcontents 
+@end iftex
+
+@include overview.texi
+
+@include section-gtkdialog.xml.texi
+@include section-gtkinvisible.xml.texi
+@include section-gtkmessagedialog.xml.texi
+@include section-gtkwindow.xml.texi
+@include section-gtkwindowgroup.xml.texi
+@include section-gtkaboutdialog.xml.texi
+@include section-gtkassistant.xml.texi
+
+@c Display Widgets
+@include section-gtkaccellabel.xml.texi
+@include section-gtkimage.xml.texi
+@include section-gtklabel.xml.texi
+@include section-gtkprogressbar.xml.texi
+@include section-gtkstatusbar.xml.texi
+@include section-gtkstatusicon.xml.texi
+
+@c Buttons and Toggles
+@include section-gtkbutton.xml.texi
+@include section-gtkcheckbutton.xml.texi
+@include section-gtkradiobutton.xml.texi
+@include section-gtktogglebutton.xml.texi
+@include section-gtklinkbutton.xml.texi
+
+@c Numeric/Text Data Entry
+@include section-gtkentry.xml.texi
+@include section-gtkentrycompletion.xml.texi
+@include section-gtkhscale.xml.texi
+@include section-gtkvscale.xml.texi
+@include section-gtkspinbutton.xml.texi
+@include section-gtkeditable.xml.texi
+
+@c Multiline Text Editor
+@include section-gtktextiter.xml.texi
+@include section-gtktextmark.xml.texi
+@include section-gtktextbuffer.xml.texi
+@include section-gtktexttag.xml.texi
+@include section-gtktexttagtable.xml.texi
+@include section-gtktextview.xml.texi
+
+@c Tree, List and Icon Grid Widgets
+@include section-gtktreemodel.xml.texi
+@include section-gtktreeselection.xml.texi
+@include section-gtktreeviewcolumn.xml.texi
+@include section-gtktreeview.xml.texi
+@include section-gtktreednd.xml.texi
+@include section-gtkcellview.xml.texi
+@include section-gtkiconview.xml.texi
+@include section-gtktreesortable.xml.texi
+@include section-gtktreemodelsort.xml.texi
+@include section-gtktreemodelfilter.xml.texi
+@include section-gtkcelllayout.xml.texi
+@include section-gtkcellrenderer.xml.texi
+@include section-gtkcelleditable.xml.texi
+@include section-gtkcellrendereraccel.xml.texi
+@include section-gtkcellrenderercombo.xml.texi
+@include section-gtkcellrendererpixbuf.xml.texi
+@include section-gtkcellrendererprogress.xml.texi
+@include section-gtkcellrendererspin.xml.texi
+@include section-gtkcellrenderertext.xml.texi
+@include section-gtkcellrenderertoggle.xml.texi
+@include section-gtkliststore.xml.texi
+@include section-gtktreestore.xml.texi
+
+@c Menus, Combo Box, Toolbar
+@include section-gtkcombobox.xml.texi
+@include section-gtkcomboboxentry.xml.texi
+@include section-gtkmenu.xml.texi
+@include section-gtkmenubar.xml.texi
+@include section-gtkmenuitem.xml.texi
+@include section-gtkmenushell.xml.texi
+@include section-gtkimagemenuitem.xml.texi
+@include section-gtkradiomenuitem.xml.texi
+@include section-gtkcheckmenuitem.xml.texi
+@include section-gtkseparatormenuitem.xml.texi
+@include section-gtktearoffmenuitem.xml.texi
+@include section-gtktoolbar.xml.texi
+@include section-gtktoolitem.xml.texi
+@include section-gtkseparatortoolitem.xml.texi
+@include section-gtktoolbutton.xml.texi
+@include section-gtkmenutoolbutton.xml.texi
+@include section-gtktoggletoolbutton.xml.texi
+@include section-gtkradiotoolbutton.xml.texi
+
+@c Action-based menus and toolbars
+@include section-gtkuimanager.xml.texi
+@include section-gtkactiongroup.xml.texi
+@include section-gtkaction.xml.texi
+@include section-gtktoggleaction.xml.texi
+@include section-gtkradioaction.xml.texi
+
+@c Selectors (File/Font/Color/Input Devices)
+@include section-gtkcolorbutton.xml.texi
+@include section-gtkcolorsel.xml.texi
+@include section-gtkcolorseldlg.xml.texi
+@include section-gtkfilesel.xml.texi
+@include section-gtkfilechooser.xml.texi
+@include section-gtkfilechooserbutton.xml.texi
+@include section-gtkfilechooserdialog.xml.texi
+@include section-gtkfilechooserwidget.xml.texi
+@include section-gtkfilefilter.xml.texi
+@include section-gtkfontbutton.xml.texi
+@include section-gtkfontsel.xml.texi
+@include section-gtkfontseldlg.xml.texi
+@include section-gtkinputdialog.xml.texi
+
+@c Layout Containers
+@include section-gtkalignment.xml.texi
+@include section-gtkaspectframe.xml.texi
+@include section-gtkhbox.xml.texi
+@include section-gtkvbox.xml.texi
+@include section-gtkhbbox.xml.texi
+@include section-gtkvbbox.xml.texi
+@include section-gtkfixed.xml.texi
+@include section-gtkhpaned.xml.texi
+@include section-gtkvpaned.xml.texi
+@include section-gtklayout.xml.texi
+@include section-gtknotebook.xml.texi
+@include section-gtktable.xml.texi
+@include section-gtkexpander.xml.texi
+
+@c Ornaments
+@include section-gtkframe.xml.texi
+@include section-gtkhseparator.xml.texi
+@include section-gtkvseparator.xml.texi
+
+@c Scrolling
+@include section-gtkhscrollbar.xml.texi
+@include section-gtkvscrollbar.xml.texi
+@include section-gtkscrolledwindow.xml.texi
+
+@c Printing
+@include section-gtkprintoperation.xml.texi
+@include section-gtkprintcontext.xml.texi
+@include section-gtkprintsettings.xml.texi
+@include section-gtkpagesetup.xml.texi
+@include section-gtkpapersize.xml.texi
+
+@c Miscellaneous
+@include section-gtkadjustment.xml.texi
+@include section-gtkarrow.xml.texi
+@include section-gtkcalendar.xml.texi
+@include section-gtkdrawingarea.xml.texi
+@include section-gtkeventbox.xml.texi
+@include section-gtkhandlebox.xml.texi
+@include section-gtkimcontextsimple.xml.texi
+@include section-gtkimmulticontext.xml.texi
+@include section-gtksizegroup.xml.texi
+@include section-gtktooltips.xml.texi
+@include section-gtkviewport.xml.texi
+@include section-gtkaccessible.xml.texi
+
+@c Abstract Base Classes
+@include section-gtkbin.xml.texi
+@include section-gtkbox.xml.texi
+@include section-gtkbbox.xml.texi
+@include section-gtkcontainer.xml.texi
+@include section-gtkitem.xml.texi
+@include section-gtkmisc.xml.texi
+@include section-gtkobject.xml.texi
+@include section-gtkpaned.xml.texi
+@include section-gtkrange.xml.texi
+@include section-gtkscale.xml.texi
+@include section-gtkscrollbar.xml.texi
+@include section-gtkseparator.xml.texi
+@include section-gtkwidget.xml.texi
+@include section-gtkimcontext.xml.texi
+
+@c Cross-process Embedding
+@include section-gtkplug.xml.texi
+@include section-gtksocket.xml.texi
+
+@c Special-purpose features
+@include section-gtkcurve.xml.texi
+@include section-gtkgamma.xml.texi
+@include section-gtkruler.xml.texi
+@include section-gtkhruler.xml.texi
+@include section-gtkvruler.xml.texi
+
+@c Recently Used Documents
+@include section-gtkrecentmanager.xml.texi
+@include section-gtkrecentchooser.xml.texi
+@include section-gtkrecentchooserdialog.xml.texi
+@include section-gtkrecentchoosermenu.xml.texi
+@include section-gtkrecentchooserwidget.xml.texi
+@include section-gtkrecentfilter.xml.texi
+
+@include undocumented.texi
+
+@node Type Index
+@unnumbered Type Index
+@printindex tp
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+@bye

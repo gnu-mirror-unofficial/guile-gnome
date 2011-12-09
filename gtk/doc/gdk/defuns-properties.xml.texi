@@ -1,0 +1,61 @@
+
+@c %start of fragment
+
+@deftp Class <gdk-atom>
+Opaque pointer.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gdk-atom-intern  (atom_name@tie{}@code{mchars}) (only_if_exists@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<gdk-atom>})
+Finds or creates an atom corresponding to a given string.
+
+@table @var
+@item atom-name
+a string.
+
+@item only-if-exists
+if @samp{@code{#t}}, GDK is allowed to not create a new atom, but just return
+@samp{GDK_NONE} if the requested atom doesn't already exists. Currently, the
+flag is ignored, since checking the existance of an atom is as expensive as
+creating it.
+
+@item ret
+the atom corresponding to @var{atom-name}.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-atom-name  (atom@tie{}@code{<gdk-atom>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Determines the string corresponding to an atom.
+
+@table @var
+@item atom
+a @code{<gdk-atom>}.
+
+@item ret
+a newly-allocated string containing the string corresponding to @var{atom}. When
+you are done with the return value, you should free it using @code{g-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-property-delete  (window@tie{}@code{<gdk-window>}) (property@tie{}@code{<gdk-atom>})
+Deletes a property from a window.
+
+@table @var
+@item window
+a @code{<gdk-window>}.
+
+@item property
+the property to delete.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,204 @@
+
+@c %start of fragment
+
+@deffn Function g-get-application-name  @result{}@tie{} (ret@tie{}@code{mchars})
+Gets a human-readable name for the application, as set by
+@code{g-set-application-name}. This name should be localized if possible, and is
+intended for display to the user. Contrast with @code{g-get-prgname}, which gets
+a non-localized name. If @code{g-set-application-name} has not been called,
+returns the result of @code{g-get-prgname} (which may be @samp{@code{#f}} if
+@code{g-set-prgname} has also not been called).
+
+@table @var
+@item ret
+human-readable application name. may return @samp{@code{#f}}
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function g-set-application-name  (application_name@tie{}@code{mchars})
+Sets a human-readable name for the application. This name should be localized if
+possible, and is intended for display to the user. Contrast with
+@code{g-set-prgname}, which sets a non-localized name. @code{g-set-prgname} will
+be called automatically by @code{gtk-init}, but @code{g-set-application-name}
+will not.
+
+Note that for thread safety reasons, this function can only be called once.
+
+The application name will be used in contexts such as error messages, or when
+displaying an application's name in the task list.
+
+@table @var
+@item application-name
+localized name of the application
+
+@end table
+
+@end deffn
+
+@deffn Function g-get-prgname  @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the name of the program. This name should @emph{not} be localized, contrast
+with @code{g-get-application-name}. (If you are using GDK or GTK+ the program
+name is set in @code{gdk-init}, which is called by @code{gtk-init}. The program
+name is found by taking the last component of @samp{argv[0]}.)
+
+@table @var
+@item ret
+the name of the program. The returned string belongs to GLib and must not be
+modified or freed.
+
+@end table
+
+@end deffn
+
+@deffn Function g-set-prgname  (prgname@tie{}@code{mchars})
+Sets the name of the program. This name should @emph{not} be localized, contrast
+with @code{g-set-application-name}. Note that for thread-safety reasons this
+function can only be called once.
+
+@table @var
+@item prgname
+the name of the program.
+
+@end table
+
+@end deffn
+
+@deffn Function g-get-user-name  @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the user name of the current user. The encoding of the returned string is
+system-defined. On UNIX, it might be the preferred file name encoding, or
+something else, and there is no guarantee that it is even consistent on a
+machine. On Windows, it is always UTF-8.
+
+@table @var
+@item ret
+the user name of the current user.
+
+@end table
+
+@end deffn
+
+@deffn Function g-get-real-name  @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the real name of the user. This usually comes from the user's entry in the
+@file{passwd} file. The encoding of the returned string is system-defined. (On
+Windows, it is, however, always UTF-8.) If the real user name cannot be
+determined, the string "Unknown" is returned.
+
+@table @var
+@item ret
+the user's real name.
+
+@end table
+
+@end deffn
+
+@deffn Function g-get-user-cache-dir  @result{}@tie{} (ret@tie{}@code{mchars})
+Returns a base directory in which to store non-essential, cached data specific
+to particular user.
+
+On UNIX platforms this is determined using the mechanisms described in the
+@uref{http://www.freedesktop.org/Standards/basedir-spec, XDG Base Directory
+Specification}
+
+@table @var
+@item ret
+a string owned by GLib that must not be modified or freed.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function g-get-user-data-dir  @result{}@tie{} (ret@tie{}@code{mchars})
+Returns a base directory in which to access application data such as icons that
+is customized for a particular user.
+
+On UNIX platforms this is determined using the mechanisms described in the
+@uref{http://www.freedesktop.org/Standards/basedir-spec, XDG Base Directory
+Specification}
+
+@table @var
+@item ret
+a string owned by GLib that must not be modified or freed.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function g-get-user-config-dir  @result{}@tie{} (ret@tie{}@code{mchars})
+Returns a base directory in which to store user-specific application
+configuration information such as user preferences and settings.
+
+On UNIX platforms this is determined using the mechanisms described in the
+@uref{http://www.freedesktop.org/Standards/basedir-spec, XDG Base Directory
+Specification}
+
+@table @var
+@item ret
+a string owned by GLib that must not be modified or freed.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function g-get-host-name  @result{}@tie{} (ret@tie{}@code{mchars})
+Return a name for the machine.
+
+The returned name is not necessarily a fully-qualified domain name, or even
+present in DNS or some other name service at all. It need not even be unique on
+your local network or site, but usually it is. Callers should not rely on the
+return value having any specific properties like uniqueness for security
+purposes. Even if the name of the machine is changed while an application is
+running, the return value from this function does not change. The returned
+string is owned by GLib and should not be modified or freed. If no name can be
+determined, a default fixed string "localhost" is returned.
+
+@table @var
+@item ret
+the host name of the machine.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function g-get-home-dir  @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the current user's home directory.
+
+Note that in contrast to traditional UNIX tools, this function prefers
+@file{passwd} entries over the @env{HOME} environment variable.
+
+@table @var
+@item ret
+the current user's home directory.
+
+@end table
+
+@end deffn
+
+@deffn Function g-get-tmp-dir  @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the directory to use for temporary files. This is found from inspecting the
+environment variables @env{TMPDIR}, @env{TMP}, and @env{TEMP} in that order. If
+none of those are defined "/tmp" is returned on UNIX and "C:\" on Windows. The
+encoding of the returned string is system-defined. On Windows, it is always
+UTF-8. The return value is never @samp{@code{#f}}.
+
+@table @var
+@item ret
+the directory to use for temporary files.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

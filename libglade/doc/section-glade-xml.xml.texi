@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@node GladeXML
+@chapter GladeXML
+Allows dynamic loading of user interfaces from XML descriptions.
+
+@section Overview
+This object represents an `instantiation' of an XML interface description. When
+one of these objects is created, the XML file is read, and the interface is
+created. The GladeXML object then provides an interface for accessing the
+widgets in the interface by the names assigned to them inside the XML
+description.
+
+The GladeXML object can also be used to connect handlers to the named signals in
+the description. Libglade also provides an interface by which it can look up the
+signal handler names in the program's symbol table and automatically connect as
+many handlers up as it can that way.
+
+@section Usage
+@include defuns-glade-xml.xml.texi
+
+@c %end of fragment

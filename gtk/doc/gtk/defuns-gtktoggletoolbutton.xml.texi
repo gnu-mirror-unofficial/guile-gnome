@@ -1,0 +1,75 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-toggle-tool-button>
+Derives from @code{<gtk-tool-button>}.
+
+This class defines the following slots:
+
+@table @code
+@item active
+If the toggle button should be pressed in or not
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-toggle-tool-button> toggled 
+Emitted whenever the toggle tool button changes state.
+
+@end defop
+
+@deffn Function gtk-toggle-tool-button-new  @result{}@tie{} (ret@tie{}@code{<gtk-tool-item>})
+Returns a new @code{<gtk-toggle-tool-button>}
+
+@table @var
+@item ret
+a newly created @code{<gtk-toggle-tool-button>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toggle-tool-button-set-active  (self@tie{}@code{<gtk-toggle-tool-button>}) (is_active@tie{}@code{bool})
+@deffnx Method set-active
+Sets the status of the toggle tool button. Set to @samp{@code{#t}} if you want
+the GtkToggleButton to be 'pressed in', and @samp{@code{#f}} to raise it. This
+action causes the toggled signal to be emitted.
+
+@table @var
+@item button
+a @code{<gtk-toggle-tool-button>}
+
+@item is-active
+whether @var{button} should be active
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-toggle-tool-button-get-active  (self@tie{}@code{<gtk-toggle-tool-button>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-active
+Queries a @code{<gtk-toggle-tool-button>} and returns its current state. Returns
+@samp{@code{#t}} if the toggle button is pressed in and @samp{@code{#f}} if it
+is raised.
+
+@table @var
+@item button
+a @code{<gtk-toggle-tool-button>}
+
+@item ret
+@samp{@code{#t}} if the toggle tool button is pressed in, @samp{@code{#f}} if
+not
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

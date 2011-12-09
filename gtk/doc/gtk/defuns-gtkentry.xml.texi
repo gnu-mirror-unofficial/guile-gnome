@@ -1,0 +1,505 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-entry>
+Derives from @code{<gtk-editable>}, @code{<gtk-cell-editable>},
+@code{<gtk-widget>}.
+
+This class defines the following slots:
+
+@table @code
+@item cursor-position
+The current position of the insertion cursor in chars
+
+@item selection-bound
+The position of the opposite end of the selection from the cursor in chars
+
+@item editable
+Whether the entry contents can be edited
+
+@item max-length
+Maximum number of characters for this entry. Zero if no maximum
+
+@item visibility
+FALSE displays the "invisible char" instead of the actual text (password mode)
+
+@item has-frame
+FALSE removes outside bevel from entry
+
+@item inner-border
+Border between text and frame. Overrides the inner-border style property
+
+@item invisible-char
+The character to use when masking entry contents (in "password mode")
+
+@item activates-default
+Whether to activate the default widget (such as the default button in a dialog)
+when Enter is pressed
+
+@item width-chars
+Number of characters to leave space for in the entry
+
+@item scroll-offset
+Number of pixels of the entry scrolled off the screen to the left
+
+@item text
+The contents of the entry
+
+@item xalign
+The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts.
+
+@item truncate-multiline
+Whether to truncate multiline pastes to one line.
+
+@item shadow-type
+Which kind of shadow to draw around the entry when has-frame is set
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-entry> move-cursor  (arg0@tie{}@code{<gtk-movement-step>}) (arg1@tie{}@code{<gint>}) (arg2@tie{}@code{<gboolean>})
+@end defop
+
+@defop Signal <gtk-entry> copy-clipboard 
+@end defop
+
+@defop Signal <gtk-entry> populate-popup  (arg0@tie{}@code{<gtk-menu>})
+@end defop
+
+@defop Signal <gtk-entry> activate 
+@end defop
+
+@defop Signal <gtk-entry> insert-at-cursor  (arg0@tie{}@code{<gchararray>})
+@end defop
+
+@defop Signal <gtk-entry> delete-from-cursor  (arg0@tie{}@code{<gtk-delete-type>}) (arg1@tie{}@code{<gint>})
+@end defop
+
+@defop Signal <gtk-entry> backspace 
+@end defop
+
+@defop Signal <gtk-entry> cut-clipboard 
+@end defop
+
+@defop Signal <gtk-entry> paste-clipboard 
+@end defop
+
+@defop Signal <gtk-entry> toggle-overwrite 
+@end defop
+
+@deffn Function gtk-entry-set-text  (self@tie{}@code{<gtk-entry>}) (text@tie{}@code{mchars})
+@deffnx Method set-text
+Sets the text in the widget to the given value, replacing the current contents.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}.
+
+@item text
+the new text.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-get-text  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-text
+Retrieves the contents of the entry widget. See also
+@code{gtk-editable-get-chars}.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item ret
+a pointer to the contents of the widget as a string. This string points to
+internally allocated storage in the widget and must not be freed, modified or
+stored.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-set-visibility  (self@tie{}@code{<gtk-entry>}) (visible@tie{}@code{bool})
+@deffnx Method set-visibility
+Sets whether the contents of the entry are visible or not. When visibility is
+set to @samp{@code{#f}}, characters are displayed as the invisible char, and
+will also appear that way when the text in the entry widget is copied elsewhere.
+
+The default invisible char is the asterisk '*', but it can be changed with
+@code{gtk-entry-set-invisible-char}.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}.
+
+@item visible
+@samp{@code{#t}} if the contents of the entry are displayed as plaintext.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-set-invisible-char  (self@tie{}@code{<gtk-entry>}) (ch@tie{}@code{unsigned-int32})
+@deffnx Method set-invisible-char
+Sets the character to use in place of the actual text when
+@code{gtk-entry-set-visibility} has been called to set text visibility to
+@samp{@code{#f}}. i.e. this is the character used in "password mode" to show the
+user how many characters have been typed. The default invisible char is an
+asterisk ('*'). If you set the invisible char to 0, then the user will get no
+feedback at all; there will be no text on the screen as they type.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item ch
+a Unicode character
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-set-max-length  (self@tie{}@code{<gtk-entry>}) (max@tie{}@code{int})
+@deffnx Method set-max-length
+Sets the maximum allowed length of the contents of the widget. If the current
+contents are longer than the given length, then they will be truncated to fit.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}.
+
+@item max
+the maximum length of the entry, or 0 for no maximum. (other than the maximum
+length of entries.) The value passed in will be clamped to the range 0-65536.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-get-activates-default  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-activates-default
+Retrieves the value set by @code{gtk-entry-set-activates-default}.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item ret
+@samp{@code{#t}} if the entry will activate the default widget
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-get-has-frame  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-has-frame
+Gets the value set by @code{gtk-entry-set-has-frame}.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item ret
+whether the entry has a beveled frame
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-get-inner-border  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (ret@tie{}@code{<gtk-border>})
+@deffnx Method get-inner-border
+This function returns the entry's inner-border property. See
+@code{gtk-entry-set-inner-border} for more information.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item ret
+the entry's @code{<gtk-border>}, or @samp{@code{#f}} if none was set.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-entry-get-width-chars  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-width-chars
+Gets the value set by @code{gtk-entry-set-width-chars}.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item ret
+number of chars to request space for, or negative if unset
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-set-activates-default  (self@tie{}@code{<gtk-entry>}) (setting@tie{}@code{bool})
+@deffnx Method set-activates-default
+If @var{setting} is @samp{@code{#t}}, pressing Enter in the @var{entry} will
+activate the default widget for the window containing the entry. This usually
+means that the dialog box containing the entry will be closed, since the default
+widget is usually one of the dialog buttons.
+
+(For experts: if @var{setting} is @samp{@code{#t}}, the entry calls
+@code{gtk-window-activate-default} on the window containing the entry, in the
+default handler for the "activate" signal.)
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item setting
+@samp{@code{#t}} to activate window's default widget on Enter keypress
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-set-has-frame  (self@tie{}@code{<gtk-entry>}) (setting@tie{}@code{bool})
+@deffnx Method set-has-frame
+Sets whether the entry has a beveled frame around it.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item setting
+new value
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-set-inner-border  (self@tie{}@code{<gtk-entry>}) (border@tie{}@code{<gtk-border>})
+@deffnx Method set-inner-border
+Sets @samp{entry}'s inner-border property to @samp{border}, or clears it if
+@samp{@code{#f}} is passed. The inner-border is the area around the entry's
+text, but inside its frame.
+
+If set, this property overrides the inner-border style property. Overriding the
+style-provided border is useful when you want to do in-place editing of some
+text in a canvas or list widget, where pixel-exact positioning of the entry is
+important.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item border
+a @code{<gtk-border>}, or @samp{@code{#f}}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-entry-set-width-chars  (self@tie{}@code{<gtk-entry>}) (n_chars@tie{}@code{int})
+@deffnx Method set-width-chars
+Changes the size request of the entry to be about the right size for
+@var{n-chars} characters. Note that it changes the size @emph{request}, the size
+can still be affected by how you pack the widget into containers. If
+@var{n-chars} is -1, the size reverts to the default entry size.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item n-chars
+width in chars
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-get-invisible-char  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
+@deffnx Method get-invisible-char
+Retrieves the character displayed in place of the real characters for entries
+with visisbility set to false. See @code{gtk-entry-set-invisible-char}.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item ret
+the current invisible char, or 0, if the entry does not show invisible text at
+all.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-set-alignment  (self@tie{}@code{<gtk-entry>}) (xalign@tie{}@code{float})
+@deffnx Method set-alignment
+Sets the alignment for the contents of the entry. This controls the horizontal
+positioning of the contents when the displayed text is shorter than the width of
+the entry.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item xalign
+The horizontal alignment, from 0 (left) to 1 (right). Reversed for RTL layouts
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-entry-get-alignment  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (ret@tie{}@code{float})
+@deffnx Method get-alignment
+Gets the value set by @code{gtk-entry-set-alignment}.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item ret
+the alignment
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-entry-get-layout  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (ret@tie{}@code{<pango-layout>})
+@deffnx Method get-layout
+Gets the @code{<pango-layout>} used to display the entry. The layout is useful
+to e.g. convert text positions to pixel positions, in combination with
+@code{gtk-entry-get-layout-offsets}. The returned layout is owned by the entry
+and must not be modified or freed by the caller.
+
+Keep in mind that the layout text may contain a preedit string, so
+@code{gtk-entry-layout-index-to-text-index} and
+@code{gtk-entry-text-index-to-layout-index} are needed to convert byte indices
+in the layout to byte indices in the entry contents.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item ret
+the @code{<pango-layout>} for this entry
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-get-layout-offsets  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method get-layout-offsets
+Obtains the position of the @code{<pango-layout>} used to render text in the
+entry, in widget coordinates. Useful if you want to line up the text in an entry
+with some other text, e.g. when using the entry to implement editable cells in a
+sheet widget.
+
+Also useful to convert mouse events into coordinates inside the
+@code{<pango-layout>}, e.g. to take some action if some part of the entry text
+is clicked.
+
+Note that as the user scrolls around in the entry the offsets will change;
+you'll need to connect to the "notify::scroll-offset" signal to track this.
+Remember when using the @code{<pango-layout>} functions you need to convert to
+and from pixels using @code{pango-pixels} or @code{<pango-scale>}.
+
+Keep in mind that the layout text may contain a preedit string, so
+@code{gtk-entry-layout-index-to-text-index} and
+@code{gtk-entry-text-index-to-layout-index} are needed to convert byte indices
+in the layout to byte indices in the entry contents.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item x
+location to store X offset of layout, or @samp{@code{#f}}
+
+@item y
+location to store Y offset of layout, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-get-max-length  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-max-length
+Retrieves the maximum allowed length of the text in @var{entry}. See
+@code{gtk-entry-set-max-length}.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item ret
+the maximum allowed number of characters in @code{<gtk-entry>}, or 0 if there is
+no maximum.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-get-visibility  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-visibility
+Retrieves whether the text in @var{entry} is visible. See
+@code{gtk-entry-set-visibility}.
+
+@table @var
+@item entry
+a @code{<gtk-entry>}
+
+@item ret
+@samp{@code{#t}} if the text is currently visible
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-entry-set-completion  (self@tie{}@code{<gtk-entry>}) (completion@tie{}@code{<gtk-entry-completion>})
+@deffnx Method set-completion
+Sets @var{completion} to be the auxiliary completion object to use with
+@var{entry}. All further configuration of the completion mechanism is done on
+@var{completion} using the @code{<gtk-entry-completion>} API. Completion is
+disabled if @var{completion} is set to @samp{@code{#f}}.
+
+@table @var
+@item entry
+A @code{<gtk-entry>}.
+
+@item completion
+The @code{<gtk-entry-completion>} or @samp{@code{#f}}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-entry-get-completion  (self@tie{}@code{<gtk-entry>}) @result{}@tie{} (ret@tie{}@code{<gtk-entry-completion>})
+@deffnx Method get-completion
+Returns the auxiliary completion object currently in use by @var{entry}.
+
+@table @var
+@item entry
+A @code{<gtk-entry>}.
+
+@item ret
+The auxiliary completion object currently in use by @var{entry}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

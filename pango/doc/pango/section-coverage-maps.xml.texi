@@ -1,0 +1,17 @@
+
+@c %start of fragment
+
+@node Coverage Maps
+@chapter Coverage Maps
+Unicode character range coverage storage
+
+@section Overview
+It is often necessary in Pango to determine if a particular font can represent a
+particular character, and also how well it can represent that character. The
+@code{<pango-coverage>} is a data structure that is used to represent that
+information.
+
+@section Usage
+@include defuns-coverage-maps.xml.texi
+
+@c %end of fragment

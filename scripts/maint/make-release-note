@@ -1,0 +1,61 @@
+#!/bin/bash
+
+package=$1
+version=$2
+if test -z "$package" -o -z "$version"; then
+    echo "usage: make-release-note PACKAGE VERSION" >&2
+    exit 1
+fi
+
+dir=$(cd `dirname $0`/../.. && pwd)
+cd $dir
+
+cat <<EOF
+
+We are pleased to announce the release of $package version $version.
+
+
+About $package
+EOF
+echo -n "======"
+for ((j=1;j<`echo $package | wc -m`;j=$j+1)); do
+    echo -n =
+done
+cat<<EOF
+
+
+$package is a ...
+
+This release is a ...
+
+
+Changes
+=======
+
+EOF
+
+echo "packaging changes"
+echo "-----------------"
+perl -e 'local $/; $_=<>; ($foo) = /[^=\n]*\n=+\n\n(([^=\n]*\n)*)\n[^=\n]*\n=+\n(.*)/s; print $foo;' < NEWS
+
+for i in *; do
+    if test -d $i/.git; then
+        (
+            cd $i
+            echo "$i"
+            for ((j=1;j<`echo $i | wc -m`;j=$j+1)); do
+                echo -n -
+            done
+            echo
+            perl -e 'local $/; $_=<>; ($foo) = /[^=\n]*\n=+\n\n(([^=\n]*\n)*)\n[^=\n]*\n=+\n(.*)/s; print $foo;' < NEWS
+        )
+    fi
+done
+
+echo <<EOF
+Copyright (C) `date +'%Y'` Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice
+and this notice are preserved.
+EOF

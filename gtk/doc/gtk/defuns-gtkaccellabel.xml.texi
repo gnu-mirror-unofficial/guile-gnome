@@ -1,0 +1,116 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-accel-label>
+Derives from @code{<gtk-label>}.
+
+This class defines the following slots:
+
+@table @code
+@item accel-closure
+The closure to be monitored for accelerator changes
+
+@item accel-widget
+The widget to be monitored for accelerator changes
+
+@end table
+
+@end deftp
+
+@deffn Function gtk-accel-label-new  (string@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-accel-label>}.
+
+@table @var
+@item string
+the label string. Must be non-@samp{@code{#f}}.
+
+@item ret
+a new @code{<gtk-accel-label>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-label-set-accel-closure  (self@tie{}@code{<gtk-accel-label>}) (accel_closure@tie{}@code{<gclosure>})
+@deffnx Method set-accel-closure
+Sets the closure to be monitored by this accelerator label. The closure must be
+connected to an accelerator group; see @code{gtk-accel-group-connect}.
+
+@table @var
+@item accel-label
+a @code{<gtk-accel-label>}
+
+@item accel-closure
+the closure to monitor for accelerator changes.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-label-get-accel-widget  (self@tie{}@code{<gtk-accel-label>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-accel-widget
+Fetches the widget monitored by this accelerator label. See
+@code{gtk-accel-label-set-accel-widget}.
+
+@table @var
+@item accel-label
+a @code{<gtk-accel-label>}
+
+@item ret
+the object monitored by the accelerator label, or @samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-label-set-accel-widget  (self@tie{}@code{<gtk-accel-label>}) (accel_widget@tie{}@code{<gtk-widget>})
+@deffnx Method set-accel-widget
+Sets the widget to be monitored by this accelerator label.
+
+@table @var
+@item accel-label
+a @code{<gtk-accel-label>}
+
+@item accel-widget
+the widget to be monitored.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-label-get-accel-width  (self@tie{}@code{<gtk-accel-label>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+@deffnx Method get-accel-width
+Returns the width needed to display the accelerator key(s). This is used by
+menus to align all of the @code{<gtk-menu-item>} widgets, and shouldn't be
+needed by applications.
+
+@table @var
+@item accel-label
+a @code{<gtk-accel-label>}.
+
+@item ret
+the width needed to display the accelerator key(s).
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-label-refetch  (self@tie{}@code{<gtk-accel-label>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method refetch
+Recreates the string representing the accelerator keys. This should not be
+needed since the string is automatically updated whenever accelerators are added
+or removed from the associated widget.
+
+@table @var
+@item accel-label
+a @code{<gtk-accel-label>}.
+
+@item ret
+always returns @samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

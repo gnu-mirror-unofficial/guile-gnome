@@ -1,0 +1,27 @@
+
+@c %start of fragment
+
+@node Accelerator Groups
+@chapter Accelerator Groups
+Groups of global keyboard accelerators for an entire GtkWindow
+
+@section Overview
+A @code{<gtk-accel-group>} represents a group of keyboard accelerators,
+typically attached to a toplevel @code{<gtk-window>} (with
+@code{gtk-window-add-accel-group}). Usually you won't need to create a
+@code{<gtk-accel-group>} directly; instead, when using
+@code{<gtk-item-factory>}, GTK+ automatically sets up the accelerators for your
+menus in the item factory's @code{<gtk-accel-group>}.
+
+Note that @dfn{accelerators} are different from @dfn{mnemonics}. Accelerators
+are shortcuts for activating a menu item; they appear alongside the menu item
+they're a shortcut for. For example "Ctrl+Q" might appear alongside the "Quit"
+menu item. Mnemonics are shortcuts for GUI elements such as text entries or
+buttons; they appear as underlined characters. See
+@code{gtk-label-new-with-mnemonic}. Menu items can have both accelerators and
+mnemonics, of course.
+
+@section Usage
+@include defuns-gtkaccelgroup.xml.texi
+
+@c %end of fragment

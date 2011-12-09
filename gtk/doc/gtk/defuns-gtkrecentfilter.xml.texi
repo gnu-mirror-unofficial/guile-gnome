@@ -1,0 +1,185 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-recent-filter>
+Derives from @code{<gtk-object>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-recent-filter-new  @result{}@tie{} (ret@tie{}@code{<gtk-recent-filter>})
+Creates a new @code{<gtk-recent-filter>} with no rules added to it. Such filter
+does not accept any recently used resources, so is not particularly useful until
+you add rules with @code{gtk-recent-filter-add-pattern},
+@code{gtk-recent-filter-add-mime-type},
+@code{gtk-recent-filter-add-application}, @code{gtk-recent-filter-add-age}. To
+create a filter that accepts any recently used resource, use:
+
+@example 
+
+GtkRecentFilter *filter = gtk_recent_filter_new ();
+gtk_recent_filter_add_pattern (filter, "*");
+@end example
+
+@table @var
+@item ret
+a new @code{<gtk-recent-filter>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-filter-get-name  (self@tie{}@code{<gtk-recent-filter>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-name
+Gets the human-readable name for the filter. See
+@code{gtk-recent-filter-set-name}.
+
+@table @var
+@item filter
+a @code{<gtk-recent-filter>}
+
+@item ret
+the name of the filter, or @samp{@code{#f}}. The returned string is owned by the
+filter object and should not be freed.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-filter-set-name  (self@tie{}@code{<gtk-recent-filter>}) (name@tie{}@code{mchars})
+@deffnx Method set-name
+Sets the human-readable name of the filter; this is the string that will be
+displayed in the recently used resources selector user interface if there is a
+selectable list of filters.
+
+@table @var
+@item filter
+a @code{<gtk-recent-filter>}
+
+@item name
+then human readable name of @var{filter}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-filter-add-mime-type  (self@tie{}@code{<gtk-recent-filter>}) (mime_type@tie{}@code{mchars})
+@deffnx Method add-mime-type
+Adds a rule that allows resources based on their registered MIME type.
+
+@table @var
+@item filter
+a @code{<gtk-recent-filter>}
+
+@item mime-type
+a MIME type
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-filter-add-pattern  (self@tie{}@code{<gtk-recent-filter>}) (pattern@tie{}@code{mchars})
+@deffnx Method add-pattern
+Adds a rule that allows resources based on a pattern matching their display
+name.
+
+@table @var
+@item filter
+a @code{<gtk-recent-filter>}
+
+@item pattern
+a file pattern
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-filter-add-application  (self@tie{}@code{<gtk-recent-filter>}) (application@tie{}@code{mchars})
+@deffnx Method add-application
+Adds a rule that allows resources based on the name of the application that has
+registered them.
+
+@table @var
+@item filter
+a @code{<gtk-recent-filter>}
+
+@item application
+an application name
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-filter-add-group  (self@tie{}@code{<gtk-recent-filter>}) (group@tie{}@code{mchars})
+@deffnx Method add-group
+Adds a rule that allows resources based on the name of the group to which they
+belong
+
+@table @var
+@item filter
+a @code{<gtk-recent-filter>}
+
+@item group
+a group name
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-filter-add-age  (self@tie{}@code{<gtk-recent-filter>}) (days@tie{}@code{int})
+@deffnx Method add-age
+Adds a rule that allows resources based on their age - that is, the number of
+days elapsed since they were last modified.
+
+@table @var
+@item filter
+a @code{<gtk-recent-filter>}
+
+@item days
+number of days
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-recent-filter-get-needed  (self@tie{}@code{<gtk-recent-filter>}) @result{}@tie{} (ret@tie{}@code{<gtk-recent-filter-flags>})
+@deffnx Method get-needed
+Gets the fields that need to be filled in for the structure passed to
+@code{gtk-recent-filter-filter}
+
+This function will not typically be used by applications; it is intended
+principally for use in the implementation of @code{<gtk-recent-chooser>}.
+
+@table @var
+@item filter
+a @code{<gtk-recent-filter>}
+
+@item ret
+bitfield of flags indicating needed fields when calling
+@code{gtk-recent-filter-filter}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment

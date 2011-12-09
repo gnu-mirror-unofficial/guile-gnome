@@ -1,0 +1,34 @@
+@node Overview
+@chapter Overview
+
+@code{(gnome gconf)} wraps the GNOME configuration library for Guile.
+It is a part of Guile-GNOME.
+
+@section Example code
+
+@lisp
+(define *gconf-client* (gconf-client-get-default))
+(define *gconf-dir* "/apps/my-app")
+(gconf-client-add-dir gconf-client gconf-dir 'preload-onelevel)
+(define (gconf-key s)
+  (string-append gconf-dir "/" (symbol->string s)))
+
+(define (state-ref key default)
+  (catch #t
+         (lambda ()
+           (gconf-client-get *gconf-client* (gconf-key key)))
+         (lambda args default)))
+(define (state-set! key val)
+  (gconf-client-set *gconf-client* (gconf-key key) val))
+
+(define (value-changed client cnxn-id key val)
+  (format #t "~a: ~a\n" key val))
+(gconf-client-add-notify *gconf-client* "/apps/my-app"
+                         value-changed)
+@end lisp
+
+Note that the @code{value-changed} procedure will only be called if
+you have a main loop running.
+
+See the documentation for @code{(gnome gobject)} for more information
+on Guile-GNOME.

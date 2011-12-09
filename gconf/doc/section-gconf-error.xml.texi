@@ -1,0 +1,53 @@
+
+@c %start of fragment
+
+@node GError
+@chapter GError
+error reporting.
+
+@section Overview
+The @code{<g-error>} object is used to report errors that occur in GConf library
+routines. All functions that report errors work the same way:
+
+The last argument to the function is a @code{<g-error>}**, a pointer to a
+location where a @code{<g-error>}* can be placed.
+
+This last argument may be , in which case no error will be returned.
+
+If non-, the argument should be the address of a @code{<g-error>}* variable,
+which should be initialized to .
+
+If an error occurs, a @code{<g-error>} will be allocated and placed in the
+return location; the caller must free the @code{<g-error>} with
+@code{g-error-free}. If no error occurs, the return location will be left
+untouched. That is, the test @samp{error != NULL} should always be a reliable
+indicator of whether the operation failed.
+
+It's also common that the return value of a function indicates whether or not an
+error occurred. Typically, is returned on success. In some cases, a return value
+indicates failure. Either way, if the return value indicates failure and you
+passed a non- value for the last argument to the function, a @code{<g-error>}
+will be returned. If the return value indicates success, then a @code{<g-error>}
+will never be returned. These relationships are guaranteed; that is, you can
+reliably use the return value to decide whether a @code{<g-error>} was placed in
+the return location. If a function does @emph{not} indicate success/failure by
+return value, you must check whether the @code{<g-error>} is to detect errors.
+
+Here's a short error handling example:
+
+@example 
+
+  GError* err = NULL;
+
+  if (!gconf_init(&err))
+    @{
+      fprintf(stderr, _("Failed to init GConf: %s\n"), err->message);
+      g_error_free(err); 
+      err = NULL;
+    @}
+@end example
+
+@section Usage
+@include defuns-gconf-error.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,40 @@
+
+@c %start of fragment
+
+@deffn Function gnome-vfs-truncate  (text_uri@tie{}@code{mchars}) (length@tie{}@code{unsigned-int64}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Truncate the file at @var{text-uri} to @var{length} bytes.
+
+@table @var
+@item text-uri
+string representing the file to be truncated.
+
+@item length
+length of the new file at @var{text-uri}.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-truncate-uri  (uri@tie{}@code{<gnome-vfsuri>}) (length@tie{}@code{unsigned-int64}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Truncate the file at @var{uri} to be only @var{length} bytes. Data past
+@var{length} bytes will be discarded.
+
+@table @var
+@item uri
+uri of the file to be truncated.
+
+@item length
+length of the new file at @var{uri}.
+
+@item ret
+an integer representing the result of the operation.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

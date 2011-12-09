@@ -1,0 +1,66 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas-line>
+Derives from @code{<gnome-canvas-item>}.
+
+This class defines the following properties:
+
+@table @code
+@item points
+
+
+@item fill-color
+
+
+@item fill-color-gdk
+
+
+@item fill-color-rgba
+
+
+@item fill-stipple
+
+
+@item width-pixels
+
+
+@item width-units
+
+
+@item cap-style
+
+
+@item join-style
+
+
+@item line-style
+
+
+@item first-arrowhead
+
+
+@item last-arrowhead
+
+
+@item smooth
+
+
+@item spline-steps
+
+
+@item arrow-shape-a
+
+
+@item arrow-shape-b
+
+
+@item arrow-shape-c
+
+
+@end table
+
+@end deftp
+
+
+@c %end of fragment

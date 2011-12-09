@@ -1,0 +1,91 @@
+
+@c %start of fragment
+
+@deftp Class <pango-coverage>
+Opaque pointer.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function pango-coverage-new  @result{}@tie{} (ret@tie{}@code{<pango-coverage>})
+Create a new @code{<pango-coverage>}
+
+@table @var
+@item ret
+the newly allocated @code{<pango-coverage>}, initialized to
+@samp{PANGO_COVERAGE_NONE} with a reference count of one, which should be freed
+with @code{pango-coverage-unref}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-coverage-copy  (self@tie{}@code{<pango-coverage>}) @result{}@tie{} (ret@tie{}@code{<pango-coverage>})
+Copy an existing @code{<pango-coverage>}. (This function may now be unnecessary
+since we refcount the structure. File a bug if you use it.)
+
+@table @var
+@item coverage
+a @code{<pango-coverage>}
+
+@item ret
+the newly allocated @code{<pango-coverage>}, with a reference count of one,
+which should be freed with @code{pango-coverage-unref}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-coverage-get  (self@tie{}@code{<pango-coverage>}) (index_@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<pango-coverage-level>})
+Determine whether a particular index is covered by @var{coverage}
+
+@table @var
+@item coverage
+a @code{<pango-coverage>}
+
+@item index
+the index to check
+
+@item ret
+the coverage level of @var{coverage} for character @var{index}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-coverage-max  (self@tie{}@code{<pango-coverage>}) (other@tie{}@code{<pango-coverage>})
+Set the coverage for each index in @var{coverage} to be the max (better) value
+of the current coverage for the index and the coverage for the corresponding
+index in @var{other}.
+
+@table @var
+@item coverage
+a @code{<pango-coverage>}
+
+@item other
+another @code{<pango-coverage>}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-coverage-set  (self@tie{}@code{<pango-coverage>}) (index_@tie{}@code{int}) (level@tie{}@code{<pango-coverage-level>})
+Modify a particular index within @var{coverage}
+
+@table @var
+@item coverage
+a @code{<pango-coverage>}
+
+@item index
+the index to modify
+
+@item level
+the new level for @var{index}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

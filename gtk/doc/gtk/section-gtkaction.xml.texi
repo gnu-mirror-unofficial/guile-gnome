@@ -1,0 +1,46 @@
+
+@c %start of fragment
+
+@node GtkAction
+@chapter GtkAction
+An action which can be triggered by a menu or toolbar item
+
+@section Overview
+Actions represent operations that the user can be perform, along with some
+information how it should be presented in the interface. Each action provides
+methods to create icons, menu items and toolbar items representing itself.
+
+As well as the callback that is called when the action gets activated, the
+following also gets associated with the action: The action will also have some
+state information:
+
+a name (not translated, for path lookup)
+
+a label (translated, for display)
+
+an accelerator
+
+whether label indicates a stock id
+
+a tooltip (optional, translated)
+
+a toolbar label (optional, shorter than label)
+
+visible (shown/hidden)
+
+sensitive (enabled/disabled)
+
+Apart from regular actions, there are toggle actions, which can be toggled
+between two states and radio actions, of which only one in a group can be in the
+"active" state. Other actions can be implemented as @code{<gtk-action>}
+subclasses.
+
+Each action can have one or more proxy menu item, toolbar button or other proxy
+widgets. Proxies mirror the state of the action (text label, tooltip, icon,
+visible, sensitive, etc), and should change when the action's state changes.
+When the proxy is activated, it should activate its action.
+
+@section Usage
+@include defuns-gtkaction.xml.texi
+
+@c %end of fragment

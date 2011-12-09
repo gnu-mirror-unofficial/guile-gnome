@@ -1,0 +1,12 @@
+# the standard variables don't make sense for an uninstalled copy
+prefix=
+exec_prefix=
+libdir=${pcfiledir}
+includedir=${pcfiledir}
+
+Name: Guile-Gnome GLib bindings, Uninstalled
+Description: Guile-Gnome GLib bindings, Uninstalled
+Version: @VERSION@
+Requires: gobject-2.0
+Libs: ${libdir}/gnome/gobject/libguile-gnome-gobject-@API_VERSION@.la
+Cflags: -I${includedir}/gnome/gobject @GUILE_CFLAGS@

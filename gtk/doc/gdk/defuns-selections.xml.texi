@@ -1,0 +1,156 @@
+
+@c %start of fragment
+
+@deffn Function gdk-selection-owner-set  (owner@tie{}@code{<gdk-window>}) (selection@tie{}@code{<gdk-atom>}) (time_@tie{}@code{unsigned-int32}) (send_event@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+Sets the owner of the given selection.
+
+@table @var
+@item owner
+a @code{<gdk-window>} or @samp{@code{#f}} to indicate that the the owner for the
+given should be unset.
+
+@item selection
+an atom identifying a selection.
+
+@item time
+timestamp to use when setting the selection. If this is older than the timestamp
+given last time the owner was set for the given selection, the request will be
+ignored.
+
+@item send-event
+if @samp{@code{#t}}, and the new owner is different from the current owner, the
+current owner will be sent a SelectionClear event.
+
+@item ret
+@samp{@code{#t}} if the selection owner was successfully changed to @var{owner},
+otherwise @samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-selection-owner-set-for-display  (display@tie{}@code{<gdk-display>}) (owner@tie{}@code{<gdk-window>}) (selection@tie{}@code{<gdk-atom>}) (time_@tie{}@code{unsigned-int32}) (send_event@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+Sets the @code{<gdk-window>}@var{owner} as the current owner of the selection
+@var{selection}.
+
+@table @var
+@item display
+the @code{<gdk-display>}.
+
+@item owner
+a @code{<gdk-window>} or @samp{@code{#f}} to indicate that the owner for the
+given should be unset.
+
+@item selection
+an atom identifying a selection.
+
+@item time
+timestamp to use when setting the selection. If this is older than the timestamp
+given last time the owner was set for the given selection, the request will be
+ignored.
+
+@item send-event
+if @samp{@code{#t}}, and the new owner is different from the current owner, the
+current owner will be sent a SelectionClear event.
+
+@item ret
+@samp{@code{#t}} if the selection owner was successfully changed to owner,
+otherwise @samp{@code{#f}}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-selection-owner-get  (selection@tie{}@code{<gdk-atom>}) @result{}@tie{} (ret@tie{}@code{<gdk-window>})
+Determines the owner of the given selection.
+
+@table @var
+@item selection
+an atom indentifying a selection.
+
+@item ret
+if there is a selection owner for this window, and it is a window known to the
+current process, the @code{<gdk-window>} that owns the selection, otherwise
+@samp{@code{#f}}. Note that the return value may be owned by a different process
+if a foreign window was previously created for that window, but a new foreign
+window will never be created by this call.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-selection-owner-get-for-display  (display@tie{}@code{<gdk-display>}) (selection@tie{}@code{<gdk-atom>}) @result{}@tie{} (ret@tie{}@code{<gdk-window>})
+Determine the owner of the given selection.
+
+Note that the return value may be owned by a different process if a foreign
+window was previously created for that window, but a new foreign window will
+never be created by this call.
+
+@table @var
+@item display
+a @code{<gdk-display>}.
+
+@item selection
+an atom indentifying a selection.
+
+@item ret
+if there is a selection owner for this window, and it is a window known to the
+current process, the @code{<gdk-window>} that owns the selection, otherwise
+@samp{@code{#f}}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-selection-convert  (requestor@tie{}@code{<gdk-window>}) (selection@tie{}@code{<gdk-atom>}) (target@tie{}@code{<gdk-atom>}) (time_@tie{}@code{unsigned-int32})
+Retrieves the contents of a selection in a given form.
+
+@table @var
+@item requestor
+a @code{<gdk-window>}.
+
+@item selection
+an atom identifying the selection to get the contents of.
+
+@item target
+the form in which to retrieve the selection.
+
+@item time
+the timestamp to use when retrieving the selection. The selection owner may
+refuse the request if it did not own the selection at the time indicated by the
+timestamp.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-selection-send-notify  (requestor@tie{}@code{unsigned-int32}) (selection@tie{}@code{<gdk-atom>}) (target@tie{}@code{<gdk-atom>}) (property@tie{}@code{<gdk-atom>}) (time_@tie{}@code{unsigned-int32})
+Sends a response to SelectionRequest event.
+
+@table @var
+@item requestor
+window to which to deliver response.
+
+@item selection
+selection that was requested.
+
+@item target
+target that was selected.
+
+@item property
+property in which the selection owner stored the data, or @samp{GDK_NONE} to
+indicate that the request was rejected.
+
+@item time
+timestamp.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

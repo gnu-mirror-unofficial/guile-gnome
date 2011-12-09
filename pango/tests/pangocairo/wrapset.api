@@ -1,0 +1,94 @@
+(module-api
+  (version 1 0)
+  ((gnome gobject generics)
+   (uses-interfaces)
+   (typed-exports
+     (block generic (<gtype-instance> <top>))
+     (connect
+       generic
+       <top>
+       (<gtype-instance> <symbol> <procedure>))
+     (connect-after
+       generic
+       (<gtype-instance> <symbol> <procedure>))
+     (connected? generic (<gtype-instance> <top>))
+     (create-signal
+       generic
+       (<gtype-class> <symbol> <top> <top>))
+     (disconnect generic (<gtype-instance> <top>))
+     (emit generic
+           (<gtype-instance> <symbol> . <top>))
+     (find-property generic (<gtype-class> <symbol>))
+     (get generic (<gobject> <symbol>))
+     (get-properties generic (<gtype-class>))
+     (get-property-names generic (<gtype-class>))
+     (get-signals generic (<gtype-class>))
+     (invoke generic (<gclosure> . <top>))
+     (set generic (<gobject> <symbol> <top>))
+     (unblock generic (<gtype-instance> <top>))))
+  ((gnome gw generics)
+   (uses-interfaces (gnome gobject generics))
+   (typed-exports))
+  ((gnome gw pangocairo)
+   (uses-interfaces (gnome gw generics))
+   (typed-exports
+     (pango-cairo-context-get-font-options
+       procedure
+       (arity 1 0 #f))
+     (pango-cairo-context-get-resolution
+       procedure
+       (arity 0 0 #t))
+     (pango-cairo-context-set-font-options
+       procedure
+       (arity 2 0 #f))
+     (pango-cairo-context-set-resolution
+       procedure
+       (arity 0 0 #t))
+     (pango-cairo-create-layout
+       procedure
+       (arity 1 0 #f))
+     (pango-cairo-error-underline-path
+       procedure
+       (arity 5 0 #f))
+     (pango-cairo-font-map-create-context
+       procedure
+       (arity 0 0 #t))
+     (pango-cairo-font-map-get-default
+       procedure
+       (arity 0 0 #t))
+     (pango-cairo-font-map-get-resolution
+       procedure
+       (arity 0 0 #t))
+     (pango-cairo-font-map-new
+       procedure
+       (arity 0 0 #t))
+     (pango-cairo-font-map-set-resolution
+       procedure
+       (arity 0 0 #t))
+     (pango-cairo-glyph-string-path
+       procedure
+       (arity 3 0 #f))
+     (pango-cairo-layout-line-path
+       procedure
+       (arity 2 0 #f))
+     (pango-cairo-layout-path
+       procedure
+       (arity 2 0 #f))
+     (pango-cairo-show-error-underline
+       procedure
+       (arity 5 0 #f))
+     (pango-cairo-show-glyph-string
+       procedure
+       (arity 3 0 #f))
+     (pango-cairo-show-layout
+       procedure
+       (arity 2 0 #f))
+     (pango-cairo-show-layout-line
+       procedure
+       (arity 2 0 #f))
+     (pango-cairo-update-context
+       procedure
+       (arity 2 0 #f))
+     (pango-cairo-update-layout
+       procedure
+       (arity 2 0 #f)))))

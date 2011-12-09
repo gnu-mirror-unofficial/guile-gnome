@@ -1,0 +1,941 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-print-settings>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-print-settings-new  @result{}@tie{} (ret@tie{}@code{<gtk-print-settings>})
+Creates a new @code{<gtk-print-settings>} object.
+
+@table @var
+@item ret
+a new @code{<gtk-print-settings>} object
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-has-key  (self@tie{}@code{<gtk-print-settings>}) (key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method has-key
+Returns @samp{@code{#t}}, if a value is associated with @var{key}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item key
+a key
+
+@item ret
+@samp{@code{#t}}, if @var{key} has a value
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get  (self@tie{}@code{<gtk-print-settings>}) (key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get
+Looks up the string value associated with @var{key}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item key
+a key
+
+@item ret
+the string value for @var{key}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set  (self@tie{}@code{<gtk-print-settings>}) (key@tie{}@code{mchars}) (value@tie{}@code{mchars})
+@deffnx Method set
+Associates @var{value} with @var{key}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item key
+a key
+
+@item value
+a string value, or @samp{@code{#f}}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-unset  (self@tie{}@code{<gtk-print-settings>}) (key@tie{}@code{mchars})
+@deffnx Method unset
+Removes any value associated with @var{key}. This has the same effect as setting
+the value to @samp{@code{#f}}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item key
+a key
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-bool  (self@tie{}@code{<gtk-print-settings>}) (key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-bool
+Returns the boolean represented by the value that is associated with @var{key}.
+
+The string "true" represents @samp{@code{#t}}, any other string
+@samp{@code{#f}}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item key
+a key
+
+@item ret
+@samp{@code{#t}}, if @var{key} maps to a true value.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-bool  (self@tie{}@code{<gtk-print-settings>}) (key@tie{}@code{mchars}) (value@tie{}@code{bool})
+@deffnx Method set-bool
+Sets @var{key} to a boolean value.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item key
+a key
+
+@item value
+a boolean
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-double  (self@tie{}@code{<gtk-print-settings>}) (key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-double
+Returns the double value associated with @var{key}, or 0.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item key
+a key
+
+@item ret
+the double value of @var{key}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-double  (self@tie{}@code{<gtk-print-settings>}) (key@tie{}@code{mchars}) (value@tie{}@code{double})
+@deffnx Method set-double
+Sets @var{key} to a double value.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item key
+a key
+
+@item value
+a double value
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-length  (self@tie{}@code{<gtk-print-settings>}) (key@tie{}@code{mchars}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-length
+Returns the value associated with @var{key}, interpreted as a length. The
+returned value is converted to @var{units}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item key
+a key
+
+@item unit
+the unit of the return value
+
+@item ret
+the length value of @var{key}, converted to @var{unit}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-length  (self@tie{}@code{<gtk-print-settings>}) (key@tie{}@code{mchars}) (value@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>})
+@deffnx Method set-length
+Associates a length in units of @var{unit} with @var{key}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item key
+a key
+
+@item value
+a length
+
+@item unit
+the unit of @var{length}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-int  (self@tie{}@code{<gtk-print-settings>}) (key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-int
+Returns the integer value of @var{key}, or 0.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item key
+a key
+
+@item ret
+the integer value of @var{key}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-int  (self@tie{}@code{<gtk-print-settings>}) (key@tie{}@code{mchars}) (value@tie{}@code{int})
+@deffnx Method set-int
+Sets @var{key} to an integer value.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item key
+a key
+
+@item value
+an integer
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-printer  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-printer
+Convenience function to obtain the value of @samp{GTK_PRINT_SETTINGS_PRINTER}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+the printer name
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-printer  (self@tie{}@code{<gtk-print-settings>}) (printer@tie{}@code{mchars})
+@deffnx Method set-printer
+Convenience function to set @samp{GTK_PRINT_SETTINGS_PRINTER} to @var{printer}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item printer
+the printer name
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-orientation  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{<gtk-page-orientation>})
+@deffnx Method get-orientation
+Get the value of @samp{GTK_PRINT_SETTINGS_ORIENTATION}, converted to a
+@code{<gtk-page-orientation>}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+the orientation
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-orientation  (self@tie{}@code{<gtk-print-settings>}) (orientation@tie{}@code{<gtk-page-orientation>})
+@deffnx Method set-orientation
+Sets the value of @samp{GTK_PRINT_SETTINGS_ORIENTATION}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item orientation
+a page orientation
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-paper-size  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{<gtk-paper-size>})
+@deffnx Method get-paper-size
+Gets the value of @samp{GTK_PRINT_SETTINGS_PAPER_FORMAT}, converted to a
+@code{<gtk-paper-size>}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+the paper size
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-paper-size  (self@tie{}@code{<gtk-print-settings>}) (paper_size@tie{}@code{<gtk-paper-size>})
+@deffnx Method set-paper-size
+Sets the value of @samp{GTK_PRINT_SETTINGS_PAPER_FORMAT},
+@samp{GTK_PRINT_SETTINGS_PAPER_WIDTH} and
+@samp{GTK_PRINT_SETTINGS_PAPER_HEIGHT}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item paper-size
+a paper size
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-paper-width  (self@tie{}@code{<gtk-print-settings>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-paper-width
+Gets the value of @samp{GTK_PRINT_SETTINGS_PAPER_WIDTH}, converted to
+@var{unit}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item unit
+the unit for the return value
+
+@item ret
+the paper width, in units of @var{unit}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-paper-width  (self@tie{}@code{<gtk-print-settings>}) (width@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>})
+@deffnx Method set-paper-width
+Sets the value of @samp{GTK_PRINT_SETTINGS_PAPER_WIDTH}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item width
+the paper width
+
+@item unit
+the units of @var{width}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-paper-height  (self@tie{}@code{<gtk-print-settings>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-paper-height
+Gets the value of @samp{GTK_PRINT_SETTINGS_PAPER_HEIGHT}, converted to
+@var{unit}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item unit
+the unit for the return value
+
+@item ret
+the paper height, in units of @var{unit}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-paper-height  (self@tie{}@code{<gtk-print-settings>}) (height@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>})
+@deffnx Method set-paper-height
+Sets the value of @samp{GTK_PRINT_SETTINGS_PAPER_HEIGHT}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item height
+the paper height
+
+@item unit
+the units of @var{height}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-use-color  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-use-color
+Gets the value of @samp{GTK_PRINT_SETTINGS_USE_COLOR}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+whether to use color
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-use-color  (self@tie{}@code{<gtk-print-settings>}) (use_color@tie{}@code{bool})
+@deffnx Method set-use-color
+Sets the value of @samp{GTK_PRINT_SETTINGS_USE_COLOR}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item use-color
+whether to use color
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-collate  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-collate
+Gets the value of @samp{GTK_PRINT_SETTINGS_COLLATE}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+whether to collate the printed pages
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-collate  (self@tie{}@code{<gtk-print-settings>}) (collate@tie{}@code{bool})
+@deffnx Method set-collate
+Sets the value of @samp{GTK_PRINT_SETTINGS_COLLATE}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item collate
+whether to collate the output
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-reverse  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-reverse
+Gets the value of @samp{GTK_PRINT_SETTINGS_REVERSE}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+whether to reverse the order of the printed pages
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-reverse  (self@tie{}@code{<gtk-print-settings>}) (reverse@tie{}@code{bool})
+@deffnx Method set-reverse
+Sets the value of @samp{GTK_PRINT_SETTINGS_REVERSE}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item reverse
+whether to reverse the output
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-duplex  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{<gtk-print-duplex>})
+@deffnx Method get-duplex
+Gets the value of @samp{GTK_PRINT_SETTINGS_DUPLEX}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+whether to print the output in duplex.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-duplex  (self@tie{}@code{<gtk-print-settings>}) (duplex@tie{}@code{<gtk-print-duplex>})
+@deffnx Method set-duplex
+Sets the value of @samp{GTK_PRINT_SETTINGS_DUPLEX}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item duplex
+a @code{<gtk-print-duplex>} value
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-quality  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{<gtk-print-quality>})
+@deffnx Method get-quality
+Gets the value of @samp{GTK_PRINT_SETTINGS_QUALITY}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+the print quality
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-quality  (self@tie{}@code{<gtk-print-settings>}) (quality@tie{}@code{<gtk-print-quality>})
+@deffnx Method set-quality
+Sets the value of @samp{GTK_PRINT_SETTINGS_QUALITY}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item quality
+a @code{<gtk-print-quality>} value
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-n-copies  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-n-copies
+Gets the value of @samp{GTK_PRINT_SETTINGS_N_COPIES}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+the number of copies to print
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-n-copies  (self@tie{}@code{<gtk-print-settings>}) (num_copies@tie{}@code{int})
+@deffnx Method set-n-copies
+Sets the value of @samp{GTK_PRINT_SETTINGS_N_COPIES}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item num-copies
+the number of copies
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-number-up  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-number-up
+Gets the value of @samp{GTK_PRINT_SETTINGS_NUMBER_UP}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+the number of pages per sheet
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-number-up  (self@tie{}@code{<gtk-print-settings>}) (number_up@tie{}@code{int})
+@deffnx Method set-number-up
+Sets the value of @samp{GTK_PRINT_SETTINGS_NUMBER_UP}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item number-up
+the number of pages per sheet
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-resolution  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-resolution
+Gets the value of @samp{GTK_PRINT_SETTINGS_RESOLUTION}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+the resolution in dpi
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-resolution  (self@tie{}@code{<gtk-print-settings>}) (resolution@tie{}@code{int})
+@deffnx Method set-resolution
+Sets the value of @samp{GTK_PRINT_SETTINGS_RESOLUTION}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item resolution
+the resolution in dpi
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-scale  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-scale
+Gets the value of @samp{GTK_PRINT_SETTINGS_SCALE}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+the scale in percent
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-scale  (self@tie{}@code{<gtk-print-settings>}) (scale@tie{}@code{double})
+@deffnx Method set-scale
+Sets the value of @samp{GTK_PRINT_SETTINGS_SCALE}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item scale
+the scale in percent
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-page-set  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{<gtk-page-set>})
+@deffnx Method get-page-set
+Gets the value of @samp{GTK_PRINT_SETTINGS_PAGE_SET}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+the set of pages to print
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-page-set  (self@tie{}@code{<gtk-print-settings>}) (page_set@tie{}@code{<gtk-page-set>})
+@deffnx Method set-page-set
+Sets the value of @samp{GTK_PRINT_SETTINGS_PAGE_SET}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item page-set
+a @code{<gtk-page-set>} value
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-media-type  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-media-type
+Gets the value of @samp{GTK_PRINT_SETTINGS_MEDIA_TYPE}.
+
+The set of media types is defined in PWG 5101.1-2002 PWG.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+the media type
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-media-type  (self@tie{}@code{<gtk-print-settings>}) (media_type@tie{}@code{mchars})
+@deffnx Method set-media-type
+Sets the value of @samp{GTK_PRINT_SETTINGS_MEDIA_TYPE}.
+
+The set of media types is defined in PWG 5101.1-2002 PWG.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item media-type
+the media type
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-dither  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-dither
+Gets the value of @samp{GTK_PRINT_SETTINGS_DITHER}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+the dithering that is used
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-dither  (self@tie{}@code{<gtk-print-settings>}) (dither@tie{}@code{mchars})
+@deffnx Method set-dither
+Sets the value of @samp{GTK_PRINT_SETTINGS_DITHER}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item dither
+the dithering that is used
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-finishings  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-finishings
+Gets the value of @samp{GTK_PRINT_SETTINGS_FINISHINGS}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+the finishings
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-finishings  (self@tie{}@code{<gtk-print-settings>}) (finishings@tie{}@code{mchars})
+@deffnx Method set-finishings
+Sets the value of @samp{GTK_PRINT_SETTINGS_FINISHINGS}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item finishings
+the finishings
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-get-output-bin  (self@tie{}@code{<gtk-print-settings>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-output-bin
+Gets the value of @samp{GTK_PRINT_SETTINGS_OUTPUT_BIN}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item ret
+the output bin
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-print-settings-set-output-bin  (self@tie{}@code{<gtk-print-settings>}) (output_bin@tie{}@code{mchars})
+@deffnx Method set-output-bin
+Sets the value of @samp{GTK_PRINT_SETTINGS_OUTPUT_BIN}.
+
+@table @var
+@item settings
+a @code{<gtk-print-settings>}
+
+@item output-bin
+the output bin
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment

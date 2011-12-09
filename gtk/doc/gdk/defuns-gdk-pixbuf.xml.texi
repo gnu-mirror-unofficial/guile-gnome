@@ -1,0 +1,165 @@
+
+@c %start of fragment
+
+@deftp Class <gdk-pixbuf>
+Derives from @code{<gobject>}.
+
+This class defines the following slots:
+
+@table @code
+@item colorspace
+The colorspace in which the samples are interpreted
+
+@item n-channels
+The number of samples per pixel
+
+@item has-alpha
+Whether the pixbuf has an alpha channel
+
+@item bits-per-sample
+The number of bits per sample
+
+@item width
+The number of columns of the pixbuf
+
+@item height
+The number of rows of the pixbuf
+
+@item rowstride
+The number of bytes between the start of a row and the start of the next row
+
+@item pixels
+A pointer to the pixel data of the pixbuf
+
+@end table
+
+@end deftp
+
+@deffn Function gdk-pixbuf-get-colorspace  (self@tie{}@code{<gdk-pixbuf>}) @result{}@tie{} (ret@tie{}@code{<gdk-colorspace>})
+@deffnx Method get-colorspace
+Queries the color space of a pixbuf.
+
+@table @var
+@item pixbuf
+A pixbuf.
+
+@item ret
+Color space.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-get-n-channels  (self@tie{}@code{<gdk-pixbuf>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-n-channels
+Queries the number of channels of a pixbuf.
+
+@table @var
+@item pixbuf
+A pixbuf.
+
+@item ret
+Number of channels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-get-has-alpha  (self@tie{}@code{<gdk-pixbuf>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-has-alpha
+Queries whether a pixbuf has an alpha channel (opacity information).
+
+@table @var
+@item pixbuf
+A pixbuf.
+
+@item ret
+@samp{@code{#t}} if it has an alpha channel, @samp{@code{#f}} otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-get-bits-per-sample  (self@tie{}@code{<gdk-pixbuf>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-bits-per-sample
+Queries the number of bits per color sample in a pixbuf.
+
+@table @var
+@item pixbuf
+A pixbuf.
+
+@item ret
+Number of bits per color sample.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-get-width  (self@tie{}@code{<gdk-pixbuf>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-width
+Queries the width of a pixbuf.
+
+@table @var
+@item pixbuf
+A pixbuf.
+
+@item ret
+Width in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-get-height  (self@tie{}@code{<gdk-pixbuf>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-height
+Queries the height of a pixbuf.
+
+@table @var
+@item pixbuf
+A pixbuf.
+
+@item ret
+Height in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-get-rowstride  (self@tie{}@code{<gdk-pixbuf>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-rowstride
+Queries the rowstride of a pixbuf, which is the number of bytes between the
+start of a row and the start of the next row.
+
+@table @var
+@item pixbuf
+A pixbuf.
+
+@item ret
+Distance between row starts.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-get-option  (self@tie{}@code{<gdk-pixbuf>}) (key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-option
+Looks up @var{key} in the list of options that may have been attached to the
+@var{pixbuf} when it was loaded.
+
+@table @var
+@item pixbuf
+a @code{<gdk-pixbuf>}
+
+@item key
+a nul-terminated string.
+
+@item ret
+the value associated with @var{key}. This is a nul-terminated string that should
+not be freed or @samp{@code{#f}} if @var{key} was not found.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

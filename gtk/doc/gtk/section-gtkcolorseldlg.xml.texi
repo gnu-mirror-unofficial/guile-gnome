@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node GtkColorSelectionDialog
+@chapter GtkColorSelectionDialog
+A standard dialog box for selecting a color
+
+@section Overview
+The @code{<gtk-color-selection-dialog>} provides a standard dialog which allows
+the user to select a color much like the @code{<gtk-file-selection>} provides a
+standard dialog for file selection.
+
+@section Usage
+@include defuns-gtkcolorseldlg.xml.texi
+
+@c %end of fragment

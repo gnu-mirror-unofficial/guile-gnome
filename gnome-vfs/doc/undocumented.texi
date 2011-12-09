@@ -1,0 +1,187 @@
+
+@c %start of fragment
+
+@node Undocumented
+@chapter Undocumented
+The following symbols, if any, have not been properly documented.
+
+@section (gnome gw gnome-vfs)
+@defvar gnome-vfs-ace-add-perm
+@end defvar
+
+@defvar gnome-vfs-ace-check-perm
+@end defvar
+
+@defvar gnome-vfs-ace-copy-perms
+@end defvar
+
+@defvar gnome-vfs-ace-del-perm
+@end defvar
+
+@defvar gnome-vfs-ace-equal
+@end defvar
+
+@defvar gnome-vfs-ace-get-id
+@end defvar
+
+@defvar gnome-vfs-ace-get-inherit
+@end defvar
+
+@defvar gnome-vfs-ace-get-kind
+@end defvar
+
+@defvar gnome-vfs-ace-get-negative
+@end defvar
+
+@defvar gnome-vfs-ace-set-id
+@end defvar
+
+@defvar gnome-vfs-ace-set-inherit
+@end defvar
+
+@defvar gnome-vfs-ace-set-kind
+@end defvar
+
+@defvar gnome-vfs-ace-set-negative
+@end defvar
+
+@defvar gnome-vfs-acl-clear
+@end defvar
+
+@defun gnome-vfs-acl-get-ace-list 
+@end defun
+
+@defvar gnome-vfs-acl-kind-to-string
+@end defvar
+
+@defvar gnome-vfs-acl-new
+@end defvar
+
+@defvar gnome-vfs-acl-perm-to-string
+@end defvar
+
+@defvar gnome-vfs-acl-set
+@end defvar
+
+@defvar gnome-vfs-acl-unset
+@end defvar
+
+@defvar gnome-vfs-context-check-cancellation-current
+@end defvar
+
+@defvar gnome-vfs-drive-needs-eject
+@end defvar
+
+@defvar gnome-vfs-escape-host-and-path-string
+@end defvar
+
+@defvar gnome-vfs-format-file-size-for-display
+@end defvar
+
+@defun gnome-vfs-get-default-browse-domains 
+@end defun
+
+@defvar gnome-vfs-get-mime-type-from-file-data
+@end defvar
+
+@defvar gnome-vfs-get-supertype-from-mime-type
+@end defvar
+
+@defvar gnome-vfs-init
+@end defvar
+
+@defvar gnome-vfs-initialized
+@end defvar
+
+@defvar gnome-vfs-is-executable-command-string
+@end defvar
+
+@defvar gnome-vfs-make-uri-canonical-strip-fragment
+@end defvar
+
+@defvar gnome-vfs-make-uri-from-input-with-dirs
+@end defvar
+
+@defvar gnome-vfs-make-uri-from-input-with-trailing-ws
+@end defvar
+
+@defvar gnome-vfs-mime-application-get-binary-name
+@end defvar
+
+@defvar gnome-vfs-mime-application-get-desktop-file-path
+@end defvar
+
+@defvar gnome-vfs-mime-application-get-desktop-id
+@end defvar
+
+@defvar gnome-vfs-mime-application-get-generic-name
+@end defvar
+
+@defvar gnome-vfs-mime-application-get-startup-wm-class
+@end defvar
+
+@defvar gnome-vfs-mime-application-new-from-desktop-id
+@end defvar
+
+@defvar gnome-vfs-mime-application-requires-terminal
+@end defvar
+
+@defvar gnome-vfs-mime-application-supports-startup-notification
+@end defvar
+
+@defvar gnome-vfs-mime-application-supports-uris
+@end defvar
+
+@defun gnome-vfs-mime-get-all-applications-for-uri 
+@end defun
+
+@defvar gnome-vfs-mime-get-default-application
+@end defvar
+
+@defvar gnome-vfs-mime-get-default-application-for-uri
+@end defvar
+
+@defvar gnome-vfs-mime-type-from-name-or-default
+@end defvar
+
+@defvar gnome-vfs-mime-type-get-equivalence
+@end defvar
+
+@defvar gnome-vfs-module-callback-pop
+@end defvar
+
+@defvar gnome-vfs-shutdown
+@end defvar
+
+@defvar gnome-vfs-unescape-string-for-display
+@end defvar
+
+@defvar gnome-vfs-uri-extract-short-path-name
+@end defvar
+
+@defvar gnome-vfs-uri-get-fragment-identifier
+@end defvar
+
+@defvar gnome-vfs-uri-make-full-from-relative
+@end defvar
+
+@defvar gnome-vfs-volume-get-filesystem-type
+@end defvar
+
+@defun gnome-vfs-volume-monitor-get-connected-drives 
+@end defun
+
+@defvar gnome-vfs-volume-monitor-get-drive-by-id
+@end defvar
+
+@defun gnome-vfs-volume-monitor-get-mounted-volumes 
+@end defun
+
+@defvar gnome-vfs-volume-monitor-get-volume-by-id
+@end defvar
+
+@defvar gnome-vfs-volume-monitor-get-volume-for-path
+@end defvar
+
+
+@c %end of fragment

@@ -1,0 +1,99 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-button-box>
+Derives from @code{<gtk-box>}.
+
+This class defines the following slots:
+
+@table @code
+@item layout-style
+How to layout the buttons in the box. Possible values are default, spread, edge,
+start and end
+
+@end table
+
+@end deftp
+
+@deffn Function gtk-button-box-get-layout  (self@tie{}@code{<gtk-button-box>}) @result{}@tie{} (ret@tie{}@code{<gtk-button-box-style>})
+@deffnx Method get-layout
+Retrieves the method being used to arrange the buttons in a button box.
+
+@table @var
+@item widget
+a @code{<gtk-button-box>}.
+
+@item ret
+the method used to layout buttons in @var{widget}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-box-get-child-secondary  (self@tie{}@code{<gtk-button-box>}) (child@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-child-secondary
+Returns whether @var{child} should appear in a secondary group of children.
+
+@table @var
+@item widget
+a @code{<gtk-button-box>}
+
+@item child
+a child of @var{widget}
+
+@item ret
+whether @var{child} should appear in a secondary group of children.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-button-box-set-layout  (self@tie{}@code{<gtk-button-box>}) (layout_style@tie{}@code{<gtk-button-box-style>})
+@deffnx Method set-layout
+Changes the way buttons are arranged in their container.
+
+@table @var
+@item widget
+a @code{<gtk-button-box>}.
+
+@item layout-style
+the new layout style.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-button-box-set-child-secondary  (self@tie{}@code{<gtk-button-box>}) (child@tie{}@code{<gtk-widget>}) (is_secondary@tie{}@code{bool})
+@deffnx Method set-child-secondary
+Sets whether @var{child} should appear in a secondary group of children. A
+typical use of a secondary child is the help button in a dialog.
+
+This group appears after the other children if the style is
+@samp{GTK_BUTTONBOX_START}, @samp{GTK_BUTTONBOX_SPREAD} or
+@samp{GTK_BUTTONBOX_EDGE}, and before the other children if the style is
+@samp{GTK_BUTTONBOX_END}. For horizontal button boxes, the definition of
+before/after depends on direction of the widget (see
+@code{gtk-widget-set-direction}). If the style is @samp{GTK_BUTTONBOX_START} or
+@samp{GTK_BUTTONBOX_END}, then the secondary children are aligned at the other
+end of the button box from the main children. For the other styles, they appear
+immediately next to the main children.
+
+@table @var
+@item widget
+a @code{<gtk-button-box>}
+
+@item child
+a child of @var{widget}
+
+@item is-secondary
+if @samp{@code{#t}}, the @var{child} appears in a secondary group of the button
+box.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

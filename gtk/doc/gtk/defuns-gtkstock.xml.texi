@@ -1,0 +1,92 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-stock-item>
+Opaque pointer.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-stock-add  (items@tie{}@code{scm})
+Registers each of the stock items in @var{items}. If an item already exists with
+the same stock ID as one of the @var{items}, the old item gets replaced. The
+stock items are copied, so GTK+ does not hold any pointer into @var{items} and
+@var{items} can be freed. Use @code{gtk-stock-add-static} if @var{items} is
+persistent and GTK+ need not copy the array.
+
+@table @var
+@item items
+a @code{<gtk-stock-item>} or array of items
+
+@item n-items
+number of @code{<gtk-stock-item>} in @var{items}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-stock-add-static  (items@tie{}@code{<gtk-stock-item>}) (n_items@tie{}@code{unsigned-int})
+Same as @code{gtk-stock-add}, but doesn't copy @var{items}, so @var{items} must
+persist until application exit.
+
+@table @var
+@item items
+a @code{<gtk-stock-item>} or array of @code{<gtk-stock-item>}
+
+@item n-items
+number of items
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-stock-item-copy  (self@tie{}@code{<gtk-stock-item>}) @result{}@tie{} (ret@tie{}@code{<gtk-stock-item>})
+Copies a stock item, mostly useful for language bindings and not in
+applications.
+
+@table @var
+@item item
+a @code{<gtk-stock-item>}
+
+@item ret
+a new @code{<gtk-stock-item>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-stock-list-ids  @result{}@tie{} (ret@tie{}@code{gslist-of})
+Retrieves a list of all known stock IDs added to a @code{<gtk-icon-factory>} or
+registered with @code{gtk-stock-add}. The list must be freed with
+@code{g-slist-free}, and each string in the list must be freed with
+@code{g-free}.
+
+@table @var
+@item ret
+a list of known stock IDs
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-stock-lookup  (stock_id@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{scm})
+Fills @var{item} with the registered values for @var{stock-id}, returning
+@samp{@code{#t}} if @var{stock-id} was known.
+
+@table @var
+@item stock-id
+a stock item name
+
+@item item
+stock item to initialize with values
+
+@item ret
+@samp{@code{#t}} if @var{item} was initialized
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

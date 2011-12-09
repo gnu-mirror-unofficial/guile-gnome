@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@node GtkLayout
+@chapter GtkLayout
+Infinite scrollable area containing child widgets and/or custom drawing
+
+@section Overview
+@code{<gtk-layout>} is similar to @code{<gtk-drawing-area>} in that it's a
+"blank slate" and doesn't do anything but paint a blank background by default.
+It's different in that it supports scrolling natively (you can add it to a
+@code{<gtk-scrolled-window>}), and it can contain child widgets, since it's a
+@code{<gtk-container>}. However if you're just going to draw, a
+@code{<gtk-drawing-area>} is a better choice since it has lower overhead.
+
+When handling expose events on a @code{<gtk-layout>}, you must draw to
+GTK_LAYOUT (layout)->bin_window, rather than to GTK_WIDGET (layout)->window, as
+you would for a drawing area.
+
+@section Usage
+@include defuns-gtklayout.xml.texi
+
+@c %end of fragment

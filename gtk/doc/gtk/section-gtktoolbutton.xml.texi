@@ -1,0 +1,31 @@
+
+@c %start of fragment
+
+@node GtkToolButton
+@chapter GtkToolButton
+A GtkToolItem subclass that displays buttons
+
+@section Overview
+@code{<gtk-tool-button>}s are @code{<gtk-tool-items>} containing buttons.
+
+Use @code{gtk-tool-button-new} to create a new @code{<gtk-tool-button>}. Use
+@code{gtk-tool-button-new-with-stock} to create a @code{<gtk-tool-button>}
+containing a stock item.
+
+The label of a @code{<gtk-tool-button>} is determined by the properties
+"label_widget", "label", and "stock_id". If "label_widget" is
+non-@samp{@code{#f}}, then that widget is used as the label. Otherwise, if
+"label" is non-@samp{@code{#f}}, that string is used as the label. Otherwise, if
+"stock_id" is non-@samp{@code{#f}}, the label is determined by the stock item.
+Otherwise, the button does not have a label.
+
+The icon of a @code{<gtk-tool-button>} is determined by the properties
+"icon_widget" and "stock_id". If "icon_widget" is non-@samp{@code{#f}}, then
+that widget is used as the icon. Otherwise, if "stock_id" is
+non-@samp{@code{#f}}, the icon is determined by the stock item. Otherwise, the
+button does not have a label.
+
+@section Usage
+@include defuns-gtktoolbutton.xml.texi
+
+@c %end of fragment

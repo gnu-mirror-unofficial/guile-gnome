@@ -1,0 +1,17 @@
+
+@c %start of fragment
+
+@node GtkTreeView
+@chapter GtkTreeView
+A widget for displaying both trees and lists
+
+@section Overview
+Widget that displays any object that implements the GtkTreeModel interface.
+
+Please refer to the tree widget conceptual overview for an overview of all the
+objects and data types related to the tree widget and how they work together.
+
+@section Usage
+@include defuns-gtktreeview.xml.texi
+
+@c %end of fragment

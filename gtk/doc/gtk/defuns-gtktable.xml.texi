@@ -1,0 +1,319 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-table>
+Derives from @code{<gtk-container>}.
+
+This class defines the following slots:
+
+@table @code
+@item n-rows
+The number of rows in the table
+
+@item n-columns
+The number of columns in the table
+
+@item column-spacing
+The amount of space between two consecutive columns
+
+@item row-spacing
+The amount of space between two consecutive rows
+
+@item homogeneous
+If TRUE, the table cells are all the same width/height
+
+@end table
+
+@end deftp
+
+@deffn Function gtk-table-new  (rows@tie{}@code{unsigned-int}) (columns@tie{}@code{unsigned-int}) (homogeneous@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Used to create a new table widget. An initial size must be given by specifying
+how many rows and columns the table should have, although this can be changed
+later with @code{gtk-table-resize}. @var{rows} and @var{columns} must both be in
+the range 0 .. 65535.
+
+@table @var
+@item rows
+The number of rows the new table should have.
+
+@item columns
+The number of columns the new table should have.
+
+@item homogeneous
+If set to @samp{@code{#t}}, all table cells are resized to the size of the cell
+containing the largest widget.
+
+@item ret
+A pointer to the the newly created table widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-table-resize  (self@tie{}@code{<gtk-table>}) (rows@tie{}@code{unsigned-int}) (columns@tie{}@code{unsigned-int})
+@deffnx Method resize
+If you need to change a table's size @emph{after} it has been created, this
+function allows you to do so.
+
+@table @var
+@item table
+The @code{<gtk-table>} you wish to change the size of.
+
+@item rows
+The new number of rows.
+
+@item columns
+The new number of columns.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-table-attach  (self@tie{}@code{<gtk-table>}) (child@tie{}@code{<gtk-widget>}) (left_attach@tie{}@code{unsigned-int}) (right_attach@tie{}@code{unsigned-int}) (top_attach@tie{}@code{unsigned-int}) (bottom_attach@tie{}@code{unsigned-int}) (xoptions@tie{}@code{<gtk-attach-options>}) (yoptions@tie{}@code{<gtk-attach-options>}) (xpadding@tie{}@code{unsigned-int}) (ypadding@tie{}@code{unsigned-int})
+@deffnx Method attach
+Adds a widget to a table. The number of 'cells' that a widget will occupy is
+specified by @var{left-attach}, @var{right-attach}, @var{top-attach} and
+@var{bottom-attach}. These each represent the leftmost, rightmost, uppermost and
+lowest column and row numbers of the table. (Columns and rows are indexed from
+zero).
+
+@table @var
+@item table
+The @code{<gtk-table>} to add a new widget to.
+
+@item child
+The widget to add.
+
+@item left-attach
+the column number to attach the left side of a child widget to.
+
+@item right-attach
+the column number to attach the right side of a child widget to.
+
+@item top-attach
+the row number to attach the top of a child widget to.
+
+@item bottom-attach
+the row number to attach the bottom of a child widget to.
+
+@item xoptions
+Used to specify the properties of the child widget when the table is resized.
+
+@item yoptions
+The same as xoptions, except this field determines behaviour of vertical
+resizing.
+
+@item xpadding
+An integer value specifying the padding on the left and right of the widget
+being added to the table.
+
+@item ypadding
+The amount of padding above and below the child widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-table-attach-defaults  (self@tie{}@code{<gtk-table>}) (widget@tie{}@code{<gtk-widget>}) (left_attach@tie{}@code{unsigned-int}) (right_attach@tie{}@code{unsigned-int}) (top_attach@tie{}@code{unsigned-int}) (bottom_attach@tie{}@code{unsigned-int})
+@deffnx Method attach-defaults
+As there are many options associated with @code{gtk-table-attach}, this
+convenience function provides the programmer with a means to add children to a
+table with identical padding and expansion options. The values used for the
+@code{<gtk-attach-options>} are @samp{GTK_EXPAND | GTK_FILL}, and the padding is
+set to 0.
+
+@table @var
+@item table
+The table to add a new child widget to.
+
+@item widget
+The child widget to add.
+
+@item left-attach
+The column number to attach the left side of the child widget to.
+
+@item right-attach
+The column number to attach the right side of the child widget to.
+
+@item top-attach
+The row number to attach the top of the child widget to.
+
+@item bottom-attach
+The row number to attach the bottom of the child widget to.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-table-set-row-spacing  (self@tie{}@code{<gtk-table>}) (row@tie{}@code{unsigned-int}) (spacing@tie{}@code{unsigned-int})
+@deffnx Method set-row-spacing
+Changes the space between a given table row and the subsequent row.
+
+@table @var
+@item table
+a @code{<gtk-table>} containing the row whose properties you wish to change.
+
+@item row
+row number whose spacing will be changed.
+
+@item spacing
+number of pixels that the spacing should take up.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-table-set-col-spacing  (self@tie{}@code{<gtk-table>}) (column@tie{}@code{unsigned-int}) (spacing@tie{}@code{unsigned-int})
+@deffnx Method set-col-spacing
+Alters the amount of space between a given table column and the following
+column.
+
+@table @var
+@item table
+a @code{<gtk-table>}.
+
+@item column
+the column whose spacing should be changed.
+
+@item spacing
+number of pixels that the spacing should take up.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-table-set-row-spacings  (self@tie{}@code{<gtk-table>}) (spacing@tie{}@code{unsigned-int})
+@deffnx Method set-row-spacings
+Sets the space between every row in @var{table} equal to @var{spacing}.
+
+@table @var
+@item table
+a @code{<gtk-table>}.
+
+@item spacing
+the number of pixels of space to place between every row in the table.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-table-set-col-spacings  (self@tie{}@code{<gtk-table>}) (spacing@tie{}@code{unsigned-int})
+@deffnx Method set-col-spacings
+Sets the space between every column in @var{table} equal to @var{spacing}.
+
+@table @var
+@item table
+a @code{<gtk-table>}.
+
+@item spacing
+the number of pixels of space to place between every column in the table.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-table-set-homogeneous  (self@tie{}@code{<gtk-table>}) (homogeneous@tie{}@code{bool})
+@deffnx Method set-homogeneous
+Changes the homogenous property of table cells, ie. whether all cells are an
+equal size or not.
+
+@table @var
+@item table
+The @code{<gtk-table>} you wish to set the homogeneous properties of.
+
+@item homogeneous
+Set to @samp{@code{#t}} to ensure all table cells are the same size. Set to
+@samp{@code{#f}} if this is not your desired behaviour.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-table-get-default-row-spacing  (self@tie{}@code{<gtk-table>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+@deffnx Method get-default-row-spacing
+Gets the default row spacing for the table. This is the spacing that will be
+used for newly added rows. (See @code{gtk-table-set-row-spacings})
+
+@table @var
+@item table
+a @code{<gtk-table>}
+
+@item ret
+value: the default row spacing
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-table-get-homogeneous  (self@tie{}@code{<gtk-table>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-homogeneous
+Returns whether the table cells are all constrained to the same width and
+height. (See @code{gtk-table-set-homogenous})
+
+@table @var
+@item table
+a @code{<gtk-table>}
+
+@item ret
+@samp{@code{#t}} if the cells are all constrained to the same size
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-table-get-row-spacing  (self@tie{}@code{<gtk-table>}) (row@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+@deffnx Method get-row-spacing
+Gets the amount of space between row @var{row}, and row @var{row} + 1. See
+@code{gtk-table-set-row-spacing}.
+
+@table @var
+@item table
+a @code{<gtk-table>}
+
+@item row
+a row in the table, 0 indicates the first row
+
+@item ret
+the row spacing
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-table-get-col-spacing  (self@tie{}@code{<gtk-table>}) (column@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+@deffnx Method get-col-spacing
+Gets the amount of space between column @var{col}, and column @var{col} + 1. See
+@code{gtk-table-set-col-spacing}.
+
+@table @var
+@item table
+a @code{<gtk-table>}
+
+@item column
+a column in the table, 0 indicates the first column
+
+@item ret
+the column spacing
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-table-get-default-col-spacing  (self@tie{}@code{<gtk-table>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+@deffnx Method get-default-col-spacing
+Gets the default column spacing for the table. This is the spacing that will be
+used for newly added columns. (See @code{gtk-table-set-col-spacings})
+
+@table @var
+@item table
+a @code{<gtk-table>}
+
+@item ret
+value: the default column spacing
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

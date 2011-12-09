@@ -1,0 +1,47 @@
+
+@c %start of fragment
+
+@node IO Channels
+@chapter IO Channels
+portable support for using files, pipes and sockets.
+
+@section Overview
+The @code{<gio-channel>} data type aims to provide a portable method for using
+file descriptors, pipes, and sockets, and integrating them into the main event
+loop. Currently full support is available on UNIX platforms, support for Windows
+is only partially complete.
+
+To create a new @code{<gio-channel>} on UNIX systems use
+@code{g-io-channel-unix-new}. This works for plain file descriptors, pipes and
+sockets. Alternatively, a channel can be created for a file in a system
+independent manner using @code{g-io-channel-new-file}.
+
+Once a @code{<gio-channel>} has been created, it can be used in a generic manner
+with the functions @code{g-io-channel-read-chars},
+@code{g-io-channel-write-chars}, @code{g-io-channel-seek-position}, and
+@code{g-io-channel-shutdown}.
+
+To add a @code{<gio-channel>} to the main event loop use @code{g-io-add-watch}
+or @code{g-io-add-watch-full}. Here you specify which events you are interested
+in on the @code{<gio-channel>}, and provide a function to be called whenever
+these events occur.
+
+@code{<gio-channel>} instances are created with an initial reference count of 1.
+@code{g-io-channel-ref} and @code{g-io-channel-unref} can be used to increment
+or decrement the reference count respectively. When the reference count falls to
+0, the @code{<gio-channel>} is freed. (Though it isn't closed automatically,
+unless it was created using @code{g-io-channel-new-from-file}.) Using
+@code{g-io-add-watch} or @code{g-io-add-watch-full} increments a channel's
+reference count.
+
+The new functions @code{g-io-channel-read-chars}, @code{g-io-channel-read-line},
+@code{g-io-channel-read-line-string}, @code{g-io-channel-read-to-end},
+@code{g-io-channel-write-chars}, @code{g-io-channel-seek-position}, and
+@code{g-io-channel-flush} should not be mixed with the deprecated functions
+@code{g-io-channel-read}, @code{g-io-channel-write}, and
+@code{g-io-channel-seek} on the same channel.
+
+@section Usage
+@include defuns-iochannels.xml.texi
+
+@c %end of fragment

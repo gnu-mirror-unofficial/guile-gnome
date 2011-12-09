@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node GtkSeparatorMenuItem
+@chapter GtkSeparatorMenuItem
+A separator used in menus
+
+@section Overview
+The @code{<gtk-separator-menu-item>} is a separator used to group items within a
+menu. It displays a horizontal line with a shadow to make it appear sunken into
+the interface.
+
+@section Usage
+@include defuns-gtkseparatormenuitem.xml.texi
+
+@c %end of fragment

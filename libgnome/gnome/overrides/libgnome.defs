@@ -1,0 +1,84 @@
+;; -*- scheme -*-
+;; guile-gnome
+;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+
+;; This program is free software; you can redistribute it and/or    
+;; modify it under the terms of the GNU General Public License as   
+;; published by the Free Software Foundation; either version 2 of   
+;; the License, or (at your option) any later version.              
+;;                                                                  
+;; This program is distributed in the hope that it will be useful,  
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of   
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+;; GNU General Public License for more details.                     
+;;                                                                  
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, contact:
+;;
+;; Free Software Foundation           Voice:  +1-617-542-5942
+;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+;; Boston, MA  02111-1307,  USA       gnu@gnu.org
+
+;;; Commentary:
+;;
+;;Custom wrapper definitions.
+;;
+;;; Code:
+
+(define-function program_initv
+  (c-name "_wrap_gnome_program_init")
+  (overrides "%gnome-program-init") ;; hacky!
+  (return-type "GnomeProgram*")
+  (parameters
+    '("const-char*" "app_id")
+    '("const-char*" "app_version")))
+
+(ignore-glob  "*_get_type"
+              "_*"
+              "*_ref"
+              "*_unref"
+              "*_copy"
+              "*_free"
+              "*_newv"
+              "*_valist"
+              "*_setv"
+              "*_foreach"
+              "*_valist")
+
+
+
+(ignore-glob  "gnome_config*"
+              "gnome_execute_*"
+              "gnome_i18n_*"
+              "*_vector"
+              "gnome_triggers_v*"
+              "gnome_program_init*"
+              "gnome_score*"
+              )
+
+(ignore
+ "g_extension_pointer"
+ "gnome_bonobo_module_info_get"
+ "gnome_clearenv"
+ "gnome_help_display_desktop_with_env"
+ "gnome_help_display_uri_with_env"
+ "gnome_help_display_with_doc_id_and_env"
+ "gnome_help_error_quark"
+ "gnome_program_install_property" ; GnomeProgramClass*
+ "gnome_program_locate_file"
+ "gnome_program_module_load"
+ "gnome_program_module_register" ; GnomeModuleInfo*
+ "gnome_program_module_registered" ; GnomeModuleInfo*
+ "gnome_program_parse_args"
+ "gnome_program_postinit"
+ "gnome_program_preinit" ; poptContext
+ "gnome_score_init"
+ "gnome_setenv"
+ "gnome_sound_connection_get"
+ "gnome_unsetenv"
+ "gnome_url_error_quark"
+ "gnome_url_show_with_env"
+ "gnome_util_user_shell"
+ "gnome_win32_get_prefixes"
+ "libgnome_module_info_get"
+ )

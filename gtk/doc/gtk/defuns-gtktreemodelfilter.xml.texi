@@ -1,0 +1,93 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-tree-model-filter>
+Derives from @code{<gtk-tree-model>}, @code{<gtk-tree-drag-source>},
+@code{<gobject>}.
+
+This class defines the following slots:
+
+@table @code
+@item child-model
+The model for the filtermodel to filter
+
+@item virtual-root
+The virtual root (relative to the child model) for this filtermodel
+
+@end table
+
+@end deftp
+
+@deffn Function gtk-tree-model-filter-new  (self@tie{}@code{<gtk-tree-model>}) (root@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-model>})
+@deffnx Method filter-new
+Creates a new @code{<gtk-tree-model>}, with @var{child-model} as the child_model
+and @var{root} as the virtual root.
+
+@table @var
+@item child-model
+A @code{<gtk-tree-model>}.
+
+@item root
+A @code{<gtk-tree-path>} or @samp{@code{#f}}.
+
+@item ret
+A new @code{<gtk-tree-model>}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tree-model-filter-get-model  (self@tie{}@code{<gtk-tree-model-filter>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-model>})
+@deffnx Method get-model
+Returns a pointer to the child model of @var{filter}.
+
+@table @var
+@item filter
+A @code{<gtk-tree-model-filter>}.
+
+@item ret
+A pointer to a @code{<gtk-tree-model>}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tree-model-filter-refilter  (self@tie{}@code{<gtk-tree-model-filter>})
+@deffnx Method refilter
+Emits ::row_changed for each row in the child model, which causes the filter to
+re-evaluate whether a row is visible or not.
+
+@table @var
+@item filter
+A @code{<gtk-tree-model-filter>}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tree-model-filter-clear-cache  (self@tie{}@code{<gtk-tree-model-filter>})
+@deffnx Method clear-cache
+This function should almost never be called. It clears the @var{filter} of any
+cached iterators that haven't been reffed with @code{gtk-tree-model-ref-node}.
+This might be useful if the child model being filtered is static (and doesn't
+change often) and there has been a lot of unreffed access to nodes. As a side
+effect of this function, all unreffed iters will be invalid.
+
+@table @var
+@item filter
+A @code{<gtk-tree-model-filter>}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

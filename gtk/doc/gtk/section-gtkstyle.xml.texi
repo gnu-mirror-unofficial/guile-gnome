@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node Styles
+@chapter Styles
+Functions for drawing widget parts
+
+@section Overview
+@section Usage
+@include defuns-gtkstyle.xml.texi
+
+@c %end of fragment

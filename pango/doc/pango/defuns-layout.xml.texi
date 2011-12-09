@@ -1,0 +1,1170 @@
+
+@c %start of fragment
+
+@deftp Class <pango-layout>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deftp Class <pango-layout-iter>
+Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deftp Class <pango-layout-line>
+Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function pango-layout-new  (context@tie{}@code{<pango-context>}) @result{}@tie{} (ret@tie{}@code{<pango-layout>})
+Create a new @code{<pango-layout>} object with attributes initialized to default
+values for a particular @code{<pango-context>}.
+
+@table @var
+@item context
+a @code{<pango-context>}
+
+@item ret
+the newly allocated @code{<pango-layout>}, with a reference count of one, which
+should be freed with @code{g-object-unref}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-copy  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{<pango-layout>})
+@deffnx Method copy
+Does a deep copy-by-value of the @var{src} layout. The attribute list, tab
+array, and text from the original layout are all copied by value.
+
+@table @var
+@item src
+a @code{<pango-layout>}
+
+@item ret
+the newly allocated @code{<pango-layout>}, with a reference count of one, which
+should be freed with @code{g-object-unref}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-context  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{<pango-context>})
+@deffnx Method get-context
+Retrieves the @code{<pango-context>} used for this layout.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ret
+the @code{<pango-context>} for the layout. This does not have an additional
+refcount added, so if you want to keep a copy of this around, you must reference
+it yourself.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-context-changed  (self@tie{}@code{<pango-layout>})
+@deffnx Method context-changed
+Forces recomputation of any state in the @code{<pango-layout>} that might depend
+on the layout's context. This function should be called if you make changes to
+the context subsequent to creating the layout.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-set-text  (self@tie{}@code{<pango-layout>}) (text@tie{}@code{mchars}) (length@tie{}@code{int})
+@deffnx Method set-text
+Sets the text of the layout.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item text
+a valid UTF-8 string
+
+@item length
+maximum length of @var{text}, in bytes. -1 indicates that the string is
+nul-terminated and the length should be calculated. The text will also be
+truncated on encountering a nul-termination even when @var{length} is positive.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-text  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-text
+Gets the text in the layout. The returned text should not be freed or modified.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ret
+the text in the @var{layout}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-set-markup  (self@tie{}@code{<pango-layout>}) (markup@tie{}@code{mchars}) (length@tie{}@code{int})
+@deffnx Method set-markup
+Same as @code{pango-layout-set-markup-with-accel}, but the markup text isn't
+scanned for accelerators.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item markup
+marked-up text
+
+@item length
+length of marked-up text in bytes, or -1 if @var{markup} is nul-terminated
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-set-markup-with-accel  (self@tie{}@code{<pango-layout>}) (markup@tie{}@code{mchars}) (length@tie{}@code{int}) (accel_marker@tie{}@code{unsigned-int32}) @result{}@tie{} (accel_char@tie{}@code{unsigned-int32})
+@deffnx Method set-markup-with-accel
+Sets the layout text and attribute list from marked-up text (see markup format).
+Replaces the current text and attribute list.
+
+If @var{accel-marker} is nonzero, the given character will mark the character
+following it as an accelerator. For example, @var{accel-marker} might be an
+ampersand or underscore. All characters marked as an accelerator will receive a
+@samp{PANGO_UNDERLINE_LOW} attribute, and the first character so marked will be
+returned in @var{accel-char}. Two @var{accel-marker} characters following each
+other produce a single literal @var{accel-marker} character.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item markup
+marked-up text (see markup format)
+
+@item length
+length of marked-up text in bytes, or -1 if @var{markup} is nul-terminated
+
+@item accel-marker
+marker for accelerators in the text
+
+@item accel-char
+return location for first located accelerator, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-set-attributes  (self@tie{}@code{<pango-layout>}) (attrs@tie{}@code{<pango-attr-list>})
+@deffnx Method set-attributes
+Sets the text attributes for a layout object.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item attrs
+a @code{<pango-attr-list>}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-attributes  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{<pango-attr-list>})
+@deffnx Method get-attributes
+Gets the attribute list for the layout, if any.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ret
+a @code{<pango-attr-list>}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-set-font-description  (self@tie{}@code{<pango-layout>}) (desc@tie{}@code{<pango-font-description>})
+@deffnx Method set-font-description
+Sets the default font description for the layout. If no font description is set
+on the layout, the font description from the layout's context is used.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item desc
+the new @code{<pango-font-description>}, or @samp{@code{#f}} to unset the
+current font description
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-set-width  (self@tie{}@code{<pango-layout>}) (width@tie{}@code{int})
+@deffnx Method set-width
+Sets the width to which the lines of the @code{<pango-layout>} should wrap.
+
+@table @var
+@item layout
+a @code{<pango-layout>}.
+
+@item width
+the desired width in Pango units, or -1 to indicate that no wrapping should be
+performed.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-width  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-width
+Gets the width to which the lines of the @code{<pango-layout>} should wrap.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ret
+the width, or -1 if no width set.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-set-wrap  (self@tie{}@code{<pango-layout>}) (wrap@tie{}@code{<pango-wrap-mode>})
+@deffnx Method set-wrap
+Sets the wrap mode; the wrap mode only has effect if a width is set on the
+layout with @code{pango-layout-set-width}. To turn off wrapping, set the width
+to -1.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item wrap
+the wrap mode
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-wrap  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{<pango-wrap-mode>})
+@deffnx Method get-wrap
+Gets the wrap mode for the layout.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ret
+active wrap mode.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-set-ellipsize  (self@tie{}@code{<pango-layout>}) (ellipsize@tie{}@code{<pango-ellipsize-mode>})
+@deffnx Method set-ellipsize
+Sets the type of ellipsization being performed for @var{layout}. Depending on
+the ellipsization mode @var{ellipsize} text is removed from the start, middle,
+or end of lines so they fit within the width of layout set with
+@code{pango-layout-set-width}.
+
+If the layout contains characters such as newlines that force it to be layed out
+in multiple lines, then each line is ellipsized separately.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ellipsize
+the new ellipsization mode for @var{layout}
+
+@end table
+
+Since 1.6
+
+@end deffn
+
+@deffn Function pango-layout-get-ellipsize  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{<pango-ellipsize-mode>})
+@deffnx Method get-ellipsize
+Gets the type of ellipsization being performed for @var{layout}. See
+@code{pango-layout-set-ellipsize}
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ret
+the current ellipsization mode for @var{layout}.
+
+@end table
+
+Since 1.6
+
+@end deffn
+
+@deffn Function pango-layout-set-indent  (self@tie{}@code{<pango-layout>}) (indent@tie{}@code{int})
+@deffnx Method set-indent
+Sets the width in Pango units to indent each paragraph. A negative value of
+@var{indent} will produce a hanging indentation. That is, the first line will
+have the full width, and subsequent lines will be indented by the absolute value
+of @var{indent}.
+
+@table @var
+@item layout
+a @code{<pango-layout>}.
+
+@item indent
+the amount by which to indent.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-indent  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-indent
+Gets the paragraph indent width in Pango units. A negative value indicates a
+hanging indentation.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ret
+the indent.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-spacing  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-spacing
+Gets the amount of spacing in @code{<pango-glyph-unit>} between the lines of the
+layout.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ret
+the spacing.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-set-spacing  (self@tie{}@code{<pango-layout>}) (spacing@tie{}@code{int})
+@deffnx Method set-spacing
+Sets the amount of spacing in @code{<pango-glyph-unit>} between the lines of the
+layout.
+
+@table @var
+@item layout
+a @code{<pango-layout>}.
+
+@item spacing
+the amount of spacing
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-set-justify  (self@tie{}@code{<pango-layout>}) (justify@tie{}@code{bool})
+@deffnx Method set-justify
+Sets whether each complete line should be stretched to fill the entire width of
+the layout. This stretching is typically done by adding whitespace, but for some
+scripts (such as Arabic), the justification may be done in more complex ways,
+like extending the characters.
+
+Note that as of Pango-1.16, this functionality is not yet implemented.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item justify
+whether the lines in the layout should be justified.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-justify  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-justify
+Gets whether each complete line should be stretched to fill the entire width of
+the layout.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ret
+the justify.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-set-auto-dir  (self@tie{}@code{<pango-layout>}) (auto_dir@tie{}@code{bool})
+@deffnx Method set-auto-dir
+Sets whether to calculate the bidirectional base direction for the layout
+according to the contents of the layout; when this flag is on (the default),
+then paragraphs in @var{layout} that begin with strong right-to-left characters
+(Arabic and Hebrew principally), will have right-to-left layout, paragraphs with
+letters from other scripts will have left-to-right layout. Paragraphs with only
+neutral characters get their direction from the surrounding paragraphs.
+
+When @samp{@code{#f}}, the choice between left-to-right and right-to-left layout
+is done according to the base direction of the layout's @code{<pango-context>}.
+(See @code{pango-context-set-base-dir}).
+
+When the auto-computed direction of a paragraph differs from the base direction
+of the context, the interpretation of @samp{PANGO_ALIGN_LEFT} and
+@samp{PANGO_ALIGN_RIGHT} are swapped.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item auto-dir
+if @samp{@code{#t}}, compute the bidirectional base direction from the layout's
+contents.
+
+@end table
+
+Since 1.4
+
+@end deffn
+
+@deffn Function pango-layout-get-auto-dir  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-auto-dir
+Gets whether to calculate the bidirectional base direction for the layout
+according to the contents of the layout. See @code{pango-layout-set-auto-dir}.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ret
+@samp{@code{#t}} if the bidirectional base direction is computed from the
+layout's contents, @samp{@code{#f}} otherwise.
+
+@end table
+
+Since 1.4
+
+@end deffn
+
+@deffn Function pango-layout-set-alignment  (self@tie{}@code{<pango-layout>}) (alignment@tie{}@code{<pango-alignment>})
+@deffnx Method set-alignment
+Sets the alignment for the layout: how partial lines are positioned within the
+horizontal space available.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item alignment
+the alignment
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-alignment  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{<pango-alignment>})
+@deffnx Method get-alignment
+Gets the alignment for the layout: how partial lines are positioned within the
+horizontal space available.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ret
+the alignment.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-set-tabs  (self@tie{}@code{<pango-layout>}) (tabs@tie{}@code{<pango-tab-array>})
+@deffnx Method set-tabs
+Sets the tabs to use for @var{layout}, overriding the default tabs (by default,
+tabs are every 8 spaces). If @var{tabs} is @samp{@code{#f}}, the default tabs
+are reinstated. @var{tabs} is copied into the layout; you must free your copy of
+@var{tabs} yourself.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item tabs
+a @code{<pango-tab-array>}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-tabs  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{<pango-tab-array>})
+@deffnx Method get-tabs
+Gets the current @code{<pango-tab-array>} used by this layout. If no
+@code{<pango-tab-array>} has been set, then the default tabs are in use and
+@samp{@code{#f}} is returned. Default tabs are every 8 spaces. The return value
+should be freed with @code{pango-tab-array-free}.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ret
+a copy of the tabs for this layout, or @samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-index-to-pos  (self@tie{}@code{<pango-layout>}) (index_@tie{}@code{int}) @result{}@tie{} (pos@tie{}@code{<pango-rectangle>})
+@deffnx Method index-to-pos
+Converts from an index within a @code{<pango-layout>} to the onscreen position
+corresponding to the grapheme at that index, which is represented as rectangle.
+Note that @samp{pos->x} is always the leading edge of the grapheme and
+@samp{pos->x + pos->width} the trailing edge of the grapheme. If the
+directionality of the grapheme is right-to-left, then @samp{pos->width} will be
+negative.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item index
+byte index within @var{layout}
+
+@item pos
+rectangle in which to store the position of the grapheme
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-index-to-line-x  (self@tie{}@code{<pango-layout>}) (index_@tie{}@code{int}) (trailing@tie{}@code{bool}) @result{}@tie{} (line@tie{}@code{int}) (x_pos@tie{}@code{int})
+@deffnx Method index-to-line-x
+Converts from byte @var{index} within the @var{layout} to line and X position.
+(X position is measured from the left edge of the line)
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item index
+the byte index of a grapheme within the layout.
+
+@item trailing
+an integer indicating the edge of the grapheme to retrieve the position of. If
+0, the trailing edge of the grapheme, if > 0, the leading of the grapheme.
+
+@item line
+location to store resulting line index. (which will between 0 and
+pango_layout_get_line_count(layout) - 1)
+
+@item x-pos
+location to store resulting position within line (@samp{PANGO_SCALE} units per
+device unit)
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-xy-to-index  (self@tie{}@code{<pango-layout>}) (x@tie{}@code{int}) (y@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool}) (index_@tie{}@code{int}) (trailing@tie{}@code{int})
+@deffnx Method xy-to-index
+Converts from X and Y position within a layout to the byte index to the
+character at that logical position. If the Y position is not inside the layout,
+the closest position is chosen (the position will be clamped inside the layout).
+If the X position is not within the layout, then the start or the end of the
+line is chosen as described for @code{pango-layout-x-to-index}. If either the X
+or Y positions were not inside the layout, then the function returns
+@samp{@code{#f}}; on an exact hit, it returns @samp{@code{#t}}.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item x
+the X offset (in @code{<pango-glyph-unit>}) from the left edge of the layout.
+
+@item y
+the Y offset (in @code{<pango-glyph-unit>}) from the top edge of the layout
+
+@item index
+location to store calculated byte index
+
+@item trailing
+location to store a integer indicating where in the grapheme the user clicked.
+It will either be zero, or the number of characters in the grapheme. 0
+represents the trailing edge of the grapheme.
+
+@item ret
+@samp{@code{#t}} if the coordinates were inside text, @samp{@code{#f}}
+otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-cursor-pos  (self@tie{}@code{<pango-layout>}) (index_@tie{}@code{int}) @result{}@tie{} (strong_pos@tie{}@code{<pango-rectangle>}) (weak_pos@tie{}@code{<pango-rectangle>})
+@deffnx Method get-cursor-pos
+Given an index within a layout, determines the positions that of the strong and
+weak cursors if the insertion point is at that index. The position of each
+cursor is stored as a zero-width rectangle. The strong cursor location is the
+location where characters of the directionality equal to the base direction of
+the layout are inserted. The weak cursor location is the location where
+characters of the directionality opposite to the base direction of the layout
+are inserted.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item index
+the byte index of the cursor
+
+@item strong-pos
+location to store the strong cursor position (may be @samp{@code{#f}})
+
+@item weak-pos
+location to store the weak cursor position (may be @samp{@code{#f}})
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-move-cursor-visually  (self@tie{}@code{<pango-layout>}) (strong@tie{}@code{bool}) (old_index@tie{}@code{int}) (old_trailing@tie{}@code{int}) (direction@tie{}@code{int}) @result{}@tie{} (new_index@tie{}@code{int}) (new_trailing@tie{}@code{int})
+@deffnx Method move-cursor-visually
+Computes a new cursor position from an old position and a count of positions to
+move visually. If @var{count} is positive, then the new strong cursor position
+will be one position to the right of the old cursor position. If @var{count} is
+negative, then the new strong cursor position will be one position to the left
+of the old cursor position.
+
+In the presence of bidirection text, the correspondence between logical and
+visual order will depend on the direction of the current run, and there may be
+jumps when the cursor is moved off of the end of a run.
+
+Motion here is in cursor positions, not in characters, so a single call to
+@code{pango-layout-move-cursor-visually} may move the cursor over multiple
+characters when multiple characters combine to form a single grapheme.
+
+@table @var
+@item layout
+a @code{<pango-layout>}.
+
+@item strong
+whether the moving cursor is the strong cursor or the weak cursor. The strong
+cursor is the cursor corresponding to text insertion in the base direction for
+the layout.
+
+@item old-index
+the byte index of the grapheme for the old index
+
+@item old-trailing
+if 0, the cursor was at the trailing edge of the grapheme indicated by
+@var{old-index}, if > 0, the cursor was at the leading edge.
+
+@item direction
+direction to move cursor. A negative value indicates motion to the left.
+
+@item new-index
+location to store the new cursor byte index. A value of -1 indicates that the
+cursor has been moved off the beginning of the layout. A value of
+@samp{G_MAXINT} indicates that the cursor has been moved off the end of the
+layout.
+
+@item new-trailing
+number of characters to move forward from the location returned for
+@var{new-index} to get the position where the cursor should be displayed. This
+allows distinguishing the position at the beginning of one line from the
+position at the end of the preceding line. @var{new-index} is always on the line
+where the cursor should be displayed.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-extents  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ink_rect@tie{}@code{<pango-rectangle>}) (logical_rect@tie{}@code{<pango-rectangle>})
+@deffnx Method get-extents
+Computes the logical and ink extents of @var{layout}. Logical extents are
+usually what you want for positioning things. Note that both extents may have
+non-zero x and y. You may want to use those to offset where you render the
+layout. Not doing that is a very typical bug that shows up as right-to-left
+layouts not being correctly positioned in a layout with a set width.
+
+The extents are given in layout coordinates and in Pango units; layout
+coordinates begin at the top left corner of the layout.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ink-rect
+rectangle used to store the extents of the layout as drawn or @samp{@code{#f}}
+to indicate that the result is not needed.
+
+@item logical-rect
+rectangle used to store the logical extents of the layout or @samp{@code{#f}} to
+indicate that the result is not needed.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-pixel-extents  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ink_rect@tie{}@code{<pango-rectangle>}) (logical_rect@tie{}@code{<pango-rectangle>})
+@deffnx Method get-pixel-extents
+Computes the logical and ink extents of @var{layout} in device units. See
+@code{pango-layout-get-extents}; this function just calls
+@code{pango-layout-get-extents} and then converts the extents to device units
+using the @samp{PANGO_SCALE} factor.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ink-rect
+rectangle used to store the extents of the layout as drawn or @samp{@code{#f}}
+to indicate that the result is not needed.
+
+@item logical-rect
+rectangle used to store the logical extents of the layout or @samp{@code{#f}} to
+indicate that the result is not needed.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-size  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method get-size
+Determines the logical width and height of a @code{<pango-layout>} in Pango
+units. (device units scaled by @samp{PANGO_SCALE}). This is simply a convenience
+function around @code{pango-layout-get-extents}.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item width
+location to store the logical width, or @samp{@code{#f}}
+
+@item height
+location to store the logical height, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-pixel-size  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method get-pixel-size
+Determines the logical width and height of a @code{<pango-layout>} in device
+units. (@code{pango-layout-get-size} returns the width and height scaled by
+@samp{PANGO_SCALE}.) This is simply a convenience function around
+@code{pango-layout-get-pixel-extents}.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item width
+location to store the logical width, or @samp{@code{#f}}
+
+@item height
+location to store the logical height, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-line-count  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-line-count
+Retrieves the count of lines for the @var{layout}.
+
+@table @var
+@item layout
+@code{<pango-layout>}
+
+@item ret
+the line count.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-line  (self@tie{}@code{<pango-layout>}) (line@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<pango-layout-line>})
+@deffnx Method get-line
+Retrieves a particular line from a @code{<pango-layout>}.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item line
+the index of a line, which must be between 0 and
+@samp{pango_layout_get_line_count(layout) - 1}, inclusive.
+
+@item ret
+the requested @code{<pango-layout-line>}, or @samp{@code{#f}} if the index is
+out of range. This layout line can be ref'ed and retained, but will become
+invalid if changes are made to the @code{<pango-layout>}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-lines  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{gslist-of})
+@deffnx Method get-lines
+Returns the lines of the @var{layout} as a list.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ret
+a @code{<gs-list>} containing the lines in the layout. This points to internal
+data of the @code{<pango-layout>} and must be used with care. It will become
+invalid on any change to the layout's text or properties.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-get-iter  (self@tie{}@code{<pango-layout>}) @result{}@tie{} (ret@tie{}@code{<pango-layout-iter>})
+@deffnx Method get-iter
+Returns an iterator to iterate over the visual extents of the layout.
+
+@table @var
+@item layout
+a @code{<pango-layout>}
+
+@item ret
+the new @code{<pango-layout-iter>} that should be freed using
+@code{pango-layout-iter-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-iter-next-run  (self@tie{}@code{<pango-layout-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
+Moves @var{iter} forward to the next run in visual order. If @var{iter} was
+already at the end of the layout, returns @samp{@code{#f}}.
+
+@table @var
+@item iter
+a @code{<pango-layout-iter>}
+
+@item ret
+whether motion was possible.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-iter-next-char  (self@tie{}@code{<pango-layout-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
+Moves @var{iter} forward to the next character in visual order. If @var{iter}
+was already at the end of the layout, returns @samp{@code{#f}}.
+
+@table @var
+@item iter
+a @code{<pango-layout-iter>}
+
+@item ret
+whether motion was possible.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-iter-next-cluster  (self@tie{}@code{<pango-layout-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
+Moves @var{iter} forward to the next cluster in visual order. If @var{iter} was
+already at the end of the layout, returns @samp{@code{#f}}.
+
+@table @var
+@item iter
+a @code{<pango-layout-iter>}
+
+@item ret
+whether motion was possible.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-iter-next-line  (self@tie{}@code{<pango-layout-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
+Moves @var{iter} forward to the start of the next line. If @var{iter} is already
+on the last line, returns @samp{@code{#f}}.
+
+@table @var
+@item iter
+a @code{<pango-layout-iter>}
+
+@item ret
+whether motion was possible.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-iter-at-last-line  (self@tie{}@code{<pango-layout-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
+Determines whether @var{iter} is on the last line of the layout.
+
+@table @var
+@item iter
+a @code{<pango-layout-iter>}
+
+@item ret
+@samp{@code{#t}} if @var{iter} is on the last line.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-iter-get-index  (self@tie{}@code{<pango-layout-iter>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the current byte index. Note that iterating forward by char moves in visual
+order, not logical order, so indexes may not be sequential. Also, the index may
+be equal to the length of the text in the layout, if on the @samp{@code{#f}} run
+(see @code{pango-layout-iter-get-run}).
+
+@table @var
+@item iter
+a @code{<pango-layout-iter>}
+
+@item ret
+current byte index.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-iter-get-baseline  (self@tie{}@code{<pango-layout-iter>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the Y position of the current line's baseline, in layout coordinates
+(origin at top left of the entire layout).
+
+@table @var
+@item iter
+a @code{<pango-layout-iter>}
+
+@item ret
+baseline of current line.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-iter-get-line  (self@tie{}@code{<pango-layout-iter>}) @result{}@tie{} (ret@tie{}@code{<pango-layout-line>})
+Gets the current line.
+
+@table @var
+@item iter
+a @code{<pango-layout-iter>}
+
+@item ret
+the current line.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-iter-get-char-extents  (self@tie{}@code{<pango-layout-iter>}) @result{}@tie{} (logical_rect@tie{}@code{<pango-rectangle>})
+Gets the extents of the current character, in layout coordinates (origin is the
+top left of the entire layout). Only logical extents can sensibly be obtained
+for characters; ink extents make sense only down to the level of clusters.
+
+@table @var
+@item iter
+a @code{<pango-layout-iter>}
+
+@item logical-rect
+rectangle to fill with logical extents
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-iter-get-run-extents  (self@tie{}@code{<pango-layout-iter>}) @result{}@tie{} (ink_rect@tie{}@code{<pango-rectangle>}) (logical_rect@tie{}@code{<pango-rectangle>})
+Gets the extents of the current run in layout coordinates (origin is the top
+left of the entire layout).
+
+@table @var
+@item iter
+a @code{<pango-layout-iter>}
+
+@item ink-rect
+rectangle to fill with ink extents, or @samp{@code{#f}}
+
+@item logical-rect
+rectangle to fill with logical extents, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-iter-get-line-yrange  (self@tie{}@code{<pango-layout-iter>}) @result{}@tie{} (y0_@tie{}@code{int}) (y1_@tie{}@code{int})
+Divides the vertical space in the @code{<pango-layout>} being iterated over
+between the lines in the layout, and returns the space belonging to the current
+line. A line's range includes the line's logical extents, plus half of the
+spacing above and below the line, if @code{pango-layout-set-spacing} has been
+called to set layout spacing. The Y positions are in layout coordinates (origin
+at top left of the entire layout).
+
+@table @var
+@item iter
+a @code{<pango-layout-iter>}
+
+@item y0
+start of line
+
+@item y1
+end of line
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-iter-get-line-extents  (self@tie{}@code{<pango-layout-iter>}) @result{}@tie{} (ink_rect@tie{}@code{<pango-rectangle>}) (logical_rect@tie{}@code{<pango-rectangle>})
+Obtains the extents of the current line. @var{ink-rect} or @var{logical-rect}
+can be NULL if you aren't interested in them. Extents are in layout coordinates
+(origin is the top-left corner of the entire @code{<pango-layout>}). Thus the
+extents returned by this function will be the same width/height but not at the
+same x/y as the extents returned from @code{pango-layout-line-get-extents}.
+
+@table @var
+@item iter
+a @code{<pango-layout-iter>}
+
+@item ink-rect
+rectangle to fill with ink extents, or @samp{@code{#f}}
+
+@item logical-rect
+rectangle to fill with logical extents, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-line-get-extents  (self@tie{}@code{<pango-layout-line>}) @result{}@tie{} (ink_rect@tie{}@code{<pango-rectangle>}) (logical_rect@tie{}@code{<pango-rectangle>})
+Computes the logical and ink extents of a layout line. See
+@code{pango-font-get-glyph-extents} for details about the interpretation of the
+rectangles.
+
+@table @var
+@item line
+a @code{<pango-layout-line>}
+
+@item ink-rect
+rectangle used to store the extents of the glyph string as drawn, or
+@samp{@code{#f}}
+
+@item logical-rect
+rectangle used to store the logical extents of the glyph string, or
+@samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-line-get-pixel-extents  (self@tie{}@code{<pango-layout-line>}) @result{}@tie{} (ink_rect@tie{}@code{<pango-rectangle>}) (logical_rect@tie{}@code{<pango-rectangle>})
+Computes the logical and ink extents of a layout line. See
+@code{pango-font-get-glyph-extents} for details about the interpretation of the
+rectangles. The returned rectangles are in device units, as opposed to
+@code{pango-layout-line-get-extents}, which returns the extents in
+@code{<pango-glyph-unit>}.
+
+@table @var
+@item layout-line
+a @code{<pango-layout-line>}
+
+@item ink-rect
+rectangle used to store the extents of the glyph string as drawn, or
+@samp{@code{#f}}
+
+@item logical-rect
+rectangle used to store the logical extents of the glyph string, or
+@samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-line-index-to-x  (self@tie{}@code{<pango-layout-line>}) (index_@tie{}@code{int}) (trailing@tie{}@code{bool}) @result{}@tie{} (x_pos@tie{}@code{int})
+Converts an index within a line to a X position.
+
+@table @var
+@item line
+a @code{<pango-layout-line>}
+
+@item index
+byte offset of a grapheme within the layout
+
+@item trailing
+an integer indicating the edge of the grapheme to retrieve the position of. If
+0, the trailing edge of the grapheme, if > 0, the leading of the grapheme.
+
+@item x-pos
+location to store the x_offset (in @code{<pango-glyph-unit>})
+
+@end table
+
+@end deffn
+
+@deffn Function pango-layout-line-x-to-index  (self@tie{}@code{<pango-layout-line>}) (x_pos@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool}) (index_@tie{}@code{int}) (trailing@tie{}@code{int})
+Converts from x offset to the byte index of the corresponding character within
+the text of the layout. If @var{x-pos} is outside the line, @var{index} and
+@var{trailing} will point to the very first or very last position in the line.
+This determination is based on the resolved direction of the paragraph; for
+example, if the resolved direction is right-to-left, then an X position to the
+right of the line (after it) results in 0 being stored in @var{index} and
+@var{trailing}. An X position to the left of the line results in @var{index}
+pointing to the (logical) last grapheme in the line and @var{trailing} being set
+to the number of characters in that grapheme. The reverse is true for a
+left-to-right line.
+
+@table @var
+@item line
+a @code{<pango-layout-line>}
+
+@item x-pos
+the X offset (in @code{<pango-glyph-unit>}) from the left edge of the line.
+
+@item index
+location to store calculated byte index for the grapheme in which the user
+clicked.
+
+@item trailing
+location to store a integer indicating where in the grapheme the user clicked.
+It will either be zero, or the number of characters in the grapheme. 0
+represents the trailing edge of the grapheme.
+
+@item ret
+@samp{@code{#f}} if @var{x-pos} was outside the line, @samp{@code{#t}} if inside
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

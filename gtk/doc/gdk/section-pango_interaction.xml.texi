@@ -1,0 +1,118 @@
+
+@c %start of fragment
+
+@node Pango Interaction
+@chapter Pango Interaction
+Using Pango in GDK
+
+@section Overview
+Pango is the text layout system used by GDK and GTK+. The functions and types in
+this section are used to render Pango objects to GDK. drawables, and also extend
+the set of Pango attributes to include stippling and embossing.
+
+Creating a @code{<pango-layout>} object is the first step in rendering text, and
+requires getting a handle to a @code{<pango-context>}. For GTK+ programs, you'll
+usually want to use @code{gtk-widget-get-pango-context}, or
+@code{gtk-widget-create-pango-layout}, rather than using the lowlevel
+@code{gdk-pango-context-get-for-screen}. Once you have a @code{<pango-layout>},
+you can set the text and attributes of it with Pango functions like
+@code{pango-layout-set-text} and get its size with @code{pango-layout-get-size}.
+(Note that Pango uses a fixed point system internally, so converting between
+Pango units and pixels using PANGO_SCALE or the @code{pango-pixels} macro.)
+
+Rendering a Pango layout is done most simply with @code{gdk-draw-layout}; you
+can also draw pieces of the layout with @code{gdk-draw-layout} or
+@code{gdk-draw-glyphs}. @code{<gdk-pango-renderer>} is a subclass of
+@code{<pango-renderer>} that is used internally to implement these functions.
+Using it directly or subclassing it can be useful in some cases. See the
+@code{<gdk-pango-renderer>} documentation for details.
+
+@example 
+
+#define RADIUS 100
+#define N_WORDS 10
+#define FONT "Sans Bold 18"
+  
+GdkScreen *screen = gdk_drawable_get_screen (drawable);
+PangoRenderer *renderer;
+GdkGC *gc;
+
+PangoMatrix matrix = PANGO_MATRIX_INIT;
+PangoContext *context;
+PangoLayout *layout;
+PangoFontDescription *desc;
+
+double device_radius;
+int width, height;
+int i;
+
+/* Get the default renderer for the screen, and set it up for drawing  */
+renderer = gdk_pango_renderer_get_default (screen);
+gdk_pango_renderer_set_drawable (GDK_PANGO_RENDERER (renderer), drawable);
+
+gc = gdk_gc_new (drawable);
+gdk_pango_renderer_set_gc (GDK_PANGO_RENDERER (renderer), gc);
+
+/* Set up a transformation matrix so that the user space coordinates for
+ * where we are drawing are [-RADIUS, RADIUS], [-RADIUS, RADIUS]
+ * We first center, then change the scale */
+gdk_drawable_get_size (drawable, &width, &height);
+device_radius = MIN (width, height) / 2.;
+
+pango_matrix_translate (&matrix,
+                        device_radius + (width - 2 * device_radius) / 2,
+                        device_radius + (height - 2 * device_radius) / 2);
+pango_matrix_scale (&matrix, device_radius / RADIUS, device_radius / RADIUS);
+
+/* Create a PangoLayout, set the font and text */
+context = gdk_pango_context_get_for_screen (screen);
+layout = pango_layout_new (context);
+pango_layout_set_text (layout, "Text", -1);
+desc = pango_font_description_from_string (FONT);
+pango_layout_set_font_description (layout, desc);
+pango_font_description_free (desc);
+
+/* Draw the layout N_WORDS times in a circle */
+for (i = 0; i < N_WORDS; i++)
+  @{
+    GdkColor color;
+    PangoMatrix rotated_matrix = matrix;
+    int width, height;
+    double angle = (360. * i) / N_WORDS;
+
+    /* Gradient from red at angle == 60 to blue at angle == 300 */
+    color.red   = 65535 * (1 + cos ((angle - 60) * M_PI / 180.)) / 2;
+    color.green = 0;
+    color.blue  = 65535  - color.red;
+    
+    gdk_pango_renderer_set_override_color (GDK_PANGO_RENDERER (renderer),
+                                           PANGO_RENDER_PART_FOREGROUND, &color);
+                                             
+    pango_matrix_rotate (&rotated_matrix, angle);
+
+    pango_context_set_matrix (context, &rotated_matrix);
+    
+    /* Inform Pango to re-layout the text with the new transformation matrix */
+    pango_layout_context_changed (layout);
+    
+    pango_layout_get_size (layout, &width, &height);
+    pango_renderer_draw_layout (renderer, layout,
+                                - width / 2, - RADIUS * PANGO_SCALE);
+  @}
+
+/* Clean up default renderer, since it is shared */
+gdk_pango_renderer_set_override_color (GDK_PANGO_RENDERER (renderer),
+                                       PANGO_RENDER_PART_FOREGROUND, NULL);
+gdk_pango_renderer_set_drawable (GDK_PANGO_RENDERER (renderer), NULL);
+gdk_pango_renderer_set_gc (GDK_PANGO_RENDERER (renderer), NULL);
+
+/* free the objects we created */
+g_object_unref (layout);
+g_object_unref (context);
+g_object_unref (gc);
+@end example
+
+@section Usage
+@include defuns-pango_interaction.xml.texi
+
+@c %end of fragment

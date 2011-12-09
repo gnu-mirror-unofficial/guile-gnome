@@ -1,0 +1,10 @@
+To find out what should go in this file, see "Information For
+Maintainers of GNU Software" (maintain.texi), the section called
+"Recording Changes".
+
+
+Andy Wingo:
+In the directory gnome/gw, wrote:
+    cairo-spec.scm
+In the directory gnome, wrote:
+    cairo.scm

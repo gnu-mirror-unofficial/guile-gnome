@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-vfs-file-info>
+Opaque pointer.
+
+This class defines no direct slots.
+
+@end deftp
+
+
+@c %end of fragment

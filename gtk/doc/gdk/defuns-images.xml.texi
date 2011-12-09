@@ -1,0 +1,146 @@
+
+@c %start of fragment
+
+@deftp Class <gdk-image>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gdk-image-new  (type@tie{}@code{<gdk-image-type>}) (visual@tie{}@code{<gdk-visual>}) (width@tie{}@code{int}) (height@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-image>})
+Creates a new @code{<gdk-image>}.
+
+@table @var
+@item type
+the type of the @code{<gdk-image>}, one of @samp{GDK_IMAGE_NORMAL},
+@samp{GDK_IMAGE_SHARED} and @samp{GDK_IMAGE_FASTEST}. @samp{GDK_IMAGE_FASTEST}
+is probably the best choice, since it will try creating a
+@samp{GDK_IMAGE_SHARED} image first and if that fails it will then use
+@samp{GDK_IMAGE_NORMAL}.
+
+@item visual
+the @code{<gdk-visual>} to use for the image.
+
+@item width
+the width of the image in pixels.
+
+@item height
+the height of the image in pixels.
+
+@item ret
+a new @code{<gdk-image>}, or @samp{@code{#f}} if the image could not be created.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-image-get  (drawable@tie{}@code{<gdk-drawable>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-image>})
+@samp{gdk_image_get} is deprecated and should not be used in newly-written code.
+
+This is a deprecated wrapper for @code{gdk-drawable-get-image};
+@code{gdk-drawable-get-image} should be used instead. Or even better: in most
+cases @code{gdk-pixbuf-get-from-drawable} is the most convenient choice.
+
+@table @var
+@item drawable
+a @code{<gdk-drawable>}
+
+@item x
+x coordinate in @var{window}
+
+@item y
+y coordinate in @var{window}
+
+@item width
+width of area in @var{window}
+
+@item height
+height of area in @var{window}
+
+@item ret
+a new @code{<gdk-image>} or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-image-get-colormap  (self@tie{}@code{<gdk-image>}) @result{}@tie{} (ret@tie{}@code{<gdk-colormap>})
+@deffnx Method get-colormap
+Retrieves the colormap for a given image, if it exists. An image will have a
+colormap if the drawable from which it was created has a colormap, or if a
+colormap was set explicitely with @code{gdk-image-set-colormap}.
+
+@table @var
+@item image
+a @code{<gdk-image>}
+
+@item ret
+colormap for the image
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-image-set-colormap  (self@tie{}@code{<gdk-image>}) (colormap@tie{}@code{<gdk-colormap>})
+@deffnx Method set-colormap
+Sets the colormap for the image to the given colormap. Normally there's no need
+to use this function, images are created with the correct colormap if you get
+the image from a drawable. If you create the image from scratch, use the
+colormap of the drawable you intend to render the image to.
+
+@table @var
+@item image
+a @code{<gdk-image>}
+
+@item colormap
+a @code{<gdk-colormap>}
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-image-put-pixel  (self@tie{}@code{<gdk-image>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (pixel@tie{}@code{unsigned-int32})
+@deffnx Method put-pixel
+Sets a pixel in a @code{<gdk-image>} to a given pixel value.
+
+@table @var
+@item image
+a @code{<gdk-image>}.
+
+@item x
+the x coordinate of the pixel to set.
+
+@item y
+the y coordinate of the pixel to set.
+
+@item pixel
+the pixel value to set.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-image-get-pixel  (self@tie{}@code{<gdk-image>}) (x@tie{}@code{int}) (y@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
+@deffnx Method get-pixel
+Gets a pixel value at a specified position in a @code{<gdk-image>}.
+
+@table @var
+@item image
+a @code{<gdk-image>}.
+
+@item x
+the x coordinate of the pixel to get.
+
+@item y
+the y coordinate of the pixel to get.
+
+@item ret
+the pixel value at the given position.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

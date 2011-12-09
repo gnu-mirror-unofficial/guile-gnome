@@ -1,0 +1,238 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-im-context>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@defop Signal <gtk-im-context> preedit-start 
+@end defop
+
+@defop Signal <gtk-im-context> preedit-end 
+@end defop
+
+@defop Signal <gtk-im-context> preedit-changed 
+@end defop
+
+@defop Signal <gtk-im-context> commit  (arg0@tie{}@code{<gchararray>})
+@end defop
+
+@defop Signal <gtk-im-context> retrieve-surrounding  @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-im-context> delete-surrounding  (arg0@tie{}@code{<gint>}) (arg1@tie{}@code{<gint>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@deffn Function gtk-im-context-set-client-window  (self@tie{}@code{<gtk-im-context>}) (window@tie{}@code{<gdk-window>})
+@deffnx Method set-client-window
+Set the client window for the input context; this is the @code{<gdk-window>} in
+which the input appears. This window is used in order to correctly position
+status windows, and may also be used for purposes internal to the input method.
+
+@table @var
+@item context
+a @code{<gtk-im-context>}
+
+@item window
+the client window. This may be @samp{@code{#f}} to indicate that the previous
+client window no longer exists.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-im-context-filter-keypress  (self@tie{}@code{<gtk-im-context>}) (event@tie{}@code{<gdk-event-key>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method filter-keypress
+Allow an input method to internally handle key press and release events. If this
+function returns @samp{@code{#t}}, then no further processing should be done for
+this key event.
+
+@table @var
+@item context
+a @code{<gtk-im-context>}
+
+@item event
+the key event
+
+@item ret
+@samp{@code{#t}} if the input method handled the key event.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-im-context-focus-in  (self@tie{}@code{<gtk-im-context>})
+@deffnx Method focus-in
+Notify the input method that the widget to which this input context corresponds
+has gained focus. The input method may, for example, change the displayed
+feedback to reflect this change.
+
+@table @var
+@item context
+a @code{<gtk-im-context>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-im-context-focus-out  (self@tie{}@code{<gtk-im-context>})
+@deffnx Method focus-out
+Notify the input method that the widget to which this input context corresponds
+has lost focus. The input method may, for example, change the displayed feedback
+or reset the contexts state to reflect this change.
+
+@table @var
+@item context
+a @code{<gtk-im-context>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-im-context-reset  (self@tie{}@code{<gtk-im-context>})
+@deffnx Method reset
+Notify the input method that a change such as a change in cursor position has
+been made. This will typically cause the input method to clear the preedit
+state.
+
+@table @var
+@item context
+a @code{<gtk-im-context>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-im-context-set-cursor-location  (self@tie{}@code{<gtk-im-context>}) (area@tie{}@code{<gdk-rectangle>})
+@deffnx Method set-cursor-location
+Notify the input method that a change in cursor position has been made. The
+location is relative to the client window.
+
+@table @var
+@item context
+a @code{<gtk-im-context>}
+
+@item area
+new location
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-im-context-set-use-preedit  (self@tie{}@code{<gtk-im-context>}) (use_preedit@tie{}@code{bool})
+@deffnx Method set-use-preedit
+Sets whether the IM context should use the preedit string to display feedback.
+If @var{use-preedit} is FALSE (default is TRUE), then the IM context may use
+some other method to display feedback, such as displaying it in a child of the
+root window.
+
+@table @var
+@item context
+a @code{<gtk-im-context>}
+
+@item use-preedit
+whether the IM context should use the preedit string.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-im-context-set-surrounding  (self@tie{}@code{<gtk-im-context>}) (text@tie{}@code{mchars}) (len@tie{}@code{int}) (cursor_index@tie{}@code{int})
+@deffnx Method set-surrounding
+Sets surrounding context around the insertion point and preedit string. This
+function is expected to be called in response to the
+GtkIMContext::retrieve_surrounding signal, and will likely have no effect if
+called at other times.
+
+@table @var
+@item context
+a @code{<gtk-im-context>}
+
+@item text
+text surrounding the insertion point, as UTF-8. the preedit string should not be
+included within @var{text}.
+
+@item len
+the length of @var{text}, or -1 if @var{text} is nul-terminated
+
+@item cursor-index
+the byte index of the insertion cursor within @var{text}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-im-context-get-surrounding  (self@tie{}@code{<gtk-im-context>}) @result{}@tie{} (ret@tie{}@code{bool}) (text@tie{}@code{mchars}) (cursor_index@tie{}@code{int})
+@deffnx Method get-surrounding
+Retrieves context around the insertion point. Input methods typically want
+context in order to constrain input text based on existing text; this is
+important for languages such as Thai where only some sequences of characters are
+allowed.
+
+This function is implemented by emitting the GtkIMContext::retrieve_surrounding
+signal on the input method; in response to this signal, a widget should provide
+as much context as is available, up to an entire paragraph, by calling
+@code{gtk-im-context-set-surrounding}. Note that there is no obligation for a
+widget to respond to the ::retrieve_surrounding signal, so input methods must be
+prepared to function without context.
+
+@table @var
+@item context
+a @code{<gtk-im-context>}
+
+@item text
+location to store a UTF-8 encoded string of text holding context around the
+insertion point. If the function returns @samp{@code{#t}}, then you must free
+the result stored in this location with @code{g-free}.
+
+@item cursor-index
+location to store byte index of the insertion cursor within @var{text}.
+
+@item ret
+@samp{@code{#t}} if surrounding text was provided; in this case you must free
+the result stored in *text.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-im-context-delete-surrounding  (self@tie{}@code{<gtk-im-context>}) (offset@tie{}@code{int}) (n_chars@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method delete-surrounding
+Asks the widget that the input context is attached to to delete characters
+around the cursor position by emitting the GtkIMContext::delete_surrounding
+signal. Note that @var{offset} and @var{n-chars} are in characters not in bytes
+which differs from the usage other places in @code{<gtk-im-context>}.
+
+In order to use this function, you should first call
+@code{gtk-im-context-get-surrounding} to get the current context, and call this
+function immediately afterwards to make sure that you know what you are
+deleting. You should also account for the fact that even if the signal was
+handled, the input context might not have deleted all the characters that were
+requested to be deleted.
+
+This function is used by an input method that wants to make subsitutions in the
+existing text in response to new input. It is not useful for applications.
+
+@table @var
+@item context
+a @code{<gtk-im-context>}
+
+@item offset
+offset from cursor position in chars; a negative value means start before the
+cursor.
+
+@item n-chars
+number of characters to delete.
+
+@item ret
+@samp{@code{#t}} if the signal was handled.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

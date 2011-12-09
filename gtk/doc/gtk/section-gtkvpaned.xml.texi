@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node GtkVPaned
+@chapter GtkVPaned
+A container with two panes arranged vertically
+
+@section Overview
+The VPaned widget is a container widget with two children arranged vertically.
+The division between the two panes is adjustable by the user by dragging a
+handle. See @code{<gtk-paned>} for details.
+
+@section Usage
+@include defuns-gtkvpaned.xml.texi
+
+@c %end of fragment

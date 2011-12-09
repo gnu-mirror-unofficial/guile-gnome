@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-separator-menu-item>
+Derives from @code{<gtk-menu-item>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-separator-menu-item-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-separator-menu-item>}.
+
+@table @var
+@item ret
+a new @code{<gtk-separator-menu-item>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

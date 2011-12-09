@@ -1,0 +1,21 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas-group>
+Derives from @code{<gnome-canvas-item>}.
+
+This class defines the following slots:
+
+@table @code
+@item x
+X
+
+@item y
+Y
+
+@end table
+
+@end deftp
+
+
+@c %end of fragment

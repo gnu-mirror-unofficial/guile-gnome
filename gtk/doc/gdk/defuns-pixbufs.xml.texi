@@ -1,0 +1,291 @@
+
+@c %start of fragment
+
+@deffn Function gdk-pixbuf-render-threshold-alpha  (self@tie{}@code{<gdk-pixbuf>}) (bitmap@tie{}@code{<gdk-drawable>}) (src_x@tie{}@code{int}) (src_y@tie{}@code{int}) (dest_x@tie{}@code{int}) (dest_y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (alpha_threshold@tie{}@code{int})
+@deffnx Method render-threshold-alpha
+Takes the opacity values in a rectangular portion of a pixbuf and thresholds
+them to produce a bi-level alpha mask that can be used as a clipping mask for a
+drawable.
+
+@table @var
+@item pixbuf
+A pixbuf.
+
+@item bitmap
+Bitmap where the bilevel mask will be painted to.
+
+@item src-x
+Source X coordinate.
+
+@item src-y
+source Y coordinate.
+
+@item dest-x
+Destination X coordinate.
+
+@item dest-y
+Destination Y coordinate.
+
+@item width
+Width of region to threshold, or -1 to use pixbuf width
+
+@item height
+Height of region to threshold, or -1 to use pixbuf height
+
+@item alpha-threshold
+Opacity values below this will be painted as zero; all other values will be
+painted as one.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-render-to-drawable  (self@tie{}@code{<gdk-pixbuf>}) (drawable@tie{}@code{<gdk-drawable>}) (gc@tie{}@code{<gdk-gc>}) (src_x@tie{}@code{int}) (src_y@tie{}@code{int}) (dest_x@tie{}@code{int}) (dest_y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (dither@tie{}@code{<gdk-rgb-dither>}) (x_dither@tie{}@code{int}) (y_dither@tie{}@code{int})
+@deffnx Method render-to-drawable
+@samp{gdk_pixbuf_render_to_drawable} has been deprecated since version 2.4 and
+should not be used in newly-written code. This function is obsolete. Use
+@code{gdk-draw-pixbuf} instead.
+
+Renders a rectangular portion of a pixbuf to a drawable while using the
+specified GC. This is done using GdkRGB, so the specified drawable must have the
+GdkRGB visual and colormap. Note that this function will ignore the opacity
+information for images with an alpha channel; the GC must already have the
+clipping mask set if you want transparent regions to show through.
+
+For an explanation of dither offsets, see the GdkRGB documentation. In brief,
+the dither offset is important when re-rendering partial regions of an image to
+a rendered version of the full image, or for when the offsets to a base position
+change, as in scrolling. The dither matrix has to be shifted for consistent
+visual results. If you do not have any of these cases, the dither offsets can be
+both zero.
+
+@table @var
+@item pixbuf
+A pixbuf.
+
+@item drawable
+Destination drawable.
+
+@item gc
+GC used for rendering.
+
+@item src-x
+Source X coordinate within pixbuf.
+
+@item src-y
+Source Y coordinate within pixbuf.
+
+@item dest-x
+Destination X coordinate within drawable.
+
+@item dest-y
+Destination Y coordinate within drawable.
+
+@item width
+Width of region to render, in pixels, or -1 to use pixbuf width
+
+@item height
+Height of region to render, in pixels, or -1 to use pixbuf height
+
+@item dither
+Dithering mode for GdkRGB.
+
+@item x-dither
+X offset for dither.
+
+@item y-dither
+Y offset for dither.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-render-to-drawable-alpha  (self@tie{}@code{<gdk-pixbuf>}) (drawable@tie{}@code{<gdk-drawable>}) (src_x@tie{}@code{int}) (src_y@tie{}@code{int}) (dest_x@tie{}@code{int}) (dest_y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) (alpha_mode@tie{}@code{<gdk-pixbuf-alpha-mode>}) (alpha_threshold@tie{}@code{int}) (dither@tie{}@code{<gdk-rgb-dither>}) (x_dither@tie{}@code{int}) (y_dither@tie{}@code{int})
+@deffnx Method render-to-drawable-alpha
+@samp{gdk_pixbuf_render_to_drawable_alpha} has been deprecated since version 2.4
+and should not be used in newly-written code. This function is obsolete. Use
+@code{gdk-draw-pixbuf} instead.
+
+Renders a rectangular portion of a pixbuf to a drawable. The destination
+drawable must have a colormap. All windows have a colormap, however, pixmaps
+only have colormap by default if they were created with a non-@samp{@code{#f}}
+window argument. Otherwise a colormap must be set on them with
+gdk_drawable_set_colormap.
+
+On older X servers, rendering pixbufs with an alpha channel involves round trips
+to the X server, and may be somewhat slow.
+
+@table @var
+@item pixbuf
+A pixbuf.
+
+@item drawable
+Destination drawable.
+
+@item src-x
+Source X coordinate within pixbuf.
+
+@item src-y
+Source Y coordinates within pixbuf.
+
+@item dest-x
+Destination X coordinate within drawable.
+
+@item dest-y
+Destination Y coordinate within drawable.
+
+@item width
+Width of region to render, in pixels, or -1 to use pixbuf width.
+
+@item height
+Height of region to render, in pixels, or -1 to use pixbuf height.
+
+@item alpha-mode
+Ignored. Present for backwards compatibility.
+
+@item alpha-threshold
+Ignored. Present for backwards compatibility
+
+@item dither
+Dithering mode for GdkRGB.
+
+@item x-dither
+X offset for dither.
+
+@item y-dither
+Y offset for dither.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-get-from-drawable  (self@tie{}@code{<gdk-pixbuf>}) (src@tie{}@code{<gdk-drawable>}) (cmap@tie{}@code{<gdk-colormap>}) (src_x@tie{}@code{int}) (src_y@tie{}@code{int}) (dest_x@tie{}@code{int}) (dest_y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method get-from-drawable
+Transfers image data from a @code{<gdk-drawable>} and converts it to an RGB(A)
+representation inside a @code{<gdk-pixbuf>}. In other words, copies image data
+from a server-side drawable to a client-side RGB(A) buffer. This allows you to
+efficiently read individual pixels on the client side.
+
+If the drawable @var{src} has no colormap (@code{gdk-drawable-get-colormap}
+returns @samp{@code{#f}}), then a suitable colormap must be specified. Typically
+a @code{<gdk-window>} or a pixmap created by passing a @code{<gdk-window>} to
+@code{gdk-pixmap-new} will already have a colormap associated with it. If the
+drawable has a colormap, the @var{cmap} argument will be ignored. If the
+drawable is a bitmap (1 bit per pixel pixmap), then a colormap is not required;
+pixels with a value of 1 are assumed to be white, and pixels with a value of 0
+are assumed to be black. For taking screenshots, @code{gdk-colormap-get-system}
+returns the correct colormap to use.
+
+If the specified destination pixbuf @var{dest} is @samp{@code{#f}}, then this
+function will create an RGB pixbuf with 8 bits per channel and no alpha, with
+the same size specified by the @var{width} and @var{height} arguments. In this
+case, the @var{dest-x} and @var{dest-y} arguments must be specified as 0. If the
+specified destination pixbuf is not @samp{@code{#f}} and it contains alpha
+information, then the filled pixels will be set to full opacity (alpha = 255).
+
+If the specified drawable is a pixmap, then the requested source rectangle must
+be completely contained within the pixmap, otherwise the function will return
+@samp{@code{#f}}. For pixmaps only (not for windows) passing -1 for width or
+height is allowed to mean the full width or height of the pixmap.
+
+If the specified drawable is a window, and the window is off the screen, then
+there is no image data in the obscured/offscreen regions to be placed in the
+pixbuf. The contents of portions of the pixbuf corresponding to the offscreen
+region are undefined.
+
+If the window you're obtaining data from is partially obscured by other windows,
+then the contents of the pixbuf areas corresponding to the obscured regions are
+undefined.
+
+If the target drawable is not mapped (typically because it's iconified/minimized
+or not on the current workspace), then @samp{@code{#f}} will be returned.
+
+If memory can't be allocated for the return value, @samp{@code{#f}} will be
+returned instead.
+
+(In short, there are several ways this function can fail, and if it fails it
+returns @samp{@code{#f}}; so check the return value.)
+
+This function calls @code{gdk-drawable-get-image} internally and converts the
+resulting image to a @code{<gdk-pixbuf>}, so the documentation for
+@code{gdk-drawable-get-image} may also be relevant.
+
+@table @var
+@item dest
+Destination pixbuf, or @samp{@code{#f}} if a new pixbuf should be created.
+
+@item src
+Source drawable.
+
+@item cmap
+A colormap if @var{src} doesn't have one set.
+
+@item src-x
+Source X coordinate within drawable.
+
+@item src-y
+Source Y coordinate within drawable.
+
+@item dest-x
+Destination X coordinate in pixbuf, or 0 if @var{dest} is NULL.
+
+@item dest-y
+Destination Y coordinate in pixbuf, or 0 if @var{dest} is NULL.
+
+@item width
+Width in pixels of region to get.
+
+@item height
+Height in pixels of region to get.
+
+@item ret
+The same pixbuf as @var{dest} if it was non-@samp{@code{#f}}, or a newly-created
+pixbuf with a reference count of 1 if no destination pixbuf was specified, or
+@samp{@code{#f}} on error
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-get-from-image  (self@tie{}@code{<gdk-pixbuf>}) (src@tie{}@code{<gdk-image>}) (cmap@tie{}@code{<gdk-colormap>}) (src_x@tie{}@code{int}) (src_y@tie{}@code{int}) (dest_x@tie{}@code{int}) (dest_y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method get-from-image
+Same as @code{gdk-pixbuf-get-from-drawable} but gets the pixbuf from an image.
+
+@table @var
+@item dest
+Destination pixbuf, or @samp{@code{#f}} if a new pixbuf should be created.
+
+@item src
+Source @code{<gdk-image>}.
+
+@item cmap
+A colormap, or @samp{@code{#f}} to use the one for @var{src}
+
+@item src-x
+Source X coordinate within drawable.
+
+@item src-y
+Source Y coordinate within drawable.
+
+@item dest-x
+Destination X coordinate in pixbuf, or 0 if @var{dest} is NULL.
+
+@item dest-y
+Destination Y coordinate in pixbuf, or 0 if @var{dest} is NULL.
+
+@item width
+Width in pixels of region to get.
+
+@item height
+Height in pixels of region to get.
+
+@item ret
+@var{dest}, newly-created pixbuf if @var{dest} was @samp{@code{#f}},
+@samp{@code{#f}} on error
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

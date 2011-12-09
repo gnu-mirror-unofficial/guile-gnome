@@ -1,0 +1,19 @@
+
+@c %start of fragment
+
+@deffn Function gnome-authentication-manager-init 
+This function checks for thread support and does a thread initialisation, if the
+support is available. Also sets the default sync and async gnome-vfs callbacks
+for various types of authentication.
+
+Note: If you call this, and you use threads with gtk+, you must never hold the
+gdk lock while doing synchronous gnome-vfs calls. Otherwise an authentication
+callback presenting a dialog could try to grab the already held gdk lock,
+causing a deadlock.
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

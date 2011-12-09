@@ -1,0 +1,93 @@
+To find out what should go in this file, see "Information For
+Maintainers of GNU Software" (maintain.texi), the section called
+"Recording Changes".
+
+
+*Note*: After version 0.5.3, in the gnome/gobject folder, the
+guile-gnome-gobject wrapper was split into six pieces: gobject, gtype,
+gvalue, gparameter, gsignal, and gclosure. Each piece has one C file,
+one C header, and one SCM file. Changes are given below relative to the
+new names.
+
+Martin Baulig:
+wrote the first version of guile-gobject, off of which guile-gnome-glib
+is based. Much of his code still exists in the GObject wrapper:
+In the directory gnome/gobject, initial version of:
+    gobject.c   gtype.c   gvalue.c   gparameter.c   gsignal.c   gclosure.c
+    gobject.h   gtype.h   gvalue.h   gparameter.h   gsignal.h   gclosure.h
+    gobject.scm gtype.scm gvalue.scm gparameter.scm gsignal.scm gclosure.scm
+In the directory gnome/gw, wrote:
+    gobject-spec.scm
+In the directory test-suite, wrote:
+    gobject.test
+
+Dirk Herrmann:
+In the subdirectory test-suite, wrote:
+    lib.scm
+
+Thien-Thi Nguyen:
+In the subdirectory test-suite, changes to:
+    guile-test		lib.scm
+
+Ariel Rios:
+Maintained guile-gobject for versions 0.3.0 and 0.4.0.
+In the directory gnome/gobject, changes to:
+    gobject.c   gtype.c   gvalue.c   gparameter.c   gsignal.c   gclosure.c
+    gobject.h   gtype.h   gvalue.h   gparameter.h   gsignal.h   gclosure.h
+    gobject.scm gtype.scm gvalue.scm gparameter.scm gsignal.scm gclosure.scm
+
+Andy Wingo:
+In the directory gnome/gobject, extensive changes to:
+    gobject.c   gtype.c   gvalue.c   gparameter.c   gsignal.c   gclosure.c
+    gobject.h   gtype.h   gvalue.h   gparameter.h   gsignal.h   gclosure.h
+    gobject.scm gtype.scm gvalue.scm gparameter.scm gsignal.scm gclosure.scm
+In the directory gnome/gobject, wrote:
+    generics.scm config.scm.in
+In the directory gnome/gw/support, wrote:
+    defs.scm gobject.scm util.scm slib.scm
+In the directory gnome/gw, wrote:
+    glib-spec.scm glib-support.c glib-support.h
+In the directory gnome, wrote:
+    gobject.scm glib.scm
+In the toplevel directory, wrote:
+    WARTS THREADING REFCOUNTING TODO
+In the directory examples, wrote:
+    example-1.scm main-loop.scm
+In the directory bin, wrote:
+    guile-gnome.in
+Many other changes throughout.
+  
+Marius Vollmer:
+In the directory gnome/gobject, wrote:
+    event-repl.scm
+
+Andreas Rottmann:
+In the directory gnome/gw, changes to:
+    glib-spec.scm gobject-spec.scm glib-support.c glib-support.h
+In the directory gnome/gw/support, changes to:
+    defs.scm gobject.scm
+In the directory gnome, changes to:
+    glib.scm
+In the directory test-suite, wrote:
+    gw-test-glib-spec.scm exceptions.scm test-gobject.c test-gobject.c
+    test-gobject.defs test-glib.c test-glib.h test-glib.defs
+    gw-test-glib-spec.scm gw-glib.test gw-gobject.test
+    guile-test-env
+In the directory test-suite, changes to:
+    gobject.test guile-gobject-test
+
+Jim Blandy:
+In the directory test-suite, wrote:
+    guile-gobject-test
+
+Marc Feeley:
+In the directory gnome/gw/support, wrote:
+    genwrite.scm
+
+Radey Shouman:
+In the directory gnome/gw/support, wrote:
+    glob.scm printf.scm
+
+Aubrey Jaffer:
+In the directory gnome/gw/support, changes to:
+    printf.scm

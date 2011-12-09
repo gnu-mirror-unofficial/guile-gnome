@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node Undocumented
+@chapter Undocumented
+The following symbols, if any, have not been properly documented.
+
+@section (gnome gw pangocairo)
+@defun pango-cairo-context-get-font-options 
+@end defun
+
+@defun pango-cairo-context-set-font-options 
+@end defun
+
+
+@c %end of fragment

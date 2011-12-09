@@ -1,0 +1,538 @@
+2008-04-27  Andy Wingo  <wingo@pobox.com>
+
+	* docs/: Add, now that docs is out from the platform, containing
+	the release notes doc, and a couple of old release notes.
+
+	* PACKAGES (guile-gnome-platform): Remove docs from the platform
+	-- all of its contents have been folded into the reference for the
+	individual modules.
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.98 ==
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh (GUILE_VERSION): Formally require Guile 1.8, as
+	has been the case for a while now.
+	(API_VERSION): Bump API_VERSION to 2, as a test before going
+	stable.
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* == Released guile-gnome-platform version 2.15.97 ==
+
+2008-04-10  Andy Wingo  <wingo@pobox.com>
+
+	* scripts/for-each-pkg (packages): Handle argv more sensibly, so
+	that multiple words in one arg get passed to the subcommand
+	correctly.
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* NEWS: Update NEWS.
+
+2007-12-17  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* scripts/push-packages: add --create-prefix, allowing easier
+	contributing.
+
+	* .bzrignore: Ignore temp files and packages.
+
+2008-04-09  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh: Output a more modern configure.ac. Tell automake
+	to not worry about non-portable make.
+
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.96 ==
+
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* generate-docs.mk (GTK_DOC_GENERATE_UNDOCUMENTED): 
+	(generate-undocumented): Add targets to regenerate
+	undocumented.texi.
+
+2007-11-25  Andy Wingo  <wingo@pobox.com>
+
+	* generate-docs.mk (GUILE): Fix a typo.
+
+	* dev-environ.in (ALL_PKGS): Add bin/ to the path if the package
+	has one.
+
+	* tests.mk: 
+	* generate-docs.mk: So, just use guile-gnome-0 if glib is not in
+	the packages set, because if glib is in the set, then dev-environ
+	is sufficient for setting up the enviroment.
+
+2007-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* tests.mk (GUILE): 
+	* generate-docs.mk (GUILE): Use guile-gnome-0, because we want
+	(gnome-0) to have been loaded.
+
+	* scripts/review-api: New script, generates a minimal texinfo file
+	that one can use to review wrapped API.
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.95 ==
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* tests.mk: New file, common makefile snippets for running API
+	regression suites.
+
+	* generate-docs.mk (check-coverage): New target, checks the
+	coverage of the documentation.
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.94 ==
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* NEWS: Updated.
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* NEWS: Updated.
+
+2007-09-24  Andy Wingo  <wingo@pobox.com>
+
+	* generate-docs.mk: Rework to deal with new gtk-doc.scm interface.
+
+2007-09-07  Andy Wingo  <wingo@pobox.com>
+
+	* generate-docs.mk: New common makefile snippet for generated
+	docs.
+
+2007-08-25  Andy Wingo  <wingo@pobox.com>
+
+	* common.mk (.c.doc): Update so that making .doc files works;
+	still needs some filtering though.
+
+2007-06-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.93 ==
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* scripts/maint/upload-to-ftp.gnu.org: Actually upload the file if
+	we are given a URL.
+
+	* == Released guile-gnome-platform version 2.15.92 ==
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* h2def.py: Add new options --type-re, to specify a regular
+	expression to transform a type name into a gtype-id macro. See
+	defs/gnome/defs/Makefile.am for a use example.
+
+2007-05-20  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh: Fix some aesthetics if a package is not going to
+	be built.
+
+	* PACKAGES (guile-gnome-platform): Add cairo to
+	guile-gnome-platform.
+
+2007-05-13  Andy Wingo  <wingo@pobox.com>
+
+	* h2def.py (get_type_pat): In method detection, require that the
+	"object" type have a trailing *. Fixes incorrect detection of e.g.
+	atk_role_get_name as a method wrapper, because otherwise you can't
+	tell a difference between a pointer type and a scalar.
+
+	* h2def.py: Add a command line argument --no-methods to disable
+	the code that automatically tries to detect methods. Useful for
+	example when generating glib defs.
+
+2007-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.91 ==
+
+2007-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* scripts/maint/prepare-news-entry (len): Use minimal matching on
+	the changelog diff so that we just return the most recent
+	changelog entries.
+
+2007-05-06  Andy Wingo  <wingo@pobox.com>
+
+	* common.mk (PKG_PATH): Fix PKG_PATH statement, pointed out by
+	Mark Flacy.
+
+2007-05-05  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh: Depend on g-wrap >= 1.9.8.
+
+2006-12-18  Andy Wingo  <wingo@pobox.com>
+
+	* scripts/maint/upload-to-ftp.gnu.org: Add the skeleton of a
+	ftp-upload.gnu.org helper.
+
+2006-12-17  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-gstreamer version 0.9.90 ==
+
+2006-12-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.90 ==
+
+2006-12-15  Andy Wingo  <wingo@pobox.com>
+
+	* scripts/maint/prepare-release:
+	* scripts/maint/make-release-note:
+	* scripts/maint/commit-release: 
+	* autogen-pkg.sh (release_manager): Update scripts. I hope they
+	work!
+
+2006-12-08  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh: Require the newly-released g-wrap 1.9.7.
+
+2006-11-05  Andy Wingo  <wingo@pobox.com>
+
+	* scripts/commit-from-changelog: New amazing script.
+
+2006-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* autogen.sh: We seem to require bash for the moment.
+
+2006-08-13  Andy Wingo  <wingo@pobox.com>
+
+	* PACKAGES (guile-gnome-evolution-data-server): Add some more
+	packages.
+
+	* HACKING: 
+	* autogen-pkg.sh (release_manager): It's get-packages, not
+	pull-packages.
+
+	* README: 
+	* HACKING: Updated.
+
+	* scripts/prepare-release:
+	* scripts/prepare-news-entry:
+	* scripts/make-release-note:
+	* scripts/for-each-pkg:
+	* scripts/commit-release:
+	* scripts/changelog-log-release:
+	* scripts/add-changelog-entry: Moved to scripts/maint/.
+
+2006-08-13  Andy Wingo  <wingo@pobox.com>
+
+	* scripts/upstream-missing:
+	* scripts/update-inventories: 
+	* scripts/submit-merge: Removed.
+
+	* scripts/release-config: Removed, but we don't have anything to
+	replace it yet; perhaps branch-mark is what we need?
+
+	* scripts/merge-all: 
+	* scripts/fork-archive-pkgs: Removed, thank god.
+	* scripts/commit-all-merges: 
+	* scripts/commit-all: Removed.
+
+	* scripts/prepare-release:
+	* scripts/prepare-news-entry:
+	* scripts/make-release-note:
+	* scripts/for-each-pkg:
+	* scripts/commit-release:
+	* scripts/changelog-log-release:
+	* scripts/add-changelog-entry: tla->bzr.
+
+	* scripts/push-packages: New scripts, pushes all your packages
+	somewhere.
+	* scripts/pull-packages: New script, does bzr merge for all
+	branches.
+	* scripts/get-packages: Moved here from pull-packages.
+
+	* PACKAGES: New file, lists what packages can be built.
+
+	* scripts/pull-packages: New script, pulls in sub-packages.
+
+	* autogen-pkg.sh (determine_package, autogen_pkg): Figure out our
+	configuration from the directories in ./, not from ../=RELEASE-ID.
+	We are free of tla, yay.
+
+2005-12-22  Andy Wingo  <wingo@pobox.com>
+
+	* scripts/update-inventories: Make tla-agnostic.
+
+	* autogen-pkg.sh: Remove build-dep on SLIB.
+
+2005-11-05  Andy Wingo  <wingo@pobox.com>
+
+	* scripts/fork-archive-pkgs: Work with tla or baz. I think.
+
+	* scripts/upstream-missing: Change to use baz missing, doh.
+	Renamed from patches-missing.
+
+2005-11-04  Andy Wingo  <wingo@pobox.com>
+
+	* scripts/patches-missing: Don't do anything about patches in
+	upstream but not in the local copy. Handle the no-diff case
+	better. Better non-full output.
+
+	* scripts/patches-missing: Use {arch}/+upstream if available.
+	Don't print diffs any more, just show the patches that are
+	missing. Let --full do a cat-archive-log on the patch.
+
+	* scripts/fork-archive-pkgs: Support baz.
+
+	* scripts/patches-missing: New file, prints a list of patches
+	missing from this version in another archive.
+
+2005-04-09  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* dev-environ.in: Set LTDL_LIBRARY_PATH instead of
+	LD_LIBRARY_PATH.
+
+	* h2def.py (find_enum_defs): Allow digits in enum names.
+
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* scripts/make-release-note: Tweak evil regexps to correctly parse
+	the NEWS files.
+
+	* == Released guile-gnome-platform version 2.7.99 ==
+
+2005-02-17  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh (GUILE_LIBS): Require g-wrap >= 1.9.4.
+	(DISABLE_DEPRECATED): Add a general option to disable deprecated
+	cflags.
+
+2005-02-24  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* scripts/commit-all: Only commit when ChangeLog has been touched,
+	thus avoiding arch-log-only commits.
+	
+	* scripts/commit-all, scripts/merge-all: New helper scripts.
+
+2005-01-25  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* configure.ac: Require G-Wrap >= 1.9.4.
+
+	* h2def.py (proto_pat): Fix for return types with spaces,
+	e.g. unsigned long.
+
+	* common.mk (packages): Make out-of-tree-build-safe.
+
+2005-01-12  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.98 ==
+
+2005-01-12  Andy Wingo  <wingo@pobox.com>
+
+	* scripts/release-config:
+	* scripts/make-release-note: New files.
+
+2005-01-11  Andy Wingo  <wingo@pobox.com>
+
+	* scripts/add-changelog-entry: 
+	* scripts/changelog-log-release: 
+	* scripts/prepare-news-entry:
+	* scripts/prepare-release: 
+	* scripts/commit-release: New helper scripts.
+
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am.bottom (dist-gzip, dist, dist-all): Create ustar
+	archives, because evolution-data-server manages to exceed the
+	maximum path length.
+
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh (record_check): Quote the bad value.
+	Check for --prefix; if none is given, barf. People should be aware
+	of guile's deficiencies.
+
+	* autogen.sh: 
+	* autogen-support.sh (--only-genconfigure): New option.
+
+2004-11-13  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh (record_check): New function, should be called
+	from within package.ac files to report whether a wrapper can be
+	built or not.
+	(report_checks): New function, called after the packages have made
+	their checks. Will report which wrappers can be built and which
+	are missing prereqs, and error out if no package can be built.
+	(release_manager): New global, defines the subdir of configs/ from
+	which the official releases come.
+	(get_version): New function, computes the version of a package. If
+	no VERSION file is present in a subpackage, or more than one is
+	present, default to a timestamp.
+	(autogen_pkg): Always use guile-gnome-$pkg as the package name.
+	Append +$source to the version if the source is not the
+	$release_manager.
+
+2004-11-11  Andy Wingo  <wingo@pobox.com>
+
+	* common.mk (%.scm guile-gnome-gw-%.c): Before loading g-wrap,
+	load (gnome-@API_VERSION@). This will make sure that, when
+	building against an installed guile-gnome, guile-gnome of the
+	right version is available. My English sucks!
+
+2004-10-13  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* scripts/fork-archive-pkgs: Use -S option to "tla tag" instead of
+	seperate archive-setup.
+
+2004-10-29  Andy Wingo  <wingo@pobox.com>
+
+	* common.mk: pkg-config versioning voodoo.
+
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* common.mk: No more $guiledir, but there is $guilegnomedir, which
+	is $datadir/guile-gnome-$apiversion. Adapt guilemoduledir ad
+	guilegwmoduledir accordingly.
+
+	* autogen-pkg.sh: No more --with-guiledir, we install to
+	$datadir/guile-gnome-$apiversion.
+	(API_VERSION): New substituted variable, the API version. Constant
+	iff a release is backward compatible with the previous one. Starts
+	at 0.
+
+2004-10-17  Andy Wingo  <wingo@pobox.com>
+
+	* common.mk (guilemoduledir, guilegwmoduledir): Get $guiledir from
+	--with-guile-dir.
+
+	* autogen-pkg.sh: Add --with-guiledir option to control install
+	location of guile modules. Default PREFIX/share/guile/site.
+
+2004-10-24  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh (sort_pkgs): Fix it right this time.
+
+2004-10-16  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh: Get the module_directory for g-wrap from the
+	right pkg-config file.
+	(sort_pkgs): Echo the package into tsort even if it has no deps
+	(e.g. docs/).
+	Add a check for slib.
+
+2004-10-12  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* autogen-pkg.sh: Use tsort instead of hand-built package
+	sorter. This fixes a bug when defs and defs-extra are both
+	present.
+
+	* autogen.sh: Fix sourcing for shells that don't search the
+	current directory.
+
+	* dev-environ.in: Remove special casing of glib for setting
+	$LD_LIBRARY_PATH, use a new control file shlib-dirs.ac instead.
+
+2004-10-12  Andy Wingo  <wingo@pobox.com>
+
+	* h2def.py (proto_pat): Accept whitespace between the parens and
+	the arguments.
+
+2004-10-06  Andy Wingo  <wingo@pobox.com>
+
+	* h2def.py: Make sure the emacs typecode is always first in the
+	output.
+	
+2004-10-06  Andy Wingo  <wingo@pobox.com>
+
+	* h2def.py: Change so we require one of --types, --procs, or
+	--all. Change --enums-without-gtype to --c-enums. Add optional
+	--with-header= option. Adjust logic to match.
+
+2004-09-30  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh (autogen_pkg): An unrecognized config $i becomes
+	guile-gnome-$i-YYYYMMDD+$source.
+
+2004-09-27  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh: Require g-wrap = 1.9.3. g-wrap is in unstable
+	releases, and as such we require specific micro versions.
+
+	* autogen-support.sh: sed character range fix.
+
+2004-09-22  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh, autogen-support.sh, autogen.sh, common.mk,
+	dev-environ.in: Added license blocks.
+
+	* README: No g-wrap 1.9.2
+
+2004-09-21  Andy Wingo  <wingo@pobox.com>
+
+	* NEWS: Updated.
+
+	* AUTHORS: Removed the RELEASE-NOTES entries, they're in docs/
+	now.
+
+2004-09-19  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am.bottom: Added. Dist HACKING.
+
+	* autogen-pkg.sh: Only generate the SUBDIRS part of Makefile.am;
+	append Makefile.am.bottom to the end.
+
+	* HACKING: Added.
+
+	* scripts/tla-for-each: New script, does a tla command for all
+	arch subdirs of the toplevel dir.
+
+2004-09-17  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh (EXTRA_DIST): No more old release notes.
+
+2004-09-16  Andy Wingo  <wingo@pobox.com>
+
+	* AUTHORS: Add update-inventories to my AUTHORS list.
+
+	* Makefile.am (EXTRA_DIST): No more old release notes.
+
+	* RELEASE-NOTES-0.2.0.txt, RELEASE-NOTES-0.5.0.txt: Moved to the
+	docs category.
+
+	* NEWS: Distilled.
+
+	* README: Updated.
+
+2004-09-15  Andy Wingo  <wingo@pobox.com>
+
+	* scripts/update-inventories: New script, will create
+	arch-inventory entries for any untagged-source files. Useful for
+	when you build in the source tree.
+
+2004-09-08  Andy Wingo  <wingo@pobox.com>
+
+	* NEWS: Initial version, still needs to be filled in.
+
+	* AUTHORS: Updated.
+
+2004-09-05  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh: No more m4/ dir, it was empty anyway. Use
+	AC_PROG_LIBTOOL.
+
+2004-09-04  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh (autogen_pkg): For the dev build-config, set
+	package=guile-gnome-dev, so that no dev distribution tarball
+	escapes into the wild with the name `guile-gnome'. Print out the
+	package name and version. Just print the sorted dependency list,
+	not the progress of the sort.
+	(GUILE_LIBS): Require g-wrap 1.9.1 or greater.
+
+2004-06-27  Andy Wingo  <wingo@pobox.com>
+
+	* autogen-pkg.sh (ensure_dependencies): New function, taken from
+	the main function because it needs to recurse.
+
+2004-04-15  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* [guile-gnome started]
+

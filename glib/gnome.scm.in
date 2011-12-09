@@ -1,0 +1,156 @@
+;; guile-gnome        -*- scheme -*-
+;; Copyright (C) 2003,2004,2008 Andy Wingo <wingo at pobox dot com>
+
+;; This program is free software; you can redistribute it and/or    
+;; modify it under the terms of the GNU General Public License as   
+;; published by the Free Software Foundation; either version 2 of   
+;; the License, or (at your option) any later version.              
+;;                                                                  
+;; This program is distributed in the hope that it will be useful,  
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of   
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+;; GNU General Public License for more details.                     
+;;                                                                  
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, contact:
+;;
+;; Free Software Foundation           Voice:  +1-617-542-5942
+;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+;; Boston, MA  02111-1307,  USA       gnu@gnu.org
+
+;;; Commentary:
+;;
+;; Selects version @API_VERSION@ of the Guile-GNOME libraries. This
+;; module is used for its side effects; it exports no procedures.
+;;
+;; @section Rationale
+;;
+;; Early in the development of guile-gnome, we realized that at some
+;; point we might need to make incompatible changes. Of course, we would
+;; not want to force a correctly-written program to break when
+;; guile-gnome gets upgraded. For this reason, we decided to make
+;; guile-gnome parallel-installable. A program is completely specified
+;; when it indicates which version of guile-gnome it should use.
+;;
+;; Guile-gnome has the concept of an API version, which indicates a
+;; stable API series. For example, a program written against API version
+;; 2 of guile-gnome will continue to work against all future releases of
+;; that API version. It is permitted to add interfaces within a stable
+;; series, but never to remove or change them incompatibly.
+;;
+;; Changing the API version is expected to be a relatively infrequent
+;; operation. The current API version is @API_VERSION@.
+;;
+;; There are two manners for a program to specify the guile-gnome
+;; version:
+;;
+;; @enumerate
+;; @item
+;; Via importing the @code{(gnome-@var{version})} module.
+;;
+;; This special module alters guile's load path to include the path of
+;; the specified API version of guile-gnome. For example:
+;;
+;; @lisp
+;; (use-modules (gnome-@API_VERSION@))
+;; @end lisp
+;;
+;; @item
+;; Via invoking guile as guile-gnome-@var{version}.
+;;
+;; This shell script is installed when building a particular version of
+;; guile-gnome, and serves to automatically load the
+;; @code{(gnome-@var{apiversion})} module. For example, to get a repl
+;; ready for guile-gnome:
+;;
+;; @example
+;; $ guile-gnome-@API_VERSION@
+;; @end example
+;;
+;; To load a script with a particular version of guile-gnome:
+;;
+;; @example
+;; $ guile-gnome-@API_VERSION@ -s @var{script} @var{args...}
+;; @end example
+;;
+;; To specify the guile-gnome version in a script, you might begin the
+;; file with:
+;;
+;; @example
+;; #! /bin/sh
+;; # -*- scheme -*-
+;; exec guile-gnome-@API_VERSION@ -s $0
+;; !#
+;; ;; scheme code here...
+;; @end example
+;; @end enumerate
+;;
+;; A program must select the guile-gnome version before importing any
+;; guile-gnome modules. Indeed, one cannot even import @code{(gnome
+;; gobject)} before doing so.
+;;
+;; For a further rationale on parallel installability, see
+;; @uref{http://ometer.com/parallel.html}.
+;;
+;;; Code:
+
+;; Although resolve-module would create (gnome) if it's not found, guile
+;; 1.6 will still search for a lib named libgnome.so before giving up.
+;; Avoid this problem by making sure (gnome) is defined.
+(define-module (gnome))
+
+(define-module (gnome-@API_VERSION@))
+
+(define (ld-library-path-prepend! path)
+  (let ((ld-library-path (getenv "LD_LIBRARY_PATH")))
+    (if ld-library-path
+        (setenv "LD_LIBRARY_PATH" (format #f "~A:~A"
+                                          path ld-library-path))
+        (setenv "LD_LIBRARY_PATH" path))))
+
+;; Add path to the load path, preserving any modification that the user
+;; already made via environment variables. Necessary so that
+;; GUILE_LOAD_PATH munging during build works even after (gnome-2)
+;; munges the path itself.
+(define (add-to-load-path! path)
+  (let ((first-std-path (in-vicinity
+                         (assq-ref %guile-build-info 'pkgdatadir)
+                         "site")))
+    (let lp ((tail %load-path) (head '()))
+      (cond
+       ((null? tail)
+        (set! %load-path (cons path %load-path)))
+       ((string=? (car tail) first-std-path)
+        (set! %load-path (append (reverse head) (cons path tail))))
+       (else
+        (lp (cdr tail) (cons (car tail) head)))))))
+                 
+(define version "@API_VERSION@")
+
+(cond
+ ((module-variable (resolve-module '(gnome)) 'gnome-version)
+  =>
+  (lambda (v)
+    (if (not (string=? (variable-ref v) version))
+        (error "Loading guile-gnome version ~A, but ~A was already loaded"
+               (variable-ref v) version))))
+
+ (@running-uninstalled@ ;; #t if we are uninstalled
+  (module-define! (resolve-module '(gnome)) 'gnome-version version)
+  #t) ;; we're building guile-gnome, let the build scripts do their hacks
+
+ (else
+  (module-define! (resolve-module '(gnome)) 'gnome-version version)
+
+  (let ((guile-gnome-dir "@guilegnomedir@")
+        (guile-gnome-lib-dir "@guilegnomelibdir@")
+        (libdir "@libdir@"))
+
+    (add-to-load-path! guile-gnome-dir)
+
+    ;; Resolve (gnome gw ...) wrapper links to libguile-gnome-gobject.
+    (if (not (member libdir '("/usr/lib" "/usr/local/lib")))
+        (ld-library-path-prepend! libdir))
+  
+    ;; Resolve (gnome gw ...) wrappers.
+    (ld-library-path-prepend! guile-gnome-lib-dir))))

@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@node GtkCellEditable
+@chapter GtkCellEditable
+Interface for widgets which can are used for editing cells
+
+@section Overview
+The @code{<gtk-cell-editable>} interface must be implemented for widgets to be
+usable when editing the contents of a @code{<gtk-tree-view>} cell.
+
+@section Usage
+@include defuns-gtkcelleditable.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,19 @@
+# This file defines the set of packages that can be built with this
+# module. The format is:
+# PACKAGE-NAME: SUBMODULE-1 SUBMODULE-2 ...
+#
+# Blank lines and lines starting with # are ignored.
+#
+# This file is processed by autogen-pkg.sh, so it's important to keep
+# it syntactically correct.
+
+guile-gnome-glib: defs glib
+guile-gnome-platform: atk cairo corba defs gconf glib gnome-vfs gtk libglade libgnome libgnomecanvas libgnomeui pango
+guile-gnome-gstreamer: gstreamer
+guile-gnome-evolution-data-server: evolution-data-server
+guile-gnome-gtksourceview: gtksourceview
+guile-gnome-libwnck: libwnck
+guile-gnome-libgda: libgda
+guile-gnome-dbus: dbus
+guile-gnome-panel-applet: panel-applet
+guile-clutter: clutter

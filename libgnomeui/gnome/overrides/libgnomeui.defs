@@ -1,0 +1,108 @@
+;; -*- scheme -*-
+;; guile-gnome
+;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+
+;; This program is free software; you can redistribute it and/or    
+;; modify it under the terms of the GNU General Public License as   
+;; published by the Free Software Foundation; either version 2 of   
+;; the License, or (at your option) any later version.              
+;;                                                                  
+;; This program is distributed in the hope that it will be useful,  
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of   
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+;; GNU General Public License for more details.                     
+;;                                                                  
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, contact:
+;;
+;; Free Software Foundation           Voice:  +1-617-542-5942
+;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+;; Boston, MA  02111-1307,  USA       gnu@gnu.org
+
+;;; Commentary:
+;;
+;;Custom wrapper definitions.
+;;
+;;; Code:
+
+(ignore-glob  "*_get_type"
+              "_*"
+              "*_ref"
+              "*_unref"
+              "*_copy"
+              "*_free"
+              "*_newv"
+              "*_valist"
+              "*_setv"
+              "*_foreach"
+              "*_valist")
+
+;; Ignore deprecated API
+
+(ignore-glob  "gnome_color_picker_*"
+              "gnome_app_*"
+              "gnome_appbar_*"
+              "gnome_mdi*"
+              "gnome_dialog*"
+              "gnome_druid_*"
+              "gnome_message_box*"
+              "gnome_property_box*"
+              "gnome_file_entry*"
+              "gnome_ok*"
+              "gnome_warning*"
+              "gnome_error*"
+              "gnome_icon_*"
+              "gnome_question*"
+              "gnome_href_*"
+              "gnome_request*"
+              "gnome_entry_*"
+              "gnome_font_picker_*"
+              "gnome_icon_theme_*"
+              "gnome_pixmap_*"
+              "gnome_scores_*"
+              "*_command" ;; can't handle the argv
+              "*_search_path" ;; can't deal with argv
+              "gnome_theme_file*"
+              "gnome_popup_menu_*"
+              "gnome_window_icon_set_*from_file_list" ;; char**
+              "gnome_window_icon_*"
+              "gnome_thumbnail_*"
+              )
+
+(ignore "gnome_client_disable_master_connection"
+
+        "gnome_accelerators_sync"
+
+        "gnome_client_module_info_get"
+        "gnome_client_request_interaction"
+        "gnome_client_request_interaction_interp"
+        "gnome_interaction_key_return"
+
+        "gnome_date_edit_get_date"
+
+        "gnome_entry_construct" ;; <- debian borked this symbol from 2.8.0
+        "gnome_href_construct" ;; <- debian borked this symbol from 2.8.0
+
+        "gnome_gtk_widget_add_popup_items"
+        "gnome_window_toplevel_set_title"
+        
+        "gnome_file_entry_set_directory"
+
+        "gnome_ice_init"
+
+        "gnome_icon_data_dup"
+
+        "gnome_init_with_popt_table"
+        
+        "libgnomeui_module_info_get" ; GnomeModuleInfo*
+        "gnome_gtk_module_info_get" ; GnomeModuleInfo*
+        "gnome_gdk_pixbuf_new_from_uri_async" ; GnomeGdkPixbufAsyncHandle*
+        "gnome_gdk_pixbuf_new_from_uri_cancel" ; GnomeGdkPixbufAsyncHandle*
+
+
+        "gnome_about_new" ;; can't handle char**
+        "gnome_about_construct" ;; not needed
+
+        "gnome_icon_theme_lookup_icon" ;; can't handle GnomeIconData**
+        )
+

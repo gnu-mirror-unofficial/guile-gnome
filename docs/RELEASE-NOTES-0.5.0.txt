@@ -1,0 +1,169 @@
+Release Notes for guile-gobject 0.5.0 "Out of Africa"
+=========================================================================
+
+Following up on Martin Baulig's nice work on wrapping the GObject type
+system in scheme, and Ariel Rios' subsequent maintainance on the code,
+guile-gobject 0.5.0 adds support for wrapping GObject-based apis
+described by the .defs standard.
+
+These tools were used to produce preliminary wrappings for GTK+ 2.2, and
+can be used by third-parties to wrap other .defs-based apis. Support
+will be added soon for the rest of the GNOME libraries, as well as for
+GStreamer.
+
+For an introduction to the GObject wrapper, see the
+RELEASE-NOTES-0.2.0.txt file in the guile-gobject distribution.
+
+Using (gnome gtk)
+=========================================================================
+
+The following code can be found in examples/gtk/hello.scm.
+
+;; load up gtk -- also pulls in goops bindings
+(use-modules (gnome gtk))
+
+;; define the app as a function -- there are many other ways to do this,
+;; of course...
+(define (app)
+  ;; we can make new widgets just like we make goops objects -- there is
+  ;; a corresponding goops class for every GType we know about. the
+  ;; arguments to make, after the class, are interpreted as properties
+  ;; to set. in this case we make a toplevel window and a button with
+  ;; the label, "Hello, World!".
+  (let* ((window (make <gtk-window> #:type 'toplevel))
+	 (button (make <gtk-button> #:label "Hello, World!")))
+
+    ;; there are scheme functions corresponding to all of the c ones...
+    ;; and of course we don't have to cast anything.
+    (gtk-container-set-border-width window 10)
+    (gtk-container-add window button)
+    
+    ;; and of course you can attach a lambda to a signal :-)
+    (gobject-signal-connect button 'clicked (lambda (b) (gtk-main-quit)))
+
+    (gtk-widget-show-all window)
+
+    (gtk-main)))
+
+(app)
+
+However, there's something about this that resembles programming in C a
+little bit too much... In Python, you can just do window.add(button).
+That's a lot less typing. In GOOPS, the object framework for guile,
+methods are implemented a bit differently. The (gnome gtk generics)
+module defines methods for those gtk functions described with
+`define-method' in the .defs file, so hello-generics.scm looks a bit
+different:
+
+(use-modules (gnome gtk))
+
+(define (app)
+  (let* ((window (make <gtk-window> #:type 'toplevel))
+	 (button (make <gtk-button> #:label "Hello, World!")))
+
+    ;; up to here, everything is the same as hello.scm. however, now we
+    ;; can make use of generic functions:
+
+    ;; since window is a container, this generic maps onto the function
+    ;; gtk-container-set-border-width
+    (set-border-width window 10)
+
+    ;; note that we can set the border width with a gobject property as
+    ;; well:
+    (gobject-set-property window 'border-width 15)
+
+    ;; (gnome gobject generics), re-exported by (gnome gtk), defines a
+    ;; generic `set' method for gobject-set-property, se we can also do
+    ;; it like this:
+    (set window 'border-width 20)
+
+    ;; this is much less typing :-)
+    (add window button)
+    
+    ;; see (gnome gobject generics) for a full list of gobject generic
+    ;; functions
+    (connect button 'clicked (lambda (b) (gtk-main-quit)))
+
+    ;; generic functions for .defs apis are defined in the .defs files,
+    ;; not manually
+    (show-all window)
+
+    (gtk-main)))
+
+(app)
+
+How it works
+=========================================================================
+
+The (gnome gobject defs-support) module defines a function, `load-defs',
+that creates an environment to natively _evaluate_ the .defs files. The
+defined types and functions are then wrapped by g-wrap.
+
+As an example, Atk is wrapped with the following code, from
+gnome/gtk/gw-atk-spec.scm:
+
+;; wrap atk
+
+;; this wrapper-generation-spec module will actually be installed, along
+;; with the defs, so that other wrappers which use Atk types (such as
+;; Gtk) can have them available
+(define-module (gnome gtk gw-atk-spec)
+  :use-module (g-wrap)
+  ;; support for GObject, GValue, GType; in turn, this module uses
+  ;; gw-glib-spec, which wraps gint, gint32, and the like...
+  :use-module (gnome gobject gw-gobject-spec)
+  ;; this module provides `load-defs'
+  :use-module (gnome gobject defs-support))
+
+;; we use the newest development g-wrap to do the work for us.
+(let ((ws (gw:new-wrapset "guile-gnome-gw-atk")))
+
+  (gw:wrapset-set-guile-module! ws '(gnome gtk gw-atk))
+
+  ;; make the types from the following wrapsets available to us...
+  (gw:wrapset-depends-on ws "gw-standard")
+  (gw:wrapset-depends-on ws "guile-gnome-gw-glib")
+  (gw:wrapset-depends-on ws "guile-gnome-gw-gobject")
+
+  ;; add some headers to the generated c file...
+  (gw:wrapset-add-cs-declarations!
+   ws
+   (lambda (wrapset client-wrapset)
+     (if (eq? client-wrapset wrapset)
+         '()
+         (list
+          "#include <atk/atk.h>\n"
+          "#include <atk/atk-enum-types.h>\n"))))
+
+  ;; manually wrap AtkState as a 64 bit int
+  (register-type "guile-gnome-gw-atk" "AtkState" '<gw:long-long>)
+
+  ;; then we're finished :-)
+  (load-defs ws "atk.defs"))
+
+See gnome/gtk/Makefile.am to see how the wrapper is actually produced.
+
+Summary, Remaining Issues, ....:
+=========================================================================
+
+The GObject-level wrapper is essentially complete. Now we have a wrapper
+generator for defs-style apis. To finish the Gtk wrapper, some manual
+fine-tuning is needed: making c-style functions more schemy, wrapping
+types in a more scheme-native manner, etc. See the TODO for details.
+
+Work also needs to be done on the robustness front -- making it
+impossible to crash guile from scheme. I'm sure it's possible now,
+although I don't run into it too often.
+
+Somehow in the changes to new g-wrap and a new directory structure, and
+possibly in the year and a half of GNOME development since guile-gtk
+0.2.0, (gnome corba) got broken. Some corba genius should look into
+fixing it -- should be simple, but I couldn't stumble upon the solution.
+
+Comments, patches, etc are more than welcome. Send them to... who? I
+need to fix this before the release is sent out.
+
+-------------
+3 May, 2003
+Andy Wingo <wingo at pobox dot com>
+

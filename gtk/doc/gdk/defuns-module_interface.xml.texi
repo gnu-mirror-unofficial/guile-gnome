@@ -1,0 +1,21 @@
+
+@c %start of fragment
+
+@deffn Function gdk-pixbuf-get-formats  @result{}@tie{} (ret@tie{}@code{gslist-of})
+Obtains the available information about the image formats supported by
+GdkPixbuf.
+
+@table @var
+@item ret
+A list of @code{<gdk-pixbuf-format>}s describing the supported image formats.
+The list should be freed when it is no longer needed, but the structures
+themselves are owned by @code{<gdk-pixbuf>} and should not be freed.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+
+@c %end of fragment

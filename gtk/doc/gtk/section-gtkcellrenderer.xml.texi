@@ -1,0 +1,40 @@
+
+@c %start of fragment
+
+@node GtkCellRenderer
+@chapter GtkCellRenderer
+An object for rendering a single cell on a
+
+@section Overview
+The @code{<gtk-cell-renderer>} is a base class of a set of objects used for
+rendering a cell to a @code{<gdk-drawable>}. These objects are used primarily by
+the @code{<gtk-tree-view>} widget, though they aren't tied to them in any
+specific way. It is worth noting that @code{<gtk-cell-renderer>} is not a
+@code{<gtk-widget>} and cannot be treated as such.
+
+The primary use of a @code{<gtk-cell-renderer>} is for drawing a certain
+graphical elements on a @code{<gdk-drawable>}. Typically, one cell renderer is
+used to draw many cells on the screen. To this extent, it isn't expected that a
+CellRenderer keep any permanent state around. Instead, any state is set just
+prior to use using @code{<gobject>}s property system. Then, the cell is measured
+using @code{gtk-cell-renderer-get-size}. Finally, the cell is rendered in the
+correct location using @code{gtk-cell-renderer-render}.
+
+There are a number of rules that must be followed when writing a new
+@code{<gtk-cell-renderer>}. First and formost, it's important that a certain set
+of properties will always yield a cell renderer of the same size, barring a
+@code{<gtk-style>} change. The @code{<gtk-cell-renderer>} also has a number of
+generic properties that are expected to be honored by all children.
+
+Beyond merely rendering a cell, cell renderers can optionally provide active
+user interface elements. A cell renderer can be @dfn{activatable} like
+@code{<gtk-cell-renderer-toggle>}, which toggles when it gets activated by a
+mouse click, or it can be @dfn{editable} like @code{<gtk-cell-renderer-text>},
+which allows the user to edit the text using a @code{<gtk-entry>}. To make a
+cell renderer activatable or editable, you have to implement the @var{activate}
+or @var{start-editing} virtual functions, respectively.
+
+@section Usage
+@include defuns-gtkcellrenderer.xml.texi
+
+@c %end of fragment

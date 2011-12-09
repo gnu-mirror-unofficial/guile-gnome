@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@node gnome-canvas-path-def
+@chapter gnome-canvas-path-def
+Container and functions for manipulating ArtBpaths
+
+@section Overview
+Convenient container and functions for manipulating ArtBpaths, which are paths
+defined by line and curve segments.
+
+@section Usage
+@include defuns-gnome-canvas-path-def.xml.texi
+
+@c %end of fragment

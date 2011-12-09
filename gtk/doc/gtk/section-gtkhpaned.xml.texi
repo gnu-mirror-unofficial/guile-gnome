@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node GtkHPaned
+@chapter GtkHPaned
+A container with two panes arranged horizontally
+
+@section Overview
+The HPaned widget is a container widget with two children arranged horizontally.
+The division between the two panes is adjustable by the user by dragging a
+handle. See @code{<gtk-paned>} for details.
+
+@section Usage
+@include defuns-gtkhpaned.xml.texi
+
+@c %end of fragment

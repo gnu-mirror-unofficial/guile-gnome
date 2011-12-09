@@ -1,0 +1,90 @@
+@node Overview
+@chapter Overview
+
+The GTK+ wrapper for Guile is a part of Guile-GNOME. It's a good idea
+to read the @code{(gnome gobject)} documentation first.
+@xref{Top,,Contents,guile-gnome-gobject, Guile-GNOME: GObject}.
+
+@section Example usage
+
+The following code can be found in the file
+@code{gtk/examples/hello.scm} in your distribution.
+
+@example
+(use-modules (oop goops) (gnome gobject) (gnome gtk))
+
+;; define the app as a function -- there are many other ways to do
+;; this, of course...
+
+(define (hello)
+  ;; every widget has a class. here we define a window and a button.
+  (let* ((window (make <gtk-window> #:type 'toplevel))
+	 (button (make <gtk-button> #:label "Hello, World!")))
+
+    (gtk-container-set-border-width window 10)
+    (gtk-container-add window button)
+    
+    ;; of course you can attach a lambda to a signal :-)
+    (gtype-instance-signal-connect button 'clicked
+                                   (lambda (b) (gtk-main-quit)))
+
+    (gtk-widget-show-all window)
+
+    ;; this will block until gtk-main-quit is called...
+    (gtk-main)))
+
+;; meaning this blocks until the button is clicked.
+(hello)
+@end example
+
+@section @code{hello world}, improved
+
+There's something about this that resembles programming in C a little
+bit too much. In Python, you can just do @code{window.add(button)}.
+That's a lot less typing. In GOOPS, the object framework for Guile,
+methods are implemented a bit differently -- @xref{gnome gobject
+generics,,(gnome gobject generics),guile-gnome-gobject,Guile-Gnome:GObject}.
+If we use the GOOPS methods, @code{hello-generics.scm} looks a bit different:
+
+@example
+(use-modules (oop goops) (gnome gobject) (gnome gtk)
+             (gnome gobject utils))
+
+(define (hello)
+  (let* ((window (make <gtk-window> #:type 'toplevel))
+	 (button (make <gtk-button> #:label "Hello, World!")))
+
+    ;; since window is a container, this generic maps onto the
+    ;; function gtk-container-set-border-width
+
+    (set-border-width window 10)
+
+    ;; note that we can set the border width with a gobject property
+    ;; as well:
+
+    (gobject-set-property window 'border-width 15)
+
+    ;; (gnome gobject generics), re-exported by (gnome gtk), defines a
+    ;; generic `set' method for gobject-set-property, se we can also
+    ;; do it like this:
+    (set window 'border-width 20)
+
+    ;; or, like this, using with-accessors from (gnome gobject utils):
+    (with-accessors (border-width)
+      (set! (border-width window) 20))
+
+    ;; this is much less typing :-)
+    (add window button)
+    
+    ;; see (gnome gobject generics) for a full list of gobject generic
+    ;; functions
+    (connect button 'clicked (lambda (b) (gtk-main-quit)))
+
+    ;; generic functions for .defs apis are defined in the .defs files,
+    ;; not manually
+    (show-all window)
+
+    (gtk-main)))
+
+(hello)
+@end example

@@ -1,0 +1,18 @@
+
+@c %start of fragment
+
+@node Bitmaps and Pixmaps
+@chapter Bitmaps and Pixmaps
+Offscreen drawables
+
+@section Overview
+Pixmaps are offscreen drawables. They can be drawn upon with the standard
+drawing primitives, then copied to another drawable (such as a
+@code{<gdk-window>}) with @code{gdk-pixmap-draw}. The depth of a pixmap is the
+number of bits per pixels. Bitmaps are simply pixmaps with a depth of 1. (That
+is, they are monochrome bitmaps - each pixel can be either on or off).
+
+@section Usage
+@include defuns-pixmaps.xml.texi
+
+@c %end of fragment

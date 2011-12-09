@@ -1,0 +1,280 @@
+#!/bin/sh
+exec ${srcdir:-.}/guile-test-env guile -s "$0" "$@"
+!#
+
+;; guile-gnome
+;; Copyright (C) 2001 Martin Baulig
+;;               2003,2004 Andreas Rottmann
+
+;; This program is free software; you can redistribute it and/or    
+;; modify it under the terms of the GNU General Public License as   
+;; published by the Free Software Foundation; either version 2 of   
+;; the License, or (at your option) any later version.              
+;;                                                                  
+;; This program is distributed in the hope that it will be useful,  
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of   
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+;; GNU General Public License for more details.                     
+;;                                                                  
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, contact:
+;;
+;; Free Software Foundation           Voice:  +1-617-542-5942
+;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+;; Boston, MA  02111-1307,  USA       gnu@gnu.org
+
+(define-module (test-suite test-gobject)
+  #:use-module (oop goops)
+  #:use-module (gnome gobject)
+  #:use-module (gnome gobject gtype)
+  #:use-module (test-suite lib)
+  #:use-module (test-suite exceptions))
+
+(with-test-prefix "basic values"
+  (define (test class value)
+    (equal? (gvalue->scm (make class #:value value)) value))
+  (define exception:value-out-of-range
+    (cons 'out-of-range "^Value .*out of range"))
+  
+  (pass-if-exception "#:value arg missing"
+                     exception:value-arg-missing
+                     (make <guchar>))
+
+  (pass-if "creating gchar"
+           (test <gchar> #\space))
+
+  (pass-if "creating guchar"
+           (test <guchar> #\space))
+
+  (pass-if "creating gboolean #f"
+           (test <gboolean> #f))
+
+  (pass-if "creating gboolean #t"
+           (test <gboolean> #t))
+
+  (pass-if "creating gint"
+           (test <gint> 511))
+
+  (pass-if "creating guint"
+           (test <guint> 511))
+
+  (pass-if-exception "creating guint"
+                     exception:value-out-of-range
+                     (make <guint> #:value -1))
+
+  (pass-if "creating glong"
+           (test <glong> 511))
+
+  (pass-if "creating gulong"
+           (test <gulong> 511))
+
+  (pass-if-exception "creating gulong"
+                     exception:value-out-of-range
+                     (make <gulong> #:value -1))
+
+  (pass-if "creating gfloat"
+           (test <gfloat> 4.5))
+
+  (pass-if "creating gdouble"
+           (test <gdouble> 4.1234))
+
+  (pass-if "creating gchararray"
+           (test <gchararray> "This is a test"))
+
+  (pass-if "creating empty gchararray"
+           (test <gchararray> #f))
+
+  (pass-if "creating gvalue array"
+           (test <gvalue-array> '(1 2 3)))
+  )
+
+(with-test-prefix "creating genum and gflags types"
+  
+  (pass-if "creating genum type"
+           (let ((class (make-class (list <genum>) '()
+                          #:name '<enum-test>
+                          #:vtable #((a "Foo" 1) (b "Hello" 2)))))
+             (eq? class (gtype-name->class "EnumTest"))))
+
+  (pass-if "creating gflags type"
+           (let ((class (make-class (list <gflags>) '()
+                          #:name '<flags-test>
+                          #:vtable #((c "AAAA" 4) (d "BBBB" 8)))))
+             (eq? class (gtype-name->class "FlagsTest"))))
+  )
+
+(define (gvalue? x) (is-a? x <gvalue>))
+
+(with-test-prefix "genum values"
+  
+  (define enum-class (gtype-name->class "EnumTest"))
+  
+  (pass-if "getting enum type class"
+           (is-a? enum-class <gtype-class>))
+  
+  (pass-if "creating enum by nick"
+           (gvalue? (make enum-class #:value 'a)))
+  
+  (pass-if "creating enum by name"
+           (gvalue? (make enum-class #:value "Foo")))
+  
+  (pass-if "creating enum by value"
+           (gvalue? (make enum-class #:value 1)))
+  
+  (pass-if "gvalue->scm on an enum is a <gvalue>"
+           (gvalue? (gvalue->scm (make enum-class #:value 'a))))
+
+  (pass-if "getting enum nick"
+           (eq? (genum->symbol (make enum-class #:value 'a)) 'a))
+  
+  (pass-if "getting enum name"
+           (equal? (genum->name (make enum-class #:value 'a)) "Foo"))
+
+  (pass-if "getting enum value"
+           (equal? (genum->value (make enum-class #:value 'a)) 1))
+  
+  )
+
+(with-test-prefix "gflags values"
+
+  (define flags-class (gtype-name->class "FlagsTest"))
+  
+  (pass-if "getting flags type class"
+           (is-a? flags-class <gtype-class>))
+
+  (pass-if "creating flags by nick"
+           (gvalue? (make flags-class #:value '(c d))))
+
+  (pass-if "creating flags by name"
+           (gvalue? (make flags-class #:value '("AAAA" "BBBB"))))
+
+  (pass-if "creating flags by value"
+           (gvalue? (make flags-class #:value '(4 8))))
+
+  (pass-if "creating flags by or'd value"
+           (gvalue? (make flags-class #:value 12)))
+
+  (pass-if "creating flags by mixed list"
+           (gvalue? (make flags-class #:value '(c "BBBB"))))
+
+  (pass-if "creating flags by single symbol"
+           (gvalue? (make flags-class #:value 'c)))
+
+  (pass-if "gvalue->scm on a flags is a <gvalue>"
+           (gvalue? (gvalue->scm (make flags-class #:value '(4 8)))))
+
+  (pass-if "getting flags as one int value"
+           (equal? (gflags->value (make flags-class #:value '(4 8)))
+                   12))
+
+  (pass-if "getting flags nicks"
+           (equal? (gflags->symbol-list
+                    (make flags-class #:value '(4 8))) '(c d)))
+
+  (pass-if "getting flags names"
+           (equal? (gflags->name-list (make flags-class #:value '(4 8)))
+                   '("AAAA" "BBBB")))
+
+  (pass-if "getting flags values"
+           (equal? (gflags->value-list (make flags-class #:value '(4 8)))
+                   '(4 8)))
+  )
+
+(with-test-prefix "creating gclosure"
+  
+  (define func-without-args (lambda () "Hello World"))
+  (define my-closure? (lambda (x) (is-a? x <gclosure>)))
+  (define long-arg (list->vector (list (make <glong> #:value 82))))
+  
+  (pass-if "creating gclosure"
+           (my-closure? (make <gclosure> #:func func-without-args)))
+  
+  (pass-if "creating gclosure with return type"
+           (my-closure? (make <gclosure> #:func func-without-args
+                              #:return-type <gchararray>)))
+  
+  (pass-if "creating gclosure with arg"
+           (my-closure? (make <gclosure> #:func func-without-args
+                              #:return-type <gchararray>
+                              #:param-types (list <glong>))))
+  )
+
+(with-test-prefix "invoking gclosure"
+  (define long-arg (make <glong> #:value 82))
+  
+  (define closure-without-args
+    (make <gclosure> #:func (lambda () "Hello World")))
+  
+  (define closure-with-retval
+    (make <gclosure> #:func (lambda () "Hello World")
+          #:return-type <gchararray>))
+  
+  (define closure-with-boxed-retval
+    (make <gclosure> #:func (lambda () (make <gclosure> #:func (lambda () #t)))
+          #:return-type <gclosure>))
+  
+  (pass-if "invoking gclosure"
+           (unspecified? (gclosure-invoke closure-without-args #f)))
+  
+  ;; crosses a with/without barrier, not possible to get an exception...
+  ;;(pass-if-exception "invoking gclosure with incorrect arguments"
+  ;;                   exception:wrong-number-of-args
+  ;;                   (gclosure-invoke closure-without-args #f long-arg))
+  
+  (pass-if "invoking gclosure with retval"
+           (string? (gclosure-invoke closure-with-retval <gchararray>)))
+  
+  (pass-if "invoking gclosure checking retval"
+           (equal? (gclosure-invoke closure-with-retval <gchararray>)
+                   "Hello World"))
+  
+  (pass-if "invoking gclosure with boxed retval"
+           (gvalue? (gclosure-invoke closure-with-boxed-retval <gclosure>)))
+  )
+
+(define-class <my-object> (<gobject>)
+  (int #:gparam `(,<gparam-int> #:minimum 2 #:maximum 100 #:default-value 3
+                                #:flags (read write construct)))
+  (float #:gparam `(,<gparam-float> #:minimum 2.0 #:maximum 100.0 #:default-value 3.0
+                                    #:flags (read write construct)))
+  scm)
+(define-method (gobject:set-property (object <my-object>) key val)
+  (next-method)
+  (case key
+    ((int) (slot-set! object 'scm val))
+    ((float) #t) ; pass
+    (else (error "unknown property" key))))
+
+(with-test-prefix "defining custom gobject type"
+ (pass-if "construction succeeds"
+          (is-a? (make <my-object>) <my-object>))
+
+ (pass-if "construct arg set correctly"
+          (let ((o (make <my-object>)))
+            (= (gobject-get-property o 'int) 3)))
+
+ (pass-if "construct arg overridable"
+          (let ((o (make <my-object> #:int 4)))
+            (= (gobject-get-property o 'int) 4)))
+
+ (pass-if "arg settable"
+          (let ((o (make <my-object>)))
+            (gobject-set-property o 'int 10)
+            (= (gobject-get-property o 'int) 10)))
+
+ (pass-if "the same object is seen in construct gobject:set-property and afterwards"
+          (let ((o (make <my-object>)))
+            (= (slot-ref o 'scm) 3)))
+
+ (pass-if "notify works, with the detail argument"
+          (let* ((o (make <my-object>))
+                 (got-notify 0)
+                 (notify (lambda (obj pspec) (set! got-notify (1+ got-notify))))
+                 (id (gtype-instance-signal-connect o 'notify notify #t 'int)))
+            (gobject-set-property o 'int 40)
+            (gobject-set-property o 'float 42)
+            (= got-notify 1))))
+ 
+;; Local Variables:
+;; mode: scheme
+;; End:

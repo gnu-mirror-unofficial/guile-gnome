@@ -1,0 +1,866 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-icon-view>
+Derives from @code{<gtk-cell-layout>}, @code{<gtk-container>}.
+
+This class defines the following slots:
+
+@table @code
+@item pixbuf-column
+Model column used to retrieve the icon pixbuf from
+
+@item text-column
+Model column used to retrieve the text from
+
+@item markup-column
+Model column used to retrieve the text if using Pango markup
+
+@item selection-mode
+The selection mode
+
+@item orientation
+How the text and icon of each item are positioned relative to each other
+
+@item model
+The model for the icon view
+
+@item columns
+Number of columns to display
+
+@item item-width
+The width used for each item
+
+@item spacing
+Space which is inserted between cells of an item
+
+@item row-spacing
+Space which is inserted between grid rows
+
+@item column-spacing
+Space which is inserted between grid columns
+
+@item margin
+Space which is inserted at the edges of the icon view
+
+@item reorderable
+View is reorderable
+
+@item tooltip-column
+The column in the model containing the tooltip texts for the items
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-icon-view> move-cursor  (arg0@tie{}@code{<gtk-movement-step>}) (arg1@tie{}@code{<gint>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-icon-view> selection-changed 
+@end defop
+
+@defop Signal <gtk-icon-view> set-scroll-adjustments  (arg0@tie{}@code{<gtk-adjustment>}) (arg1@tie{}@code{<gtk-adjustment>})
+@end defop
+
+@defop Signal <gtk-icon-view> item-activated  (arg0@tie{}@code{<gtk-tree-path>})
+@end defop
+
+@defop Signal <gtk-icon-view> select-all 
+@end defop
+
+@defop Signal <gtk-icon-view> unselect-all 
+@end defop
+
+@defop Signal <gtk-icon-view> select-cursor-item 
+@end defop
+
+@defop Signal <gtk-icon-view> toggle-cursor-item 
+@end defop
+
+@defop Signal <gtk-icon-view> activate-cursor-item  @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@deffn Function gtk-icon-view-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-icon-view>} widget
+
+@table @var
+@item ret
+A newly created @code{<gtk-icon-view>} widget
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-new-with-model  (model@tie{}@code{<gtk-tree-model>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-icon-view>} widget with the model @var{model}.
+
+@table @var
+@item model
+The model.
+
+@item ret
+A newly created @code{<gtk-icon-view>} widget.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-set-model  (self@tie{}@code{<gtk-icon-view>}) (model@tie{}@code{<gtk-tree-model>})
+@deffnx Method set-model
+Sets the model for a @code{<gtk-icon-view>}. If the @var{icon-view} already has
+a model set, it will remove it before setting the new model. If @var{model} is
+@samp{@code{#f}}, then it will unset the old model.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item model
+The model.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-get-model  (self@tie{}@code{<gtk-icon-view>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-model>})
+@deffnx Method get-model
+Returns the model the @code{<gtk-icon-view>} is based on. Returns
+@samp{@code{#f}} if the model is unset.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item ret
+A @code{<gtk-tree-model>}, or @samp{@code{#f}} if none is currently being used.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-set-text-column  (self@tie{}@code{<gtk-icon-view>}) (column@tie{}@code{int})
+@deffnx Method set-text-column
+Sets the column with text for @var{icon-view} to be @var{column}. The text
+column must be of type @code{<g-type-string>}.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item column
+A column in the currently used model.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-get-text-column  (self@tie{}@code{<gtk-icon-view>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-text-column
+Returns the column with text for @var{icon-view}.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item ret
+the text column, or -1 if it's unset.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-set-markup-column  (self@tie{}@code{<gtk-icon-view>}) (column@tie{}@code{int})
+@deffnx Method set-markup-column
+Sets the column with markup information for @var{icon-view} to be @var{column}.
+The markup column must be of type @code{<g-type-string>}. If the markup column
+is set to something, it overrides the text column set by
+@code{gtk-icon-view-set-text-column}.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item column
+A column in the currently used model.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-get-markup-column  (self@tie{}@code{<gtk-icon-view>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-markup-column
+Returns the column with markup text for @var{icon-view}.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item ret
+the markup column, or -1 if it's unset.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-set-pixbuf-column  (self@tie{}@code{<gtk-icon-view>}) (column@tie{}@code{int})
+@deffnx Method set-pixbuf-column
+Sets the column with pixbufs for @var{icon-view} to be @var{column}. The pixbuf
+column must be of type @code{<gdk-type-pixbuf>}
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item column
+A column in the currently used model.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-get-pixbuf-column  (self@tie{}@code{<gtk-icon-view>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-pixbuf-column
+Returns the column with pixbufs for @var{icon-view}.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item ret
+the pixbuf column, or -1 if it's unset.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-get-path-at-pos  (self@tie{}@code{<gtk-icon-view>}) (x@tie{}@code{int}) (y@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-path>})
+@deffnx Method get-path-at-pos
+Finds the path at the point (@var{x}, @var{y}), relative to widget coordinates.
+See @code{gtk-icon-view-get-item-at-pos}, if you are also interested in the cell
+at the specified position.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item x
+The x position to be identified
+
+@item y
+The y position to be identified
+
+@item ret
+The @code{<gtk-tree-path>} corresponding to the icon or @samp{@code{#f}} if no
+icon exists at that position.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-set-cursor  (self@tie{}@code{<gtk-icon-view>}) (path@tie{}@code{<gtk-tree-path>}) (cell@tie{}@code{<gtk-cell-renderer>}) (start_editing@tie{}@code{bool})
+@deffnx Method set-cursor
+Sets the current keyboard focus to be at @var{path}, and selects it. This is
+useful when you want to focus the user's attention on a particular item. If
+@var{cell} is not @samp{@code{#f}}, then focus is given to the cell specified by
+it. Additionally, if @var{start-editing} is @samp{@code{#t}}, then editing
+should be started in the specified cell.
+
+This function is often followed by @samp{gtk_widget_grab_focus (icon_view)} in
+order to give keyboard focus to the widget. Please note that editing can only
+happen when the widget is realized.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}
+
+@item path
+A @code{<gtk-tree-path>}
+
+@item cell
+One of the cell renderers of @var{icon-view}, or @samp{@code{#f}}
+
+@item start-editing
+@samp{@code{#t}} if the specified cell should start being edited.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-icon-view-set-selection-mode  (self@tie{}@code{<gtk-icon-view>}) (mode@tie{}@code{<gtk-selection-mode>})
+@deffnx Method set-selection-mode
+Sets the selection mode of the @var{icon-view}.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item mode
+The selection mode
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-get-selection-mode  (self@tie{}@code{<gtk-icon-view>}) @result{}@tie{} (ret@tie{}@code{<gtk-selection-mode>})
+@deffnx Method get-selection-mode
+Gets the selection mode of the @var{icon-view}.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item ret
+the current selection mode
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-set-orientation  (self@tie{}@code{<gtk-icon-view>}) (orientation@tie{}@code{<gtk-orientation>})
+@deffnx Method set-orientation
+Sets the ::orientation property which determines whether the labels are drawn
+beside the icons instead of below.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item orientation
+the relative position of texts and icons
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-get-orientation  (self@tie{}@code{<gtk-icon-view>}) @result{}@tie{} (ret@tie{}@code{<gtk-orientation>})
+@deffnx Method get-orientation
+Returns the value of the ::orientation property which determines whether the
+labels are drawn beside the icons instead of below.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item ret
+the relative position of texts and icons
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-set-columns  (self@tie{}@code{<gtk-icon-view>}) (columns@tie{}@code{int})
+@deffnx Method set-columns
+Sets the ::columns property which determines in how many columns the icons are
+arranged. If @var{columns} is -1, the number of columns will be chosen
+automatically to fill the available area.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item columns
+the number of columns
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-get-columns  (self@tie{}@code{<gtk-icon-view>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-columns
+Returns the value of the ::columns property.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item ret
+the number of columns, or -1
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-set-item-width  (self@tie{}@code{<gtk-icon-view>}) (item_width@tie{}@code{int})
+@deffnx Method set-item-width
+Sets the ::item-width property which specifies the width to use for each item.
+If it is set to -1, the icon view will automatically determine a suitable item
+size.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item item-width
+the width for each item
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-get-item-width  (self@tie{}@code{<gtk-icon-view>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-item-width
+Returns the value of the ::item-width property.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item ret
+the width of a single item, or -1
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-set-spacing  (self@tie{}@code{<gtk-icon-view>}) (spacing@tie{}@code{int})
+@deffnx Method set-spacing
+Sets the ::spacing property which specifies the space which is inserted between
+the cells (i.e. the icon and the text) of an item.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item spacing
+the spacing
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-get-spacing  (self@tie{}@code{<gtk-icon-view>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-spacing
+Returns the value of the ::spacing property.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item ret
+the space between cells
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-set-row-spacing  (self@tie{}@code{<gtk-icon-view>}) (row_spacing@tie{}@code{int})
+@deffnx Method set-row-spacing
+Sets the ::row-spacing property which specifies the space which is inserted
+between the rows of the icon view.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item row-spacing
+the row spacing
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-get-row-spacing  (self@tie{}@code{<gtk-icon-view>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-row-spacing
+Returns the value of the ::row-spacing property.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item ret
+the space between rows
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-set-column-spacing  (self@tie{}@code{<gtk-icon-view>}) (column_spacing@tie{}@code{int})
+@deffnx Method set-column-spacing
+Sets the ::column-spacing property which specifies the space which is inserted
+between the columns of the icon view.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item column-spacing
+the column spacing
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-get-column-spacing  (self@tie{}@code{<gtk-icon-view>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-column-spacing
+Returns the value of the ::column-spacing property.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item ret
+the space between columns
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-set-margin  (self@tie{}@code{<gtk-icon-view>}) (margin@tie{}@code{int})
+@deffnx Method set-margin
+Sets the ::margin property which specifies the space which is inserted at the
+top, bottom, left and right of the icon view.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item margin
+the margin
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-get-margin  (self@tie{}@code{<gtk-icon-view>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-margin
+Returns the value of the ::margin property.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item ret
+the space at the borders
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-select-path  (self@tie{}@code{<gtk-icon-view>}) (path@tie{}@code{<gtk-tree-path>})
+@deffnx Method select-path
+Selects the row at @var{path}.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item path
+The @code{<gtk-tree-path>} to be selected.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-unselect-path  (self@tie{}@code{<gtk-icon-view>}) (path@tie{}@code{<gtk-tree-path>})
+@deffnx Method unselect-path
+Unselects the row at @var{path}.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item path
+The @code{<gtk-tree-path>} to be unselected.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-path-is-selected  (self@tie{}@code{<gtk-icon-view>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method path-is-selected
+Returns @samp{@code{#t}} if the icon pointed to by @var{path} is currently
+selected. If @var{icon} does not point to a valid location, @samp{@code{#f}} is
+returned.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item path
+A @code{<gtk-tree-path>} to check selection on.
+
+@item ret
+@samp{@code{#t}} if @var{path} is selected.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-get-selected-items  (self@tie{}@code{<gtk-icon-view>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method get-selected-items
+Creates a list of paths of all selected items. Additionally, if you are planning
+on modifying the model after calling this function, you may want to convert the
+returned list into a list of @code{<gtk-tree-row-reference>}s. To do this, you
+can use @code{gtk-tree-row-reference-new}.
+
+To free the return value, use:
+
+@example 
+
+g_list_foreach (list, gtk_tree_path_free, NULL);
+g_list_free (list);
+@end example
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item ret
+A @code{<g-list>} containing a @code{<gtk-tree-path>} for each selected row.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-select-all  (self@tie{}@code{<gtk-icon-view>})
+@deffnx Method select-all
+Selects all the icons. @var{icon-view} must has its selection mode set to
+@code{<gtk-selection-multiple>}.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-unselect-all  (self@tie{}@code{<gtk-icon-view>})
+@deffnx Method unselect-all
+Unselects all the icons.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-item-activated  (self@tie{}@code{<gtk-icon-view>}) (path@tie{}@code{<gtk-tree-path>})
+@deffnx Method item-activated
+Activates the item determined by @var{path}.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}
+
+@item path
+The @code{<gtk-tree-path>} to be activated
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-icon-view-scroll-to-path  (self@tie{}@code{<gtk-icon-view>}) (path@tie{}@code{<gtk-tree-path>}) (use_align@tie{}@code{bool}) (row_align@tie{}@code{float}) (col_align@tie{}@code{float})
+@deffnx Method scroll-to-path
+Moves the alignments of @var{icon-view} to the position specified by @var{path}.
+@var{row-align} determines where the row is placed, and @var{col-align}
+determines where @var{column} is placed. Both are expected to be between 0.0 and
+1.0. 0.0 means left/top alignment, 1.0 means right/bottom alignment, 0.5 means
+center.
+
+If @var{use-align} is @samp{@code{#f}}, then the alignment arguments are
+ignored, and the tree does the minimum amount of work to scroll the item onto
+the screen. This means that the item will be scrolled to the edge closest to its
+current position. If the item is currently visible on the screen, nothing is
+done.
+
+This function only works if the model is set, and @var{path} is a valid row on
+the model. If the model changes before the @var{icon-view} is realized, the
+centered path will be modified to reflect this change.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item path
+The path of the item to move to.
+
+@item use-align
+whether to use alignment arguments, or @samp{@code{#f}}.
+
+@item row-align
+The vertical alignment of the item specified by @var{path}.
+
+@item col-align
+The horizontal alignment of the item specified by @var{path}.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-icon-view-unset-model-drag-dest  (self@tie{}@code{<gtk-icon-view>})
+@deffnx Method unset-model-drag-dest
+Undoes the effect of @code{gtk-icon-view-enable-model-drag-dest}.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-icon-view-set-reorderable  (self@tie{}@code{<gtk-icon-view>}) (reorderable@tie{}@code{bool})
+@deffnx Method set-reorderable
+This function is a convenience function to allow you to reorder models that
+support the @code{<gtk-tree-drag-source-iface>} and the
+@code{<gtk-tree-drag-dest-iface>}. Both @code{<gtk-tree-store>} and
+@code{<gtk-list-store>} support these. If @var{reorderable} is @samp{@code{#t}},
+then the user can reorder the model by dragging and dropping rows. The developer
+can listen to these changes by connecting to the model's row_inserted and
+row_deleted signals.
+
+This function does not give you any degree of control over the order -- any
+reordering is allowed. If more control is needed, you should probably handle
+drag and drop manually.
+
+@table @var
+@item icon-view
+A @code{<gtk-icon-view>}.
+
+@item reorderable
+@samp{@code{#t}}, if the list of items can be reordered.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-icon-view-get-reorderable  (self@tie{}@code{<gtk-icon-view>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-reorderable
+Retrieves whether the user can reorder the list via drag-and-drop. See
+@code{gtk-icon-view-set-reorderable}.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item ret
+@samp{@code{#t}} if the list can be reordered.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-icon-view-set-drag-dest-item  (self@tie{}@code{<gtk-icon-view>}) (path@tie{}@code{<gtk-tree-path>}) (pos@tie{}@code{<gtk-icon-view-drop-position>})
+@deffnx Method set-drag-dest-item
+Sets the item that is highlighted for feedback.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item path
+The path of the item to highlight, or @samp{@code{#f}}.
+
+@item pos
+Specifies where to drop, relative to the item
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-icon-view-create-drag-icon  (self@tie{}@code{<gtk-icon-view>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixmap>})
+@deffnx Method create-drag-icon
+Creates a @code{<gdk-pixmap>} representation of the item at @var{path}. This
+image is used for a drag icon.
+
+@table @var
+@item icon-view
+a @code{<gtk-icon-view>}
+
+@item path
+a @code{<gtk-tree-path>} in @var{icon-view}
+
+@item ret
+a newly-allocated pixmap of the drag icon.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+
+@c %end of fragment

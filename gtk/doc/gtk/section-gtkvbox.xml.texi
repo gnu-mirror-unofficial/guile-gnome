@@ -1,0 +1,19 @@
+
+@c %start of fragment
+
+@node GtkVBox
+@chapter GtkVBox
+A vertical container box
+
+@section Overview
+GtkVBox is a container that organizes child widgets into a single column.
+
+Use the @code{<gtk-box>} packing interface to determine the arrangement,
+spacing, height, and alignment of GtkVBox children.
+
+All children are allocated the same width.
+
+@section Usage
+@include defuns-gtkvbox.xml.texi
+
+@c %end of fragment

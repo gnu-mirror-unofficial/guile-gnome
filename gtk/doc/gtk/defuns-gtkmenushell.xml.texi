@@ -1,0 +1,255 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-menu-shell>
+Derives from @code{<gtk-container>}.
+
+This class defines the following slots:
+
+@table @code
+@item take-focus
+A boolean that determines whether the menu grabs the keyboard focus
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-menu-shell> deactivate 
+This signal is emitted when a menu shell is deactivated.
+
+@end defop
+
+@defop Signal <gtk-menu-shell> selection-done 
+This signal is emitted when a selection has been completed within a menu shell.
+
+@end defop
+
+@defop Signal <gtk-menu-shell> move-current  (arg0@tie{}@code{<gtk-menu-direction-type>})
+An action signal which moves the current menu item in the direction specified by
+@var{direction}.
+
+@end defop
+
+@defop Signal <gtk-menu-shell> activate-current  (arg0@tie{}@code{<gboolean>})
+An action signal that activates the current menu item within the menu shell.
+
+@end defop
+
+@defop Signal <gtk-menu-shell> cancel 
+An action signal which cancels the selection within the menu shell. Causes the
+GtkMenuShell::selection-done signal to be emitted.
+
+@end defop
+
+@defop Signal <gtk-menu-shell> cycle-focus  (arg0@tie{}@code{<gtk-direction-type>})
+@end defop
+
+@defop Signal <gtk-menu-shell> move-selected  (arg0@tie{}@code{<gint>}) @result{}@tie{}@code{<gboolean>}
+undocumented
+@end defop
+
+@deffn Function gtk-menu-shell-append  (self@tie{}@code{<gtk-menu-shell>}) (child@tie{}@code{<gtk-widget>})
+@deffnx Method append
+Adds a new @code{<gtk-menu-item>} to the end of the menu shell's item list.
+
+@table @var
+@item menu-shell
+a @code{<gtk-menu-shell>}.
+
+@item child
+The @code{<gtk-menu-item>} to add.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-shell-prepend  (self@tie{}@code{<gtk-menu-shell>}) (child@tie{}@code{<gtk-widget>})
+@deffnx Method prepend
+Adds a new @code{<gtk-menu-item>} to the beginning of the menu shell's item
+list.
+
+@table @var
+@item menu-shell
+a @code{<gtk-menu-shell>}.
+
+@item child
+The @code{<gtk-menu-item>} to add.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-shell-insert  (self@tie{}@code{<gtk-menu-shell>}) (child@tie{}@code{<gtk-widget>}) (position@tie{}@code{int})
+@deffnx Method insert
+Adds a new @code{<gtk-menu-item>} to the menu shell's item list at the position
+indicated by @var{position}.
+
+@table @var
+@item menu-shell
+a @code{<gtk-menu-shell>}.
+
+@item child
+The @code{<gtk-menu-item>} to add.
+
+@item position
+The position in the item list where @var{child} is added. Positions are numbered
+from 0 to n-1.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-shell-deactivate  (self@tie{}@code{<gtk-menu-shell>})
+@deffnx Method deactivate
+Deactivates the menu shell. Typically this results in the menu shell being
+erased from the screen.
+
+@table @var
+@item menu-shell
+a @code{<gtk-menu-shell>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-shell-select-item  (self@tie{}@code{<gtk-menu-shell>}) (menu_item@tie{}@code{<gtk-widget>})
+@deffnx Method select-item
+Selects the menu item from the menu shell.
+
+@table @var
+@item menu-shell
+a @code{<gtk-menu-shell>}.
+
+@item menu-item
+The @code{<gtk-menu-item>} to select.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-shell-select-first  (self@tie{}@code{<gtk-menu-shell>}) (search_sensitive@tie{}@code{bool})
+@deffnx Method select-first
+Select the first visible or selectable child of the menu shell; don't select
+tearoff items unless the only item is a tearoff item.
+
+@table @var
+@item menu-shell
+a @code{<gtk-menu-shell>}
+
+@item search-sensitive
+if @samp{@code{#t}}, search for the first selectable menu item, otherwise select
+nothing if the first item isn't sensitive. This should be @samp{@code{#f}} if
+the menu is being popped up initially.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-menu-shell-deselect  (self@tie{}@code{<gtk-menu-shell>})
+@deffnx Method deselect
+Deselects the currently selected item from the menu shell, if any.
+
+@table @var
+@item menu-shell
+a @code{<gtk-menu-shell>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-shell-activate-item  (self@tie{}@code{<gtk-menu-shell>}) (menu_item@tie{}@code{<gtk-widget>}) (force_deactivate@tie{}@code{bool})
+@deffnx Method activate-item
+Activates the menu item within the menu shell.
+
+@table @var
+@item menu-shell
+a @code{<gtk-menu-shell>}.
+
+@item menu-item
+The @code{<gtk-menu-item>} to activate.
+
+@item force-deactivate
+If TRUE, force the deactivation of the menu shell after the menu item is
+activated.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-menu-shell-cancel  (self@tie{}@code{<gtk-menu-shell>})
+@deffnx Method cancel
+Cancels the selection within the menu shell.
+
+@table @var
+@item menu-shell
+a @code{<gtk-menu-shell>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-menu-shell-set-take-focus  (self@tie{}@code{<gtk-menu-shell>}) (take_focus@tie{}@code{bool})
+@deffnx Method set-take-focus
+If @var{take-focus} is @samp{@code{#t}} (the default) the menu shell will take
+the keyboard focus so that it will receive all keyboard events which is needed
+to enable keyboard navigation in menus.
+
+Setting @var{take-focus} to @samp{@code{#f}} is useful only for special
+applications like virtual keyboard implementations which should not take
+keyboard focus.
+
+The @var{take-focus} state of a menu or menu bar is automatically propagated to
+submenus whenever a submenu is popped up, so you don't have to worry about
+recursively setting it for your entire menu hierarchy. Only when
+programmatically picking a submenu and popping it up manually, the
+@var{take-focus} property of the submenu needs to be set explicitely.
+
+Note that setting it to @samp{@code{#f}} has side-effects:
+
+If the focus is in some other app, it keeps the focus and keynav in the menu
+doesn't work. Consequently, keynav on the menu will only work if the focus is on
+some toplevel owned by the onscreen keyboard.
+
+To avoid confusing the user, menus with @var{take-focus} set to @samp{@code{#f}}
+should not display mnemonics or accelerators, since it cannot be guaranteed that
+they will work.
+
+See also @code{gdk-keyboard-grab}
+
+@table @var
+@item menu-shell
+a @code{<gtk-menu-shell>}
+
+@item take-focus
+@samp{@code{#t}} if the menu shell should take the keyboard focus on popup.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-menu-shell-get-take-focus  (self@tie{}@code{<gtk-menu-shell>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-take-focus
+Returns @samp{@code{#t}} if the menu shell will take the keyboard focus on
+popup.
+
+@table @var
+@item menu-shell
+a @code{<gtk-menu-shell>}
+
+@item ret
+@samp{@code{#t}} if the menu shell will take the keyboard focus on popup.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+
+@c %end of fragment

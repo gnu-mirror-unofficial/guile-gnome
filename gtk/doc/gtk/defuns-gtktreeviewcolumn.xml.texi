@@ -1,0 +1,618 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-tree-view-column>
+Derives from @code{<gtk-buildable>}, @code{<gtk-cell-layout>},
+@code{<gtk-object>}.
+
+This class defines the following slots:
+
+@table @code
+@item visible
+Whether to display the column
+
+@item resizable
+Column is user-resizable
+
+@item width
+Current width of the column
+
+@item spacing
+Space which is inserted between cells
+
+@item sizing
+Resize mode of the column
+
+@item fixed-width
+Current fixed width of the column
+
+@item min-width
+Minimum allowed width of the column
+
+@item max-width
+Maximum allowed width of the column
+
+@item title
+Title to appear in column header
+
+@item expand
+Column gets share of extra width allocated to the widget
+
+@item clickable
+Whether the header can be clicked
+
+@item widget
+Widget to put in column header button instead of column title
+
+@item alignment
+X Alignment of the column header text or widget
+
+@item reorderable
+Whether the column can be reordered around the headers
+
+@item sort-indicator
+Whether to show a sort indicator
+
+@item sort-order
+Sort direction the sort indicator should indicate
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-tree-view-column> clicked 
+@end defop
+
+@deffn Function gtk-tree-view-column-new  @result{}@tie{} (ret@tie{}@code{<gtk-tree-view-column>})
+Creates a new @code{<gtk-tree-view-column>}.
+
+@table @var
+@item ret
+A newly created @code{<gtk-tree-view-column>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-pack-start  (self@tie{}@code{<gtk-tree-view-column>}) (cell@tie{}@code{<gtk-cell-renderer>}) (expand@tie{}@code{bool})
+@deffnx Method pack-start
+Packs the @var{cell} into the beginning of the column. If @var{expand} is
+@samp{@code{#f}}, then the @var{cell} is allocated no more space than it needs.
+Any unused space is divided evenly between cells for which @var{expand} is
+@samp{@code{#t}}.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item cell
+The @code{<gtk-cell-renderer>}.
+
+@item expand
+@samp{@code{#t}} if @var{cell} is to be given extra space allocated to
+@var{tree-column}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-pack-end  (self@tie{}@code{<gtk-tree-view-column>}) (cell@tie{}@code{<gtk-cell-renderer>}) (expand@tie{}@code{bool})
+@deffnx Method pack-end
+Adds the @var{cell} to end of the column. If @var{expand} is @samp{@code{#f}},
+then the @var{cell} is allocated no more space than it needs. Any unused space
+is divided evenly between cells for which @var{expand} is @samp{@code{#t}}.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item cell
+The @code{<gtk-cell-renderer>}.
+
+@item expand
+@samp{@code{#t}} if @var{cell} is to be given extra space allocated to
+@var{tree-column}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-clear  (self@tie{}@code{<gtk-tree-view-column>})
+@deffnx Method clear
+Unsets all the mappings on all renderers on the @var{tree-column}.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-add-attribute  (self@tie{}@code{<gtk-tree-view-column>}) (cell_renderer@tie{}@code{<gtk-cell-renderer>}) (attribute@tie{}@code{mchars}) (column@tie{}@code{int})
+@deffnx Method add-attribute
+Adds an attribute mapping to the list in @var{tree-column}. The @var{column} is
+the column of the model to get a value from, and the @var{attribute} is the
+parameter on @var{cell-renderer} to be set from the value. So for example if
+column 2 of the model contains strings, you could have the "text" attribute of a
+@code{<gtk-cell-renderer-text>} get its values from column 2.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item cell-renderer
+the @code{<gtk-cell-renderer>} to set attributes on
+
+@item attribute
+An attribute on the renderer
+
+@item column
+The column position on the model to get the attribute from.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-set-spacing  (self@tie{}@code{<gtk-tree-view-column>}) (spacing@tie{}@code{int})
+@deffnx Method set-spacing
+Sets the spacing field of @var{tree-column}, which is the number of pixels to
+place between cell renderers packed into it.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item spacing
+distance between cell renderers in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-get-spacing  (self@tie{}@code{<gtk-tree-view-column>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-spacing
+Returns the spacing of @var{tree-column}.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item ret
+the spacing of @var{tree-column}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-set-visible  (self@tie{}@code{<gtk-tree-view-column>}) (visible@tie{}@code{bool})
+@deffnx Method set-visible
+Sets the visibility of @var{tree-column}.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item visible
+@samp{@code{#t}} if the @var{tree-column} is visible.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-get-visible  (self@tie{}@code{<gtk-tree-view-column>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-visible
+Returns @samp{@code{#t}} if @var{tree-column} is visible.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item ret
+whether the column is visible or not. If it is visible, then the tree will show
+the column.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-set-resizable  (self@tie{}@code{<gtk-tree-view-column>}) (resizable@tie{}@code{bool})
+@deffnx Method set-resizable
+If @var{resizable} is @samp{@code{#t}}, then the user can explicitly resize the
+column by grabbing the outer edge of the column button. If resizable is
+@samp{@code{#t}} and sizing mode of the column is
+@code{<gtk-tree-view-column-autosize>}, then the sizing mode is changed to
+@code{<gtk-tree-view-column-grow-only>}.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}
+
+@item resizable
+@samp{@code{#t}}, if the column can be resized
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-get-resizable  (self@tie{}@code{<gtk-tree-view-column>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-resizable
+Returns @samp{@code{#t}} if the @var{tree-column} can be resized by the end
+user.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}
+
+@item ret
+@samp{@code{#t}}, if the @var{tree-column} can be resized.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-set-sizing  (self@tie{}@code{<gtk-tree-view-column>}) (type@tie{}@code{<gtk-tree-view-column-sizing>})
+@deffnx Method set-sizing
+Sets the growth behavior of @var{tree-column} to @var{type}.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item type
+The @code{<gtk-tree-view-column-sizing>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-get-sizing  (self@tie{}@code{<gtk-tree-view-column>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-view-column-sizing>})
+@deffnx Method get-sizing
+Returns the current type of @var{tree-column}.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item ret
+The type of @var{tree-column}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-get-width  (self@tie{}@code{<gtk-tree-view-column>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-width
+Returns the current size of @var{tree-column} in pixels.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item ret
+The current width of @var{tree-column}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-set-min-width  (self@tie{}@code{<gtk-tree-view-column>}) (min_width@tie{}@code{int})
+@deffnx Method set-min-width
+Sets the minimum width of the @var{tree-column}. If @var{min-width} is -1, then
+the minimum width is unset.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item min-width
+The minimum width of the column in pixels, or -1.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-get-min-width  (self@tie{}@code{<gtk-tree-view-column>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-min-width
+Returns the minimum width in pixels of the @var{tree-column}, or -1 if no
+minimum width is set.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item ret
+The minimum width of the @var{tree-column}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-set-max-width  (self@tie{}@code{<gtk-tree-view-column>}) (max_width@tie{}@code{int})
+@deffnx Method set-max-width
+Sets the maximum width of the @var{tree-column}. If @var{max-width} is -1, then
+the maximum width is unset. Note, the column can actually be wider than max
+width if it's the last column in a view. In this case, the column expands to
+fill any extra space.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item max-width
+The maximum width of the column in pixels, or -1.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-get-max-width  (self@tie{}@code{<gtk-tree-view-column>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-max-width
+Returns the maximum width in pixels of the @var{tree-column}, or -1 if no
+maximum width is set.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item ret
+The maximum width of the @var{tree-column}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-clicked  (self@tie{}@code{<gtk-tree-view-column>})
+@deffnx Method clicked
+Emits the "clicked" signal on the column. This function will only work if
+@var{tree-column} is clickable.
+
+@table @var
+@item tree-column
+a @code{<gtk-tree-view-column>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-set-title  (self@tie{}@code{<gtk-tree-view-column>}) (title@tie{}@code{mchars})
+@deffnx Method set-title
+Sets the title of the @var{tree-column}. If a custom widget has been set, then
+this value is ignored.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item title
+The title of the @var{tree-column}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-get-title  (self@tie{}@code{<gtk-tree-view-column>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-title
+Returns the title of the widget.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item ret
+the title of the column. This string should not be modified or freed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-set-expand  (self@tie{}@code{<gtk-tree-view-column>}) (expand@tie{}@code{bool})
+@deffnx Method set-expand
+Sets the column to take available extra space. This space is shared equally
+amongst all columns that have the expand set to @samp{@code{#t}}. If no column
+has this option set, then the last column gets all extra space. By default,
+every column is created with this @samp{@code{#f}}.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}
+
+@item expand
+@samp{@code{#t}} if the column should take available extra space,
+@samp{@code{#f}} if not
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-get-expand  (self@tie{}@code{<gtk-tree-view-column>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-expand
+Return @samp{@code{#t}} if the column expands to take any available space.
+
+@table @var
+@item tree-column
+a @code{<gtk-tree-view-column>}
+
+@item ret
+@samp{@code{#t}}, if the column expands
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-set-clickable  (self@tie{}@code{<gtk-tree-view-column>}) (clickable@tie{}@code{bool})
+@deffnx Method set-clickable
+Sets the header to be active if @var{active} is @samp{@code{#t}}. When the
+header is active, then it can take keyboard focus, and can be clicked.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item clickable
+@samp{@code{#t}} if the header is active.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-get-clickable  (self@tie{}@code{<gtk-tree-view-column>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-clickable
+Returns @samp{@code{#t}} if the user can click on the header for the column.
+
+@table @var
+@item tree-column
+a @code{<gtk-tree-view-column>}
+
+@item ret
+@samp{@code{#t}} if user can click the column header.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-set-widget  (self@tie{}@code{<gtk-tree-view-column>}) (widget@tie{}@code{<gtk-widget>})
+@deffnx Method set-widget
+Sets the widget in the header to be @var{widget}. If widget is @samp{@code{#f}},
+then the header button is set with a @code{<gtk-label>} set to the title of
+@var{tree-column}.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item widget
+A child @code{<gtk-widget>}, or @samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-get-widget  (self@tie{}@code{<gtk-tree-view-column>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-widget
+Returns the @code{<gtk-widget>} in the button on the column header. If a custom
+widget has not been set then @samp{@code{#f}} is returned.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item ret
+The @code{<gtk-widget>} in the column header, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-set-alignment  (self@tie{}@code{<gtk-tree-view-column>}) (xalign@tie{}@code{float})
+@deffnx Method set-alignment
+Sets the alignment of the title or custom widget inside the column header. The
+alignment determines its location inside the button -- 0.0 for left, 0.5 for
+center, 1.0 for right.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item xalign
+The alignment, which is between [0.0 and 1.0] inclusive.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-get-alignment  (self@tie{}@code{<gtk-tree-view-column>}) @result{}@tie{} (ret@tie{}@code{float})
+@deffnx Method get-alignment
+Returns the current x alignment of @var{tree-column}. This value can range
+between 0.0 and 1.0.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}.
+
+@item ret
+The current alignent of @var{tree-column}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-set-sort-order  (self@tie{}@code{<gtk-tree-view-column>}) (order@tie{}@code{<gtk-sort-type>})
+@deffnx Method set-sort-order
+Changes the appearance of the sort indicator.
+
+This @emph{does not} actually sort the model. Use
+@code{gtk-tree-view-column-set-sort-column-id} if you want automatic sorting
+support. This function is primarily for custom sorting behavior, and should be
+used in conjunction with @code{gtk-tree-sortable-set-sort-column} to do that.
+For custom models, the mechanism will vary.
+
+The sort indicator changes direction to indicate normal sort or reverse sort.
+Note that you must have the sort indicator enabled to see anything when calling
+this function; see @code{gtk-tree-view-column-set-sort-indicator}.
+
+@table @var
+@item tree-column
+a @code{<gtk-tree-view-column>}
+
+@item order
+sort order that the sort indicator should indicate
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-get-sort-order  (self@tie{}@code{<gtk-tree-view-column>}) @result{}@tie{} (ret@tie{}@code{<gtk-sort-type>})
+@deffnx Method get-sort-order
+Gets the value set by @code{gtk-tree-view-column-set-sort-order}.
+
+@table @var
+@item tree-column
+a @code{<gtk-tree-view-column>}
+
+@item ret
+the sort order the sort indicator is indicating
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-focus-cell  (self@tie{}@code{<gtk-tree-view-column>}) (cell@tie{}@code{<gtk-cell-renderer>})
+@deffnx Method focus-cell
+Sets the current keyboard focus to be at @var{cell}, if the column contains 2 or
+more editable and activatable cells.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}
+
+@item cell
+A @code{<gtk-cell-renderer>}
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-tree-view-column-queue-resize  (self@tie{}@code{<gtk-tree-view-column>})
+@deffnx Method queue-resize
+Flags the column, and the cell renderers added to this column, to have their
+sizes renegotiated.
+
+@table @var
+@item tree-column
+A @code{<gtk-tree-view-column>}
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+
+@c %end of fragment

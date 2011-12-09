@@ -1,0 +1,95 @@
+
+@c %start of fragment
+
+@node GConfClient
+@chapter GConfClient
+convenience wrapper
+
+@section Overview
+@code{<g-conf-client>} adds the following features to plain GConf:
+
+A client-side cache for a specified list of directories you're interested in.
+You can "preload" entire directories into the cache, speeding things up even
+more.
+
+Some automatic error handling, if you request it.
+
+Signals when a value changes or an error occurs.
+
+If you use @code{<g-conf-client>}, you should not use the underlying
+@code{<g-conf-engine>} directly, or you'll break things. This is why there's no
+@code{gconf-client-get-engine} function; in fact, if you create the
+@code{<g-conf-client>} with @code{gconf-client-get-default}, there is no
+(legitimate) way to obtain a pointer to the underlying @code{<g-conf-engine>}.
+If you create a @code{<g-conf-client>} from an existing engine, you'll have to
+be disciplined enough to avoid using that engine directly.
+
+This is all a white lie; @emph{some} direct @code{<g-conf-engine>} operations
+are safe. But it's complicated to know which, and if an operation isn't safe the
+resulting bugs will mangle the cache and cause weird bugs at an indeterminate
+time in the future; you don't want to risk this situation.
+
+A @code{<g-conf-client>} has a list of directories that it "watches." These
+directories are optionally pre-loaded into the cache, and monitored in order to
+emit the @code{<value-changed>} signal. The @code{<g-conf-client>} can also be
+used to access directories not in the list, but those directories won't be
+preloaded and the "value_changed" signal won't be emitted for them.
+
+There are two error-related signals in @code{<g-conf-client>}. The first is
+plain "error"; it's emitted anytime an error occurs. The second is
+"unreturned_error"; this signal is emitted if you pass as the @code{<g-error>}**
+to any @code{<g-conf-client>} function. The idea is that you can have a global
+error handler attached to the "unreturned_error" signal; if you want to use this
+handler, you don't need to use the normal GConf error handling mechanism.
+However, if you ever need to handle errors for a specific function call, you can
+override the global handler by passing a non-@code{<g-error>}** to the function.
+If you want an error handler that's @emph{always} invoked, use the "error"
+signal.
+
+The "value_changed" signal is emitted whenever the server notifies your client
+program that a value has changed in the GConf database. There's one problem with
+this signal: the signal handler has to use @code{strcmp} to determine whether
+the changed value is the one it was interested in. If you are interested in lots
+of values, then every time a value changes you'll be making lots of calls to
+@code{strcmp} and getting O(n) performance. @code{gconf-client-notify-add} is a
+superior interface in most cases for this reason. Note that calling
+@code{gconf-client-set} and its relatives will cause "value_changed" to be
+emitted, but "value_changed" is also emitted if another process changes the
+value.
+
+Most of the @code{<g-conf-client>} interface mirrors the functions you'd use to
+manipulate a @code{<g-conf-engine>} (@code{gconf-engine-get} and
+@code{gconf-client-get}, for example). These should all work just like the
+@code{<g-conf-engine>} versions, except that they use the cache from
+@code{<g-conf-client>} and emit the @code{<g-conf-client>} signals.
+
+As always with GConf, applications based on @code{<g-conf-client>} should use a
+model-controller-view architecture. Typically, this means that areas of your
+application affected by a setting will monitor the relevant key and update
+themselves when necessary. The preferences dialog will simply change keys,
+allowing GConf to notify the rest of the application that changes have occurred.
+Here the application proper is the "view," GConf is the "model", and the
+preferences dialog is the "controller." In no case should you do this: This
+breaks if a setting is changed @emph{outside} your application&#x2014;or even
+from a different part of your application. The correct way (in pseudo-code) is:
+See the example programs that come with GConf for more details.
+
+@example 
+
+ gconf_client_set(client, key, value);
+ application_update_to_reflect_setting();
+@end example
+
+@example 
+
+ /* At application startup */
+ gconf_client_notify_add(client, key, application_update_to_reflect_setting, data);
+
+ /* From preferences dialog */
+ gconf_client_set(client, key, value);
+@end example
+
+@section Usage
+@include defuns-gconf-client.xml.texi
+
+@c %end of fragment

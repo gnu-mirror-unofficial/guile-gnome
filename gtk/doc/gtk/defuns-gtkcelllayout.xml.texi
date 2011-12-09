@@ -1,0 +1,145 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-cell-layout>
+Derives from @code{<ginterface>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-cell-layout-pack-start  (self@tie{}@code{<gtk-cell-layout>}) (cell@tie{}@code{<gtk-cell-renderer>}) (expand@tie{}@code{bool})
+@deffnx Method pack-start
+Packs the @var{cell} into the beginning of @var{cell-layout}. If @var{expand} is
+@samp{@code{#f}}, then the @var{cell} is allocated no more space than it needs.
+Any unused space is divided evenly between cells for which @var{expand} is
+@samp{@code{#t}}.
+
+Note that reusing the same cell renderer is not supported.
+
+@table @var
+@item cell-layout
+A @code{<gtk-cell-layout>}.
+
+@item cell
+A @code{<gtk-cell-renderer>}.
+
+@item expand
+@samp{@code{#t}} if @var{cell} is to be given extra space allocated to
+@var{cell-layout}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-cell-layout-pack-end  (self@tie{}@code{<gtk-cell-layout>}) (cell@tie{}@code{<gtk-cell-renderer>}) (expand@tie{}@code{bool})
+@deffnx Method pack-end
+Adds the @var{cell} to the end of @var{cell-layout}. If @var{expand} is
+@samp{@code{#f}}, then the @var{cell} is allocated no more space than it needs.
+Any unused space is divided evenly between cells for which @var{expand} is
+@samp{@code{#t}}.
+
+Note that reusing the same cell renderer is not supported.
+
+@table @var
+@item cell-layout
+A @code{<gtk-cell-layout>}.
+
+@item cell
+A @code{<gtk-cell-renderer>}.
+
+@item expand
+@samp{@code{#t}} if @var{cell} is to be given extra space allocated to
+@var{cell-layout}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-cell-layout-reorder  (self@tie{}@code{<gtk-cell-layout>}) (cell@tie{}@code{<gtk-cell-renderer>}) (position@tie{}@code{int})
+@deffnx Method reorder
+Re-inserts @var{cell} at @var{position}. Note that @var{cell} has already to be
+packed into @var{cell-layout} for this to function properly.
+
+@table @var
+@item cell-layout
+A @code{<gtk-cell-layout>}.
+
+@item cell
+A @code{<gtk-cell-renderer>} to reorder.
+
+@item position
+New position to insert @var{cell} at.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-cell-layout-clear  (self@tie{}@code{<gtk-cell-layout>})
+@deffnx Method clear
+Unsets all the mappings on all renderers on @var{cell-layout} and removes all
+renderers from @var{cell-layout}.
+
+@table @var
+@item cell-layout
+A @code{<gtk-cell-layout>}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-cell-layout-add-attribute  (self@tie{}@code{<gtk-cell-layout>}) (cell@tie{}@code{<gtk-cell-renderer>}) (attribute@tie{}@code{mchars}) (column@tie{}@code{int})
+@deffnx Method add-attribute
+Adds an attribute mapping to the list in @var{cell-layout}. The @var{column} is
+the column of the model to get a value from, and the @var{attribute} is the
+parameter on @var{cell} to be set from the value. So for example if column 2 of
+the model contains strings, you could have the "text" attribute of a
+@code{<gtk-cell-renderer-text>} get its values from column 2.
+
+@table @var
+@item cell-layout
+A @code{<gtk-cell-layout>}.
+
+@item cell
+A @code{<gtk-cell-renderer>}.
+
+@item attribute
+An attribute on the renderer.
+
+@item column
+The column position on the model to get the attribute from.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-cell-layout-clear-attributes  (self@tie{}@code{<gtk-cell-layout>}) (cell@tie{}@code{<gtk-cell-renderer>})
+@deffnx Method clear-attributes
+Clears all existing attributes previously set with
+@code{gtk-cell-layout-set-attributes}.
+
+@table @var
+@item cell-layout
+A @code{<gtk-cell-layout>}.
+
+@item cell
+A @code{<gtk-cell-renderer>} to clear the attribute mapping on.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

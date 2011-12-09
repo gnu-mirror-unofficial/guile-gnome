@@ -1,0 +1,219 @@
+(module-api
+  (version 1 0)
+  ((gnome gnome-ui)
+   (uses-interfaces (gnome gw libgnomeui))
+   (typed-exports))
+  ((gnome gobject generics)
+   (uses-interfaces)
+   (typed-exports
+     (block generic (<gtype-instance> <top>))
+     (connect
+       generic
+       <top>
+       (<gtype-instance> <symbol> <procedure>))
+     (connect-after
+       generic
+       (<gtype-instance> <symbol> <procedure>))
+     (connected? generic (<gtype-instance> <top>))
+     (create-signal
+       generic
+       (<gtype-class> <symbol> <top> <top>))
+     (disconnect generic (<gtype-instance> <top>))
+     (emit generic
+           (<gtype-instance> <symbol> . <top>))
+     (find-property generic (<gtype-class> <symbol>))
+     (get generic (<gobject> <symbol>))
+     (get-properties generic (<gtype-class>))
+     (get-property-names generic (<gtype-class>))
+     (get-signals generic (<gtype-class>))
+     (invoke generic (<gclosure> . <top>))
+     (set generic
+          (<gobject> <symbol> <top>)
+          (<gtk-alignment> <real> <real> <real> <real>)
+          (<gtk-arrow> <top> <top>)
+          (<gtk-aspect-frame> . <top>)
+          (<gtk-list-store> <gtk-tree-iter> . <top>)
+          (<gtk-print-settings> <string> <string>)
+          (<gtk-tree-store> <gtk-tree-iter> . <top>))
+     (unblock generic (<gtype-instance> <top>))))
+  ((gnome gw generics)
+   (uses-interfaces (gnome gobject generics))
+   (typed-exports
+     (set generic
+          (<gobject> <symbol> <top>)
+          (<gtk-alignment> <real> <real> <real> <real>)
+          (<gtk-arrow> <top> <top>)
+          (<gtk-aspect-frame> . <top>)
+          (<gtk-list-store> <gtk-tree-iter> . <top>)
+          (<gtk-print-settings> <string> <string>)
+          (<gtk-tree-store> <gtk-tree-iter> . <top>))))
+  ((gnome gw libgnomeui)
+   (uses-interfaces (gnome gw generics))
+   (typed-exports
+     (gnome-authentication-manager-dialog-is-visible
+       procedure
+       (arity 0 0 #t))
+     (gnome-authentication-manager-init
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-connect procedure (arity 0 0 #t))
+     (gnome-client-disconnect
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-flush procedure (arity 0 0 #t))
+     (gnome-client-get-config-prefix
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-get-desktop-id
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-get-flags procedure (arity 0 0 #t))
+     (gnome-client-get-global-config-prefix
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-get-id procedure (arity 0 0 #t))
+     (gnome-client-get-previous-id
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-new procedure (arity 0 0 #t))
+     (gnome-client-new-without-connection
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-request-phase-2
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-request-save
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-save-any-dialog
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-save-error-dialog
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-current-directory
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-environment
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-global-config-prefix
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-id procedure (arity 0 0 #t))
+     (gnome-client-set-priority
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-process-id
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-program
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-restart-style
+       procedure
+       (arity 0 0 #t))
+     (gnome-client-set-user-id
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-construct
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-get-flags
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-get-initial-time
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-get-time
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-new procedure (arity 0 0 #t))
+     (gnome-date-edit-new-flags
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-set-flags
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-set-popup-range
+       procedure
+       (arity 0 0 #t))
+     (gnome-date-edit-set-time
+       procedure
+       (arity 0 0 #t))
+     (gnome-gdk-pixbuf-new-from-uri
+       procedure
+       (arity 0 0 #t))
+     (gnome-gdk-pixbuf-new-from-uri-at-scale
+       procedure
+       (arity 0 0 #t))
+     (gnome-help-display-desktop-on-screen
+       procedure
+       (arity 5 0 #f))
+     (gnome-help-display-on-screen
+       procedure
+       (arity 3 0 #f))
+     (gnome-help-display-uri-on-screen
+       procedure
+       (arity 2 0 #f))
+     (gnome-help-display-with-doc-id-on-screen
+       procedure
+       (arity 5 0 #f))
+     (gnome-master-client procedure (arity 0 0 #t))
+     (gnome-password-dialog-anon-selected
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-get-domain
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-get-password
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-get-remember
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-get-username
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-new
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-run-and-block
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-domain
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-password
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-readonly-domain
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-readonly-username
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-remember
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-show-domain
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-show-password
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-show-remember
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-show-username
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-show-userpass-buttons
+       procedure
+       (arity 0 0 #t))
+     (gnome-password-dialog-set-username
+       procedure
+       (arity 0 0 #t))
+     (gnome-url-show-on-screen
+       procedure
+       (arity 2 0 #f)))))

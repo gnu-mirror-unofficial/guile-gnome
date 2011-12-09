@@ -1,0 +1,118 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename guile-gnome-gnome-vfs.info
+@settitle Guile-GNOME-VFS
+@c %**end of header
+
+@include version.texi
+
+@copying 
+This manual is for @code{(gnome vfs)} (version @value{VERSION}, updated
+@value{UPDATED})
+
+Copyright 2001-2007 The Free Software Foundation, Christophe Fergeau,
+Christian Neumair
+
+@quotation 
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation.
+@end quotation
+
+@end copying
+
+@dircategory The Algorithmic Language Scheme
+@direntry 
+* Guile-GNOME-VFS: (guile-gnome-gnome-vfs.info).  The GNOME virtual file system.
+@end direntry
+
+@titlepage 
+@title Guile-GNOME: GNOME-VFS
+@subtitle version @value{VERSION}, updated @value{UPDATED}
+@author The Free Software Foundation
+@author Christophe Fergeau
+@author Christian Neumair
+@page 
+@vskip 0pt plus 1filll
+@insertcopying 
+@end titlepage
+
+@ifnottex 
+@node Top
+@top Guile-GNOME-VFS
+
+@insertcopying 
+@menu
+* Overview::               About GNOME-VFS and its Guile bindings.
+
+Basic Data Types
+
+* GnomeVFSResult:: Result of I/O operations, the equivalent of errno
+* GnomeVFSURI:: A uniform resource identifier.
+* gnome-vfs-utils:: various utilities functions to manipulate uris
+* GnomeVFSFileInfo:: stores information about files, GnomeVFS equivalent of stat
+
+File Operations
+
+* Basic File Operations:: Essential VFS operations. This includes creating, moving and deleting files,
+* Truncating Files:: Force files to a particular length
+* Getting and Setting File Information:: Convenient high-level abstraction for obtaining and setting file information,
+
+Directory-Specific Operations
+
+* Basic Directory Operations:: Creating and removing directories.
+
+Volumes and Drives Handling
+
+* GnomeVFSVolume:: Abstraction for a mounted file system or a network location.
+* GnomeVFSDrive:: Container for GnomeVFSVolume (floppy drive, CD reader, ...)
+* GnomeVFSVolumeMonitor:: Monitors volume mounts and unmounts
+
+MIME Registry
+
+* MIME typing:: functions to get a mime-type for a file using its name or its content
+* gnome-vfs-mime-utils:: 
+* MIME Database:: functions for getting information about applications and components associated
+
+* Undocumented::           Undocumented functions.
+
+* Type Index::
+* Function Index::
+@end menu
+
+@end ifnottex
+
+@iftex 
+@shortcontents 
+@end iftex
+
+@include overview.texi
+
+@include section-gnome-vfs-result.xml.texi
+@include section-gnome-vfs-uri.xml.texi
+@include section-gnome-vfs-utils.xml.texi
+@include section-gnome-vfs-file-info.xml.texi
+
+@include section-gnome-vfs-file-basic-ops.xml.texi
+@include section-gnome-vfs-file-trunc-ops.xml.texi
+@include section-gnome-vfs-file-info-ops.xml.texi
+
+@include section-gnome-vfs-directory-basic-ops.xml.texi
+
+@include section-gnome-vfs-volume.xml.texi
+@include section-gnome-vfs-drive.xml.texi
+@include section-gnome-vfs-volume-monitor.xml.texi
+
+@include section-gnome-vfs-mime.xml.texi
+@include section-gnome-vfs-mime-utils.xml.texi
+@include section-gnome-vfs-mime-database.xml.texi
+
+@include undocumented.texi
+
+@node Type Index
+@unnumbered Type Index
+@printindex tp
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+@bye

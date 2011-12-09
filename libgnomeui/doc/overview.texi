@@ -1,0 +1,16 @@
+@node Overview
+@chapter Overview
+
+@code{(gnome gnome-ui)} wraps some pieces of the libgnomeui library
+for Guile. It is a part of Guile-GNOME.
+
+Libgnomeui historically was a staging ground for code meant to go
+into GTK. In the modern environment, it has largely been replaced,
+its functionality having been pushed into GTK+ itself.
+
+However, as of 2008 it still has some utility as a kind of glue layer
+between lower-level modules, with the authentication manager, the
+GNOME-VFS GDK-Pixbuf integration, and the session manager code.
+
+See the documentation for @code{(gnome gobject)} for more information
+on Guile-GNOME.

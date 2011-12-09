@@ -1,0 +1,52 @@
+
+@c %start of fragment
+
+@node Undocumented
+@chapter Undocumented
+The following symbols, if any, have not been properly documented.
+
+@section (gnome gw libgnomeui)
+@defvar gnome-authentication-manager-dialog-is-visible
+@end defvar
+
+@defvar gnome-client-get-global-config-prefix
+@end defvar
+
+@defvar gnome-client-set-global-config-prefix
+@end defvar
+
+@defvar gnome-gdk-pixbuf-new-from-uri-at-scale
+@end defvar
+
+@defun gnome-help-display-desktop-on-screen 
+@end defun
+
+@defun gnome-help-display-with-doc-id-on-screen 
+@end defun
+
+@defvar gnome-password-dialog-get-remember
+@end defvar
+
+@defvar gnome-password-dialog-set-readonly-domain
+@end defvar
+
+@defvar gnome-password-dialog-set-readonly-username
+@end defvar
+
+@defvar gnome-password-dialog-set-show-domain
+@end defvar
+
+@defvar gnome-password-dialog-set-show-password
+@end defvar
+
+@defvar gnome-password-dialog-set-show-remember
+@end defvar
+
+@defvar gnome-password-dialog-set-show-username
+@end defvar
+
+@defvar gnome-password-dialog-set-show-userpass-buttons
+@end defvar
+
+
+@c %end of fragment

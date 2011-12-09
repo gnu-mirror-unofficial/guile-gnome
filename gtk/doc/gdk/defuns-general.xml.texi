@@ -1,0 +1,391 @@
+
+@c %start of fragment
+
+@deffn Function gdk-get-display-arg-name  @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the display name specified in the command line arguments passed to
+@code{gdk-init} or @code{gdk-parse-args}, if any.
+
+@table @var
+@item ret
+the display name, if specified explicitely, otherwise @samp{@code{#f}} this
+string is owned by GTK+ and must not be modified or freed.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-set-locale  @result{}@tie{} (ret@tie{}@code{mchars})
+Initializes the support for internationalization by calling the
+@code{@code{setlocale}} system call. This function is called by
+@code{gtk-set-locale} and so GTK+ applications should use that instead.
+
+The locale to use is determined by the @env{LANG} environment variable, so to
+run an application in a certain locale you can do something like this:
+
+@example 
+
+  export LANG="fr"
+  ... run application ...
+@end example
+
+If the locale is not supported by X then it is reset to the standard "C" locale.
+
+@table @var
+@item ret
+the resulting locale.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-set-sm-client-id  (sm_client_id@tie{}@code{mchars})
+Sets the @samp{SM_CLIENT_ID} property on the application's leader window so that
+the window manager can save the application's state using the X11R6 ICCCM
+session management protocol.
+
+See the X Session Management Library documentation for more information on
+session management and the Inter-Client Communication Conventions Manual (ICCCM)
+for information on the @samp{WM_CLIENT_LEADER} property. (Both documents are
+part of the X Window System distribution.)
+
+@table @var
+@item sm-client-id
+the client id assigned by the session manager when the connection was opened, or
+@samp{@code{#f}} to remove the property.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-notify-startup-complete 
+Indicates to the GUI environment that the application has finished loading. If
+the applications opens windows, this function is normally called after opening
+the application's initial set of windows.
+
+GTK+ will call this function automatically after opening the first
+@code{<gtk-window>} unless @code{gtk-window-set-auto-startup-notification} is
+called to disable that feature.
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-get-program-class  @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the program class. Unless the program class has explicitly been set with
+@code{gdk-set-program-class} or with the @c (option "--class") commandline
+option, the default value is the program name (determined with
+@code{g-get-prgname}) with the first character converted to uppercase.
+
+@table @var
+@item ret
+the program class.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-set-program-class  (program_class@tie{}@code{mchars})
+Sets the program class. The X11 backend uses the program class to set the class
+name part of the @samp{WM_CLASS} property on toplevel windows; see the ICCCM.
+
+@table @var
+@item program-class
+a string.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-get-display  @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the name of the display, which usually comes from the @env{DISPLAY}
+environment variable or the @c (option "--display") command line option.
+
+@table @var
+@item ret
+the name of the display.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-flush 
+Flushes the X output buffer and waits until all requests have been processed by
+the server. This is rarely needed by applications. It's main use is for trapping
+X errors with @code{gdk-error-trap-push} and @code{gdk-error-trap-pop}.
+
+@end deffn
+
+@deffn Function gdk-screen-width  @result{}@tie{} (ret@tie{}@code{int})
+Returns the width of the default screen in pixels.
+
+@table @var
+@item ret
+the width of the default screen in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-screen-height  @result{}@tie{} (ret@tie{}@code{int})
+Returns the height of the default screen in pixels.
+
+@table @var
+@item ret
+the height of the default screen in pixels.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-screen-width-mm  @result{}@tie{} (ret@tie{}@code{int})
+Returns the width of the default screen in millimeters. Note that on many X
+servers this value will not be correct.
+
+@table @var
+@item ret
+the width of the default screen in millimeters, though it is not always correct.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-screen-height-mm  @result{}@tie{} (ret@tie{}@code{int})
+Returns the height of the default screen in millimeters. Note that on many X
+servers this value will not be correct.
+
+@table @var
+@item ret
+the height of the default screen in millimeters, though it is not always
+correct.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pointer-grab  (window@tie{}@code{<gdk-window>}) (owner_events@tie{}@code{bool}) (event_mask@tie{}@code{<gdk-event-mask>}) (confine_to@tie{}@code{<gdk-window>}) (cursor@tie{}@code{<gdk-cursor>}) (time_@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{<gdk-grab-status>})
+Grabs the pointer (usually a mouse) so that all events are passed to this
+application until the pointer is ungrabbed with @code{gdk-pointer-ungrab}, or
+the grab window becomes unviewable. This overrides any previous pointer grab by
+this client.
+
+Pointer grabs are used for operations which need complete control over mouse
+events, even if the mouse leaves the application. For example in GTK+ it is used
+for Drag and Drop, for dragging the handle in the @code{<gtk-hpaned>} and
+@code{<gtk-vpaned>} widgets, and for resizing columns in @code{<gtk-clist>}
+widgets.
+
+Note that if the event mask of an X window has selected both button press and
+button release events, then a button press event will cause an automatic pointer
+grab until the button is released. X does this automatically since most
+applications expect to receive button press and release events in pairs. It is
+equivalent to a pointer grab on the window with @var{owner-events} set to
+@samp{@code{#t}}.
+
+If you set up anything at the time you take the grab that needs to be cleaned up
+when the grab ends, you should handle the @code{<gdk-event-grab-broken>} events
+that are emitted when the grab ends unvoluntarily.
+
+@table @var
+@item window
+the @code{<gdk-window>} which will own the grab (the grab window).
+
+@item owner-events
+if @samp{@code{#f}} then all pointer events are reported with respect to
+@var{window} and are only reported if selected by @var{event-mask}. If
+@samp{@code{#t}} then pointer events for this application are reported as
+normal, but pointer events outside this application are reported with respect to
+@var{window} and only if selected by @var{event-mask}. In either mode,
+unreported events are discarded.
+
+@item event-mask
+specifies the event mask, which is used in accordance with @var{owner-events}.
+Note that only pointer events (i.e. button and motion events) may be selected.
+
+@item confine-to
+If non-@samp{@code{#f}}, the pointer will be confined to this window during the
+grab. If the pointer is outside @var{confine-to}, it will automatically be moved
+to the closest edge of @var{confine-to} and enter and leave events will be
+generated as necessary.
+
+@item cursor
+the cursor to display while the grab is active. If this is @samp{@code{#f}} then
+the normal cursors are used for @var{window} and its descendants, and the cursor
+for @var{window} is used for all other windows.
+
+@item time
+the timestamp of the event which led to this pointer grab. This usually comes
+from a @code{<gdk-event-button>} struct, though @samp{GDK_CURRENT_TIME} can be
+used if the time isn't known.
+
+@item ret
+@samp{GDK_GRAB_SUCCESS} if the grab was successful.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pointer-ungrab  (time_@tie{}@code{unsigned-int32})
+Ungrabs the pointer, if it is grabbed by this application.
+
+@table @var
+@item time
+a timestamp from a @code{<gdk-event>}, or @samp{GDK_CURRENT_TIME} if no
+timestamp is available.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pointer-is-grabbed  @result{}@tie{} (ret@tie{}@code{bool})
+Returns @samp{@code{#t}} if the pointer is currently grabbed by this
+application.
+
+Note that this does not take the inmplicit pointer grab on button presses into
+account.
+
+@table @var
+@item ret
+@samp{@code{#t}} if the pointer is currently grabbed by this application.*
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-set-double-click-time  (msec@tie{}@code{unsigned-int})
+Set the double click time for the default display. See
+@code{gdk-display-set-double-click-time}. See also
+@code{gdk-display-set-double-click-distance}. Applications should @emph{not} set
+this, it is a global user-configured setting.
+
+@table @var
+@item msec
+double click time in milliseconds (thousandths of a second)
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-keyboard-grab  (window@tie{}@code{<gdk-window>}) (owner_events@tie{}@code{bool}) (time_@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{<gdk-grab-status>})
+Grabs the keyboard so that all events are passed to this application until the
+keyboard is ungrabbed with @code{gdk-keyboard-ungrab}. This overrides any
+previous keyboard grab by this client.
+
+If you set up anything at the time you take the grab that needs to be cleaned up
+when the grab ends, you should handle the @code{<gdk-event-grab-broken>} events
+that are emitted when the grab ends unvoluntarily.
+
+@table @var
+@item window
+the @code{<gdk-window>} which will own the grab (the grab window).
+
+@item owner-events
+if @samp{@code{#f}} then all keyboard events are reported with respect to
+@var{window}. If @samp{@code{#t}} then keyboard events for this application are
+reported as normal, but keyboard events outside this application are reported
+with respect to @var{window}. Both key press and key release events are always
+reported, independant of the event mask set by the application.
+
+@item time
+a timestamp from a @code{<gdk-event>}, or @samp{GDK_CURRENT_TIME} if no
+timestamp is available.
+
+@item ret
+@samp{GDK_GRAB_SUCCESS} if the grab was successful.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-keyboard-ungrab  (time_@tie{}@code{unsigned-int32})
+Ungrabs the keyboard, if it is grabbed by this application.
+
+@table @var
+@item time
+a timestamp from a @code{<gdk-event>}, or @samp{GDK_CURRENT_TIME} if no
+timestamp is available.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-beep 
+Emits a short beep on the default display.
+
+@end deffn
+
+@deffn Function gdk-get-use-xshm  @result{}@tie{} (ret@tie{}@code{bool})
+@samp{gdk_get_use_xshm} is deprecated and should not be used in newly-written
+code.
+
+Returns @samp{@code{#t}} if GDK will attempt to use the MIT-SHM shared memory
+extension.
+
+The shared memory extension is used for @code{<gdk-image>}, and consequently for
+GdkRGB. It enables much faster drawing by communicating with the X server
+through SYSV shared memory calls. However, it can only be used if the X client
+and server are on the same machine and the server supports it.
+
+@table @var
+@item ret
+@samp{@code{#t}} if use of the MIT shared memory extension will be attempted.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-set-use-xshm  (use_xshm@tie{}@code{bool})
+@samp{gdk_set_use_xshm} is deprecated and should not be used in newly-written
+code.
+
+Sets whether the use of the MIT shared memory extension should be attempted.
+This function is mainly for internal use. It is only safe for an application to
+set this to @samp{@code{#f}}, since if it is set to @samp{@code{#t}} and the
+server does not support the extension it may cause warning messages to be
+output.
+
+@table @var
+@item use-xshm
+@samp{@code{#t}} if use of the MIT shared memory extension should be attempted.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-error-trap-push 
+This function allows X errors to be trapped instead of the normal behavior of
+exiting the application. It should only be used if it is not possible to avoid
+the X error in any other way.
+
+@c (title "Trapping an X error")
+@example 
+
+  gdk_error_trap_push ();
+
+  /* ... Call the X function which may cause an error here ... */
+
+  /* Flush the X queue to catch errors now. */
+  gdk_flush ();
+
+  if (gdk_error_trap_pop ())
+    @{
+      /* ... Handle the error here ... */
+    @}
+@end example
+
+@end deffn
+
+@deffn Function gdk-error-trap-pop  @result{}@tie{} (ret@tie{}@code{int})
+Removes the X error trap installed with @code{gdk-error-trap-push}.
+
+@table @var
+@item ret
+the X error code, or 0 if no error occurred.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

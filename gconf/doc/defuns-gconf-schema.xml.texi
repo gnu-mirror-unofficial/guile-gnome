@@ -1,0 +1,288 @@
+
+@c %start of fragment
+
+@deftp Class <g-conf-schema>
+Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gconf-schema-new  @result{}@tie{} (ret@tie{}@code{<g-conf-schema>})
+Creates a new @code{<g-conf-schema>}.
+
+@table @var
+@item ret
+newly allocated @code{<g-conf-schema>}
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-get-locale  (self@tie{}@code{<g-conf-schema>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Returns the locale for a @code{<g-conf-schema>}. The returned string is
+@emph{not} a copy, so don't try to free it. It is "owned" by the
+@code{<g-conf-schema>} and will be destroyed when the @code{<g-conf-schema>} is
+destroyed.
+
+@table @var
+@item schema
+a @code{<g-conf-schema>}
+
+@item ret
+the locale
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-get-short-desc  (self@tie{}@code{<g-conf-schema>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Returns the short description for a @code{<g-conf-schema>}. The returned string
+is @emph{not} a copy, don't try to free it. It is "owned" by the
+@code{<g-conf-schema>} and will be destroyed when the @code{<g-conf-schema>} is
+destroyed.
+
+@table @var
+@item schema
+a @code{<g-conf-schema>}.
+
+@item ret
+the short description.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-get-long-desc  (self@tie{}@code{<g-conf-schema>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Returns the long description for a @code{<g-conf-schema>}. The returned string
+is @emph{not} a copy, don't try to free it. It is "owned" by the
+@code{<g-conf-schema>} and will be destroyed when the @code{<g-conf-schema>} is
+destroyed.
+
+@table @var
+@item schema
+a @code{<g-conf-schema>}
+
+@item ret
+the long description.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-get-owner  (self@tie{}@code{<g-conf-schema>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Returns the owner of a @code{<g-conf-schema>}. The returned string is @emph{not}
+a copy, don't try to free it. It is "owned" by the @code{<g-conf-schema>} and
+will be destroyed when the @code{<g-conf-schema>} is destroyed.
+
+@table @var
+@item schema
+a @code{<g-conf-schema>}.
+
+@item ret
+the owner.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-get-default-value  (self@tie{}@code{<g-conf-schema>}) @result{}@tie{} (ret@tie{}@code{<g-conf-value>})
+Returns the default value of the entry that is described by a
+@code{<g-conf-schema>}.
+
+@table @var
+@item schema
+a @code{<g-conf-schema>}.
+
+@item ret
+the default value of the entry.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-get-car-type  (self@tie{}@code{<g-conf-schema>}) @result{}@tie{} (ret@tie{}@code{<g-conf-value-type>})
+Returns the default type of the first member of the pair in the entry (which
+should be of type @samp{GCONF_VALUE_PAIR}) described by @var{schema}.
+
+@table @var
+@item schema
+a @code{<g-conf-schema>}.
+
+@item ret
+the type of the first member of the pair element of the entry.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-get-cdr-type  (self@tie{}@code{<g-conf-schema>}) @result{}@tie{} (ret@tie{}@code{<g-conf-value-type>})
+Returns the default type of the second member of the pair in the entry (which
+should be of type @samp{GCONF_VALUE_PAIR}) described by @var{schema}.
+
+@table @var
+@item schema
+a @code{<g-conf-schema>}.
+
+@item ret
+the type of the second member of the pair element of the entry.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-get-list-type  (self@tie{}@code{<g-conf-schema>}) @result{}@tie{} (ret@tie{}@code{<g-conf-value-type>})
+Returns the default type of the list elements of the entry (which should be of
+default type @samp{GCONF_VALUE_LIST}) described by @var{schema}.
+
+@table @var
+@item schema
+
+
+@item ret
+
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-set-type  (self@tie{}@code{<g-conf-schema>}) (type@tie{}@code{<g-conf-value-type>})
+Sets the @code{<g-conf-value-type>} of the @code{<g-conf-schema>} to @var{type}.
+
+@table @var
+@item sc
+a @code{<g-conf-schema>}.
+
+@item type
+the type.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-set-locale  (self@tie{}@code{<g-conf-schema>}) (locale@tie{}@code{mchars})
+Sets the locale for a @code{<g-conf-schema>} to @var{locale}. @var{locale} is
+copied.
+
+@table @var
+@item sc
+a @code{<g-conf-schema>}.
+
+@item locale
+the locale.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-set-short-desc  (self@tie{}@code{<g-conf-schema>}) (desc@tie{}@code{mchars})
+Sets the short description of a @code{<g-conf-schema>} to @var{desc}. @var{desc}
+is copied.
+
+@table @var
+@item sc
+a @code{<g-conf-schema>}.
+
+@item desc
+the short description.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-set-long-desc  (self@tie{}@code{<g-conf-schema>}) (desc@tie{}@code{mchars})
+Sets the long description of a @code{<g-conf-schema>} to @var{desc}. @var{desc}
+is copied.
+
+@table @var
+@item sc
+a @code{<g-conf-schema>}.
+
+@item desc
+the long description.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-set-owner  (self@tie{}@code{<g-conf-schema>}) (owner@tie{}@code{mchars})
+Sets the "owner" of the @code{<g-conf-schema>}, where the owner is the name of
+the application that created the entry.
+
+@table @var
+@item sc
+a @code{<g-conf-schema>}.
+
+@item owner
+the name of the creating application.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-set-default-value  (self@tie{}@code{<g-conf-schema>}) (val@tie{}@code{<g-conf-value>})
+Sets the default value for the entry described by the @code{<g-conf-schema>}.
+The @code{<g-conf-value>} is copied. Alternatively, use
+@code{gconf-schema-set-default-value-nocopy}.
+
+@table @var
+@item sc
+a @code{<g-conf-schema>}.
+
+@item val
+the default value.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-set-car-type  (self@tie{}@code{<g-conf-schema>}) (type@tie{}@code{<g-conf-value-type>})
+Sets the @code{<g-conf-value-type>} of the first member (car) of the entry
+(which should be of type @samp{GCONF_VALUE_PAIR}) described by
+@code{<g-conf-schema>} to @var{type}.
+
+@table @var
+@item sc
+a @code{<g-conf-schema>}.
+
+@item type
+the type.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-set-cdr-type  (self@tie{}@code{<g-conf-schema>}) (type@tie{}@code{<g-conf-value-type>})
+Sets the @code{<g-conf-value-type>} of the second member (cdr) of the entry
+(which should be of type @samp{GCONF_VALUE_PAIR}) described by
+@code{<g-conf-schema>} to @var{type}.
+
+@table @var
+@item sc
+a @code{<g-conf-schema>}.
+
+@item type
+the type.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-schema-set-list-type  (self@tie{}@code{<g-conf-schema>}) (type@tie{}@code{<g-conf-value-type>})
+Sets the @code{<g-conf-value-type>} of the list elements of the entry (which
+should be of type @samp{GCONF_VALUE_LIST}) described by @code{<g-conf-schema>}
+to @var{type}.
+
+@table @var
+@item sc
+a @code{<g-conf-schema>}.
+
+@item type
+the type.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GnomeVFSVolumeMonitor
+@chapter GnomeVFSVolumeMonitor
+Monitors volume mounts and unmounts
+
+@section Overview
+@section Usage
+@include defuns-gnome-vfs-volume-monitor.xml.texi
+
+@c %end of fragment

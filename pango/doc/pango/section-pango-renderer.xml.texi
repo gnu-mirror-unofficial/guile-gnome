@@ -1,0 +1,18 @@
+
+@c %start of fragment
+
+@node PangoRenderer
+@chapter PangoRenderer
+Rendering driver base class
+
+@section Overview
+@code{<pango-renderer>} is a base class that contains the necessary logic for
+rendering a @code{<pango-layout>} or @code{<pango-layout-line>}. By subclassing
+@code{<pango-renderer>} and overriding operations such as @var{draw-glyphs} and
+@var{draw-rectangle}, renderers for particular font backends and destinations
+can be created.
+
+@section Usage
+@include defuns-pango-renderer.xml.texi
+
+@c %end of fragment

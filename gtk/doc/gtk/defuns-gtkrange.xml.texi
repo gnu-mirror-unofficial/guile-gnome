@@ -1,0 +1,252 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-range>
+Derives from @code{<gtk-widget>}.
+
+This class defines the following slots:
+
+@table @code
+@item update-policy
+How the range should be updated on the screen
+
+@item adjustment
+The GtkAdjustment that contains the current value of this range object
+
+@item inverted
+Invert direction slider moves to increase range value
+
+@item lower-stepper-sensitivity
+The sensitivity policy for the stepper that points to the adjustment's lower
+side
+
+@item upper-stepper-sensitivity
+The sensitivity policy for the stepper that points to the adjustment's upper
+side
+
+@item show-fill-level
+Whether to display a fill level indicator graphics on trough.
+
+@item restrict-to-fill-level
+Whether to restrict the upper boundary to the fill level.
+
+@item fill-level
+The fill level.
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-range> value-changed 
+Emitted when the range value changes.
+
+@end defop
+
+@defop Signal <gtk-range> adjust-bounds  (arg0@tie{}@code{<gdouble>})
+@end defop
+
+@defop Signal <gtk-range> move-slider  (arg0@tie{}@code{<gtk-scroll-type>})
+Virtual function that moves the slider. Used for keybindings.
+
+@end defop
+
+@defop Signal <gtk-range> change-value  (arg0@tie{}@code{<gtk-scroll-type>}) (arg1@tie{}@code{<gdouble>}) @result{}@tie{}@code{<gboolean>}
+The ::change-value signal is emitted when a scroll action is performed on a
+range. It allows an application to determine the type of scroll event that
+occurred and the resultant new value. The application can handle the event
+itself and return @samp{@code{#t}} to prevent further processing. Or, by
+returning @samp{@code{#f}}, it can pass the event to other handlers until the
+default GTK+ handler is reached.
+
+The value parameter is unrounded. An application that overrides the
+::change-value signal is responsible for clamping the value to the desired
+number of decimal digits; the default GTK+ handler clamps the value based on
+@var{range->round-digits}.
+
+It is not possible to use delayed update policies in an overridden
+::change-value handler.
+
+Since 2.6
+
+@end defop
+
+@deffn Function gtk-range-get-adjustment  (self@tie{}@code{<gtk-range>}) @result{}@tie{} (ret@tie{}@code{<gtk-adjustment>})
+@deffnx Method get-adjustment
+Get the @code{<gtk-adjustment>} which is the "model" object for
+@code{<gtk-range>}. See @code{gtk-range-set-adjustment} for details. The return
+value does not have a reference added, so should not be unreferenced.
+
+@table @var
+@item range
+a @code{<gtk-range>}
+
+@item ret
+a @code{<gtk-adjustment>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-range-set-update-policy  (self@tie{}@code{<gtk-range>}) (policy@tie{}@code{<gtk-update-type>})
+@deffnx Method set-update-policy
+Sets the update policy for the range. @code{<gtk-update-continuous>} means that
+anytime the range slider is moved, the range value will change and the
+value_changed signal will be emitted. @code{<gtk-update-delayed>} means that the
+value will be updated after a brief timeout where no slider motion occurs, so
+updates are spaced by a short time rather than continuous.
+@code{<gtk-update-discontinuous>} means that the value will only be updated when
+the user releases the button and ends the slider drag operation.
+
+@table @var
+@item range
+a @code{<gtk-range>}
+
+@item policy
+update policy
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-range-set-adjustment  (self@tie{}@code{<gtk-range>}) (adjustment@tie{}@code{<gtk-adjustment>})
+@deffnx Method set-adjustment
+Sets the adjustment to be used as the "model" object for this range widget. The
+adjustment indicates the current range value, the minimum and maximum range
+values, the step/page increments used for keybindings and scrolling, and the
+page size. The page size is normally 0 for @code{<gtk-scale>} and nonzero for
+@code{<gtk-scrollbar>}, and indicates the size of the visible area of the widget
+being scrolled. The page size affects the size of the scrollbar slider.
+
+@table @var
+@item range
+a @code{<gtk-range>}
+
+@item adjustment
+a @code{<gtk-adjustment>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-range-get-inverted  (self@tie{}@code{<gtk-range>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-inverted
+Gets the value set by @code{gtk-range-set-inverted}.
+
+@table @var
+@item range
+a @code{<gtk-range>}
+
+@item ret
+@samp{@code{#t}} if the range is inverted
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-range-set-inverted  (self@tie{}@code{<gtk-range>}) (setting@tie{}@code{bool})
+@deffnx Method set-inverted
+Ranges normally move from lower to higher values as the slider moves from top to
+bottom or left to right. Inverted ranges have higher values at the top or on the
+right rather than on the bottom or left.
+
+@table @var
+@item range
+a @code{<gtk-range>}
+
+@item setting
+@samp{@code{#t}} to invert the range
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-range-get-update-policy  (self@tie{}@code{<gtk-range>}) @result{}@tie{} (ret@tie{}@code{<gtk-update-type>})
+@deffnx Method get-update-policy
+Gets the update policy of @var{range}. See @code{gtk-range-set-update-policy}.
+
+@table @var
+@item range
+a @code{<gtk-range>}
+
+@item ret
+the current update policy
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-range-get-value  (self@tie{}@code{<gtk-range>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-value
+Gets the current value of the range.
+
+@table @var
+@item range
+a @code{<gtk-range>}
+
+@item ret
+current value of the range.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-range-set-increments  (self@tie{}@code{<gtk-range>}) (step@tie{}@code{double}) (page@tie{}@code{double})
+@deffnx Method set-increments
+Sets the step and page sizes for the range. The step size is used when the user
+clicks the @code{<gtk-scrollbar>} arrows or moves @code{<gtk-scale>} via arrow
+keys. The page size is used for example when moving via Page Up or Page Down
+keys.
+
+@table @var
+@item range
+a @code{<gtk-range>}
+
+@item step
+step size
+
+@item page
+page size
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-range-set-range  (self@tie{}@code{<gtk-range>}) (min@tie{}@code{double}) (max@tie{}@code{double})
+@deffnx Method set-range
+Sets the allowable values in the @code{<gtk-range>}, and clamps the range value
+to be between @var{min} and @var{max}. (If the range has a non-zero page size,
+it is clamped between @var{min} and @var{max} - page-size.)
+
+@table @var
+@item range
+a @code{<gtk-range>}
+
+@item min
+minimum range value
+
+@item max
+maximum range value
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-range-set-value  (self@tie{}@code{<gtk-range>}) (value@tie{}@code{double})
+@deffnx Method set-value
+Sets the current value of the range; if the value is outside the minimum or
+maximum range values, it will be clamped to fit inside them. The range emits the
+"value_changed" signal if the value changes.
+
+@table @var
+@item range
+a @code{<gtk-range>}
+
+@item value
+new value of the range
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

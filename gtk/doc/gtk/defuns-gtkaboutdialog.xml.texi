@@ -1,0 +1,394 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-about-dialog>
+Derives from @code{<gtk-dialog>}.
+
+This class defines the following slots:
+
+@table @code
+@item program-name
+The name of the program. If this is not set, it defaults to
+g_get_application_name()
+
+@item version
+The version of the program
+
+@item copyright
+Copyright information for the program
+
+@item comments
+Comments about the program
+
+@item website
+The URL for the link to the website of the program
+
+@item website-label
+The label for the link to the website of the program. If this is not set, it
+defaults to the URL
+
+@item license
+The license of the program
+
+@item authors
+List of authors of the program
+
+@item documenters
+List of people documenting the program
+
+@item translator-credits
+Credits to the translators. This string should be marked as translatable
+
+@item artists
+List of people who have contributed artwork to the program
+
+@item logo
+A logo for the about box. If this is not set, it defaults to
+gtk_window_get_default_icon_list()
+
+@item logo-icon-name
+A named icon to use as the logo for the about box.
+
+@item wrap-license
+Whether to wrap the license text.
+
+@end table
+
+@end deftp
+
+@deffn Function gtk-about-dialog-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-about-dialog>}.
+
+@table @var
+@item ret
+a newly created @code{<gtk-about-dialog>}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-get-name  (self@tie{}@code{<gtk-about-dialog>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-name
+Returns the program name displayed in the about dialog.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item ret
+The program name. The string is owned by the about dialog and must not be
+modified.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-set-name  (self@tie{}@code{<gtk-about-dialog>}) (name@tie{}@code{mchars})
+@deffnx Method set-name
+Sets the name to display in the about dialog. If this is not set, it defaults to
+@code{g-get-application-name}.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item name
+the program name
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-get-version  (self@tie{}@code{<gtk-about-dialog>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-version
+Returns the version string.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item ret
+The version string. The string is owned by the about dialog and must not be
+modified.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-set-version  (self@tie{}@code{<gtk-about-dialog>}) (version@tie{}@code{mchars})
+@deffnx Method set-version
+Sets the version string to display in the about dialog.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item version
+the version string
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-get-copyright  (self@tie{}@code{<gtk-about-dialog>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-copyright
+Returns the copyright string.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item ret
+The copyright string. The string is owned by the about dialog and must not be
+modified.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-set-copyright  (self@tie{}@code{<gtk-about-dialog>}) (copyright@tie{}@code{mchars})
+@deffnx Method set-copyright
+Sets the copyright string to display in the about dialog. This should be a short
+string of one or two lines.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item copyright
+the copyright string
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-get-license  (self@tie{}@code{<gtk-about-dialog>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-license
+Returns the license information.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item ret
+The license information. The string is owned by the about dialog and must not be
+modified.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-set-license  (self@tie{}@code{<gtk-about-dialog>}) (license@tie{}@code{mchars})
+@deffnx Method set-license
+Sets the license information to be displayed in the secondary license dialog. If
+@var{license} is @samp{@code{#f}}, the license button is hidden.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item license
+the license information or @samp{@code{#f}}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-get-wrap-license  (self@tie{}@code{<gtk-about-dialog>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-wrap-license
+Returns whether the license text in @var{about} is automatically wrapped.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item ret
+@samp{@code{#t}} if the license text is wrapped
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-about-dialog-set-wrap-license  (self@tie{}@code{<gtk-about-dialog>}) (wrap_license@tie{}@code{bool})
+@deffnx Method set-wrap-license
+Sets whether the license text in @var{about} is automatically wrapped.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item wrap-license
+whether to wrap the license
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-about-dialog-get-website  (self@tie{}@code{<gtk-about-dialog>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-website
+Returns the website URL.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item ret
+The website URL. The string is owned by the about dialog and must not be
+modified.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-set-website  (self@tie{}@code{<gtk-about-dialog>}) (website@tie{}@code{mchars})
+@deffnx Method set-website
+Sets the URL to use for the website link.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item website
+a URL string starting with "http://"
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-get-website-label  (self@tie{}@code{<gtk-about-dialog>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-website-label
+Returns the label used for the website link.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item ret
+The label used for the website link. The string is owned by the about dialog and
+must not be modified.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-set-website-label  (self@tie{}@code{<gtk-about-dialog>}) (website_label@tie{}@code{mchars})
+@deffnx Method set-website-label
+Sets the label to be used for the website link. It defaults to the website URL.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item website-label
+the label used for the website link
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-get-logo  (self@tie{}@code{<gtk-about-dialog>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method get-logo
+Returns the pixbuf displayed as logo in the about dialog.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item ret
+the pixbuf displayed as logo. The pixbuf is owned by the about dialog. If you
+want to keep a reference to it, you have to call @code{g-object-ref} on it.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-set-logo  (self@tie{}@code{<gtk-about-dialog>}) (logo@tie{}@code{<gdk-pixbuf>})
+@deffnx Method set-logo
+Sets the pixbuf to be displayed as logo in the about dialog. If it is
+@samp{@code{#f}}, the default window icon set with
+@code{gtk-window-set-default-icon} will be used.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item logo
+a @code{<gdk-pixbuf>}, or @samp{@code{#f}}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-get-logo-icon-name  (self@tie{}@code{<gtk-about-dialog>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-logo-icon-name
+Returns the icon name displayed as logo in the about dialog.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item ret
+the icon name displayed as logo. The string is owned by the dialog. If you want
+to keep a reference to it, you have to call @code{g-strdup} on it.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-about-dialog-set-logo-icon-name  (self@tie{}@code{<gtk-about-dialog>}) (icon_name@tie{}@code{mchars})
+@deffnx Method set-logo-icon-name
+Sets the pixbuf to be displayed as logo in the about dialog. If it is
+@samp{@code{#f}}, the default window icon set with
+@code{gtk-window-set-default-icon} will be used.
+
+@table @var
+@item about
+a @code{<gtk-about-dialog>}
+
+@item icon-name
+an icon name, or @samp{@code{#f}}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

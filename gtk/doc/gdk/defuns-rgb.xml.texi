@@ -1,0 +1,169 @@
+
+@c %start of fragment
+
+@deffn Function gdk-rgb-init 
+@samp{gdk_rgb_init} is deprecated and should not be used in newly-written code.
+
+This function no longer does anything at all. It's completely useless (and
+harmless).
+
+@end deffn
+
+@deffn Function gdk-rgb-gc-set-foreground  (gc@tie{}@code{<gdk-gc>}) (rgb@tie{}@code{unsigned-int32})
+@samp{gdk_rgb_gc_set_foreground} is deprecated and should not be used in
+newly-written code.
+
+Sets the foreground color in @var{gc} to the specified color (or the closest
+approximation, in the case of limited visuals).
+
+@table @var
+@item gc
+The @code{<gdk-gc>} to modify.
+
+@item rgb
+The color, represented as a 0xRRGGBB integer value.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-gc-set-background  (gc@tie{}@code{<gdk-gc>}) (rgb@tie{}@code{unsigned-int32})
+@samp{gdk_rgb_gc_set_background} is deprecated and should not be used in
+newly-written code.
+
+Sets the background color in @var{gc} to the specified color (or the closest
+approximation, in the case of limited visuals).
+
+@table @var
+@item gc
+The @code{<gdk-gc>} to modify.
+
+@item rgb
+The color, represented as a 0xRRGGBB integer value.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-xpixel-from-rgb  (rgb@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{unsigned-long})
+@samp{gdk_rgb_xpixel_from_rgb} is deprecated and should not be used in
+newly-written code.
+
+Finds the X pixel closest in color to the @var{rgb} color specified. This value
+may be used to set the @c (structfield "pixel") field of a @code{<gdk-color>}
+struct.
+
+@table @var
+@item rgb
+The color, represented as a 0xRRGGBB integer value.
+
+@item ret
+The X pixel value.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-set-install  (install@tie{}@code{bool})
+If @var{install} is @samp{@code{#t}}, directs GdkRGB to always install a new
+"private" colormap rather than trying to find a best fit with the colors already
+allocated. Ordinarily, GdkRGB will install a colormap only if a sufficient cube
+cannot be allocated.
+
+A private colormap has more colors, leading to better quality display, but also
+leads to the dreaded "colormap flashing" effect.
+
+@table @var
+@item install
+@samp{@code{#t}} to set install mode.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-set-min-colors  (min_colors@tie{}@code{int})
+Sets the minimum number of colors for the color cube. Generally, GdkRGB tries to
+allocate the largest color cube it can. If it can't allocate a color cube at
+least as large as @var{min-colors}, it installs a private colormap.
+
+@table @var
+@item min-colors
+The minimum number of colors accepted.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-get-visual  @result{}@tie{} (ret@tie{}@code{<gdk-visual>})
+Gets a "preferred visual" chosen by GdkRGB for rendering image data on the
+default screen. In previous versions of GDK, this was the only visual GdkRGB
+could use for rendering. In current versions, it's simply the visual GdkRGB
+would have chosen as the optimal one in those previous versions. GdkRGB can now
+render to drawables with any visual.
+
+@table @var
+@item ret
+The @code{<gdk-visual>} chosen by GdkRGB.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-get-colormap  @result{}@tie{} (ret@tie{}@code{<gdk-colormap>})
+Get the preferred colormap for rendering image data. Not a very useful function;
+historically, GDK could only render RGB image data to one colormap and visual,
+but in the current version it can render to any colormap and visual. So there's
+no need to call this function.
+
+@table @var
+@item ret
+the preferred colormap
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-ditherable  @result{}@tie{} (ret@tie{}@code{bool})
+Determines whether the preferred visual is ditherable. This function may be
+useful for presenting a user interface choice to the user about which dither
+mode is desired; if the display is not ditherable, it may make sense to gray out
+or hide the corresponding UI widget.
+
+@table @var
+@item ret
+@samp{@code{#t}} if the preferred visual is ditherable.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-colormap-ditherable  (cmap@tie{}@code{<gdk-colormap>}) @result{}@tie{} (ret@tie{}@code{bool})
+Determines whether the visual associated with @var{cmap} is ditherable. This
+function may be useful for presenting a user interface choice to the user about
+which dither mode is desired; if the display is not ditherable, it may make
+sense to gray out or hide the corresponding UI widget.
+
+@table @var
+@item cmap
+a @code{<gdk-colormap>}
+
+@item ret
+@samp{@code{#t}} if the visual associated with @var{cmap} is ditherable.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-rgb-set-verbose  (verbose@tie{}@code{bool})
+Sets the "verbose" flag. This is generally only useful for debugging.
+
+@table @var
+@item verbose
+@samp{@code{#t}} if verbose messages are desired.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

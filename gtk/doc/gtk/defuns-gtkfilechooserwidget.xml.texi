@@ -1,0 +1,31 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-file-chooser-widget>
+Derives from @code{<gtk-file-chooser-embed>}, @code{<gtk-file-chooser>},
+@code{<gtk-vbox>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-file-chooser-widget-new  (action@tie{}@code{<gtk-file-chooser-action>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-file-chooser-widget>}. This is a file chooser widget
+that can be embedded in custom windows, and it is the same widget that is used
+by @code{<gtk-file-chooser-dialog>}.
+
+@table @var
+@item action
+Open or save mode for the widget
+
+@item ret
+a new @code{<gtk-file-chooser-widget>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

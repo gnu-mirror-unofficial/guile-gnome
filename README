@@ -1,0 +1,72 @@
+guile-gnome-pkg README
+Copyright (C) 2004,2006 Free Software Foundation, Inc.
+See the end for copying conditions of this file.
+Last updated 13 August 2006.
+
+
+About guile-gnome
+=================
+
+guile-gnome is a Guile wrapper collection for the GNOME library stack.
+It ships with an wrapper engine that allows semi-automatic wrapping of
+GObject-based C APIs.
+
+
+Copying guile-gnome
+===================
+
+Distribution of guile-gnome libraries and components is under the GPL.
+See the COPYING file for more information.
+
+
+Contact info
+============
+
+  Mailing List: guile-gtk-general@gnu.org
+  Homepage:     http://www.gnu.org/software/guile-gnome/
+  Download:     http://www.gnu.org/software/guile-gnome/download/
+
+
+Build dependencies
+==================
+
+* Guile 1.6.4 or newer
+  http://www.gnu.org/software/guile/
+* G-Wrap 1.9.1 or above, but not 1.9.2
+  http://www.nongnu.org/g-wrap/
+* Development packages for individual wrapsets
+  See README files in the wrapset subdirectories for more information.
+
+
+Installation quickstart
+=======================
+
+Install using the standard autotools incantation:
+  ./configure && make && make install.
+
+Build from CVS or Arch using ./autogen.sh && make.
+
+You can run without installing, just run './dev-environ guile'.
+
+
+About the packaging
+===================
+
+guile-gnome is developed as a number of modular packages. Each wrapper
+is contained within its own subdirectory, for instance glib/ or
+gstreamer/.
+
+You are reading this document from the toplevel umbrella package,
+guile-gnome-pkg, which has no knowledge of packages contained within it.
+For information on the individual wrappers contained in this package,
+see the documentation in the subdirectories.
+
+
+Copying this file
+=================
+
+Copyright (C) 2004,2006 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice
+and this notice are preserved.

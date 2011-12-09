@@ -1,0 +1,53 @@
+
+@c %start of fragment
+
+@node GtkPaned
+@chapter GtkPaned
+Base class for widgets with two adjustable panes
+
+@section Overview
+@code{<gtk-paned>} is the base class for widgets with two panes, arranged either
+horizontally (@code{<gtk-hpaned>}) or vertically (@code{<gtk-vpaned>}). Child
+widgets are added to the panes of the widget with @code{gtk-paned-pack1} and
+@code{gtk-paned-pack2}. The division beween the two children is set by default
+from the size requests of the children, but it can be adjusted by the user.
+
+A paned widget draws a separator between the two child widgets and a small
+handle that the user can drag to adjust the division. It does not draw any
+relief around the children or around the separator. (The space in which the
+separator is called the gutter.) Often, it is useful to put each child inside a
+@code{<gtk-frame>} with the shadow type set to @samp{GTK_SHADOW_IN} so that the
+gutter appears as a ridge.
+
+Each child has two options that can be set, @var{resize} and @var{shrink}. If
+@var{resize} is true, then when the @code{<gtk-paned>} is resized, that child
+will expand or shrink along with the paned widget. If @var{shrink} is true, then
+when that child can be made smaller than its requisition by the user. Setting
+@var{shrink} to @samp{@code{#f}} allows the application to set a minimum size.
+If @var{resize} is false for both children, then this is treated as if
+@var{resize} is true for both children.
+
+The application can set the position of the slider as if it were set by the
+user, by calling @code{gtk-paned-set-position}.
+
+@example 
+
+GtkWidget *hpaned = gtk_hpaned_new ();
+GtkWidget *frame1 = gtk_frame_new (NULL);
+GtkWidget *frame2 = gtk_frame_new (NULL);
+gtk_frame_set_shadow_type (GTK_FRAME (frame1), GTK_SHADOW_IN);
+gtk_frame_set_shadow_type (GTK_FRAME (frame2), GTK_SHADOW_IN);
+
+gtk_widget_set_size_request (hpaned, 200 + GTK_PANED (hpaned)->gutter_size, -1);
+
+gtk_paned_pack1 (GTK_PANED (hpaned), frame1, TRUE, FALSE);
+gtk_widget_set_size_request (frame1, 50, -1);
+
+gtk_paned_pack2 (GTK_PANED (hpaned), frame2, FALSE, FALSE);
+gtk_widget_set_size_request (frame2, 50, -1);
+@end example
+
+@section Usage
+@include defuns-gtkpaned.xml.texi
+
+@c %end of fragment

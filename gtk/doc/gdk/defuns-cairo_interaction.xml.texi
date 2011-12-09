@@ -1,0 +1,118 @@
+
+@c %start of fragment
+
+@deffn Function gdk-cairo-create  (drawable@tie{}@code{<gdk-drawable>}) @result{}@tie{} (ret@tie{}@code{cairo-t})
+Creates a Cairo context for drawing to @var{drawable}.
+
+@table @var
+@item drawable
+a @code{<gdk-drawable>}
+
+@item ret
+A newly created Cairo context. Free with @code{cairo-destroy} when you are done
+drawing.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gdk-cairo-set-source-color  (cr@tie{}@code{cairo-t}) (color@tie{}@code{<gdk-color>})
+Sets the specified @code{<gdk-color>} as the source color of @var{cr}.
+
+@table @var
+@item cr
+a @code{<cairo-t>}
+
+@item color
+a @code{<gdk-color>}
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gdk-cairo-set-source-pixbuf  (cr@tie{}@code{cairo-t}) (pixbuf@tie{}@code{<gdk-pixbuf>}) (pixbuf_x@tie{}@code{double}) (pixbuf_y@tie{}@code{double})
+Sets the given pixbuf as the source pattern for the Cairo context. The pattern
+has an extend mode of @samp{CAIRO_EXTEND_NONE} and is aligned so that the origin
+of @var{pixbuf} is @var{pixbuf-x}, @var{pixbuf-y}
+
+@table @var
+@item cr
+a @code{<cairo>} context
+
+@item pixbuf
+a @code{<gdk-pixbuf>}
+
+@item pixbuf-x
+X coordinate of location to place upper left corner of @var{pixbuf}
+
+@item pixbuf-y
+Y coordinate of location to place upper left corner of @var{pixbuf}
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gdk-cairo-set-source-pixmap  (cr@tie{}@code{cairo-t}) (pixmap@tie{}@code{<gdk-pixmap>}) (pixmap_x@tie{}@code{double}) (pixmap_y@tie{}@code{double})
+Sets the given pixmap as the source pattern for the Cairo context. The pattern
+has an extend mode of @samp{CAIRO_EXTEND_NONE} and is aligned so that the origin
+of @var{pixbuf} is @var{pixbuf-x}, @var{pixbuf-y}
+
+@table @var
+@item cr
+a @code{<cairo>} context
+
+@item pixmap
+a @code{<gdk-pixmap>}
+
+@item pixmap-x
+X coordinate of location to place upper left corner of @var{pixmap}
+
+@item pixmap-y
+Y coordinate of location to place upper left corner of @var{pixmap}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gdk-cairo-rectangle  (cr@tie{}@code{cairo-t}) (rectangle@tie{}@code{<gdk-rectangle>})
+Adds the given rectangle to the current path of @var{cr}.
+
+@table @var
+@item cr
+a @code{<cairo-t>}
+
+@item rectangle
+a @code{<gdk-rectangle>}
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gdk-cairo-region  (cr@tie{}@code{cairo-t}) (region@tie{}@code{<gdk-region>})
+Adds the given region to the current path of @var{cr}.
+
+@table @var
+@item cr
+a @code{<cairo-t>}
+
+@item region
+a @code{<gdk-region>}
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+
+@c %end of fragment

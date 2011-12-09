@@ -1,0 +1,28 @@
+
+@c %start of fragment
+
+@node GtkToolbar
+@chapter GtkToolbar
+Create bars of buttons and other widgets
+
+@section Overview
+A toolbar is created with a call to @code{gtk-toolbar-new}.
+
+A toolbar can contain instances of a subclass of @code{<gtk-tool-item>}. To add
+a @code{<gtk-tool-item>} to the a toolbar, use @code{gtk-toolbar-insert}. To
+remove an item from the toolbar use @code{gtk-container-remove}. To add a button
+to the toolbar, add an instance of @code{<gtk-tool-button>}.
+
+Toolbar items can be visually grouped by adding instances of
+@code{<gtk-separator-tool-item>} to the toolbar. If a
+@code{<gtk-separator-tool-item>} has the "expand" property set to
+@code{@code{#t}} and the "draw" property set to @code{@code{#f}} the effect is
+to force all following items to the end of the toolbar.
+
+Creating a context menu for the toolbar can be done by connecting to the
+@code{<gtk-toolbar::popup-context-menu>} signal.
+
+@section Usage
+@include defuns-gtktoolbar.xml.texi
+
+@c %end of fragment

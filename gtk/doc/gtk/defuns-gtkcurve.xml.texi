@@ -1,0 +1,106 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-curve>
+Derives from @code{<gtk-drawing-area>}.
+
+This class defines the following slots:
+
+@table @code
+@item curve-type
+Is this curve linear, spline interpolated, or free-form
+
+@item min-x
+Minimum possible value for X
+
+@item max-x
+Maximum possible X value
+
+@item min-y
+Minimum possible value for Y
+
+@item max-y
+Maximum possible value for Y
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-curve> curve-type-changed 
+Emitted when the curve type has been changed. The curve type can be changed
+explicitly with a call to @code{gtk-curve-set-curve-type}. It is also changed as
+a side-effect of calling @code{gtk-curve-reset} or @code{gtk-curve-set-gamma}.
+
+@end defop
+
+@deffn Function gtk-curve-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-curve>}.
+
+@table @var
+@item ret
+a new @code{<gtk-curve>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-curve-reset  (self@tie{}@code{<gtk-curve>})
+@deffnx Method reset
+Resets the curve to a straight line from the minimum x and y values to the
+maximum x and y values (i.e. from the bottom-left to the top-right corners). The
+curve type is not changed.
+
+@table @var
+@item curve
+a @code{<gtk-curve>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-curve-set-gamma  (self@tie{}@code{<gtk-curve>}) (gamma@tie{}@code{float})
+@deffnx Method set-gamma
+Recomputes the entire curve using the given gamma value. A gamma value of 1
+results in a straight line. Values greater than 1 result in a curve above the
+straight line. Values less than 1 result in a curve below the straight line. The
+curve type is changed to @samp{GTK_CURVE_TYPE_FREE}. FIXME: Needs a more precise
+definition of gamma.
+
+@table @var
+@item curve
+a @code{<gtk-curve>}.
+
+@item gamma
+the gamma value.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-curve-set-range  (self@tie{}@code{<gtk-curve>}) (min_x@tie{}@code{float}) (max_x@tie{}@code{float}) (min_y@tie{}@code{float}) (max_y@tie{}@code{float})
+@deffnx Method set-range
+Sets the minimum and maximum x and y values of the curve. The curve is also
+reset with a call to @code{gtk-curve-reset}.
+
+@table @var
+@item curve
+a @code{<gtk-curve>}.
+
+@item min-x
+the minimum x value.
+
+@item max-x
+the maximum x value.
+
+@item min-y
+the minimum y value.
+
+@item max-y
+the maximum y value.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

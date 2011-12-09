@@ -1,0 +1,262 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-dialog>
+Derives from @code{<gtk-window>}.
+
+This class defines the following slots:
+
+@table @code
+@item has-separator
+The dialog has a separator bar above its buttons
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-dialog> response  (arg0@tie{}@code{<gint>})
+Emitted when an action widget is clicked, the dialog receives a delete event, or
+the application programmer calls @code{gtk-dialog-response}. On a delete event,
+the response ID is @code{<gtk-response-none>}. Otherwise, it depends on which
+action widget was clicked.
+
+@end defop
+
+@defop Signal <gtk-dialog> close 
+@end defop
+
+@deffn Function gtk-dialog-run  (self@tie{}@code{<gtk-dialog>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method run
+Blocks in a recursive main loop until the @var{dialog} either emits the response
+signal, or is destroyed. If the dialog is destroyed during the call to
+@code{gtk-dialog-run}, gtk_dialog_returns @code{<gtk-response-none>}. Otherwise,
+it returns the response ID from the "response" signal emission. Before entering
+the recursive main loop, @code{gtk-dialog-run} calls @code{gtk-widget-show} on
+the dialog for you. Note that you still need to show any children of the dialog
+yourself.
+
+During @code{gtk-dialog-run}, the default behavior of "delete_event" is
+disabled; if the dialog receives "delete_event", it will not be destroyed as
+windows usually are, and @code{gtk-dialog-run} will return
+@code{<gtk-response-delete-event>}. Also, during @code{gtk-dialog-run} the
+dialog will be modal. You can force @code{gtk-dialog-run} to return at any time
+by calling @code{gtk-dialog-response} to emit the "response" signal. Destroying
+the dialog during @code{gtk-dialog-run} is a very bad idea, because your
+post-run code won't know whether the dialog was destroyed or not.
+
+After @code{gtk-dialog-run} returns, you are responsible for hiding or
+destroying the dialog if you wish to do so.
+
+Typical usage of this function might be:
+
+@example 
+
+  gint result = gtk_dialog_run (GTK_DIALOG (dialog));
+  switch (result)
+    @{
+      case GTK_RESPONSE_ACCEPT:
+         do_application_specific_something ();
+         break;
+      default:
+         do_nothing_since_dialog_was_cancelled ();
+         break;
+    @}
+  gtk_widget_destroy (dialog);
+@end example
+
+Note that even though the recursive main loop gives the effect of a modal dialog
+(it prevents the user from interacting with other windows in the same window
+group while the dialog is run), callbacks such as timeouts, IO channel watches,
+DND drops, etc, @emph{will} be triggered during a @code{gtk-dialog-run} call.
+
+@table @var
+@item dialog
+a @code{<gtk-dialog>}
+
+@item ret
+response ID
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-dialog-response  (self@tie{}@code{<gtk-dialog>}) (response_id@tie{}@code{int})
+@deffnx Method response
+Emits the "response" signal with the given response ID. Used to indicate that
+the user has responded to the dialog in some way; typically either you or
+@code{gtk-dialog-run} will be monitoring the "response" signal and take
+appropriate action.
+
+@table @var
+@item dialog
+a @code{<gtk-dialog>}
+
+@item response-id
+response ID
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-dialog-add-button  (self@tie{}@code{<gtk-dialog>}) (button_text@tie{}@code{mchars}) (response_id@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method add-button
+Adds a button with the given text (or a stock button, if @var{button-text} is a
+stock ID) and sets things up so that clicking the button will emit the
+"response" signal with the given @var{response-id}. The button is appended to
+the end of the dialog's action area. The button widget is returned, but usually
+you don't need it.
+
+@table @var
+@item dialog
+a @code{<gtk-dialog>}
+
+@item button-text
+text of button, or stock ID
+
+@item response-id
+response ID for the button
+
+@item ret
+the button widget that was added
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-dialog-add-action-widget  (self@tie{}@code{<gtk-dialog>}) (child@tie{}@code{<gtk-widget>}) (response_id@tie{}@code{int})
+@deffnx Method add-action-widget
+Adds an activatable widget to the action area of a @code{<gtk-dialog>},
+connecting a signal handler that will emit the "response" signal on the dialog
+when the widget is activated. The widget is appended to the end of the dialog's
+action area. If you want to add a non-activatable widget, simply pack it into
+the @samp{action_area} field of the @code{<gtk-dialog>} struct.
+
+@table @var
+@item dialog
+a @code{<gtk-dialog>}
+
+@item child
+an activatable widget
+
+@item response-id
+response ID for @var{child}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-dialog-get-has-separator  (self@tie{}@code{<gtk-dialog>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-has-separator
+Accessor for whether the dialog has a separator.
+
+@table @var
+@item dialog
+a @code{<gtk-dialog>}
+
+@item ret
+@samp{@code{#t}} if the dialog has a separator
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-dialog-set-default-response  (self@tie{}@code{<gtk-dialog>}) (response_id@tie{}@code{int})
+@deffnx Method set-default-response
+Sets the last widget in the dialog's action area with the given
+@var{response-id} as the default widget for the dialog. Pressing "Enter"
+normally activates the default widget.
+
+@table @var
+@item dialog
+a @code{<gtk-dialog>}
+
+@item response-id
+a response ID
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-dialog-set-has-separator  (self@tie{}@code{<gtk-dialog>}) (setting@tie{}@code{bool})
+@deffnx Method set-has-separator
+Sets whether the dialog has a separator above the buttons. @samp{@code{#t}} by
+default.
+
+@table @var
+@item dialog
+a @code{<gtk-dialog>}
+
+@item setting
+@samp{@code{#t}} to have a separator
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-dialog-set-response-sensitive  (self@tie{}@code{<gtk-dialog>}) (response_id@tie{}@code{int}) (setting@tie{}@code{bool})
+@deffnx Method set-response-sensitive
+Calls @samp{gtk_widget_set_sensitive (widget, @var{setting})} for each widget in
+the dialog's action area with the given @var{response-id}. A convenient way to
+sensitize/desensitize dialog buttons.
+
+@table @var
+@item dialog
+a @code{<gtk-dialog>}
+
+@item response-id
+a response ID
+
+@item setting
+@samp{@code{#t}} for sensitive
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-dialog-get-response-for-widget  (self@tie{}@code{<gtk-dialog>}) (widget@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-response-for-widget
+Gets the response id of a widget in the action area of a dialog.
+
+@table @var
+@item dialog
+a @code{<gtk-dialog>}
+
+@item widget
+a widget in the action area of @var{dialog}
+
+@item ret
+the response id of @var{widget}, or @samp{GTK_RESPONSE_NONE} if @var{widget}
+doesn't have a response id set.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-alternative-dialog-button-order  (screen@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{bool})
+Returns @samp{@code{#t}} if dialogs are expected to use an alternative button
+order on the screen @var{screen}. See
+@code{gtk-dialog-set-alternative-button-order} for more details about
+alternative button order.
+
+If you need to use this function, you should probably connect to the
+::notify:gtk-alternative-button-order signal on the @code{<gtk-settings>} object
+associated to @var{screen}, in order to be notified if the button order setting
+changes.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}, or @samp{@code{#f}} to use the default screen
+
+@item ret
+Whether the alternative button order should be used
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

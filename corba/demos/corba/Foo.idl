@@ -1,0 +1,29 @@
+module Foo {
+
+    struct MyType {
+	short eins;
+	long zwei;
+    };
+
+    module Bar {
+	interface Baz {
+	    void haveFun (in short a, in boolean b);
+	};
+    };
+
+    interface Hello {
+	exception MyException { };
+	typedef long MyLong;
+
+	void doHello ();
+    };
+
+    interface MaximumHello : Bar::Baz, Hello {
+	void haveMoreFun ();
+	void haveFunWithAnArgument (in long argument, in short foo);
+    };
+
+    interface InheritanceTest : MaximumHello {
+	void theMegaTest ();
+    };
+};

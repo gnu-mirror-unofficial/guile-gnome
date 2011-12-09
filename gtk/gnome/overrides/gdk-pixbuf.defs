@@ -1,0 +1,80 @@
+;; -*- scheme -*-
+;; guile-gnome
+;; Copyright (C) 2004 Free Software Foundation, Inc.
+
+;; This program is free software; you can redistribute it and/or    
+;; modify it under the terms of the GNU General Public License as   
+;; published by the Free Software Foundation; either version 2 of   
+;; the License, or (at your option) any later version.              
+;;                                                                  
+;; This program is distributed in the hope that it will be useful,  
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of   
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+;; GNU General Public License for more details.                     
+;;                                                                  
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, contact:
+;;
+;; Free Software Foundation           Voice:  +1-617-542-5942
+;; 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+;; Boston, MA  02111-1307,  USA       gnu@gnu.org
+
+;;; Commentary:
+;;
+;;Custom wrapper definitions.
+;;
+;;; Code:
+
+(define-object Pixbuf
+  (in-module "Gdk")
+  (parent "GObject")
+  (c-name "GdkPixbuf")
+  (gtype-id "GDK_TYPE_PIXBUF")
+)
+
+(define-object PixbufSimpleAnim
+  (c-name "GdkPixbufSimpleAnim")
+  (gtype-id "GDK_TYPE_PIXBUF_SIMPLE_ANIM")
+)
+
+(define-function gdk_pixbuf_get_formats
+  (c-name "gdk_pixbuf_get_formats")
+  (overrides "gdk_pixbuf_get_formats")
+  (return-type "GSList*-of-GdkPixbufFormat*")
+)
+
+(define-method gdk_pixbuf_save_to_port
+  (of-object "GdkPixbuf")
+  (c-name "gdk_pixbuf_save_to_port")
+  (return-type "gboolean")
+  (leave-guile-mode #f)
+  (parameters
+   '("SCM" "port")
+   '("const-char*" "type")
+   '("SCM" "options_alist")
+   '("GError**" "error")))
+
+(ignore-glob  "*_get_type"
+              "_*"
+              "*_ref"
+              "*_unref"
+              "*_copy"
+              "*_free"
+              "*_newv"
+              "*_valist"
+              "*_setv")
+
+(ignore "gdk_pixbuf_get_pixels"
+        "gdk_pixbuf_new_from_data"
+        "gdk_pixbuf_new_from_inline"
+        "gdk_pixbuf_new_from_xpm_data"
+        "gdk_pixbuf_save_to_callbackv"
+        "gdk_pixbuf_save_to_bufferv"
+        "gdk_pixbuf_savev"
+        "gdk_pixbuf_loader_write"
+        "gdk_pixbuf_non_anim_new"
+        "gdk_pixbuf_set_option"
+
+        "gdk_pixbuf_animation_get_iter" ; GTimeVal*
+        "gdk_pixbuf_animation_iter_advance" ; GTimeVal*
+        )

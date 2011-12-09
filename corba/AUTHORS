@@ -1,0 +1,22 @@
+To find out what should go in this file, see "Information For
+Maintainers of GNU Software" (maintain.texi), the section called
+"Recording Changes".
+
+
+Martin Baulig:
+In the directory gnome, wrote:
+    corba.scm
+In the directory gnome/corba, wrote:
+    guile-gnome-corba.c guile-gnome-corba-primitives.c
+    guile-gnome-corba-generic.c guile-gnome-corba-primitives.h
+    guile-gnome-corba-generic.h guile-gnome-corba-types.c
+    test.c test.scm primitives.scm types.scm
+In the directory gnome/gw, wrote:
+    corba-spec.scm
+In the directory demos/corba, wrote:
+    Foo.idl
+
+
+Andy Wingo:
+In the directory gnome/gw, changes to:
+    corba-spec.scm

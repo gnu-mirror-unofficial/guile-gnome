@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-separator>
+Derives from @code{<gtk-widget>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+
+@c %end of fragment

@@ -1,0 +1,102 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-image-menu-item>
+Derives from @code{<gtk-menu-item>}.
+
+This class defines the following slots:
+
+@table @code
+@item image
+Child widget to appear next to the menu text
+
+@end table
+
+@end deftp
+
+@deffn Function gtk-image-menu-item-set-image  (self@tie{}@code{<gtk-image-menu-item>}) (image@tie{}@code{<gtk-widget>})
+@deffnx Method set-image
+Sets the image of @var{image-menu-item} to the given widget. Note that it
+depends on the show-menu-images setting whether the image will be displayed or
+not.
+
+@table @var
+@item image-menu-item
+a @code{<gtk-image-menu-item>}.
+
+@item image
+a widget to set as the image for the menu item.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-menu-item-get-image  (self@tie{}@code{<gtk-image-menu-item>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-image
+Gets the widget that is currently set as the image of @var{image-menu-item}. See
+@code{gtk-image-menu-item-set-image}.
+
+@table @var
+@item image-menu-item
+a @code{<gtk-image-menu-item>}.
+
+@item ret
+the widget set as image of @var{image-menu-item}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-menu-item-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-image-menu-item>} with an empty label.
+
+@table @var
+@item ret
+a new @code{<gtk-image-menu-item>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-menu-item-new-from-stock  (stock_id@tie{}@code{mchars}) (accel_group@tie{}@code{<gtk-accel-group>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-image-menu-item>} containing the image and text from a
+stock item. Some stock ids have preprocessor macros like @code{<gtk-stock-ok>}
+and @code{<gtk-stock-apply>}.
+
+If you want this menu item to have changeable accelerators, then pass in
+@samp{@code{#f}} for accel_group. Next call @code{gtk-menu-item-set-accel-path}
+with an appropriate path for the menu item, use @code{gtk-stock-lookup} to look
+up the standard accelerator for the stock item, and if one is found, call
+@code{gtk-accel-map-add-entry} to register it.
+
+@table @var
+@item stock-id
+the name of the stock item.
+
+@item accel-group
+the @code{<gtk-accel-group>} to add the menu items accelerator to, or
+@samp{@code{#f}}.
+
+@item ret
+a new @code{<gtk-image-menu-item>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-image-menu-item-new-with-label  (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-image-menu-item>} containing a label.
+
+@table @var
+@item label
+the text of the menu item.
+
+@item ret
+a new @code{<gtk-image-menu-item>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

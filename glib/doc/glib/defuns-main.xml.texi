@@ -1,0 +1,587 @@
+
+@c %start of fragment
+
+@deftp Class <g-main-loop>
+Opaque pointer.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deftp Class <g-main-context>
+Opaque pointer.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deftp Class <g-source>
+Opaque pointer.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function g-main-loop-new  (context@tie{}@code{<g-main-context>}) (is_running@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{<g-main-loop>})
+Creates a new @code{<g-main-loop>} structure.
+
+@table @var
+@item context
+a @code{<g-main-context>} (if @samp{@code{#f}}, the default context will be
+used).
+
+@item is-running
+set to @samp{@code{#t}} to indicate that the loop is running. This is not very
+important since calling @code{g-main-loop-run} will set this to @samp{@code{#t}}
+anyway.
+
+@item ret
+a new @code{<g-main-loop>}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-main-loop-run  (self@tie{}@code{<g-main-loop>})
+Runs a main loop until @code{g-main-loop-quit} is called on the loop. If this is
+called for the thread of the loop's @code{<g-main-context>}, it will process
+events from the loop, otherwise it will simply wait.
+
+@table @var
+@item loop
+a @code{<g-main-loop>}
+
+@end table
+
+@end deffn
+
+@deffn Function g-main-loop-quit  (loop@tie{}@code{<g-main-loop>})
+Stops a @code{<g-main-loop>} from running. Any calls to @code{g-main-loop-run}
+for the loop will return.
+
+@table @var
+@item loop
+a @code{<g-main-loop>}
+
+@end table
+
+@end deffn
+
+@deffn Function g-main-loop-is-running  (loop@tie{}@code{<g-main-loop>}) @result{}@tie{} (ret@tie{}@code{bool})
+Checks to see if the main loop is currently being run via
+@code{g-main-loop-run}.
+
+@table @var
+@item loop
+a @code{<g-main-loop>}.
+
+@item ret
+@samp{@code{#t}} if the mainloop is currently being run.
+
+@end table
+
+@end deffn
+
+@deffn Function g-main-loop-get-context  (loop@tie{}@code{<g-main-loop>}) @result{}@tie{} (ret@tie{}@code{<g-main-context>})
+Returns the @code{<g-main-context>} of @var{loop}.
+
+@table @var
+@item loop
+a @code{<g-main-loop>}.
+
+@item ret
+the @code{<g-main-context>} of @var{loop}
+
+@end table
+
+@end deffn
+
+@deffn Function g-main-context-new  @result{}@tie{} (ret@tie{}@code{<g-main-context>})
+Creates a new @code{<g-main-context>} strcuture
+
+@table @var
+@item ret
+the new @code{<g-main-context>}
+
+@end table
+
+@end deffn
+
+@deffn Function g-main-context-default  @result{}@tie{} (ret@tie{}@code{<g-main-context>})
+Returns the default main context. This is the main context used for main loop
+functions when a main loop is not explicitly specified.
+
+@table @var
+@item ret
+the default main context.
+
+@end table
+
+@end deffn
+
+@deffn Function g-main-context-iteration  (self@tie{}@code{<g-main-context>}) (may_block@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+Runs a single iteration for the given main loop. This involves checking to see
+if any event sources are ready to be processed, then if no events sources are
+ready and @var{may-block} is @samp{@code{#t}}, waiting for a source to become
+ready, then dispatching the highest priority events sources that are ready. Note
+that even when @var{may-block} is @samp{@code{#t}}, it is still possible for
+@code{g-main-context-iteration} to return @samp{@code{#f}}, since the the wait
+may be interrupted for other reasons than an event source becoming ready.
+
+@table @var
+@item context
+a @code{<g-main-context>} (if @samp{@code{#f}}, the default context will be
+used)
+
+@item may-block
+whether the call may block.
+
+@item ret
+@samp{@code{#t}} if events were dispatched.
+
+@end table
+
+@end deffn
+
+@deffn Function g-main-context-pending  (context@tie{}@code{<g-main-context>}) @result{}@tie{} (ret@tie{}@code{bool})
+Checks if any sources have pending events for the given context.
+
+@table @var
+@item context
+a @code{<g-main-context>} (if @samp{@code{#f}}, the default context will be
+used)
+
+@item ret
+@samp{@code{#t}} if events are pending.
+
+@end table
+
+@end deffn
+
+@deffn Function g-main-context-find-source-by-id  (context@tie{}@code{<g-main-context>}) (source_id@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{<g-source>})
+Finds a @code{<g-source>} given a pair of context and ID.
+
+@table @var
+@item context
+a @code{<g-main-context>} (if @samp{@code{#f}}, the default context will be
+used)
+
+@item source-id
+the source ID, as returned by @code{g-source-get-id}.
+
+@item ret
+the @code{<g-source>} if found, otherwise, @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function g-main-context-wakeup  (context@tie{}@code{<g-main-context>})
+If @var{context} is currently waiting in a @code{poll}, interrupt the
+@code{poll}, and continue the iteration process.
+
+@table @var
+@item context
+a @code{<g-main-context>}
+
+@end table
+
+@end deffn
+
+@deffn Function g-main-context-acquire  (context@tie{}@code{<g-main-context>}) @result{}@tie{} (ret@tie{}@code{bool})
+Tries to become the owner of the specified context. If some other context is the
+owner of the context, returns @samp{@code{#f}} immediately. Ownership is
+properly recursive: the owner can require ownership again and will release
+ownership when @code{g-main-context-release} is called as many times as
+@code{g-main-context-acquire}.
+
+You must be the owner of a context before you can call
+@code{g-main-context-prepare}, @code{g-main-context-query},
+@code{g-main-context-check}, @code{g-main-context-dispatch}.
+
+@table @var
+@item context
+a @code{<g-main-context>}
+
+@item ret
+@samp{@code{#t}} if the operation succeeded, and this thread is now the owner of
+@var{context}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-main-context-release  (context@tie{}@code{<g-main-context>})
+Releases ownership of a context previously acquired by this thread with
+@code{g-main-context-acquire}. If the context was acquired multiple times, the
+only release ownership when @code{g-main-context-release} is called as many
+times as it was acquired.
+
+@table @var
+@item context
+a @code{<g-main-context>}
+
+@end table
+
+@end deffn
+
+@deffn Function g-main-context-is-owner  (context@tie{}@code{<g-main-context>}) @result{}@tie{} (ret@tie{}@code{bool})
+Determines whether this thread holds the (recursive) ownership of this
+@code{<g-maincontext>}. This is useful to know before waiting on another thread
+that may be blocking to get ownership of @var{context}.
+
+@table @var
+@item context
+a @code{<g-main-context>}
+
+@item ret
+@samp{@code{#t}} if current thread is owner of @var{context}.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function g-main-context-prepare  (context@tie{}@code{<g-main-context>}) @result{}@tie{} (ret@tie{}@code{bool}) (priority@tie{}@code{int})
+Prepares to poll sources within a main loop. The resulting information for
+polling is determined by calling @code{g-main-context-query}.
+
+@table @var
+@item context
+a @code{<g-main-context>}
+
+@item priority
+location to store priority of highest priority source already ready.
+
+@item ret
+@samp{@code{#t}} if some source is ready to be dispatched prior to polling.
+
+@end table
+
+@end deffn
+
+@deffn Function g-main-depth  @result{}@tie{} (ret@tie{}@code{int})
+Return value: The main loop recursion level in the current thread
+
+The value returned is the depth of the stack of calls to
+@code{g-main-context-dispatch} on any @code{<g-main-context>} in the current
+thread. That is, when called from the toplevel, it gives 0. When called from
+within a callback from @code{g-main-context-iteration} (or
+@code{g-main-loop-run}, etc.) it returns 1. When called from within a callback
+to a recursive call to @code{g-main-context-iterate}, it returns 2. And so
+forth.
+
+This function is an attractive nuisance, and its use normally indicates a
+misunderstanding of how main loop reentrancy works. Use
+@code{gtk-widget-set-sensitive} or modal dialogs to prevent the user from
+interacting with elements while the main loop is recursing.
+
+A better idea is to avoid main loop recursion entirely. Instead, structure your
+code so that you simply return to the main loop and then get called again when
+there is more work to do.
+
+@end deffn
+
+@deffn Function g-main-current-source  @result{}@tie{} (ret@tie{}@code{<g-source>})
+Returns the currently firing source for this thread.
+
+@table @var
+@item ret
+The currently firing source or @samp{@code{#f}}.
+
+@end table
+
+Since 2.12
+
+@end deffn
+
+@deffn Function g-timeout-source-new  (interval@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{<g-source>})
+Creates a new timeout source.
+
+The source will not initially be associated with any @code{<g-main-context>} and
+must be added to one with @code{g-source-attach} before it will be executed.
+
+@table @var
+@item interval
+the timeout interval in milliseconds.
+
+@item ret
+the newly-created timeout source
+
+@end table
+
+@end deffn
+
+@deffn Function g-idle-source-new  @result{}@tie{} (ret@tie{}@code{<g-source>})
+Creates a new idle source.
+
+The source will not initially be associated with any @code{<g-main-context>} and
+must be added to one with @code{g-source-attach} before it will be executed.
+Note that the default priority for idle sources is
+@samp{G_PRIORITY_DEFAULT_IDLE}, as compared to other sources which have a
+default priority of @samp{G_PRIORITY_DEFAULT}.
+
+@table @var
+@item ret
+the newly-created idle source
+
+@end table
+
+@end deffn
+
+@deffn Function g-child-watch-source-new  (pid@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<g-source>})
+Creates a new child_watch source.
+
+The source will not initially be associated with any @code{<g-main-context>} and
+must be added to one with @code{g-source-attach} before it will be executed.
+
+Note that child watch sources can only be used in conjunction with
+@samp{g_spawn...} when the @samp{G_SPAWN_DO_NOT_REAP_CHILD} flag is used.
+
+Note that on platforms where @code{<g-pid>} must be explicitly closed (see
+@code{g-spawn-close-pid}) @var{pid} must not be closed while the source is still
+active. Typically, you will want to call @code{g-spawn-close-pid} in the
+callback function for the source.
+
+Note further that using @code{g-child-watch-source-new} is not compatible with
+calling @samp{waitpid(-1)} in the application. Calling @code{waitpid} for
+individual pids will still work fine.
+
+@table @var
+@item pid
+process id of a child process to watch. On Windows, a HANDLE for the process to
+watch (which actually doesn't have to be a child).
+
+@item ret
+the newly-created child watch source
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function g-source-attach  (self@tie{}@code{<g-source>}) (context@tie{}@code{<g-main-context>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Adds a @code{<g-source>} to a @var{context} so that it will be executed within
+that context.
+
+@table @var
+@item source
+a @code{<g-source>}
+
+@item context
+a @code{<g-main-context>} (if @samp{@code{#f}}, the default context will be
+used)
+
+@item ret
+the ID (greater than 0) for the source within the @code{<g-main-context>}.
+
+@end table
+
+@end deffn
+
+@deffn Function g-source-destroy  (source@tie{}@code{<g-source>})
+Removes a source from its @code{<g-main-context>}, if any, and mark it as
+destroyed. The source cannot be subsequently added to another context.
+
+@table @var
+@item source
+a @code{<g-source>}
+
+@end table
+
+@end deffn
+
+@deffn Function g-source-is-destroyed  (source@tie{}@code{<g-source>}) @result{}@tie{} (ret@tie{}@code{bool})
+Returns whether @var{source} has been destroyed.
+
+This is important when you operate upon your objects from within idle handlers,
+but may have freed the object before the dispatch of your idle handler.
+
+@example 
+
+static gboolean 
+idle_callback (gpointer data)
+@{
+  SomeWidget *self = data;
+   
+  GDK_THREADS_ENTER ();
+  /* do stuff with self */
+  self->idle_id = 0;
+  GDK_THREADS_LEAVE ();
+   
+  return FALSE;
+@}
+ 
+static void 
+some_widget_do_stuff_later (SomeWidget *self)
+@{
+  self->idle_id = g_idle_add (idle_callback, self);
+@}
+ 
+static void 
+some_widget_finalize (GObject *object)
+@{
+  SomeWidget *self = SOME_WIDGET (object);
+   
+  if (self->idle_id)
+    g_source_remove (self->idle_id);
+   
+  G_OBJECT_CLASS (parent_class)->finalize (object);
+@}
+@end example
+
+This will fail in a multi-threaded application if the widget is destroyed before
+the idle handler fires due to the use after free in the callback. A solution, to
+this particular problem, is to check to if the source has already been destroy
+within the callback.
+
+@example 
+
+static gboolean 
+idle_callback (gpointer data)
+@{
+  SomeWidget *self = data;
+  
+  GDK_THREADS_ENTER ();
+  if (!g_source_is_destroyed (g_main_current_source ()))
+    @{
+      /* do stuff with self */
+    @}
+  GDK_THREADS_LEAVE ();
+  
+  return FALSE;
+@}
+@end example
+
+@table @var
+@item source
+a @code{<g-source>}
+
+@item ret
+@samp{@code{#t}} if the source has been destroyed
+
+@end table
+
+Since 2.12
+
+@end deffn
+
+@deffn Function g-source-set-priority  (source@tie{}@code{<g-source>}) (priority@tie{}@code{int})
+Sets the priority of a source. While the main loop is being run, a source will
+be dispatched if it is ready to be dispatched and no sources at a higher
+(numerically smaller) priority are ready to be dispatched.
+
+@table @var
+@item source
+a @code{<g-source>}
+
+@item priority
+the new priority.
+
+@end table
+
+@end deffn
+
+@deffn Function g-source-get-priority  (source@tie{}@code{<g-source>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the priority of a source.
+
+@table @var
+@item source
+a @code{<g-source>}
+
+@item ret
+the priority of the source
+
+@end table
+
+@end deffn
+
+@deffn Function g-source-set-can-recurse  (source@tie{}@code{<g-source>}) (can_recurse@tie{}@code{bool})
+Sets whether a source can be called recursively. If @var{can-recurse} is
+@samp{@code{#t}}, then while the source is being dispatched then this source
+will be processed normally. Otherwise, all processing of this source is blocked
+until the dispatch function returns.
+
+@table @var
+@item source
+a @code{<g-source>}
+
+@item can-recurse
+whether recursion is allowed for this source
+
+@end table
+
+@end deffn
+
+@deffn Function g-source-get-can-recurse  (source@tie{}@code{<g-source>}) @result{}@tie{} (ret@tie{}@code{bool})
+Checks whether a source is allowed to be called recursively. see
+@code{g-source-set-can-recurse}.
+
+@table @var
+@item source
+a @code{<g-source>}
+
+@item ret
+whether recursion is allowed.
+
+@end table
+
+@end deffn
+
+@deffn Function g-source-get-id  (source@tie{}@code{<g-source>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Returns the numeric ID for a particular source. The ID of a source is a positive
+integer which is unique within a particular main loop context. The reverse
+mapping from ID to source is done by @code{g-main-context-find-source-by-id}.
+
+@table @var
+@item source
+a @code{<g-source>}
+
+@item ret
+the ID (greater than 0) for the source
+
+@end table
+
+@end deffn
+
+@deffn Function g-source-get-context  (source@tie{}@code{<g-source>}) @result{}@tie{} (ret@tie{}@code{<g-main-context>})
+Gets the @code{<g-main-context>} with which the source is associated. Calling
+this function on a destroyed source is an error.
+
+@table @var
+@item source
+a @code{<g-source>}
+
+@item ret
+the @code{<g-main-context>} with which the source is associated, or
+@samp{@code{#f}} if the context has not yet been added to a source.
+
+@end table
+
+@end deffn
+
+@deffn Function g-source-remove  (tag@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{bool})
+Removes the source with the given id from the default main context. The id of a
+@code{<g-source>} is given by @code{g-source-get-id}, or will be returned by the
+functions @code{g-source-attach}, @code{g-idle-add}, @code{g-idle-add-full},
+@code{g-timeout-add}, @code{g-timeout-add-full}, @code{g-child-watch-add},
+@code{g-child-watch-add-full}, @code{g-io-add-watch}, and
+@code{g-io-add-watch-full}.
+
+See also @code{g-source-destroy}.
+
+@table @var
+@item tag
+the ID of the source to remove.
+
+@item ret
+@samp{@code{#t}} if the source was found and removed.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

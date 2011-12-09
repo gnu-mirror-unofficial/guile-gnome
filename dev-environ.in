@@ -1,0 +1,57 @@
+#!/bin/sh
+
+# guile-gnome
+# Copyright (C) 2003,2004 Free Software Foundation, Inc.
+#
+# This program is free software; you can redistribute it and/or    
+# modify it under the terms of the GNU General Public License as   
+# published by the Free Software Foundation; either version 2 of   
+# the License, or (at your option) any later version.              
+#
+# This program is distributed in the hope that it will be useful,  
+# but WITHOUT ANY WARRANTY; without even the implied warranty of   
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the    
+# GNU General Public License for more details.                     
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, contact:
+#
+# Free Software Foundation           Voice:  +1-617-542-5942
+# 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+# Boston, MA  02111-1307,  USA       gnu@gnu.org
+
+
+pwd=`pwd`
+this_dir=`dirname $0`
+this_dir=`readlink -f $this_dir`
+src_dir=@top_srcdir@
+cd $this_dir
+src_dir=`readlink -f $src_dir`
+cd $pwd
+
+ALL_PKGS="@AG_PACKAGES@"
+
+for pkg in $ALL_PKGS; do
+  if [ -d $src_dir/$pkg ]; then
+    if [ $src_dir != $this_dir ]; then
+      GUILE_LOAD_PATH=$src_dir/$pkg:$this_dir/$pkg:$GUILE_LOAD_PATH
+    else
+      GUILE_LOAD_PATH=$this_dir/$pkg:$GUILE_LOAD_PATH
+    fi
+    if [ -d $this_dir/$pkg/bin ]; then
+      PATH=$this_dir/$pkg/bin:$PATH
+    fi
+    if [ -f $src_dir/$pkg/shlib-dirs.ac ]; then
+      for dir in `cat $src_dir/$pkg/shlib-dirs.ac`; do
+	LTDL_LIBRARY_PATH=$this_dir/$pkg/$dir:$LTDL_LIBRARY_PATH
+      done
+    else
+      LTDL_LIBRARY_PATH=$this_dir/$pkg/gnome/gw:$LTDL_LIBRARY_PATH
+    fi
+    PKG_CONFIG_PATH=$this_dir/$pkg:$PKG_CONFIG_PATH
+  fi
+done
+
+export GUILE_LOAD_PATH LTDL_LIBRARY_PATH PKG_CONFIG_PATH PATH
+
+exec "$@"

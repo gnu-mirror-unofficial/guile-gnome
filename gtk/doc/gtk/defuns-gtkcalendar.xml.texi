@@ -1,0 +1,228 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-calendar>
+Derives from @code{<gtk-widget>}.
+
+This class defines the following slots:
+
+@table @code
+@item year
+The selected year
+
+@item month
+The selected month (as a number between 0 and 11)
+
+@item day
+The selected day (as a number between 1 and 31, or 0 to unselect the currently
+selected day)
+
+@item show-heading
+If TRUE, a heading is displayed
+
+@item show-day-names
+If TRUE, day names are displayed
+
+@item no-month-change
+If TRUE, the selected month cannot be changed
+
+@item show-week-numbers
+If TRUE, week numbers are displayed
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-calendar> month-changed 
+Emitted when the user clicks a button to change the selected month on a
+calendar.
+
+@end defop
+
+@defop Signal <gtk-calendar> day-selected 
+Emitted when the user selects a day.
+
+@end defop
+
+@defop Signal <gtk-calendar> day-selected-double-click 
+@end defop
+
+@defop Signal <gtk-calendar> prev-month 
+@end defop
+
+@defop Signal <gtk-calendar> next-month 
+@end defop
+
+@defop Signal <gtk-calendar> prev-year 
+@end defop
+
+@defop Signal <gtk-calendar> next-year 
+@end defop
+
+@deffn Function gtk-calendar-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new calendar, with the current date being selected.
+
+@table @var
+@item ret
+a newly @code{<gtk-calendar>} widget
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-calendar-select-month  (self@tie{}@code{<gtk-calendar>}) (month@tie{}@code{unsigned-int}) (year@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method select-month
+Shifts the calendar to a different month.
+
+@table @var
+@item calendar
+a @code{<gtk-calendar>}
+
+@item month
+a month number between 0 and 11.
+
+@item year
+the year the month is in.
+
+@item ret
+@samp{@code{#t}}, always
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-calendar-select-day  (self@tie{}@code{<gtk-calendar>}) (day@tie{}@code{unsigned-int})
+@deffnx Method select-day
+Selects a day from the current month.
+
+@table @var
+@item calendar
+a @code{<gtk-calendar>}.
+
+@item day
+the day number between 1 and 31, or 0 to unselect the currently selected day.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-calendar-mark-day  (self@tie{}@code{<gtk-calendar>}) (day@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method mark-day
+Places a visual marker on a particular day.
+
+@table @var
+@item calendar
+a @code{<gtk-calendar>}
+
+@item day
+the day number to mark between 1 and 31.
+
+@item ret
+@samp{@code{#t}}, always
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-calendar-unmark-day  (self@tie{}@code{<gtk-calendar>}) (day@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method unmark-day
+Removes the visual marker from a particular day.
+
+@table @var
+@item calendar
+a @code{<gtk-calendar>}.
+
+@item day
+the day number to unmark between 1 and 31.
+
+@item ret
+@samp{@code{#t}}, always
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-calendar-clear-marks  (self@tie{}@code{<gtk-calendar>})
+@deffnx Method clear-marks
+Remove all visual markers.
+
+@table @var
+@item calendar
+a @code{<gtk-calendar>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-calendar-set-display-options  (self@tie{}@code{<gtk-calendar>}) (flags@tie{}@code{<gtk-calendar-display-options>})
+@deffnx Method set-display-options
+Sets display options (whether to display the heading and the month headings).
+
+@table @var
+@item calendar
+a @code{<gtk-calendar>}
+
+@item flags
+the display options to set
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-calendar-get-date  (self@tie{}@code{<gtk-calendar>}) @result{}@tie{} (year@tie{}@code{unsigned-int}) (month@tie{}@code{unsigned-int}) (day@tie{}@code{unsigned-int})
+@deffnx Method get-date
+Obtains the selected date from a @code{<gtk-calendar>}.
+
+@table @var
+@item calendar
+a @code{<gtk-calendar>}
+
+@item year
+location to store the year number, or @samp{@code{#f}}
+
+@item month
+location to store the month number (between 0 and 11), or @samp{@code{#f}}
+
+@item day
+location to store the day number (between 1 and 31), or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-calendar-freeze  (self@tie{}@code{<gtk-calendar>})
+@deffnx Method freeze
+@samp{gtk_calendar_freeze} has been deprecated since version 2.8 and should not
+be used in newly-written code.
+
+Does nothing. Previously locked the display of the calendar until it was thawed
+with @code{gtk-calendar-thaw}.
+
+@table @var
+@item calendar
+a @code{<gtk-calendar>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-calendar-thaw  (self@tie{}@code{<gtk-calendar>})
+@deffnx Method thaw
+@samp{gtk_calendar_thaw} has been deprecated since version 2.8 and should not be
+used in newly-written code.
+
+Does nothing. Previously defrosted a calendar; all the changes made since the
+last @code{gtk-calendar-freeze} were displayed.
+
+@table @var
+@item calendar
+a @code{<gtk-calendar>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

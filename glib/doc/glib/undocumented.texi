@@ -1,0 +1,119 @@
+
+@c %start of fragment
+
+@node Undocumented
+@chapter Undocumented
+The following symbols, if any, have not been properly documented.
+
+@section (gnome glib)
+@defun g-error-code error
+@end defun
+
+@defun g-error-domain error
+@end defun
+
+@defun g-error-message error
+@end defun
+
+@defun g-idle-add proc
+@end defun
+
+@defun g-main-loop-console-repl 
+@end defun
+
+@defvar g-source-set-closure
+@end defvar
+
+@defun g-timeout-add milliseconds proc
+@end defun
+
+@section (gnome gw glib)
+@defvar <g-string*>
+@end defvar
+
+@defun enum-<g-bookmark-file-error>-val->int 
+@end defun
+
+@defun enum-<g-bookmark-file-error>-val->sym 
+@end defun
+
+@defun enum-<g-file-error>-val->int 
+@end defun
+
+@defun enum-<g-file-error>-val->sym 
+@end defun
+
+@defun enum-<g-file-test>-val->int 
+@end defun
+
+@defun enum-<g-file-test>-val->sym 
+@end defun
+
+@defun enum-<g-normalize-mode>-val->int 
+@end defun
+
+@defun enum-<g-normalize-mode>-val->sym 
+@end defun
+
+@defun enum-<g-seek-type>-val->int 
+@end defun
+
+@defun enum-<g-seek-type>-val->sym 
+@end defun
+
+@defun enum-<g-unicode-break-type>-val->int 
+@end defun
+
+@defun enum-<g-unicode-break-type>-val->sym 
+@end defun
+
+@defun enum-<g-unicode-type>-val->int 
+@end defun
+
+@defun enum-<g-unicode-type>-val->sym 
+@end defun
+
+@defun enum-<gio-channel-error>-val->int 
+@end defun
+
+@defun enum-<gio-channel-error>-val->sym 
+@end defun
+
+@defun enum-<gio-condition>-val->int 
+@end defun
+
+@defun enum-<gio-condition>-val->sym 
+@end defun
+
+@defun enum-<gio-error>-val->int 
+@end defun
+
+@defun enum-<gio-error>-val->sym 
+@end defun
+
+@defun enum-<gio-flags>-val->int 
+@end defun
+
+@defun enum-<gio-flags>-val->sym 
+@end defun
+
+@defun enum-<gio-status>-val->int 
+@end defun
+
+@defun enum-<gio-status>-val->sym 
+@end defun
+
+@defvar g-bookmark-file-error-quark
+@end defvar
+
+@defvar g-convert-error-quark
+@end defvar
+
+@defvar g-file-error-quark
+@end defvar
+
+@defvar g-io-channel-error-quark
+@end defvar
+
+
+@c %end of fragment

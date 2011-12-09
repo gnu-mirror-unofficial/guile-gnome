@@ -1,0 +1,51 @@
+
+@c %start of fragment
+
+@node GtkRecentChooserDialog
+@chapter GtkRecentChooserDialog
+Displays recently used files in a dialog
+
+@section Overview
+@code{<gtk-recent-chooser-dialog>} is a dialog box suitable for displaying the
+recently used documents. This widgets works by putting a
+@code{<gtk-recent-chooser-widget>} inside a @code{<gtk-dialog>}. It exposes the
+@code{<gtk-recent-chooser-iface>} interface, so you can use all the
+@code{<gtk-recent-chooser>} functions on the recent chooser dialog as well as
+those for @code{<gtk-dialog>}.
+
+Note that @code{<gtk-recent-chooser-dialog>} does not have any methods of its
+own. Instead, you should use the functions that work on a
+@code{<gtk-recent-chooser>}.
+
+In the simplest of cases, you can use the following code to use a
+@code{<gtk-recent-chooser-dialog>} to select a recently used file:
+
+@example 
+
+GtkWidget *dialog;
+
+dialog = gtk_recent_chooser_dialog_new ("Recent Documents",
+					parent_window,
+					GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+					NULL);
+					
+if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+  @{
+    GtkRecentInfo *info;
+
+    info = gtk_recent_chooser_get_current_item (GTK_RECENT_CHOOSER (dialog));
+    open_file (gtk_recent_info_get_uri (info));
+    gtk_recent_info_unref (info);
+  @}
+
+gtk_widget_destroy (dialog);
+  
+@end example
+
+Recently used files are supported since GTK+ 2.10.
+
+@section Usage
+@include defuns-gtkrecentchooserdialog.xml.texi
+
+@c %end of fragment

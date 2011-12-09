@@ -1,0 +1,120 @@
+
+@c %start of fragment
+
+@deffn Function gconf-valid-key  (key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool}) (why_invalid@tie{}@code{mchars})
+Asks whether a key is syntactically correct, that is, it ensures that the key
+consists of slash-separated strings and contains only legal characters. Normally
+you shouldn't need to call this function; the GConf functions all check this for
+you and return an error if the key is invalid. However, it may be useful to
+validate input to an entry field or the like. If you pass a non-@code{@code{#f}}
+address as the @var{why-invalid} argument, an allocated string is returned
+explaining why the key is invalid, if it is. If the key is valid the
+@var{why-invalid} argument is unused.
+
+@table @var
+@item key
+key to check.
+
+@item why-invalid
+return location for an explanation of the problem, if any. @code{g-free} the
+returned string.
+
+@item ret
+@code{@code{#t}} if the key is valid, or @code{@code{#f}} if not.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-key-is-below  (above@tie{}@code{mchars}) (below@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Asks whether the key @var{below} would be found below the key @var{above}, were
+they both to exist in the database. For example, @code{/foo} is always found
+below @code{/} and above @code{/foo/bar}. This probably isn't useful but GConf
+uses it internally so here it is if you need it.
+
+@table @var
+@item above
+the key on the "left hand side" of the predicate.
+
+@item below
+the key on the "right hand side."
+
+@item ret
+@code{@code{#t}} or @code{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-concat-dir-and-key  (dir@tie{}@code{mchars}) (key@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Concatenates the dir and key passed removing the unnecessary '/' characters and
+returns the new string.
+
+@table @var
+@item dir
+the directory.
+
+@item key
+the key.
+
+@item ret
+the newly concatenated string.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-unique-key  @result{}@tie{} (ret@tie{}@code{mchars})
+Generates a new and unique key using serial number, process id, current time and
+a random number generated.
+
+@table @var
+@item ret
+a newly created key, a @code{<gchar>} value.
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-escape-key  (arbitrary_text@tie{}@code{mchars}) (len@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+Escape @var{arbitrary-text} such that it's a valid key element (i.e. one part of
+the key path). The escaped key won't pass @code{gconf-valid-key} because it
+isn't a whole key (i.e. it doesn't have a preceding slash), but prepending a
+slash to the escaped text should always result in a valid key.
+
+@table @var
+@item arbitrary-text
+some text in any encoding or format
+
+@item len
+length of @var{arbitrary-text} in bytes, or -1 if @var{arbitrary-text} is
+nul-terminated
+
+@item ret
+a nul-terminated valid GConf key
+
+@end table
+
+@end deffn
+
+@deffn Function gconf-unescape-key  (escaped_key@tie{}@code{mchars}) (len@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+Converts a string escaped with @code{gconf-escape-key} back into its original
+form.
+
+@table @var
+@item escaped-key
+a key created with @code{gconf-escape-key}
+
+@item len
+length of @var{escaped-key} in bytes, or -1 if @var{escaped-key} is
+nul-terminated
+
+@item ret
+the original string that was escaped to create @var{escaped-key}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

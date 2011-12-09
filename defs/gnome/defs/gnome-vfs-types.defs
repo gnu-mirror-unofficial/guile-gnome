@@ -1,0 +1,528 @@
+;; -*- scheme -*-
+;; Enumerations and flags ...
+
+(define-flags VFSDirectoryVisitOptions
+  (in-module "Gnome")
+  (c-name "GnomeVFSDirectoryVisitOptions")
+  (gtype-id "GNOME_VFS_TYPE_VFS_DIRECTORY_VISIT_OPTIONS")
+  (values
+    '("default" "GNOME_VFS_DIRECTORY_VISIT_DEFAULT")
+    '("samefs" "GNOME_VFS_DIRECTORY_VISIT_SAMEFS")
+    '("loopcheck" "GNOME_VFS_DIRECTORY_VISIT_LOOPCHECK")
+  )
+)
+
+(define-enum VFSDNSSDServiceStatus
+  (in-module "Gnome")
+  (c-name "GnomeVFSDNSSDServiceStatus")
+  (gtype-id "GNOME_VFS_TYPE_VFS_DNSSD_SERVICE_STATUS")
+  (values
+    '("added" "GNOME_VFS_DNS_SD_SERVICE_ADDED")
+    '("removed" "GNOME_VFS_DNS_SD_SERVICE_REMOVED")
+  )
+)
+
+(define-flags VFSFileFlags
+  (in-module "Gnome")
+  (c-name "GnomeVFSFileFlags")
+  (gtype-id "GNOME_VFS_TYPE_VFS_FILE_FLAGS")
+  (values
+    '("none" "GNOME_VFS_FILE_FLAGS_NONE")
+    '("symlink" "GNOME_VFS_FILE_FLAGS_SYMLINK")
+    '("local" "GNOME_VFS_FILE_FLAGS_LOCAL")
+  )
+)
+
+(define-enum VFSFileType
+  (in-module "Gnome")
+  (c-name "GnomeVFSFileType")
+  (gtype-id "GNOME_VFS_TYPE_VFS_FILE_TYPE")
+  (values
+    '("unknown" "GNOME_VFS_FILE_TYPE_UNKNOWN")
+    '("regular" "GNOME_VFS_FILE_TYPE_REGULAR")
+    '("directory" "GNOME_VFS_FILE_TYPE_DIRECTORY")
+    '("fifo" "GNOME_VFS_FILE_TYPE_FIFO")
+    '("socket" "GNOME_VFS_FILE_TYPE_SOCKET")
+    '("character-device" "GNOME_VFS_FILE_TYPE_CHARACTER_DEVICE")
+    '("block-device" "GNOME_VFS_FILE_TYPE_BLOCK_DEVICE")
+    '("symbolic-link" "GNOME_VFS_FILE_TYPE_SYMBOLIC_LINK")
+  )
+)
+
+(define-flags VFSFileInfoFields
+  (in-module "Gnome")
+  (c-name "GnomeVFSFileInfoFields")
+  (gtype-id "GNOME_VFS_TYPE_VFS_FILE_INFO_FIELDS")
+  (values
+    '("none" "GNOME_VFS_FILE_INFO_FIELDS_NONE")
+    '("type" "GNOME_VFS_FILE_INFO_FIELDS_TYPE")
+    '("permissions" "GNOME_VFS_FILE_INFO_FIELDS_PERMISSIONS")
+    '("flags" "GNOME_VFS_FILE_INFO_FIELDS_FLAGS")
+    '("device" "GNOME_VFS_FILE_INFO_FIELDS_DEVICE")
+    '("inode" "GNOME_VFS_FILE_INFO_FIELDS_INODE")
+    '("link-count" "GNOME_VFS_FILE_INFO_FIELDS_LINK_COUNT")
+    '("size" "GNOME_VFS_FILE_INFO_FIELDS_SIZE")
+    '("block-count" "GNOME_VFS_FILE_INFO_FIELDS_BLOCK_COUNT")
+    '("io-block-size" "GNOME_VFS_FILE_INFO_FIELDS_IO_BLOCK_SIZE")
+    '("atime" "GNOME_VFS_FILE_INFO_FIELDS_ATIME")
+    '("mtime" "GNOME_VFS_FILE_INFO_FIELDS_MTIME")
+    '("ctime" "GNOME_VFS_FILE_INFO_FIELDS_CTIME")
+    '("symlink-name" "GNOME_VFS_FILE_INFO_FIELDS_SYMLINK_NAME")
+    '("mime-type" "GNOME_VFS_FILE_INFO_FIELDS_MIME_TYPE")
+    '("access" "GNOME_VFS_FILE_INFO_FIELDS_ACCESS")
+    '("ids" "GNOME_VFS_FILE_INFO_FIELDS_IDS")
+    '("acl" "GNOME_VFS_FILE_INFO_FIELDS_ACL")
+    '("selinux-context" "GNOME_VFS_FILE_INFO_FIELDS_SELINUX_CONTEXT")
+  )
+)
+
+(define-flags VFSFilePermissions
+  (in-module "Gnome")
+  (c-name "GnomeVFSFilePermissions")
+  (gtype-id "GNOME_VFS_TYPE_VFS_FILE_PERMISSIONS")
+  (values
+    '("suid" "GNOME_VFS_PERM_SUID")
+    '("sgid" "GNOME_VFS_PERM_SGID")
+    '("sticky" "GNOME_VFS_PERM_STICKY")
+    '("user-read" "GNOME_VFS_PERM_USER_READ")
+    '("user-write" "GNOME_VFS_PERM_USER_WRITE")
+    '("user-exec" "GNOME_VFS_PERM_USER_EXEC")
+    '("user-all" "GNOME_VFS_PERM_USER_ALL")
+    '("group-read" "GNOME_VFS_PERM_GROUP_READ")
+    '("group-write" "GNOME_VFS_PERM_GROUP_WRITE")
+    '("group-exec" "GNOME_VFS_PERM_GROUP_EXEC")
+    '("group-all" "GNOME_VFS_PERM_GROUP_ALL")
+    '("other-read" "GNOME_VFS_PERM_OTHER_READ")
+    '("other-write" "GNOME_VFS_PERM_OTHER_WRITE")
+    '("other-exec" "GNOME_VFS_PERM_OTHER_EXEC")
+    '("other-all" "GNOME_VFS_PERM_OTHER_ALL")
+    '("access-readable" "GNOME_VFS_PERM_ACCESS_READABLE")
+    '("access-writable" "GNOME_VFS_PERM_ACCESS_WRITABLE")
+    '("access-executable" "GNOME_VFS_PERM_ACCESS_EXECUTABLE")
+  )
+)
+
+(define-flags VFSFileInfoOptions
+  (in-module "Gnome")
+  (c-name "GnomeVFSFileInfoOptions")
+  (gtype-id "GNOME_VFS_TYPE_VFS_FILE_INFO_OPTIONS")
+  (values
+    '("default" "GNOME_VFS_FILE_INFO_DEFAULT")
+    '("get-mime-type" "GNOME_VFS_FILE_INFO_GET_MIME_TYPE")
+    '("force-fast-mime-type" "GNOME_VFS_FILE_INFO_FORCE_FAST_MIME_TYPE")
+    '("force-slow-mime-type" "GNOME_VFS_FILE_INFO_FORCE_SLOW_MIME_TYPE")
+    '("follow-links" "GNOME_VFS_FILE_INFO_FOLLOW_LINKS")
+    '("get-access-rights" "GNOME_VFS_FILE_INFO_GET_ACCESS_RIGHTS")
+    '("name-only" "GNOME_VFS_FILE_INFO_NAME_ONLY")
+    '("get-acl" "GNOME_VFS_FILE_INFO_GET_ACL")
+    '("get-selinux-context" "GNOME_VFS_FILE_INFO_GET_SELINUX_CONTEXT")
+  )
+)
+
+(define-flags VFSSetFileInfoMask
+  (in-module "Gnome")
+  (c-name "GnomeVFSSetFileInfoMask")
+  (gtype-id "GNOME_VFS_TYPE_VFS_SET_FILE_INFO_MASK")
+  (values
+    '("none" "GNOME_VFS_SET_FILE_INFO_NONE")
+    '("name" "GNOME_VFS_SET_FILE_INFO_NAME")
+    '("permissions" "GNOME_VFS_SET_FILE_INFO_PERMISSIONS")
+    '("owner" "GNOME_VFS_SET_FILE_INFO_OWNER")
+    '("time" "GNOME_VFS_SET_FILE_INFO_TIME")
+    '("acl" "GNOME_VFS_SET_FILE_INFO_ACL")
+    '("selinux-context" "GNOME_VFS_SET_FILE_INFO_SELINUX_CONTEXT")
+    '("symlink-name" "GNOME_VFS_SET_FILE_INFO_SYMLINK_NAME")
+  )
+)
+
+(define-enum VFSFindDirectoryKind
+  (in-module "Gnome")
+  (c-name "GnomeVFSFindDirectoryKind")
+  (gtype-id "GNOME_VFS_TYPE_VFS_FIND_DIRECTORY_KIND")
+  (values
+    '("desktop" "GNOME_VFS_DIRECTORY_KIND_DESKTOP")
+    '("trash" "GNOME_VFS_DIRECTORY_KIND_TRASH")
+  )
+)
+
+(define-flags VFSOpenMode
+  (in-module "Gnome")
+  (c-name "GnomeVFSOpenMode")
+  (gtype-id "GNOME_VFS_TYPE_VFS_OPEN_MODE")
+  (values
+    '("none" "GNOME_VFS_OPEN_NONE")
+    '("read" "GNOME_VFS_OPEN_READ")
+    '("write" "GNOME_VFS_OPEN_WRITE")
+    '("random" "GNOME_VFS_OPEN_RANDOM")
+    '("truncate" "GNOME_VFS_OPEN_TRUNCATE")
+  )
+)
+
+(define-enum VFSSeekPosition
+  (in-module "Gnome")
+  (c-name "GnomeVFSSeekPosition")
+  (gtype-id "GNOME_VFS_TYPE_VFS_SEEK_POSITION")
+  (values
+    '("start" "GNOME_VFS_SEEK_START")
+    '("current" "GNOME_VFS_SEEK_CURRENT")
+    '("end" "GNOME_VFS_SEEK_END")
+  )
+)
+
+(define-enum VFSMimeActionType
+  (in-module "Gnome")
+  (c-name "GnomeVFSMimeActionType")
+  (gtype-id "GNOME_VFS_TYPE_VFS_MIME_ACTION_TYPE")
+  (values
+    '("none" "GNOME_VFS_MIME_ACTION_TYPE_NONE")
+    '("application" "GNOME_VFS_MIME_ACTION_TYPE_APPLICATION")
+    '("component" "GNOME_VFS_MIME_ACTION_TYPE_COMPONENT")
+  )
+)
+
+(define-enum VFSMimeApplicationArgumentType
+  (in-module "Gnome")
+  (c-name "GnomeVFSMimeApplicationArgumentType")
+  (gtype-id "GNOME_VFS_TYPE_VFS_MIME_APPLICATION_ARGUMENT_TYPE")
+  (values
+    '("uris" "GNOME_VFS_MIME_APPLICATION_ARGUMENT_TYPE_URIS")
+    '("paths" "GNOME_VFS_MIME_APPLICATION_ARGUMENT_TYPE_PATHS")
+    '("uris-for-non-files" "GNOME_VFS_MIME_APPLICATION_ARGUMENT_TYPE_URIS_FOR_NON_FILES")
+  )
+)
+
+(define-enum VFSMimeEquivalence
+  (in-module "Gnome")
+  (c-name "GnomeVFSMimeEquivalence")
+  (gtype-id "GNOME_VFS_TYPE_VFS_MIME_EQUIVALENCE")
+  (values
+    '("unrelated" "GNOME_VFS_MIME_UNRELATED")
+    '("identical" "GNOME_VFS_MIME_IDENTICAL")
+    '("parent" "GNOME_VFS_MIME_PARENT")
+  )
+)
+
+(define-enum VFSMonitorType
+  (in-module "Gnome")
+  (c-name "GnomeVFSMonitorType")
+  (gtype-id "GNOME_VFS_TYPE_VFS_MONITOR_TYPE")
+  (values
+    '("file" "GNOME_VFS_MONITOR_FILE")
+    '("directory" "GNOME_VFS_MONITOR_DIRECTORY")
+  )
+)
+
+(define-enum VFSMonitorEventType
+  (in-module "Gnome")
+  (c-name "GnomeVFSMonitorEventType")
+  (gtype-id "GNOME_VFS_TYPE_VFS_MONITOR_EVENT_TYPE")
+  (values
+    '("changed" "GNOME_VFS_MONITOR_EVENT_CHANGED")
+    '("deleted" "GNOME_VFS_MONITOR_EVENT_DELETED")
+    '("startexecuting" "GNOME_VFS_MONITOR_EVENT_STARTEXECUTING")
+    '("stopexecuting" "GNOME_VFS_MONITOR_EVENT_STOPEXECUTING")
+    '("created" "GNOME_VFS_MONITOR_EVENT_CREATED")
+    '("metadata-changed" "GNOME_VFS_MONITOR_EVENT_METADATA_CHANGED")
+  )
+)
+
+(define-enum VFSResult
+  (in-module "Gnome")
+  (c-name "GnomeVFSResult")
+  (gtype-id "GNOME_VFS_TYPE_VFS_RESULT")
+  (values
+    '("ok" "GNOME_VFS_OK")
+    '("error-not-found" "GNOME_VFS_ERROR_NOT_FOUND")
+    '("error-generic" "GNOME_VFS_ERROR_GENERIC")
+    '("error-internal" "GNOME_VFS_ERROR_INTERNAL")
+    '("error-bad-parameters" "GNOME_VFS_ERROR_BAD_PARAMETERS")
+    '("error-not-supported" "GNOME_VFS_ERROR_NOT_SUPPORTED")
+    '("error-io" "GNOME_VFS_ERROR_IO")
+    '("error-corrupted-data" "GNOME_VFS_ERROR_CORRUPTED_DATA")
+    '("error-wrong-format" "GNOME_VFS_ERROR_WRONG_FORMAT")
+    '("error-bad-file" "GNOME_VFS_ERROR_BAD_FILE")
+    '("error-too-big" "GNOME_VFS_ERROR_TOO_BIG")
+    '("error-no-space" "GNOME_VFS_ERROR_NO_SPACE")
+    '("error-read-only" "GNOME_VFS_ERROR_READ_ONLY")
+    '("error-invalid-uri" "GNOME_VFS_ERROR_INVALID_URI")
+    '("error-not-open" "GNOME_VFS_ERROR_NOT_OPEN")
+    '("error-invalid-open-mode" "GNOME_VFS_ERROR_INVALID_OPEN_MODE")
+    '("error-access-denied" "GNOME_VFS_ERROR_ACCESS_DENIED")
+    '("error-too-many-open-files" "GNOME_VFS_ERROR_TOO_MANY_OPEN_FILES")
+    '("error-eof" "GNOME_VFS_ERROR_EOF")
+    '("error-not-a-directory" "GNOME_VFS_ERROR_NOT_A_DIRECTORY")
+    '("error-in-progress" "GNOME_VFS_ERROR_IN_PROGRESS")
+    '("error-interrupted" "GNOME_VFS_ERROR_INTERRUPTED")
+    '("error-file-exists" "GNOME_VFS_ERROR_FILE_EXISTS")
+    '("error-loop" "GNOME_VFS_ERROR_LOOP")
+    '("error-not-permitted" "GNOME_VFS_ERROR_NOT_PERMITTED")
+    '("error-is-directory" "GNOME_VFS_ERROR_IS_DIRECTORY")
+    '("error-no-memory" "GNOME_VFS_ERROR_NO_MEMORY")
+    '("error-host-not-found" "GNOME_VFS_ERROR_HOST_NOT_FOUND")
+    '("error-invalid-host-name" "GNOME_VFS_ERROR_INVALID_HOST_NAME")
+    '("error-host-has-no-address" "GNOME_VFS_ERROR_HOST_HAS_NO_ADDRESS")
+    '("error-login-failed" "GNOME_VFS_ERROR_LOGIN_FAILED")
+    '("error-cancelled" "GNOME_VFS_ERROR_CANCELLED")
+    '("error-directory-busy" "GNOME_VFS_ERROR_DIRECTORY_BUSY")
+    '("error-directory-not-empty" "GNOME_VFS_ERROR_DIRECTORY_NOT_EMPTY")
+    '("error-too-many-links" "GNOME_VFS_ERROR_TOO_MANY_LINKS")
+    '("error-read-only-file-system" "GNOME_VFS_ERROR_READ_ONLY_FILE_SYSTEM")
+    '("error-not-same-file-system" "GNOME_VFS_ERROR_NOT_SAME_FILE_SYSTEM")
+    '("error-name-too-long" "GNOME_VFS_ERROR_NAME_TOO_LONG")
+    '("error-service-not-available" "GNOME_VFS_ERROR_SERVICE_NOT_AVAILABLE")
+    '("error-service-obsolete" "GNOME_VFS_ERROR_SERVICE_OBSOLETE")
+    '("error-protocol-error" "GNOME_VFS_ERROR_PROTOCOL_ERROR")
+    '("error-no-master-browser" "GNOME_VFS_ERROR_NO_MASTER_BROWSER")
+    '("error-no-default" "GNOME_VFS_ERROR_NO_DEFAULT")
+    '("error-no-handler" "GNOME_VFS_ERROR_NO_HANDLER")
+    '("error-parse" "GNOME_VFS_ERROR_PARSE")
+    '("error-launch" "GNOME_VFS_ERROR_LAUNCH")
+    '("error-timeout" "GNOME_VFS_ERROR_TIMEOUT")
+    '("error-nameserver" "GNOME_VFS_ERROR_NAMESERVER")
+    '("error-locked" "GNOME_VFS_ERROR_LOCKED")
+    '("error-deprecated-function" "GNOME_VFS_ERROR_DEPRECATED_FUNCTION")
+    '("error-invalid-filename" "GNOME_VFS_ERROR_INVALID_FILENAME")
+    '("error-not-a-symbolic-link" "GNOME_VFS_ERROR_NOT_A_SYMBOLIC_LINK")
+    '("num-errors" "GNOME_VFS_NUM_ERRORS")
+  )
+)
+
+(define-flags VFSModuleCallbackFullAuthenticationFlags
+  (in-module "Gnome")
+  (c-name "GnomeVFSModuleCallbackFullAuthenticationFlags")
+  (gtype-id "GNOME_VFS_TYPE_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_FLAGS")
+  (values
+    '("previous-attempt-failed" "GNOME_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_PREVIOUS_ATTEMPT_FAILED")
+    '("need-password" "GNOME_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_NEED_PASSWORD")
+    '("need-username" "GNOME_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_NEED_USERNAME")
+    '("need-domain" "GNOME_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_NEED_DOMAIN")
+    '("saving-supported" "GNOME_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_SAVING_SUPPORTED")
+    '("anon-supported" "GNOME_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_ANON_SUPPORTED")
+  )
+)
+
+(define-flags VFSModuleCallbackFullAuthenticationOutFlags
+  (in-module "Gnome")
+  (c-name "GnomeVFSModuleCallbackFullAuthenticationOutFlags")
+  (gtype-id "GNOME_VFS_TYPE_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_OUT_FLAGS")
+  (values
+    '("d" "GNOME_VFS_MODULE_CALLBACK_FULL_AUTHENTICATION_OUT_ANON_SELECTED")
+  )
+)
+
+(define-enum VFSModuleCallbackAuthenticationAuthType
+  (in-module "Gnome")
+  (c-name "GnomeVFSModuleCallbackAuthenticationAuthType")
+  (gtype-id "GNOME_VFS_TYPE_VFS_MODULE_CALLBACK_AUTHENTICATION_AUTH_TYPE")
+  (values
+    '("basic" "AuthTypeBasic")
+    '("digest" "AuthTypeDigest")
+  )
+)
+
+(define-flags VFSURIHideOptions
+  (in-module "Gnome")
+  (c-name "GnomeVFSURIHideOptions")
+  (gtype-id "GNOME_VFS_TYPE_VFS_URI_HIDE_OPTIONS")
+  (values
+    '("none" "GNOME_VFS_URI_HIDE_NONE")
+    '("user-name" "GNOME_VFS_URI_HIDE_USER_NAME")
+    '("password" "GNOME_VFS_URI_HIDE_PASSWORD")
+    '("host-name" "GNOME_VFS_URI_HIDE_HOST_NAME")
+    '("host-port" "GNOME_VFS_URI_HIDE_HOST_PORT")
+    '("toplevel-method" "GNOME_VFS_URI_HIDE_TOPLEVEL_METHOD")
+    '("fragment-identifier" "GNOME_VFS_URI_HIDE_FRAGMENT_IDENTIFIER")
+  )
+)
+
+(define-flags VFSMakeURIDirs
+  (in-module "Gnome")
+  (c-name "GnomeVFSMakeURIDirs")
+  (gtype-id "GNOME_VFS_TYPE_VFS_MAKE_URI_DIRS")
+  (values
+    '("none" "GNOME_VFS_MAKE_URI_DIR_NONE")
+    '("homedir" "GNOME_VFS_MAKE_URI_DIR_HOMEDIR")
+    '("current" "GNOME_VFS_MAKE_URI_DIR_CURRENT")
+  )
+)
+
+(define-enum VFSDeviceType
+  (in-module "Gnome")
+  (c-name "GnomeVFSDeviceType")
+  (gtype-id "GNOME_VFS_TYPE_VFS_DEVICE_TYPE")
+  (values
+    '("unknown" "GNOME_VFS_DEVICE_TYPE_UNKNOWN")
+    '("audio-cd" "GNOME_VFS_DEVICE_TYPE_AUDIO_CD")
+    '("video-dvd" "GNOME_VFS_DEVICE_TYPE_VIDEO_DVD")
+    '("harddrive" "GNOME_VFS_DEVICE_TYPE_HARDDRIVE")
+    '("cdrom" "GNOME_VFS_DEVICE_TYPE_CDROM")
+    '("floppy" "GNOME_VFS_DEVICE_TYPE_FLOPPY")
+    '("zip" "GNOME_VFS_DEVICE_TYPE_ZIP")
+    '("jaz" "GNOME_VFS_DEVICE_TYPE_JAZ")
+    '("nfs" "GNOME_VFS_DEVICE_TYPE_NFS")
+    '("autofs" "GNOME_VFS_DEVICE_TYPE_AUTOFS")
+    '("camera" "GNOME_VFS_DEVICE_TYPE_CAMERA")
+    '("memory-stick" "GNOME_VFS_DEVICE_TYPE_MEMORY_STICK")
+    '("smb" "GNOME_VFS_DEVICE_TYPE_SMB")
+    '("apple" "GNOME_VFS_DEVICE_TYPE_APPLE")
+    '("music-player" "GNOME_VFS_DEVICE_TYPE_MUSIC_PLAYER")
+    '("windows" "GNOME_VFS_DEVICE_TYPE_WINDOWS")
+    '("loopback" "GNOME_VFS_DEVICE_TYPE_LOOPBACK")
+    '("network" "GNOME_VFS_DEVICE_TYPE_NETWORK")
+  )
+)
+
+(define-enum VFSVolumeType
+  (in-module "Gnome")
+  (c-name "GnomeVFSVolumeType")
+  (gtype-id "GNOME_VFS_TYPE_VFS_VOLUME_TYPE")
+  (values
+    '("mountpoint" "GNOME_VFS_VOLUME_TYPE_MOUNTPOINT")
+    '("vfs-mount" "GNOME_VFS_VOLUME_TYPE_VFS_MOUNT")
+    '("connected-server" "GNOME_VFS_VOLUME_TYPE_CONNECTED_SERVER")
+  )
+)
+
+(define-flags VFSXferOptions
+  (in-module "Gnome")
+  (c-name "GnomeVFSXferOptions")
+  (gtype-id "GNOME_VFS_TYPE_VFS_XFER_OPTIONS")
+  (values
+    '("default" "GNOME_VFS_XFER_DEFAULT")
+    '("unused-1" "GNOME_VFS_XFER_UNUSED_1")
+    '("follow-links" "GNOME_VFS_XFER_FOLLOW_LINKS")
+    '("unused-2" "GNOME_VFS_XFER_UNUSED_2")
+    '("recursive" "GNOME_VFS_XFER_RECURSIVE")
+    '("samefs" "GNOME_VFS_XFER_SAMEFS")
+    '("delete-items" "GNOME_VFS_XFER_DELETE_ITEMS")
+    '("empty-directories" "GNOME_VFS_XFER_EMPTY_DIRECTORIES")
+    '("new-unique-directory" "GNOME_VFS_XFER_NEW_UNIQUE_DIRECTORY")
+    '("removesource" "GNOME_VFS_XFER_REMOVESOURCE")
+    '("use-unique-names" "GNOME_VFS_XFER_USE_UNIQUE_NAMES")
+    '("link-items" "GNOME_VFS_XFER_LINK_ITEMS")
+    '("follow-links-recursive" "GNOME_VFS_XFER_FOLLOW_LINKS_RECURSIVE")
+    '("target-default-perms" "GNOME_VFS_XFER_TARGET_DEFAULT_PERMS")
+  )
+)
+
+(define-enum VFSXferProgressStatus
+  (in-module "Gnome")
+  (c-name "GnomeVFSXferProgressStatus")
+  (gtype-id "GNOME_VFS_TYPE_VFS_XFER_PROGRESS_STATUS")
+  (values
+    '("ok" "GNOME_VFS_XFER_PROGRESS_STATUS_OK")
+    '("vfserror" "GNOME_VFS_XFER_PROGRESS_STATUS_VFSERROR")
+    '("overwrite" "GNOME_VFS_XFER_PROGRESS_STATUS_OVERWRITE")
+    '("duplicate" "GNOME_VFS_XFER_PROGRESS_STATUS_DUPLICATE")
+  )
+)
+
+(define-enum VFSXferOverwriteMode
+  (in-module "Gnome")
+  (c-name "GnomeVFSXferOverwriteMode")
+  (gtype-id "GNOME_VFS_TYPE_VFS_XFER_OVERWRITE_MODE")
+  (values
+    '("abort" "GNOME_VFS_XFER_OVERWRITE_MODE_ABORT")
+    '("query" "GNOME_VFS_XFER_OVERWRITE_MODE_QUERY")
+    '("replace" "GNOME_VFS_XFER_OVERWRITE_MODE_REPLACE")
+    '("skip" "GNOME_VFS_XFER_OVERWRITE_MODE_SKIP")
+  )
+)
+
+(define-enum VFSXferOverwriteAction
+  (in-module "Gnome")
+  (c-name "GnomeVFSXferOverwriteAction")
+  (gtype-id "GNOME_VFS_TYPE_VFS_XFER_OVERWRITE_ACTION")
+  (values
+    '("abort" "GNOME_VFS_XFER_OVERWRITE_ACTION_ABORT")
+    '("replace" "GNOME_VFS_XFER_OVERWRITE_ACTION_REPLACE")
+    '("replace-all" "GNOME_VFS_XFER_OVERWRITE_ACTION_REPLACE_ALL")
+    '("skip" "GNOME_VFS_XFER_OVERWRITE_ACTION_SKIP")
+    '("skip-all" "GNOME_VFS_XFER_OVERWRITE_ACTION_SKIP_ALL")
+  )
+)
+
+(define-enum VFSXferErrorMode
+  (in-module "Gnome")
+  (c-name "GnomeVFSXferErrorMode")
+  (gtype-id "GNOME_VFS_TYPE_VFS_XFER_ERROR_MODE")
+  (values
+    '("abort" "GNOME_VFS_XFER_ERROR_MODE_ABORT")
+    '("query" "GNOME_VFS_XFER_ERROR_MODE_QUERY")
+  )
+)
+
+(define-enum VFSXferErrorAction
+  (in-module "Gnome")
+  (c-name "GnomeVFSXferErrorAction")
+  (gtype-id "GNOME_VFS_TYPE_VFS_XFER_ERROR_ACTION")
+  (values
+    '("abort" "GNOME_VFS_XFER_ERROR_ACTION_ABORT")
+    '("retry" "GNOME_VFS_XFER_ERROR_ACTION_RETRY")
+    '("skip" "GNOME_VFS_XFER_ERROR_ACTION_SKIP")
+  )
+)
+
+(define-enum VFSXferPhase
+  (in-module "Gnome")
+  (c-name "GnomeVFSXferPhase")
+  (gtype-id "GNOME_VFS_TYPE_VFS_XFER_PHASE")
+  (values
+    '("phase-initial" "GNOME_VFS_XFER_PHASE_INITIAL")
+    '("checking-destination" "GNOME_VFS_XFER_CHECKING_DESTINATION")
+    '("phase-collecting" "GNOME_VFS_XFER_PHASE_COLLECTING")
+    '("phase-readytogo" "GNOME_VFS_XFER_PHASE_READYTOGO")
+    '("phase-opensource" "GNOME_VFS_XFER_PHASE_OPENSOURCE")
+    '("phase-opentarget" "GNOME_VFS_XFER_PHASE_OPENTARGET")
+    '("phase-copying" "GNOME_VFS_XFER_PHASE_COPYING")
+    '("phase-moving" "GNOME_VFS_XFER_PHASE_MOVING")
+    '("phase-readsource" "GNOME_VFS_XFER_PHASE_READSOURCE")
+    '("phase-writetarget" "GNOME_VFS_XFER_PHASE_WRITETARGET")
+    '("phase-closesource" "GNOME_VFS_XFER_PHASE_CLOSESOURCE")
+    '("phase-closetarget" "GNOME_VFS_XFER_PHASE_CLOSETARGET")
+    '("phase-deletesource" "GNOME_VFS_XFER_PHASE_DELETESOURCE")
+    '("phase-setattributes" "GNOME_VFS_XFER_PHASE_SETATTRIBUTES")
+    '("phase-filecompleted" "GNOME_VFS_XFER_PHASE_FILECOMPLETED")
+    '("phase-cleanup" "GNOME_VFS_XFER_PHASE_CLEANUP")
+    '("phase-completed" "GNOME_VFS_XFER_PHASE_COMPLETED")
+    '("num-phases" "GNOME_VFS_XFER_NUM_PHASES")
+  )
+)
+
+;; -*- scheme -*-
+; object definitions ...
+(define-object VFSACE
+  (in-module "Gnome")
+  (parent "GObject")
+  (c-name "GnomeVFSACE")
+  (gtype-id "GNOME_VFS_TYPE_VFS_ACE")
+)
+
+(define-object VFSACL
+  (in-module "Gnome")
+  (parent "GObject")
+  (c-name "GnomeVFSACL")
+  (gtype-id "GNOME_VFS_TYPE_VFS_ACL")
+)
+
+(define-object VFSDrive
+  (in-module "Gnome")
+  (parent "GObject")
+  (c-name "GnomeVFSDrive")
+  (gtype-id "GNOME_VFS_TYPE_VFS_DRIVE")
+)
+
+(define-object VFSVolume
+  (in-module "Gnome")
+  (parent "GObject")
+  (c-name "GnomeVFSVolume")
+  (gtype-id "GNOME_VFS_TYPE_VFS_VOLUME")
+)
+
+(define-object VFSVolumeMonitor
+  (in-module "Gnome")
+  (parent "GObject")
+  (c-name "GnomeVFSVolumeMonitor")
+  (gtype-id "GNOME_VFS_TYPE_VFS_VOLUME_MONITOR")
+)
+

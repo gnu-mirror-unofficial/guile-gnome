@@ -1,0 +1,253 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-tree-selection>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@defop Signal <gtk-tree-selection> changed 
+Emitted whenever the selection has (possibly) changed. Please note that this
+signal is mostly a hint. It may only be emitted once when a range of rows are
+selected, and it may occasionally be emitted when nothing has happened.
+
+@end defop
+
+@deffn Function gtk-tree-selection-set-mode  (self@tie{}@code{<gtk-tree-selection>}) (type@tie{}@code{<gtk-selection-mode>})
+@deffnx Method set-mode
+Sets the selection mode of the @var{selection}. If the previous type was
+@code{<gtk-selection-multiple>}, then the anchor is kept selected, if it was
+previously selected.
+
+@table @var
+@item selection
+A @code{<gtk-tree-selection>}.
+
+@item type
+The selection mode
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-selection-get-mode  (self@tie{}@code{<gtk-tree-selection>}) @result{}@tie{} (ret@tie{}@code{<gtk-selection-mode>})
+@deffnx Method get-mode
+Gets the selection mode for @var{selection}. See
+@code{gtk-tree-selection-set-mode}.
+
+@table @var
+@item selection
+a @code{<gtk-tree-selection>}
+
+@item ret
+the current selection mode
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-selection-get-tree-view  (self@tie{}@code{<gtk-tree-selection>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-view>})
+@deffnx Method get-tree-view
+Returns the tree view associated with @var{selection}.
+
+@table @var
+@item selection
+A @code{<gtk-tree-selection>}
+
+@item ret
+A @code{<gtk-tree-view>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-selection-get-selected  (self@tie{}@code{<gtk-tree-selection>}) @result{}@tie{} (model@tie{}@code{<gtk-tree-model>}) (iter@tie{}@code{<gtk-tree-iter>})
+@deffnx Method get-selected
+@deffnx Method get-selected 
+Retrieve the current selection, if @var{selection} is set to
+@code{<gtk-selection-single>} or @code{<gtk-selection-browse>}.
+
+This function will not work if you use @var{selection} is
+@code{<gtk-selection-multiple>}.
+
+@table @var
+@item selection
+A @code{<gtk-tree-selection>}.
+
+@item model
+A pointer to set to the @code{<gtk-tree-model>}, or NULL.
+
+@item iter
+The @code{<gtk-tree-iter>}, or NULL.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-selection-select-path  (self@tie{}@code{<gtk-tree-selection>}) (path@tie{}@code{<gtk-tree-path>})
+@deffnx Method select-path
+Select the row at @var{path}.
+
+@table @var
+@item selection
+A @code{<gtk-tree-selection>}.
+
+@item path
+The @code{<gtk-tree-path>} to be selected.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-selection-unselect-path  (self@tie{}@code{<gtk-tree-selection>}) (path@tie{}@code{<gtk-tree-path>})
+@deffnx Method unselect-path
+Unselects the row at @var{path}.
+
+@table @var
+@item selection
+A @code{<gtk-tree-selection>}.
+
+@item path
+The @code{<gtk-tree-path>} to be unselected.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-selection-path-is-selected  (self@tie{}@code{<gtk-tree-selection>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method path-is-selected
+Returns @samp{@code{#t}} if the row pointed to by @var{path} is currently
+selected. If @var{path} does not point to a valid location, @samp{@code{#f}} is
+returned
+
+@table @var
+@item selection
+A @code{<gtk-tree-selection>}.
+
+@item path
+A @code{<gtk-tree-path>} to check selection on.
+
+@item ret
+@samp{@code{#t}} if @var{path} is selected.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-selection-select-iter  (self@tie{}@code{<gtk-tree-selection>}) (iter@tie{}@code{<gtk-tree-iter>})
+@deffnx Method select-iter
+Selects the specified iterator.
+
+@table @var
+@item selection
+A @code{<gtk-tree-selection>}.
+
+@item iter
+The @code{<gtk-tree-iter>} to be selected.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-selection-unselect-iter  (self@tie{}@code{<gtk-tree-selection>}) (iter@tie{}@code{<gtk-tree-iter>})
+@deffnx Method unselect-iter
+Unselects the specified iterator.
+
+@table @var
+@item selection
+A @code{<gtk-tree-selection>}.
+
+@item iter
+The @code{<gtk-tree-iter>} to be unselected.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-selection-iter-is-selected  (self@tie{}@code{<gtk-tree-selection>}) (iter@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method iter-is-selected
+Returns @samp{@code{#t}} if the row at @var{iter} is currently selected.
+
+@table @var
+@item selection
+A @code{<gtk-tree-selection>}
+
+@item iter
+A valid @code{<gtk-tree-iter>}
+
+@item ret
+@samp{@code{#t}}, if @var{iter} is selected
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-selection-select-all  (self@tie{}@code{<gtk-tree-selection>})
+@deffnx Method select-all
+Selects all the nodes. @var{selection} must be set to
+@code{<gtk-selection-multiple>} mode.
+
+@table @var
+@item selection
+A @code{<gtk-tree-selection>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-selection-unselect-all  (self@tie{}@code{<gtk-tree-selection>})
+@deffnx Method unselect-all
+Unselects all the nodes.
+
+@table @var
+@item selection
+A @code{<gtk-tree-selection>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-selection-select-range  (self@tie{}@code{<gtk-tree-selection>}) (start_path@tie{}@code{<gtk-tree-path>}) (end_path@tie{}@code{<gtk-tree-path>})
+@deffnx Method select-range
+Selects a range of nodes, determined by @var{start-path} and @var{end-path}
+inclusive. @var{selection} must be set to @code{<gtk-selection-multiple>} mode.
+
+@table @var
+@item selection
+A @code{<gtk-tree-selection>}.
+
+@item start-path
+The initial node of the range.
+
+@item end-path
+The final node of the range.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-selection-unselect-range  (self@tie{}@code{<gtk-tree-selection>}) (start_path@tie{}@code{<gtk-tree-path>}) (end_path@tie{}@code{<gtk-tree-path>})
+@deffnx Method unselect-range
+Unselects a range of nodes, determined by @var{start-path} and @var{end-path}
+inclusive.
+
+@table @var
+@item selection
+A @code{<gtk-tree-selection>}.
+
+@item start-path
+The initial node of the range.
+
+@item end-path
+The initial node of the range.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+
+@c %end of fragment

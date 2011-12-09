@@ -1,0 +1,84 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename guile-gnome-libgnomeui.info
+@settitle Guile-Libgnomeui
+@c %**end of header
+
+@include version.texi
+
+@copying 
+This manual is for @code{(gnome libgnomeui)} (version @value{VERSION}, updated
+@value{UPDATED})
+
+Copyright 1998-2007 Kjartan Maraas, Anders Carlsson, and others
+
+@c LIBGNOMEUI is LGPL, ergo GPL distribution is possible
+@quotation 
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU General Public License, Version 2 or any
+later version published by the Free Software Foundation.
+@end quotation
+
+@end copying
+
+@dircategory The Algorithmic Language Scheme
+@direntry 
+* Guile-Libgnomeui: (guile-gnome-libgnomeui.info).  A deprecated GNOME UI lib.
+@end direntry
+
+@titlepage 
+@title Guile-GNOME: libgnomeui
+@subtitle version @value{VERSION}, updated @value{UPDATED}
+@author Kjartan Maraas
+@author Anders Carlsson
+@author many others
+@page 
+@vskip 0pt plus 1filll
+@insertcopying 
+@end titlepage
+
+@ifnottex 
+@node Top
+@top Guile-Libgnomeui
+
+@insertcopying 
+@menu
+* Overview::             About libgnomeui and its Guile bindings.
+
+* GnomeAuthentication:: 
+* GnomeClient::          Interactions with the session manager.
+* GnomeDateEdit:: 
+* GnomeMultiScreen:: 
+* GnomePassword:: 
+* gnome-vfs-util:: 
+
+* Undocumented::         Undocumented functions.
+
+* Type Index::
+* Function Index::
+@end menu
+
+@end ifnottex
+
+@iftex 
+@shortcontents 
+@end iftex
+
+@include overview.texi
+
+@include section-gnome-authentication.xml.texi
+@include section-gnome-client.xml.texi
+@include section-gnome-dateedit.xml.texi
+@include section-gnome-multi-screen.xml.texi
+@include section-gnome-password.xml.texi
+@include section-gnome-vfs-util.xml.texi
+
+@include undocumented.texi
+
+@node Type Index
+@unnumbered Type Index
+@printindex tp
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+@bye

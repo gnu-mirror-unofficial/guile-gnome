@@ -1,0 +1,33 @@
+
+@c %start of fragment
+
+@node Points Rectangles and Regions
+@chapter Points, Rectangles and Regions
+Simple graphical data types
+
+@section Overview
+GDK provides the @code{<gdk-point>}, @code{<gdk-rectangle>}, @code{<gdk-region>}
+and @code{<gdk-span>} data types for representing pixels and sets of pixels on
+the screen.
+
+@code{<gdk-point>} is a simple structure containing an x and y coordinate of a
+point.
+
+@code{<gdk-rectangle>} is a structure holding the position and size of a
+rectangle. The intersection of two rectangles can be computed with
+@code{gdk-rectangle-intersect}. To find the union of two rectangles use
+@code{gdk-rectangle-union}.
+
+@code{<gdk-region>} is an opaque data type holding a set of arbitrary pixels,
+and is usually used for clipping graphical operations (see
+@code{gdk-gc-set-clip-region}).
+
+@code{<gdk-span>} is a structure holding a spanline. A spanline is a horizontal
+line that is one pixel wide. It is mainly used when rasterizing other graphics
+primitives. It can be intersected to regions by using
+@code{gdk-region-spans-intersect-foreach}.
+
+@section Usage
+@include defuns-regions.xml.texi
+
+@c %end of fragment

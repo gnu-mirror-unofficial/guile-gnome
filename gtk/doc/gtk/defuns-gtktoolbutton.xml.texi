@@ -1,0 +1,316 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-tool-button>
+Derives from @code{<gtk-tool-item>}.
+
+This class defines the following slots:
+
+@table @code
+@item label
+Text to show in the item.
+
+@item use-underline
+If set, an underline in the label property indicates that the next character
+should be used for the mnemonic accelerator key in the overflow menu
+
+@item label-widget
+Widget to use as the item label
+
+@item stock-id
+The stock icon displayed on the item
+
+@item icon-name
+The name of the themed icon displayed on the item
+
+@item icon-widget
+Icon widget to display in the item
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-tool-button> clicked 
+This signal is emitted when the tool button is clicked with the mouse or
+activated with the keyboard.
+
+@end defop
+
+@deffn Function gtk-tool-button-new  (icon_widget@tie{}@code{<gtk-widget>}) (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-tool-item>})
+Creates a new @samp{GtkToolButton} using @var{icon-widget} as icon and
+@var{label} as label.
+
+@table @var
+@item icon-widget
+a widget that will be used as icon widget, or @samp{@code{#f}}
+
+@item label
+a string that will be used as label, or @samp{@code{#f}}
+
+@item ret
+A new @code{<gtk-tool-button>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-button-new-from-stock  (stock_id@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-tool-item>})
+Creates a new @code{<gtk-tool-button>} containing the image and text from a
+stock item. Some stock ids have preprocessor macros like @code{<gtk-stock-ok>}
+and @code{<gtk-stock-apply>}.
+
+It is an error if @var{stock-id} is not a name of a stock item.
+
+@table @var
+@item stock-id
+the name of the stock item
+
+@item ret
+A new @code{<gtk-tool-button>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-button-set-label  (self@tie{}@code{<gtk-tool-button>}) (label@tie{}@code{mchars})
+@deffnx Method set-label
+Sets @var{label} as the label used for the tool button. The "label" property
+only has an effect if not overridden by a non-@samp{@code{#f}} "label_widget"
+property. If both the "label_widget" and "label" properties are
+@samp{@code{#f}}, the label is determined by the "stock_id" property. If the
+"stock_id" property is also @samp{@code{#f}}, @var{button} will not have a
+label.
+
+@table @var
+@item button
+a @code{<gtk-tool-button>}
+
+@item label
+a string that will be used as label, or @samp{@code{#f}}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-button-get-label  (self@tie{}@code{<gtk-tool-button>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-label
+Returns the label used by the tool button, or @samp{@code{#f}} if the tool
+button doesn't have a label. or uses a the label from a stock item. The returned
+string is owned by GTK+, and must not be modified or freed.
+
+@table @var
+@item button
+a @code{<gtk-tool-button>}
+
+@item ret
+The label, or @samp{@code{#f}}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-button-set-use-underline  (self@tie{}@code{<gtk-tool-button>}) (use_underline@tie{}@code{bool})
+@deffnx Method set-use-underline
+If set, an underline in the label property indicates that the next character
+should be used for the mnemonic accelerator key in the overflow menu. For
+example, if the label property is "_Open" and @var{use-underline} is
+@samp{@code{#t}}, the label on the tool button will be "Open" and the item on
+the overflow menu will have an underlined 'O'.
+
+Labels shown on tool buttons never have mnemonics on them; this property only
+affects the menu item on the overflow menu.
+
+@table @var
+@item button
+a @code{<gtk-tool-button>}
+
+@item use-underline
+whether the button label has the form "_Open"
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-button-get-use-underline  (self@tie{}@code{<gtk-tool-button>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-use-underline
+Returns whether underscores in the label property are used as mnemonics on menu
+items on the overflow menu. See @code{gtk-tool-button-set-use-underline}.
+
+@table @var
+@item button
+a @code{<gtk-tool-button>}
+
+@item ret
+@samp{@code{#t}} if underscores in the label property are used as mnemonics on
+menu items on the overflow menu.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-button-set-stock-id  (self@tie{}@code{<gtk-tool-button>}) (stock_id@tie{}@code{mchars})
+@deffnx Method set-stock-id
+Sets the name of the stock item. See @code{gtk-tool-button-new-from-stock}. The
+stock_id property only has an effect if not overridden by non-@samp{@code{#f}}
+"label" and "icon_widget" properties.
+
+@table @var
+@item button
+a @code{<gtk-tool-button>}
+
+@item stock-id
+a name of a stock item, or @samp{@code{#f}}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-button-get-stock-id  (self@tie{}@code{<gtk-tool-button>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-stock-id
+Returns the name of the stock item. See @code{gtk-tool-button-set-stock-id}. The
+returned string is owned by GTK+ and must not be freed or modifed.
+
+@table @var
+@item button
+a @code{<gtk-tool-button>}
+
+@item ret
+the name of the stock item for @var{button}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-button-set-icon-name  (self@tie{}@code{<gtk-tool-button>}) (icon_name@tie{}@code{mchars})
+@deffnx Method set-icon-name
+Sets the icon for the tool button from a named themed icon. See the docs for
+@code{<gtk-icon-theme>} for more details. The "icon_name" property only has an
+effect if not overridden by non-@samp{@code{#f}} "label", "icon_widget" and
+"stock_id" properties.
+
+@table @var
+@item button
+a @code{<gtk-tool-button>}
+
+@item icon-name
+the name of the themed icon
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-tool-button-get-icon-name  (self@tie{}@code{<gtk-tool-button>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-icon-name
+Returns the name of the themed icon for the tool button, see
+@code{gtk-tool-button-set-icon-name}.
+
+@table @var
+@item button
+a @code{<gtk-tool-button>}
+
+@item ret
+the icon name or @samp{@code{#f}} if the tool button has no themed icon
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-tool-button-set-icon-widget  (self@tie{}@code{<gtk-tool-button>}) (icon_widget@tie{}@code{<gtk-widget>})
+@deffnx Method set-icon-widget
+Sets @var{icon} as the widget used as icon on @var{button}. If @var{icon-widget}
+is @samp{@code{#f}} the icon is determined by the "stock_id" property. If the
+"stock_id" property is also @samp{@code{#f}}, @var{button} will not have an
+icon.
+
+@table @var
+@item button
+a @code{<gtk-tool-button>}
+
+@item icon-widget
+the widget used as icon, or @samp{@code{#f}}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-button-get-icon-widget  (self@tie{}@code{<gtk-tool-button>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-icon-widget
+Return the widget used as icon widget on @var{button}. See
+@code{gtk-tool-button-set-icon-widget}.
+
+@table @var
+@item button
+a @code{<gtk-tool-button>}
+
+@item ret
+The widget used as icon on @var{button}, or @samp{@code{#f}}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-button-set-label-widget  (self@tie{}@code{<gtk-tool-button>}) (label_widget@tie{}@code{<gtk-widget>})
+@deffnx Method set-label-widget
+Sets @var{label-widget} as the widget that will be used as the label for
+@var{button}. If @var{label-widget} is @samp{@code{#f}} the "label" property is
+used as label. If "label" is also @samp{@code{#f}}, the label in the stock item
+determined by the "stock_id" property is used as label. If "stock_id" is also
+@samp{@code{#f}}, @var{button} does not have a label.
+
+@table @var
+@item button
+a @code{<gtk-tool-button>}
+
+@item label-widget
+the widget used as label, or @samp{@code{#f}}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-button-get-label-widget  (self@tie{}@code{<gtk-tool-button>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-label-widget
+Returns the widget used as label on @var{button}. See
+@code{gtk-tool-button-set-label-widget}.
+
+@table @var
+@item button
+a @code{<gtk-tool-button>}
+
+@item ret
+The widget used as label on @var{button}, or @samp{@code{#f}}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

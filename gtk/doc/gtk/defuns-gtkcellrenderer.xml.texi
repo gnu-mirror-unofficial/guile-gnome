@@ -1,0 +1,285 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-cell-renderer>
+Derives from @code{<gtk-object>}.
+
+This class defines the following slots:
+
+@table @code
+@item mode
+Editable mode of the CellRenderer
+
+@item visible
+Display the cell
+
+@item sensitive
+Display the cell sensitive
+
+@item xalign
+The x-align
+
+@item yalign
+The y-align
+
+@item xpad
+The xpad
+
+@item ypad
+The ypad
+
+@item width
+The fixed width
+
+@item height
+The fixed height
+
+@item is-expander
+Row has children
+
+@item is-expanded
+Row is an expander row, and is expanded
+
+@item cell-background
+Cell background color as a string
+
+@item cell-background-gdk
+Cell background color as a GdkColor
+
+@item cell-background-set
+Whether this tag affects the cell background color
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-cell-renderer> editing-canceled 
+This signal gets emitted when the user cancels the process of editing a cell.
+For example, an editable cell renderer could be written to cancel editing when
+the user presses Escape.
+
+See also: @code{gtk-cell-renderer-editing-canceled}
+
+Since 2.4
+
+@end defop
+
+@defop Signal <gtk-cell-renderer> editing-started  (arg0@tie{}@code{<gtk-cell-editable>}) (arg1@tie{}@code{<gchararray>})
+This signal gets emitted when a cell starts to be edited. The indended use of
+this signal is to do special setup on @var{editable}, e.g. adding a
+@code{<gtk-entry-completion>} or setting up additional columns in a
+@code{<gtk-combo-box>}.
+
+Note that GTK+ doesn't guarantee that cell renderers will continue to use the
+same kind of widget for editing in future releases, therefore you should check
+the type of @var{editable} before doing any specific setup, as in the following
+example:
+
+@example 
+
+static void
+text_editing_started (GtkCellRenderer *cell,
+                      GtkCellEditable *editable,
+                      const gchar     *path,
+                      gpointer         data)
+@{
+  if (GTK_IS_ENTRY (editable)) 
+    @{
+      GtkEntry *entry = GTK_ENTRY (editable);
+      
+      /* ... create a GtkEntryCompletion */
+      
+      gtk_entry_set_completion (entry, completion);
+    @}
+@}
+@end example
+
+Since 2.6
+
+@end defop
+
+@deffn Function gtk-cell-renderer-render  (self@tie{}@code{<gtk-cell-renderer>}) (window@tie{}@code{<gdk-window>}) (widget@tie{}@code{<gtk-widget>}) (background_area@tie{}@code{<gdk-rectangle>}) (cell_area@tie{}@code{<gdk-rectangle>}) (expose_area@tie{}@code{<gdk-rectangle>}) (flags@tie{}@code{<gtk-cell-renderer-state>})
+@deffnx Method render
+Invokes the virtual render function of the @code{<gtk-cell-renderer>}. The three
+passed-in rectangles are areas of @var{window}. Most renderers will draw within
+@var{cell-area}; the xalign, yalign, xpad, and ypad fields of the
+@code{<gtk-cell-renderer>} should be honored with respect to @var{cell-area}.
+@var{background-area} includes the blank space around the cell, and also the
+area containing the tree expander; so the @var{background-area} rectangles for
+all cells tile to cover the entire @var{window}. @var{expose-area} is a clip
+rectangle.
+
+@table @var
+@item cell
+a @code{<gtk-cell-renderer>}
+
+@item window
+a @code{<gdk-drawable>} to draw to
+
+@item widget
+the widget owning @var{window}
+
+@item background-area
+entire cell area (including tree expanders and maybe padding on the sides)
+
+@item cell-area
+area normally rendered by a cell renderer
+
+@item expose-area
+area that actually needs updating
+
+@item flags
+flags that affect rendering
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-cell-renderer-activate  (self@tie{}@code{<gtk-cell-renderer>}) (event@tie{}@code{<gdk-event>}) (widget@tie{}@code{<gtk-widget>}) (path@tie{}@code{mchars}) (background_area@tie{}@code{<gdk-rectangle>}) (cell_area@tie{}@code{<gdk-rectangle>}) (flags@tie{}@code{<gtk-cell-renderer-state>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method activate
+Passes an activate event to the cell renderer for possible processing. Some cell
+renderers may use events; for example, @code{<gtk-cell-renderer-toggle>} toggles
+when it gets a mouse click.
+
+@table @var
+@item cell
+a @code{<gtk-cell-renderer>}
+
+@item event
+a @code{<gdk-event>}
+
+@item widget
+widget that received the event
+
+@item path
+widget-dependent string representation of the event location; e.g. for
+@code{<gtk-tree-view>}, a string representation of @code{<gtk-tree-path>}
+
+@item background-area
+background area as passed to @var{gtk-cell-renderer-render}
+
+@item cell-area
+cell area as passed to @var{gtk-cell-renderer-render}
+
+@item flags
+render flags
+
+@item ret
+@samp{@code{#t}} if the event was consumed/handled
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-cell-renderer-start-editing  (self@tie{}@code{<gtk-cell-renderer>}) (event@tie{}@code{<gdk-event>}) (widget@tie{}@code{<gtk-widget>}) (path@tie{}@code{mchars}) (background_area@tie{}@code{<gdk-rectangle>}) (cell_area@tie{}@code{<gdk-rectangle>}) (flags@tie{}@code{<gtk-cell-renderer-state>}) @result{}@tie{} (ret@tie{}@code{<gtk-cell-editable>})
+@deffnx Method start-editing
+Passes an activate event to the cell renderer for possible processing.
+
+@table @var
+@item cell
+a @code{<gtk-cell-renderer>}
+
+@item event
+a @code{<gdk-event>}
+
+@item widget
+widget that received the event
+
+@item path
+widget-dependent string representation of the event location; e.g. for
+@code{<gtk-tree-view>}, a string representation of @code{<gtk-tree-path>}
+
+@item background-area
+background area as passed to @var{gtk-cell-renderer-render}
+
+@item cell-area
+cell area as passed to @var{gtk-cell-renderer-render}
+
+@item flags
+render flags
+
+@item ret
+A new @code{<gtk-cell-editable>}, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-cell-renderer-editing-canceled  (self@tie{}@code{<gtk-cell-renderer>})
+@deffnx Method editing-canceled
+@samp{gtk_cell_renderer_editing_canceled} has been deprecated since version 2.6
+and should not be used in newly-written code. Use
+@code{gtk-cell-renderer-stop-editing} instead
+
+Causes the cell renderer to emit the "editing-canceled" signal. This function is
+for use only by implementations of cell renderers that need to notify the client
+program that an editing process was canceled and the changes were not committed.
+
+@table @var
+@item cell
+A @code{<gtk-cell-renderer>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-cell-renderer-stop-editing  (self@tie{}@code{<gtk-cell-renderer>}) (canceled@tie{}@code{bool})
+@deffnx Method stop-editing
+Informs the cell renderer that the editing is stopped. If @var{canceled} is
+@samp{@code{#t}}, the cell renderer will emit the "editing-canceled" signal.
+This function should be called by cell renderer implementations in response to
+the "editing-done" signal of @code{<gtk-cell-editable>}.
+
+@table @var
+@item cell
+A @code{<gtk-cell-renderer>}
+
+@item canceled
+@samp{@code{#t}} if the editing has been canceled
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-cell-renderer-get-fixed-size  (self@tie{}@code{<gtk-cell-renderer>}) @result{}@tie{} (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method get-fixed-size
+Fills in @var{width} and @var{height} with the appropriate size of @var{cell}.
+
+@table @var
+@item cell
+A @code{<gtk-cell-renderer>}
+
+@item width
+location to fill in with the fixed width of the widget, or @samp{@code{#f}}
+
+@item height
+location to fill in with the fixed height of the widget, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-cell-renderer-set-fixed-size  (self@tie{}@code{<gtk-cell-renderer>}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method set-fixed-size
+Sets the renderer size to be explicit, independent of the properties set.
+
+@table @var
+@item cell
+A @code{<gtk-cell-renderer>}
+
+@item width
+the width of the cell renderer, or -1
+
+@item height
+the height of the cell renderer, or -1
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

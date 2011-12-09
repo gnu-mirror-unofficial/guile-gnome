@@ -1,0 +1,80 @@
+
+@c %start of fragment
+
+@node GtkFileSelection
+@chapter GtkFileSelection
+Prompt the user for a file or directory name
+
+@section Overview
+@code{<gtk-file-selection>} should be used to retrieve file or directory names
+from the user. It will create a new dialog window containing a directory list,
+and a file list corresponding to the current working directory. The filesystem
+can be navigated using the directory list or the drop-down history menu.
+Alternatively, the TAB key can be used to navigate using filename completion -
+common in text based editors such as emacs and jed.
+
+File selection dialogs are created with a call to @code{gtk-file-selection-new}.
+
+The default filename can be set using @code{gtk-file-selection-set-filename} and
+the selected filename retrieved using @code{gtk-file-selection-get-filename}.
+
+Use @code{gtk-file-selection-complete} to display files and directories that
+match a given pattern. This can be used for example, to show only *.txt files,
+or only files beginning with gtk*.
+
+Simple file operations; create directory, delete file, and rename file, are
+available from buttons at the top of the dialog. These can be hidden using
+@code{gtk-file-selection-hide-fileop-buttons} and shown again using
+@code{gtk-file-selection-show-fileop-buttons}.
+
+
+
+@example 
+
+
+/* The file selection widget and the string to store the chosen filename */
+
+void store_filename (GtkWidget *widget, gpointer user_data) @{
+   GtkWidget *file_selector = GTK_WIDGET (user_data);
+   const gchar *selected_filename;
+
+   selected_filename = gtk_file_selection_get_filename (GTK_FILE_SELECTION (file_selector));
+   g_print ("Selected filename: %s\n", selected_filename);
+@}
+
+void create_file_selection (void) @{
+
+   GtkWidget *file_selector;
+
+   /* Create the selector */
+   
+   file_selector = gtk_file_selection_new ("Please select a file for editing.");
+   
+   g_signal_connect (GTK_FILE_SELECTION (file_selector)->ok_button,
+                     "clicked",
+                     G_CALLBACK (store_filename),
+                     file_selector);
+   			   
+   /* Ensure that the dialog box is destroyed when the user clicks a button. */
+   
+   g_signal_connect_swapped (GTK_FILE_SELECTION (file_selector)->ok_button,
+                             "clicked",
+                             G_CALLBACK (gtk_widget_destroy), 
+                             file_selector);
+
+   g_signal_connect_swapped (GTK_FILE_SELECTION (file_selector)->cancel_button,
+                             "clicked",
+                             G_CALLBACK (gtk_widget_destroy),
+                             file_selector); 
+   
+   /* Display that dialog */
+   
+   gtk_widget_show (file_selector);
+@}
+
+@end example
+
+@section Usage
+@include defuns-gtkfilesel.xml.texi
+
+@c %end of fragment

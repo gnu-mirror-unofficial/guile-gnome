@@ -1,0 +1,85 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-file-chooser-button>
+Derives from @code{<gtk-file-chooser>}, @code{<gtk-hbox>}.
+
+This class defines the following slots:
+
+@table @code
+@item dialog
+The file chooser dialog to use.
+
+@item focus-on-click
+Whether the button grabs focus when it is clicked with the mouse
+
+@item title
+The title of the file chooser dialog.
+
+@item width-chars
+The desired width of the button widget, in characters.
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-file-chooser-button> file-set 
+undocumented
+@end defop
+
+@deffn Function gtk-file-chooser-button-new  (title@tie{}@code{mchars}) (action@tie{}@code{<gtk-file-chooser-action>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new file-selecting button widget.
+
+@table @var
+@item title
+the title of the browse dialog.
+
+@item action
+the open mode for the widget.
+
+@item ret
+a new button widget.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-file-chooser-button-get-title  (self@tie{}@code{<gtk-file-chooser-button>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-title
+Retrieves the title of the browse dialog used by @var{button}. The returned
+value should not be modified or freed.
+
+@table @var
+@item button
+the button widget to examine.
+
+@item ret
+a pointer to the browse dialog's title.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-file-chooser-button-set-title  (self@tie{}@code{<gtk-file-chooser-button>}) (title@tie{}@code{mchars})
+@deffnx Method set-title
+Modifies the @var{title} of the browse dialog used by @var{button}.
+
+@table @var
+@item button
+the button widget to modify.
+
+@item title
+the new browse dialog title.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

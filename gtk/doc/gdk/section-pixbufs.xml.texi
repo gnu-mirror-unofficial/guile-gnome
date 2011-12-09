@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node Pixbufs
+@chapter Pixbufs
+Functions for rendering pixbufs on drawables
+
+@section Overview
+These functions allow to render pixbufs on drawables. Pixbufs are client-side
+images. For details on how to create and manipulate pixbufs, see the
+@code{<gdk-pixbuf>} API documentation.
+
+@section Usage
+@include defuns-pixbufs.xml.texi
+
+@c %end of fragment

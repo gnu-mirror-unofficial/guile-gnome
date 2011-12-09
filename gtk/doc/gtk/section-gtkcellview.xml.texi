@@ -1,0 +1,17 @@
+
+@c %start of fragment
+
+@node GtkCellView
+@chapter GtkCellView
+A widget displaying a single row of a GtkTreeModel
+
+@section Overview
+A @code{<gtk-cell-view>} displays a single row of a @code{<gtk-tree-model>},
+using cell renderers just like @code{<gtk-tree-view>}. @code{<gtk-cell-view>}
+doesn't support some of the more complex features of @code{<gtk-tree-view>},
+like cell editing and drag and drop.
+
+@section Usage
+@include defuns-gtkcellview.xml.texi
+
+@c %end of fragment

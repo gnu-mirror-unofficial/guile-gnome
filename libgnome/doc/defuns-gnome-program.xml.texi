@@ -1,0 +1,120 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-program>
+Derives from @code{<gobject>}.
+
+This class defines the following slots:
+
+@table @code
+@item app-id
+ID string to use for this application
+
+@item app-version
+Version of this application
+
+@item human-readable-name
+Human readable name of this application
+
+@item gnome-path
+Path in which to look for installed files
+
+@item gnome-prefix
+Prefix where GNOME was installed
+
+@item gnome-libdir
+Library prefix where GNOME was installed
+
+@item gnome-datadir
+Data prefix where GNOME was installed
+
+@item gnome-sysconfdir
+Configuration prefix where GNOME was installed
+
+@item app-prefix
+Prefix where this application was installed
+
+@item app-libdir
+Library prefix where this application was installed
+
+@item app-datadir
+Data prefix where this application was installed
+
+@item app-sysconfdir
+Configuration prefix where this application was installed
+
+@item create-directories
+Create standard GNOME directories on startup
+
+@item enable-sound
+Enable sound on startup
+
+@item espeaker
+How to connect to esd
+
+@item popt-table
+The table of options for popt
+
+@item popt-flags
+The flags to use for popt
+
+@item popt-context
+The popt context pointer that GnomeProgram is using
+
+@item goption-context
+The goption context pointer that GnomeProgram is using
+
+@end table
+
+@end deftp
+
+@deffn Function gnome-program-get  @result{}@tie{} (ret@tie{}@code{<gnome-program>})
+Retrieves an object that stored information about the application's state. Other
+functions assume this will always return a @code{<gnome-program>} object which
+(if not @samp{@code{#f}}) has already been initialized.
+
+@table @var
+@item ret
+The application's @code{<gnome-program>} instance, or @samp{@code{#f}} if it
+does not exist.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-program-get-app-id  (self@tie{}@code{<gnome-program>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-app-id
+This function returns a pointer to a static string that the application has
+provided as an identifier. This is not meant as a human-readable identifier so
+much as a unique identifier for programs and libraries.
+
+@table @var
+@item program
+The program object
+
+@item ret
+Application ID string.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-program-get-app-version  (self@tie{}@code{<gnome-program>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-app-version
+This function returns a pointer to a static string that the application has
+provided as a version number. This is not meant as a human-readable identifier
+so much as a unique identifier for programs and libraries.
+
+@table @var
+@item program
+The application object
+
+@item ret
+Application version string.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

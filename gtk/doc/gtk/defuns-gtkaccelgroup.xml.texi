@@ -1,0 +1,312 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-accel-group>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@defop Signal <gtk-accel-group> accel-activate  (arg0@tie{}@code{<gobject>}) (arg1@tie{}@code{<guint>}) (arg2@tie{}@code{<gdk-modifier-type>}) @result{}@tie{}@code{<gboolean>}
+The accel-activate signal is an implementation detail of
+@code{<gtk-accel-group>} and not meant to be used by applications.
+
+@end defop
+
+@defop Signal <gtk-accel-group> accel-changed  (arg0@tie{}@code{<guint>}) (arg1@tie{}@code{<gdk-modifier-type>}) (arg2@tie{}@code{<gclosure>})
+The accel-changed signal is emitted when a @code{<gtk-accel-group-entry>} is
+added to or removed from the accel group.
+
+Widgets like @code{<gtk-accel-label>} which display an associated accelerator
+should connect to this signal, and rebuild their visual representation if the
+@var{accel-closure} is theirs.
+
+@end defop
+
+@deffn Function gtk-accel-group-new  @result{}@tie{} (ret@tie{}@code{<gtk-accel-group>})
+Creates a new @code{<gtk-accel-group>}.
+
+@table @var
+@item ret
+a new @code{<gtk-accel-group>} object
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-group-connect  (self@tie{}@code{<gtk-accel-group>}) (accel_key@tie{}@code{unsigned-int}) (accel_mods@tie{}@code{<gdk-modifier-type>}) (accel_flags@tie{}@code{<gtk-accel-flags>}) (closure@tie{}@code{<gclosure>})
+@deffnx Method connect
+Installs an accelerator in this group. When @var{accel-group} is being activated
+in response to a call to @code{gtk-accel-groups-activate}, @var{closure} will be
+invoked if the @var{accel-key} and @var{accel-mods} from
+@code{gtk-accel-groups-activate} match those of this connection.
+
+The signature used for the @var{closure} is that of
+@code{<gtk-accel-group-activate>}.
+
+Note that, due to implementation details, a single closure can only be connected
+to one accelerator group.
+
+@table @var
+@item accel-group
+the accelerator group to install an accelerator in
+
+@item accel-key
+key value of the accelerator
+
+@item accel-mods
+modifier combination of the accelerator
+
+@item accel-flags
+a flag mask to configure this accelerator
+
+@item closure
+closure to be executed upon accelerator activation
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-group-connect-by-path  (self@tie{}@code{<gtk-accel-group>}) (accel_path@tie{}@code{mchars}) (closure@tie{}@code{<gclosure>})
+@deffnx Method connect-by-path
+Installs an accelerator in this group, using an accelerator path to look up the
+appropriate key and modifiers (see @code{gtk-accel-map-add-entry}). When
+@var{accel-group} is being activated in response to a call to
+@code{gtk-accel-groups-activate}, @var{closure} will be invoked if the
+@var{accel-key} and @var{accel-mods} from @code{gtk-accel-groups-activate} match
+the key and modifiers for the path.
+
+The signature used for the @var{closure} is that of
+@code{<gtk-accel-group-activate>}.
+
+@table @var
+@item accel-group
+the accelerator group to install an accelerator in
+
+@item accel-path
+path used for determining key and modifiers.
+
+@item closure
+closure to be executed upon accelerator activation
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-group-disconnect  (self@tie{}@code{<gtk-accel-group>}) (closure@tie{}@code{<gclosure>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method disconnect
+Removes an accelerator previously installed through
+@code{gtk-accel-group-connect}.
+
+@table @var
+@item accel-group
+the accelerator group to remove an accelerator from
+
+@item closure
+the closure to remove from this accelerator group
+
+@item ret
+@samp{@code{#t}} if the closure was found and got disconnected
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-group-disconnect-key  (self@tie{}@code{<gtk-accel-group>}) (accel_key@tie{}@code{unsigned-int}) (accel_mods@tie{}@code{<gdk-modifier-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method disconnect-key
+Removes an accelerator previously installed through
+@code{gtk-accel-group-connect}.
+
+@table @var
+@item accel-group
+the accelerator group to install an accelerator in
+
+@item accel-key
+key value of the accelerator
+
+@item accel-mods
+modifier combination of the accelerator
+
+@item ret
+@samp{@code{#t}} if there was an accelerator which could be removed,
+@samp{@code{#f}} otherwise
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-group-activate  (self@tie{}@code{<gtk-accel-group>}) (accel_quark@tie{}@code{unsigned-int}) (acceleratable@tie{}@code{<gobject>}) (accel_key@tie{}@code{unsigned-int}) (accel_mods@tie{}@code{<gdk-modifier-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method activate
+@table @var
+@item accel-group
+
+
+@item accel-quark
+
+
+@item acceleratable
+
+
+@item accel-key
+
+
+@item accel-mods
+
+
+@item ret
+
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-group-lock  (self@tie{}@code{<gtk-accel-group>})
+@deffnx Method lock
+Locks the given accelerator group.
+
+Locking an acelerator group prevents the accelerators contained within it to be
+changed during runtime. Refer to @code{gtk-accel-map-change-entry} about runtime
+accelerator changes.
+
+If called more than once, @var{accel-group} remains locked until
+@code{gtk-accel-group-unlock} has been called an equivalent number of times.
+
+@table @var
+@item accel-group
+a @code{<gtk-accel-group>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-group-unlock  (self@tie{}@code{<gtk-accel-group>})
+@deffnx Method unlock
+Undoes the last call to @code{gtk-accel-group-lock} on this @var{accel-group}.
+
+@table @var
+@item accel-group
+a @code{<gtk-accel-group>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-group-from-accel-closure  (closure@tie{}@code{<gclosure>}) @result{}@tie{} (ret@tie{}@code{<gtk-accel-group>})
+Finds the @code{<gtk-accel-group>} to which @var{closure} is connected; see
+@code{gtk-accel-group-connect}.
+
+@table @var
+@item closure
+a @code{<gclosure>}
+
+@item ret
+the @code{<gtk-accel-group>} to which @var{closure} is connected, or
+@samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-groups-activate  (object@tie{}@code{<gobject>}) (accel_key@tie{}@code{unsigned-int}) (accel_mods@tie{}@code{<gdk-modifier-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+Finds the first accelerator in any @code{<gtk-accel-group>} attached to
+@var{object} that matches @var{accel-key} and @var{accel-mods}, and activates
+that accelerator. If an accelerator was activated and handled this keypress,
+@samp{@code{#t}} is returned.
+
+@table @var
+@item object
+the @code{<gobject>}, usually a @code{<gtk-window>}, on which to activate the
+accelerator.
+
+@item accel-key
+accelerator keyval from a key event
+
+@item accel-mods
+keyboard state mask from a key event
+
+@item ret
+@samp{@code{#t}} if the accelerator was handled, @samp{@code{#f}} otherwise
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accel-groups-from-object  (object@tie{}@code{<gobject>}) @result{}@tie{} (ret@tie{}@code{gslist-of})
+Gets a list of all accel groups which are attached to @var{object}.
+
+@table @var
+@item object
+a @code{<gobject>}, usually a @code{<gtk-window>}
+
+@item ret
+a list of all accel groups which are attached to @var{object}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accelerator-valid  (keyval@tie{}@code{unsigned-int}) (modifiers@tie{}@code{<gdk-modifier-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+Determines whether a given keyval and modifier mask constitute a valid keyboard
+accelerator. For example, the @code{<gdk-a>} keyval plus
+@code{<gdk-control-mask>} is valid - this is a "Ctrl+a" accelerator. But, you
+can't, for instance, use the @code{<gdk--control-l>} keyval as an accelerator.
+
+@table @var
+@item keyval
+a GDK keyval
+
+@item modifiers
+modifier mask
+
+@item ret
+@samp{@code{#t}} if the accelerator is valid
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accelerator-name  (accelerator_key@tie{}@code{unsigned-int}) (accelerator_mods@tie{}@code{<gdk-modifier-type>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Converts an accelerator keyval and modifier mask into a string parseable by
+@code{gtk-accelerator-parse}. For example, if you pass in @code{<gdk-q>} and
+@code{<gdk-control-mask>}, this function returns "<Control>q".
+
+If you need to display accelerators in the user interface, see
+@code{gtk-accelerator-get-label}.
+
+@table @var
+@item accelerator-key
+accelerator keyval
+
+@item accelerator-mods
+accelerator modifier mask
+
+@item ret
+a newly-allocated accelerator name
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-accelerator-get-label  (accelerator_key@tie{}@code{unsigned-int}) (accelerator_mods@tie{}@code{<gdk-modifier-type>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Converts an accelerator keyval and modifier mask into a string which can be used
+to represent the accelerator to the user.
+
+@table @var
+@item accelerator-key
+accelerator keyval
+
+@item accelerator-mods
+accelerator modifier mask
+
+@item ret
+a newly-allocated string representing the accelerator.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

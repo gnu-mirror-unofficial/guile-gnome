@@ -1,0 +1,303 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-vfs-drive>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@defop Signal <gnome-vfs-drive> volume-mounted  (arg0@tie{}@code{<gnome-vfs-volume>})
+This signal is emitted after the @code{<gnome-vfs-volume>}@var{volume} has been
+mounted.
+
+When the @var{volume} is mounted, it is added to the @var{drive}'s list of
+mounted volumes, which can be queried using
+@code{gnome-vfs-drive-get-mounted-volumes}.
+
+It is also added to the list of the @code{<gnome-vfs-volume-monitor>}'s list of
+mounted volumes, which can be queried using
+@code{gnome-vfs-volume-monitor-get-mounted-volumes}.
+
+@end defop
+
+@defop Signal <gnome-vfs-drive> volume-pre-unmount  (arg0@tie{}@code{<gnome-vfs-volume>})
+This signal is emitted when the @code{<gnome-vfs-volume>}@var{volume}, which has
+been present in the @code{<gnome-vfs-drive>}@var{drive}, is about to be
+unmounted.
+
+When the @var{volume} is unmounted, it is removed from the @var{drive}'s list of
+mounted volumes, which can be queried using
+@code{gnome-vfs-drive-get-mounted-volumes}.
+
+It is also removed from the @code{<gnome-vfs-volume-monitor>}'s list of mounted
+volumes, which can be queried using
+@code{gnome-vfs-volume-monitor-get-mounted-volumes}.
+
+When a client application receives this signal, it must free all resources
+associated with the @var{volume}, for instance cancel all pending file
+operations on the @var{volume}, and cancel all pending file monitors using
+@code{gnome-vfs-monitor-cancel}.
+
+@end defop
+
+@defop Signal <gnome-vfs-drive> volume-unmounted  (arg0@tie{}@code{<gnome-vfs-volume>})
+This signal is emitted after the @code{<gnome-vfs-volume>}@var{volume}, which
+had been present in the @code{<gnome-vfs-drive>}@var{drive}, has been unmounted.
+
+When the @var{volume} is unmounted, it is removed from the @var{drive}'s list of
+mounted volumes, which can be queried using
+@code{gnome-vfs-drive-get-mounted-volumes}.
+
+It is also removed from the @code{<gnome-vfs-volume-monitor>}'s list of mounted
+volumes, which can be queried using
+@code{gnome-vfs-volume-monitor-get-mounted-volumes}.
+
+@end defop
+
+@deffn Function gnome-vfs-drive-compare  (self@tie{}@code{<gnome-vfs-drive>}) (b@tie{}@code{<gnome-vfs-drive>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method compare
+Compares two @code{<gnome-vfs-drive>} objects @var{a} and @var{b}. Two
+@code{<gnome-vfs-drive>} objects referring to different drives are guaranteed to
+not return 0 when comparing them, if they refer to the same drive 0 is returned.
+
+The resulting @code{<gint>} should be used to determine the order in which
+@var{a} and @var{b} are displayed in graphical user interfces.
+
+The comparison algorithm first of all peeks the device type of @var{a} and
+@var{b}, they will be sorted in the following order:
+
+@itemize 
+@item
+@item
+@item
+@item
+@item
+@end itemize
+
+Magnetic and opto-magnetic drives (ZIP, floppy)
+
+Optical drives (CD, DVD)
+
+External drives (USB sticks, music players)
+
+Mounted hard disks<
+
+Other drives<
+
+Afterwards, the display name of @var{a} and @var{b} is compared using a
+locale-sensitive sorting algorithm, which involves @code{g-utf8-collate-key}.
+
+If two drives have the same display name, their unique ID is compared which can
+be queried using @code{gnome-vfs-drive-get-id}.
+
+@table @var
+@item a
+a @code{<gnome-vfs-drive>}.
+
+@item b
+a @code{<gnome-vfs-drive>}.
+
+@item ret
+0 if the drives refer to the same @var{gnome-vfs-drive}, a negative value if
+@var{a} should be displayed before @var{b}, or a positive value if @var{a}
+should be displayed after @var{b}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-drive-get-activation-uri  (self@tie{}@code{<gnome-vfs-drive>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-activation-uri
+Returns the activation URI of a @code{<gnome-vfs-drive>}.
+
+The returned URI usually refers to a valid location. You can check the validity
+of the location by calling @code{gnome-vfs-uri-new} with the URI, and checking
+whether the return value is not @samp{@code{#f}}.
+
+@table @var
+@item drive
+a @code{<gnome-vfs-drive>}.
+
+@item ret
+a newly allocated string for the activation uri of the @code{<drive>}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-drive-get-device-path  (self@tie{}@code{<gnome-vfs-drive>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-device-path
+Returns the device path of a @code{<gnome-vfs-drive>}.
+
+For HAL drives, this returns the value of the drives's "block.device" key. For
+UNIX mounts, it returns the @samp{mntent}'s @samp{mnt_fsname} entry.
+
+Otherwise, it returns @samp{@code{#f}}.
+
+@table @var
+@item drive
+a @code{<gnome-vfs-drive>}.
+
+@item ret
+a newly allocated string for the device path of the @code{<drive>}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-drive-get-device-type  (self@tie{}@code{<gnome-vfs-drive>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-device-type>})
+@deffnx Method get-device-type
+@table @var
+@item drive
+a @code{<gnome-vfs-drive>}.
+
+@item ret
+device type, a @code{<gnome-vfs-device-type>} value.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-drive-get-display-name  (self@tie{}@code{<gnome-vfs-drive>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-display-name
+@table @var
+@item drive
+a @code{<gnome-vfs-drive>}.
+
+@item ret
+a newly allocated string for the display name of the @var{drive}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-drive-get-hal-udi  (self@tie{}@code{<gnome-vfs-drive>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-hal-udi
+Returns the HAL UDI of a @code{<gnome-vfs-drive>}.
+
+For HAL drives, this matches the value of the "info.udi" key, for other drives
+it is @samp{@code{#f}}.
+
+@table @var
+@item drive
+a @code{<gnome-vfs-drive>}.
+
+@item ret
+a newly allocated string for the unique device id of the @var{drive}, or
+@samp{@code{#f}}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-drive-get-icon  (self@tie{}@code{<gnome-vfs-drive>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-icon
+@table @var
+@item drive
+a @code{<gnome-vfs-drive>}.
+
+@item ret
+a newly allocated string for the icon filename of the @var{drive}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-drive-get-id  (self@tie{}@code{<gnome-vfs-drive>}) @result{}@tie{} (ret@tie{}@code{unsigned-long})
+@deffnx Method get-id
+@table @var
+@item drive
+a @code{<gnome-vfs-drive>}.
+
+@item ret
+drive id, a @code{<gulong>} value.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-drive-get-mounted-volumes  (self@tie{}@code{<gnome-vfs-drive>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method get-mounted-volumes
+@table @var
+@item drive
+a @code{<gnome-vfs-drive>}.
+
+@item ret
+list of mounted volumes for the @var{drive}.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gnome-vfs-drive-is-connected  (self@tie{}@code{<gnome-vfs-drive>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-connected
+@table @var
+@item drive
+a @code{<gnome-vfs-drive>}.
+
+@item ret
+@samp{@code{#t}} if the @var{drive} is connected, @samp{@code{#f}} otherwise.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-drive-is-mounted  (self@tie{}@code{<gnome-vfs-drive>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-mounted
+@table @var
+@item drive
+a @code{<gnome-vfs-drive>}.
+
+@item ret
+@samp{@code{#t}} if the @var{drive} is mounted, @samp{@code{#f}} otherwise.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-drive-is-user-visible  (self@tie{}@code{<gnome-vfs-drive>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-user-visible
+Returns whether the @var{drive} is visible to the user. This should be used by
+applications to determine whether it is included in user interfaces listing
+available drives.
+
+@table @var
+@item drive
+a @code{<gnome-vfs-drive>}.
+
+@item ret
+@samp{@code{#t}} if the @var{drive} is visible to the user, @samp{@code{#f}}
+otherwise.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

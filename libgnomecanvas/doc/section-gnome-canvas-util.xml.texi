@@ -1,0 +1,27 @@
+
+@c %start of fragment
+
+@node gnome-canvas-util
+@chapter gnome-canvas-util
+Canvas utility functions
+
+@section Overview
+Some useful canvas utility functions.
+
+The @code{<gnome-canvas-points>} structure manages an array of points (X and Y
+coordinates) and is used by @code{<gnome-canvas-line>} and
+@code{<gnome-canvas-polygon>} canvas items.
+
+To create a @code{<gnome-canvas-points>} structure call
+@code{gnome-canvas-points-new} and when finished using it call
+@code{gnome-canvas-points-free}.
+
+Of note is that the @code{<gnome-canvas-points>} structure is actually managed
+by a reference count, so it won't be freed until this count reaches 0. To
+increment its reference count call @code{gnome-canvas-points-ref} and to
+decrement it call @code{gnome-canvas-points-unref}.
+
+@section Usage
+@include defuns-gnome-canvas-util.xml.texi
+
+@c %end of fragment

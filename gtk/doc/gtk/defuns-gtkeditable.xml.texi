@@ -1,0 +1,266 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-editable>
+Derives from @code{<ginterface>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@defop Signal <gtk-editable> changed 
+Indicates that the user has changed the contents of the widget.
+
+@end defop
+
+@defop Signal <gtk-editable> insert-text  (arg0@tie{}@code{<gchararray>}) (arg1@tie{}@code{<gint>}) (arg2@tie{}@code{<gpointer>})
+This signal is emitted when text is inserted into the widget by the user. The
+default handler for this signal will normally be responsible for inserting the
+text, so by connecting to this signal and then stopping the signal with
+@code{gtk-signal-emit-stop}, it is possible to modify the inserted text, or
+prevent it from being inserted entirely.
+
+@end defop
+
+@defop Signal <gtk-editable> delete-text  (arg0@tie{}@code{<gint>}) (arg1@tie{}@code{<gint>})
+This signal is emitted when text is deleted from the widget by the user. The
+default handler for this signal will normally be responsible for inserting the
+text, so by connecting to this signal and then stopping the signal with
+@code{gtk-signal-emit-stop}, it is possible to modify the inserted text, or
+prevent it from being inserted entirely. The @var{start-pos} and @var{end-pos}
+parameters are interpreted as for @code{gtk-editable-delete-text}
+
+@end defop
+
+@deffn Function gtk-editable-select-region  (self@tie{}@code{<gtk-editable>}) (start@tie{}@code{int}) (end@tie{}@code{int})
+@deffnx Method select-region
+Selects a region of text. The characters that are selected are those characters
+at positions from @var{start-pos} up to, but not including @var{end-pos}. If
+@var{end-pos} is negative, then the the characters selected will be those
+characters from @var{start-pos} to the end of the text.
+
+@table @var
+@item editable
+a @code{<gtk-editable>} widget.
+
+@item start
+the starting position.
+
+@item end
+the end position.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-editable-get-selection-bounds  (self@tie{}@code{<gtk-editable>}) @result{}@tie{} (ret@tie{}@code{bool}) (start@tie{}@code{int}) (end@tie{}@code{int})
+@deffnx Method get-selection-bounds
+Gets the current selection bounds, if there is a selection.
+
+@table @var
+@item editable
+a @code{<gtk-editable>} widget.
+
+@item start
+location to store the starting position, or @samp{@code{#f}}.
+
+@item end
+location to store the end position, or @samp{@code{#f}}.
+
+@item ret
+@samp{@code{#t}} if there is a selection.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-editable-insert-text  (self@tie{}@code{<gtk-editable>}) (new_text@tie{}@code{mchars}) (position@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method insert-text
+Inserts text at a given position.
+
+@table @var
+@item editable
+a @code{<gtk-editable>} widget.
+
+@item new-text
+the text to insert.
+
+@item new-text-length
+the length of the text to insert, in bytes
+
+@item position
+an inout parameter. The caller initializes it to the position at which to insert
+the text. After the call it points at the position after the newly inserted
+text.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-editable-delete-text  (self@tie{}@code{<gtk-editable>}) (start_pos@tie{}@code{int}) (end_pos@tie{}@code{int})
+@deffnx Method delete-text
+Deletes a sequence of characters. The characters that are deleted are those
+characters at positions from @var{start-pos} up to, but not including
+@var{end-pos}. If @var{end-pos} is negative, then the the characters deleted
+will be those characters from @var{start-pos} to the end of the text.
+
+@table @var
+@item editable
+a @code{<gtk-editable>} widget.
+
+@item start-pos
+the starting position.
+
+@item end-pos
+the end position.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-editable-get-chars  (self@tie{}@code{<gtk-editable>}) (start_pos@tie{}@code{int}) (end_pos@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-chars
+Retrieves a sequence of characters. The characters that are retrieved are those
+characters at positions from @var{start-pos} up to, but not including
+@var{end-pos}. If @var{end-pos} is negative, then the the characters retrieved
+will be those characters from @var{start-pos} to the end of the text.
+
+@table @var
+@item editable
+a @code{<gtk-editable>} widget.
+
+@item start-pos
+the starting position.
+
+@item end-pos
+the end position.
+
+@item ret
+the characters in the indicated region. The result must be freed with
+@code{g-free} when the application is finished with it.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-editable-cut-clipboard  (self@tie{}@code{<gtk-editable>})
+@deffnx Method cut-clipboard
+Causes the characters in the current selection to be copied to the clipboard and
+then deleted from the widget.
+
+@table @var
+@item editable
+a @code{<gtk-editable>} widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-editable-copy-clipboard  (self@tie{}@code{<gtk-editable>})
+@deffnx Method copy-clipboard
+Causes the characters in the current selection to be copied to the clipboard.
+
+@table @var
+@item editable
+a @code{<gtk-editable>} widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-editable-paste-clipboard  (self@tie{}@code{<gtk-editable>})
+@deffnx Method paste-clipboard
+Causes the contents of the clipboard to be pasted into the given widget at the
+current cursor position.
+
+@table @var
+@item editable
+a @code{<gtk-editable>} widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-editable-delete-selection  (self@tie{}@code{<gtk-editable>})
+@deffnx Method delete-selection
+Deletes the current contents of the widgets selection and disclaims the
+selection.
+
+@table @var
+@item editable
+a @code{<gtk-editable>} widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-editable-set-position  (self@tie{}@code{<gtk-editable>}) (position@tie{}@code{int})
+@deffnx Method set-position
+Sets the cursor position.
+
+@table @var
+@item editable
+a @code{<gtk-editable>} widget.
+
+@item position
+the position of the cursor. The cursor is displayed before the character with
+the given (base 0) index in the widget. The value must be less than or equal to
+the number of characters in the widget. A value of -1 indicates that the
+position should be set after the last character in the entry. Note that this
+position is in characters, not in bytes.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-editable-get-position  (self@tie{}@code{<gtk-editable>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-position
+Retrieves the current cursor position.
+
+@table @var
+@item editable
+a @code{<gtk-editable>} widget.
+
+@item ret
+the position of the cursor. The cursor is displayed before the character with
+the given (base 0) index in the widget. The value will be less than or equal to
+the number of characters in the widget. Note that this position is in
+characters, not in bytes.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-editable-set-editable  (self@tie{}@code{<gtk-editable>}) (is_editable@tie{}@code{bool})
+@deffnx Method set-editable
+Determines if the user can edit the text in the editable widget or not.
+
+@table @var
+@item editable
+a @code{<gtk-editable>} widget.
+
+@item is-editable
+@samp{@code{#t}} if the user is allowed to edit the text in the widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-editable-get-editable  (self@tie{}@code{<gtk-editable>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-editable
+Retrieves whether @var{editable} is editable. See
+@code{gtk-editable-set-editable}.
+
+@table @var
+@item editable
+a @code{<gtk-editable>}
+
+@item ret
+@samp{@code{#t}} if @var{editable} is editable.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,147 @@
+
+@c %start of fragment
+
+@node Fonts
+@chapter Fonts
+Loading and manipulating fonts
+
+@section Overview
+The @code{<gdk-font>} data type represents a font for drawing on the screen.
+These functions provide support for loading fonts, and also for determining the
+dimensions of characters and strings when drawn with a particular font.
+
+Fonts in X are specified by a @dfn{X Logical Font Description}. The following
+description is considerably simplified. For definitive information about XLFD's
+see the X reference documentation. A X Logical Font Description (XLFD) consists
+of a sequence of fields separated (and surrounded by) '-' characters. For
+example, Adobe Helvetica Bold 12 pt, has the full description:
+
+@example 
+
+"-adobe-helvetica-bold-r-normal--12-120-75-75-p-70-iso8859-1"
+@end example
+
+The fields in the XLFD are:
+
+When specifying a font via a X logical Font Description, '*' can be used as a
+wildcard to match any portion of the XLFD. For instance, the above example could
+also be specified as It is generally a good idea to use wildcards for any
+portion of the XLFD that your program does not care about specifically, since
+that will improve the chances of finding a matching font.
+
+@example 
+
+"-*-helvetica-bold-r-normal--*-120-*-*-*-*-iso8859-1"
+@end example
+
+A @dfn{fontset} is a list of fonts that is used for drawing international text
+that may contain characters from a number of different character sets. It is
+represented by a list of XLFD's.
+
+The font for a given character set is determined by going through the list of
+XLFD's in order. For each one, if the registry and and encoding fields match the
+desired character set, then that font is used, otherwise if the XLFD contains
+wild-cards for the registry and encoding fields, the registry and encoding for
+the desired character set are substituted in and a lookup is done. If a match is
+found that font is used. Otherwise, processing continues on to the next font in
+the list.
+
+The functions for determining the metrics of a string come in several varieties
+that can take a number of forms of string input:
+
+@table @var
+@item 16-bit string
+
+@c %start of fragment
+
+
+@c %end of fragment
+@item Multibyte string
+
+@c %start of fragment
+
+
+@c %end of fragment
+@item Wide character string
+
+@c %start of fragment
+
+
+@c %end of fragment
+@end table
+
+When using functions like @code{gdk-string-width} that take a @code{<gchar *>},
+if the font is of type @samp{GDK_FONT_FONT} and is an 8-bit font, then each
+@code{<gchar>} indexes the glyphs in the font directly.
+
+For functions taking a @code{<gchar *>}, if the font is of type
+@samp{GDK_FONT_FONT}, and is a 16-bit font, then the @code{<gchar *>} argument
+is interpreted as a @code{<guint16 *>} cast to a @code{<gchar *>} and each
+@code{<guint16>} indexes the glyphs in the font directly.
+
+For functions taking a @code{<gchar *>}, if the font is of type
+@samp{GDK_FONT_FONTSET}, then the input string is interpreted as a
+@dfn{multibyte} encoded according to the current locale. (A multibyte string is
+one in which each character may consist of one or more bytes, with different
+lengths for different characters in the string). They can be converted to and
+from wide character strings (see below) using @code{gdk-wcstombs} and
+@code{gdk-mbstowcs}.) The string will be rendered using one or more different
+fonts from the fontset.
+
+For a number of the text-measuring functions, GDK provides a variant (such as
+@code{gdk-text-width-wc}) which takes a @code{<gdk-wchar *>} instead of a
+@code{<gchar *>}. The input is then taken to be a wide character string in the
+encoding of the current locale. (A wide character string is a string in which
+each character consists of several bytes, and the width of each character in the
+string is constant.)
+
+GDK provides functions to determine a number of different measurements (metrics)
+for a given string. (Need diagram here).
+
+@table @var
+@item descent
+
+@c %start of fragment
+
+
+@c %end of fragment
+@item left bearing
+
+@c %start of fragment
+
+
+@c %end of fragment
+@item right bearing
+
+@c %start of fragment
+
+
+@c %end of fragment
+@item width bearing
+
+@c %start of fragment
+
+
+@c %end of fragment
+@end table
+
+The vertical distance from the origin of the drawing opereration to the top of
+the drawn character.
+
+The vertical distance from the origin of the drawing opereration to the bottom
+of the drawn character.
+
+The horizontal distance from the origin of the drawing operation to the
+left-most part of the drawn character.
+
+The horizontal distance from the origin of the drawing operation to the
+right-most part of the drawn character.
+
+The horizontal distance from the origin of the drawing operation to the correct
+origin for drawing another string to follow the current one. Depending on the
+font, this could be greater than or less than the right bearing.
+
+@section Usage
+@include defuns-fonts.xml.texi
+
+@c %end of fragment

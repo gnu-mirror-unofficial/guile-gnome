@@ -1,0 +1,37 @@
+
+@c %start of fragment
+
+@node Undocumented
+@chapter Undocumented
+The following symbols, if any, have not been properly documented.
+
+@section (gnome gw canvas)
+@defvar gnome-canvas-get-center-scroll-region
+@end defvar
+
+@defvar gnome-canvas-path-def-closepath-current
+@end defvar
+
+@defvar gnome-canvas-path-def-has-currentpoint
+@end defvar
+
+@defvar gnome-canvas-rich-text-copy-clipboard
+@end defvar
+
+@defvar gnome-canvas-rich-text-cut-clipboard
+@end defvar
+
+@defvar gnome-canvas-rich-text-get-iter-at-location
+@end defvar
+
+@defvar gnome-canvas-rich-text-get-iter-location
+@end defvar
+
+@defvar gnome-canvas-rich-text-paste-clipboard
+@end defvar
+
+@defvar gnome-canvas-set-center-scroll-region
+@end defvar
+
+
+@c %end of fragment

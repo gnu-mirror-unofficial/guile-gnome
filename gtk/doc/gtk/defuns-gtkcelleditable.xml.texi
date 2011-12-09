@@ -1,0 +1,61 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-cell-editable>
+Derives from @code{<ginterface>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@defop Signal <gtk-cell-editable> editing-done 
+@end defop
+
+@defop Signal <gtk-cell-editable> remove-widget 
+@end defop
+
+@deffn Function gtk-cell-editable-start-editing  (self@tie{}@code{<gtk-cell-editable>}) (event@tie{}@code{<gdk-event>})
+@deffnx Method start-editing
+Begins editing on a @var{cell-editable}. @var{event} is the @code{<gdk-event>}
+that began the editing process. It may be @samp{@code{#f}}, in the instance that
+editing was initiated through programatic means.
+
+@table @var
+@item cell-editable
+A @code{<gtk-cell-editable>}
+
+@item event
+A @code{<gdk-event>}, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-cell-editable-editing-done  (self@tie{}@code{<gtk-cell-editable>})
+@deffnx Method editing-done
+Emits the "editing_done" signal. This signal is a sign for the cell renderer to
+update its value from the cell.
+
+@table @var
+@item cell-editable
+A @code{<gtk-tree-editable>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-cell-editable-remove-widget  (self@tie{}@code{<gtk-cell-editable>})
+@deffnx Method remove-widget
+Emits the "remove_widget" signal. This signal is meant to indicate that the cell
+is finished editing, and the widget may now be destroyed.
+
+@table @var
+@item cell-editable
+A @code{<gtk-tree-editable>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

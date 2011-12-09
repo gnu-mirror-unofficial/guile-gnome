@@ -1,0 +1,64 @@
+
+@c %start of fragment
+
+@deffn Function gdk-pixbuf-new  (colorspace@tie{}@code{<gdk-colorspace>}) (has_alpha@tie{}@code{bool}) (bits_per_sample@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+Creates a new @code{<gdk-pixbuf>} structure and allocates a buffer for it. The
+buffer has an optimal rowstride. Note that the buffer is not cleared; you will
+have to fill it completely yourself.
+
+@table @var
+@item colorspace
+Color space for image
+
+@item has-alpha
+Whether the image should have transparency information
+
+@item bits-per-sample
+Number of bits per color sample
+
+@item width
+Width of image in pixels, must be > 0
+
+@item height
+Height of image in pixels, must be > 0
+
+@item ret
+A newly-created @code{<gdk-pixbuf>} with a reference count of 1, or
+@samp{@code{#f}} if not enough memory could be allocated for the image buffer.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-pixbuf-new-subpixbuf  (self@tie{}@code{<gdk-pixbuf>}) (src_x@tie{}@code{int}) (src_y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method new-subpixbuf
+Creates a new pixbuf which represents a sub-region of @var{src-pixbuf}. The new
+pixbuf shares its pixels with the original pixbuf, so writing to one affects
+both. The new pixbuf holds a reference to @var{src-pixbuf}, so @var{src-pixbuf}
+will not be finalized until the new pixbuf is finalized.
+
+@table @var
+@item src-pixbuf
+a @code{<gdk-pixbuf>}
+
+@item src-x
+X coord in @var{src-pixbuf}
+
+@item src-y
+Y coord in @var{src-pixbuf}
+
+@item width
+width of region in @var{src-pixbuf}
+
+@item height
+height of region in @var{src-pixbuf}
+
+@item ret
+a new pixbuf
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

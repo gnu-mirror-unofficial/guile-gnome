@@ -1,0 +1,18 @@
+
+@c %start of fragment
+
+@node GtkVScrollbar
+@chapter GtkVScrollbar
+A vertical scrollbar
+
+@section Overview
+The @code{<gtk-vscrollbar>} widget is a widget arranged vertically creating a
+scrollbar. See @code{<gtk-scrollbar>} for details on scrollbars.
+@code{<gtk-adjustment>} pointers may be added to handle the adjustment of the
+scrollbar or it may be left @samp{@code{#f}} in which case one will be created
+for you. See @code{<gtk-adjustment>} for details.
+
+@section Usage
+@include defuns-gtkvscrollbar.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,156 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas-points>
+Derives from @code{<gboxed>}.
+
+@end deftp
+
+@deffn Function gnome-canvas-get-miter-points  (x1@tie{}@code{double}) (y1@tie{}@code{double}) (x2@tie{}@code{double}) (y2@tie{}@code{double}) (x3@tie{}@code{double}) (y3@tie{}@code{double}) (width@tie{}@code{double}) @result{}@tie{} (ret@tie{}@code{int}) (mx1@tie{}@code{double}) (my1@tie{}@code{double}) (mx2@tie{}@code{double}) (my2@tie{}@code{double})
+Given three points forming an angle, computes the coordinates of the inside and
+outside points of the mitered corner formed by a line of a given width at that
+angle.
+
+@table @var
+@item x1
+X coordinate of the first point
+
+@item y1
+Y coordinate of the first point
+
+@item x2
+X coordinate of the second (angle) point
+
+@item y2
+Y coordinate of the second (angle) point
+
+@item x3
+X coordinate of the third point
+
+@item y3
+Y coordinate of the third point
+
+@item width
+Width of the line
+
+@item mx1
+The X coordinate of the first miter point is returned here.
+
+@item my1
+The Y coordinate of the first miter point is returned here.
+
+@item mx2
+The X coordinate of the second miter point is returned here.
+
+@item my2
+The Y coordinate of the second miter point is returned here.
+
+@item ret
+FALSE if the angle is less than 11 degrees (this is the same threshold as X
+uses. If this occurs, the return points are not modified. Otherwise, returns
+TRUE.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-get-butt-points  (x1@tie{}@code{double}) (y1@tie{}@code{double}) (x2@tie{}@code{double}) (y2@tie{}@code{double}) (width@tie{}@code{double}) (project@tie{}@code{int}) @result{}@tie{} (bx1@tie{}@code{double}) (by1@tie{}@code{double}) (bx2@tie{}@code{double}) (by2@tie{}@code{double})
+Computes the butt points of a line segment.
+
+@table @var
+@item x1
+X coordinate of first point in the line
+
+@item y1
+Y cooordinate of first point in the line
+
+@item x2
+X coordinate of second point (endpoint) of the line
+
+@item y2
+Y coordinate of second point (endpoint) of the line
+
+@item width
+Width of the line
+
+@item project
+Whether the butt points should project out by width/2 distance
+
+@item bx1
+X coordinate of first butt point is returned here
+
+@item by1
+Y coordinate of first butt point is returned here
+
+@item bx2
+X coordinate of second butt point is returned here
+
+@item by2
+Y coordinate of second butt point is returned here
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-polygon-to-point  (num_points@tie{}@code{int}) (x@tie{}@code{double}) (y@tie{}@code{double}) @result{}@tie{} (ret@tie{}@code{double}) (poly@tie{}@code{double})
+Computes the distance between a point and a polygon.
+
+@table @var
+@item poly
+Vertices of the polygon. X coordinates are in the even indices, and Y
+coordinates are in the odd indices
+
+@item num-points
+Number of points in the polygon
+
+@item x
+X coordinate of the point
+
+@item y
+Y coordinate of the point
+
+@item ret
+The distance from the point to the polygon, or zero if the point is inside the
+polygon.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-item-reset-bounds  (self@tie{}@code{<gnome-canvas-item>})
+@deffnx Method reset-bounds
+Resets the bounding box of a canvas item to an empty rectangle.
+
+@table @var
+@item item
+A canvas item
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-update-bbox  (item@tie{}@code{<gnome-canvas-item>}) (x1@tie{}@code{int}) (y1@tie{}@code{int}) (x2@tie{}@code{int}) (y2@tie{}@code{int})
+Sets the bbox to the new value, requesting full repaint.
+
+@table @var
+@item item
+the canvas item needing update
+
+@item x1
+Left coordinate of the new bounding box
+
+@item y1
+Top coordinate of the new bounding box
+
+@item x2
+Right coordinate of the new bounding box
+
+@item y2
+Bottom coordinate of the new bounding box
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

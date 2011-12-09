@@ -1,0 +1,28 @@
+
+@c %start of fragment
+
+@node GtkFileFilter
+@chapter GtkFileFilter
+A filter for selecting a file subset
+
+@section Overview
+A GtkFileFilter can be used to restrict the files being shown in a
+@code{<gtk-file-chooser>}. Files can be filtered based on their name (with
+@code{gtk-file-filter-add-pattern}), on their mime type (with
+@code{gtk-file-filter-add-mime-type}), or by a custom filter function (with
+@code{gtk-file-filter-add-custom}).
+
+Filtering by mime types handles aliasing and subclassing of mime types; e.g. a
+filter for text/plain also matches a file with mime type application/rtf, since
+application/rtf is a subclass of text/plain. Note that @code{<gtk-file-filter>}
+allows wildcards for the subtype of a mime type, so you can e.g. filter for
+image/*.
+
+Normally, filters are used by adding them to a @code{<gtk-file-chooser>}, see
+@code{gtk-file-chooser-add-filter}, but it is also possible to manually use a
+filter on a file with @code{gtk-file-filter-filter}.
+
+@section Usage
+@include defuns-gtkfilefilter.xml.texi
+
+@c %end of fragment

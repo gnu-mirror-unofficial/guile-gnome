@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-im-multicontext>
+Derives from @code{<gtk-im-context>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-im-multicontext-new  @result{}@tie{} (ret@tie{}@code{<gtk-im-context>})
+Creates a new @code{<gtk-im-multicontext>}.
+
+@table @var
+@item ret
+a new @code{<gtk-im-multicontext>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

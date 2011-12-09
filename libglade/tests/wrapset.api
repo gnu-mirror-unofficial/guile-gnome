@@ -1,0 +1,71 @@
+(module-api
+  (version 1 0)
+  ((gnome glade)
+   (uses-interfaces (gnome gw libglade))
+   (typed-exports))
+  ((gnome gobject generics)
+   (uses-interfaces)
+   (typed-exports
+     (block generic (<gtype-instance> <top>))
+     (connect
+       generic
+       <top>
+       (<gtype-instance> <symbol> <procedure>))
+     (connect-after
+       generic
+       (<gtype-instance> <symbol> <procedure>))
+     (connected? generic (<gtype-instance> <top>))
+     (create-signal
+       generic
+       (<gtype-class> <symbol> <top> <top>))
+     (disconnect generic (<gtype-instance> <top>))
+     (emit generic
+           (<gtype-instance> <symbol> . <top>))
+     (find-property generic (<gtype-class> <symbol>))
+     (get generic (<gobject> <symbol>))
+     (get-properties generic (<gtype-class>))
+     (get-property-names generic (<gtype-class>))
+     (get-signals generic (<gtype-class>))
+     (invoke generic (<gclosure> . <top>))
+     (set generic
+          (<gobject> <symbol> <top>)
+          (<gtk-alignment> <real> <real> <real> <real>)
+          (<gtk-arrow> <top> <top>)
+          (<gtk-aspect-frame> . <top>)
+          (<gtk-list-store> <gtk-tree-iter> . <top>)
+          (<gtk-print-settings> <string> <string>)
+          (<gtk-tree-store> <gtk-tree-iter> . <top>))
+     (unblock generic (<gtype-instance> <top>))))
+  ((gnome gw generics)
+   (uses-interfaces (gnome gobject generics))
+   (typed-exports
+     (set generic
+          (<gobject> <symbol> <top>)
+          (<gtk-alignment> <real> <real> <real> <real>)
+          (<gtk-arrow> <top> <top>)
+          (<gtk-aspect-frame> . <top>)
+          (<gtk-list-store> <gtk-tree-iter> . <top>)
+          (<gtk-print-settings> <string> <string>)
+          (<gtk-tree-store> <gtk-tree-iter> . <top>))))
+  ((gnome gw libglade)
+   (uses-interfaces (gnome gw generics))
+   (typed-exports
+     (glade-get-widget-name procedure (arity 0 0 #t))
+     (glade-get-widget-tree procedure (arity 0 0 #t))
+     (glade-xml-get-widget procedure (arity 0 0 #t))
+     (glade-xml-get-widget-prefix
+       procedure
+       (arity 2 0 #f))
+     (glade-xml-new procedure (arity 1 2 #f))
+     (glade-xml-new-from-buffer
+       procedure
+       (arity 1 2 #f))
+     (glade-xml-relative-file
+       procedure
+       (arity 0 0 #t))
+     (glade-xml-signal-autoconnect
+       procedure
+       (arity 0 0 #t))
+     (glade-xml-signal-connect
+       procedure
+       (arity 0 0 #t)))))

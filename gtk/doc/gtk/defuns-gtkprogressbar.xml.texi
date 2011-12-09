@@ -1,0 +1,222 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-progress-bar>
+Derives from @code{<gtk-progress>}.
+
+This class defines the following slots:
+
+@table @code
+@item fraction
+The fraction of total work that has been completed
+
+@item pulse-step
+The fraction of total progress to move the bouncing block when pulsed
+
+@item orientation
+Orientation and growth direction of the progress bar
+
+@item text
+Text to be displayed in the progress bar
+
+@item ellipsize
+The preferred place to ellipsize the string, if the progress bar does not have
+enough room to display the entire string, if at all.
+
+@item adjustment
+The GtkAdjustment connected to the progress bar (Deprecated)
+
+@item bar-style
+Specifies the visual style of the bar in percentage mode (Deprecated)
+
+@item activity-step
+The increment used for each iteration in activity mode (Deprecated)
+
+@item activity-blocks
+The number of blocks which can fit in the progress bar area in activity mode
+(Deprecated)
+
+@item discrete-blocks
+The number of discrete blocks in a progress bar (when shown in the discrete
+style)
+
+@end table
+
+@end deftp
+
+@deffn Function gtk-progress-bar-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-progress-bar>}.
+
+@table @var
+@item ret
+a @code{<gtk-progress-bar>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-progress-bar-pulse  (self@tie{}@code{<gtk-progress-bar>})
+@deffnx Method pulse
+Indicates that some progress is made, but you don't know how much. Causes the
+progress bar to enter "activity mode," where a block bounces back and forth.
+Each call to @code{gtk-progress-bar-pulse} causes the block to move by a little
+bit (the amount of movement per pulse is determined by
+@code{gtk-progress-bar-set-pulse-step}).
+
+@table @var
+@item pbar
+a @code{<gtk-progress-bar>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-progress-bar-set-text  (self@tie{}@code{<gtk-progress-bar>}) (text@tie{}@code{mchars})
+@deffnx Method set-text
+Causes the given @var{text} to appear superimposed on the progress bar.
+
+@table @var
+@item pbar
+a @code{<gtk-progress-bar>}
+
+@item text
+a UTF-8 string, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-progress-bar-set-fraction  (self@tie{}@code{<gtk-progress-bar>}) (fraction@tie{}@code{double})
+@deffnx Method set-fraction
+Causes the progress bar to "fill in" the given fraction of the bar. The fraction
+should be between 0.0 and 1.0, inclusive.
+
+@table @var
+@item pbar
+a @code{<gtk-progress-bar>}
+
+@item fraction
+fraction of the task that's been completed
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-progress-bar-set-pulse-step  (self@tie{}@code{<gtk-progress-bar>}) (fraction@tie{}@code{double})
+@deffnx Method set-pulse-step
+Sets the fraction of total progress bar length to move the bouncing block for
+each call to @code{gtk-progress-bar-pulse}.
+
+@table @var
+@item pbar
+a @code{<gtk-progress-bar>}
+
+@item fraction
+fraction between 0.0 and 1.0
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-progress-bar-set-orientation  (self@tie{}@code{<gtk-progress-bar>}) (orientation@tie{}@code{<gtk-progress-bar-orientation>})
+@deffnx Method set-orientation
+Causes the progress bar to switch to a different orientation (left-to-right,
+right-to-left, top-to-bottom, or bottom-to-top).
+
+@table @var
+@item pbar
+a @code{<gtk-progress-bar>}
+
+@item orientation
+orientation of the progress bar
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-progress-bar-set-ellipsize  (self@tie{}@code{<gtk-progress-bar>}) (mode@tie{}@code{<pango-ellipsize-mode>})
+@deffnx Method set-ellipsize
+Sets the mode used to ellipsize (add an ellipsis: "...") the text if there is
+not enough space to render the entire string.
+
+@table @var
+@item pbar
+a @code{<gtk-progress-bar>}
+
+@item mode
+a @code{<pango-ellipsize-mode>}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-progress-bar-get-text  (self@tie{}@code{<gtk-progress-bar>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-text
+Retrieves the text displayed superimposed on the progress bar, if any, otherwise
+@samp{@code{#f}}. The return value is a reference to the text, not a copy of it,
+so will become invalid if you change the text in the progress bar.
+
+@table @var
+@item pbar
+a @code{<gtk-progress-bar>}
+
+@item ret
+text, or @samp{@code{#f}}; this string is owned by the widget and should not be
+modified or freed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-progress-bar-get-fraction  (self@tie{}@code{<gtk-progress-bar>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-fraction
+Returns the current fraction of the task that's been completed.
+
+@table @var
+@item pbar
+a @code{<gtk-progress-bar>}
+
+@item ret
+a fraction from 0.0 to 1.0
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-progress-bar-get-pulse-step  (self@tie{}@code{<gtk-progress-bar>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-pulse-step
+Retrieves the pulse step set with @code{gtk-progress-bar-set-pulse-step}
+
+@table @var
+@item pbar
+a @code{<gtk-progress-bar>}
+
+@item ret
+a fraction from 0.0 to 1.0
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-progress-bar-get-ellipsize  (self@tie{}@code{<gtk-progress-bar>}) @result{}@tie{} (ret@tie{}@code{<pango-ellipsize-mode>})
+@deffnx Method get-ellipsize
+Returns the ellipsizing position of the progressbar. See
+@code{gtk-progress-bar-set-ellipsize}.
+
+@table @var
+@item pbar
+a @code{<gtk-progress-bar>}
+
+@item ret
+@code{<pango-ellipsize-mode>}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

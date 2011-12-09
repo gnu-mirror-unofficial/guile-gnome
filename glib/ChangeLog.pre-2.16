@@ -1,0 +1,3422 @@
+2008-05-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (load-defs): Remove the
+	bad-method-name tracking code, as we no longer write logs.
+
+2008-04-27  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm: Flesh out docs, from the tutorial.
+	(load-defs): Remove logfile-writing foo.
+
+	* gnome/gobject/generics.scm: Fix docs.
+
+	* gnome/gobject.scm: Add tutorial-style docs to the module
+	commentary, taken from the tutorial.
+
+	* gnome.scm.in: Add the API_VERSION docs from the tutorial into
+	the gnome-N module commentary, so they will end up in the
+	reference documentation.
+
+	* doc/gobject/guile-gnome-gobject.scm: Add a type index. Add
+	(gnome-2) and (gnome gobject).
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.98 ==
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.15.98.
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/wrapset.api: Regenerate.
+	* test-suite/gobject.api: Regenerate.
+
+	* examples/main-loop.scm: 
+	* examples/example-1.scm: Update examples to gnome-2.
+
+	* gnome/gw/support/gtk-doc.scm (zap-whitespace)
+	(docbook->sdocbook): Zap any whitespace-only strings coming out of
+	xml->sxml.
+	(class-signal-stexi-docs): Only doc the class' own signals.
+	(gobject-class-stexi-docs): Reword.
+
+	* gnome/gobject/gsignal.c (gtype-class-get-signals): Only query
+	instantiatable types.
+
+	* gnome/gobject/gparameter.scm (<gparam-value-array>): Allow #f
+	for the element-spec.
+	(<gparam-unichar>):
+	* gnome/gobject/gparameter.c (scm_c_gparam_initialize_scm)
+	(scm_c_gparam_construct): Re-add unichar param support.
+
+	* gnome/gobject/gobject.scm (compute-slots): A bit of a hack to
+	make sure that the direct-slots slot mentions the GObject
+	properties.
+	(<gparam-object>): Change to accept <ginterface> as well.
+
+	* doc/gobject/guile-gnome-gobject.texi: Update version.
+
+	* doc/gobject/guile-gnome-gobject.scm (*updated*, *version*)
+	(*years*); Updated.
+
+	* doc/glib/defuns-*.texi: Regenerated. Lost the whitespace due to
+	change in gtk-doc.scm.
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gtk-doc.scm (gobject-class-stexi-docs): Cope
+	with gw:wct, which is not a <class>. Sigh.
+
+	* gnome/gobject/gtype.h: Remove unimplemented foo
+
+	* gnome/gobject/gtype.c (gtype-instance-destroy!): Renamed from
+	%gtype-instance-destroy!, because really it's not that private;
+	its semantics are necessary.
+	(especify-metaclass!): Removed, as the only user --
+	<gtk-message-dialog> -- was fixed. yay1
+
+	* gnome/gw/support/gtk-doc.scm: 
+	* gnome/gobject/gvalue.scm: 
+	(<gboxed>): 
+	* gnome/gobject/gvalue.c (genum-register-static)
+	(gflags-register-static):
+	* gnome/gobject/gtype.scm: 
+	* gnome/gobject/gtype.c (gtype-name->class):
+	* gnome/gobject/gsignal.scm: 
+	(gtype-class-create-signal): 
+	* gnome/gobject/gparameter.scm: 
+	* gnome/gobject/gobject.scm (<gobject>)
+	(gobject-class-find-property): 
+	* gnome/gobject/gclosure.scm: Updated docs.
+
+	* doc/glib/defuns-*.texi: Regenerated. Lots of extra crap
+	whitespace because SSAX changed to not ignore whitespace-only
+	strings.
+
+2008-04-24  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/gobject.test ("gflags values"): Add test for
+	scm_c_scm_to_flags_value fix.
+
+	* gnome/gobject/gvalue.c (scm_c_gvalue_ref): Whoops, handle the
+	string-is-null case.
+	(scm_c_scm_to_flags_value): Accept single 'foo or "foo" to mean
+	'(foo) or '("foo"), respectively. Thanks to Gregory Benison for
+	the report.
+
+	* gnome/gobject/guile-support.h: 
+	* gnome/gobject/guile-support.c (scm_symbol_chars)
+	(scm_symbol_chars_dynwind, scm_keyword_chars)
+	(scm_keyword_chars_dynwind): New functions.
+
+	* gnome/gobject/gvalue.c (scm_c_gvalue_ref, scm_c_gvalue_set)
+	(scm_c_scm_to_enum_value, scm_c_scm_to_flags_value)
+	(unwrap_gvalue_array, genum-register-static)
+	(genum-class->value-table, gflags-register-static)
+	(gflags-class->value-table):
+	* gnome/gobject/gsignal.c (gsignal-query, gsignal-create)
+	(gtype-instance-signal-emit)
+	(gtype-instance-signal-connect-closure): 
+	* gnome/gobject/gparameter.c (SCM_ERROR_NOT_YET_IMPLEMENTED):
+	Fix deprecation warnings.
+
+	* gnome/gobject/gobject.c (gobject-get-data, gobject-set-data!):
+	Remove unused functions.
+	(scm_c_gobject_construct)
+	(scm_with_c_gtype_instance_instance_init, gobject-get-property)
+	(gobject-set-property)
+	(SCM_DEFINE): Fix deprecation warnings. Untabify the file.
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* == Released guile-gnome-platform version 2.15.97 ==
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* VERSION: Bumped to 2.15.97.
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* NEWS: Update NEWS.
+
+2008-04-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gvalue.c:
+	* gnome/gobject/gtype.c:
+	* gnome/gobject/gsignal.c (scm_c_gsignal_query):
+	* gnome/gobject/gparameter.c:
+	* gnome/gobject/gobject.c: Disable debugging printouts.
+
+	* gnome/gobject/gtype.c (scm_c_gtype_class_to_gtype)
+	(scm_c_scm_to_gtype_instance): Avoid scm_slot_ref on 'u' slots on
+	broken versions of Guile.
+
+	* gnome/gobject/gparameter.scm (compute-get-n-set): Use our new
+	%hacky-* struct accessors. (The accessors are not exported.)
+
+	* gnome/gobject/gparameter.c (scm_sys_hacky_struct_ref)
+	(scm_sys_hacky_struct_set_x): New functions, equivalent to
+	struct-ref and struct-set! from guile, except that they don't
+	check permissions or allocation, because we know them, and, more
+	crucially, they understand how to calculate n_fields for the
+	so-called "light structs". Should be unnecessary once the patches
+	submitted to guile-devel on 10 April 2008 are accepted.
+
+	Reminiscent of %get-struct-slot and %set-struct-slot! from gtype.c
+	before my rewrite, which were probably written in part to
+	compensate for this problem, under the haze of ignorance.
+
+2008-04-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.c (%gtype-class-bind)
+	(%gtype-class-inherit-magic)
+	* gnome/gobject/gtype.scm (initialize on <gtype-class>): We do
+	need to bind the gtype to the class before calling next-method,
+	but also we have to munge the class' free function after the
+	next-method. Therefore split %gtype-class-inherit-magic out of
+	%gtype-class-bind. Fixes things not being freed because the base
+	%inherit-magic overwrite our struct free function.
+
+	* test-suite/gobject.test ("genum values", "gflags values"): Add
+	some tests.
+
+	* gnome/gobject/gvalue.scm: (gflags->element-list, genum->enum):
+	Use the ->value functions defined in C.
+
+	* gnome/gobject/gvalue.c (scm_c_gvalue_ref): Don't turn <genum>
+	and <gflags> values into ints, leave them as gvalues.
+	(genum->value, gflags->value): Implemented in C. The latter
+	function is new.
+
+	* gnome/gobject/private.h:
+	* gnome/gobject/gtype.c (scm_sys_gtype_instance_construct): Export
+	scm_c_gtype_instance_bind_to_object instead. Allow for the
+	possibility that construct() bound the instance.
+
+	* gnome/gobject/gobject.c
+	(scm_with_c_gtype_instance_instance_init): Use bind_to_object; the
+	incomplete set_cached() is insufficient if e.g. the
+	gobject:set-property calls API on the object.
+
+	* test-suite/gobject.test ("defining custom gobject type"): Add a
+	test for the construct arg behaviour.
+
+	* gnome/gobject/private.h:
+	* gnome/gobject/gtype.c (scm_c_gtype_instance_set_cached): Expose
+	this internal piece to gobject.c.
+
+	* gnome/gobject/gobject.c (push_in_construction_from_scheme)
+	(pop_in_construction_from_scheme, in_construction_from_scheme):
+	Keep a stack of SCM objects under construction.
+	(scm_with_c_gtype_instance_instance_init): If there is an object
+	under construction, associate it with the GTypeInstance*, so that
+	gobject:set-property calls for construct properties see the same
+	SCM as the one under construction.
+
+	* gnome/gobject/gvalue.scm (<gboxed-scm>, <gvalue-array>):
+	* gnome/gobject/gclosure.scm (<gclosure>): Inherit from <gboxed>,
+	because that's how they roll.
+
+2008-04-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.h:
+	* gnome/gobject/gtype.c: Rewrite to never expose GTypes on the
+	Scheme side, rather wrapping GTypes directly as <gtype-class>
+	instances. The GType is stored in a <read-only-slot>, which stores
+	a raw (untagged) word -- the perfect size for a GType. Hence much
+	gtype<->class API has been removed.
+
+	Because a GType is isomorphic to GTypeClass*, the <%gtype-class>
+	smob is also gone.
+
+	On the instance side, I also removed the need for
+	<%gtype-instance> smobs as well, through interesting trickery: the
+	GOOPS objects directly store the GTypeInstance* pointer in a
+	<read-only-slot>, as with the <gtype-class> instances. The
+	trickery is that we can be notified when the struct is collected,
+	via monkeypatching the <gtype-class> objects to free via a custom
+	function, scm_gtype_instance_struct_free. This allows us to unref
+	the object.
+
+	This low-level trickery happens as part of the object allocation
+	and initialization protocol.
+
+	(scm_c_gtype_get_direct_supers): C function to determine the
+	superclasses of a given GType: the union of the type's parents and
+	the type's interfaces.
+	(scm_c_gtype_to_class): Dispatch down to `make-class' with the
+	right #:gtype-name.
+	(%gtype_to_class): New function corresponding to the old
+	gtype->class, but for such things as g-wrap's latent class
+	binding. Not really public.
+	(scm_gtype_name_to_class): Replaces the old gtype->class. In the
+	new world order gtypes can be summoned by name only.
+	(gtype_struct_offset): Helper to compute the offset within the
+	class struct in which to store the gtype.
+	(scm_sys_gtype_bind): Deep magic to shove a GType into a
+	<gtype-class>, called during <gtype-class>'s `initialize'
+	function. Also sets the struct free functions in the classes with
+	a sketchy heuristic.
+	(scm_c_gtype_class_to_gtype): New function for C.
+	(scm_c_gtype_class_is_a_p): New function for C.
+	(scm_c_gtype_instance_get_cached): Remove the smob/goops glue
+	code: there is just one cache for an instance.
+
+	(scm_t_gtype_instance_funcs): Add construct() and initialize_scm()
+	methods.
+
+	(scm_c_gtype_instance_construct): New function, called as the
+	first thing that <gtype-instance>'s `initialize' does.
+	(scm_c_gtype_instance_bind_to_object):
+	(scm_gtype_instance_unbind):
+	(scm_gtype_instance_struct_free): Corresponding trickery to bind
+	<gtype-instance> values to refcounted C pointers.
+
+	(%gtype-instance-construct): <gtype-instance>'s `initialize'
+	bottoms out here, normally resulting in the construction of the
+	instance, e.g. via g_object_newv(). There is another codepath to
+	initialize a SCM instead of the pointer, but I think the idea is a
+	bit flaky. See e.g. gparameter.c.
+	(%gtype-instance-destroy!): Forcibly drop the GOOPS object's
+	reference on the type instance.
+	(scm_c_scm_to_gtype_instance): No longer takes two arguments. The
+	two-arg version is...
+	(scm_c_scm_to_gtype_instance_typed): ...here.
+	(%get-struct-slot, %set-struct-slot!): Removed, no longer
+	necessary.
+
+	* gnome/gobject/gtype.scm: A rewrite corresponding to that
+	described in gtype.[ch].
+	(initialize <gtype-class>): Base mechanics to bind a class to a
+	GType, looked up by name.
+	(initialize <gtype-instance>): Base mechanics to construct a
+	GTypeInstance, if the instance is not yet bound.
+
+	* gnome/gobject/gvalue.c: Rewrite to represent GValue objects as
+	instances of GOOPS classes, bound to C GValue* values in the same
+	way as <gtype-instance> objects are bound to GTypeInstance*
+	values. (They used to be SMOBs.)
+
+	(scm_gvalue_struct_free): A <gvalue> free function, like
+	scm_gtype_instance_struct_free.
+	(scm_sys_bless_gvalue_class): Magic like %gtype-class-bind.
+	(scm_sys_allocate_gvalue): <gvalue>'s `allocate-instance' bottoms
+	out here, which allocates the C GValue* object.
+	(scm_c_make_gvalue): Redone on top of GOOPS allocation protocol.
+	The case in which the <gtype-class> is not a <gvalue-class> is a
+	bit hacky, unfortunately.
+	(scm_c_gvalue_peek_value): New function.
+	(scm_c_gvalue_ref): New function, factored out of
+	scm_gvalue_primitive_get, but operating on GValue*.
+	(scm_c_gvalue_set): New function, factored out of
+	scm_gvalue_primitive_set, but operating on GValue*.
+	(scm_c_scm_to_enum_value, scm_c_scm_to_flags_value): New
+	functions, factored out gvalue.scm.
+	(%gvalue-set!): New hackiness, for <gvalue>'s `initialize'.
+	(scm_c_gvalue_to_scm, scm_c_scm_to_gvalue): Implemented on top of
+	ref() and set().
+	(
+	(scm_genum_class_to_value_table, scm_gflags_class_to_value_table):
+	Rename from foo-type-get-values, remove the old SCM wrappers.
+	(scm_c_gvalue_holds, scm_c_gvalue_new_from_boxed)
+	(scm_c_gvalue_new_take_boxed, scm_c_gvalue_peek_boxed)
+	(scm_c_gvalue_dup_boxed, scm_c_gvalue_dup_value)
+	(scm_c_gvalue_from_value, scm_c_gvalue_take_value): New C helper
+	functions.
+	(scm_init_gnome_gobject_values): Register SCM-gvalue wrappers for
+	boxeds and value arrays just like other non-core boxed types.
+
+	* gnome/gobject/gvalue.scm (gnome): Also export <gvalue>. Remove
+	{genum,gflags}-type-get-value, use the foo-class->value-table
+	functions instead. Define all <gvalue> subclasses (<gchar>,
+	<gfloat>, etc.) using normal subclassing foo.
+	(<genum>, <gflags>): Rework to be more like other <gtype-class>
+	instances. Don't store a value table on the class object, that's
+	not necessary.
+
+	* gnome/gobject/utils.scm (unless): New macro.
+	(with-accessors): New macro, defines procedures-with-setters in
+	its body that map to particular slot accessors. Very interesting;
+	needs more docs.
+
+	* gnome/gobject/gclosure.scm:
+	* gnome/gobject/gclosure.h:
+	* gnome/gobject/gclosure.c (scm_gclosure_marshal_with_guile):
+	Perform the C<->GValue conversions here, not in a Scheme wrapper.
+	(struct _GuileGClosure, %gclosure-construct): Store the closure
+	metadata in the C closure instead of in the SCM, which is just a
+	boxed value anyway. Perhaps avoid a leaked ref -- there was a very
+	crufty-looking comment that might need checking up on in the
+	future.
+	(scm_gclosure_invoke): Renamed from gclosure-primitive-invoke.
+	Require typed <gvalue> instances, because otherwise we don't know
+	what GValues to use to invoke the closure.
+	(<gclosure>): Derive from <gvalue>, yay. Don't store
+	things (return type, etc) on the SCM object, because if we get a
+	closure from C, we have no way of knowing those things.
+	(initialize): Don't chain up, because we do our own construction.
+	Hacky, but it gets the job done.
+
+	* gnome/gobject/gparameter.scm:
+	* gnome/gobject/gparameter.h:
+	* gnome/gobject/gparameter.c: Parameters are now GOOPS objects
+	only, not GOOPS objects augmented by strange structs.
+	(scm_c_gparam_initialize_scm): New function, called when wrapping
+	an existing parameter as a SCM to initialize the SCM's slots. It's
+	pretty silly though to actually allocate slots, it would be better
+	to use accessors instead. Oh well, perhaps in the future.
+	(scm_c_gparam_construct): New function to create a GParamSpec via
+	e.g.
+	(make <gparam-char> #:name ...)
+	(<gparam>): Define slots for each attribute: name, nick, etc...
+	(<gparam-char>, etc): Define manually.
+
+	* gnome/gobject/gsignal.scm:
+	* gnome/gobject/gsignal.h:
+	* gnome/gobject/gsignal.c: Signals are now GOOPS objects, not
+	structs.
+	(scm_c_gsignal_query, scm_gsignal_query): Make a <gsignal> out of
+	an integer signal ID.
+	(scm_gtype_class_get_signals): Change from gtype-get-signals;
+	return a list of <gsignal> objects.
+	(scm_gsignal_create): Change from gsignal-primitive-create;
+	otherwise basically the same.
+	(scm_gtype_instance_signal_emit): Change from
+	gtype-instance-primitive-signal-emit.
+	(scm_gtype_instance_signal_connect_closure): Renamed from
+	gtype-instance-primitive-signal-connect.
+	(scm_gsignal_handler_block, scm_gsignal_handler_unblock)
+	(scm_gsignal_handler_disconnect, scm_gsignal_handler_connected_p):
+	De-primitivize.
+
+	* gnome/gobject/gobject.scm:
+	* gnome/gobject/gobject.h:
+	* gnome/gobject/gobject.c: Adapt to <gtype-class>/<gtype-instance>
+	changes.
+	(scm_c_gobject_construct): Move construction logic into C; this
+	function is called by <gtype-instance>'s `initialize'. Some
+	trickery to know whether construction was initialized by Scheme)
+	(and thus the initialization protocol is in progress, or whether
+	we need to allocate and initialize a new SCM object.
+	(scm_with_c_gtype_instance_instance_init): Second part of the
+	trickery.
+	(scm_gtype_register_static): Return the type name instead of a
+	GType object.
+	(scm_gobject_class_get_properties): Rename and rework from
+	gobject-type-get-properties.
+	(scm_gobject_class_get_property_names): Crackily duplicated code)
+	(but allows slots to be computed during class initialization
+	without forcing initialization cycles, e.g. <gtk-container> <->
+	<gtk-widget>.
+	(scm_gobject_class_install_property): No need to update a
+	#:properties slot.
+	(scm_gobject_get_property, scm_gobject_set_property):
+	Deprimitivize.
+
+	* gnome/gobject/gobject.scm (compute-slots on <gobject-class>):
+	Excellent cleverness to declare, but not allocate, slots for each
+	GObject property, even for C types.
+	(compute-get-n-set): Use gobject-{get,set}-property for the slot
+	accessors.
+	(initialize on <gobject-class>): Adapt to gtype.scm protocols.
+	(<gobject>): No more #:gsignals and #:gobject-properties slots;
+	use getter functions instead.
+	(<gparam-object>): Define here, because <gobject> is only defined
+	here.
+
+	* examples/example-1.scm: Update to the new <gclosure> API, and to
+	avoid gtypes.
+
+	* gnome/glib.scm:
+	* examples/main-loop.scm: Avoid gtypes.
+
+	* gnome/gw/support/defs.scm (load-defs):
+	s/wrap-object!/wrap-instance!/.
+
+	* gnome/gw/support/gobject.scm:
+	* gnome/gw/gobject-spec.scm: Wrap <gtype> as <gtype-class>. Remove
+	wrappers for primitive <gtype-instance> objects. Use two-arg
+	scm_c_scm_to_gtype_instance_typed when needed. Remove redundant
+	casts. Use new GValue* helpers. Rename wrap-object! to
+	wrap-instance!, as it works on all GTypeInstance* types that we
+	know about.
+	(initializations-cg on <gobject-classed-type>): Perform the latent
+	binding via (%gtype->class gtype-as-int), instead of on gtype
+	objects. Be more clever about avoiding GValue allocation.
+
+	* gnome/gw/support/gtk-doc.scm (signal-stexi-args)
+	(class-signal-stexi-docs, gobject-class-stexi-docs): Cursory
+	changes that might work; needs more testing. Looks much nicer)
+	(though.
+
+	* test-suite/gobject.api: Update for new API. Yay!
+
+	* test-suite/gobject.test: Remove some GType tests. Adapt others
+	to new API.
+
+	* test-suite/gw-gobject.test: Adapt to new API.
+
+	* test-suite/test-gobject.c (test_obj_class_init): Properly
+	declare the value array parameter.
+
+2008-04-04  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gc.c: Gcc started throwing warnings about the
+	locking foo, at which point I realized that we never actually
+	initialized gthreads, or linked to it. Fix to use normal mutexen
+	and initialize threads. Perhaps in the future we will do something
+	clever with gdk_thread_funcs.
+
+	* package.ac: Check for gthreads.
+
+	* gnome/gobject/Makefile.am (C_FILES): Reorder to reflect correct
+	dependency ordering.
+	(libguile_gnome_gobject_@API_VERSION@_la_CFLAGS):
+	(libguile_gnome_gobject_@API_VERSION@_la_LIBADD): Link to
+	gthreads.
+	(DOT_DOC_FILES): Remove gparameter.doc from the list, as soon it
+	will have nothing to say.
+
+2007-12-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.h: 
+	* gnome/gobject/gtype.c:
+	* gnome/gobject/gobject.c (gobject-primitive-create-instance):
+	(scm_c_gtype_instance_get_cached_goops)
+	(scm_c_gtype_instance_set_cached_goops)
+	(scm_c_gtype_instance_to_scm_typed)
+	(scm_init_gnome_gobject_types): Because we don't really have any
+	guarantee on the order that the SMOB and the GOOPS object are
+	collected, change from caching the GOOPS object on the instance to
+	caching it on a weak hash table, keyed on the SMOB itself.
+	
+	* gnome/gobject/gtype.c (scm_c_gtype_instance_get_cached_smob)
+	(scm_c_gtype_instance_get_cached_goops): Crazily, with Guile 1.8
+	there is a window between mark and sweep in which a value has not
+	been collected, but is marked for collecting. If we try to get a
+	cached SCM value in this window, re-mark it so that when lazy
+	sweeping happens, we don't get the newly-alive value freed out
+	from under us. Quite a tough bug!
+	(scm_c_scm_to_gtype_instance): More debugging if we have a bad
+	%gtype-instance.
+
+2007-12-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.c (scm_gtype_instance_free): Add debug.
+
+	* gnome/gobject/gvalue.c (free_gboxed_scm): 
+	* gnome/gobject/gparameter.c (gparam->param-struct):
+	* gnome/gobject/gobject.c (scm_with_c_gtype_instance_class_init):
+	* gnome/gobject/gclosure.c (free_closure, gclosure-primitive-new):
+	Update for gc_protect_object changes.
+
+	* gnome/gobject/gc.h: 
+	* gnome/gobject/gc.c (scm_glib_gc_protect_object)
+	(scm_glib_gc_unprotect_object): Change prototypes to reflect these
+	functions' nature as a bridge between C and scheme. Note that
+	unprotect_object looks mightily dodgy.
+
+2007-12-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gobject.c (scm_c_gtype_instance_class_init): Enter
+	guile mode.
+	(scm_c_gtype_instance_class_init): Enter guile mode.
+
+	* gnome/gobject/guile-support.h: 
+	* gnome/gobject/guile-support.c (scm_dynwind_guile_v__p_u_c_p)
+	(scm_dynwind_guile_v__p_u_p_p, scm_dynwind_guile_v__p_p): Factor
+	some common scm_with_guile/scm_without_guile code into a separate
+	file. Ick.
+
+	* gnome/gobject/gobject.c (scm_c_gobject_set_property)
+	(scm_c_gobject_get_property): Enter guile mode. Icky icky ick.
+
+	* gnome/gobject/gclosure.c
+	(scm_closure_primitive_invoke_without_guile)
+	(scm_closure_primitive_invoke): Leave Guile mode when invoking
+	closures.
+
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.96 ==
+
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.15.96.
+
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/glib.defs (g_io_channel_read_line): 
+	* gnome/gw/glib-support.h:
+	* gnome/gw/glib-support.c (_wrap_g_io_channel_read_line): Restore
+	this wrapper.
+
+	* gnome/gw/glib-support.c (g_io_add_watch): Enter guile mode in
+	the callback. What a pain in the ass.
+
+	* gnome/gobject/guile-support.h: 
+	* gnome/gobject/guile-support.c (scm_to_locale_string_dynwind):
+	New helper, allocates a string to be freed within the current
+	dynwind.
+
+	* gnome/gobject/gvalue.c (scm_gvalue_primitive_set)
+	(scm_genum_register_static, scm_gflags_register_static):
+	* gnome/gobject/gtype.c (scm_gtype_from_name)
+	(scm_c_define_and_export_gtype_x): 
+	* gnome/gobject/gparameter.c (SCM_GPARAM_STRUCT_BLURB)
+	(SCM_GPARAM_STRUCT_NICK, scm_gparam_primitive_create):
+	* gnome/gobject/gobject.c (scm_gtype_register_static): Use the
+	scm_to_locale_string_dynwind instead of SCM_STRING_CHARS.
+
+	* examples/fifo.scm (fifo-callback): Update for new
+	io-channel-read-line behavior.
+	(main): primitive-exit from the subthread. Adapt to
+	io-channel-new-file argument change.
+
+2007-12-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/glib.defs (run): 
+	* gnome/gw/glib-support.c (_wrap_g_main_loop_run): Don't leave
+	guile mode before calling main_loop_run, because we still have to
+	do some SCM-calling things. Instead leave guile mode from inside
+	the wrapper. Fixes some lockups.
+
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/wrapset.api: 
+	* test-suite/gobject.api: Regenerate.
+
+	* gnome/gw/support/gtk-doc.scm (generate-undocumented-texi): New
+	exported function, generates undocumented.texi.
+
+	* doc/glib/undocumented.texi: 
+	* doc/glib/guile-gnome-glib.texi (Top): Add undocumented
+	functions.
+
+	* doc/glib/defuns-unicode.xml.texi: Regenerated docs removed some
+	functions.
+
+2007-11-30  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (type-lookup): Ignore functions that
+	would force opaque types to be wrapped.
+
+2007-11-25  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (type-lookup)
+	(construct-argument-list): Add another arg, #:for-proc, that will
+	be used when we warn about making opaque types.
+	(load-defs): Set #:for-proc on lookup-type.
+
+	* doc/glib/defuns-main.xml.texi: 
+	* doc/glib/defuns-iochannels.xml.texi: 
+	* doc/glib/defuns-bookmarkfile.xml.texi: Regenerated, adds entries
+	for the opaque types.
+
+	* gnome/gw/support/gtk-doc.scm (superclasses)
+	(gobject-class-stexi-docs): Document superclasses.
+	(check-documentation-coverage): Print out "spurious" symbols,
+	those that we think are documented but are not in the wrapper.
+
+	* gnome/gw/support/gobject.scm (initializations-cg)
+	(wrap-opaque-pointer!): Do define and export the wct variable, as
+	other wrapsets that use this type need to get at the wct. Doh.
+
+	* doc/gobject/guile-gnome-gobject.texi (Top): 
+	* doc/glib/guile-gnome-glib.texi (Top): Remove the concept index,
+	and add a type index.
+
+	* gnome/gw/support/gtk-doc.scm (gobject-class-stexi-docs): Don't
+	error if the class is not defined in the module.
+
+	* gnome/gw/support/gobject.scm (wrap-freeable-pointer!)
+	(wrap-refcounted-pointer!): Accept the ctype as the name of the
+	type without a star, so that the type name becomes e.g.
+	<g-main-loop> instead of <g-main-loop*>. This means that only
+	truly opaque pointers will have a * in their names.
+
+	* gnome/gw/gobject-spec.scm (initialize): Specialize on
+	<g-source>, not <g-source*> -- fallout from the changes to
+	gobject.scm.
+
+	* gnome/gw/glib-spec.scm (initialize): Adapt to changes in
+	wrap-freeable-pointer and wrap-refcounted-pointer.
+
+	* doc/glib/defuns-*.xml.texi: Regenerated.
+
+2007-11-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (unwrap-value-cg): Fix a typo, my
+	bads yo.
+	(<gobject-structure-type>, check-typespec-options, c-type-name)
+	(make-typespec, unwrap-value-cg, call-arg-cg, wrap-value-cg)
+	(wrap-structure!): New public function, wrap-structure!, which
+	wraps a C structure as a Scheme value. Parameters of the form
+	"StructName*" are interpreted as "out" parameters, while
+	"const-StructName*" are treated as "in" parameters.
+
+2007-11-23  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/wrapset.api: Update for the changes resulting from
+	the API review. Neat!
+
+	* bin/Makefile.am: Rework; in the future perhaps we will not make
+	a local guile-gnome binary.
+
+	* gnome/overrides/glib.defs: Add lots of custom function wrapper
+	definitions, backed by code in glib-support. Ignore a number of
+	other functions of dubious utility, or that cannot be wrapped
+	safely in scheme.
+
+	* gnome/gw/support/gobject.scm (<gobject-opaque-pointer>): Pull in
+	Guile's wct implementation, as it is not public, and does some
+	things that we don't want to do (e.g. defining the wct classes as
+	variables, that is useless.)
+	(wrap-opaque-pointer!): Use <gobject-opaque-pointer>.
+	(<gobject-freeable-pointer>): New class, a pointer that has a free
+	function.
+	(wrap-freeable-pointer!): New public function.
+	(<gobject-ref-pointer>): New class, a pointer that can be reffed
+	or unreffed.
+	(wrap-refcounted-pointer!): New function.
+
+	* gnome/gw/glib-support.h: 
+	* gnome/gw/glib-support.c: Expand, providing better scheme
+	wrappers for a number of functions.
+
+	* gnome/gw/glib-spec.scm (initialize): Wrap a number of types as
+	freeable or refcounted pointers.
+
+	* doc/glib/section-strings.xml.texi (Strings): Add docs for
+	g-string-get-str.
+
+	* doc/glib/overrides.texi: Added some overrides.
+
+	* doc/glib/defuns-unicode.xml.texi: 
+	* doc/glib/defuns-misc_utils.xml.texi: 
+	* doc/glib/defuns-main.xml.texi: 
+	* doc/glib/defuns-iochannels.xml.texi: 
+	* doc/glib/defuns-fileutils.xml.texi: 
+	* doc/glib/defuns-conversions.xml.texi: 
+	* doc/glib/defuns-bookmarkfile.xml.texi: Regenerated with all of
+	the wrapset changes.
+
+	* doc/gobject/Makefile.am:
+	* doc/gobject/guile-gnome-gobject.texi: Added to bzr, because I
+	can't figure out how to get automake to deal with it otherwise.
+	Not such a bad idea though to have this in VC.
+
+	* doc/glib/Makefile.am (docbook_xml): 
+	* doc/glib/guile-gnome-glib.texi (Base64 Encoding):
+	* doc/glib/defuns-base64.xml.texi:
+	* doc/glib/section-base64.xml.texi: Removed, the base64 functions
+	were removed.
+
+2007-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gtk-doc.scm (lambda): Fix some texi because the
+	upstream xml is bad.
+	(make-type-docs?, gtk-doc-sdocbook->class-list/g-wrap): Don't
+	generate docs for types that g-wrap does not define, fixes e.g.
+	<gst-element-class>.
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.95 ==
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.15.95.
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/Makefile.am: Add makefile foo for the wrapset api
+	check.
+
+	* test-suite/wrapset.scm: New check for api stability in the
+	g-wrap-generated glib wrapset.
+
+	* test-suite/wrapset.api: New file, defines the glib API.
+
+	* gnome/gw/support/gtk-doc.scm (extract-defs)
+	(check-documentation-coverage): New export,
+	check-documentation-coverage, which looks at a texinfo file and a
+	set of modules to determine which exports of the modules are
+	undocumented.
+	(check-documentation-coverage): Sort the undocumented symbol list.
+	(check-documentation-coverage): Don't error out if a module cannot
+	be resolved.
+
+2007-11-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gtk-doc.scm (gobject-class-stexi-docs): Put
+	prop descriptions in a para.
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.94 ==
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.15.94.
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* NEWS: Updated.
+
+2007-09-24  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/Makefile.am: Update for gobject docs moving.
+
+	* doc/gobject/docs.mk: Update a bit.
+
+	* test-suite/gobject.api: Regenerate for gtk-doc.scm changes, an
+	incompatible change but not in any released version.
+
+	* gnome/gw/support/gtk-doc.scm: Document the module, and reduce
+	the number of exports to just two. Move around some definitions.
+	(gtk-doc->texi-defuns): Rework to handle either the heuristics
+	mode or g-wrap, and document.
+	(gtk-doc->texi-stubs): Document.
+
+	* doc/gobject/make-texinfo.scm: Add spaces between args to deal
+	with fixed guile-lib serialization.
+
+	* doc/glib/: 
+	* doc/gobject/: GLib and GObject docs moved to separate
+	directories.
+
+2007-09-07  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gtk-doc.scm: Import gobject and goops so that
+	we can do some runtime introspection of classes.
+	(sdocbook-fold-structs): New function, folds over struct
+	definitions.
+	(signal-doc-name, signal-doc-docs, signal-refsect2-list)
+	(signal-docs-alist, signal-stexi-args, class-signal-stexi-docs)
+	(gobject-class-stexi-docs, gtk-doc-sdocbook->class-list/g-wrap):
+	New functions to document classes, with their properties and
+	signals.
+	(gtk-doc->texi-defuns): Put class documentation before functions.
+
+	* doc/section-*.texi: 
+	* doc/defuns-*.texi: Regenerated.
+
+	* gnome/gw/support/gtk-doc.scm (c-arguments->scheme-arguments)
+	(function-stexi-arguments): Use @tie{} instead of a space where
+	appropriate.
+	(*gtk-doc-sdocbook->stexi-rules*): Translate FALSE and TRUE.
+	(gtk-doc->texi-stubs): Put the subtitle in a subparagraph, not the
+	title.
+	(function-stexi-arguments): Don't wrap the var in @var, that makes
+	it to be @tt font, which we don't want or need.
+	(make-defs/g-wrap): Doc generics using @deffnx, not @deffn.
+
+	* doc/Makefile.am: Factor out automatic g-wrap docs stuff into
+	common makefile routines.
+
+2007-09-02  Andy Wingo  <wingo@pobox.com>
+
+	* doc/guile-gnome-glib.texi: New file, includes all the rest to
+	make glib docs.
+
+	* doc/Makefile.am: Add rules to regenerate guile-gnome-glib.texi's
+	dependencies. Add guile-gnome-glib manual.
+
+	* gnome/gw/support/gtk-doc.scm: Add a couple of public methods and
+	hacks to get GLib docbook to work. Will document more later.
+
+	* doc/defuns-*.texi:
+	* doc/section-*.texi: Add generated documentation.
+
+2007-09-01  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/Makefile.am: Add some hairyness for the api check
+	test.
+
+	* gnome/gw/support/gobject.scm: Don't export wrap-enum!; we just
+	add a method on the wrap-enum! from (g-wrap enumeration).
+
+	* test-suite/gobject.api: An apicheck description of the gobject
+	api.
+
+	* test-suite/api.scm: New test, tests that our API has not
+	regressed.
+
+	* gnome/gobject/gobject.scm (make-gobject-instance): Fix bug
+	introduced by doc (define placement).
+
+	* gnome/gw/generics.scm: Document, and re-export (gnome gobject
+	generics).
+
+	* doc/guile-gnome-gobject.scm (*modules*): Add the (gnome gw
+	generics) module to the list.
+
+	* gnome/gw/support/modules.scm: 
+	* gnome/gw/support/defs.scm: Document.
+
+	* doc/guile-gnome-gobject.scm: Remove the concept index; we
+	defined no concepts.
+
+	* gnome/gw/support/gobject.scm: Document. Removed the undefined
+	construct-argument-list.
+
+	* gnome/gobject/utils.scm: Document.
+
+	* gnome/gobject/gobject.scm: Move around some docs, looks better
+	with newer guile-lib.
+
+	* gnome/gobject/generics.scm: Write a bunch about the place of
+	generics in guile-gnome. Redefine docs as being on methods; needs
+	latest guile-lib to understand, thouh.
+
+2007-08-28  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/generics.scm: Rewrite to export the generics
+	normally instead of molesting the root module.
+
+2007-08-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.scm: Fix a URL.
+
+	* gnome/gobject/gsignal.c: 
+	* gnome/gobject/gsignal.scm: 
+	* gnome/gobject/gobject.c:
+	* gnome/gobject/gobject.scm: Document.
+
+	* gnome/gobject/gvalue.scm: 
+	* gnome/gobject/gvalue.c: Document.
+
+	* gnome/gobject/gclosure.scm: Document. Change gclosure-invoke to
+	be a procedure rather than a method/generic.
+
+	* gnome/gobject/gparameter.scm: 
+	* gnome/gobject/gparameter.c: Document. Remove
+	gparam-struct-arg-info from the exports list.
+
+	* doc/guile-gnome-gobject.scm (*modules*): Reorder the modules so
+	gvalue is before gparameter.
+
+	* gnome/gobject/utils.scm (define-class-with-docs): New exported
+	macro.
+
+	* gnome/gobject/gtype.scm: Add a commentary, lots of doc fixups.
+
+	* gnome/gobject/gtype.c: Lots of doc fixups.
+
+	* doc/Makefile.am (doc): Define DOT_DOC_FILES so that we actually
+	pick up the .doc files.
+
+	* gnome/gobject/gtype.scm:
+	* gnome/gobject/gtype.c (%function->method-public): Removed, this
+	hack is no longer necessary (or used).
+
+2007-08-25  Andy Wingo  <wingo@pobox.com>
+
+	* doc/make-texinfo.scm (main): Don't search the load path for the
+	file, we know where it is.
+
+	* doc/docs.mk ($(doc).texi): Use the right environments.
+
+	* doc/Makefile.am (nodist_info_TEXINFOS): Make automake happy.
+
+	* doc/guile-gnome-gobject.texi: Remove, I found the trick to make
+	automake happy.
+	
+	* gnome/gobject/Makefile.am: Add .doc files to the makefile, so
+	they get built
+
+	* TODO: Add something of a TODO
+
+	* Makefile.am: Recurse into doc/.
+
+	* doc/guile-gnome-gobject.texi: Add this file so that automake is
+	happy.
+	
+	* doc/make-texinfo.scm: 
+	* doc/guile-gnome-gobject.scm: 
+	* doc/docs.mk:
+	* doc/Makefile.am: Added doc infrastructure. make-texinfo.scm has
+	been augmented with Ludovic's code to parse out docs snarfed from
+	C files.
+
+	* gnome/gw/support/modules.scm (export-all-lazy!): Export all
+	non-lazy variables explicitly so that things like module frisking
+	and tab completion work.
+
+	* gnome/gobject/gsignal.c (scm_init_gnome_gobject_signals): Define
+	<gsignal> as the struct vtable. It was always exported but never
+	defined.
+
+2007-08-15  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/support/gobject.scm (<gobject-object-type>)
+	(<gobject-boxed-type>, <gobject-interface-type>): Properly set
+	allowed-options via class declaration keyword instead of explicit
+	slot access.
+
+2007-08-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (generate-wrapset): Make generated
+	SCM wrappers use the (gnome gobject) library, which in the change
+	to generics.scm is no longer unintentionally exported. Use the
+	generics' public interface, not its private interface.
+
+	* gnome/gw/support/modules.scm (export-all-lazy!): 
+	* gnome/gw/generics.scm: Instead of making the public interface
+	use the module, which unintentionally re-exports imported
+	bindings in addition to the local bindings, install a module
+	binder proc on the public interface to export only local
+	variables.
+
+2007-07-28  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gtk-doc.scm: Expand and document, depending on
+	the latest in guile-lib. I believe the interface is sufficient
+	now, at least for guile-cairo's purposes.
+
+2007-07-17  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gtk-doc.scm: Checkpoint some new developments.
+
+2007-07-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/Makefile.am: 
+	* gnome/gw/support/gtk-doc.scm: New module, useful for generating
+	docs from gtk-doc-generated docbook. Currently used in
+	guile-cairo.
+
+2007-06-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.93 ==
+
+2007-06-15  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.15.93.
+
+2007-06-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (construct-argument-list): Fix parsing
+	of argument options like (callee-owned), broken on 2007-05-05.
+
+2007-05-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/glib.defs (g_string_get_str): Fix generated
+	wrapper name.
+
+	* gnome/gw/support/modules.scm: New function. If we have a fixed
+	guile, exports everything to the public interface, with the effect
+	that the module binder proc will be active on the public
+	interface. However, this causes huge slowdowns on most guile 1.8
+	versions; if we detect an old version, export all symbols
+	explicitly, forcing the lazy bindings to be constructed. Otherwise
+	it takes much more time than the baseline 16 seconds.
+
+	* gnome/gw/support/gobject.scm (generate-wrapset): Fix bug in our
+	SCM generator: wrap generic functions that are not backed by RTI.
+	(generate-wrapset): Instead of unconditionally exporting
+	everything, go export-all-lazy!.
+
+	* gnome/overrides/glib.defs: Recover some default values lost when
+	glib.defs was regenerated.
+
+	* gnome/gw/support/gobject.scm (generate-wrapset): Override
+	g-wrap's creation of the SCM module, so that we just export
+	"everything" instead of enumerating the exports. Allows lazy
+	binding to work, dropping (gnome gtk) load time down to a
+	manageable 2 seconds.
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.92 ==
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.15.92.
+
+2007-05-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-support.h: 
+	* gnome/gobject/guile-support.c (scm_with_guile): Add a guile 1.6
+	shim of dubious correctness.
+
+2007-05-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/glib.defs-type-ignores: 
+	* gnome/overrides/Makefile.am: Add type ignores for GLib.
+
+	* package.ac: Update GLib requirement to 2.10, corresponding to
+	the 2.16 release of the Gnome Developer Platform.
+
+	* gnome/overrides/glib.defs: Update ignores for new autogenerated
+	glib.defs in the defs module. I have mostly ignored everything;
+	the notable addition is GBookmarkFile. I also didn't ignore the
+	unicode functions, figuring they will be useful while Guile
+	doesn't have any of its own.
+
+	* gnome/gw/glib-spec.scm (initialize): Add alias for time_t as
+	long.
+
+2007-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/glib-support.c (_wrap_g_main_loop_run): Rework signal
+	handling code to use a special gsource. The source is woken when
+	SIGINT is delivered, via writing a byte on an fd, which is what
+	g_main_context_wakeup does; however it also does some locking.
+	Unsure about the safety of all of this, we'll see how it works
+	out.
+
+	* == Released guile-gnome-platform version 2.15.91 ==
+
+2007-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.15.91.
+
+2007-05-06  Andy Wingo  <wingo@pobox.com>
+
+	* examples/example-1.scm: Put in a modeline.
+
+	* gnome/gw/support/gobject.scm (find-type-rule): Look up type
+	rules recursively, fixes a very old bug in which out parameters
+	are only recognized automatically within the same wrapset that
+	defines the rule.
+
+	* gnome/gw/glib-spec.scm (initialize): Fix char* being marked for
+	automatic 'out aliasing.
+
+2007-05-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm: New export, lookup-type-by-alias.
+	(add-type-alias!): Simplify.
+	(lookup-type-by-alias): Renamed from lookup-type, which was a name
+	collision with g-wrap.scm, which confused me for quite some time.
+	(add-type-rule!, find-type-rule): Simplify so that a type rule is
+	simply a string, which maps to a g-wrap typespec as a list of
+	symbols.
+
+	* gnome/gw/support/defs.scm (type-lookup): Always return a list;
+	lists are always valid as typespecs on the g-wrap side.
+	(construct-argument-list): Simplify (?), assuming that type-lookup
+	gives us a list, and for the update in type rules. Removes
+	theoretical ability for multiple C arguments to be given from one
+	Scheme object, but that wasn't used, and if it goes in again some
+	documentation would be good. (This capability still exists via
+	custom wrappers.)
+	(load-defs): lookup-type-by-alias, not lookup-type.
+
+	* gnome/gw/glib-spec.scm (initialize): Add "out" type aliases for
+	all scalar types for which it makes sense. gunichar is a guint32.
+
+2007-05-04  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gvalue.h: New public function,
+	scm_c_register_gtype_instance_gvalue_wrappers. Long name!
+
+	* gnome/gobject/gvalue.c
+	(scm_c_register_gtype_instance_gvalue_wrappers)
+	(scm_gvalue_to_scm, scm_gvalue_primitive_set, scm_c_gvalue_to_scm)
+	(scm_scm_to_gvalue): Handle GTypeInstances in GValues via a
+	generic wrapper mechanism; allows GStreamer's miniobjects to hook
+	into this system.
+
+	* gnome/gobject/private.h: 
+	* gnome/gobject/gtype.c (scm_c_gtype_instance_to_scm_typed): New
+	function, made to solve the `initialize' bug of gobject.c,
+	described below. Private.
+
+	* gnome/gobject/gparameter.c (scm_init_gnome_gobject_parameters):
+	Register GValue wrappers for GParamSpec.
+
+	* gnome/gobject/gobject.c (scm_c_gtype_instance_instance_init):
+	Fix a longstanding bug (3.5 years) whereby double-derived scheme
+	classes were always had `initialize' called with an instance of
+	the most specific class.
+	(scm_init_gnome_gobject): Register GValue wrappers for GObject.
+
+	* gnome/overrides/glib.defs (g_io_add_watch, string): Don't leave
+	guile mode for functions that deal in SCM.
+
+2007-02-02  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (wrap-gobject-class!): Add a type
+	alias for classes; fixes class parameters to wrapped functions.
+
+	* gnome/gw/support/defs.scm (load-defs): Support new parameter,
+	`leave-guile-mode'. Takes one boolean argument, defaults to #t. If
+	#t, g-wrap will leave guile mode when the function is called.
+	Requires new g-wrap.
+
+	* gnome/gobject/gvalue.scm (initialize): Untabify.
+	(gtype-instance:write): Untabify. Use gflags->symbol-list to write
+	flags.
+	(find-enum, genum->symbol, genum->name, genum->value): Untabify.
+	(gflags->element-list): Untabify; fix a bug so that 0x3 does not
+	match 0x1.
+	(gflags->symbol-list, gflags->name-list, gflags->value-list):
+	Untabify.
+
+	* gnome/gobject/gtype.c (scm_init_gnome_gobject_types): Don't
+	install a log handler; not only does the scm_throw corrupt
+	libraries' internal state, it is dangerous because now it is
+	likely that we are not in guile mode.
+
+2006-12-17  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gclosure.c ("%scm-gclosure-marshal"): Enter guile
+	via scm_with_guile when invoking a closure; along with a patch I'm
+	mailing to the g-wrap list this makes callbacks from other threads
+	work.
+
+2006-12-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.90 ==
+
+2006-12-15  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.15.90.
+
+2006-12-15  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/gw-test-gobject-spec.scm (gw-test-gobject-spec): 
+	* test-suite/gw-test-glib-spec.scm (gw-test-glib-spec): Fix up
+	includes.
+
+	* test-suite/gobject.test ("basic values"): Fix the check for
+	out-of-range errors, using the "value out of range" variant
+	instead of "argument N out of range".
+
+	* test-suite/Makefile.am (libgw_guile_test_glib_la_LIBADD): Link
+	to GLib.
+
+	* gnome/gw/support/gobject.scm (wrap-value-cg): Use the
+	scm_c_gtype_instance_unref generic function instead of
+	g_object_unref, so that we can support other classed objects.
+
+	* gnome/gobject/gtype.c: 
+	(get_gtype_instance_instance_funcs)
+	(scm_register_gtype_instance_funcs, scm_c_gtype_instance_ref)
+	(scm_c_gtype_instance_unref)
+	(scm_c_gtype_instance_get_cached_smob)
+	(scm_c_gtype_instance_set_cached_smob)
+	(scm_c_gtype_instance_get_cached_goops)
+	(scm_c_gtype_instance_set_cached_goops): Keep a registry of
+	fundamental classed gtypes that we know how to deal with, with
+	function pointers on how to ref, unref, get qdata, and set qdata
+	on them. This gets g_object_* code out of gtype.c, and allows for
+	external modules to define wrappers for new fundamental classed
+	types, like GStreamer's miniobjects.
+	(scm_gtype_instance_free, scm_c_gtype_instance_to_scm)
+	(scm_c_make_gtype_instance): Use the generic functions instead of
+	type-specific switch blocks.
+
+	* gnome/gobject/gparameter.c (scm_init_gnome_gobject_parameters):
+	Register the paramspec ref/sink/qdata functions with gtype.c.
+	
+	* gnome/gobject/gobject.c (scm_init_gnome_gobject): Register the
+	gobject ref/sink/qdata functions with gtype.c.
+	(s_scm_gobject_primitive_create_instance): use
+	scm_c_gtype_instance_set_cached_goops instead of mucking about
+	with qdata ourselves.
+
+2006-12-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (wrap-value-cg): If a boxed value
+	is caller-owned, then use g_value_take_boxed instead of
+	g_value_set_boxed.
+
+	* gnome/gobject/gvalue.c (s_scm_scm_to_gvalue): If a custom
+	unwrapper fails to set the gvalue, signal a wrong-type-arg
+	exception.
+
+2006-12-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (wrap-custom-gvalue!): New public
+	macro, allows new fundamental GTypes to be represented as native
+	scheme values. For example, GstIntRange as a pair of ints.
+	
+	* gnome/gobject/guile-gnome-gobject.h: Add gc.h so people using
+	this header get everything.
+
+	* gnome/gobject/gvalue.c (scm_init_gnome_gobject_values): Don't
+	export enum and flags gtypes here, that's already done by gtype.c.
+	I'm not sure if this is the right change though; it seems that all
+	of the gtype:foo exports should be done in the same file. Dunno.
+
+2006-11-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gobject-spec.scm: Use (gnome gw support g-wrap), the
+	g-wrap compatibility wrapper.
+
+	* gnome/gw/glib-spec.scm: Use (gnome gw support g-wrap), the
+	g-wrap compatibility wrapper.
+
+	* gnome/gw/support/Makefile.am (support_DATA): 
+	* gnome/gw/support/g-wrap.scm: New module, (gnome gw support
+	g-wrap), added to the dist. The idea is for wrapsets to have
+	access to all g-wrap generics from one module.
+
+2006-10-30  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gc.h:
+	* gnome/gobject/gc.c (scm_glib_gc_protect_object)
+	(scm_glib_gc_unprotect_object): New functions, like
+	scm_gc_[un]protect_object, but can be called from inside the gc's
+	sweep phase.
+
+	* gnome/gobject/gparameter.c (s_scm_gparam_to_param_struct): 
+	* gnome/gobject/gvalue.c (copy_gboxed_scm, free_gboxed_scm): 
+	* gnome/gobject/gobject.c (s_scm_gobject_set_data_x)
+	(scm_c_gtype_instance_class_init): 
+	* gnome/gobject/gclosure.c (free_closure)
+	(s_scm_gclosure_primitive_new): Use scm_glib_gc_protect_object
+	instead of guile's scm_gc_protect_object.
+
+	* gnome/gobject/Makefile.am (C_FILES): Add gc.c.
+
+2006-10-27  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (construct-argument-list): Don't throw
+	away typespec options, like 'null-ok, when there are extras
+	arguments. Fixes cases like this:
+	'("GMainContext*" "context" (null-ok) (default "NULL")).
+
+2006-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (add-type!): Only export classes
+	that are actually defined. Fixes guile-gnome on guile 1.8.
+
+	* gnome/gw/generics.scm (gnome): Use (gnome gobject), so that any
+	methods we define hang off the same generics as the base gobject
+	library.
+
+2006-10-20  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (initializations-cg): Tell g-wrap
+	to work with generic functions in the (gnome gw generics) module.
+	Makes it so that we don't pollute the root namespace.
+
+	* gnome/gw/Makefile.am (guilegwmodule_DATA): Autotoolage.
+
+	* gnome/gw/generics.scm: New file, created to hold guile-gnome's
+	generic functions.
+
+2005-12-22  Andy Wingo  <wingo@pobox.com>
+
+	* AUTHORS: Updated.
+
+	* gnome/gw/support/Makefile.am (support_DATA): Updated
+	accordingly.
+
+	* gnome/gw/support/slib.scm: New module, provides printf and
+	glob:make-matcher. This removes the build dependency on slib.
+
+	* gnome/gw/support/printf.scm: 
+	* gnome/gw/support/glob.scm: 
+	* gnome/gw/support/genwrite.scm: Pulled in from SLIB. Without
+	modifications.
+
+2005-10-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.c (scm_gtype_interfaces): Signedness fix.
+
+2005-09-17  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/gtype.c (s_scm_gtype_interfaces): Fix GCC 4.0
+	warnings.
+
+2005-04-20  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/glib.scm (g-error-domain, g-error-code, g-error-message):
+	New public functions.
+
+2005-04-10  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/gobject.c, gnome/gobject/gvalue.c,
+	* gnome/gw/glib-support.c: Use the new macros.
+	* gnome/gobject/gutil.h (GPOINTER_TO_SCM, SCM_TO_GPOINTER): New
+	macros.
+	
+2005-04-09  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/glib-spec.scm (initialize): Fix gsize, gssize in- and 
+	out-arguments.
+	
+	* gnome/gw/glib-spec.scm (post-call-arg-cg): Use newly-added function
+	scm_c_raise_gerror.
+	* gnome/gobject/Makefile.am (C_FILES): Added gutil.c
+	* gnome/gobject/gobject.h: #include gutil.h
+	* gnome/gobject/gutil.c, gnome/gobject/gutil.h: New files.
+
+2005-04-07  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* test-suite/gw-gobject.test, test-suite/gobject.test: Added a few
+	tests relevant to the gvalue fixes.
+
+	* gnome/gw/support/defs.scm (load-defs): Improve error handling a
+	bit by re-raising stacked conditions where appropriate.
+
+	* gnome/gobject/gvalue.c (scm_gvalue_primitive_get): Return a full
+	goops instance when the gvalue contains an object.
+
+	* gnome/gobject/gvalue.c (scm_gvalue_primitive_set): Fix
+	scm_list_p() check, needs to wrapped with SCM_BOOL().
+	(scm_gvalue_primitive_set): Also handle goops gobject instances.
+
+2005-03-17  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/gvalue.c (scm_gvalue_primitive_set): Fix memleak
+	when setting a string value.
+
+2005-03-01  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/overrides/glib.defs: Added g_io_add_watch_full to ignore
+	list.
+
+	* examples/fifo.scm: Polished a bit.
+
+	* gnome/gw/support/defs.scm (load-defs): Re-enable logging of
+	opaque types.
+
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.7.99 ==
+
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.7.99.
+
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm: Don't make generics if the of-object
+	is an enum, flags, boxed, or custom boxed. This is a nasty nasty
+	hack to make sure generics aren't created with unspecialized args,
+	to prevent e.g. (foo-append <top> <top>) -> (append <top> <top>). 
+
+2005-01-29  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/support/gobject.scm (make-typespec): Make the methods
+	specialized on <gobject-enum-type>, <gobject-boxed-type> and
+	<gobject-custom-boxed-type> add the 'unspecialized option to the
+	created typespec (needed for G-Wrap 1.9.4).
+
+2005-01-11  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.98 ==
+
+2005-01-11  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped to 2.7.98.
+
+2004-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* VERSION: Bumped.
+
+	* == Released platform version 2.7.97 ==
+
+	* gnome/gobject/gvalue.c (scm_c_register_gvalue_wrappers):
+	DAMMMIT, g_int_hash doesn't do what you think it does!
+
+2004-12-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (wrap-custom-boxed!): New exported
+	macro, replaces wrap-custom-pointer! and custom-wrapper-decls.
+	(<gobject-custom-boxed-type>, gen-c-tmp, global-definitions-cg) 
+	(global-declarations-cg, initializations-cg, make-custom-wrapper) 
+	(make-custom-unwrapper, unwrap-value-cg, wrap-value-cg): Support
+	for the new custom wrapper. Will create GValue wrapper functions,
+	use them from the wrap/unwrap procedures, and registers them with
+	gvalue.c.
+
+	* gnome/gobject/gvalue.c (s_scm_gvalue_primitive_get)
+	(scm_c_gvalue_to_scm, s_scm_gvalue_to_scm): Remove casts to
+	GTypeInstance.
+
+	* gnome/gobject/gtype.c (scm_c_make_gtype_instance)
+	(scm_gtype_instance_free, scm_gtype_instance_print)
+	(sink_type_instance, scm_register_gtype_instance_sinkfunc)
+	(scm_c_gtype_instance_to_scm, scm_c_make_gtype_instance)
+	(guile_gobject_log_handler)
+	(scm_c_scm_to_gtype_instance, scm_c_gtype_instance_to_scm): Use
+	gpointer instead of GTypeInstance* as the type declaration, since
+	we never actually deal with GTypeInstance, only their subclasses.
+	Eliminates the need for many casts, because we have to check at
+	runtime anyway.
+
+2004-12-02  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/utils.scm (gnome): Export GStudlyCapsExpand so
+	that (gnome gw support gobject) can use it.
+
+	* gnome/gobject/gvalue.c (s_scm_scm_to_gvalue)
+	(s_scm_gvalue_to_scm): Use the new gvalue wrappers as appropriate.
+	(scm_c_register_gvalue_wrappers): New procedure, registers a pair
+	of procedures to make a custom mapping between scheme values and
+	gvalues.
+
+2004-11-29  Andy Wingo  <wingo@pobox.com>
+
+	* gnome.scm.in (gnome): Define the module before resolving it, so
+	as to avoid guile 1.6 trying to load a binary module. Thanks to
+	David Pirotte for the bug report. Define the version as
+	`gnome-version' because the core already exports `version'.
+	(add-to-load-path!): New proc, tries to order environment-variable
+	load paths first so that hacking the load path during compilation
+	works.
+
+2004-11-21  Andy Wingo  <wingo@pobox.com>
+
+	* examples/Makefile.am (EXTRA_DIST): Dist all scm files.
+
+2004-11-16  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/glib-support.c: Indentation, only get iochannel_type
+	when the func is first called.
+
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/glib-support.c: Fix includes.
+	(scm_init_glib): Lookup the iochannel type when glib is
+	initialized.
+	(g_io_func): Don't lookup the type all the time.
+
+2004-10-30  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* examples/fifo.scm: Update.
+
+	* gnome/gw/glib-support.scm: Add return parameter overrides (Rotty).
+
+	* gnome/gw/glib-support.c: Remove _wrap_g_io_channel_read_line wrapper.
+
+2004-10-22  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* examples/fifo.scm: New file.
+
+2004-10-21  Jan Nieuwenhuizen  <janneke@gnu.org>
+
+	* gnome/gw/glib-support.c (_wrap_g_io_add_watch): New wrapper.
+
+	* gnome/overrides/glib.defs (g_io_add_watch): New override.
+
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am: Don't install into guile's path, just use $prefix.
+
+	* gnome.scm.in: Don't hack /usr/local. Add some comments.
+
+	* package.ac: Add record_check.
+
+2004-11-13  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (EXTRA_DIST): Dist VERSION.
+	* VERSION: New file.
+
+2004-11-11  Andy Wingo  <wingo@pobox.com>
+
+	* gnome.scm.in (usr-local-hack): Fix..
+
+	* Makefile.am (guilesite): Argh, get the inst dir right.
+
+	* package.ac: Avoid readlink -f, be more portable.
+
+	* gnome.scm.in: New file, basically does what guile-gnome-0 does,
+	but from within scheme.
+
+	* Makefile.am: Add rules so that gnome-$version.scm looks right
+	both installed and uninstalled. Install to the system guile path,
+	regardless of the $prefix of guile-gnome. Build . before subdirs.
+
+	* gnome/gw/glib-spec.scm (unwrap-value-cg): Whoops, fix parens.
+
+	* gnome/gw/support/defs.scm (type-lookup): Assume that the caller
+	owns generated container types (i.e. GList) if 'const isn't set.
+	Prevents some invalid frees, hanks to Patrick Bernaud for the
+	report.
+	
+	* gnome/gw/glib-spec.scm (unwrap-value-cg): Use destroy-value-cg
+	to free the list after unwrapping.
+
+2004-11-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (custom-wrap-decls)
+	(wrap-custom-pointer!): New exported macros, designed to simplify
+	wrappings of c types represented by native scheme values.
+
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* defs-checks.ac: Versioned pkg-config check.
+
+	* Makefile.am (all-local): Versioned pkg-config files.
+
+	* examples/main-loop.scm: 
+	* examples/example-1.scm: Use guile-gnome-0.
+
+	* bin/guile-gnome.in (localpath): Add /usr/local include dirs to
+	the guile loadpath, so that users aren't surprised when they have
+	g-wrap installed in /usr/local/guile/site. A hack for guile 1.6.
+
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac (GUILE_GLIB_LIBS): Link to the versioned lib.
+
+	* guile-gnome-glib-uninstalled.pc.in, guile-gnome-glib.pc.in: Link
+	to the versioned lib.
+
+	* gnome/gobject/config.scm.in: New file, exports
+	*guile-gnome-gobject-lib-path*.
+
+	* gnome/gobject/gobject.scm, gtype.scm, gvalue.scm,
+	gparameter.scm, gsignal.scm, gclosure.scm: dynamic-link the path
+	from (gnome gobject config).
+
+	* gnome/gobject/Makefile.am: Version the libguile-gnome-gobject
+	lib. Make config.scm work in the source tree and in the
+	installdir. Define GUILE_GOBJECT_DIR to be $guilegnomedir.
+
+	* bin/Makefile.am: New file. Will install a versioned
+	guile-gnome-$apiversion into $bindir.
+
+	* bin/guile-gnome.in: New script, wraps guile with a munged load
+	path for modules and libraries.
+
+	* Makefile.am (SUBDIRS): Add bin/.
+
+	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
+	versioned directory.
+
+2004-10-12  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* shlib-dirs.ac: New file, to be used by dev-environ.
+
+2004-10-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gvalue.c (s_scm_gvalue_primitive_set): For
+	objects, interpret a #f value as NULL.
+	(s_scm_gvalue_primitive_set): Bugfix: convert SCM return value of
+	scm_list_p into a C boolean.
+
+	* gnome/gobject/gtype.c (scm_c_make_gtype_instance): Return #f if
+	the instance argument is NULL.
+
+2004-10-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gvalue.c (s_scm_gvalue_primitive_set): For
+	objects, assert that the type is compatible with the GValue type.
+
+2004-10-11  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gobject.scm (make-gobject-instance): Set the fluid
+	%gobject_initargs to the init-keyword kwargs for the duration of
+	the gobject-primitive-create-instance. This allows the call back
+	into scheme for `initialize' to pass the kwargs. However, if (not
+	 (scheme-gclass? class), call `initialize' manually. Also, in the
+	error message, "No such s/property/property or init-keyword/ ...".
+
+	* gnome/gobject/gtype.scm (initialize): For <gtype-instance>, no
+	need to provide a method that does nothing, and no need to avoid
+	the <gobject> initialize method. Removed.
+
+	* gnome/gobject/gobject.h: 
+	* gnome/gobject/gobject.c (s_scm_scheme_gclass_p): New predicate,
+	returns #t iff `class' is derived from within scheme. Normally it
+	doesn't matter, but we want to avoid calling `initialize' twice on
+	the instance.
+	(scm_init_gnome_gobject): Initialize the _gobject_initargs_fluid
+	to '(), define it for scheme.
+	(scm_c_gtype_instance_instance_init): Call initialize with the
+	proper initargs.
+
+2004-10-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.c (scm_c_gtype_instance_to_scm): Don't error
+	out if ginstance is NULL, we're probably going to scheme anyway.
+	Better to just return #f and stay quiet.
+
+	* gnome/gw/support/defs.scm (load-defs): Better error when a
+	symbolic include isn't file isn't found.
+
+	* gnome/gobject/gsignal.scm (gtype-class-get-signal-names): Copy
+	vector-map from gobject.scm.
+
+	* gnome/gw/glib-spec.scm (initialize): GTime -> int32.
+
+	* gnome/gobject/gvalue.[ch] (scm_c_gboxed_to_scm) 
+	(scm_c_dup_gboxed_to_scm): New helper functions. Take a pointer to
+	an object along with its GType and return a SCM gvalue.
+
+2004-10-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/gobject.scm (unwrap-value-cg, wrap-value-cg):
+	Define c-var, scm-var, and gtype-id within the body of the
+	wrap-pointer! value wrappers.
+
+2004-10-07  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (construct-argument-list): Fail
+	correctly if there is an unknown rest arg, but warn.
+	(load-defs:scan-type!): Catch a throw to 'ignored. Get the ctype
+	as a string, not a list of one element. Throw to 'ignored if the
+	ctype is in the ignored-types list.
+	(load-defs:ignore-types): New procedure, adds all of its arguments
+	to the ignored types list.
+	(load-defs): Add a hook to interpret ignore-types. Also interpret
+	the form (include SYMBOL) to mean (include
+	"gnome/overrides/BASENAME-SYMBOL").
+
+2004-09-27  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/exceptions.scm, gnome/gw/Makefile.am
+	* test-suite/test-gobject.c, examples/example-1.scm
+	* test-suite/gw-glib.test, test-suite/gw-gobject.test
+	* test-suite/gobject.test, test-suite/gw-test-gobject-spec.scm
+	* test-suite/guile-gobject-test, test-suite/gw-test-glib-spec.scm
+	* test-suite/test-glib.defs, test-suite/test-gobject.h: Added
+	license blocks.
+
+2004-09-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_glib_la_LIBADD): Not
+	G_WRAP_LINK_ARGS, it's G_WRAP_LIBS.
+
+	* gnome/gobject/Makefile.am (libguile_gnome_gobject_la_LIBADD):
+	Don't link to g-wrap.
+
+	* gnome/gobject/guile-support.h: Don't include
+	g-wrap/guile-compatibility.h -- no reason to depend on g-wrap.
+
+	* guile-gnome-glib.pc.in (includedir): Point to the versioned
+	directory.
+
+	* gnome/gobject/Makefile.am: Install headers to a versioned
+	directory.
+
+2004-09-16  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (SUBDIRS): Dist fixes.
+
+	* README: Added.
+
+	* NEWS: All pre-guile-gnome stuff elided. 
+
+	* NEWS.guile-gobject: Added the old news here.
+
+2004-09-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (load-defs): Ignore varargs functions,
+	like we used to before the rewrite.
+
+2004-09-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm: Real keywords, avoid deprecated modules.
+
+	* gnome/glib.scm: Real keywords, avoid deprecated modules.
+
+	* gnome/gw/gobject-spec.scm (gnome, gnome): Adapt to new module
+	names.
+
+	* package.ac (GUILE_GLIB_LIBS): Use readlink, not realpath, for
+	portability.
+
+2004-09-08  Andy Wingo  <wingo@pobox.com>
+
+	* AUTHORS: Updated.
+
+	* NEWS: Updated, and put in a more Guile-like format.
+
+	* TODO: Removed many items.
+
+2004-09-07  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/support/defs.scm (load-defs): Change out a `cond' with
+	a series of and=> statements. Fixes some problems.
+
+2004-09-06  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am: Er, it's not in this module. I'm stupid.
+
+	* Makefile.am: Install the -defs pkg-config file.
+
+2004-09-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/Makefile.am (CLEANFILES): Clean the .x files.
+
+	* package.ac (GUILE_GLIB_CFLAGS): Include the builddir's gobject
+	dir as well.
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_gobject_la_CFLAGS): Add
+	the builddir to the CFLAGS as well: the link is placed in the
+	builddir.
+
+	* package.ac: Fix the link creation for non-srcdir builds.
+
+	* gnome/overrides/Makefile.am, gnome/Makefile.am: Add the
+	overrides to the dist.
+
+	* package.ac: Create the gnome/gobject/guile-gnome-gobject link
+	when config.status is created.
+
+	* guile-gnome-glib.pc.in, guile-gnome-glib-uninstalled.pc.in:
+	Moved from guile-gobject*.pc.in.
+
+	* gnome/overrides/glib.defs: Moved from glib-overrides in the defs
+	module. Otherwise unchanged.
+
+	* defs-checks.ac: New file. We depend on the defs module.
+
+	* For each of the files below, deprecated versions were left in
+	the original locations.
+	
+	* gnome/gw/support/modules.scm: Moved from (gnome gobject
+	gw-utils). Otherwise unchanged.
+
+	* gnome/gw/support/gobject.scm: Moved from (gnome gobject
+	gw-spec-utils). Otherwise unchanged.
+
+	* gnome/gw/support/defs.scm: Moved from (gnome gobject
+	defs-support). The parser was rewritten as an interpreter, rather
+	than using guile as the interpreter.
+	(load-defs): Take an optional argument, overrides, which should be
+	the path within %load-path of the overrides file. Handle (ignore
+	overrides).
+	(load-defs-with-overrides): New procedure, wraps load-defs.
+
+2004-07-28  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/glib-spec.scm (make-typespec): Use raise instead of throw.
+
+	* gnome/gw/glib-spec.scm: Adapt for destruct-value-cg ->
+	destroy-value-cg G-Wrap API change.
+
+2004-08-29  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gclosure.c (%scm-gclosure-marshal): A non-NULL
+	return_value of type G_TYPE_NONE or G_TYPE_INVALID does not need
+	to be filled.
+
+2004-09-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/glib-spec.scm: Wrap unsigned-char.
+
+2004-07-28  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/glib-spec.scm (make-typespec): Use raise instead of throw.
+
+	* gnome/gw/glib-spec.scm: Adapt for destruct-value-cg ->
+	destroy-value-cg G-Wrap API change.
+
+2004-08-29  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gclosure.c (%scm-gclosure-marshal): A non-NULL
+	return_value of type G_TYPE_NONE or G_TYPE_INVALID does not need
+	to be filled.
+
+2004-07-18  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/glib-spec.scm (<glist-of-type>): Added #:type-cname and
+	#:func prefix slots, so that <glist-of-type> can be used for
+	slists as well. The wrap/destruct methods were changed
+	accordingly, and "GSList*" now maps to the gslist-of type.
+
+2004-07-11  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gvalue.scm (gtype-instance:write): Use logand, not
+	logior for flags.
+
+2004-07-07  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gobject-spec.scm (unwrap-value-cg): Whoops, call
+	wrapped-var on the right thing.
+
+	* gnome/gobject/gw-spec-utils.scm (unwrap-value-cg): For enums and
+	flags, use scm_scm_to_gvalue() instead of rolling our own
+	conversion. Also fixes problems when the current module doesn't
+	import GOOPS.
+
+2004-07-06  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gobject-spec.scm: Same.
+
+	* gnome/gobject/gw-spec-utils.scm: Make sure that gw:error is
+	passed the wrapped var, not the scm var -- they are of different
+	types.
+
+2004-07-01  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/glib.scm: Include #:use-module (gnome gobject) before the
+	generated wrapsets (fixes segfault).
+
+	* gnome/gobject/gw-spec-utils.scm (unwrap-null-check): Bugfix;
+	conversion code was always executed, even when null-ok and the
+	pointer actually was NULL. This is now named unwrap-null-checked
+	and takes the actual unwrap code as extra parameter.
+ 
+2004-06-30  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.c (scm_gtype_instance_print): Same bug.
+
+	* gnome/gobject/gvalue.c (scm_gvalue_print): I got bit by !SCM.
+	Use SCM_FALSEP instead.
+
+	* gnome/gobject/gtype.c: Yikes, somehow Martin's copyright notice
+	got lost in the file split! Put back on all files.
+
+	* gnome/gobject/gvalue.c (scm_gvalue_print): Indentation fix.
+
+2004-06-24  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* test-suite/guile-gobject-test: Include (gnome gobject) in
+	use-modules before the generated wrapset (fixes segfault).
+	
+	* gnome/gw/glib-spec.scm, gnome/gw/gobject-spec.scm,
+	* test-suite/gw-test-gobject-spec.scm, 
+	* test-suite/gw-test-glib-spec.scm: Adapted for G-Wrap "depends-on!"
+	API change.
+
+2004-05-19  Andy Wingo  <wingo@pobox.com>
+
+	* ChangeLog: All changelogs have been merged, and the entries that
+	don't deal with the GLib/GObject wrapper have been elided. Some
+	directories were corrected.
+
+	* gnome/gobject/gparameter.scm (gnome): Export gparameter: limits.
+
+	* gnome/gobject/gparameter.c (scm_init_gnome_gobject_parameters):
+	Changed gruntime:int-max and friends to be gparameter:int-max,
+	etc.
+
+	* Makefile.am, files.ac, guile-gobject-uninstalled.pc.in: Revive
+	this pkg-config file. See pkg-config(1) for more info.
+
+	* gnome/gobject/gw-spec-utils.scm: Wrap GObjectClass. This is used
+	in GStreamer, at least, and should be used in GTK.
+
+	* gnome/gw/Makefile.am: Don't link the glib wrapper to the gobject
+	runtime, there's no need.
+
+2004-05-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.c (scm_c_gtype_to_class): Try to prevent a
+	rount-trip to SCM by calling scm_c_lookup_class first.
+
+	* gnome/gobject/gw-spec-utils.scm (unwrap-value-cg for enums and
+	flags): Use scm_c_gtype_to_class instead of lookup_class, because
+	with latent bindings the class might not exist yet.
+
+2004-05-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gtype.c (scm_gtype_to_class): Now exported as part
+	of the C API (formerly static SCM _gtype_to_class).
+
+2004-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* test-suite/gobject-primitives.test: Removed, this interface is
+	no longer exported. Yay!
+
+2004-05-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gw-gobject-spec.scm (ws): Don't wrap gtype
+	functions. I'm trying to move away from unnecessary g-wrap usage.
+
+	* gnome/gobject/gtype.c (s_scm_gtype_to_class_name,
+	s_scm_gtype_to_method_name): Implemented in scheme now.
+
+	* gnome/gobject/gw-spec-utils.scm: removed the type name mangling
+	code, going to put it in types.scm.
+
+	* gnome/gobject/gtype.c (s_scm_gtype_children): Changed to return
+	a list instead of a vector.
+
+	* gnome/gobject/gparameter.c (s_scm_gparam_spec_p): Removed, it
+	wasn't used anywhere. (s_scm_gparam_primitive_create): Doesn't
+	pre-cache the param struct any more -- should be constructed on
+	demand, i.e. when gparam->param-struct is called.
+
+2004-05-04  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/glib-support.c, glib-support.c
+	(_wrap_g_string_get_str): New function.
+
+2004-04-30  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* package.ac: Depend on glib-2.0 >= 2.4.0.
+	
+2004-04-27  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/Makefile.am: Also distribute and install glib.scm.
+
+	* gnome/gw/glib-spec.scm (initialize): Added a few type aliases
+	for basic C types. Fixed for changed defs directory.
+
+2004-04-12  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* h2def.py: Quick hack to fix G_*_DECLS misparsing.
+
+2004-04-11  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/defs-support.scm (load-defs): Cope with slib 3
+	(and hopefully 2 as well) by changing the glob:match?? call to
+	glob:make-matcher.
+
+2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/defs-support.scm (type-lookup): Recognize "[]" in
+	type strings and treat it like a pointer.
+
+2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* configure.in: Depend on libgnomeui >= 2.6.0 and gtk+ >= 2.4.0.
+
+2004-04-02  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject.scm (gtype-instance:write): Typo fix: logor ->
+	logior.
+
+2004-03-29  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* test-suite/Makefile.am (libgw_test_gobject_la_LIBADD): Link
+	against core instead of wrapset.
+
+2004-03-29  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* guile-gobject.pc.in, guile-gobject-uninstalled.pc.in: Moved to
+	gnome/gobject, where they belong. Makefiles adapted.
+	
+	* guile-gobject.pc.in (Libs): Link against against the core
+	support code, not a wrapset. Remove have_gtk= line and FIXME
+	comment, since these do not fall in the realm of pkg-config (no
+	headers or regular shared libs installed). *
+	guile-gobject-uninstalled.pc.in: Ditto.
+	
+2004-03-28  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/defs-support.scm (load-defs): The glob:* functions
+	are not existant anymore in SLIB3, and were aliased to filename:*
+	anyway.
+
+2004-03-26  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject.scm (gtype-class-define-signal): Use
+	procedure->memoizing-macro instead of procedure->macro, which is
+	deprecated.
+
+2004-02-22  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject.c (s_scm_gobject_get_data)
+	(s_scm_gobject_set_data_x): Use SCM_UNBOUND to indicate an unbound
+	slot.
+
+2004-02-22  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm (make-gparam-instance): Make params (read
+	write) by default. (make-gobject-instance): Allow keyword initargs
+	that are defined via :init-keyword. Call the <object> initializer
+	directly to set these. Somewhat hacky, but doesn't really break
+	any rules. (scm->gvalue): Work with closures.
+
+2004-02-21  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm (gtype-instance:write): If we get a GValue
+	from somewhere else, the "primitive" code doesn't know how to make
+	the class. So we have a new hacky method to accept a gtype as the
+	arg and do the gtype->class in gobject.scm now.
+
+2004-02-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(guile_gobject_log_handler): Handle a NULL for log_domain.
+
+	* gnome/gobject/primitives.scm (gparam-spec-type-args): Add a pair for
+	GParamValueArray, but there's probably more work to do before you
+	can make the param in scheme.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.h: GuileGClosure
+	struct moved to the .c file to make it private.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_c_debug_print): Removed. (scm_c_get_enum): Removed.
+	(scm_c_make_genum): Removed.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.h: No more
+	exporting (as C api) gparam-primitive-create-pspec-struct.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(s_scm_gvalue_primitive_set): Accept object and interface types as
+	well. (s_scm_gtype_instance_primitive_to_value): Replaced by
+	gvalue-primitive-new then gvalue-primitive-set.
+	(s_scm_gvalue_primitive_set): Also handle gboxed-scm.
+	(s_scm_gvalue_primitive_get): Handle gboxed-scm.
+	(s_scm_gboxed_scm_primitive_new): Removed, now redundant.
+	(s_scm_gboxed_scm_primitive_to_scm): Same.
+	(s_scm_gtype_is_basic_p): Changed name to include -is and remove
+	-primitive, like the standard GLib functions. Documented what a
+	basic type is. (s_scm_gtype_is_basic_p): Boxed SCM is a basic
+	type. (s_scm_gtype_is_valued_p): New function. Predicate that's
+	true when you can make a GValue with (make class :value val).
+	(scm_gvalue_array_primitive_new): Remove, just use
+	gvalue-primitive-new. (scm_gvalue_array_primitive_append):
+	Removed. There are no value array manipulation procedures any
+	more. Use gvalue-primitive-set with a list as the argument.
+
+	* gnome/gobject/primitives.scm (gflags->element-list): Replace
+	gflags-primitive-bit-set?.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(s_scm_gvalue_primitive_set_enum): Functionality moved to
+	gvalue-primitive-set. (s_scm_gvalue_primitive_set): Accept enum
+	and flags types. (s_scm_gvalue_primitive_set_flags): Removed, like
+	set-enum. (s_scm_gflags_primitive_bit_set_p): Removed, it's the
+	same as (positive? (logand value bit)).
+
+	* gnome/gobject/guile-gnome-gobject-primitives.h
+	(scm_gtype_instance_primitive): Undefined function, somehow in the
+	API? Removed. (scm_sys_gtype_instance_primitive_destroy_x): Since
+	we export it to scheme, we can export it to C.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(genum_type_get_values): Changed name, from
+	genum_primitive_get_values. (s_scm_gflags_type_get_values): Same.
+	(scm_init_gnome_gobject_primitives): Organized and documented
+	export list. The source file could also use such a reorganization.
+	(s_scm_gtype_primitive_create_basic_instance): Removed, it does
+	the same thing as gvalue-primitive-new.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.h
+	(scm_tc16_gvalue_array): Gone.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_gvalue_array_primitive_new): Just allocate GValueArray as a
+	standard boxed type. (scm_gvalue_array_print): Removed, use just
+	normal GValue printing. (scm_gvalue_array_free): Removed, no more
+	tc16_gvalue_array.
+
+2004-02-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm (scm->gvalue): Add a case for setting flags.
+	(allocate-instance): Use gvalue-primitive-new for basic types.
+	(gvalue->scm, scm->gvalue): Simplifications based on basic types.
+	All over: adapt to primitives changes.
+
+2004-02-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/primitives.scm (genum->value): New public function.
+	(genum->value-table): Removed. Use genum-class->value-table from
+	gobject.scm.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_c_make_gvalue): Add some more debugging.
+
+	* gnome/gw/glib-support.h: Add copyright notice. Still need to
+	change all these to FSF.
+
+2004-02-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm: Removed most of the commentary. Instead,
+	refer to the tutorial.
+
+	(exports): No more genum->value-table. New functions
+	genum-class->value-table, gflags-class->value-table. New function
+	genum->value. (initialize for <gtype-class>): Allow subclassing of
+	<genum> and <gflags> to create new GTypes. You must pass #:vtable
+	as an initarg. (gtype-instance-primitive): New helper (private).
+	(initialize for <gclosure>): Allow either parameters and return
+	val to be either <gtype> or <gtype-class> instances. If no return
+	type is specified, set the slot to gtype:void, not #f.
+	(make-pspec-args): Accept <gtype-class> when gtype? is the
+	predicate. (gtype-class-create-signal): Accept <gtype-class>
+	instances in the param types.
+
+2004-01-29  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/defs-support.scm (load-defs): Parse a (callee-owned)
+	option in parameter definitions.
+
+	* gnome/gw/gw-gobject-spec.scm (GValue wrapping): Support
+	'callee-owned values.
+
+	* gnome/gobject/gw-spec-utils.scm (gobject:gwrap-boxed): Support
+	'callee-owned arguments (call g_value_dup_boxed instead of
+	_get_boxed).
+
+2004-01-28  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gw-gobject-spec.scm (ws): Check for a NULL return for
+	GValues.
+
+2004-01-22  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(s_scm_gvalue_array_primitive_new)
+	(s_scm_gvalue_array_primitive_append): Don't wrap SCM_DEFINE
+	invocation too much, since it seems to confuse older snarfers.
+
+2004-01-22  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* configure.in: Check for GLib >= 2.2.0, since 2.1.X has no
+	g_{set,get}_application_name.
+
+	* configure.in: Use pkg-config to check for g-wrap.
+
+2004-01-20  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* guile-gobject.pc.in: Require g-wrap and drop @GUILE_LIBS@.
+
+	* autogen.sh: Require automake 1.7.
+
+2004-01-20  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/defs-support.scm (load-defs): The glob:* functions are
+	not existant anymore in SLIB3, and were aliased to filename:*
+	anyway.
+
+2004-01-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/primitives.scm (<gtype-instance-class>): There's no
+	special get-n-set here any more, that's done with qdata. See
+	gobject.scm for more details.
+
+	* gnome/gobject/gw-spec-utils.scm (gobject:gwrap-object): Don't ref
+	returned objects here, only unref them if we own them. This
+	complements the change in make_gtype_instance.
+	(gobject:gwrap-interface): Same.
+
+	* gnome/gobject/guile-gnome-gobject.c (s_scm_gobject_set_data_x,
+	s_scm_gobject_get_data): New functions implementing object
+	properties using qdata so the state persists for all wrappers.
+	(scm_c_gobject_get_property): Use scm_c_gtype_instance_to_scm to
+	get the object -- will retrieve a cached object.
+	(scm_c_gobject_set_property): Same. (remove_object_quark,
+	free_object_quark): Removed.
+	(s_scm_sys_function_to_method_public): Set the generic's name. A
+	bit slower, but necessary for debugging.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(s_scm_gclosure_primitive_new): Make free_closure the invalidate
+	notifier, not the finalize notifier.
+	(s_scm_gclosure_primitive_new): Don't actually hold a ref on the
+	closure by using g_value_set_static_boxed. This is to compensate
+	for an over-conservative GC. (everywhere): Add some more debugging
+	printouts (not enabled by default). (scm_gtype_instance_free):
+	Remove vestigial finalize_func code, set the SMOB's data to NULL,
+	and remove cached wrapper info. Can be called multiple times.
+	(s_scm_sys_gtype_instance_primitive_destroy_x): New function,
+	analogous to gtk_object_destroy, called by gtk.scm in response to
+	the ::destroy signal. (line 710): A couple of pages of comment on
+	the design of the GObject wrapper. (scm_c_make_gtype_instance):
+	Check for a cached wrapper before sinking object. Cache the
+	primitive wrapper separately from the GOOPS wrapper. Actually ref
+	the object, in accordance with the design doc. Ref params too.
+	(s_scm_gobject_primitive_get_properties): Don't ref the param
+	here, it's done in make_gtype_instance.
+	(s_scm_gparam_primitive_create): Remove floating reference, still
+	holding the one from make_gtype_instance.
+	(s_scm_gobject_primitive_create_instance): Remove extra ref on
+	object, as we own the one given by g_object_new. Cache the
+	wrapper. (s_scm_gvalue_primitive_get): Don't ref the objects or
+	params here, it's done in make_gtype_instance.
+
+2004-01-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm (make-gobject-instance): Now a method so that
+	<gtk-object> can implement explicit destruction. Exported.
+	(<gobject-class>): New class whose get-n-set uses gobject-get-data
+	and gobject-set-data! to implement instance-allocated slots.
+	(gvalue->scm): Use %gtype-instance-value->scm to convert GObject
+	GValues into GOOPS objects. An optimization to prevent excessive
+	allocation and reffing.
+
+2004-01-14  Andy Wingo  <wingo@pobox.com>
+
+	* WARTS: You've been able to subclass with define-class for a
+	while now...
+
+2004-01-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject.c
+	(scm_c_scm_to_gtype_instance): Error if the SMOB's data is NULL
+	(meaning the object has been destroyed).
+	(scm_c_gtype_instance_to_scm): Cache return values as qdata on the
+	objects. The qdata is removed when the SMOB is freed.
+	(s_scm_sys_gtype_instance_value_to_scm): New function. An
+	optimization so that callbacks can use existing object wrappers.
+
+	* gnome/gobject/gw-utils.scm: Remove re-export-bindings in favor of
+	re-export-module. Add a copyright notice.
+
+2003-12-30  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_c_make_gtype_name) (s_scm_gtype_primitive_get_signals):
+	Plugged memory leaks.
+
+2003-12-17  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* TODO: Added entry on procedure->macro usage.
+
+2003-12-13  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/gw-glib-spec.scm (GSList): Initialize the c-var in the
+	scm->c-ccg with NULL.
+
+2003-12-13  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/guile-support.h: Build upon g-wrap-compatibilty.h.
+
+2003-12-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject.c
+	(scm_c_gtype_instance_instance_init): Switch on the type from the
+	class, not the instance, as the instance's type changes in
+	different phases of initialization. Check to see if we have a
+	servant already before making another one. Fixes some bugs in
+	doubly-derived gobject classes.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_c_make_gtype_instance): Sink objects after checking to see if
+	we have a wrapper.
+
+2003-12-07  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.h
+	(scm_init_gnome_gobject_helper): Added declaration.
+
+2003-12-06  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(guile_gobject_log_handler): Always issue error, even with NULL
+	domain/message.
+
+2003-12-03  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gw-glib-spec.scm: Fixed some longstanding bugs,
+	embarassingly enough related to the size of fundamental types.
+	Also added gshort and gushort as types.
+
+2003-12-03  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(guile_gobject_log_handler): Protect against NULL arguments.
+
+2003-12-02  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/gw-glib-spec.scm (GError): Ignore null-ok typespec
+	option (we always pass a pointer).
+
+2003-11-30  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/gw-glib-spec.scm: Register gshort and gushort type
+	aliases.
+
+2003-11-22  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/Makefile.am: Use $(G_WRAP_LIBS) and $(G_WRAP_CFLAGS).
+
+	* gnome/gw/gw-glib-spec.scm: Adapted for new g-wrap. Implemented
+	transparent GError handling (throw expection and hide argument).
+	
+	* gnome/gobject/gw-spec-utils.scm, gw-gobject-spec.scm: Reworked for
+	new g-wrap.
+	
+	* gnome/gw/Makefile.am: Removed gw-standard sections. *
+	gnome/gw/gw-standard-spec.scm: Removed, since g-wrap now has an
+	up-to-date copy. All uses changed back to "(g-wrap
+	gw-standard-spec)".
+	
+	* gnome/gobject/guile-gnome-gobject.c, guile-gnome-gobject.h
+	(scm_sys_function_to_method_public): Removed, functionality is now
+	in g-wrap.
+	
+	* gnome/gobject/guile-gnome-gobject.c, guile-gnome-gobject.h
+	(g_type_from_instance, g_type_is_instantiatable)
+	(g_type_is_classed): New macro-workalike functions.
+	
+	* gnome/gw/glib-support.h: Added #include guards. *
+	gnome/gw/glib-support.c: Quick-fixed to work with Guile 1.7.
+	
+	* gnome/gw/guile-support.h (scm_gc_free): Fixed parameter list. *
+	gnome/gobject/guile-gnome-gobject-primitives.c (scm_gvalue_free):
+	Fix scm_gc_free() invocation.
+
+2003-11-18  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(s_scm_gboxed_scm_primitive_to_scm): If the boxed value is NULL,
+	we return SCM_UNSPECIFIED to prevent a segfault when the value is
+	printed. (s_scm_gvalue_primitive_set): If we don't know how to
+	handle the GValue, signal a wrong type arg on the GValue, not the
+	value we are trying to set.
+
+2003-11-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(s_scm_especify_metaclass_x): New function. Makes the metaclass of
+	an existing GTypeClass more specific, hence the novel new word
+	`especify'. Exists to hack around GOOPS' lack of class methods.
+
+2003-11-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm (make-instance): New implementation for
+	gtype-instances. `initialize' for gobjects is now called by the
+	gobject system, not by goops. For params and interfaces, it is the
+	same as before. (gtype-instance:initialize): Gone, replaced by the
+	normal `initialize'.
+
+2003-11-06  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject.c
+	(s_scm_sys_function_to_method_public): Don't set the name keyword
+	when making the generic, it's faster according to Andreas.
+
+2003-11-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject.[ch] (scm_c_gvalue_to_scm):
+	This one is const now.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(%scm-gclosure-marshal): Add some hacky prototypes to allow us to
+	use scm_c_gvalue_to_scm in the marshaller.
+
+2003-10-31  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* test-suite/guile-test-env: Drop support of Guile 1.3 and fix
+	left-over g-wrap reference.
+
+	* test-suite/exceptions.scm: Renamed gruntime-wrong-number-of-args
+	to wrong-number-of args again, since the exception in lib.scm is
+	called wrong-num-args, so there is no conflict. Users adapted
+	accordingly.
+
+	* test-suite/exceptions.scm: Get rid of out-of-range, as this is
+	already in lib.scm.
+
+	* test-suite/gw-test-gobject-spec.scm: Depend on "gw-standard". *
+	test-suite/test-gobject.h, test-gobject.c, test-gobject.defs,
+	gw-gobject.test: Added method invocation testcase.
+
+2003-10-29  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm (initialize): Allow a single symbol again as a
+	flags #:value.
+
+2003-10-27  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm (initialize): For <gflags>, if the #:value is
+	an integer, process it correctly.
+
+2003-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gw-glib-spec.scm (gslist-of): Fix some const pointer
+	warnings.
+
+	* gnome/gobject/gw-spec-utils.scm (gobject:gwrap-class): Use slot-ref,
+	not slot-ref-using-class.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(slot_definition_using_name): Removed.
+
+	* gnome/gobject/primitives.scm (define-with-docs): Renamed from
+	define-public-with-docs, doesn't export the binding any more
+	(let's just use the :export option when defining the module).
+	(gruntime-debug): Removed. (%gruntime-debug): Removed.
+
+	* gnome/gobject/guile-gnome-gobject.c (scm_gobject_register_type):
+	Removed. Just use (define foo (gtype-from-name name)).
+	(scm_c_gtype_instance_class_init): Don't call the
+	gobject:class-init, just initialize after you define your class.
+	This prevents custom initialization of scheme classes further
+	subclassed in C, but that's a corner case that is maybe better
+	left out. (scm_sys_gobject_get_refcount): Only define if
+	DEBUG_REFCOUNTING is defined.
+	(scm_c_gtype_instance_instance_init): Only call
+	gtype-instance:initialize (was :instance-init), not a specific one
+	for gobject.
+
+2003-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm There were a lot of general cleanups and
+	reorganizations here. The file should be more readable now.
+
+	(gobject-get-property): Not a method anymore. We don't want people
+	mistakenly overriding this function (override gobject:get-property
+	instead). (gobject-set-property): Same. (gobject:set-property):
+	Added docstring. (gobject:get-property): Same. (<gobject>): No
+	more servant properties. (gobject:instance-init): Gone, use
+	gtype-instance:instance-init. (gobject:class-init): Gone,
+	initialize after you make the class.
+	(gobject-class:install-property): Gone, the C code does The Right
+	Thing now. (gtype-instance:class-init): Gone, like
+	gobject:class-init. (class-is-a?): Gone.
+	(gobject-type-register-static): Gone. Use gtype-register-static if
+	you want to, but subclassing should be good enough. (initialize):
+	For <gvalue>, we never see closures, so we remove that piece of
+	code.
+
+2003-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* examples/gobject/example-1.scm: Updated to the new
+	property/signal/subclassing API.
+
+2003-10-25  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/primitives.scm (<gtype-instance-class>): A new
+	metaclass descending from <gtype-class>. <gtype-instance> is now
+	an instance of this class. (compute-get-n-set): For
+	<gtype-instance-class>, overrides #:instance allocation to set
+	properties on the <%gtype-instance> smob.
+
+	* gnome/gobject/guile-gnome-gobject.c (scm_gtype_eq_p): Removed.
+	Just use eq?.
+
+2003-10-25  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm (get-direct-supers): Only add <gtype-instance>
+	to the hierarchy if the type is instantiatable, not classed.
+	(gobject-class-set-properties!): New function, split out of
+	init-gobject class. (init-gobject-class): Expose slots described
+	with #:param-spec options as gobject properties. (let-params):
+	Removed, you can do all of this with GOOPS now.
+	(make-gobject-property): Removed, GOOPS handles this now.
+	(define-gobject-class): Removed, just use define-class.
+	(initialize): For <gtype-class>, do most of the things we did in
+	gtype->class here. If no #:gtype argument is passed, subclass the
+	parent type. (gtype->class): Just make the class, no more voodoo
+	here. (write): for <gparam>, don't try to write the pspec struct
+	if it isn't set yet. (gtype-class-create-signal): Take a list of
+	param types instead of a vector.
+
+2003-10-25  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* test-suite/gobject.test: Fixed for recent API changes.
+
+2003-10-25  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(s_scm_gparam_primitive_create_pspec_struct,
+	s_scm_gparam_primitive_create): GValue support for param specs. *
+	gnome/gobject/guile-gnome-gobject-primitives.h
+	(SCM_G_IS_PARAM_SPEC_VALUE_ARRAY): New macro.
+
+2003-10-25  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject.scm (scm->gvalue): Fixed wrt gvalue-array (recent
+	changes broke this).
+	
+2003-10-24  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* test-suite/gobject.test: Comment out tests failing due to API
+	regression.
+	
+	* test-suite/Makefile.am: 'make distcheck' fixes.
+	
+	* test-suite/test-gobject.c, test-gobject.h, test-gobject.defs,
+	gw-test-gobject-spec.scm, gw-gobject.test: Testcase framework for
+	wrapping, including test for GValue arrays.
+	
+	* test-suite/guile-test-env: New shell script - runs guile with
+	the right environment for the tests.
+
+	* test-suite/Makefile.am: New - we want to run the test-suite with
+	'make check'.
+
+	* test-suite/guile-gobject-test: Also stolen from Guile CVS
+	(guile-test) and adapted. * test-suite/lib.scm: Stolen from Guile
+	CVS, as this is not installed.
+	
+	* test-suite/exceptions.scm: New module, defines common
+	exceptions.
+	
+	* test-suite/gobject.test, gobject-primitives.test: Brought on par
+	with the current API and molded into modules.
+	
+2003-10-24  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject.scm (gclosure-invoke): Fixed for closures without
+	return type.
+
+2003-10-23  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject.c (%gobject-get-property): Use
+	scm->gvalue to process the return from gobject:get-property.
+
+2003-10-23  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm (gobject-get-property): Use gvalue->scm.
+	(allocate-instance): Allocate GBoxedSCM instances in the
+	<gtype-class> allocate-instance method. (let-params): #:name, not
+	:name.
+
+2003-10-22  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/primitives.scm: The big changes! There's no more
+	<gtype-class-meta>. (<set-once-class>): New metaclass implementing
+	set-once slots. (<gtype-class>): Now a metaclass. Its metaclass is
+	<set-once-class>, so it has set-once slots for gtype and
+	gtype-class. All gtype classes are now instances of this
+	metaclass. (<gtype-instance>): New class, has a set-once slot for
+	the gtype-instance. Instance of <gtype-class>. Parent class of all
+	instantiatable types (like <gobject>).
+
+	* gnome/gw/gw-gobject-spec.scm: New wrappers for gtype-is-classed?
+	and gtype-is-instantiatable?.
+
+	* gnome/gobject/guile-gnome-gobject.h (SCM_GOBJECTP): Use new
+	SUBCLASSP macro. (SCM_GOBJECT_CLASSP): Use SUBCLASSP macro.
+	(SCM_VALIDATE_GOBJECT_CLASS_GET_TYPE): Get the gtype by a
+	slot-ref, not a class-slot-ref.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.h
+	(SCM_GPARAM_SPEC_P): Allow SCM_BOOL_F for owner-type.
+	(SCM_GTYPE_CLASS_SUBCLASSP): New macro.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(s_scm_sys_gtype_bind_to_class): Re-set the 'signals slot on
+	implemented interfaces after g_type_class_ref()ing an implementor.
+	Hackery, but that's the GObject system for you!
+	(scm_gtype_class_print): Print gtype-class smobs with a %.
+	(s_scm_sys_gtype_bind_to_class): Set the gtype and gtype-class
+	slots using slot-set!, in accordance with the new hierarchy. Also
+	loop through the implemented interfaces to re-set 'gsignals,
+	because they aren't there until after a g_type_class_ref () on an
+	implementor. (s_scm_sys_get_struct_slot): Work on any instance.
+	(s_scm_sys_set_struct_slot): Same.
+	(s_scm_gtype_primitive_get_signals): Rename from
+	gobject-primitive-get-signals, because it works on interfaces too.
+	(s_scm_gtype_instance_primitive_signal_emit): Renamed.
+	(s_scm_gtype_instance_primitive_signal_connect): Renamed.
+
+	* gnome/gobject/generics.scm (all functions): Updated to the new
+	class hierarchy.
+
+	* gnome/gobject/guile-gnome-gobject.h
+	(SCM_VALIDATE_GOBJECT_CLASS_COPY): Renamed to
+	SCM_VALIDATE_GOBJECT_CLASS_GET_GTYPE, since that's what it
+	actually does.
+
+2003-10-22  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm: (get-metaclass): Removed, we always use
+	<gtype-class> as a metaclass. (gtype->class): Always use
+	<gtype-class> as a metaclass. Add some initialization for
+	interfaces, but this can't be completed until an implementor has
+	been initialized as well. So the job is finished in
+	%gtype-bind-to-class for implementors. (gtype-instance:write):
+	Work on <%gtype-instance>. This will probably move somewhere else
+	in the future. (gtype-instance:write): Why we have implementations
+	for <gtype>s is unknown to me. These will likely be removed.
+	(gtype-class-get-vector-slot): Robustified to deal with strange
+	objects in the CPL (like interfaces).
+	(gtype-instance-signal-emit): Name changed from
+	gobject-signal-emit, because it can operate on any gtype-instance.
+	(gtype-instance-signal-connect-data): Same.
+	(gtype-instance-signal-connect): Same.
+	(gtype-instance-signal-connect-after): Same.
+	(gtype-class-create-signal): Same.
+
+2003-10-22  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c,
+	guile-gnome-gobject-primitives.h, guile-gnome-gobject.c: Implement
+	GValue array support.
+	
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_c_make_gvalue) (scm_gvalue_free): Replaced deprecated
+	scm_must_malloc/free invokations with scm_gc_malloc/free.
+
+	* gnome/gw/guile-support.h (SCM_VECTOR_REF, SCM_VECTOR_SET): New
+	compat macros, to be used instead of SCM_VELTS(). (scm_gc_malloc,
+	scm_gc_free): New compat macros, to be used instead of
+	scm_must_malloc/free. (scm_gc_unregister_collectable_memory)
+	(scm_gc_register_collectable_memory): New compat macros.
+
+2003-10-21  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_pre_init_gnome_gobject_primitives): Make the smob for
+	GTypeClass called "%gtype-class" to avoid conflicts between the
+	GOOPS smob class and the real wrapper class.
+
+	* gnome/gw/gw-gobject-spec.scm: New wrapped function:
+	gtype-is-classed?.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_gtype_interfaces): New function, returns the interfaces
+	implemented by a type. (scm_gtype_primitive_get_signals): Renamed
+	from gobject-primitive-get-signals, although no code change is
+	required.
+
+2003-10-21  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm: General reorganizations. (get-parent-types):
+	Removed, we only have one direct parent now (as well as interfaces
+	if they're not already there). (gtype-class-ancestry): Removed,
+	all this information is already encapsulated in the class
+	precedence list. (make-class-slots): Change the name of
+	gobject-signals to gsignals, and add it to all classed GTypes.
+	(gtype-ancestry): Removed, either get this from the class
+	precedence list or loop on gtype-parent yourself.
+	(init-gobject-class): Only store signals from the class itself in
+	the gsignals slot. (gtype-class-get-signal-names): New function.
+	(get-direct-supers): New function, replaces get-parent-types. I'm
+	schizophrenic ;) (gtype->class): Also initialize GObject (dunno
+	why this wasn't done).
+
+2003-10-21  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* configure.in: Disable ORBit check, since the code needs internal
+	API headers that are not installed by default.
+
+2003-10-16  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gw-spec-utils.scm: Export
+	gobject:gwrap-helper-with-class.
+
+2003-10-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject.c
+	(scm_c_gtype_instance_instance_init): Only call the instance-inits
+	with one argument, the object.
+
+2003-10-15  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm (gobject:instance-init): Remove class
+	argument. (gtype-instance:instance-init): Remove class argument.
+
+2003-10-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject.c (scm_c_gvalue_to_scm): Copy
+	the incoming GValue so that we have our own.
+
+2003-10-13  Andy Wingo  <wingo@pobox.com>
+
+	* configure.in: -Wall always. -Werror unless you pass
+	--disable-Werror. --disable-Wall is gone. Put in debugging symbols
+	unless --disable-debug is passed.
+
+2003-10-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject.c (scm_c_scm_to_gvalue): New
+	function, calls scm->gvalue. (scm_c_gvalue_to_scm): New function,
+	calls gvalue->scm.
+
+	* gnome/gobject/gw-spec-utils.scm (gobject:gwrap-interface): Wrap
+	interfaces properly, now that we use them.
+
+2003-10-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm (scm->gvalue): renamed from
+	make-value-from-scm. Also deals with interfaces.
+	(make-ginterface): Wrap interfaces using the standard
+	goops<->GTypeInstance SMOB pairing. (exports): Export classes for
+	<ginterface>, <gint64>, and <guint64>.
+
+2003-10-12  Andy Wingo  <wingo@pobox.com>
+
+	* configure.in: We do -Wall by default (--disable-Wall to disable)
+
+2003-10-11  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/defs-support.scm (load-defs): Ignore .defs entries
+	where there is a (varargs ...) line.
+
+	* gnome/gobject/guile-gnome-gobject.c
+	(s_scm_sys_function_to_method_public): Some cleanups. Use the same
+	coding style as the rest of the file. Use static variables to
+	reference the-root-module and module-add!. Don't check to see if
+	objects are actually classes, that's done by g-wrap now. We still
+	have to make a new closure for the procedure, due to a bug in
+	Guile 1.6.4.
+
+2003-10-07  Kevin Ryde  <user42@zip.com.au>
+
+	* gnome/gobject/guile-gnome-gobject.c
+	(scm_sys_function_to_method_public): Don't put variable
+	declarations in the middle of the function, that's a c99-ism.
+
+2003-10-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gw-spec-utils.scm: General cleanups all around...
+	(GStudlyCapsExpand): New function, based on StudlyCapsExpand from
+	slib's strcase.scm (public domain). Given a C type name, returns
+	the appropriate scheme type name. Normally a lower case letter
+	preceded by one capital letter forces a hyphenation before the
+	capital letter: GSource => g-source, GtkIMContext =>
+	gtk-im-context. However, a lower case letter preceded by exactly
+	two capital letters that is not at the beginning of the string is
+	treated specially: GtkHBox => gtk-hbox (like the C api).
+	(glib:type-cname->symbol-alist): New alist of overrides for
+	converting C type names to scheme names.
+	(glib:type-cname->symbol): uses GStudlyCapsExpand, mapping
+	underscores to hyphens. GSource* => <g-source*>. (print-info):
+	Gives more feedback when the bindings are being created. This uses
+	slib's printf. (gwrap-helper): New argument HOW-WRAPPED. If not
+	false, will cause gwrap-helper to call print-info for the type.
+	(gwrap-helper-with-class): New argument HOW-WRAPPED, passed on to
+	gwrap-helper. Cleanups. (gobject:gwrap-*): Pass appropriate values
+	for HOW-WRAPPED.
+
+	* gnome/gw/gw-gobject-spec.scm: use the new
+	glib:type-cname->symbol-alist to override scheme names for
+	<gobject>, <gvalue>, <gclosure>, and <gparam>. When wrapping
+	g-source-set-closure, use the new name for GSource (<g-source*>).
+
+	* gnome/gobject/defs-support.scm (register-type): Removed last argument
+	relating to information printing -- that's done in gw-spec-utils
+	now. (load-defs): When checking to see if a method has a bad name,
+	don't ignore asterisks at the end of the type name. Thus we avoid
+	creating methods for opaque pointers.
+
+2003-10-01  Andy Wingo  <wingo@pobox.com>
+
+	* configure.in: Check to see if glade is installed.
+
+2003-09-22  Andy Wingo  <wingo@pobox.com>
+
+	* autogen.sh: remove build-dependency on gnome2-dev by using
+	gstreamer's build system * autogen-support.sh: gstreamer's build
+	system (new file)
+
+2003-08-26  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gobject/gw-utils.scm (function->method-public)
+	(functions->methods-public): Unecessary now, removed.
+	
+	* gnome/gobject/defs-support.scm (load-defs): Make sym_of_object and
+	sym_generic_name static. (load-defs): Create generic functions
+	immediatly instead of setting the of-object procedure property.
+
+	* gnome/gobject/guile-gnome-gobject.c, guile-gnome-gobject.h
+	(scm_sys_function_to_method_public): New function.
+	
+	* gnome/gobject/defs-support.scm (recursive-type-find): Fixed behavior
+	for empty type-hashes.
+	
+	* gnome/gobject/defs-support.scm, gw-spec-utils.scm: Support for
+	enums/flags without gtype-id.
+
+	* gnome/gw/Makefile.am (GUILE_FLAGS): New variable.
+
+2003-07-27  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.[ch]
+	(G_TYPE_BOXED_SCM): renamed from G_TYPE_GBOXED_SCM. There have
+	been other changes recently that I haven't been putting in the
+	changelogs...
+
+2003-07-27  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm (make-value-from-scm): Make gboxed-scms when
+	needed.
+
+2003-06-21  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/gw-spec-utils.scm (gobject:gwrap-class): New function.
+
+2003-06-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject.c
+	(scm_c_gtype_instance_instance_init): Call
+	scm_c_make_gtype_instance to get the primitive GTypeInstance
+	wrapper for the servant. That way we really only have one
+	primitive wrapper, however many high level wrappers there are.
+	Seems to fix some flaky bugs as well, as a side effect.
+
+2003-06-18  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm (make-gparam-instance): Fix typo (name->nick).
+	(make-gparam-instance): Make the pspec->flags actually set, with a
+	#:flags initarg -- also required some changes in -primitives.c.
+
+2003-06-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_c_make_gtype_instance): Cache the primitive gtype instance
+	smob.
+
+2003-06-07  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/primitives.scm (gparam-spec:args): Fix to actually
+	return the full list of args. Zip up the returned list with
+	descriptive keywords.
+
+2003-06-07  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject.scm: Made the commentary retrievable with
+	file-commentary, see (ice-9 documentation) for more details.
+
+	* gnome/glib.scm (g-timeout-add, g-idle-add): As it turns out,
+	g-idle-source-new creates an idle source, but with priority
+	G_PRIORITY_DEFAULT instead of G_PRIORITY_DEFAULT_IDLE. This means
+	that after g-idle-add is called, no Gtk events get processed (Bad
+	Thing (tm)). Now we set the priority manually to DEFAULT_IDLE.
+	Thanks to Owen Taylor for pointers on this one.
+
+2003-05-30  Andy Wingo  <wingo@pobox.com>
+
+	* gw-standard-spec.scm (<gw:long-long>, <gw:unsigned-long-long>):
+	Add LL to the end of the max/min 64 bit constants to appease gcc
+	3.3. However, gcc-3.3 fails to compile the gtk bindings, at least
+	on my machine. gcc 3.2 does work.
+
+2003-05-30  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/defs-support.scm (type-lookup): Without an explicit
+	value for ownership, we only assume that we own non-const strings.
+	Other things represented by pointers are treated conservatively.
+	This is so that a function returning a GObject* has its return
+	g_object_ref'd; non-const is not the same as caller-owned.
+
+2003-05-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/defs-support.scm (load-defs): Add support for null-ok
+	in defs files, e.g. '("GdkWindow*" "window" (null-ok)).
+
+	* gnome/gobject/gw-spec-utils.scm: Only allow NULL values for objects,
+	pointers, boxeds, and interfaces if 'null-ok appears in the
+	typespec.
+
+	* gnome/gw/gw-gobject-spec.scm: Added input checks for generic
+	GValue type wrapper. Only allow NULL for closures if 'null-ok
+	appears in the typespec.
+
+2003-05-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.[ch]: Added and
+	exported log handler for g_logv messages. I don't thing it
+	returns, however, which can cause recursion... dunno what to do
+	about that.
+
+	* gnome/gw/gw-gobject-spec.scm: wrap closures and
+	g-source-set-closure.
+
+	* gnome/gw/gw-glib-spec.scm: wrap main loops and some things from
+	gutils.h. Steal GList/GSList wrapper from g-wrap.
+
+	* gnome/gobject/defs-support.scm: prettify output, log opaque types and
+	bad methods to a file. We now wrap opaque types as <gw:wct>. Add
+	support for GList*-of-GtkWindow*. Support new commands "ignore",
+	"ignore-glob", and function attribute "overrides".
+
+2003-05-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/glib.scm: new file. Imports gobject/gw-glib and defines
+	g-idle-add and g-timeout-add (in scheme).
+
+2003-05-03  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gobject.scm: Cleanups. Also changed a few
+	gtype-instance-primitive function calls with (slot-ref obj
+	'gtype-instance). With the new directory structure, gobject.scm
+	moves into gnome/.
+
+	* gnome/gobject/primitives.scm: Don't hold extra data in the
+	slot-definition, it's needed by the latest guile 1.6. Change the
+	old slot allocation for gtype and gtype-instance to rely on a new
+	kind of allocation, #:set-once. Adapt to the new method of library
+	initialization with g-wrap.
+
+	* gnome/gobject/gw-utils.scm: New file. Provides utility syntax
+	re-export-bindings and functions->methods-public.
+
+	* gnome/gobject/gw-spec-utils.scm: New file. Provides utility functions
+	for spec files, such as gobject:wrap-object, gobject:wrap-enum,
+	and the like.
+
+	* gnome/gobject/defs-support.scm: New file. Provides support for
+	natively loading .defs-style api definitions into g-wrap wrapsets.
+
+	* gnome/gw/gw-glib-spec.scm: New file. Will eventually wrap glib
+	functions, but for now just provides type wrappings for other
+	wrapsets.
+
+	* gnome/gw/gnome-gobject.gwp: Deleted. Functionality moved to
+	gw-gobject-spec.scm.
+	
+	* gnome/gw/gw-gobject-spec.scm: New file. Wraps functions to
+	initialize gnome-gobject, as well as wrapping some fundamental
+	types for g-wrap.
+
+	* gnome/gw/generics.scm: New file. Provides generic functions for
+	gobject.scm.
+
+	* gnome/gobject/guile-gnome-gobject.c: Added diagnostic macros to
+	debug allocation problems. Adapted to new slot allocation for
+	'gtype and 'gtype-instance. Return a a goops object of class
+	(gtype->class [type of gtypeinstance]) in
+	scm_c_gtype_instance_to_scm. Exported (to C)
+	scm_sym_gtype_to_class, the symbol for gtype->class. Adapted to
+	new initialization via g-wrap.
+	
+	* gnome/gobject/guile-gnome-gobject-primitives.c: Muck about with
+	refcounting. Provide guile_gobject_register_sinkfunc(), much like
+	what pygtk does, to deal with GTK_OBJECT_FLOATING. Provide getters
+	and setters for #:set-once allocation and adapt accordingly for
+	'gtype and 'gtype-instance. Refcounting is still not in a coherent
+	state, needs a bit of work.
+	
+2002-11-08  Ariel Rios <ariel@gnu.org>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(s_scm_gobject_primitive_signal_emit): Rewrite the function being
+	more clever, more readable and hey! it works.
+
+	* gnome/gobject.scm (gobject-signal-emit): Do some cleanup.
+	
+	
+2002-08-01  Ariel Rios  <ariel@gnu.org>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(s_scm_gparam_primitive_create_pspec_struct): Some cleanup
+
+2002-08-01  Ariel Rios  <ariel@gnu.org>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(s_scm_gparam_primitive_create): Use the new macros thus doing the
+	right thing (TM)
+
+	* gnome/gobject/guile-gnome-gobject-primitives.h
+	(SCM_G_IS_PARAM_SPEC_BOOLEAN) (SCM_G_IS_PARAM_SPEC_STRING,
+	SCM_G_IS_PARAM_SPEC_OBJECT) (SCM_G_IS_PARAM_SPEC_BOXED,
+	SCM_G_IS_PARAM_SPEC_CHAR) (SCM_G_IS_PARAM_SPEC_UCHAR,
+	SCM_G_IS_PARAM_SPEC_INT) (SCM_G_IS_PARAM_SPEC_UINT,
+	SCM_G_IS_PARAM_SPEC_LONG) (SCM_G_IS_PARAM_SPEC_ULONG,
+	SCM_G_IS_PARAM_SPEC_FLOAT) (SCM_G_IS_PARAM_SPEC_DOUBLE,
+	SCM_G_IS_PARAM_SPEC_POINTER) (SCM_G_IS_PARAM_SPEC_ENUM,
+	SCM_G_IS_PARAM_SPEC_FLAGS): New macros
+
+2002-07-30  Ariel Rios  <ariel@gnu.org>
+
+        * guile-gnome-gobject.c : Add string.h to make compiler happy
+	
+	* gnome/gobject/guile-gnome-gobject-primitives.c: Ditto
+
+	* gnome/gw/guile-support.c: Ditto
+
+2002-07-30  Ariel Rios  <ariel@gnu.org>
+
+	* gnome/gobject/guile-gnome-gobject.c (scm_init_gnome_gobject):
+	Some cleanup of unused code.
+
+2002-07-30  Ariel Rios  <ariel@gnu.org>
+
+	* gnome/gobject/guile-gnome-gobject.c (scm_init_gnome_gobject): Do
+	the right thing.
+
+2002-04-13  Ariel Rios  <ariel@gnu.org>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(s_scm_gparam_primitive_create_pspec_struct):
+	s/g_param_get_*/g_param_spec_get.
+
+2002-01-28  Ariel Rios  <ariel@gnu.org>
+
+	* configure.in: Bump version number to 0.3.0
+
+	* NEWS: What's new =)
+
+2002-01-23  Ariel Rios  <ariel@gnu.org>
+
+        * guile-gnome-gobject-primitives.c: glib-object.h
+	
+	* gnome/gobject/guile-gnome-gobject-primitives.h: Ditto.
+
+	* gnome/gobject/guile-gnome-gobject.c (scm_init_gnome_gobject): Do
+	not use G_TYPE_FUNDAMENTAL_LAST and other deprecated stuff, this
+	hack is a workaround and it is not guaranteed to work yet. We now
+	only include glib-object.h
+		
+2002-01-23  Ariel Rios  <ariel@gnu.org>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(s_scm_gparam_primitive_create_pspec_struct): Functions now
+	compiles. Still some work to do in some functions ahead.
+	
+
+2002-01-23  Ariel Rios  <ariel@gnu.org>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(s_scm_gparam_primitive_create): More clean ups. Almost done.
+
+2002-01-23  Ariel Rios  <ariel@gnu.org>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(s_scm_gparam_primitive_create): All fixes done. It compiles
+	again. Need to check the fundamental stuff.
+
+2001-09-21  Ariel Rios  <ariel@gnu.org>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(gboxed_scm_get_type): Use correct of arguments required by recent
+	glib changes. (s_scm_gparam_primitive_create_pspec_struct): Do not
+	access GParamSpec fields directly.
+	(s_scm_gparam_primitive_create): Correct number of arguments
+	passed to SCM_ASSERT
+
+2001-09-10  Martin Baulig  <baulig@suse.de>
+
+	Released guile-gobject 0.2.0 "The Great Barrier Reef".
+
+	* configure.in: Bump version number to 0.2.0.
+
+	* RELEASE-NOTES-0.2.0.txt: Preparing the release ...
+
+2001-09-09  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gw/gobject.scm (vector-map): New private utility function.
+	(<gparam>): Removed the `pspec-struct' slot. (<gparam-pointer>
+	<gparam-string> <gparam-object> <gparam-boxed>): Added.
+	(<gparam-enum> <gparam-flags>): Added. (gparam->pspec-struct): New
+	public function. (allocate-instance <gtype-class>): Moved <gparam>
+	and <gobject> initialization into (initialize <gtype-class>), only
+	do the actual allocating here.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_c_debug_print): New utility function. (SCM_DEBUG_PRINT): New
+	utility macro. (gparam-primitive->pspec-struct): Moved the
+	functionality of this function into
+	`gparam-primitive-create-pspec-struct' (not exported), store the
+	pspec-struct as qdata in the param and return it.
+	(SCM_ERROR_NOT_YET_IMPLEMENTED): Added `what' argument.
+
+	* gnome/gobject/guile-gnome-gobject.c (gtype?): New function.
+	(gparam->value-type): New function.
+
+2001-09-09  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gw/gobject.scm (gobject-class-find-property): New public
+	function.
+
+2001-09-08  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gw/gobject.scm (gtype-instance:class-init,
+	gtype-instance:instance-init gobject:class-init
+	gobject:instance-init gobject-class:install-property
+	gobject:set-property gobject:get-property): Moved here from
+	primitives.scm. (<gparam>): Added `pspec-struct' slot.
+	(<gobject>): The `gobject-properties' vector now contains <gparam>
+	objects. (make-gparam-instance): Added #:pspec-struct keyword to
+	create a <gparam> object from a pspec-struct.
+	(gobject:get-property, gobject:set-property): This now gets a
+	<gparam> object as argument, not a pspec-struct.
+	(gobject-class-install-property): Removed, implemented in C.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_c_gtype_lookup_class): New function.
+	(scm_c_gtype_instance_bind_to_instance): New function.
+	(gtype-primitive-register-static): Moved to guile-gnome-gobject.c
+	and renamed to gtype-register-static.
+	(gobject-class-primitive-install-property): Moved to
+	guile-gnome-gobject.c and renamed to
+	gobject-class-install-property. (scm_gparam_spec_vtable): Added
+	"param-type" field.
+
+	* gnome/gobject/guile-gnome-gobject.c (gtype-register-static):
+	Moved here. (gobject-class-install-property): Moved here.
+
+2001-09-08  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gw/foo.[ch]: Removed.
+
+2001-09-07  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gw/guile-support.[ch]: New files. This stuff may be moved
+	into guile at a future time.
+
+2001-09-07  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_add_slot_closure): Removed.
+
+2001-09-06  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gw/gobject.scm (<gparam-char> <gparam-uchar>
+	<gparam-boolean> <gparam-int> <gparam-uint> <gparam-long>
+	<gparam-ulong> <gparam-float> <gparam-double>): New classes.
+	(gobject-class-install-property): New public function.
+	(allocate-instance (<gtype-class>)): Added support for <gparam>
+	subclasses.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(gparam-primitive-create): This now takes 4 args like
+	(gobject-primitive-create-instance).
+
+2001-09-05  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gobject/primitives.scm (gparam-spec:name gparam-spec:nick
+	gparam-spec:blurb gparam-spec:flags gparam-spec:value-type
+	gparam-spec:owner-type gparam-spec:args): New accessor functions.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(gobject-primitive-get-properties): Only return direct properties,
+	not the ones from our parent types.
+
+	* gnome/gw/gobject.scm (gtype->class): Register parent classes if
+	necessary. gsignal:id gsignal:name gsignal:interface-type
+	gsignal:return-type gsignal:param-types gparam-spec:name
+	gparam-spec:nick gparam-spec:blurb gparam-spec:flags
+	gparam-spec:value-type gparam-spec:owner-type gparam-spec:args):
+	Re-export them (from (gnome gobject primitives)).
+	(gobject-class-get-property-names): New convenience function.
+
+	* gnome/gobject/guile-gnome-gobject.c
+	(scm_c_gtype_instance_is_a_p): New function.
+	(scm_c_scm_to_gtype_instance, scm_c_gtype_instance_to_scm): New
+	functions.
+
+2001-09-05  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c (gparam-spec?):
+	New func. (gobject-class-primitive-install-property): New
+	function. Added support for properties. (scm_gtype_instance_free):
+	Don't free the instance if we have a finalize func.
+
+	* gnome/gobject/primitives.scm (gobject:set-property
+	gobject:get-property): New generic functions.
+
+	* gnome/gw/gobject.scm (gobject:set-property
+	gobject:get-property): Provide default implementation.
+
+2001-09-05  Martin Baulig  <baulig@suse.de>
+
+	* configure.in: Bump version number to 0.1.0.
+
+2001-09-03  Martin Baulig  <baulig@suse.de>
+
+	Another batch of larger changes:
+
+	- improved gsignal support. - we can now derive GObject's in
+	scheme.
+
+	More detailed, but a bit uncomplete list:
+
+	* gnome/gw/gobject.scm (gtype->class): For each class we create,
+	use its parent class as metaclass. (<gboxed-scm>): New type. This
+	is a GBoxed type to hold a scheme value. (gvalue->scm): Moved here
+	from primitives.scm and export it. (gtype-instance:class-init):
+	New generic function. (gtype-instance:instance-init): New generic
+	function. (gobject-class-define-signal): New public macro.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.[ch]
+	(gvalue-primitive-get-basic): Renamed to gvalue-primitive-get.
+	(gvalue-primitive-set-basic): Renamed to gvalue-primitive-set.
+	(gtype-instance-primitive-type): Renamed to
+	gtype-instance-primitive->type.
+	(gtype-instance-primitive-to-value): New function.
+	(scm_init_gnome_gobject_primitives): Don't export the "gsignal-*"
+	symbols, except "gsignal-struct-vtable". (G_TYPE_GBOXED_SCM): New
+	GBoxed type to hold a scheme value. (gboxed-scm-primitive-new):
+	New function. (gboxed-scm-primitive->scm): New function.
+	(gsignal-primitive-create): New function. (gtype-class->type):
+	Removed. This is now implemented in scheme and correctly handles
+	the case if you create a GOOPS subclass of a class.
+
+	* gnome/gobject/guile-gnome-gobject.[ch] (gtype->method-name): New
+	function.
+
+	* gnome/gobject/primitives.scm (gsignal:id, gsignal:name,
+	gsignal:return-type, gsignal:instance-type,
+	gsignal:parameter-types): New accessor functions.
+
+2001-09-03  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(gobject:class-init, gobject:instance-init): When deriving
+	GObject's, use `gobject:class-init' and `gobject-instance-init'
+	instead of `gtype-instance:class-init' and
+	`gtype-instance:instance-init'.
+
+	* gnome/gobject/guile-gnome-gobject.c (gtype-fundamental?): New
+	function. This isn't really necessary, but it's faster to do this
+	in C.
+
+	* gnome/gobject/primitives.scm (define-public-with-docs): New macro.
+	(define-generic-with-docs): New macro.
+
+	* gnome/gw/gobject.scm: Documentation .....
+
+2001-09-03  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_c_register_gtype): Unmangle the type with
+	G_TYPE_FLAG_RESERVED_ID_BIT.
+
+2001-09-03  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(gtype-primitive-create-instance): Renamed to
+	gobject-primitive-create-instance; its last argument is now a
+	vector containing the properties.
+
+	* gnome/gw/gobject.scm: When creating new <gobject> instances,
+	interpret all arguments as GObject properties.
+
+2001-09-03  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(gsignal-primitive-create): Actually pass the `param-types' vector
+	to g_signal_newv().
+
+	* gnome/gw/gobject.scm (make-value-from-scm): Throw an exception
+	if we got the unspecified value, but a non-void type.
+
+2001-09-01  Martin Baulig  <baulig@suse.de>
+
+	Added support for GParamSpec.
+
+	* gnome/gw/gobject.scm (gobject-get-property,
+	gobject-set-property): New functions.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_gparam_spec_struct_vtable): New struct type.
+	(scm_gtype_instance_primitive_to_instance): Renamed to
+	scm_gtype_instance_primitive().
+	(scm_gtype_instance_primitive_type): New function.
+	(scm_gobject_primitive_signal_emit,
+	scm_gobject_primitive_signal_connect): Take a
+	scm_tc16_gtype_instance smob, not a <gobject> object.
+	(scm_gparam_primitive_to_pspec_struct): New function.
+	(scm_gparam_primitive_create): New function.
+	(s_scm_gobject_primitive_get_properties): New function.
+	(scm_gobject_primitive_get_property): New function.
+	(scm_gobject_primitive_set_property): New function.
+
+	* gnome/gw/foo.[ch]: Added properties.
+
+2001-09-01  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gobject/primitives.scm (<gtype>): Removed, replaced with a
+	smob. (gobject-error): Renamed to gruntime-error.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.[ch]: Removed the
+	<gtype> class and added new scm_tc16_gtype smob.
+
+	* gnome/gw/gobject.scm (gtype->class): Use <gtype-class> as
+	metaclass and changed all <gtype-class-meta> to <gtype-class>.
+
+	* gnome/gobject/guile-gnome-gobject.c: Call the GType's
+	"gtype:<type-name>" instead of "gtype-type-<type-name>".
+
+2001-09-01  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_gtype_primitive_register_static): New function.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.h
+	(SCM_VALIDATE_FLOAT_COPY): Make this actually work.
+
+2001-09-01  Martin Baulig  <baulig@suse.de>
+
+	* Makefile.am, configure.in: Don't build libgnome/ and orbit/ for
+	the moment, nothing interesting in there.
+
+2001-08-31  Martin Baulig  <baulig@suse.de>
+
+	* test-suite/gobject-primitives.test: Added tests for gclosure
+	primitives.
+
+	* test-suite/gobject.test: Added tests for gclosure.
+
+2001-08-31  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_tc16_gclosure_smob): Removed.
+	(scm_gclosure_primitive_invoke): Correctly GC protect the
+	GuileGClosure's `func' field.
+	
+2001-08-31  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_gvalue_primitive_to_type): Removed, we already have
+	scm_gvalue_to_type.
+
+2001-08-31  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gw/gobject.scm (gtype-instance-write): Added method for
+	`(type <gtype>) (obj <gvalue>) file)' - creates the class using
+	(gtype->class type) and then calls the normal
+	gtype-instance-write.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_gvalue_print): If the class doesn't exist yet, use the type
+	as first argument of gtype-instance-write.
+
+2001-08-31  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gw/gobject.scm (gobject-signal-connect-data): Use the new
+	<gclosure> object. (gsignal-handler-block gsignal-handler-unblock
+	gsignal-handler-disconnect gsignal-handler-connected?): New
+	functions.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(GuileGTypeInstance): Killed, use GTypeInstance directly.
+	(scm_gtype_instance_primitive_to_instance): New func.
+	(scm_gsignal_primitive_handler_block): New func.
+	(scm_gsignal_primitive_handler_unblock): New func.
+	(scm_gsignal_primitive_handler_disconnect): New func.
+	(scm_gsignal_primitive_handler_connected_p): New func.
+
+2001-08-31  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gw/gobject.scm (<gclosure>): Implement this as a GOOPS
+	class, not as a GValue. (gclosure-invoke): New generic function.
+
+	* gnome/gobject/guile-gnome-gobject-primitives.c
+	(scm_tc16_gclosure): Renamed to `scm_tc16_gclosure_smob'.
+	(scm_gclosure_primitive_invoke): Added return_type argument.
+	(scm_gvalue_primitive_to_type): New function.
+
+2001-08-27  Martin Baulig  <baulig@suse.de>
+
+	* test-suite/gobject.text: Testcase for `(gnome gobject)' module.
+
+	* test-suite/gobject-primitives.test: Testcase for `(gnome gobject
+	primitives)'.
+
+2001-08-27  Martin Baulig  <baulig@suse.de>
+
+	* test-suite/: New directory.
+
+2001-08-27  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gobject/primitives.scm, guile-gnome-gobject-primitives.[ch]:
+	Moved some of the internal stuff into a new `(gnome gobject
+	primitives)' module and exported most of the methods.
+
+2001-08-27  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gobject/primitives.scm (gflags->element-list): New primitive
+	function. (gflags->symbol-list gflags->name-list
+	gflags->value-list): New functions.
+
+2001-08-25  Martin Baulig  <baulig@suse.de>
+
+	- added basic support for signals.
+
+2001-08-23  Martin Baulig  <baulig@suse.de>
+
+	- added basic gclosure support.
+
+	- added gchararray.
+
+	- added support for flags.
+
+	- added genum-register-static.
+
+	- added gchar, guchar, gint, guint, glong, gulong, gfloat and
+	gdouble.
+
+	- added support for enums.
+
+2001-08-21  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gobject/guile-gnome-gobject.c
+	(scm_sys_gobject_scheme_dir): New func.
+	(scm_gobject_register_type): New func.
+
+	* gnome/gw/Makefile.am: Create and install documentation.
+
+2001-08-21  Martin Baulig  <baulig@suse.de>
+
+	* gnome/gobject/guile-gnome-gobject.c (scm_gtype_children): New
+	func. (scm_init_gnome_gobject): Register all fundamental and
+	derived types.
+

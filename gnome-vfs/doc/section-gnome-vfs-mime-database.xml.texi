@@ -1,0 +1,20 @@
+
+@c %start of fragment
+
+@node MIME Database
+@chapter MIME Database
+functions for getting information about applications and components associated
+with MIME types.
+
+@section Overview
+This API can be used to query the applications and components associated with
+particular MIME types, and to collect extra information about them, and also
+provides a convenience function for launching them. Applications can register
+themselves for particular MIME types by adhering to the
+@uref{http://standards.freedesktop.org/desktop-entry-spec/latest,
+Freedesktop.Org Desktop Entry Specification}.
+
+@section Usage
+@include defuns-gnome-vfs-mime-database.xml.texi
+
+@c %end of fragment

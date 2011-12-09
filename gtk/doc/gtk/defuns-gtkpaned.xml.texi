@@ -1,0 +1,183 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-paned>
+Derives from @code{<gtk-container>}.
+
+This class defines the following slots:
+
+@table @code
+@item position
+Position of paned separator in pixels (0 means all the way to the left/top)
+
+@item position-set
+TRUE if the Position property should be used
+
+@item min-position
+Smallest possible value for the "position" property
+
+@item max-position
+Largest possible value for the "position" property
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-paned> cycle-child-focus  (arg0@tie{}@code{<gboolean>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-paned> toggle-handle-focus  @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-paned> move-handle  (arg0@tie{}@code{<gtk-scroll-type>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-paned> cycle-handle-focus  (arg0@tie{}@code{<gboolean>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-paned> accept-position  @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-paned> cancel-position  @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@deffn Function gtk-paned-add1  (self@tie{}@code{<gtk-paned>}) (child@tie{}@code{<gtk-widget>})
+@deffnx Method add1
+Adds a child to the top or left pane with default parameters. This is equivalent
+to @samp{gtk_paned_pack1 (paned, child, FALSE, TRUE)}.
+
+@table @var
+@item paned
+a paned widget
+
+@item child
+the child to add
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-paned-add2  (self@tie{}@code{<gtk-paned>}) (child@tie{}@code{<gtk-widget>})
+@deffnx Method add2
+Adds a child to the bottom or right pane with default parameters. This is
+equivalent to @samp{gtk_paned_pack2 (paned, child, TRUE, TRUE)}.
+
+@table @var
+@item paned
+a paned widget
+
+@item child
+the child to add
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-paned-pack1  (self@tie{}@code{<gtk-paned>}) (child@tie{}@code{<gtk-widget>}) (resize@tie{}@code{bool}) (shrink@tie{}@code{bool})
+@deffnx Method pack1
+Adds a child to the top or left pane.
+
+@table @var
+@item paned
+a paned widget
+
+@item child
+the child to add
+
+@item resize
+should this child expand when the paned widget is resized.
+
+@item shrink
+can this child be made smaller than its requisition.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-paned-pack2  (self@tie{}@code{<gtk-paned>}) (child@tie{}@code{<gtk-widget>}) (resize@tie{}@code{bool}) (shrink@tie{}@code{bool})
+@deffnx Method pack2
+Adds a child to the bottom or right pane.
+
+@table @var
+@item paned
+a paned widget
+
+@item child
+the child to add
+
+@item resize
+should this child expand when the paned widget is resized.
+
+@item shrink
+can this child be made smaller than its requisition.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-paned-get-child1  (self@tie{}@code{<gtk-paned>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-child1
+Obtains the first child of the paned widget.
+
+@table @var
+@item paned
+a @code{<gtk-paned>} widget
+
+@item ret
+first child, or @samp{@code{#f}} if it is not set.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-paned-get-child2  (self@tie{}@code{<gtk-paned>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-child2
+Obtains the second child of the paned widget.
+
+@table @var
+@item paned
+a @code{<gtk-paned>} widget
+
+@item ret
+second child, or @samp{@code{#f}} if it is not set.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-paned-set-position  (self@tie{}@code{<gtk-paned>}) (position@tie{}@code{int})
+@deffnx Method set-position
+Sets the position of the divider between the two panes.
+
+@table @var
+@item paned
+a @code{<gtk-paned>} widget
+
+@item position
+pixel position of divider, a negative value means that the position is unset.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-paned-get-position  (self@tie{}@code{<gtk-paned>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-position
+Obtains the position of the divider between the two panes.
+
+@table @var
+@item paned
+a @code{<gtk-paned>} widget
+
+@item ret
+position of the divider
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

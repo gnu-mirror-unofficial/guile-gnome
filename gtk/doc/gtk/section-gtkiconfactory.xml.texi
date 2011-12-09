@@ -1,0 +1,33 @@
+
+@c %start of fragment
+
+@node Themeable Stock Images
+@chapter Themeable Stock Images
+Manipulating stock icons
+
+@section Overview
+Browse the available stock icons in the list of stock IDs found here. You can
+also use the application for this purpose.
+
+An icon factory manages a collection of @code{<gtk-icon-set>}; a
+@code{<gtk-icon-set>} manages a set of variants of a particular icon (i.e. a
+@code{<gtk-icon-set>} contains variants for different sizes and widget states).
+Icons in an icon factory are named by a stock ID, which is a simple string
+identifying the icon. Each @code{<gtk-style>} has a list of
+@code{<gtk-icon-factory>} derived from the current theme; those icon factories
+are consulted first when searching for an icon. If the theme doesn't set a
+particular icon, GTK+ looks for the icon in a list of default icon factories,
+maintained by @code{gtk-icon-factory-add-default} and
+@code{gtk-icon-factory-remove-default}. Applications with icons should add a
+default icon factory with their icons, which will allow themes to override the
+icons for the application.
+
+To display an icon, always use @code{gtk-style-lookup-icon-set} on the widget
+that will display the icon, or the convenience function
+@code{gtk-widget-render-icon}. These functions take the theme into account when
+looking up the icon to use for a given stock ID.
+
+@section Usage
+@include defuns-gtkiconfactory.xml.texi
+
+@c %end of fragment

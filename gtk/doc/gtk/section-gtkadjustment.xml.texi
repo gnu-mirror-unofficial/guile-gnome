@@ -1,0 +1,27 @@
+
+@c %start of fragment
+
+@node GtkAdjustment
+@chapter GtkAdjustment
+A GtkObject representing an adjustable bounded value
+
+@section Overview
+The @code{<gtk-adjustment>} object represents a value which has an associated
+lower and upper bound, together with step and page increments, and a page size.
+It is used within several GTK+ widgets, including @code{<gtk-spin-button>},
+@code{<gtk-viewport>}, and @code{<gtk-range>} (which is a base class for
+@code{<gtk-hscrollbar>}, @code{<gtk-vscrollbar>}, @code{<gtk-hscale>}, and
+@code{<gtk-vscale>}).
+
+The @code{<gtk-adjustment>} object does not update the value itself. Instead it
+is left up to the owner of the @code{<gtk-adjustment>} to control the value.
+
+The owner of the @code{<gtk-adjustment>} typically calls the
+@code{gtk-adjustment-value-changed} and @code{gtk-adjustment-changed} functions
+after changing the value and its bounds. This results in the emission of the
+"value_changed" or "changed" signal respectively.
+
+@section Usage
+@include defuns-gtkadjustment.xml.texi
+
+@c %end of fragment

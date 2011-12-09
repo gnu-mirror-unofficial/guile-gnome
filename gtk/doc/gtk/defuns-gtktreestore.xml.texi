@@ -1,0 +1,379 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-tree-store>
+Derives from @code{<gtk-tree-model>}, @code{<gtk-tree-sortable>},
+@code{<gtk-buildable>}, @code{<gtk-tree-drag-dest>},
+@code{<gtk-tree-drag-source>}, @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-tree-store-new  (types@tie{}@code{scm}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-store>})
+Creates a new tree store as with @var{n-columns} columns each of the types
+passed in. Note that only types derived from standard GObject fundamental types
+are supported.
+
+As an example, @samp{gtk_tree_store_new (3, G_TYPE_INT, G_TYPE_STRING,
+GDK_TYPE_PIXBUF);} will create a new @code{<gtk-tree-store>} with three columns,
+of type @code{<int>}, @code{<string>} and @code{<gdk-pixbuf>} respectively.
+
+@table @var
+@item n-columns
+number of columns in the tree store
+
+@item ...
+all @code{<g-type>} types for the columns, from first to last
+
+@item ret
+a new @code{<gtk-tree-store>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-store-set-value  (self@tie{}@code{<gtk-tree-store>}) (iter@tie{}@code{<gtk-tree-iter>}) (column@tie{}@code{int}) (value@tie{}@code{scm})
+@deffnx Method set-value
+Sets the data in the cell specified by @var{iter} and @var{column}. The type of
+@var{value} must be convertible to the type of the column.
+
+@table @var
+@item tree-store
+a @code{<gtk-tree-store>}
+
+@item iter
+A valid @code{<gtk-tree-iter>} for the row being modified
+
+@item column
+column number to modify
+
+@item value
+new value for the cell
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-store-remove  (self@tie{}@code{<gtk-tree-store>}) (iter@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-iter>})
+@deffnx Method remove
+Removes @var{iter} from @var{tree-store}. After being removed, @var{iter} is set
+to the next valid row at that level, or invalidated if it previously pointed to
+the last one.
+
+@table @var
+@item tree-store
+A @code{<gtk-tree-store>}
+
+@item iter
+A valid @code{<gtk-tree-iter>}
+
+@item ret
+@samp{@code{#t}} if @var{iter} is still valid, @samp{@code{#f}} if not.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-store-insert  (self@tie{}@code{<gtk-tree-store>}) (parent@tie{}@code{<gtk-tree-iter>}) (position@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-iter>})
+@deffnx Method insert
+Creates a new row at @var{position}. If parent is non-@samp{@code{#f}}, then the
+row will be made a child of @var{parent}. Otherwise, the row will be created at
+the toplevel. If @var{position} is larger than the number of rows at that level,
+then the new row will be inserted to the end of the list. @var{iter} will be
+changed to point to this new row. The row will be empty after this function is
+called. To fill in values, you need to call @code{gtk-tree-store-set} or
+@code{gtk-tree-store-set-value}.
+
+@table @var
+@item tree-store
+A @code{<gtk-tree-store>}
+
+@item iter
+An unset @code{<gtk-tree-iter>} to set to the new row
+
+@item parent
+A valid @code{<gtk-tree-iter>}, or @samp{@code{#f}}
+
+@item position
+position to insert the new row
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-store-insert-before  (self@tie{}@code{<gtk-tree-store>}) (parent@tie{}@code{<gtk-tree-iter>}) (sibling@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-iter>})
+@deffnx Method insert-before
+Inserts a new row before @var{sibling}. If @var{sibling} is @samp{@code{#f}},
+then the row will be appended to @var{parent} 's children. If @var{parent} and
+@var{sibling} are @samp{@code{#f}}, then the row will be appended to the
+toplevel. If both @var{sibling} and @var{parent} are set, then @var{parent} must
+be the parent of @var{sibling}. When @var{sibling} is set, @var{parent} is
+optional.
+
+@var{iter} will be changed to point to this new row. The row will be empty after
+this function is called. To fill in values, you need to call
+@code{gtk-tree-store-set} or @code{gtk-tree-store-set-value}.
+
+@table @var
+@item tree-store
+A @code{<gtk-tree-store>}
+
+@item iter
+An unset @code{<gtk-tree-iter>} to set to the new row
+
+@item parent
+A valid @code{<gtk-tree-iter>}, or @samp{@code{#f}}
+
+@item sibling
+A valid @code{<gtk-tree-iter>}, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-store-insert-after  (self@tie{}@code{<gtk-tree-store>}) (parent@tie{}@code{<gtk-tree-iter>}) (sibling@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-iter>})
+@deffnx Method insert-after
+Inserts a new row after @var{sibling}. If @var{sibling} is @samp{@code{#f}},
+then the row will be prepended to @var{parent} 's children. If @var{parent} and
+@var{sibling} are @samp{@code{#f}}, then the row will be prepended to the
+toplevel. If both @var{sibling} and @var{parent} are set, then @var{parent} must
+be the parent of @var{sibling}. When @var{sibling} is set, @var{parent} is
+optional.
+
+@var{iter} will be changed to point to this new row. The row will be empty after
+this function is called. To fill in values, you need to call
+@code{gtk-tree-store-set} or @code{gtk-tree-store-set-value}.
+
+@table @var
+@item tree-store
+A @code{<gtk-tree-store>}
+
+@item iter
+An unset @code{<gtk-tree-iter>} to set to the new row
+
+@item parent
+A valid @code{<gtk-tree-iter>}, or @samp{@code{#f}}
+
+@item sibling
+A valid @code{<gtk-tree-iter>}, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-store-prepend  (self@tie{}@code{<gtk-tree-store>}) (parent@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-iter>})
+@deffnx Method prepend
+Prepends a new row to @var{tree-store}. If @var{parent} is non-@samp{@code{#f}},
+then it will prepend the new row before the first child of @var{parent},
+otherwise it will prepend a row to the top level. @var{iter} will be changed to
+point to this new row. The row will be empty after this function is called. To
+fill in values, you need to call @code{gtk-tree-store-set} or
+@code{gtk-tree-store-set-value}.
+
+@table @var
+@item tree-store
+A @code{<gtk-tree-store>}
+
+@item iter
+An unset @code{<gtk-tree-iter>} to set to the prepended row
+
+@item parent
+A valid @code{<gtk-tree-iter>}, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-store-append  (self@tie{}@code{<gtk-tree-store>}) (parent@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-iter>})
+@deffnx Method append
+Appends a new row to @var{tree-store}. If @var{parent} is non-@samp{@code{#f}},
+then it will append the new row after the last child of @var{parent}, otherwise
+it will append a row to the top level. @var{iter} will be changed to point to
+this new row. The row will be empty after this function is called. To fill in
+values, you need to call @code{gtk-tree-store-set} or
+@code{gtk-tree-store-set-value}.
+
+@table @var
+@item tree-store
+A @code{<gtk-tree-store>}
+
+@item iter
+An unset @code{<gtk-tree-iter>} to set to the appended row
+
+@item parent
+A valid @code{<gtk-tree-iter>}, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-store-is-ancestor  (self@tie{}@code{<gtk-tree-store>}) (iter@tie{}@code{<gtk-tree-iter>}) (descendant@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-ancestor
+Returns @samp{@code{#t}} if @var{iter} is an ancestor of @var{descendant}. That
+is, @var{iter} is the parent (or grandparent or great-grandparent) of
+@var{descendant}.
+
+@table @var
+@item tree-store
+A @code{<gtk-tree-store>}
+
+@item iter
+A valid @code{<gtk-tree-iter>}
+
+@item descendant
+A valid @code{<gtk-tree-iter>}
+
+@item ret
+@samp{@code{#t}}, if @var{iter} is an ancestor of @var{descendant}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-store-iter-depth  (self@tie{}@code{<gtk-tree-store>}) (iter@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method iter-depth
+Returns the depth of @var{iter}. This will be 0 for anything on the root level,
+1 for anything down a level, etc.
+
+@table @var
+@item tree-store
+A @code{<gtk-tree-store>}
+
+@item iter
+A valid @code{<gtk-tree-iter>}
+
+@item ret
+The depth of @var{iter}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-store-clear  (self@tie{}@code{<gtk-tree-store>})
+@deffnx Method clear
+Removes all rows from @var{tree-store}
+
+@table @var
+@item tree-store
+a @code{<gtk-tree-store>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-store-iter-is-valid  (self@tie{}@code{<gtk-tree-store>}) (iter@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method iter-is-valid
+WARNING: This function is slow. Only use it for debugging and/or testing
+purposes.
+
+Checks if the given iter is a valid iter for this @code{<gtk-tree-store>}.
+
+@table @var
+@item tree-store
+A @code{<gtk-tree-store>}.
+
+@item iter
+A @code{<gtk-tree-iter>}.
+
+@item ret
+@samp{@code{#t}} if the iter is valid, @samp{@code{#f}} if the iter is invalid.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-tree-store-reorder  (self@tie{}@code{<gtk-tree-store>}) (parent@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (new_order@tie{}@code{int})
+@deffnx Method reorder
+Reorders the children of @var{parent} in @var{tree-store} to follow the order
+indicated by @var{new-order}. Note that this function only works with unsorted
+stores.
+
+@table @var
+@item tree-store
+A @code{<gtk-tree-store>}.
+
+@item parent
+A @code{<gtk-tree-iter>}.
+
+@item new-order
+an array of integers mapping the new position of each child to its old position
+before the re-ordering, i.e. @var{new-order}@samp{[newpos] = oldpos}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-tree-store-swap  (self@tie{}@code{<gtk-tree-store>}) (a@tie{}@code{<gtk-tree-iter>}) (b@tie{}@code{<gtk-tree-iter>})
+@deffnx Method swap
+Swaps @var{a} and @var{b} in the same level of @var{tree-store}. Note that this
+function only works with unsorted stores.
+
+@table @var
+@item tree-store
+A @code{<gtk-tree-store>}.
+
+@item a
+A @code{<gtk-tree-iter>}.
+
+@item b
+Another @code{<gtk-tree-iter>}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-tree-store-move-before  (self@tie{}@code{<gtk-tree-store>}) (iter@tie{}@code{<gtk-tree-iter>}) (position@tie{}@code{<gtk-tree-iter>})
+@deffnx Method move-before
+Moves @var{iter} in @var{tree-store} to the position before @var{position}.
+@var{iter} and @var{position} should be in the same level. Note that this
+function only works with unsorted stores. If @var{position} is @samp{@code{#f}},
+@var{iter} will be moved to the end of the level.
+
+@table @var
+@item tree-store
+A @code{<gtk-tree-store>}.
+
+@item iter
+A @code{<gtk-tree-iter>}.
+
+@item position
+A @code{<gtk-tree-iter>} or @samp{@code{#f}}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-tree-store-move-after  (self@tie{}@code{<gtk-tree-store>}) (iter@tie{}@code{<gtk-tree-iter>}) (position@tie{}@code{<gtk-tree-iter>})
+@deffnx Method move-after
+Moves @var{iter} in @var{tree-store} to the position after @var{position}.
+@var{iter} and @var{position} should be in the same level. Note that this
+function only works with unsorted stores. If @var{position} is @samp{@code{#f}},
+@var{iter} will be moved to the start of the level.
+
+@table @var
+@item tree-store
+A @code{<gtk-tree-store>}.
+
+@item iter
+A @code{<gtk-tree-iter>}.
+
+@item position
+A @code{<gtk-tree-iter>}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+
+@c %end of fragment

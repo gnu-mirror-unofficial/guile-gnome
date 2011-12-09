@@ -1,0 +1,14 @@
+
+@c %start of fragment
+
+@node GnomeCanvasWidget
+@chapter GnomeCanvasWidget
+Widget canvas item
+
+@section Overview
+A canvas item for placing arbitrary GtkWidget objects onto a canvas.
+
+@section Usage
+@include defuns-gnome-canvas-widget.xml.texi
+
+@c %end of fragment

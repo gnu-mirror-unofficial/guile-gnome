@@ -1,0 +1,18 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas-polygon>
+Derives from @code{<gnome-canvas-shape>}.
+
+This class defines the following properties:
+
+@table @code
+@item points
+
+
+@end table
+
+@end deftp
+
+
+@c %end of fragment

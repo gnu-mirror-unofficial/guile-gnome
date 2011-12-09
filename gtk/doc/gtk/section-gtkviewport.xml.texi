@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GtkViewport
+@chapter GtkViewport
+An adapter which makes widgets scrollable
+
+@section Overview
+@section Usage
+@include defuns-gtkviewport.xml.texi
+
+@c %end of fragment

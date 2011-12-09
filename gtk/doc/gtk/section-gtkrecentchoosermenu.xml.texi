@@ -1,0 +1,34 @@
+
+@c %start of fragment
+
+@node GtkRecentChooserMenu
+@chapter GtkRecentChooserMenu
+Displays recently used files in a menu
+
+@section Overview
+@code{<gtk-recent-chooser-menu>} is a widget suitable for displaying recently
+used files inside a menu. It can be used to set a sub-menu of a
+@code{<gtk-menu-item>} using @code{gtk-menu-item-set-submenu}, or as the menu of
+a @code{<gtk-menu-tool-button>}.
+
+Note that @code{<gtk-recent-chooser-menu>} does not have any methods of its own.
+Instead, you should use the functions that work on a
+@code{<gtk-recent-chooser>}.
+
+Note also that @code{<gtk-recent-chooser-menu>} does not support multiple
+filters, as it has no way to let the user choose between them as the
+@code{<gtk-recent-chooser-widget>} and @code{<gtk-recent-chooser-dialog>}
+widgets do. Thus using @code{gtk-recent-chooser-add-filter} on a
+@code{<gtk-recent-chooser-menu>} widget will yield the same effects as using
+@code{gtk-recent-chooser-set-filter}, replacing any currently set filter with
+the supplied filter; @code{gtk-recent-chooser-remove-filter} will remove any
+currently set @code{<gtk-recent-filter>} object and will unset the current
+filter; @code{gtk-recent-chooser-list-filters} will return a list containing a
+single @code{<gtk-recent-filter>} object.
+
+Recently used files are supported since GTK+ 2.10.
+
+@section Usage
+@include defuns-gtkrecentchoosermenu.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@node General
+@chapter General
+Library initialization and miscellaneous functions
+
+@section Overview
+This section describes the GDK initialization functions and miscellaneous
+utility functions.
+
+@section Usage
+@include defuns-general.xml.texi
+
+@c %end of fragment

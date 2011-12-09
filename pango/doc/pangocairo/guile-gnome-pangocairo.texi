@@ -1,0 +1,73 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename guile-gnome-pangocairo.info
+@settitle Guile-PangoCairo
+@c %**end of header
+
+@include version.texi
+
+@copying 
+This manual is for @code{(gnome pangocairo)} (version @value{VERSION},
+updated @value{UPDATED})
+
+Copyright 2001-2007 Owen Taylor, Behdad Esfahbod, many others
+
+@c PANGO is LGPL, ergo GPL distribution is possible
+@quotation 
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU General Public License, Version 2 or any
+later version published by the Free Software Foundation.
+@end quotation
+
+@end copying
+
+@dircategory The Algorithmic Language Scheme
+@direntry 
+* Guile-PangoCairo: (guile-gnome-pangocairo.info).  Pango+Cairo.
+@end direntry
+
+@titlepage 
+@title Guile-GNOME: PangoCairo
+@subtitle version @value{VERSION}, updated @value{UPDATED}
+@author Owen Taylor
+@author Behdad Esfahbod
+@author many others
+@page 
+@vskip 0pt plus 1filll
+@insertcopying 
+@end titlepage
+
+@ifnottex 
+@node Top
+@top Guile-PangoCairo
+
+@insertcopying 
+@menu
+* Overview::                  About the binding.
+
+* Cairo Rendering::           Rendering with the Cairo backend
+
+* Undocumented::              Undocumented functions.
+
+* Type Index::
+* Function Index::
+@end menu
+
+@end ifnottex
+
+@iftex 
+@shortcontents 
+@end iftex
+
+@include overview.texi
+@include section-pangocairo.xml.texi
+
+@include undocumented.texi
+
+@node Type Index
+@unnumbered Type Index
+@printindex tp
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+@bye

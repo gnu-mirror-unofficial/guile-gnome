@@ -1,0 +1,77 @@
+(module-api
+  (version 1 0)
+  ((gnome gnome)
+   (uses-interfaces (gnome gw libgnome))
+   (typed-exports
+     (gnome-program-init procedure (arity 2 0 #t))))
+  ((gnome gobject generics)
+   (uses-interfaces)
+   (typed-exports
+     (block generic (<gtype-instance> <top>))
+     (connect
+       generic
+       <top>
+       (<gtype-instance> <symbol> <procedure>))
+     (connect-after
+       generic
+       (<gtype-instance> <symbol> <procedure>))
+     (connected? generic (<gtype-instance> <top>))
+     (create-signal
+       generic
+       (<gtype-class> <symbol> <top> <top>))
+     (disconnect generic (<gtype-instance> <top>))
+     (emit generic
+           (<gtype-instance> <symbol> . <top>))
+     (find-property generic (<gtype-class> <symbol>))
+     (get generic (<gobject> <symbol>))
+     (get-properties generic (<gtype-class>))
+     (get-property-names generic (<gtype-class>))
+     (get-signals generic (<gtype-class>))
+     (invoke generic (<gclosure> . <top>))
+     (set generic (<gobject> <symbol> <top>))
+     (unblock generic (<gtype-instance> <top>))))
+  ((gnome gw generics)
+   (uses-interfaces (gnome gobject generics))
+   (typed-exports))
+  ((gnome gw libgnome)
+   (uses-interfaces (gnome gw generics))
+   (typed-exports
+     (%gnome-program-init procedure (arity 0 0 #t))
+     (gnome-gconf-get-app-settings-relative
+       procedure
+       (arity 0 0 #t))
+     (gnome-gconf-get-gnome-libs-settings-relative
+       procedure
+       (arity 0 0 #t))
+     (gnome-help-display procedure (arity 2 0 #f))
+     (gnome-help-display-desktop
+       procedure
+       (arity 4 0 #f))
+     (gnome-help-display-uri procedure (arity 1 0 #f))
+     (gnome-help-display-with-doc-id
+       procedure
+       (arity 4 0 #f))
+     (gnome-program-get procedure (arity 0 0 #t))
+     (gnome-program-get-app-id
+       procedure
+       (arity 0 0 #t))
+     (gnome-program-get-app-version
+       procedure
+       (arity 0 0 #t))
+     (gnome-program-get-human-readable-name
+       procedure
+       (arity 0 0 #t))
+     (gnome-sound-init procedure (arity 0 0 #t))
+     (gnome-sound-play procedure (arity 0 0 #t))
+     (gnome-sound-sample-load
+       procedure
+       (arity 0 0 #t))
+     (gnome-sound-shutdown procedure (arity 0 0 #t))
+     (gnome-url-show procedure (arity 1 0 #f))
+     (gnome-user-accels-dir-get
+       procedure
+       (arity 0 0 #t))
+     (gnome-user-dir-get procedure (arity 0 0 #t))
+     (gnome-user-private-dir-get
+       procedure
+       (arity 0 0 #t)))))

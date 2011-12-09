@@ -1,0 +1,4 @@
+Name: Guile-Gnome Cairo integration
+Description: Guile-Gnome Cairo integration
+Version: @VERSION@
+Requires: guile-cairo

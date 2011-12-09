@@ -1,0 +1,101 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-radio-menu-item>
+Derives from @code{<gtk-check-menu-item>}.
+
+This class defines the following slots:
+
+@table @code
+@item group
+The radio menu item whose group this widget belongs to.
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-radio-menu-item> group-changed 
+@end defop
+
+@deffn Function gtk-radio-menu-item-new  (group@tie{}@code{<gtk-radio-group*>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-radio-menu-item>}.
+
+@table @var
+@item group
+the group to which the radio menu item is to be attached
+
+@item ret
+a new @code{<gtk-radio-menu-item>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-radio-menu-item-new-with-label  (group@tie{}@code{<gtk-radio-group*>}) (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-radio-menu-item>} whose child is a simple
+@code{<gtk-label>}.
+
+@table @var
+@item group
+the group to which the radio menu item is to be attached
+
+@item label
+the text for the label
+
+@item ret
+a new @code{<gtk-radio-menu-item>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-radio-menu-item-new-from-widget  (group@tie{}@code{<gtk-radio-menu-item>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-radio-menu-item>} adding it to the same group as
+@var{group}.
+
+@table @var
+@item group
+An existing @code{<gtk-radio-menu-item>}
+
+@item ret
+The new @code{<gtk-radio-menu-item>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-radio-menu-item-set-group  (self@tie{}@code{<gtk-radio-menu-item>}) (group@tie{}@code{<gtk-radio-group*>})
+@deffnx Method set-group
+Sets the group of a radio menu item, or changes it.
+
+@table @var
+@item radio-menu-item
+a @code{<gtk-radio-menu-item>}.
+
+@item group
+the new group.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-radio-menu-item-get-group  (self@tie{}@code{<gtk-radio-menu-item>}) @result{}@tie{} (ret@tie{}@code{<gtk-radio-group*>})
+@deffnx Method get-group
+Returns the group to which the radio menu item belongs, as a @code{<g-list>} of
+@code{<gtk-radio-menu-item>}. The list belongs to GTK+ and should not be freed.
+
+@table @var
+@item radio-menu-item
+a @code{<gtk-radio-menu-item>}.
+
+@item ret
+the group of @var{radio-menu-item}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

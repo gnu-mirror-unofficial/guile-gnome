@@ -1,0 +1,7 @@
+-*- text -*-
+
+Things that are somehow ugly about this language binding.
+
+* GObject properties are not directly mapped onto the somewhat
+  equivalent way of doing things in GOOPS, slots. That's ameliorated by
+  the presence of the 'get' and 'set' generics, which seem to work ok.

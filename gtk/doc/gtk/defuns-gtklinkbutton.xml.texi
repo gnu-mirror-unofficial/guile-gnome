@@ -1,0 +1,88 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-link-button>
+Derives from @code{<gtk-button>}.
+
+This class defines the following slots:
+
+@table @code
+@item uri
+The URI bound to this button
+
+@end table
+
+@end deftp
+
+@deffn Function gtk-link-button-new  (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-link-button>} with the URI as its text.
+
+@table @var
+@item uri
+a valid URI
+
+@item ret
+a new link button widget.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-link-button-new-with-label  (uri@tie{}@code{mchars}) (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-link-button>} containing a label.
+
+@table @var
+@item uri
+a valid URI
+
+@item label
+the text of the button
+
+@item ret
+a new link button widget.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-link-button-get-uri  (self@tie{}@code{<gtk-link-button>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-uri
+Retrieves the URI set using @code{gtk-link-button-set-uri}.
+
+@table @var
+@item link-button
+a @code{<gtk-link-button>}
+
+@item ret
+a valid URI. The returned string is owned by the link button and should not be
+modified or freed.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-link-button-set-uri  (self@tie{}@code{<gtk-link-button>}) (uri@tie{}@code{mchars})
+@deffnx Method set-uri
+Sets @var{uri} as the URI where the @code{<gtk-link-button>} points.
+
+@table @var
+@item link-button
+a @code{<gtk-link-button>}
+
+@item uri
+a valid URI
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment

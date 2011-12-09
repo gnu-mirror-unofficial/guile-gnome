@@ -1,0 +1,58 @@
+
+@c %start of fragment
+
+@node GtkRecentManager
+@chapter GtkRecentManager
+Managing Recently Used Files
+
+@section Overview
+@code{<gtk-recent-manager>} provides a facility for adding, removing and looking
+up recently used files. Each recently used file is identified by its URI, and
+has meta-data associated to it, like the names and command lines of the
+applications that have registered it, the number of time each application has
+registered the same file, the mime type of the file and whether the file should
+be displayed only by the applications that have registered it.
+
+The @code{<gtk-recent-manager>} acts like a database of all the recently used
+files. You can create new @code{<gtk-recent-manager>} objects, but it is more
+efficient to use the standard recent manager for the @code{<gdk-screen>} so that
+informations about the recently used files is shared with other people using
+them. In case the default screen is being used, adding a new recently used file
+is as simple as:
+
+@example 
+
+GtkRecentManager *manager;
+
+manager = gtk_recent_manager_get_default ();
+gtk_recent_manager_add_item (manager, file_uri);
+  
+@end example
+
+@example 
+
+GtkRecentManager *manager;
+GtkRecentInfo *info;
+GError *error = NULL;
+
+manager = gtk_recent_manager_get_default ();
+info = gtk_recent_manager_lookup_item (manager, file_uri, &error);
+if (error)
+  @{
+    g_warning ("Could not find the file: %s", error->message);
+    g_error_free (error);
+  @}
+else
+  @{
+    /* Use the info object */
+    gtk_recent_info_unref (info);
+  @}
+  
+@end example
+
+Recently used files are supported since GTK+ 2.10.
+
+@section Usage
+@include defuns-gtkrecentmanager.xml.texi
+
+@c %end of fragment

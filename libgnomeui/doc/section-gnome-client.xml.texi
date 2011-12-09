@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GnomeClient
+@chapter GnomeClient
+Interactions with the session manager.
+
+@section Overview
+@section Usage
+@include defuns-gnome-client.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,17 @@
+
+@c %start of fragment
+
+@node Text Attributes
+@chapter Text Attributes
+Font and other attributes for annotating text
+
+@section Overview
+Attributed text is used in a number of places in Pango. It is used as the input
+to the itemization process and also when creating a @code{<pango-layout>}. The
+data types and functions in this section are used to represent and manipulate
+sets of attributes applied to a portion of text.
+
+@section Usage
+@include defuns-text-attributes.xml.texi
+
+@c %end of fragment

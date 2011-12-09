@@ -1,0 +1,106 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename guile-gnome-libgnomecanvas.info
+@settitle Guile-Libgnomecanvas
+@c %**end of header
+
+@include version.texi
+
+@copying 
+This manual is for @code{(gnome libgnomecanvas)} (version @value{VERSION}, updated
+@value{UPDATED})
+
+Copyright 2001-2007 Federico Mena Quintero, Raph Levien, and others
+
+@c LIBGNOMECANVAS is LGPL, ergo GPL distribution is possible
+@quotation 
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU General Public License, Version 2 or any
+later version published by the Free Software Foundation.
+@end quotation
+
+@end copying
+
+@dircategory The Algorithmic Language Scheme
+@direntry 
+* Guile-Libgnomecanvas: (guile-gnome-libgnomecanvas.info).  Structured graphics.
+@end direntry
+
+@titlepage 
+@title Guile-GNOME: Libgnomecanvas
+@subtitle version @value{VERSION}, updated @value{UPDATED}
+@author Federico Mena Quintero
+@author Raph Levien
+@author and others
+@page 
+@vskip 0pt plus 1filll
+@insertcopying 
+@end titlepage
+
+@ifnottex 
+@node Top
+@top Guile-Libgnomecanvas
+
+@insertcopying 
+@menu
+* Overview::             About libgnomecanvas and its Guile bindings.
+
+* GnomeCanvasBpath::     Bezier path canvas item
+* GnomeCanvasClipgroup:: Canvas group that implements clipping
+* GnomeCanvasEllipse::   Canvas item for drawing ellipses and circles
+* GnomeCanvasGroup::     Canvas item group
+* GnomeCanvasItem::      Base class for all canvas items
+* GnomeCanvasLine::      Line canvas item
+* gnome-canvas-path-def::Container and functions for manipulating ArtBpaths
+* GnomeCanvasPixbuf::    Pixbuf image canvas item
+* GnomeCanvasPolygon::   Polygon canvas item
+* GnomeCanvasRect::      Rectangle canvas item
+* GnomeCanvasRE::        Base class for rectangle and ellipse items
+* GnomeCanvasRichText::  Rich text canvas item
+* GnomeCanvasShape::     Base class for canvas item shapes
+* GnomeCanvasText::      Text canvas item
+* gnome-canvas-util::    Canvas utility functions
+* GnomeCanvasWidget::    Widget canvas item
+* GnomeCanvas::          Main canvas widget
+
+* Undocumented::         Undocumented functions.
+
+* Type Index::
+* Function Index::
+@end menu
+
+@end ifnottex
+
+@iftex 
+@shortcontents 
+@end iftex
+
+@include overview.texi
+
+@include section-gnome-canvas-bpath.xml.texi
+@include section-gnome-canvas-clipgroup.xml.texi
+@include section-gnome-canvas-ellipse.xml.texi
+@include section-gnome-canvas-group.xml.texi
+@include section-gnome-canvas-item.xml.texi
+@include section-gnome-canvas-line.xml.texi
+@include section-gnome-canvas-path-def.xml.texi
+@include section-gnome-canvas-pixbuf.xml.texi
+@include section-gnome-canvas-polygon.xml.texi
+@include section-gnome-canvas-rect.xml.texi
+@include section-gnome-canvas-re.xml.texi
+@include section-gnome-canvas-rich-text.xml.texi
+@include section-gnome-canvas-shape.xml.texi
+@include section-gnome-canvas-text.xml.texi
+@include section-gnome-canvas-util.xml.texi
+@include section-gnome-canvas-widget.xml.texi
+@include section-gnome-canvas.xml.texi
+
+@include undocumented.texi
+
+@node Type Index
+@unnumbered Type Index
+@printindex tp
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+@bye

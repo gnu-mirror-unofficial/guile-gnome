@@ -1,0 +1,18 @@
+
+@c %start of fragment
+
+@node GtkInvisible
+@chapter GtkInvisible
+A widget which is not displayed
+
+@section Overview
+The @code{<gtk-invisible>} widget is used internally in GTK+, and is probably
+not very useful for application developers.
+
+It is used for reliable pointer grabs and selection handling in the code for
+drag-and-drop.
+
+@section Usage
+@include defuns-gtkinvisible.xml.texi
+
+@c %end of fragment

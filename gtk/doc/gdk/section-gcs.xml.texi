@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@node Graphics Contexts
+@chapter Graphics Contexts
+Objects to encapsulate drawing properties
+
+@section Overview
+All drawing operations in GDK take a @dfn{graphics context} (GC) argument. A
+graphics context encapsulates information about the way things are drawn, such
+as the foreground color or line width. By using graphics contexts, the number of
+arguments to each drawing call is greatly reduced, and communication overhead is
+minimized, since identical arguments do not need to be passed repeatedly.
+
+Most values of a graphics context can be set at creation time by using
+@code{gdk-gc-new-with-values}, or can be set one-by-one using functions such as
+@code{gdk-gc-set-foreground}. A few of the values in the GC, such as the dash
+pattern, can only be set by the latter method.
+
+@section Usage
+@include defuns-gcs.xml.texi
+
+@c %end of fragment

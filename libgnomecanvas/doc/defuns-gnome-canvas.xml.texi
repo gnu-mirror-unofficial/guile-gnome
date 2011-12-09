@@ -1,0 +1,467 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas>
+Derives from @code{<gtk-layout>}.
+
+This class defines the following properties:
+
+@table @code
+@item aa
+The antialiasing mode of the canvas.
+
+@item focused-item
+
+
+@end table
+
+@end deftp
+
+@defop Signal <gnome-canvas> draw-background  (arg0@tie{}@code{<gdk-drawable>}) (arg1@tie{}@code{<gint>}) (arg2@tie{}@code{<gint>}) (arg3@tie{}@code{<gint>}) (arg4@tie{}@code{<gint>})
+This signal is emitted to draw the background for non-antialiased mode canvas
+widgets. The default method uses the canvas widget's style to draw the
+background.
+
+@end defop
+
+@defop Signal <gnome-canvas> render-background  (arg0@tie{}@code{<gpointer>})
+This signal is emitted for antialiased mode canvas widgets to render the
+background. The buf data structure contains both a pointer to a packed 24-bit
+RGB array and the coordinates.
+
+@end defop
+
+@deffn Function gnome-canvas-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new empty canvas in non-antialiased mode.
+
+@table @var
+@item ret
+A newly-created canvas.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-new-aa  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new empty canvas in antialiased mode.
+
+@table @var
+@item ret
+A newly-created antialiased canvas.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-root  (self@tie{}@code{<gnome-canvas>}) @result{}@tie{} (ret@tie{}@code{<gnome-canvas-group>})
+@deffnx Method root
+Queries the root group of a canvas.
+
+@table @var
+@item canvas
+A canvas.
+
+@item ret
+The root group of the specified canvas.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-set-scroll-region  (self@tie{}@code{<gnome-canvas>}) (x1@tie{}@code{double}) (y1@tie{}@code{double}) (x2@tie{}@code{double}) (y2@tie{}@code{double})
+@deffnx Method set-scroll-region
+Sets the scrolling region of a canvas to the specified rectangle. The canvas
+will then be able to scroll only within this region. The view of the canvas is
+adjusted as appropriate to display as much of the new region as possible.
+
+@table @var
+@item canvas
+A canvas.
+
+@item x1
+Leftmost limit of the scrolling region.
+
+@item y1
+Upper limit of the scrolling region.
+
+@item x2
+Rightmost limit of the scrolling region.
+
+@item y2
+Lower limit of the scrolling region.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-get-scroll-region  (self@tie{}@code{<gnome-canvas>}) @result{}@tie{} (x1@tie{}@code{double}) (y1@tie{}@code{double}) (x2@tie{}@code{double}) (y2@tie{}@code{double})
+@deffnx Method get-scroll-region
+Queries the scrolling region of a canvas.
+
+@table @var
+@item canvas
+A canvas.
+
+@item x1
+Leftmost limit of the scrolling region (return value).
+
+@item y1
+Upper limit of the scrolling region (return value).
+
+@item x2
+Rightmost limit of the scrolling region (return value).
+
+@item y2
+Lower limit of the scrolling region (return value).
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-set-pixels-per-unit  (self@tie{}@code{<gnome-canvas>}) (n@tie{}@code{double})
+@deffnx Method set-pixels-per-unit
+Sets the zooming factor of a canvas by specifying the number of pixels that
+correspond to one canvas unit.
+
+The anchor point for zooming, i.e. the point that stays fixed and all others
+zoom inwards or outwards from it, depends on whether the canvas is set to center
+the scrolling region or not. You can control this using the
+@code{gnome-canvas-set-center-scroll-region} function. If the canvas is set to
+center the scroll region, then the center of the canvas window is used as the
+anchor point for zooming. Otherwise, the upper-left corner of the canvas window
+is used as the anchor point.
+
+@table @var
+@item canvas
+A canvas.
+
+@item n
+The number of pixels that correspond to one canvas unit.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-scroll-to  (self@tie{}@code{<gnome-canvas>}) (cx@tie{}@code{int}) (cy@tie{}@code{int})
+@deffnx Method scroll-to
+Makes a canvas scroll to the specified offsets, given in canvas pixel units. The
+canvas will adjust the view so that it is not outside the scrolling region. This
+function is typically not used, as it is better to hook scrollbars to the canvas
+layout's scrolling adjusments.
+
+@table @var
+@item canvas
+A canvas.
+
+@item cx
+Horizontal scrolling offset in canvas pixel units.
+
+@item cy
+Vertical scrolling offset in canvas pixel units.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-get-scroll-offsets  (self@tie{}@code{<gnome-canvas>}) @result{}@tie{} (cx@tie{}@code{int}) (cy@tie{}@code{int})
+@deffnx Method get-scroll-offsets
+Queries the scrolling offsets of a canvas. The values are returned in canvas
+pixel units.
+
+@table @var
+@item canvas
+A canvas.
+
+@item cx
+Horizontal scrolling offset (return value).
+
+@item cy
+Vertical scrolling offset (return value).
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-update-now  (self@tie{}@code{<gnome-canvas>})
+@deffnx Method update-now
+Forces an immediate update and redraw of a canvas. If the canvas does not have
+any pending update or redraw requests, then no action is taken. This is
+typically only used by applications that need explicit control of when the
+display is updated, like games. It is not needed by normal applications.
+
+@table @var
+@item canvas
+A canvas.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-get-item-at  (self@tie{}@code{<gnome-canvas>}) (x@tie{}@code{double}) (y@tie{}@code{double}) @result{}@tie{} (ret@tie{}@code{<gnome-canvas-item>})
+@deffnx Method get-item-at
+Looks for the item that is under the specified position, which must be specified
+in world coordinates.
+
+@table @var
+@item canvas
+A canvas.
+
+@item x
+X position in world coordinates.
+
+@item y
+Y position in world coordinates.
+
+@item ret
+The sought item, or NULL if no item is at the specified coordinates.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-request-redraw  (self@tie{}@code{<gnome-canvas>}) (x1@tie{}@code{int}) (y1@tie{}@code{int}) (x2@tie{}@code{int}) (y2@tie{}@code{int})
+@deffnx Method request-redraw
+Convenience function that informs a canvas that the specified rectangle needs to
+be repainted. This function converts the rectangle to a microtile array and
+feeds it to @code{gnome-canvas-request-redraw-uta}. The rectangle includes
+@var{x1} and @var{y1}, but not @var{x2} and @var{y2}. To be used only by item
+implementations.
+
+@table @var
+@item canvas
+A canvas.
+
+@item x1
+Leftmost coordinate of the rectangle to be redrawn.
+
+@item y1
+Upper coordinate of the rectangle to be redrawn.
+
+@item x2
+Rightmost coordinate of the rectangle to be redrawn, plus 1.
+
+@item y2
+Lower coordinate of the rectangle to be redrawn, plus 1.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-w2c  (self@tie{}@code{<gnome-canvas>}) (wx@tie{}@code{double}) (wy@tie{}@code{double}) @result{}@tie{} (cx@tie{}@code{int}) (cy@tie{}@code{int})
+@deffnx Method w2c
+Converts world coordinates into canvas pixel coordinates.
+
+@table @var
+@item canvas
+A canvas.
+
+@item wx
+World X coordinate.
+
+@item wy
+World Y coordinate.
+
+@item cx
+X pixel coordinate (return value).
+
+@item cy
+Y pixel coordinate (return value).
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-w2c-d  (self@tie{}@code{<gnome-canvas>}) (wx@tie{}@code{double}) (wy@tie{}@code{double}) @result{}@tie{} (cx@tie{}@code{double}) (cy@tie{}@code{double})
+@deffnx Method w2c-d
+Converts world coordinates into canvas pixel coordinates. This version returns
+coordinates in floating point coordinates, for greater precision.
+
+@table @var
+@item canvas
+A canvas.
+
+@item wx
+World X coordinate.
+
+@item wy
+World Y coordinate.
+
+@item cx
+X pixel coordinate (return value).
+
+@item cy
+Y pixel coordinate (return value).
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-c2w  (self@tie{}@code{<gnome-canvas>}) (cx@tie{}@code{int}) (cy@tie{}@code{int}) @result{}@tie{} (wx@tie{}@code{double}) (wy@tie{}@code{double})
+@deffnx Method c2w
+Converts canvas pixel coordinates to world coordinates.
+
+@table @var
+@item canvas
+A canvas.
+
+@item cx
+Canvas pixel X coordinate.
+
+@item cy
+Canvas pixel Y coordinate.
+
+@item wx
+X world coordinate (return value).
+
+@item wy
+Y world coordinate (return value).
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-window-to-world  (self@tie{}@code{<gnome-canvas>}) (winx@tie{}@code{double}) (winy@tie{}@code{double}) @result{}@tie{} (worldx@tie{}@code{double}) (worldy@tie{}@code{double})
+@deffnx Method window-to-world
+Converts window-relative coordinates into world coordinates. You can use this
+when you need to convert mouse coordinates into world coordinates, for example.
+
+@table @var
+@item canvas
+A canvas.
+
+@item winx
+Window-relative X coordinate.
+
+@item winy
+Window-relative Y coordinate.
+
+@item worldx
+X world coordinate (return value).
+
+@item worldy
+Y world coordinate (return value).
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-world-to-window  (self@tie{}@code{<gnome-canvas>}) (worldx@tie{}@code{double}) (worldy@tie{}@code{double}) @result{}@tie{} (winx@tie{}@code{double}) (winy@tie{}@code{double})
+@deffnx Method world-to-window
+Converts world coordinates into window-relative coordinates.
+
+@table @var
+@item canvas
+A canvas.
+
+@item worldx
+World X coordinate.
+
+@item worldy
+World Y coordinate.
+
+@item winx
+X window-relative coordinate.
+
+@item winy
+Y window-relative coordinate.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-get-color  (self@tie{}@code{<gnome-canvas>}) (spec@tie{}@code{mchars}) (color@tie{}@code{<gdk-color>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-color
+Allocates a color based on the specified X color specification. As a convenience
+to item implementations, it returns TRUE if the color was allocated, or FALSE if
+the specification was NULL. A NULL color specification is considered as
+"transparent" by the canvas.
+
+@table @var
+@item canvas
+A canvas.
+
+@item spec
+X color specification, or NULL for "transparent".
+
+@item color
+Returns the allocated color.
+
+@item ret
+TRUE if @var{spec} is non-NULL and the color is allocated. If @var{spec} is
+NULL, then returns FALSE.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-get-color-pixel  (self@tie{}@code{<gnome-canvas>}) (rgba@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{unsigned-long})
+@deffnx Method get-color-pixel
+Allocates a color from the RGBA value passed into this function. The alpha
+opacity value is discarded, since normal X colors do not support it.
+
+@table @var
+@item canvas
+A canvas.
+
+@item rgba
+RGBA color specification.
+
+@item ret
+Allocated pixel value corresponding to the specified color.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-set-stipple-origin  (self@tie{}@code{<gnome-canvas>}) (gc@tie{}@code{<gdk-gc>})
+@deffnx Method set-stipple-origin
+Sets the stipple origin of the specified GC as is appropriate for the canvas, so
+that it will be aligned with other stipple patterns used by canvas items. This
+is typically only needed by item implementations.
+
+@table @var
+@item canvas
+A canvas.
+
+@item gc
+GC on which to set the stipple origin.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-set-dither  (self@tie{}@code{<gnome-canvas>}) (dither@tie{}@code{<gdk-rgb-dither>})
+@deffnx Method set-dither
+Controls dithered rendering for antialiased canvases. The value of dither should
+be @code{<gdk-rgb-dither-none>}, @code{<gdk-rgb-dither-normal>}, or
+@code{<gdk-rgb-dither-max>}. The default canvas setting is
+@code{<gdk-rgb-dither-normal>}.
+
+@table @var
+@item canvas
+A canvas.
+
+@item dither
+Type of dithering used to render an antialiased canvas.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-get-dither  (self@tie{}@code{<gnome-canvas>}) @result{}@tie{} (ret@tie{}@code{<gdk-rgb-dither>})
+@deffnx Method get-dither
+Returns the type of dithering used to render an antialiased canvas.
+
+@table @var
+@item canvas
+A canvas.
+
+@item ret
+The dither setting.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GtkAccessible
+@chapter GtkAccessible
+Accessibility support for widgets
+
+@section Overview
+@section Usage
+@include defuns-gtkaccessible.xml.texi
+
+@c %end of fragment

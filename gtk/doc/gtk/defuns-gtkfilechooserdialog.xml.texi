@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-file-chooser-dialog>
+Derives from @code{<gtk-file-chooser>}, @code{<gtk-dialog>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+
+@c %end of fragment

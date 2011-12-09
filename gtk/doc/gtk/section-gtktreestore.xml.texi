@@ -1,0 +1,18 @@
+
+@c %start of fragment
+
+@node GtkTreeStore
+@chapter GtkTreeStore
+A tree-like data structure that can be used with the
+
+@section Overview
+The @code{<gtk-tree-store>} object is a list model for use with a
+@code{<gtk-tree-view>} widget. It implements the @code{<gtk-tree-model>}
+interface, and consequentialy, can use all of the methods available there. It
+also implements the @code{<gtk-tree-sortable>} interface so it can be sorted by
+the view. Finally, it also implements the tree drag and drop interfaces.
+
+@section Usage
+@include defuns-gtktreestore.xml.texi
+
+@c %end of fragment

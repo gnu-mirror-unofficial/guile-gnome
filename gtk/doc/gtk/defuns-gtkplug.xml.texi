@@ -1,0 +1,113 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-plug>
+Derives from @code{<gtk-window>}.
+
+This class defines the following slots:
+
+@table @code
+@item embedded
+Whether or not the plug is embedded
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-plug> embedded 
+@end defop
+
+@deffn Function gtk-plug-construct  (self@tie{}@code{<gtk-plug>}) (socket_id@tie{}@code{unsigned-long})
+@deffnx Method construct
+Finish the initialization of @var{plug} for a given @code{<gtk-socket>}
+identified by @var{socket-id}. This function will generally only be used by
+classes deriving from @code{<gtk-plug>}.
+
+@table @var
+@item plug
+a @code{<gtk-plug>}.
+
+@item socket-id
+the XID of the socket's window.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-plug-construct-for-display  (self@tie{}@code{<gtk-plug>}) (display@tie{}@code{<gdk-display>}) (socket_id@tie{}@code{unsigned-long})
+@deffnx Method construct-for-display
+Finish the initialization of @var{plug} for a given @code{<gtk-socket>}
+identified by @var{socket-id} which is currently displayed on @var{display}.
+This function will generally only be used by classes deriving from
+@code{<gtk-plug>}.
+
+@table @var
+@item plug
+a @code{<gtk-plug>}.
+
+@item display
+the @code{<gdk-display>} associated with @var{socket-id}'s @code{<gtk-socket>}.
+
+@item socket-id
+the XID of the socket's window.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-plug-new  (socket_id@tie{}@code{unsigned-long}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new plug widget inside the @code{<gtk-socket>} identified by
+@var{socket-id}. If @var{socket-id} is 0, the plug is left "unplugged" and can
+later be plugged into a @code{<gtk-socket>} by @code{gtk-socket-add-id}.
+
+@table @var
+@item socket-id
+the window ID of the socket, or 0.
+
+@item ret
+the new @code{<gtk-plug>} widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-plug-new-for-display  (display@tie{}@code{<gdk-display>}) (socket_id@tie{}@code{unsigned-long}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Create a new plug widget inside the @code{<gtk-socket>} identified by socket_id.
+
+@table @var
+@item display
+the @code{<gdk-display>} on which @var{socket-id} is displayed
+
+@item socket-id
+the XID of the socket's window.
+
+@item ret
+the new @code{<gtk-plug>} widget.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-plug-get-id  (self@tie{}@code{<gtk-plug>}) @result{}@tie{} (ret@tie{}@code{unsigned-long})
+@deffnx Method get-id
+Gets the window ID of a @code{<gtk-plug>} widget, which can then be used to
+embed this window inside another window, for instance with
+@code{gtk-socket-add-id}.
+
+@table @var
+@item plug
+a @code{<gtk-plug>}.
+
+@item ret
+the window ID for the plug
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

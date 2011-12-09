@@ -1,0 +1,110 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-font-selection>
+Derives from @code{<gtk-vbox>}.
+
+This class defines the following slots:
+
+@table @code
+@item font-name
+The X string that represents this font
+
+@item font
+The GdkFont that is currently selected
+
+@item preview-text
+The text to display in order to demonstrate the selected font
+
+@end table
+
+@end deftp
+
+@deffn Function gtk-font-selection-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-font-selection>}.
+
+@table @var
+@item ret
+a new @code{<gtk-font-selection>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-font-selection-get-font-name  (self@tie{}@code{<gtk-font-selection>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-font-name
+Gets the currently-selected font name. Note that this can be a different string
+than what you set with @code{gtk-font-selection-set-font-name}, as the font
+selection widget may normalize font names and thus return a string with a
+different structure. For example, "Helvetica Italic Bold 12" could be normalized
+to "Helvetica Bold Italic 12". Use @code{pango-font-description-equal} if you
+want to compare two font descriptions.
+
+@table @var
+@item fontsel
+a @code{<gtk-font-selection>}
+
+@item ret
+A string with the name of the current font, or @code{@code{#f}} if no font is
+selected. You must free this string with @code{g-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-font-selection-set-font-name  (self@tie{}@code{<gtk-font-selection>}) (fontname@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-font-name
+Sets the currently-selected font. Note that the @var{fontsel} needs to know the
+screen in which it will appear for this to work; this can be guaranteed by
+simply making sure that the @var{fontsel} is inserted in a toplevel window
+before you call this function.
+
+@table @var
+@item fontsel
+a @code{<gtk-font-selection>}
+
+@item fontname
+a font name like "Helvetica 12" or "Times Bold 18"
+
+@item ret
+@code{@code{#t}} if the font could be set successfully; @code{@code{#f}} if no
+such font exists or if the @var{fontsel} doesn't belong to a particular screen
+yet.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-font-selection-get-preview-text  (self@tie{}@code{<gtk-font-selection>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-preview-text
+Gets the text displayed in the preview area.
+
+@table @var
+@item fontsel
+a @code{<gtk-font-selection>}.
+
+@item ret
+the text displayed in the preview area. This string is owned by the widget and
+should not be modified or freed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-font-selection-set-preview-text  (self@tie{}@code{<gtk-font-selection>}) (text@tie{}@code{mchars})
+@deffnx Method set-preview-text
+Sets the text displayed in the preview area.
+
+@table @var
+@item fontsel
+a @code{<gtk-font-selection>}.
+
+@item text
+the text to display in the preview area.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

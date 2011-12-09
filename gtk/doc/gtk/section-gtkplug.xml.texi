@@ -1,0 +1,22 @@
+
+@c %start of fragment
+
+@node GtkPlug
+@chapter GtkPlug
+Toplevel for embedding into other processes
+
+@section Overview
+Together with @code{<gtk-socket>}, @code{<gtk-plug>} provides the ability to
+embed widgets from one process into another process in a fashion that is
+transparent to the user. One process creates a @code{<gtk-socket>} widget and,
+passes the ID of that widgets window to the other process, which then creates a
+@code{<gtk-plug>} with that window ID. Any widgets contained in the
+@code{<gtk-plug>} then will appear inside the first applications window.
+
+The @code{<gtk-plug>} and @code{<gtk-socket>} widgets are currently not
+available on all platforms supported by GTK+.
+
+@section Usage
+@include defuns-gtkplug.xml.texi
+
+@c %end of fragment

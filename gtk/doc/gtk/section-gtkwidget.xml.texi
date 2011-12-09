@@ -1,0 +1,26 @@
+
+@c %start of fragment
+
+@node GtkWidget
+@chapter GtkWidget
+Base class for all widgets
+
+@section Overview
+introduces @dfn{style properties} - these are basically object properties that
+are stored not on the object, but in the style object associated to the widget.
+Style properties are set in resource files. This mechanism is used for
+configuring such things as the location of the scrollbar arrows through the
+theme, giving theme authors more control over the look of applications without
+the need to write a theme engine in C.
+
+Use @code{gtk-widget-class-install-style-property} to install style properties
+for a widget class, @code{gtk-widget-class-find-style-property} or
+@code{gtk-widget-class-list-style-properties} to get information about existing
+style properties and @code{gtk-widget-style-get-property},
+@code{gtk-widget-style-get} or @code{gtk-widget-style-get-valist} to obtain the
+value of a style property.
+
+@section Usage
+@include defuns-gtkwidget.xml.texi
+
+@c %end of fragment

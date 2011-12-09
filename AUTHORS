@@ -1,0 +1,36 @@
+To find out what should go in this file, see "Information For
+Maintainers of GNU Software" (maintain.texi), the section called
+"Recording Changes".
+
+
+Martin Baulig:
+In the toplevel directory, wrote the initial versions of configure.ac,
+which live on inside autogen-pkg.sh.
+
+Andreas Rottmann:
+In the toplevel directory, wrote:
+    autogen-pkg.sh common.mk
+In the toplevel directory, changes to:
+    h2defs.py autogen.sh
+In the directory scripts/, wrote:
+    add-upstream fork-archive-packages submit-merge
+
+Toby D. Reeves:
+In the toplevel directory, wrote:
+    h2defs.py
+
+James Henstridge:
+In the toplevel directory, changes to:
+    h2defs.py
+
+Andy Wingo:
+In the toplevel directory, wrote:
+    autogen.sh dev-environ.in
+In the toplevel directory, changes to:
+    autogen-pkg.sh
+In the directory scripts/, wrote:
+    update-inventories tla-for-each
+
+Thomas Vander Stichele:
+In the toplevel directory, wrote:
+    autogen-support.sh

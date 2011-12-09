@@ -1,0 +1,85 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-tree-drag-source>
+Derives from @code{<ginterface>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deftp Class <gtk-tree-drag-dest>
+Derives from @code{<ginterface>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-tree-drag-source-drag-data-get  (self@tie{}@code{<gtk-tree-drag-source>}) (path@tie{}@code{<gtk-tree-path>}) (selection_data@tie{}@code{<gtk-selection-data>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method drag-data-get
+Asks the @code{<gtk-tree-drag-source>} to fill in @var{selection-data} with a
+representation of the row at @var{path}. @var{selection-data->target} gives the
+required type of the data. Should robustly handle a @var{path} no longer found
+in the model!
+
+@table @var
+@item drag-source
+a @code{<gtk-tree-drag-source>}
+
+@item path
+row that was dragged
+
+@item selection-data
+a @code{<gtk-selection-data>} to fill with data from the dragged row
+
+@item ret
+@samp{@code{#t}} if data of the required type was provided
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-drag-source-row-draggable  (self@tie{}@code{<gtk-tree-drag-source>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method row-draggable
+Asks the @code{<gtk-tree-drag-source>} whether a particular row can be used as
+the source of a DND operation. If the source doesn't implement this interface,
+the row is assumed draggable.
+
+@table @var
+@item drag-source
+a @code{<gtk-tree-drag-source>}
+
+@item path
+row on which user is initiating a drag
+
+@item ret
+@samp{@code{#t}} if the row can be dragged
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tree-set-row-drag-data  (self@tie{}@code{<gtk-selection-data>}) (tree_model@tie{}@code{<gtk-tree-model>}) (path@tie{}@code{<gtk-tree-path>}) @result{}@tie{} (ret@tie{}@code{bool})
+Sets selection data of target type @samp{GTK_TREE_MODEL_ROW}. Normally used in a
+drag_data_get handler.
+
+@table @var
+@item selection-data
+some @code{<gtk-selection-data>}
+
+@item tree-model
+a @code{<gtk-tree-model>}
+
+@item path
+a row in @var{tree-model}
+
+@item ret
+@samp{@code{#t}} if the @code{<gtk-selection-data>} had the proper target type
+to allow us to set a tree row
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

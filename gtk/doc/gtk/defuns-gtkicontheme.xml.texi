@@ -1,0 +1,284 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-icon-theme>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@defop Signal <gtk-icon-theme> changed 
+Emitted when the current icon theme is switched or GTK+ detects that a change
+has occurred in the contents of the current icon theme.
+
+@end defop
+
+@deffn Function gtk-icon-theme-new  @result{}@tie{} (ret@tie{}@code{<gtk-icon-theme>})
+Creates a new icon theme object. Icon theme objects are used to lookup up an
+icon by name in a particular icon theme. Usually, you'll want to use
+@code{gtk-icon-theme-get-default} or @code{gtk-icon-theme-get-for-screen} rather
+than creating a new icon theme object for scratch.
+
+@table @var
+@item ret
+the newly created @code{<gtk-icon-theme>} object.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-icon-theme-get-default  @result{}@tie{} (ret@tie{}@code{<gtk-icon-theme>})
+Gets the icon theme for the default screen. See
+@code{gtk-icon-theme-get-for-screen}.
+
+@table @var
+@item ret
+A unique @code{<gtk-icon-theme>} associated with the default screen. This icon
+theme is associated with the screen and can be used as long as the screen is
+open. Do not ref or unref it.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-icon-theme-get-for-screen  (screen@tie{}@code{<gdk-screen>}) @result{}@tie{} (ret@tie{}@code{<gtk-icon-theme>})
+Gets the icon theme object associated with @var{screen}; if this function has
+not previously been called for the given screen, a new icon theme object will be
+created and associated with the screen. Icon theme objects are fairly expensive
+to create, so using this function is usually a better choice than calling than
+@code{gtk-icon-theme-new} and setting the screen yourself; by using this
+function a single icon theme object will be shared between users.
+
+@table @var
+@item screen
+a @code{<gdk-screen>}
+
+@item ret
+A unique @code{<gtk-icon-theme>} associated with the given screen. This icon
+theme is associated with the screen and can be used as long as the screen is
+open. Do not ref or unref it.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-icon-theme-set-screen  (self@tie{}@code{<gtk-icon-theme>}) (screen@tie{}@code{<gdk-screen>})
+@deffnx Method set-screen
+Sets the screen for an icon theme; the screen is used to track the user's
+currently configured icon theme, which might be different for different screens.
+
+@table @var
+@item icon-theme
+a @code{<gtk-icon-theme>}
+
+@item screen
+a @code{<gdk-screen>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-icon-theme-append-search-path  (self@tie{}@code{<gtk-icon-theme>}) (path@tie{}@code{mchars})
+@deffnx Method append-search-path
+Appends a directory to the search path. See
+@code{gtk-icon-theme-set-search-path}.
+
+@table @var
+@item icon-theme
+a @code{<gtk-icon-theme>}
+
+@item path
+directory name to append to the icon path
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-icon-theme-prepend-search-path  (self@tie{}@code{<gtk-icon-theme>}) (path@tie{}@code{mchars})
+@deffnx Method prepend-search-path
+Prepends a directory to the search path. See
+@code{gtk-icon-theme-set-search-path}.
+
+@table @var
+@item icon-theme
+a @code{<gtk-icon-theme>}
+
+@item path
+directory name to prepend to the icon path
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-icon-theme-set-custom-theme  (self@tie{}@code{<gtk-icon-theme>}) (theme_name@tie{}@code{mchars})
+@deffnx Method set-custom-theme
+Sets the name of the icon theme that the @code{<gtk-icon-theme>} object uses
+overriding system configuration. This function cannot be called on the icon
+theme objects returned from @code{gtk-icon-theme-get-default} and
+@code{gtk-icon-theme-get-for-screen}.
+
+@table @var
+@item icon-theme
+a @code{<gtk-icon-theme>}
+
+@item theme-name
+name of icon theme to use instead of configured theme, or @samp{@code{#f}} to
+unset a previously set custom theme
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-icon-theme-has-icon  (self@tie{}@code{<gtk-icon-theme>}) (icon_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method has-icon
+Checks whether an icon theme includes an icon for a particular name.
+
+@table @var
+@item icon-theme
+a @code{<gtk-icon-theme>}
+
+@item icon-name
+the name of an icon
+
+@item ret
+@samp{@code{#t}} if @var{icon-theme} includes an icon for @var{icon-name}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-icon-theme-load-icon  (self@tie{}@code{<gtk-icon-theme>}) (icon_name@tie{}@code{mchars}) (size@tie{}@code{int}) (flags@tie{}@code{<gtk-icon-lookup-flags>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method load-icon
+Looks up an icon in an icon theme, scales it to the given size and renders it
+into a pixbuf. This is a convenience function; if more details about the icon
+are needed, use @code{gtk-icon-theme-lookup-icon} followed by
+@code{gtk-icon-info-load-icon}.
+
+Note that you probably want to listen for icon theme changes and update the
+icon. This is usually done by connecting to the GtkWidget::style-set signal. If
+for some reason you do not want to update the icon when the icon theme changes,
+you should consider using @code{gdk-pixbuf-copy} to make a private copy of the
+pixbuf returned by this function. Otherwise GTK+ may need to keep the old icon
+theme loaded, which would be a waste of memory.
+
+@table @var
+@item icon-theme
+a @code{<gtk-icon-theme>}
+
+@item icon-name
+the name of the icon to lookup
+
+@item size
+the desired icon size. The resulting icon may not be exactly this size; see
+@code{gtk-icon-info-load-icon}.
+
+@item flags
+flags modifying the behavior of the icon lookup
+
+@item error
+Location to store error information on failure, or @samp{@code{#f}}.
+
+@item ret
+the rendered icon; this may be a newly created icon or a new reference to an
+internal icon, so you must not modify the icon. Use @code{g-object-unref} to
+release your reference to the icon. @samp{@code{#f}} if the icon isn't found.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-icon-theme-list-icons  (self@tie{}@code{<gtk-icon-theme>}) (context@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method list-icons
+Lists the icons in the current icon theme. Only a subset of the icons can be
+listed by providing a context string. The set of values for the context string
+is system dependent, but will typically include such values as "Applications"
+and "MimeTypes".
+
+@table @var
+@item icon-theme
+a @code{<gtk-icon-theme>}
+
+@item context
+a string identifying a particular type of icon, or @samp{@code{#f}} to list all
+icons.
+
+@item ret
+a @code{<g-list>} list holding the names of all the icons in the theme. You must
+first free each element in the list with @code{g-free}, then free the list
+itself with @code{g-list-free}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-icon-theme-rescan-if-needed  (self@tie{}@code{<gtk-icon-theme>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method rescan-if-needed
+Checks to see if the icon theme has changed; if it has, any currently cached
+information is discarded and will be reloaded next time @var{icon-theme} is
+accessed.
+
+@table @var
+@item icon-theme
+a @code{<gtk-icon-theme>}
+
+@item ret
+@samp{@code{#t}} if the icon theme has changed and needed to be reloaded.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-icon-theme-add-builtin-icon  (icon_name@tie{}@code{mchars}) (size@tie{}@code{int}) (pixbuf@tie{}@code{<gdk-pixbuf>})
+Registers a built-in icon for icon theme lookups. The idea of built-in icons is
+to allow an application or library that uses themed icons to function requiring
+files to be present in the file system. For instance, the default images for all
+of GTK+'s stock icons are registered as built-icons.
+
+In general, if you use @code{gtk-icon-theme-add-builtin-icon} you should also
+install the icon in the icon theme, so that the icon is generally available.
+
+This function will generally be used with pixbufs loaded via
+@code{gdk-pixbuf-new-from-inline}.
+
+@table @var
+@item icon-name
+the name of the icon to register
+
+@item size
+the size at which to register the icon (different images can be registered for
+the same icon name at different sizes.)
+
+@item pixbuf
+@code{<gdk-pixbuf>} that contains the image to use for @var{icon-name}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

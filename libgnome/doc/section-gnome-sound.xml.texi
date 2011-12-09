@@ -1,0 +1,20 @@
+
+@c %start of fragment
+
+@node gnome-sound
+@chapter gnome-sound
+Sound playing routines.
+
+@section Overview
+This module provides wrapper functions for playing sound samples. Currently it
+just wraps the esound daemon, but the API is flexible enough that other sound
+infrastructures can be included in the future.
+
+These functions also allow for the fact that no sound may be supported on the
+current platform. So applications can safely call these functions to play sounds
+and they will just quietly return if no action is possible.
+
+@section Usage
+@include defuns-gnome-sound.xml.texi
+
+@c %end of fragment

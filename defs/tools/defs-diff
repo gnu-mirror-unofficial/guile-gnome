@@ -1,0 +1,93 @@
+#!/usr/bin/guile -s
+!#
+;; Copyright (C) 2004 Free Software Foundation, Inc.
+;; GPL version 2 or later.
+
+;; Assumes that a defs file is composed of lists of symbols, strings,
+;; numbers, #t/#f, and other lists. Each toplevel list is assumed to
+;; have at least two elements.
+
+(use-modules (ice-9 pretty-print))
+
+(define from-port #f)
+(define to-port #f)
+
+(define (usage)
+  (display "defs-diff FROM-FILE [TO-FILE]\n" (current-error-port))
+  (display "If there is no TO-FILE, defs-diff will read from stdin.\n")
+  (exit 1))
+
+(let ((args (program-arguments)))
+  (case (length args)
+    ((2) (set! to-port (current-input-port)))
+    ((3) (set! to-port (open-input-file (caddr args))))
+    (else (usage)))
+  (set! from-port (open-input-file (cadr args))))
+     
+(define (form-comp-object f)
+  (case (car f)
+    ((define-object define-enum define-flags define-interface
+      define-boxed define-pointer define-function define-method)
+     (cadr (assq 'c-name (cddr f))))
+    ((include)
+     (cadr f))
+    (else
+     (error "unknown defs form type" (car f)))))
+  
+;; If two forms should be treated as the same
+(define (form=? f1 f2)
+  (and (eq? (car f1) (car f2))
+       (apply equal? (map form-comp-object (list f1 f2)))))
+
+(define (symbol<? x y)
+  (string<? (symbol->string x) (symbol->string y)))
+
+(define (form<? f1 f2)
+  (if (eq? (car f1) (car f2))
+      (let ((c1 (form-comp-object f1))
+            (c2 (form-comp-object f2)))
+        (if (symbol? c1)
+            (if (symbol? c2) (symbol<? c1 c2) #t)
+            (if (symbol? c2) #f (string<? c1 c2))))
+      (symbol<? (car f1) (car f2))))
+
+(define (collect-forms port)
+  (let lp ((out '()))
+    (let ((form (read port)))
+      (if (eof-object? form)
+          (sort! (reverse! out) form<?)
+          (lp (cons form out))))))
+
+;; If two forms are really the same
+(define (form==? f1 f2)
+  (equal? f1 f2))
+
+(let lp ((l1 (collect-forms from-port))
+         (l2 (collect-forms to-port)))
+  (define (minus)
+    (display "-")
+    (pretty-print (car l1))
+    (lp (cdr l1) l2))
+  (define (plus)
+    (display "+")
+    (pretty-print (car l2))
+    (lp l1 (cdr l2)))
+  (define (eq)
+    (lp (cdr l1) (cdr l2)))
+  (cond ((and (null? l1) (null? l2))) ; finished
+        ((null? l2)
+         (minus))
+        ((null? l1)
+         (plus))
+        ((or (form<? (car l1) (car l2))
+             (and (form=? (car l1) (car l2))
+                  (not (form==? (car l1) (car l2)))))
+         (minus))
+        ((or (not (form=? (car l1) (car l2)))
+             (and (form=? (car l1) (car l2))
+                  (not (form==? (car l1) (car l2)))))
+         (plus))
+        (else
+         (or (form==? (car l1) (car l2))
+             (error "wingo is stupid"))
+         (eq))))

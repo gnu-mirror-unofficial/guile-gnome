@@ -1,0 +1,244 @@
+2008-05-01  Andy Wingo  <wingo@pobox.com>
+
+	* doc/overview.texi (Overview): Add some example docs.
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.98 ==
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* doc/*.texi: Update docs.
+
+2008-04-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gnome-vfs-port.c (vport_print): Fix some deprecation
+	warnings.
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* == Released guile-gnome-platform version 2.15.97 ==
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* NEWS: Update NEWS.
+
+2008-04-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gnome-vfs-spec.scm (unwrap-value-cg): Use new GValue
+	functions.
+
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.96 ==
+
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* doc/defuns-*.texi: Regenerated.
+
+	* doc/guile-gnome-gnome-vfs.texi (Top): 
+	* doc/undocumented.texi: New section for undocumented exports.
+
+2007-11-30  Andy Wingo  <wingo@pobox.com>
+
+	* doc/guile-gnome-gnome-vfs.texi (Top): Add type index.
+
+	* gnome/overrides/gnome-vfs.defs: Ignore all functions that deal
+	in opaque types.
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.95 ==
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* tests/Makefile.am:
+	* tests/wrapset.api:
+	* tests/wrapset.scm: Add API regression test suite.
+
+2007-11-08  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am:
+	* doc/: Add documentation, generated from upstream gtk-doc.
+	Suboptimal, as it does not talk at all the mapping between
+	gnome-vfs handles and scheme ports.
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.94 ==
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* NEWS: Updated.
+
+2007-06-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.93 ==
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.92 ==
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gnome-vfs.defs-type-ignores: Update for names
+	that don't follow standard conventions.
+
+	* gnome/overrides/gnome-vfs.defs: Update ignores for gnome-vfs
+	2.16.
+
+	* gnome/gw/gnome-vfs-spec.scm (global-declarations-cg): Include
+	gnome-vfs-mime.h also.
+
+2007-05-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gnome-vfs-spec.scm (initialize): Use uint64/int64
+	rather than long-long in aliases.
+
+2007-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.91 ==
+
+2007-05-04  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gnome-vfs.defs (gnome_vfs_open)
+	(gnome_vfs_open_uri, gnome_vfs_create, gnome_vfs_create_uri)
+	(port->handle): Don't leave guile mode for functions that deal in
+	SCM.
+
+2006-12-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.90 ==
+
+2006-11-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gnome-vfs-spec.scm: Use (gnome gw support g-wrap), the
+	g-wrap compatibility wrapper.
+
+2006-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gnome-vfs.defs ("gnome_vfs_mime_add_extension"):
+	No more bonobo functions in new gnome-vfs.
+
+	* gnome/gw/gnome-vfs-port.c (LOCK, UNLOCK): Fix locking.
+
+	* package.ac: 
+	* gnome/gw/Makefile.am (libgw_guile_gnome_gnome_vfs_la_CFLAGS):
+	Hook into the standard --disable-deprecated mechanism.
+
+2005-09-17  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/gnome-vfs-port.c (vport_seek): Fix GCC 4.0 warnings.
+
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.7.99 ==
+
+2005-01-11  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.98 ==
+
+2005-01-11  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gnome-vfs.defs-type-ignores (GnomeVFSMimeAction)
+	(GnomeVFSMimeActionType):
+	* gnome/overrides/gnome-vfs.defs
+	(gnome_vfs_mime_id_in_application_list)
+	(gnome_vfs_mime_id_in_component_list)
+	(gnome_vfs_mime_action_launch)
+	(gnome_vfs_mime_action_launch_with_env)
+	(gnome_vfs_mime_get_all_desktop_entries)
+	(gnome_vfs_application_is_user_owned_application)
+	(gnome_vfs_mime_get_default_action_type)
+	(gnome_vfs_mime_get_default_action)
+	(gnome_vfs_mime_get_icon)
+	(gnome_vfs_mime_application_new_from_id)
+	(gnome_vfs_mime_get_default_desktop_entry): Ignored, because they
+	are deprecated in 2.8 and this API doesn't have users.
+
+2004-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.97 ==
+
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Add record_check.
+
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* glib-checks.ac: 
+	* defs-checks.ac: Versioned pkg-config check
+
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
+	versioned directory.
+
+2004-10-16  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Require gnome-vfs-2.0 >= 2.8.0.
+
+2004-10-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gnome-vfs-spec.scm (wrap-value-cg): Throw to
+	'gnome-vfs-error with the specific kind of error as an argument.
+	* gnome/gw/gnome-vfs-support.h (RESULT_ERROR): Same.
+
+	* gnome/overrides/gnome-vfs.defs (gnome_vfs_result_to_string):
+	Define as a function, not a method.
+
+2004-10-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/Makefile.am (module_DATA): Dist the
+	type-ignores.
+
+	* gnome/overrides/gnome-vfs.defs: Adjust the prototypes of the
+	open/create procs to return SCM. Add a wrapper for port->handle.
+
+	* gnome/gw/gnome-vfs-support.[ch] (_wrap_gnome_vfs_open)
+	(_wrap_gnome_vfs_open_uri, _wrap_gnome_vfs_create)
+	(_wrap_gnome_vfs_create_uri): Return ports instead of handles.
+	
+	* gnome/gw/Makefile.am, gnome/gw/gnome-vfs-spec.scm: Pull the
+	-port files into the build.
+
+	* gnome/gw/gnome-vfs-port.[ch]: New file which wraps a
+	GnomeVFSHandle into a scheme port. Also implements port->handle.
+
+2004-10-09  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/Makefile.am: Adjusted for (gnome vfs).
+
+	* gnome/vfs.scm: Moved from (gnome gnome-vfs). Don't bring in GTK.
+
+	* package.ac: Check for gnome-vfs-2.0.
+
+	* gnome/gw/gnome-vfs-spec.scm: Add a custom wrapper for
+	GnomeVFSResult that will throw an error if the result is not ok,
+	unspecified otherwise. Alias FileSize and FileOffset to the
+	appropriate g-wrap/standard types.
+	(global-declarations-cg): Include a bunch more headers.
+	(initializations-cg): Call gnome_vfs_init(). Ref the
+	GnomeVFSResult enum class so we can just peek it later.
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_gnome_vfs_la_CFLAGS):
+	Compile with -DGNOME_VFS_DISABLE_DEPRECATED.
+
+	* gnome/overrides/gnome-vfs.defs-type-ignores: Ignore
+	GnomeVFSResult due to a custom wrapper. Ignore deprecated types.
+
+	* gnome/gw/gnome-vfs-support.[ch] (_wrap_gnome_vfs_directory_open)
+	(_wrap_gnome_vfs_directory_open_from_uri, _wrap_gnome_vfs_open)
+	(_wrap_gnome_vfs_open_uri, _wrap_gnome_vfs_create)
+	(_wrap_gnome_vfs_create_uri): Custom wrappers for procedures that
+	create handles.
+
+	* gnome/overrides/gnome-vfs.defs: Add subtype specifiers for
+	functions taking or returning lists, custom wrappers for
+	procedures that create handles, and ignores for deprecated
+	procedures.
+
+	* package.ac: Check the right pkg-config module.
+
+	* Initial import via guile-gnome-template's `templatize' routine.
+

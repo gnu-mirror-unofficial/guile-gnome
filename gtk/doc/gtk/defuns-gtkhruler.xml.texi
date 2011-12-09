@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-hruler>
+Derives from @code{<gtk-ruler>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-hruler-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new horizontal ruler.
+
+@table @var
+@item ret
+a new @code{<gtk-hruler>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,110 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas-rich-text>
+Derives from @code{<gnome-canvas-item>}.
+
+This class defines the following properties:
+
+@table @code
+@item text
+Text to display
+
+@item x
+X position
+
+@item y
+Y position
+
+@item width
+Width for text box
+
+@item height
+Height for text box
+
+@item editable
+Is this rich text item editable?
+
+@item visible
+Is this rich text item visible?
+
+@item cursor-visible
+Is the cursor visible in this rich text item?
+
+@item cursor-blink
+Does the cursor blink in this rich text item?
+
+@item grow-height
+Should the text box height grow if the text does not fit?
+
+@item wrap-mode
+Wrap mode for multiline text
+
+@item justification
+Justification mode
+
+@item direction
+Text direction
+
+@item anchor
+Anchor point for text
+
+@item pixels-above-lines
+Number of pixels to put above lines
+
+@item pixels-below-lines
+Number of pixels to put below lines
+
+@item pixels-inside-wrap
+Number of pixels to put inside the wrap
+
+@item left-margin
+Number of pixels in the left margin
+
+@item right-margin
+Number of pixels in the right margin
+
+@item indent
+Number of pixels for indentation
+
+@end table
+
+@end deftp
+
+@defop Signal <gnome-canvas-rich-text> tag-changed  (arg0@tie{}@code{<gobject>})
+@end defop
+
+@deffn Function gnome-canvas-rich-text-set-buffer  (self@tie{}@code{<gnome-canvas-rich-text>}) (buffer@tie{}@code{<gtk-text-buffer>})
+@deffnx Method set-buffer
+Sets the buffer field of the @var{text} to @var{buffer}.
+
+@table @var
+@item text
+a @code{<gnome-canvas-rich-text>}.
+
+@item buffer
+a @code{<gtk-text-buffer>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-canvas-rich-text-get-buffer  (self@tie{}@code{<gnome-canvas-rich-text>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-buffer>})
+@deffnx Method get-buffer
+Returns a @code{<gtk-text-buffer>} associated with the
+@code{<gnome-canvas-rich-text>}. This function creates a new
+@code{<gtk-text-buffer>} if the text buffer is NULL.
+
+@table @var
+@item text
+a @code{<gnome-canvas-rich-text>}.
+
+@item ret
+the @code{<gtk-text-buffer>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

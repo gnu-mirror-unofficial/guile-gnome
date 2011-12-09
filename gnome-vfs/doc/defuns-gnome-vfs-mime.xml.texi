@@ -1,0 +1,99 @@
+
+@c %start of fragment
+
+@deffn Function gnome-vfs-mime-type-from-name  (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+@samp{gnome_vfs_mime_type_from_name} is deprecated and should not be used in
+newly-written code. This function is deprecated, use
+@code{gnome-vfs-get-mime-type-for-name} instead.
+
+Determine the mime type for @var{filename}.
+
+Returns:
+
+@table @var
+@item filename
+a filename (the file does not necessarily exist).
+
+@item ret
+the mime-type for this filename. Will return @samp{GNOME_VFS_MIME_TYPE_UNKNOWN}
+if mime-type could not be found.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-get-mime-type-common  (uri@tie{}@code{<gnome-vfsuri>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Tries to guess the mime type of the file represented by @var{uri}. Favors using
+the file data to the @var{uri} extension. Handles @var{uri} of a non-existent
+file by falling back on returning a type based on the extension. If cant find
+the mime-type based on the extension also then returns
+'application/octet-stream'.
+
+FIXME: This function will not necessarily return the same mime type as doing a
+get file info on the text uri.
+
+@table @var
+@item uri
+a real file or a non-existent uri.
+
+@item ret
+the mime-type for @var{uri}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-get-mime-type-from-uri  (uri@tie{}@code{<gnome-vfsuri>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Tries to guess the mime type of the file @var{uri} by checking the file name
+extension. Works on non-existent files.
+
+@table @var
+@item uri
+a file uri.
+
+@item ret
+the mime-type for file at @var{uri}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-mime-type-is-supertype  (mime_type@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+@table @var
+@item mime-type
+a const char * identifying a mime type.
+
+@item ret
+Whether @var{mime-type} is of the form "foo@samp{/}*".
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-mime-info-cache-reload  (dir@tie{}@code{mchars})
+Reload the mime information for the @var{dir}.
+
+@table @var
+@item dir
+directory path which needs reloading.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-mime-reload 
+Reload the MIME database.
+
+@end deffn
+
+@deffn Function gnome-vfs-mime-shutdown 
+@samp{gnome_vfs_mime_shutdown} is deprecated and should not be used in
+newly-written code. This function doesn't have to be called as the operating
+system automatically cleans up resources when exiting.
+
+Unload the MIME database from memory.
+
+@end deffn
+
+
+@c %end of fragment

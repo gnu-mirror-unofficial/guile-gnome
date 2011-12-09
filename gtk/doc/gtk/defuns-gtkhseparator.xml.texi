@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-hseparator>
+Derives from @code{<gtk-separator>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-hseparator-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-hseparator>}.
+
+@table @var
+@item ret
+a new @code{<gtk-hseparator>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

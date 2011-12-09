@@ -1,0 +1,30 @@
+
+@c %start of fragment
+
+@node GtkActionGroup
+@chapter GtkActionGroup
+A group of actions
+
+@section Overview
+Actions are organised into groups. An action group is essentially a map from
+names to @code{<gtk-action>} objects.
+
+All actions that would make sense to use in a particular context should be in a
+single group. Multiple action groups may be used for a particular user
+interface. In fact, it is expected that most nontrivial applications will make
+use of multiple groups. For example, in an application that can edit multiple
+documents, one group holding global actions (e.g. quit, about, new), and one
+group per document holding actions that act on that document (eg. save,
+cut/copy/paste, etc). Each window's menus would be constructed from a
+combination of two action groups.
+
+Accelerators are handled by the GTK+ accelerator map. All actions are assigned
+an accelerator path (which normally has the form @samp{<Actions>//}) and a
+shortcut is associated with this accelerator path. All menuitems and toolitems
+take on this accelerator path. The GTK+ accelerator map code makes sure that the
+correct shortcut is displayed next to the menu item.
+
+@section Usage
+@include defuns-gtkactiongroup.xml.texi
+
+@c %end of fragment

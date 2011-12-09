@@ -1,0 +1,137 @@
+(module-api
+  (version 1 0)
+  ((gnome corba)
+   (uses-interfaces)
+   (typed-exports
+     (<CORBA:Object> class)
+     (<PortableServer-ServantBase> class)
+     (bonobo-get-object procedure (arity 2 0 #f))
+     (bonobo-object-query-interface
+       procedure
+       (arity 2 0 #f))
+     (corba-record-accessor procedure (arity 2 0 #f))
+     (corba-record-constructor
+       procedure
+       (arity 1 0 #t))
+     (corba-record-constructor-from-struct
+       procedure
+       (arity 1 0 #f))
+     (corba-record-modifier procedure (arity 2 0 #f))
+     (corba-record-predicate procedure (arity 1 0 #f))
+     (corba-record-type-descriptor
+       procedure
+       (arity 1 0 #f))
+     (corba-record-type-fields
+       procedure
+       (arity 1 0 #f))
+     (corba-record-type-vtable struct-vtable)
+     (corba-record-type? procedure (arity 1 0 #f))
+     (corba-record-typecode procedure (arity 1 0 #f))
+     (corba-record? procedure (arity 1 0 #f))
+     (corba-sequence->list procedure (arity 1 0 #f))
+     (corba-servant->reference
+       procedure
+       (arity 1 0 #f))
+     (corba-struct->record procedure (arity 1 0 #f))
+     (gnome-corba-error procedure (arity 1 0 #t))
+     (make-corba-record-type procedure (arity 1 0 #t))))
+  ((gnome corba primitives)
+   (uses-interfaces)
+   (typed-exports
+     (<CORBA:Object> class)
+     (<PortableServer-ServantBase> class)
+     (corba-primitive-find-poa-class
+       procedure
+       (arity 1 0 #f))
+     (corba-primitive-invoke-method
+       procedure
+       (arity 3 0 #t))
+     (corba-primitive-main procedure (arity 0 0 #f))
+     (corba-primitive-make-poa-instance
+       procedure
+       (arity 1 0 #f))
+     (corba-primitive-open-module
+       procedure
+       (arity 1 0 #f))
+     (corba-primitive-register-interface
+       procedure
+       (arity 1 0 #f))
+     (corba-primitive-typecode->class
+       procedure
+       (arity 1 0 #f))
+     (corba-typecode-primitive->name
+       procedure
+       (arity 1 0 #f))
+     (corba-typecode-primitive?
+       procedure
+       (arity 1 0 #f))))
+  ((gnome corba types)
+   (uses-interfaces)
+   (typed-exports
+     (%corba-sequence-vtable struct-vtable)
+     (%corba-sequence-vtable-offset-printer <integer>)
+     (%corba-sequence-vtable-offset-user <integer>)
+     (%corba-struct-vtable struct-vtable)
+     (%corba-struct-vtable-offset-printer <integer>)
+     (%corba-struct-vtable-offset-user <integer>)
+     (corba-object-class->typecode
+       procedure
+       (arity 1 0 #f))
+     (corba-sequence-length procedure (arity 1 0 #f))
+     (corba-sequence-ref procedure (arity 2 0 #f))
+     (corba-sequence-set! procedure (arity 3 0 #f))
+     (corba-sequence-set-length!
+       procedure
+       (arity 2 0 #f))
+     (corba-sequence-type procedure (arity 1 0 #f))
+     (corba-struct-fields procedure (arity 1 0 #f))
+     (corba-struct-is-a? procedure (arity 2 0 #f))
+     (corba-struct-ref procedure (arity 2 0 #f))
+     (corba-struct-set! procedure (arity 3 0 #f))
+     (corba-struct-type procedure (arity 1 0 #f))
+     (corba-struct? procedure (arity 1 0 #f))
+     (corba-typecode->gtype-class
+       procedure
+       (arity 1 0 #f))
+     (gnome-corba-error procedure (arity 1 0 #t))
+     (make-corba-sequence procedure (arity 2 0 #t))
+     (make-corba-struct procedure (arity 2 1 #f))))
+  ((gnome gobject generics)
+   (uses-interfaces)
+   (typed-exports
+     (block generic (<gtype-instance> <top>))
+     (connect
+       generic
+       <top>
+       (<gtype-instance> <symbol> <procedure>))
+     (connect-after
+       generic
+       (<gtype-instance> <symbol> <procedure>))
+     (connected? generic (<gtype-instance> <top>))
+     (create-signal
+       generic
+       (<gtype-class> <symbol> <top> <top>))
+     (disconnect generic (<gtype-instance> <top>))
+     (emit generic
+           (<gtype-instance> <symbol> . <top>))
+     (find-property generic (<gtype-class> <symbol>))
+     (get generic (<gobject> <symbol>))
+     (get-properties generic (<gtype-class>))
+     (get-property-names generic (<gtype-class>))
+     (get-signals generic (<gtype-class>))
+     (invoke generic (<gclosure> . <top>))
+     (set generic (<gobject> <symbol> <top>))
+     (unblock generic (<gtype-instance> <top>))))
+  ((gnome gw corba)
+   (uses-interfaces (gnome gw generics))
+   (typed-exports
+     (%init-gnome-corba procedure (arity 0 0 #t))
+     (%init-gnome-corba-primitives
+       procedure
+       (arity 0 0 #t))
+     (%init-gnome-corba-types
+       procedure
+       (arity 0 0 #t))))
+  ((gnome gw generics)
+   (uses-interfaces (gnome gobject generics))
+   (typed-exports)))

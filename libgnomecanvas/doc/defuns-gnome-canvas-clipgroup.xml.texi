@@ -1,0 +1,21 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas-clipgroup>
+Derives from @code{<gnome-canvas-group>}.
+
+This class defines the following slots:
+
+@table @code
+@item path
+
+
+@item wind
+
+
+@end table
+
+@end deftp
+
+
+@c %end of fragment

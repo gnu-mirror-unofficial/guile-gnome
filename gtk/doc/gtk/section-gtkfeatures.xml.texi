@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node Version Information
+@chapter Version Information
+Variables and functions to check the GTK+ version
+
+@section Overview
+GTK+ provides version information, primarily useful in configure checks for
+builds that have a configure script. Applications will not typically use the
+features described here.
+
+@section Usage
+@include defuns-gtkfeatures.xml.texi
+
+@c %end of fragment

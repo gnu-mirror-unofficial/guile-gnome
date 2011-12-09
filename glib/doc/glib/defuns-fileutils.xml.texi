@@ -1,0 +1,26 @@
+
+@c %start of fragment
+
+@deffn Function g-file-error-from-errno  (err_no@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<g-file-error>})
+Gets a @code{<g-file-error>} constant based on the passed-in @var{errno}. For
+example, if you pass in @samp{EEXIST} this function returns
+@code{<g-file-error-exist>}. Unlike @var{errno} values, you can portably assume
+that all @code{<g-file-error>} values will exist.
+
+Normally a @code{<g-file-error>} value goes into a @code{<g-error>} returned
+from a function that manipulates files. So you would use
+@code{g-file-error-from-errno} when constructing a @code{<g-error>}.
+
+@table @var
+@item err-no
+an "errno" value
+
+@item ret
+@code{<g-file-error>} corresponding to the given @var{errno}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

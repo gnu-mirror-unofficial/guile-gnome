@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node Settings
+@chapter Settings
+Sharing settings between applications
+
+@section Overview
+@section Usage
+@include defuns-gtksettings.xml.texi
+
+@c %end of fragment

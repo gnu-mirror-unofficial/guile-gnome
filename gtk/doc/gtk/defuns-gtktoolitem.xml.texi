@@ -1,0 +1,467 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-tool-item>
+Derives from @code{<gtk-bin>}.
+
+This class defines the following slots:
+
+@table @code
+@item visible-horizontal
+Whether the toolbar item is visible when the toolbar is in a horizontal
+orientation.
+
+@item visible-vertical
+Whether the toolbar item is visible when the toolbar is in a vertical
+orientation.
+
+@item is-important
+Whether the toolbar item is considered important. When TRUE, toolbar buttons
+show text in GTK_TOOLBAR_BOTH_HORIZ mode
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-tool-item> create-menu-proxy  @result{}@tie{}@code{<gboolean>}
+This signal is emitted when the toolbar needs information from @var{tool-item}
+about whether the item should appear in the toolbar overflow menu. In response
+the tool item should either
+
+@itemize 
+@item
+ call @code{gtk-tool-item-set-proxy-menu-item} with a @samp{@code{#f}}
+pointer and return @samp{@code{#t}} to indicate that the item should not appear
+in the overflow menu
+@item
+ call @code{gtk-tool-item-set-proxy-menu-item} with a new menu
+item and return @samp{@code{#t}}, or 
+@item
+ return @samp{@code{#f}} to indicate that the signal was not
+handled by the item. This means that
+the item will not appear in the overflow menu unless a later handler
+installs a menu item.
+@end itemize
+
+The toolbar may cache the result of this signal. When the tool item changes how
+it will respond to this signal it must call @code{gtk-tool-item-rebuild-menu} to
+invalidate the cache and ensure that the toolbar rebuilds its overflow menu.
+
+@end defop
+
+@defop Signal <gtk-tool-item> toolbar-reconfigured 
+This signal is emitted when some property of the toolbar that the item is a
+child of changes. For custom subclasses of @code{<gtk-tool-item>}, the default
+handler of this signal use the functions to find out what the toolbar should
+look like and change themselves accordingly.
+
+@itemize 
+@item
+@code{gtk-toolbar-get-orientation}@item
+@code{gtk-toolbar-get-style}@item
+@code{gtk-toolbar-get-icon-size}@item
+@code{gtk-toolbar-get-relief-style}@end itemize
+
+@end defop
+
+@defop Signal <gtk-tool-item> set-tooltip  (arg0@tie{}@code{<gtk-tooltips>}) (arg1@tie{}@code{<gchararray>}) (arg2@tie{}@code{<gchararray>}) @result{}@tie{}@code{<gboolean>}
+This signal is emitted when the toolitem's tooltip changes. Application
+developers can use @code{gtk-tool-item-set-tooltip} to set the item's tooltip.
+
+@end defop
+
+@deffn Function gtk-tool-item-new  @result{}@tie{} (ret@tie{}@code{<gtk-tool-item>})
+Creates a new @code{<gtk-tool-item>}
+
+@table @var
+@item ret
+the new @code{<gtk-tool-item>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-set-homogeneous  (self@tie{}@code{<gtk-tool-item>}) (homogeneous@tie{}@code{bool})
+@deffnx Method set-homogeneous
+Sets whether @var{tool-item} is to be allocated the same size as other
+homogeneous items. The effect is that all homogeneous items will have the same
+width as the widest of the items.
+
+@table @var
+@item tool-item
+a @code{<gtk-tool-item:>}
+
+@item homogeneous
+whether @var{tool-item} is the same size as other homogeneous items
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-get-homogeneous  (self@tie{}@code{<gtk-tool-item>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-homogeneous
+Returns whether @var{tool-item} is the same size as other homogeneous items. See
+@code{gtk-tool-item-set-homogeneous}.
+
+@table @var
+@item tool-item
+a @code{<gtk-tool-item:>}
+
+@item ret
+@samp{@code{#t}} if the item is the same size as other homogeneous item.s
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-set-expand  (self@tie{}@code{<gtk-tool-item>}) (expand@tie{}@code{bool})
+@deffnx Method set-expand
+Sets whether @var{tool-item} is allocated extra space when there is more room on
+the toolbar then needed for the items. The effect is that the item gets bigger
+when the toolbar gets bigger and smaller when the toolbar gets smaller.
+
+@table @var
+@item tool-item
+a @code{<gtk-tool-item:>}
+
+@item expand
+Whether @var{tool-item} is allocated extra space
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-get-expand  (self@tie{}@code{<gtk-tool-item>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-expand
+Returns whether @var{tool-item} is allocated extra space. See
+@code{gtk-tool-item-set-expand}.
+
+@table @var
+@item tool-item
+a @code{<gtk-tool-item:>}
+
+@item ret
+@samp{@code{#t}} if @var{tool-item} is allocated extra space.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-set-tooltip  (self@tie{}@code{<gtk-tool-item>}) (tooltips@tie{}@code{<gtk-tooltips>}) (tip_text@tie{}@code{mchars}) (tip_private@tie{}@code{mchars})
+@deffnx Method set-tooltip
+Sets the @code{<gtk-tooltips>} object to be used for @var{tool-item}, the text
+to be displayed as tooltip on the item and the private text to be used. See
+@code{gtk-tooltips-set-tip}.
+
+@table @var
+@item tool-item
+a @code{<gtk-tool-item:>}
+
+@item tooltips
+The @code{<gtk-tooltips>} object to be used
+
+@item tip-text
+text to be used as tooltip text for @var{tool-item}
+
+@item tip-private
+text to be used as private tooltip text
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-set-use-drag-window  (self@tie{}@code{<gtk-tool-item>}) (use_drag_window@tie{}@code{bool})
+@deffnx Method set-use-drag-window
+Sets whether @var{toolitem} has a drag window. When @samp{@code{#t}} the
+toolitem can be used as a drag source through @code{gtk-drag-source-set}. When
+@var{toolitem} has a drag window it will intercept all events, even those that
+would otherwise be sent to a child of @var{toolitem}.
+
+@table @var
+@item toolitem
+a @code{<gtk-tool-item>}
+
+@item use-drag-window
+Whether @var{toolitem} has a drag window.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-get-use-drag-window  (self@tie{}@code{<gtk-tool-item>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-use-drag-window
+Returns whether @var{toolitem} has a drag window. See
+@code{gtk-tool-item-set-use-drag-window}.
+
+@table @var
+@item toolitem
+a @code{<gtk-tool-item>}
+
+@item ret
+@samp{@code{#t}} if @var{toolitem} uses a drag window.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-set-visible-vertical  (self@tie{}@code{<gtk-tool-item>}) (visible_vertical@tie{}@code{bool})
+@deffnx Method set-visible-vertical
+Sets whether @var{toolitem} is visible when the toolbar is docked vertically.
+Some tool items, such as text entries, are too wide to be useful on a vertically
+docked toolbar. If @var{visible-vertical} is @samp{@code{#f}}@var{toolitem} will
+not appear on toolbars that are docked vertically.
+
+@table @var
+@item toolitem
+a @code{<gtk-tool-item>}
+
+@item visible-vertical
+whether @var{toolitem} is visible when the toolbar is in vertical mode
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-get-visible-vertical  (self@tie{}@code{<gtk-tool-item>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-visible-vertical
+Returns whether @var{toolitem} is visible when the toolbar is docked vertically.
+See @code{gtk-tool-item-set-visible-vertical}.
+
+@table @var
+@item toolitem
+a @code{<gtk-tool-item>}
+
+@item ret
+Whether @var{toolitem} is visible when the toolbar is docked vertically
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-set-is-important  (self@tie{}@code{<gtk-tool-item>}) (is_important@tie{}@code{bool})
+@deffnx Method set-is-important
+Sets whether @var{tool-item} should be considered important. The
+@code{<gtk-tool-button>} class uses this property to determine whether to show
+or hide its label when the toolbar style is @samp{GTK_TOOLBAR_BOTH_HORIZ}. The
+result is that only tool buttons with the "is_important" property set have
+labels, an effect known as "priority text"
+
+@table @var
+@item tool-item
+a @code{<gtk-tool-item>}
+
+@item is-important
+whether the tool item should be considered important
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-get-is-important  (self@tie{}@code{<gtk-tool-item>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-is-important
+Returns whether @var{tool-item} is considered important. See
+@code{gtk-tool-item-set-is-important}
+
+@table @var
+@item tool-item
+a @code{<gtk-tool-item>}
+
+@item ret
+@samp{@code{#t}} if @var{tool-item} is considered important.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-get-icon-size  (self@tie{}@code{<gtk-tool-item>}) @result{}@tie{} (ret@tie{}@code{<gtk-icon-size>})
+@deffnx Method get-icon-size
+Returns the icon size used for @var{tool-item}. Custom subclasses of
+@code{<gtk-tool-item>} should call this function to find out what size icons
+they should use.
+
+@table @var
+@item tool-item
+a @code{<gtk-tool-item:>}
+
+@item ret
+a @code{<gtk-icon-size>} indicating the icon size used for @var{tool-item}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-get-orientation  (self@tie{}@code{<gtk-tool-item>}) @result{}@tie{} (ret@tie{}@code{<gtk-orientation>})
+@deffnx Method get-orientation
+Returns the orientation used for @var{tool-item}. Custom subclasses of
+@code{<gtk-tool-item>} should call this function to find out what size icons
+they should use.
+
+@table @var
+@item tool-item
+a @code{<gtk-tool-item:>}
+
+@item ret
+a @code{<gtk-orientation>} indicating the orientation used for @var{tool-item}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-get-toolbar-style  (self@tie{}@code{<gtk-tool-item>}) @result{}@tie{} (ret@tie{}@code{<gtk-toolbar-style>})
+@deffnx Method get-toolbar-style
+Returns the toolbar style used for @var{tool-item}. Custom subclasses of
+@code{<gtk-tool-item>} should call this function in the handler of the
+GtkToolItem::toolbar_reconfigured signal to find out in what style the toolbar
+is displayed and change themselves accordingly
+
+Possibilities are:
+
+@itemize 
+@item
+ GTK_TOOLBAR_BOTH, meaning the tool item should show
+both an icon and a label, stacked vertically @item
+ GTK_TOOLBAR_ICONS, meaning the toolbar shows
+only icons @item
+ GTK_TOOLBAR_TEXT, meaning the tool item should only
+show text@item
+ GTK_TOOLBAR_BOTH_HORIZ, meaning the tool item should show
+both an icon and a label, arranged horizontally (however, note the 
+@code{<gtk-tool-button::has-text-horizontally>} that makes tool buttons not
+show labels when the toolbar style is GTK_TOOLBAR_BOTH_HORIZ.
+@end itemize
+
+@table @var
+@item tool-item
+a @code{<gtk-tool-item:>}
+
+@item ret
+A @code{<gtk-toolbar-style>} indicating the toolbar style used for
+@var{tool-item}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-get-relief-style  (self@tie{}@code{<gtk-tool-item>}) @result{}@tie{} (ret@tie{}@code{<gtk-relief-style>})
+@deffnx Method get-relief-style
+Returns the relief style of @var{tool-item}. See
+@code{gtk-button-set-relief-style}. Custom subclasses of @code{<gtk-tool-item>}
+should call this function in the handler of the
+@code{<gtk-tool-item::toolbar-reconfigured>} signal to find out the relief style
+of buttons.
+
+@table @var
+@item tool-item
+a @code{<gtk-tool-item:>}
+
+@item ret
+a @code{<gtk-relief-style>} indicating the relief style used for
+@var{tool-item}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-get-proxy-menu-item  (self@tie{}@code{<gtk-tool-item>}) (menu_item_id@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-proxy-menu-item
+If @var{menu-item-id} matches the string passed to
+@code{gtk-tool-item-set-proxy-menu-item} return the corresponding
+@code{<gtk-menu-item>}.
+
+Custom subclasses of @code{<gtk-tool-item>} should use this function to update
+their menu item when the @code{<gtk-tool-item>} changes. That the
+@var{menu-item-id}s must match ensures that a @code{<gtk-tool-item>} will not
+inadvertently change a menu item that they did not create.
+
+@table @var
+@item tool-item
+a @code{<gtk-tool-item:>}
+
+@item menu-item-id
+a string used to identify the menu item
+
+@item ret
+The @code{<gtk-menu-item>} passed to @code{gtk-tool-item-set-proxy-menu-item},
+if the @var{menu-item-id}s match.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-set-proxy-menu-item  (self@tie{}@code{<gtk-tool-item>}) (menu_item_id@tie{}@code{mchars}) (menu_item@tie{}@code{<gtk-widget>})
+@deffnx Method set-proxy-menu-item
+Sets the @code{<gtk-menu-item>} used in the toolbar overflow menu. The
+@var{menu-item-id} is used to identify the caller of this function and should
+also be used with @code{gtk-tool-item-get-proxy-menu-item}.
+
+@table @var
+@item tool-item
+a @code{<gtk-tool-item:>}
+
+@item menu-item-id
+a string used to identify @var{menu-item}
+
+@item menu-item
+a @code{<gtk-menu-item>} to be used in the overflow menu
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-tool-item-rebuild-menu  (self@tie{}@code{<gtk-tool-item>})
+@deffnx Method rebuild-menu
+Calling this function signals to the toolbar that the overflow menu item for
+@var{tool-item} has changed. If the overflow menu is visible when this function
+it called, the menu will be rebuilt.
+
+The function must be called when the tool item changes what it will do in
+response to the "create_menu_proxy" signal.
+
+@table @var
+@item tool-item
+a @code{<gtk-tool-item>}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

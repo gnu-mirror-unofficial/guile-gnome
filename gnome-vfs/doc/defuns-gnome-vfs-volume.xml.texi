@@ -1,0 +1,374 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-vfs-volume>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gnome-vfs-volume-compare  (self@tie{}@code{<gnome-vfs-volume>}) (b@tie{}@code{<gnome-vfs-volume>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method compare
+Compares two @code{<gnome-vfs-volume>} objects @var{a} and @var{b}. Two
+@code{<gnome-vfs-volume>} objects referring to different volumes are guaranteed
+to not return 0 when comparing them, if they refer to the same volume 0 is
+returned.
+
+The resulting @code{<gint>} should be used to determine the order in which
+@var{a} and @var{b} are displayed in graphical user interfces.
+
+The comparison algorithm first of all peeks the device type of @var{a} and
+@var{b}, they will be sorted in the following order:
+
+@itemize 
+@item
+@item
+@item
+@item
+@item
+@item
+@end itemize
+
+Magnetic and opto-magnetic volumes (ZIP, floppy)
+
+Optical volumes (CD, DVD)
+
+External volumes (USB sticks, music players)
+
+Mounted hard disks
+
+Network mounts
+
+Other volumes
+
+Afterwards, the display name of @var{a} and @var{b} is compared using a
+locale-sensitive sorting algorithm, which involves @code{g-utf8-collate-key}.
+
+If two volumes have the same display name, their unique ID is compared which can
+be queried using @code{gnome-vfs-volume-get-id}.
+
+@table @var
+@item a
+a @code{<gnome-vfs-volume>}.
+
+@item b
+a @code{<gnome-vfs-volume>}.
+
+@item ret
+0 if the volumes refer to the same @var{gnome-vfs-volume}, a negative value if
+@var{a} should be displayed before @var{b}, or a positive value if @var{a}
+should be displayed after @var{b}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-volume-get-activation-uri  (self@tie{}@code{<gnome-vfs-volume>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-activation-uri
+Returns the activation URI of a @code{<gnome-vfs-volume>}.
+
+The returned URI usually refers to a valid location. You can check the validity
+of the location by calling @code{gnome-vfs-uri-new} with the URI, and checking
+whether the return value is not @samp{@code{#f}}.
+
+@table @var
+@item volume
+a @code{<gnome-vfs-volume>}.
+
+@item ret
+a newly allocated string for activation uri of @var{volume}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-volume-get-device-path  (self@tie{}@code{<gnome-vfs-volume>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-device-path
+Returns the device path of a @code{<gnome-vfs-volume>}.
+
+For HAL volumes, this returns the value of the volume's "block.device" key. For
+UNIX mounts, it returns the @samp{mntent}'s @samp{mnt_fsname} entry.
+
+Otherwise, it returns @samp{@code{#f}}.
+
+@table @var
+@item volume
+a @code{<gnome-vfs-volume>}.
+
+@item ret
+a newly allocated string for device path of @var{volume}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-volume-get-device-type  (self@tie{}@code{<gnome-vfs-volume>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-device-type>})
+@deffnx Method get-device-type
+Returns the @code{<gnome-vfs-device-type>} of the @var{volume}.
+
+@table @var
+@item volume
+a @code{<gnome-vfs-volume>}.
+
+@item ret
+the device type for @var{volume}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-volume-get-display-name  (self@tie{}@code{<gnome-vfs-volume>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-display-name
+Returns the display name of the @var{volume}.
+
+@table @var
+@item volume
+a @code{<gnome-vfs-volume>}.
+
+@item ret
+a newly allocated string for display name of @var{volume}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-volume-get-drive  (self@tie{}@code{<gnome-vfs-volume>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-drive>})
+@deffnx Method get-drive
+@table @var
+@item volume
+a @code{<gnome-vfs-volume>}.
+
+@item ret
+the drive for the @var{volume}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-volume-get-hal-udi  (self@tie{}@code{<gnome-vfs-volume>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-hal-udi
+Returns the HAL UDI of a @code{<gnome-vfs-volume>}.
+
+For HAL volumes, this matches the value of the "info.udi" key, for other volumes
+it is @samp{@code{#f}}.
+
+@table @var
+@item volume
+a @code{<gnome-vfs-volume>}.
+
+@item ret
+a newly allocated string for unique device id of @var{volume}, or
+@samp{@code{#f}}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-volume-get-icon  (self@tie{}@code{<gnome-vfs-volume>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-icon
+@table @var
+@item volume
+a @code{<gnome-vfs-volume>}.
+
+@item ret
+a newly allocated string for the icon filename of @var{volume}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-volume-get-id  (self@tie{}@code{<gnome-vfs-volume>}) @result{}@tie{} (ret@tie{}@code{unsigned-long})
+@deffnx Method get-id
+Returns the ID of the @var{volume},
+
+Two @code{<gnome-vfs-volumes>} are guaranteed to refer to the same volume if
+they have the same ID.
+
+@table @var
+@item volume
+a @code{<gnome-vfs-volume>}.
+
+@item ret
+the id for the @var{volume}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-volume-get-volume-type  (self@tie{}@code{<gnome-vfs-volume>}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-volume-type>})
+@deffnx Method get-volume-type
+Returns the @code{<gnome-vfs-volume-type>} of the @var{volume}.
+
+@table @var
+@item volume
+a @code{<gnome-vfs-volume>}.
+
+@item ret
+the volume type for @var{volume}.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-volume-handles-trash  (self@tie{}@code{<gnome-vfs-volume>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method handles-trash
+Returns whether the file system on a @var{volume} supports trashing of files.
+
+If the @var{volume} has an AutoFS file system (i.e.
+@code{gnome-vfs-volume-get-device-type} returns
+@code{<gnome-vfs-device-type-autofs>}), or if the @var{volume} is mounted
+read-only (@code{gnome-vfs-volume-is-read-only} returns @samp{@code{#t}}), it is
+assumed to not support trashing of files.
+
+Otherwise, if the @var{volume} provides file system information, it is
+determined whether the file system supports trashing of files. See
+@code{gnome-vfs-volume-get-filesystem-type} for details which volumes provide
+file system information, and which file systems currently support a trash.
+
+@table @var
+@item volume
+a @code{<gnome-vfs-volume>}.
+
+@item ret
+@samp{@code{#t}} if @var{volume} handles trash, @samp{@code{#f}} otherwise.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-volume-is-mounted  (self@tie{}@code{<gnome-vfs-volume>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-mounted
+Returns whether the file system on a @var{volume} is currently mounted.
+
+For HAL volumes, this reflects the value of the "volume.is_mounted" key, for
+traditional UNIX mounts and connected servers, @samp{@code{#t}} is returned,
+because their existence implies that they are mounted.
+
+@table @var
+@item volume
+a @code{<gnome-vfs-volume>}.
+
+@item ret
+@samp{@code{#t}} if the @var{volume} is mounted, @samp{@code{#f}} otherwise.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-volume-is-read-only  (self@tie{}@code{<gnome-vfs-volume>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-read-only
+Returns whether the file system on a @var{volume} is read-only.
+
+For HAL volumes, the "volume.is_mounted_read_only" key is authoritative, for
+traditional UNIX mounts it returns @samp{@code{#t}} if the mount was done with
+the "ro" option. For servers, @samp{@code{#f}} is returned.
+
+@table @var
+@item volume
+a @code{<gnome-vfs-volume>}.
+
+@item ret
+@samp{@code{#t}} if the @var{volume} is read-only to the user, @samp{@code{#f}}
+otherwise.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-volume-is-user-visible  (self@tie{}@code{<gnome-vfs-volume>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-user-visible
+Returns whether the @var{volume} is visible to the user. This should be used by
+applications to determine whether it is included in user interfaces listing
+available volumes.
+
+@table @var
+@item volume
+a @code{<gnome-vfs-volume>}.
+
+@item ret
+@samp{@code{#t}} if @var{volume} is visible to the user, @samp{@code{#f}}
+otherwise.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gnome-vfs-connect-to-server  (uri@tie{}@code{mchars}) (display_name@tie{}@code{mchars}) (icon@tie{}@code{mchars})
+This function adds a server connection to the specified @var{uri}, which is
+displayed in user interfaces with the specified @var{display-name} and
+@var{icon}.
+
+If this function is invoked successfully, the created server shows up in the
+list of mounted volumes of the @code{<gnome-vfs-volume-monitor>}, which can be
+queried using @code{gnome-vfs-volume-monitor-get-mounted-volumes}.
+
+This function does not have a return value. Hence, you can't easily detect
+whether the specified server was successfully created. The actual creation and
+consumption of the new server through the @code{<gnome-vfs-volume-monitor>} is
+done asynchronously.
+
+@var{uri}, @var{display-name}, and @var{icon} can be freely chosen, but should
+be meaningful:
+
+@var{uri} should refer to a valid location. You can check the validity of the
+location by calling @code{gnome-vfs-uri-new} with @var{uri}, and checking
+whether the return value is not @samp{@code{#f}}.
+
+The @var{display-name} should be queried from the user, and an empty string
+should not be considered valid.
+
+@var{icon} typically references an icon from the icon theme. Some
+implementations currently use @samp{gnome-fs-smb}, @samp{gnome-fs-ssh},
+@samp{gnome-fs-ftp} and @samp{gnome-fs-share}, depending on the type of the
+server referenced by @var{uri}. The icon naming conventions might change in the
+future, though. Obeying the
+@uref{http://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.
+html, freedesktop.org Icon Naming Specification} is suggested.
+
+@table @var
+@item uri
+The string representation of the server to connect to.
+
+@item display-name
+The display name that is used to identify the server connection.
+
+@item icon
+The icon that is used to identify the server connection.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,250 @@
+2008-05-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/Makefile.am: 
+	* gnome/pangocairo.scm: Add (gnome pangocairo) module.
+
+	* doc/pangocairo/overview.texi (Overview): 
+	* doc/pango/overview.texi (Overview): Add a minimal conceit of
+	documentation.
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.98 ==
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* doc/pango/*.texi:
+	* doc/pangocairo/*.texi: Update docs.
+
+2008-04-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/pango-support.c (scm_pango_rectangle_to_scm)
+	(GET_VINT): Fix deprecation warnings.
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* == Released guile-gnome-platform version 2.15.97 ==
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* NEWS: Update NEWS.
+
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.96 ==
+
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* doc/pango/defuns-*.texi: Regenerated.
+	* doc/pangocairo/defuns-*.texi: Regenerated.
+
+	* doc/pangocairo/guile-gnome-pango.texi (Top): 
+	* doc/pangocairo/undocumented.texi:
+	* doc/pango/guile-gnome-pango.texi (Top): 
+	* doc/pango/undocumented.texi: New section for undocumented
+	exports.
+
+2007-11-25  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/pango-spec.scm (global-declarations-cg): Fix a typo.
+
+	* doc/pangocairo/guile-gnome-pangocairo.texi (Top): 
+	* doc/pango/guile-gnome-pango.texi (Top): Type and function index.
+
+	* tests/pango/wrapset.api: 
+	* tests/pangocairo/wrapset.api: Update for changes resulting from
+	API review.
+
+	* doc/pango/defuns-*.xml.texi: 
+	* doc/pangocairo/defuns-*.xml.texi: Regenerated for function
+	removal, type wrapping, and type wrapper name changes.
+
+	* gnome/overrides/pangocairo.defs (CairoFontMap): Wrap type.
+
+	* gnome/overrides/pango.defs: Wrap more types, ignore some more
+	functions.
+
+	* gnome/gw/pango-spec.scm (initialize): Wrap some more freeable
+	pointers.
+
+2007-11-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/pango.defs: Ignore a few more functions.
+
+	* gnome/gw/pango-spec.scm (initialize): Wrap PangoCoverage as a
+	refcounted pointer. Wrap PangoRectangle as a structure,
+	represented on the Scheme side by a vector of four integers, as
+	with GdkRectangle (but without a GType).
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_pango_la_SOURCES): 
+	* gnome/gw/pango-support.h: 
+	* gnome/gw/pango-support.c: New files, add support code to the
+	wrapper. 
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.95 ==
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: 
+	* gnome/gw/Makefile.am: Actually link against pangocairo libs,
+	without which (gnome gw pangocairo) won't even load.
+
+	* tests/Makefile.am:
+	* tests/pango/Makefile.am:
+	* tests/pango/wrapset.api:
+	* tests/pango/wrapset.scm:
+	* tests/pangocairo/Makefile.am:
+	* tests/pangocairo/wrapset.api:
+	* tests/pangocairo/wrapset.scm: Add API regression test suite.
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.94 ==
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* NEWS: Updated.
+
+2007-09-24  Andy Wingo  <wingo@pobox.com>
+
+	* doc/pangocairo/Makefile.am (guile_gnome_pangocairo_TEXINFOS):
+	Name the target correctly.
+
+2007-09-08  Andy Wingo  <wingo@pobox.com>
+
+	* doc/Makefile.am: 
+	* doc/pango/Makefile.am: 
+	* doc/pango/guile-gnome-pango.texi:
+	* doc/pango/overview.texi:
+	* doc/pango/overrides.texi:
+	* doc/pango/section-*.texi:
+	* doc/pango/defuns-*.texi: Move pango docs to a subdir.
+	
+	* doc/pangocairo/Makefile.am: 
+	* doc/pangocairo/guile-gnome-pangocairo.texi:
+	* doc/pangocairo/overview.texi:
+	* doc/pangocairo/overrides.texi:
+	* doc/pangocairo/section-*.texi:
+	* doc/pangocairo/defuns-*.texi: Add pangocairo docs.
+	
+2007-09-07  Andy Wingo  <wingo@pobox.com>
+
+	* doc/Makefile.am: 
+	* doc/guile-gnome-pango.texi:
+	* doc/overview.texi:
+	* doc/overrides.texi:
+	* doc/section-*.texi:
+	* doc/defuns-*.texi: Add infrastructure for documentation.
+	
+2007-06-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.93 ==
+
+	* gnome/overrides/pango.defs: Re-add boxed types lost when
+	pango.defs was generated.
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.92 ==
+
+2007-05-21  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/pangocairo-spec.scm (gnome): Actually import the cairo
+	g-wrap modules.
+
+2007-05-20  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am: 
+	* gnome/overrides/pangocairo.defs: 
+	* gnome/gw/pangocairo-spec.scm: Build a pangocairo module if cairo
+	is available.
+
+	* cairo-checks.ac: Check for cairo.
+
+2007-05-13  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/pango-spec.scm (initialize): 
+	* gnome/Makefile.am: 
+	* gnome/overrides/pango.defs: 
+	* gnome/gw/Makefile.am: Add overrides for pango 1.14. PangoGlyph
+	is a uint32, not an unsigned long.
+
+2007-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.91 ==
+
+2006-12-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.90 ==
+
+2006-11-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/pango-spec.scm: Use (gnome gw support g-wrap), the
+	g-wrap compatibility wrapper.
+
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.7.99 ==
+
+2005-01-11  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.98 ==
+
+2004-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.97 ==
+
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Add record_check.
+
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* glib-checks.ac: Check for a versioned glib.
+	* defs-checks.ac: Check for a versioned defs.
+
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
+	versioned directory.
+
+2004-09-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_pango_la_LIBADD): Not
+	G_WRAP_LINK_ARGS, it's G_WRAP_LIBS.
+
+2004-09-16  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (SUBDIRS): Dist fixes.
+
+	* README: Added.
+
+	* NEWS: Added.
+
+	* AUTHORS: Added.
+
+2004-09-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/pango.scm (gnome): Added.
+
+	* gnome/Makefile.am: Dist (gnome pango).
+
+2004-09-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am: Don't dist the gw C files.
+
+	* defs-checks.ac: Added.
+
+	* glib-checks.ac: Updated.
+
+	* gnome/gw/pango-spec.scm: Adapted for module name changes.
+
+2004-06-24  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/pango-spec.scm: Adapt for G-Wrap "depends-on!" API change.
+
+	* ChangeLog: Old ChangeLogs have been removed, as no entries
+	relevant to pango were in them.
+	

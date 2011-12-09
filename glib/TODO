@@ -1,0 +1,24 @@
+-*- outline -*-
+
+MUAHAHA! It seems our TODO list is short. Now it's just a question of
+riding the GNOME development wave.
+
+TODO for (gnome gobject)
+========================
+
+TODO for (gnome glib)
+====================
+
+* wrap necessary parts of glib
+  - quarks
+
+* what to do about unicode? can't exactly add support for it until guile
+  itself supports it...
+
+TODO for (gnome gtk)
+====================
+
+
+FIX the bit where (gnome gobject generics) molests the root module
+
+$Id: TODO,v 1.2 2003/07/03 15:16:02 wingo Exp $

@@ -1,0 +1,8 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+
+Name: (gnome gnome-ui), Uninstalled
+Description: Guile bindings for libgnomeui
+Version: @VERSION@
+Requires: guile-gnome-glib-@API_VERSION@

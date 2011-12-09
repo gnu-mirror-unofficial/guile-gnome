@@ -1,0 +1,322 @@
+
+@c %start of fragment
+
+@deffn Function gnome-vfs-format-uri-for-display  (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Filter, modify, unescape and change @var{uri} to make it appropriate for display
+to users. The conversion is done such that the roundtrip to UTF-8 is reversible.
+
+Rules: file: uri without fragments should appear as local paths. file: uri with
+fragments should appear as file:uri. All other uri appear as expected.
+
+@table @var
+@item uri
+uri to be displayed.
+
+@item ret
+a string which represents @var{uri} and can be displayed.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gnome-vfs-url-show  (url@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gnome-vfs-result>})
+Launches the default application or component associated with the given
+@var{url}.
+
+@table @var
+@item url
+url to be shown.
+
+@item ret
+@samp{GNOME_VFS_OK} if the default action was launched,
+@samp{GNOME_VFS_ERROR_BAD_PARAMETERS} for an invalid or non-existant @var{url},
+@samp{GNOME_VFS_ERROR_NO_DEFAULT} if no default action is associated with the
+@var{url}. Also error codes from @code{gnome-vfs-mime-action-launch} or
+@code{gnome-vfs-mime-action-launch-with-env}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gnome-vfs-escape-string  (string@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Escapes @var{string}, replacing any and all special characters with equivalent
+escape sequences.
+
+@table @var
+@item string
+string to be escaped.
+
+@item ret
+a newly allocated string equivalent to @var{string} but with all special
+characters escaped.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-escape-path-string  (path@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Escapes @var{path}, replacing only special characters that would not be found in
+paths (so '/', '&', and '=' will not be escaped by this function).
+
+@table @var
+@item path
+string to be escaped.
+
+@item ret
+a newly allocated string equivalent to @var{path} but with non-path characters
+escaped.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-escape-slashes  (string@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Escapes only '/' and '%' characters in @var{string}, replacing them with their
+escape sequence equivalents.
+
+@table @var
+@item string
+string to be escaped.
+
+@item ret
+a newly allocated string equivalent to @var{string}, but with no unescaped '/'
+or '%' characters.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-escape-set  (string@tie{}@code{mchars}) (match_set@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Escapes all characters in @var{string} which are listed in @var{match-set}.
+
+@table @var
+@item string
+string to be escaped.
+
+@item match-set
+a string containing all characters to be escaped in @var{string}.
+
+@item ret
+a newly allocated string equivalent to @var{string} but with characters in
+@var{match-string} escaped.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-unescape-string  (escaped_string@tie{}@code{mchars}) (illegal_characters@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Decodes escaped characters (i.e. PERCENTxx sequences) in @var{escaped-string}.
+Characters are encoded in PERCENTxy form, where xy is the ASCII hex code for
+character 16x+y.
+
+@table @var
+@item escaped-string
+an escaped uri, path, or other string.
+
+@item illegal-characters
+a string containing a sequence of characters considered "illegal" to be escaped,
+'\0' is automatically in this list.
+
+@item ret
+a newly allocated string with the unescaped equivalents, or @samp{@code{#f}} if
+@var{escaped-string} contained an escaped encoding of one of the characters in
+@var{illegal-characters}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-make-uri-canonical  (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Standardizes the format of the @var{uri}, so that it can be used later in other
+functions that expect a canonical uri.
+
+@table @var
+@item uri
+an absolute or relative stringified uri. It might have scheme.
+
+@item ret
+a newly allocated string that contains the canonical representation of
+@var{uri}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gnome-vfs-make-path-name-canonical  (path@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Calls @code{-gnome-vfs-canonicalize-pathname}, allocating storage for the result
+and providing for a cleaner memory management.
+
+@table @var
+@item path
+a file path, relative or absolute.
+
+@item ret
+a canonical version of @var{path}.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-make-uri-from-input  (location@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Takes a user input path/uri and makes a valid uri out of it.
+
+This function is the reverse of @code{gnome-vfs-format-uri-for-display} but it
+also handles the fact that the user could have typed arbitrary UTF-8 in the
+entry showing the string.
+
+@table @var
+@item location
+a possibly mangled "uri", in UTF-8.
+
+@item ret
+a newly allocated uri.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gnome-vfs-make-uri-from-shell-arg  (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Similar to @code{gnome-vfs-make-uri-from-input}, except that:
+
+1) guesses relative paths instead of http domains. 2) doesn't bother stripping
+leading/trailing white space. 3) doesn't bother with ~ expansion--that's done by
+the shell.
+
+@table @var
+@item uri
+path to make the uri from.
+
+@item ret
+a newly allocated string representing @var{uri}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gnome-vfs-expand-initial-tilde  (path@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+If @var{path} starts with a ~, representing the user's home directory, expand it
+to the actual path location.
+
+@table @var
+@item path
+a local file path which may start with a '~'.
+
+@item ret
+a newly allocated string with the initial tilde (if there was one) converted to
+an actual path.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-get-local-path-from-uri  (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Create a local path for a file:/// uri. Do not use with uris of other methods.
+
+@table @var
+@item uri
+uri to convert to a local path.
+
+@item ret
+a newly allocated string containing the local path. @samp{@code{#f}} is returned
+on error or if the uri isn't a file: uri without a fragment identifier (or
+chained uri).
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-get-uri-from-local-path  (local_full_path@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Returns a file:/// URI for the local path @var{local-full-path}, such as a path
+provided by @code{gtk-file-chooser-get-filename}. The resulting URI may be
+provided, for instance, to @code{gnome-vfs-uri-new}.
+
+On Windows @var{local-full-path} should be in the UTF-8 encoding, and can start
+with a drive letter, but doesn't have to.
+
+@table @var
+@item local-full-path
+a full local filesystem path (i.e. not relative).
+
+@item ret
+a newly allocated string containing the uri corresponding to
+@var{local-full-path} (@samp{@code{#f}} for some bad errors).
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-icon-path-from-filename  (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+@table @var
+@item filename
+path to a file. Could be relative or absolute path.
+
+@item ret
+Returns the icon path for the @var{filename}. Example:
+gnome_vfs_icon_path_from_filename ("nautilus/nautilus-desktop.png") will return
+a string forming the full path of the file nautilus-desktop.png ie
+$PREFIX/share/pixmaps/nautilus/nautilus-desktop.png.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-is-primary-thread  @result{}@tie{} (ret@tie{}@code{bool})
+Check if the current thread is the thread with the main glib event loop.
+
+@table @var
+@item ret
+@samp{@code{#t}} if the current thread is the thread with the main glib event
+loop.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-vfs-get-uri-scheme  (uri@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{mchars})
+Retrieve the scheme used in @var{uri}.
+
+@table @var
+@item uri
+a stringified uri.
+
+@item ret
+a newly allocated string containing the scheme, @samp{@code{#f}} if @var{uri}
+doesn't contain a scheme.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gnome-vfs-uris-match  (uri_1@tie{}@code{mchars}) (uri_2@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{bool})
+Compare two uris.
+
+@table @var
+@item uri-1
+stringified uri to compare with @var{uri-2}.
+
+@item uri-2
+stringified uri to compare with @var{uri-1}.
+
+@item ret
+@samp{@code{#t}} if they are the same, @samp{@code{#f}} otherwise.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+
+@c %end of fragment

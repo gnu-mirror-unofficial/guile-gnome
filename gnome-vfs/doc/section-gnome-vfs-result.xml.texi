@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GnomeVFSResult
+@chapter GnomeVFSResult
+Result of I/O operations, the equivalent of errno
+
+@section Overview
+@section Usage
+@include defuns-gnome-vfs-result.xml.texi
+
+@c %end of fragment

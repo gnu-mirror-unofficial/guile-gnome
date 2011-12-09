@@ -1,0 +1,34 @@
+
+@c %start of fragment
+
+@node GtkTreeSelection
+@chapter GtkTreeSelection
+The selection object for
+
+@section Overview
+The @code{<gtk-tree-selection>} object is a helper object to manage the
+selection for a @code{<gtk-tree-view>} widget. The @code{<gtk-tree-selection>}
+object is automatically created when a new @code{<gtk-tree-view>} widget is
+created, and cannot exist independentally of this widget. The primary reason the
+@code{<gtk-tree-selection>} objects exists is for cleanliness of code and API.
+That is, there is no conceptual reason all these functions could not be methods
+on the @code{<gtk-tree-view>} widget instead of a separate function.
+
+The @code{<gtk-tree-selection>} object is gotten from a @code{<gtk-tree-view>}
+by calling @code{gtk-tree-view-get-selection}. It can be manipulated to check
+the selection status of the tree, as well as select and deselect individual
+rows. Selection is done completely view side. As a result, multiple views of the
+same model can have completely different selections. Additionally, you cannot
+change the selection of a row on the model that is not currently displayed by
+the view without expanding its parents first.
+
+One of the important things to remember when monitoring the selection of a view
+is that the "changed" signal is mostly a hint. That is, it may only emit one
+signal when a range of rows is selected. Additionally, it may on occasion emit a
+"changed" signal when nothing has happened (mostly as a result of programmers
+calling select_row on an already selected row).
+
+@section Usage
+@include defuns-gtktreeselection.xml.texi
+
+@c %end of fragment

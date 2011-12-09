@@ -1,0 +1,8 @@
+*-gw-*.[ch]
+Makefile
+Makefile.in
+.deps
+.libs
+*.log
+*.pc
+gnome/gw/libgnomeui.scm

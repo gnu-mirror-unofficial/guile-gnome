@@ -1,0 +1,14 @@
+PKG_CHECK_MODULES(CORBA, libbonobo-2.0, HAVE_CORBA=true, HAVE_CORBA=false)
+AC_SUBST(CORBA_CFLAGS)
+AC_SUBST(CORBA_LIBS)
+AM_CONDITIONAL(HAVE_CORBA, $HAVE_CORBA)
+
+# orbit-idl
+ORBIT_IDL="`pkg-config --variable=orbit_idl ORBit-2.0`"
+AC_SUBST(ORBIT_IDL)
+
+# Activation idl files
+BONOBO_IDL_DIR="`pkg-config --variable=idldir libbonobo-2.0`"
+AC_SUBST(BONOBO_IDL_DIR)
+
+record_check corba $HAVE_CORBA

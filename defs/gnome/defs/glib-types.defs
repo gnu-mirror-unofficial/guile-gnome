@@ -1,0 +1,554 @@
+;; -*- scheme -*-
+;; Enumerations and flags ...
+
+(define-enum BookmarkFileError
+  (in-module "G")
+  (c-name "GBookmarkFileError")
+  (values
+    '("invalid-uri" "G_BOOKMARK_FILE_ERROR_INVALID_URI")
+    '("invalid-value" "G_BOOKMARK_FILE_ERROR_INVALID_VALUE")
+    '("app-not-registered" "G_BOOKMARK_FILE_ERROR_APP_NOT_REGISTERED")
+    '("uri-not-found" "G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND")
+    '("read" "G_BOOKMARK_FILE_ERROR_READ")
+    '("unknown-encoding" "G_BOOKMARK_FILE_ERROR_UNKNOWN_ENCODING")
+    '("write" "G_BOOKMARK_FILE_ERROR_WRITE")
+    '("file-not-found" "G_BOOKMARK_FILE_ERROR_FILE_NOT_FOUND")
+  )
+)
+
+(define-enum ConvertError
+  (in-module "G")
+  (c-name "GConvertError")
+  (values
+    '("no-conversion" "G_CONVERT_ERROR_NO_CONVERSION")
+    '("illegal-sequence" "G_CONVERT_ERROR_ILLEGAL_SEQUENCE")
+    '("failed" "G_CONVERT_ERROR_FAILED")
+    '("partial-input" "G_CONVERT_ERROR_PARTIAL_INPUT")
+    '("bad-uri" "G_CONVERT_ERROR_BAD_URI")
+    '("not-absolute-path" "G_CONVERT_ERROR_NOT_ABSOLUTE_PATH")
+  )
+)
+
+(define-enum DateDMY
+  (in-module "G")
+  (c-name "GDateDMY")
+  (values
+    '("day" "G_DATE_DAY")
+    '("month" "G_DATE_MONTH")
+    '("year" "G_DATE_YEAR")
+  )
+)
+
+(define-enum DateWeekday
+  (in-module "G")
+  (c-name "GDateWeekday")
+  (values
+    '("bad-weekday" "G_DATE_BAD_WEEKDAY")
+    '("monday" "G_DATE_MONDAY")
+    '("tuesday" "G_DATE_TUESDAY")
+    '("wednesday" "G_DATE_WEDNESDAY")
+    '("thursday" "G_DATE_THURSDAY")
+    '("friday" "G_DATE_FRIDAY")
+    '("saturday" "G_DATE_SATURDAY")
+    '("sunday" "G_DATE_SUNDAY")
+  )
+)
+
+(define-enum DateMonth
+  (in-module "G")
+  (c-name "GDateMonth")
+  (values
+    '("bad-month" "G_DATE_BAD_MONTH")
+    '("january" "G_DATE_JANUARY")
+    '("february" "G_DATE_FEBRUARY")
+    '("march" "G_DATE_MARCH")
+    '("april" "G_DATE_APRIL")
+    '("may" "G_DATE_MAY")
+    '("june" "G_DATE_JUNE")
+    '("july" "G_DATE_JULY")
+    '("august" "G_DATE_AUGUST")
+    '("september" "G_DATE_SEPTEMBER")
+    '("october" "G_DATE_OCTOBER")
+    '("november" "G_DATE_NOVEMBER")
+    '("december" "G_DATE_DECEMBER")
+  )
+)
+
+(define-enum FileError
+  (in-module "G")
+  (c-name "GFileError")
+  (values
+    '("exist" "G_FILE_ERROR_EXIST")
+    '("isdir" "G_FILE_ERROR_ISDIR")
+    '("acces" "G_FILE_ERROR_ACCES")
+    '("nametoolong" "G_FILE_ERROR_NAMETOOLONG")
+    '("noent" "G_FILE_ERROR_NOENT")
+    '("notdir" "G_FILE_ERROR_NOTDIR")
+    '("nxio" "G_FILE_ERROR_NXIO")
+    '("nodev" "G_FILE_ERROR_NODEV")
+    '("rofs" "G_FILE_ERROR_ROFS")
+    '("txtbsy" "G_FILE_ERROR_TXTBSY")
+    '("fault" "G_FILE_ERROR_FAULT")
+    '("loop" "G_FILE_ERROR_LOOP")
+    '("nospc" "G_FILE_ERROR_NOSPC")
+    '("nomem" "G_FILE_ERROR_NOMEM")
+    '("mfile" "G_FILE_ERROR_MFILE")
+    '("nfile" "G_FILE_ERROR_NFILE")
+    '("badf" "G_FILE_ERROR_BADF")
+    '("inval" "G_FILE_ERROR_INVAL")
+    '("pipe" "G_FILE_ERROR_PIPE")
+    '("again" "G_FILE_ERROR_AGAIN")
+    '("intr" "G_FILE_ERROR_INTR")
+    '("io" "G_FILE_ERROR_IO")
+    '("perm" "G_FILE_ERROR_PERM")
+    '("nosys" "G_FILE_ERROR_NOSYS")
+    '("failed" "G_FILE_ERROR_FAILED")
+  )
+)
+
+(define-flags FileTest
+  (in-module "G")
+  (c-name "GFileTest")
+  (values
+    '("is-regular" "G_FILE_TEST_IS_REGULAR")
+    '("is-symlink" "G_FILE_TEST_IS_SYMLINK")
+    '("is-dir" "G_FILE_TEST_IS_DIR")
+    '("is-executable" "G_FILE_TEST_IS_EXECUTABLE")
+    '("exists" "G_FILE_TEST_EXISTS")
+  )
+)
+
+(define-flags HookFlagMask
+  (in-module "G")
+  (c-name "GHookFlagMask")
+  (values
+    '("active" "G_HOOK_FLAG_ACTIVE")
+    '("in-call" "G_HOOK_FLAG_IN_CALL")
+    '("mask" "G_HOOK_FLAG_MASK")
+  )
+)
+
+(define-enum IOError
+  (in-module "G")
+  (c-name "GIOError")
+  (values
+    '("none" "G_IO_ERROR_NONE")
+    '("again" "G_IO_ERROR_AGAIN")
+    '("inval" "G_IO_ERROR_INVAL")
+    '("unknown" "G_IO_ERROR_UNKNOWN")
+  )
+)
+
+(define-enum IOChannelError
+  (in-module "G")
+  (c-name "GIOChannelError")
+  (values
+    '("fbig" "G_IO_CHANNEL_ERROR_FBIG")
+    '("inval" "G_IO_CHANNEL_ERROR_INVAL")
+    '("io" "G_IO_CHANNEL_ERROR_IO")
+    '("isdir" "G_IO_CHANNEL_ERROR_ISDIR")
+    '("nospc" "G_IO_CHANNEL_ERROR_NOSPC")
+    '("nxio" "G_IO_CHANNEL_ERROR_NXIO")
+    '("overflow" "G_IO_CHANNEL_ERROR_OVERFLOW")
+    '("pipe" "G_IO_CHANNEL_ERROR_PIPE")
+    '("failed" "G_IO_CHANNEL_ERROR_FAILED")
+  )
+)
+
+(define-enum IOStatus
+  (in-module "G")
+  (c-name "GIOStatus")
+  (values
+    '("error" "G_IO_STATUS_ERROR")
+    '("normal" "G_IO_STATUS_NORMAL")
+    '("eof" "G_IO_STATUS_EOF")
+    '("again" "G_IO_STATUS_AGAIN")
+  )
+)
+
+(define-enum SeekType
+  (in-module "G")
+  (c-name "GSeekType")
+  (values
+    '("cur" "G_SEEK_CUR")
+    '("set" "G_SEEK_SET")
+    '("end" "G_SEEK_END")
+  )
+)
+
+(define-enum IOCondition
+  (in-module "G")
+  (c-name "GIOCondition")
+  (values
+    '("in" "G_IO_IN")
+    '("out" "G_IO_OUT")
+    '("pri" "G_IO_PRI")
+    '("err" "G_IO_ERR")
+    '("hup" "G_IO_HUP")
+    '("nval" "G_IO_NVAL")
+  )
+)
+
+(define-flags IOFlags
+  (in-module "G")
+  (c-name "GIOFlags")
+  (values
+    '("append" "G_IO_FLAG_APPEND")
+    '("nonblock" "G_IO_FLAG_NONBLOCK")
+    '("is-readable" "G_IO_FLAG_IS_READABLE")
+    '("is-writeable" "G_IO_FLAG_IS_WRITEABLE")
+    '("is-seekable" "G_IO_FLAG_IS_SEEKABLE")
+    '("mask" "G_IO_FLAG_MASK")
+    '("get-mask" "G_IO_FLAG_GET_MASK")
+    '("set-mask" "G_IO_FLAG_SET_MASK")
+  )
+)
+
+(define-enum KeyFileError
+  (in-module "G")
+  (c-name "GKeyFileError")
+  (values
+    '("unknown-encoding" "G_KEY_FILE_ERROR_UNKNOWN_ENCODING")
+    '("parse" "G_KEY_FILE_ERROR_PARSE")
+    '("not-found" "G_KEY_FILE_ERROR_NOT_FOUND")
+    '("key-not-found" "G_KEY_FILE_ERROR_KEY_NOT_FOUND")
+    '("group-not-found" "G_KEY_FILE_ERROR_GROUP_NOT_FOUND")
+    '("invalid-value" "G_KEY_FILE_ERROR_INVALID_VALUE")
+  )
+)
+
+(define-flags KeyFileFlags
+  (in-module "G")
+  (c-name "GKeyFileFlags")
+  (values
+    '("none" "G_KEY_FILE_NONE")
+    '("keep-comments" "G_KEY_FILE_KEEP_COMMENTS")
+    '("keep-translations" "G_KEY_FILE_KEEP_TRANSLATIONS")
+  )
+)
+
+(define-enum MarkupError
+  (in-module "G")
+  (c-name "GMarkupError")
+  (values
+    '("bad-utf8" "G_MARKUP_ERROR_BAD_UTF8")
+    '("empty" "G_MARKUP_ERROR_EMPTY")
+    '("parse" "G_MARKUP_ERROR_PARSE")
+    '("unknown-element" "G_MARKUP_ERROR_UNKNOWN_ELEMENT")
+    '("unknown-attribute" "G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE")
+    '("invalid-content" "G_MARKUP_ERROR_INVALID_CONTENT")
+  )
+)
+
+(define-flags MarkupParseFlags
+  (in-module "G")
+  (c-name "GMarkupParseFlags")
+  (values
+    '("do-not-use-this-unsupported-flag" "G_MARKUP_DO_NOT_USE_THIS_UNSUPPORTED_FLAG")
+    '("treat-cdata-as-text" "G_MARKUP_TREAT_CDATA_AS_TEXT")
+  )
+)
+
+(define-flags LogLevelFlags
+  (in-module "G")
+  (c-name "GLogLevelFlags")
+  (values
+    '("flag-recursion" "G_LOG_FLAG_RECURSION")
+    '("flag-fatal" "G_LOG_FLAG_FATAL")
+    '("level-error" "G_LOG_LEVEL_ERROR")
+    '("level-critical" "G_LOG_LEVEL_CRITICAL")
+    '("level-warning" "G_LOG_LEVEL_WARNING")
+    '("level-message" "G_LOG_LEVEL_MESSAGE")
+    '("level-info" "G_LOG_LEVEL_INFO")
+    '("level-debug" "G_LOG_LEVEL_DEBUG")
+    '("level-mask" "G_LOG_LEVEL_MASK")
+  )
+)
+
+(define-flags TraverseFlags
+  (in-module "G")
+  (c-name "GTraverseFlags")
+  (values
+    '("leaves" "G_TRAVERSE_LEAVES")
+    '("non-leaves" "G_TRAVERSE_NON_LEAVES")
+    '("all" "G_TRAVERSE_ALL")
+    '("mask" "G_TRAVERSE_MASK")
+    '("leafs" "G_TRAVERSE_LEAFS")
+    '("non-leafs" "G_TRAVERSE_NON_LEAFS")
+  )
+)
+
+(define-enum TraverseType
+  (in-module "G")
+  (c-name "GTraverseType")
+  (values
+    '("in-order" "G_IN_ORDER")
+    '("pre-order" "G_PRE_ORDER")
+    '("post-order" "G_POST_ORDER")
+    '("level-order" "G_LEVEL_ORDER")
+  )
+)
+
+(define-flags OptionFlags
+  (in-module "G")
+  (c-name "GOptionFlags")
+  (values
+    '("hidden" "G_OPTION_FLAG_HIDDEN")
+    '("in-main" "G_OPTION_FLAG_IN_MAIN")
+    '("reverse" "G_OPTION_FLAG_REVERSE")
+    '("no-arg" "G_OPTION_FLAG_NO_ARG")
+    '("filename" "G_OPTION_FLAG_FILENAME")
+    '("optional-arg" "G_OPTION_FLAG_OPTIONAL_ARG")
+    '("noalias" "G_OPTION_FLAG_NOALIAS")
+  )
+)
+
+(define-enum OptionArg
+  (in-module "G")
+  (c-name "GOptionArg")
+  (values
+    '("none" "G_OPTION_ARG_NONE")
+    '("string" "G_OPTION_ARG_STRING")
+    '("int" "G_OPTION_ARG_INT")
+    '("callback" "G_OPTION_ARG_CALLBACK")
+    '("filename" "G_OPTION_ARG_FILENAME")
+    '("string-array" "G_OPTION_ARG_STRING_ARRAY")
+    '("filename-array" "G_OPTION_ARG_FILENAME_ARRAY")
+    '("double" "G_OPTION_ARG_DOUBLE")
+    '("int64" "G_OPTION_ARG_INT64")
+  )
+)
+
+(define-enum OptionError
+  (in-module "G")
+  (c-name "GOptionError")
+  (values
+    '("unknown-option" "G_OPTION_ERROR_UNKNOWN_OPTION")
+    '("bad-value" "G_OPTION_ERROR_BAD_VALUE")
+    '("failed" "G_OPTION_ERROR_FAILED")
+  )
+)
+
+(define-enum ErrorType
+  (in-module "G")
+  (c-name "GErrorType")
+  (values
+    '("unknown" "G_ERR_UNKNOWN")
+    '("unexp-eof" "G_ERR_UNEXP_EOF")
+    '("unexp-eof-in-string" "G_ERR_UNEXP_EOF_IN_STRING")
+    '("unexp-eof-in-comment" "G_ERR_UNEXP_EOF_IN_COMMENT")
+    '("non-digit-in-const" "G_ERR_NON_DIGIT_IN_CONST")
+    '("digit-radix" "G_ERR_DIGIT_RADIX")
+    '("float-radix" "G_ERR_FLOAT_RADIX")
+    '("float-malformed" "G_ERR_FLOAT_MALFORMED")
+  )
+)
+
+(define-enum ShellError
+  (in-module "G")
+  (c-name "GShellError")
+  (values
+    '("bad-quoting" "G_SHELL_ERROR_BAD_QUOTING")
+    '("empty-string" "G_SHELL_ERROR_EMPTY_STRING")
+    '("failed" "G_SHELL_ERROR_FAILED")
+  )
+)
+
+(define-enum SliceConfig
+  (in-module "G")
+  (c-name "GSliceConfig")
+  (values
+    '("always-malloc" "G_SLICE_CONFIG_ALWAYS_MALLOC")
+    '("bypass-magazines" "G_SLICE_CONFIG_BYPASS_MAGAZINES")
+    '("working-set-msecs" "G_SLICE_CONFIG_WORKING_SET_MSECS")
+    '("color-increment" "G_SLICE_CONFIG_COLOR_INCREMENT")
+    '("chunk-sizes" "G_SLICE_CONFIG_CHUNK_SIZES")
+    '("contention-counter" "G_SLICE_CONFIG_CONTENTION_COUNTER")
+  )
+)
+
+(define-enum SpawnError
+  (in-module "G")
+  (c-name "GSpawnError")
+  (values
+    '("fork" "G_SPAWN_ERROR_FORK")
+    '("read" "G_SPAWN_ERROR_READ")
+    '("chdir" "G_SPAWN_ERROR_CHDIR")
+    '("acces" "G_SPAWN_ERROR_ACCES")
+    '("perm" "G_SPAWN_ERROR_PERM")
+    '("2big" "G_SPAWN_ERROR_2BIG")
+    '("noexec" "G_SPAWN_ERROR_NOEXEC")
+    '("nametoolong" "G_SPAWN_ERROR_NAMETOOLONG")
+    '("noent" "G_SPAWN_ERROR_NOENT")
+    '("nomem" "G_SPAWN_ERROR_NOMEM")
+    '("notdir" "G_SPAWN_ERROR_NOTDIR")
+    '("loop" "G_SPAWN_ERROR_LOOP")
+    '("txtbusy" "G_SPAWN_ERROR_TXTBUSY")
+    '("io" "G_SPAWN_ERROR_IO")
+    '("nfile" "G_SPAWN_ERROR_NFILE")
+    '("mfile" "G_SPAWN_ERROR_MFILE")
+    '("inval" "G_SPAWN_ERROR_INVAL")
+    '("isdir" "G_SPAWN_ERROR_ISDIR")
+    '("libbad" "G_SPAWN_ERROR_LIBBAD")
+    '("failed" "G_SPAWN_ERROR_FAILED")
+  )
+)
+
+(define-flags SpawnFlags
+  (in-module "G")
+  (c-name "GSpawnFlags")
+  (values
+    '("leave-descriptors-open" "G_SPAWN_LEAVE_DESCRIPTORS_OPEN")
+    '("do-not-reap-child" "G_SPAWN_DO_NOT_REAP_CHILD")
+    '("search-path" "G_SPAWN_SEARCH_PATH")
+    '("stdout-to-dev-null" "G_SPAWN_STDOUT_TO_DEV_NULL")
+    '("stderr-to-dev-null" "G_SPAWN_STDERR_TO_DEV_NULL")
+    '("child-inherits-stdin" "G_SPAWN_CHILD_INHERITS_STDIN")
+    '("file-and-argv-zero" "G_SPAWN_FILE_AND_ARGV_ZERO")
+  )
+)
+
+(define-flags AsciiType
+  (in-module "G")
+  (c-name "GAsciiType")
+  (values
+    '("alnum" "G_ASCII_ALNUM")
+    '("alpha" "G_ASCII_ALPHA")
+    '("cntrl" "G_ASCII_CNTRL")
+    '("digit" "G_ASCII_DIGIT")
+    '("graph" "G_ASCII_GRAPH")
+    '("lower" "G_ASCII_LOWER")
+    '("print" "G_ASCII_PRINT")
+    '("punct" "G_ASCII_PUNCT")
+    '("space" "G_ASCII_SPACE")
+    '("upper" "G_ASCII_UPPER")
+    '("xdigit" "G_ASCII_XDIGIT")
+  )
+)
+
+(define-enum ThreadError
+  (in-module "G")
+  (c-name "GThreadError")
+  (values
+    '("n" "G_THREAD_ERROR_AGAIN")
+  )
+)
+
+(define-enum ThreadPriority
+  (in-module "G")
+  (c-name "GThreadPriority")
+  (values
+    '("low" "G_THREAD_PRIORITY_LOW")
+    '("normal" "G_THREAD_PRIORITY_NORMAL")
+    '("high" "G_THREAD_PRIORITY_HIGH")
+    '("urgent" "G_THREAD_PRIORITY_URGENT")
+  )
+)
+
+(define-enum OnceStatus
+  (in-module "G")
+  (c-name "GOnceStatus")
+  (values
+    '("notcalled" "G_ONCE_STATUS_NOTCALLED")
+    '("progress" "G_ONCE_STATUS_PROGRESS")
+    '("ready" "G_ONCE_STATUS_READY")
+  )
+)
+
+(define-enum UnicodeType
+  (in-module "G")
+  (c-name "GUnicodeType")
+  (values
+    '("control" "G_UNICODE_CONTROL")
+    '("format" "G_UNICODE_FORMAT")
+    '("unassigned" "G_UNICODE_UNASSIGNED")
+    '("private-use" "G_UNICODE_PRIVATE_USE")
+    '("surrogate" "G_UNICODE_SURROGATE")
+    '("lowercase-letter" "G_UNICODE_LOWERCASE_LETTER")
+    '("modifier-letter" "G_UNICODE_MODIFIER_LETTER")
+    '("other-letter" "G_UNICODE_OTHER_LETTER")
+    '("titlecase-letter" "G_UNICODE_TITLECASE_LETTER")
+    '("uppercase-letter" "G_UNICODE_UPPERCASE_LETTER")
+    '("combining-mark" "G_UNICODE_COMBINING_MARK")
+    '("enclosing-mark" "G_UNICODE_ENCLOSING_MARK")
+    '("non-spacing-mark" "G_UNICODE_NON_SPACING_MARK")
+    '("decimal-number" "G_UNICODE_DECIMAL_NUMBER")
+    '("letter-number" "G_UNICODE_LETTER_NUMBER")
+    '("other-number" "G_UNICODE_OTHER_NUMBER")
+    '("connect-punctuation" "G_UNICODE_CONNECT_PUNCTUATION")
+    '("dash-punctuation" "G_UNICODE_DASH_PUNCTUATION")
+    '("close-punctuation" "G_UNICODE_CLOSE_PUNCTUATION")
+    '("final-punctuation" "G_UNICODE_FINAL_PUNCTUATION")
+    '("initial-punctuation" "G_UNICODE_INITIAL_PUNCTUATION")
+    '("other-punctuation" "G_UNICODE_OTHER_PUNCTUATION")
+    '("open-punctuation" "G_UNICODE_OPEN_PUNCTUATION")
+    '("currency-symbol" "G_UNICODE_CURRENCY_SYMBOL")
+    '("modifier-symbol" "G_UNICODE_MODIFIER_SYMBOL")
+    '("math-symbol" "G_UNICODE_MATH_SYMBOL")
+    '("other-symbol" "G_UNICODE_OTHER_SYMBOL")
+    '("line-separator" "G_UNICODE_LINE_SEPARATOR")
+    '("paragraph-separator" "G_UNICODE_PARAGRAPH_SEPARATOR")
+    '("space-separator" "G_UNICODE_SPACE_SEPARATOR")
+  )
+)
+
+(define-enum UnicodeBreakType
+  (in-module "G")
+  (c-name "GUnicodeBreakType")
+  (values
+    '("mandatory" "G_UNICODE_BREAK_MANDATORY")
+    '("carriage-return" "G_UNICODE_BREAK_CARRIAGE_RETURN")
+    '("line-feed" "G_UNICODE_BREAK_LINE_FEED")
+    '("combining-mark" "G_UNICODE_BREAK_COMBINING_MARK")
+    '("surrogate" "G_UNICODE_BREAK_SURROGATE")
+    '("zero-width-space" "G_UNICODE_BREAK_ZERO_WIDTH_SPACE")
+    '("inseparable" "G_UNICODE_BREAK_INSEPARABLE")
+    '("non-breaking-glue" "G_UNICODE_BREAK_NON_BREAKING_GLUE")
+    '("contingent" "G_UNICODE_BREAK_CONTINGENT")
+    '("space" "G_UNICODE_BREAK_SPACE")
+    '("after" "G_UNICODE_BREAK_AFTER")
+    '("before" "G_UNICODE_BREAK_BEFORE")
+    '("before-and-after" "G_UNICODE_BREAK_BEFORE_AND_AFTER")
+    '("hyphen" "G_UNICODE_BREAK_HYPHEN")
+    '("non-starter" "G_UNICODE_BREAK_NON_STARTER")
+    '("open-punctuation" "G_UNICODE_BREAK_OPEN_PUNCTUATION")
+    '("close-punctuation" "G_UNICODE_BREAK_CLOSE_PUNCTUATION")
+    '("quotation" "G_UNICODE_BREAK_QUOTATION")
+    '("exclamation" "G_UNICODE_BREAK_EXCLAMATION")
+    '("ideographic" "G_UNICODE_BREAK_IDEOGRAPHIC")
+    '("numeric" "G_UNICODE_BREAK_NUMERIC")
+    '("infix-separator" "G_UNICODE_BREAK_INFIX_SEPARATOR")
+    '("symbol" "G_UNICODE_BREAK_SYMBOL")
+    '("alphabetic" "G_UNICODE_BREAK_ALPHABETIC")
+    '("prefix" "G_UNICODE_BREAK_PREFIX")
+    '("postfix" "G_UNICODE_BREAK_POSTFIX")
+    '("complex-context" "G_UNICODE_BREAK_COMPLEX_CONTEXT")
+    '("ambiguous" "G_UNICODE_BREAK_AMBIGUOUS")
+    '("unknown" "G_UNICODE_BREAK_UNKNOWN")
+    '("next-line" "G_UNICODE_BREAK_NEXT_LINE")
+    '("word-joiner" "G_UNICODE_BREAK_WORD_JOINER")
+    '("hangul-l-jamo" "G_UNICODE_BREAK_HANGUL_L_JAMO")
+    '("hangul-v-jamo" "G_UNICODE_BREAK_HANGUL_V_JAMO")
+    '("hangul-t-jamo" "G_UNICODE_BREAK_HANGUL_T_JAMO")
+    '("hangul-lv-syllable" "G_UNICODE_BREAK_HANGUL_LV_SYLLABLE")
+    '("hangul-lvt-syllable" "G_UNICODE_BREAK_HANGUL_LVT_SYLLABLE")
+  )
+)
+
+(define-enum NormalizeMode
+  (in-module "G")
+  (c-name "GNormalizeMode")
+  (values
+    '("default" "G_NORMALIZE_DEFAULT")
+    '("nfd" "G_NORMALIZE_NFD")
+    '("default-compose" "G_NORMALIZE_DEFAULT_COMPOSE")
+    '("nfc" "G_NORMALIZE_NFC")
+    '("all" "G_NORMALIZE_ALL")
+    '("nfkd" "G_NORMALIZE_NFKD")
+    '("all-compose" "G_NORMALIZE_ALL_COMPOSE")
+    '("nfkc" "G_NORMALIZE_NFKC")
+  )
+)
+
+;; -*- scheme -*-
+; object definitions ...

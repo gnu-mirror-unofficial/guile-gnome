@@ -1,0 +1,18 @@
+
+@c %start of fragment
+
+@node GtkVScale
+@chapter GtkVScale
+A vertical slider widget for selecting a value from a range
+
+@section Overview
+The @code{<gtk-vscale>} widget is used to allow the user to select a value using
+a vertical slider. To create one, use @code{gtk-hscale-new-with-range}.
+
+The position to show the current value, and the number of decimal places shown
+can be set using the parent @code{<gtk-scale>} class's functions.
+
+@section Usage
+@include defuns-gtkvscale.xml.texi
+
+@c %end of fragment

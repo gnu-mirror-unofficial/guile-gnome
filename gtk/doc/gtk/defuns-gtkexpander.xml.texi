@@ -1,0 +1,296 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-expander>
+Derives from @code{<gtk-bin>}.
+
+This class defines the following slots:
+
+@table @code
+@item expanded
+Whether the expander has been opened to reveal the child widget
+
+@item label
+Text of the expander's label
+
+@item use-underline
+If set, an underline in the text indicates the next character should be used for
+the mnemonic accelerator key
+
+@item use-markup
+The text of the label includes XML markup. See pango_parse_markup()
+
+@item spacing
+Space to put between the label and the child
+
+@item label-widget
+A widget to display in place of the usual expander label
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-expander> activate 
+@end defop
+
+@deffn Function gtk-expander-new  (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new expander using @var{label} as the text of the label.
+
+@table @var
+@item label
+the text of the label
+
+@item ret
+a new @code{<gtk-expander>} widget.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-expander-new-with-mnemonic  (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new expander using @var{label} as the text of the label. If characters
+in @var{label} are preceded by an underscore, they are underlined. If you need a
+literal underscore character in a label, use '__' (two underscores). The first
+underlined character represents a keyboard accelerator called a mnemonic.
+Pressing Alt and that key activates the button.
+
+@table @var
+@item label
+the text of the label with an underscore in front of the mnemonic character
+
+@item ret
+a new @code{<gtk-expander>} widget.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-expander-set-expanded  (self@tie{}@code{<gtk-expander>}) (expanded@tie{}@code{bool})
+@deffnx Method set-expanded
+Sets the state of the expander. Set to @samp{@code{#t}}, if you want the child
+widget to be revealed, and @samp{@code{#f}} if you want the child widget to be
+hidden.
+
+@table @var
+@item expander
+a @code{<gtk-expander>}
+
+@item expanded
+whether the child widget is revealed
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-expander-get-expanded  (self@tie{}@code{<gtk-expander>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-expanded
+Queries a @code{<gtk-expander>} and returns its current state. Returns
+@samp{@code{#t}} if the child widget is revealed.
+
+See @code{gtk-expander-set-expanded}.
+
+@table @var
+@item expander
+a @code{<gtk-expander>}
+
+@item ret
+the current state of the expander.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-expander-set-spacing  (self@tie{}@code{<gtk-expander>}) (spacing@tie{}@code{int})
+@deffnx Method set-spacing
+Sets the spacing field of @var{expander}, which is the number of pixels to place
+between expander and the child.
+
+@table @var
+@item expander
+a @code{<gtk-expander>}
+
+@item spacing
+distance between the expander and child in pixels.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-expander-get-spacing  (self@tie{}@code{<gtk-expander>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-spacing
+Gets the value set by @code{gtk-expander-set-spacing}.
+
+@table @var
+@item expander
+a @code{<gtk-expander>}
+
+@item ret
+spacing between the expander and child.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-expander-set-label  (self@tie{}@code{<gtk-expander>}) (label@tie{}@code{mchars})
+@deffnx Method set-label
+Sets the text of the label of the expander to @var{label}.
+
+This will also clear any previously set labels.
+
+@table @var
+@item expander
+a @code{<gtk-expander>}
+
+@item label
+a string
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-expander-get-label  (self@tie{}@code{<gtk-expander>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-label
+Fetches the text from the label of the expander, as set by
+@code{gtk-expander-set-label}. If the label text has not been set the return
+value will be @samp{@code{#f}}. This will be the case if you create an empty
+button with @code{gtk-button-new} to use as a container.
+
+@table @var
+@item expander
+a @code{<gtk-expander>}
+
+@item ret
+The text of the label widget. This string is owned by the widget and must not be
+modified or freed.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-expander-set-use-underline  (self@tie{}@code{<gtk-expander>}) (use_underline@tie{}@code{bool})
+@deffnx Method set-use-underline
+If true, an underline in the text of the expander label indicates the next
+character should be used for the mnemonic accelerator key.
+
+@table @var
+@item expander
+a @code{<gtk-expander>}
+
+@item use-underline
+@samp{@code{#t}} if underlines in the text indicate mnemonics
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-expander-get-use-underline  (self@tie{}@code{<gtk-expander>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-use-underline
+Returns whether an embedded underline in the expander label indicates a
+mnemonic. See @code{gtk-expander-set-use-underline}.
+
+@table @var
+@item expander
+a @code{<gtk-expander>}
+
+@item ret
+@samp{@code{#t}} if an embedded underline in the expander label indicates the
+mnemonic accelerator keys.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-expander-set-use-markup  (self@tie{}@code{<gtk-expander>}) (use_markup@tie{}@code{bool})
+@deffnx Method set-use-markup
+Sets whether the text of the label contains markup in Pango's text markup
+language. See @code{gtk-label-set-markup}.
+
+@table @var
+@item expander
+a @code{<gtk-expander>}
+
+@item use-markup
+@samp{@code{#t}} if the label's text should be parsed for markup
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-expander-get-use-markup  (self@tie{}@code{<gtk-expander>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-use-markup
+Returns whether the label's text is interpreted as marked up with the Pango text
+markup language. See @code{gtk-expander-set-use-markup}.
+
+@table @var
+@item expander
+a @code{<gtk-expander>}
+
+@item ret
+@samp{@code{#t}} if the label's text will be parsed for markup
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-expander-set-label-widget  (self@tie{}@code{<gtk-expander>}) (label_widget@tie{}@code{<gtk-widget>})
+@deffnx Method set-label-widget
+Set the label widget for the expander. This is the widget that will appear
+embedded alongside the expander arrow.
+
+@table @var
+@item expander
+a @code{<gtk-expander>}
+
+@item label-widget
+the new label widget
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-expander-get-label-widget  (self@tie{}@code{<gtk-expander>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-label-widget
+Retrieves the label widget for the frame. See
+@code{gtk-expander-set-label-widget}.
+
+@table @var
+@item expander
+a @code{<gtk-expander>}
+
+@item ret
+the label widget, or @samp{@code{#f}} if there is none.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

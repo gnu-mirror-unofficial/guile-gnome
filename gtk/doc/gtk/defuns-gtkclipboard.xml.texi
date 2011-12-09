@@ -1,0 +1,245 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-clipboard>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@defop Signal <gtk-clipboard> owner-change  (arg0@tie{}@code{<gdk-event>})
+@end defop
+
+@deffn Function gtk-clipboard-get  (selection@tie{}@code{<gdk-atom>}) @result{}@tie{} (ret@tie{}@code{<gtk-clipboard>})
+Returns the clipboard object for the given selection. See
+@code{gtk-clipboard-get-for-display} for complete details.
+
+@table @var
+@item selection
+a @code{<gdk-atom>} which identifies the clipboard to use.
+
+@item ret
+the appropriate clipboard object. If no clipboard already exists, a new one will
+be created. Once a clipboard object has been created, it is persistent and,
+since it is owned by GTK+, must not be freed or unrefd.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-clipboard-get-for-display  (display@tie{}@code{<gdk-display>}) (selection@tie{}@code{<gdk-atom>}) @result{}@tie{} (ret@tie{}@code{<gtk-clipboard>})
+Returns the clipboard object for the given selection. Cut/copy/paste menu items
+and keyboard shortcuts should use the default clipboard, returned by passing
+@samp{GDK_SELECTION_CLIPBOARD} for @var{selection}. (@samp{GDK_NONE} is
+supported as a synonym for GDK_SELECTION_CLIPBOARD for backwards compatibility
+reasons.) The currently-selected object or text should be provided on the
+clipboard identified by @code{<gdk-selection-primary>}. Cut/copy/paste menu
+items conceptually copy the contents of the @code{<gdk-selection-primary>}
+clipboard to the default clipboard, i.e. they copy the selection to what the
+user sees as the clipboard.
+
+(Passing @code{<gdk-none>} is the same as using @samp{gdk_atom_intern
+("CLIPBOARD", FALSE)}. See
+@uref{http://www.freedesktop.org/Standards/clipboards-spec,
+http://www.freedesktop.org/Standards/clipboards-spec} for a detailed discussion
+of the "CLIPBOARD" vs. "PRIMARY" selections under the X window system. On Win32
+the @code{<gdk-selection-primary>} clipboard is essentially ignored.)
+
+It's possible to have arbitrary named clipboards; if you do invent new
+clipboards, you should prefix the selection name with an underscore (because the
+ICCCM requires that nonstandard atoms are underscore-prefixed), and namespace it
+as well. For example, if your application called "Foo" has a special-purpose
+clipboard, you might call it "_FOO_SPECIAL_CLIPBOARD".
+
+@table @var
+@item display
+the display for which the clipboard is to be retrieved or created
+
+@item selection
+a @code{<gdk-atom>} which identifies the clipboard to use.
+
+@item ret
+the appropriate clipboard object. If no clipboard already exists, a new one will
+be created. Once a clipboard object has been created, it is persistent and,
+since it is owned by GTK+, must not be freed or unrefd.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-clipboard-get-display  (self@tie{}@code{<gtk-clipboard>}) @result{}@tie{} (ret@tie{}@code{<gdk-display>})
+@deffnx Method get-display
+Gets the @code{<gdk-display>} associated with @var{clipboard}
+
+@table @var
+@item clipboard
+a @code{<gtk-clipboard>}
+
+@item ret
+the @code{<gdk-display>} associated with @var{clipboard}
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-clipboard-get-owner  (self@tie{}@code{<gtk-clipboard>}) @result{}@tie{} (ret@tie{}@code{<gobject>})
+@deffnx Method get-owner
+If the clipboard contents callbacks were set with
+@code{gtk-clipboard-set-with-owner}, and the @code{gtk-clipboard-set-with-data}
+or @code{gtk-clipboard-clear} has not subsequently called, returns the owner set
+by @code{gtk-clipboard-set-with-owner}.
+
+@table @var
+@item clipboard
+a @code{<gtk-clipboard>}
+
+@item ret
+the owner of the clipboard, if any; otherwise @samp{@code{#f}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-clipboard-clear  (self@tie{}@code{<gtk-clipboard>})
+@deffnx Method clear
+Clears the contents of the clipboard. Generally this should only be called
+between the time you call @code{gtk-clipboard-set-with-owner} or
+@code{gtk-clipboard-set-with-data}, and when the @var{clear-func} you supplied
+is called. Otherwise, the clipboard may be owned by someone else.
+
+@table @var
+@item clipboard
+a @code{<gtk-clipboard>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-clipboard-set-text  (self@tie{}@code{<gtk-clipboard>}) (text@tie{}@code{mchars})
+@deffnx Method set-text
+Sets the contents of the clipboard to the given UTF-8 string. GTK+ will make a
+copy of the text and take responsibility for responding for requests for the
+text, and for converting the text into the requested format.
+
+@table @var
+@item clipboard
+a @code{<gtk-clipboard>} object
+
+@item text
+a UTF-8 string.
+
+@item len
+length of @var{text}, in bytes, or -1, in which case the length will be
+determined with @code{@code{strlen}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-clipboard-set-image  (self@tie{}@code{<gtk-clipboard>}) (pixbuf@tie{}@code{<gdk-pixbuf>})
+@deffnx Method set-image
+Sets the contents of the clipboard to the given @code{<gdk-pixbuf>}. GTK+ will
+take responsibility for responding for requests for the image, and for
+converting the image into the requested format.
+
+@table @var
+@item clipboard
+a @code{<gtk-clipboard>} object
+
+@item pixbuf
+a @code{<gdk-pixbuf>}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-clipboard-wait-for-contents  (self@tie{}@code{<gtk-clipboard>}) (target@tie{}@code{<gdk-atom>}) @result{}@tie{} (ret@tie{}@code{<gtk-selection-data>})
+@deffnx Method wait-for-contents
+Requests the contents of the clipboard using the given target. This function
+waits for the data to be received using the main loop, so events, timeouts, etc,
+may be dispatched during the wait.
+
+@table @var
+@item clipboard
+a @code{<gtk-clipboard>}
+
+@item target
+an atom representing the form into which the clipboard owner should convert the
+selection.
+
+@item ret
+a newly-allocated @code{<gtk-selection-data>} object or @samp{@code{#f}} if
+retrieving the given target failed. If non-@samp{@code{#f}}, this value must be
+freed with @code{gtk-selection-data-free} when you are finished with it.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-clipboard-wait-for-text  (self@tie{}@code{<gtk-clipboard>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method wait-for-text
+Requests the contents of the clipboard as text and converts the result to UTF-8
+if necessary. This function waits for the data to be received using the main
+loop, so events, timeouts, etc, may be dispatched during the wait.
+
+@table @var
+@item clipboard
+a @code{<gtk-clipboard>}
+
+@item ret
+a newly-allocated UTF-8 string which must be freed with @code{g-free}, or
+@samp{@code{#f}} if retrieving the selection data failed. (This could happen for
+various reasons, in particular if the clipboard was empty or if the contents of
+the clipboard could not be converted into text form.)
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-clipboard-wait-for-image  (self@tie{}@code{<gtk-clipboard>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method wait-for-image
+Requests the contents of the clipboard as image and converts the result to a
+@code{<gdk-pixbuf>}. This function waits for the data to be received using the
+main loop, so events, timeouts, etc, may be dispatched during the wait.
+
+@table @var
+@item clipboard
+a @code{<gtk-clipboard>}
+
+@item ret
+a newly-allocated @code{<gdk-pixbuf>} object which must be disposed with
+@code{g-object-unref}, or @samp{@code{#f}} if retrieving the selection data
+failed. (This could happen for various reasons, in particular if the clipboard
+was empty or if the contents of the clipboard could not be converted into an
+image.)
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-clipboard-store  (self@tie{}@code{<gtk-clipboard>})
+@deffnx Method store
+Stores the current clipboard data somewhere so that it will stay around after
+the application has quit.
+
+@table @var
+@item clipboard
+a @code{<gtk-clipboard>}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

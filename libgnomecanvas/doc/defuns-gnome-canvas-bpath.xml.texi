@@ -1,0 +1,18 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas-bpath>
+Derives from @code{<gnome-canvas-shape>}.
+
+This class defines the following slots:
+
+@table @code
+@item bpath
+
+
+@end table
+
+@end deftp
+
+
+@c %end of fragment

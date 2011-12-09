@@ -1,0 +1,77 @@
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.98 ==
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* == Released guile-gnome-platform version 2.15.97 ==
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* NEWS: Update NEWS.
+
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.96 ==
+
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* README: Update to say that we have no public API.
+
+	* gnome/Makefile.am: 
+	* gnome/cairo.scm: Removed, we provide no public API.
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.95 ==
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.94 ==
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* NEWS: Updated.
+
+2007-06-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.93 ==
+
+2007-05-25  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/cairo-spec.scm: Now that we are actually making a
+	shlib, init guile-cairo in the shlib instead of in every dependant
+	wrapset.
+
+	* gnome/gw/Makefile.am: I tried really hard to avoid making a
+	shared library for this g-wrap wrapset, since it is not necessary
+	at all, but I have failed for the moment: other wrapsets depending
+	on this one will check to see that something has registered the
+	"guile-cairo" wrapset with the C g-wrap runtime, which will fail
+	unless we actually have a shlib that registers the wrapset. Suck.
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.92 ==
+
+2007-05-21  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/cairo-spec.scm: Lots of g-wrap muckiness to make things
+	work.
+
+2007-05-20  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Define GUILE_CAIRO_CFLAGS, not CAIRO_CFLAGS.
+
+	* package.ac: Record that the check succeeded.
+
+	* gnome/gw/cairo-spec.scm: Define g-wrap types for cairo_t and
+	cairo_font_options_t.
+
+	* Makefile.am:
+	* guile-gnome-cairo.pc.in:
+	* guile-gnome-cairo-uninstalled.pc.in:
+	* files.ac: Add pkg-config files.
+
+	* Initial import.
+

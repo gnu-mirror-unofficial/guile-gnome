@@ -1,0 +1,503 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-action>
+Derives from @code{<gtk-buildable>}, @code{<gobject>}.
+
+This class defines the following slots:
+
+@table @code
+@item name
+A unique name for the action.
+
+@item label
+The label used for menu items and buttons that activate this action.
+
+@item short-label
+A shorter label that may be used on toolbar buttons.
+
+@item tooltip
+A tooltip for this action.
+
+@item stock-id
+The stock icon displayed in widgets representing this action.
+
+@item icon-name
+The name of the icon from the icon theme
+
+@item visible-horizontal
+Whether the toolbar item is visible when the toolbar is in a horizontal
+orientation.
+
+@item visible-vertical
+Whether the toolbar item is visible when the toolbar is in a vertical
+orientation.
+
+@item visible-overflown
+When TRUE, toolitem proxies for this action are represented in the toolbar
+overflow menu.
+
+@item is-important
+Whether the action is considered important. When TRUE, toolitem proxies for this
+action show text in GTK_TOOLBAR_BOTH_HORIZ mode.
+
+@item hide-if-empty
+When TRUE, empty menu proxies for this action are hidden.
+
+@item sensitive
+Whether the action is enabled.
+
+@item visible
+Whether the action is visible.
+
+@item action-group
+The GtkActionGroup this GtkAction is associated with, or NULL (for internal
+use).
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-action> activate 
+The "activate" signal is emitted when the action is activated.
+
+Since 2.4
+
+@end defop
+
+@deffn Function gtk-action-new  (name@tie{}@code{mchars}) (label@tie{}@code{mchars}) (tooltip@tie{}@code{mchars}) (stock_id@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-action>})
+Creates a new @code{<gtk-action>} object. To add the action to a
+@code{<gtk-action-group>} and set the accelerator for the action, call
+@code{gtk-action-group-add-action-with-accel}. See @emph{(the missing figure,
+XML-UI} for information on allowed action names.
+
+@table @var
+@item name
+A unique name for the action
+
+@item label
+the label displayed in menu items and on buttons
+
+@item tooltip
+a tooltip for the action
+
+@item stock-id
+the stock icon to display in widgets representing the action
+
+@item ret
+a new @code{<gtk-action>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-get-name  (self@tie{}@code{<gtk-action>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-name
+Returns the name of the action.
+
+@table @var
+@item action
+the action object
+
+@item ret
+the name of the action. The string belongs to GTK+ and should not be freed.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-is-sensitive  (self@tie{}@code{<gtk-action>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-sensitive
+Returns whether the action is effectively sensitive.
+
+@table @var
+@item action
+the action object
+
+@item ret
+@samp{@code{#t}} if the action and its associated action group are both
+sensitive.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-get-sensitive  (self@tie{}@code{<gtk-action>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-sensitive
+Returns whether the action itself is sensitive. Note that this doesn't
+necessarily mean effective sensitivity. See @code{gtk-action-is-sensitive} for
+that.
+
+@table @var
+@item action
+the action object
+
+@item ret
+@samp{@code{#t}} if the action itself is sensitive.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-set-sensitive  (self@tie{}@code{<gtk-action>}) (sensitive@tie{}@code{bool})
+@deffnx Method set-sensitive
+Sets the ::sensitive property of the action to @var{sensitive}. Note that this
+doesn't necessarily mean effective sensitivity. See
+@code{gtk-action-is-sensitive} for that.
+
+@table @var
+@item action
+the action object
+
+@item sensitive
+@samp{@code{#t}} to make the action sensitive
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-action-is-visible  (self@tie{}@code{<gtk-action>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-visible
+Returns whether the action is effectively visible.
+
+@table @var
+@item action
+the action object
+
+@item ret
+@samp{@code{#t}} if the action and its associated action group are both visible.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-get-visible  (self@tie{}@code{<gtk-action>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-visible
+Returns whether the action itself is visible. Note that this doesn't necessarily
+mean effective visibility. See @code{gtk-action-is-sensitive} for that.
+
+@table @var
+@item action
+the action object
+
+@item ret
+@samp{@code{#t}} if the action itself is visible.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-set-visible  (self@tie{}@code{<gtk-action>}) (visible@tie{}@code{bool})
+@deffnx Method set-visible
+Sets the ::visible property of the action to @var{visible}. Note that this
+doesn't necessarily mean effective visibility. See @code{gtk-action-is-visible}
+for that.
+
+@table @var
+@item action
+the action object
+
+@item visible
+@samp{@code{#t}} to make the action visible
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-action-activate  (self@tie{}@code{<gtk-action>})
+@deffnx Method activate
+Emits the "activate" signal on the specified action, if it isn't insensitive.
+This gets called by the proxy widgets when they get activated.
+
+It can also be used to manually activate an action.
+
+@table @var
+@item action
+the action object
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-create-icon  (self@tie{}@code{<gtk-action>}) (icon_size@tie{}@code{<gtk-icon-size>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method create-icon
+This function is intended for use by action implementations to create icons
+displayed in the proxy widgets.
+
+@table @var
+@item action
+the action object
+
+@item icon-size
+the size of the icon that should be created.
+
+@item ret
+a widget that displays the icon for this action.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-create-menu-item  (self@tie{}@code{<gtk-action>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method create-menu-item
+Creates a menu item widget that proxies for the given action.
+
+@table @var
+@item action
+the action object
+
+@item ret
+a menu item connected to the action.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-create-tool-item  (self@tie{}@code{<gtk-action>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method create-tool-item
+Creates a toolbar item widget that proxies for the given action.
+
+@table @var
+@item action
+the action object
+
+@item ret
+a toolbar item connected to the action.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-connect-proxy  (self@tie{}@code{<gtk-action>}) (proxy@tie{}@code{<gtk-widget>})
+@deffnx Method connect-proxy
+Connects a widget to an action object as a proxy. Synchronises various
+properties of the action with the widget (such as label text, icon, tooltip,
+etc), and attaches a callback so that the action gets activated when the proxy
+widget does.
+
+If the widget is already connected to an action, it is disconnected first.
+
+@table @var
+@item action
+the action object
+
+@item proxy
+the proxy widget
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-disconnect-proxy  (self@tie{}@code{<gtk-action>}) (proxy@tie{}@code{<gtk-widget>})
+@deffnx Method disconnect-proxy
+Disconnects a proxy widget from an action. Does @emph{not} destroy the widget,
+however.
+
+@table @var
+@item action
+the action object
+
+@item proxy
+the proxy widget
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-get-proxies  (self@tie{}@code{<gtk-action>}) @result{}@tie{} (ret@tie{}@code{gslist-of})
+@deffnx Method get-proxies
+Returns the proxy widgets for an action. See also @code{gtk-widget-get-action}.
+
+@table @var
+@item action
+the action object
+
+@item ret
+a @code{<gs-list>} of proxy widgets. The list is owned by GTK+ and must not be
+modified.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-connect-accelerator  (self@tie{}@code{<gtk-action>})
+@deffnx Method connect-accelerator
+Installs the accelerator for @var{action} if @var{action} has an accel path and
+group. See @code{gtk-action-set-accel-path} and
+@code{gtk-action-set-accel-group}
+
+Since multiple proxies may independently trigger the installation of the
+accelerator, the @var{action} counts the number of times this function has been
+called and doesn't remove the accelerator until
+@code{gtk-action-disconnect-accelerator} has been called as many times.
+
+@table @var
+@item action
+a @code{<gtk-action>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-disconnect-accelerator  (self@tie{}@code{<gtk-action>})
+@deffnx Method disconnect-accelerator
+Undoes the effect of one call to @code{gtk-action-connect-accelerator}.
+
+@table @var
+@item action
+a @code{<gtk-action>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-block-activate-from  (self@tie{}@code{<gtk-action>}) (proxy@tie{}@code{<gtk-widget>})
+@deffnx Method block-activate-from
+Disables calls to the @code{gtk-action-activate} function by signals on the
+given proxy widget. This is used to break notification loops for things like
+check or radio actions.
+
+This function is intended for use by action implementations.
+
+@table @var
+@item action
+the action object
+
+@item proxy
+a proxy widget
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-unblock-activate-from  (self@tie{}@code{<gtk-action>}) (proxy@tie{}@code{<gtk-widget>})
+@deffnx Method unblock-activate-from
+Re-enables calls to the @code{gtk-action-activate} function by signals on the
+given proxy widget. This undoes the blocking done by
+@code{gtk-action-block-activate-from}.
+
+This function is intended for use by action implementations.
+
+@table @var
+@item action
+the action object
+
+@item proxy
+a proxy widget
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-get-accel-path  (self@tie{}@code{<gtk-action>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-accel-path
+Returns the accel path for this action.
+
+@table @var
+@item action
+the action object
+
+@item ret
+the accel path for this action, or @samp{@code{#f}} if none is set. The returned
+string is owned by GTK+ and must not be freed or modified.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-action-set-accel-path  (self@tie{}@code{<gtk-action>}) (accel_path@tie{}@code{mchars})
+@deffnx Method set-accel-path
+Sets the accel path for this action. All proxy widgets associated with the
+action will have this accel path, so that their accelerators are consistent.
+
+@table @var
+@item action
+the action object
+
+@item accel-path
+the accelerator path
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-action-get-accel-closure  (self@tie{}@code{<gtk-action>}) @result{}@tie{} (ret@tie{}@code{<gclosure>})
+@deffnx Method get-accel-closure
+Returns the accel closure for this action.
+
+@table @var
+@item action
+the action object
+
+@item ret
+the accel closure for this action. The returned closure is owned by GTK+ and
+must not be unreffed or modified.
+
+@end table
+
+Since 2.8
+
+@end deffn
+
+@deffn Function gtk-action-set-accel-group  (self@tie{}@code{<gtk-action>}) (accel_group@tie{}@code{<gtk-accel-group>})
+@deffnx Method set-accel-group
+Sets the @code{<gtk-accel-group>} in which the accelerator for this action will
+be installed.
+
+@table @var
+@item action
+the action object
+
+@item accel-group
+a @code{<gtk-accel-group>} or @samp{@code{#f}}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

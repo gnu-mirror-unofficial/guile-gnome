@@ -1,0 +1,307 @@
+2008-04-27  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/corba.scm: Fold the CORBA tutorial foo into here.
+
+	* doc/guile-gnome-corba.scm (*name*): Update dates.
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.98 ==
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* == Released guile-gnome-platform version 2.15.97 ==
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* NEWS: Update NEWS.
+
+2008-04-10  Andy Wingo  <wingo@pobox.com>
+
+	* tests/wrapset.api: Update for corba-typecode->gtype-class
+	change.
+
+2008-04-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/corba/guile-gnome-corba-types.c: Update for (gnome
+	gobject) API changes.
+
+	* gnome/corba/guile-gnome-corba-primitives.c: Only define
+	BONOBO_EX if it's not defined already.
+
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.96 ==
+
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am: 
+	* tests/Makefile.am: 
+	* tests/wrapset.scm: 
+	* tests/wrapset.api: Add API regression tests.
+
+	* gnome/corba/Makefile.am: 
+	* Makefile.am: 
+	* doc/make-texinfo.scm: 
+	* doc/guile-gnome-corba.texi: 
+	* doc/guile-gnome-corba.scm: 
+	* doc/Makefile.am: Add docs and infrastructure for generating
+	docs. Pretty paltry right now, though.
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.95 ==
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.94 ==
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* NEWS: Updated.
+
+2007-09-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/corba/guile-gnome-corba-types.c
+	(scm_c_corba_demarshal_any): Add a cast to avoid a compiler
+	warning.
+
+2007-06-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.93 ==
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.92 ==
+
+2007-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/corba/guile-gnome-corba-generic.c
+	(guile_corba_generic_make_type_name): Actually,
+	gtype-name->class-name returns a symbol, as it turns out. Update
+	to deal with that.
+	
+	* gnome/corba/guile-gnome-corba-generic.c
+	(guile_corba_generic_make_type_name): Update for guile 1.8's
+	string functions. Fixes part of #416570.
+
+	* == Released guile-gnome-platform version 2.15.91 ==
+
+2006-12-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.90 ==
+
+2006-11-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/corba-spec.scm: Use (gnome gw support g-wrap), the
+	g-wrap compatibility wrapper. Use #:keywords, not :keywords.
+
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.7.99 ==
+
+2005-01-11  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.98 ==
+
+2004-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.97 ==
+
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Add record_check.
+
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* glib-checks.ac: Versioned pkg-config check.
+
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/corba/Makefile.am
+	(libguile_gnome_corba_@API_VERSION@_la_SOURCES): Version the lib
+	that gets linked to.
+
+	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
+	versioned directory. Link to the versioned lib.
+
+2004-09-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_corba_la_LIBADD): Not
+	G_WRAP_LINK_ARGS, it's G_WRAP_LIBS.
+
+	* gnome/corba/Makefile.am: Install headers into a versioned
+	directory.
+
+	* package.ac: Re-enable the CORBA build.
+
+	* gnome/gw/corba-spec.scm: Move here from
+	../corba/gw-corba-spec.scm.
+
+	* gnome/corba/types.scm: Use the right g-wrapped module.
+
+	* gnome/corba/primitives.scm: Use the right g-wrapped module.
+
+	* gnome/corba/guile-gnome-corba.c: Include the right
+	guile-gnome-gobject header.
+
+	* gnome/corba/guile-gnome-corba-types.h: Define
+	ORBIT2_INTERNAL_API when including orbit-object.h so we can get
+	RootObject_duplicate/release.
+
+	* gnome/corba/guile-gnome-corba-primitives.h: Define
+	ORBIT2_INTERNAL_API when including orbit-object.h so we can get
+	RootObject_duplicate/release.
+
+	* gnome/corba/guile-gnome-corba-primitives.c: Use the right
+	guile-gnome-gobject headers.
+	(scm_class_slot_ref, _scm_make_class, scm_class_slot_set_x): New
+	objects representing the scheme procedures of the same names.
+	(DEBUG): New macro, replaces g_message. Callers updated.
+	(WARN): New macro, replaces g_warning. Callers updated.
+	(FOREACH_LIST): New macro, does car/cdr recursion on a list.
+	(scm_init_gnome_corba_primitives): Initialize the scheme objects.
+
+	* gnome/corba/Makefile.am: Be more like the glib/gobject
+	Makefile.am. Only define -DORBIT2_STUBS_API, not INTERNAL.
+
+	* gnome/corba.scm: Use the right g-wrapped module.
+
+	* gnome/Makefile.am: Add gw/ to the SUBDIRS list.
+
+	* demos/corba/Makefile.am: Mark the .c and .h files as being
+	generated. Install to $(libdir)/orbit-2.0.
+
+	* gnome/corba/guile-gnome-corba-generic.[ch]
+	(guile_corba_generic_make_type_name): Don't take a format
+	argument. Callers within the .c file changed.
+
+	* gnome/corba/types.scm: Use proper g-wrapped module.
+
+	* gnome/gw/corba-spec.scm: Adapt to new g-wrap API.
+
+	* gnome/corba/guile-gnome-corba-primitives.c
+	(s_scm_corba_primitive_find_poa_class): Use car/cdr recursion
+	rather than i++/list-ref.
+	(guile_corba_sys_register_interface): small_relay_call was changed
+	to impl_finder, as far as I can tell.
+
+2004-09-18  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/corba/guile-gnome-corba-types.c
+	(scm_c_corba_demarshal_any): Adapt to changes in guile-gobject C
+	API.
+
+	* The source was pruned from the original guile-gobject package,
+	leaving only CORBA-related files. The build system was adapted for
+	guile-gnome-pkg. NEWS, AUTHORS, and README files were updated.
+
+	* ChangeLogs merged.
+
+2003-11-25  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/corba/Makefile.am (GUILE_SNARF_CFLAGS): Added
+	$(G_WRAP_FLAGS).
+	
+	* gnome/corba/gw-corba-spec.scm: Use gw-standard instead of
+	guile-gnome-gw-standard.
+
+2003-10-22  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/corba/guile-gnome-corba-primitives.c: Use for "" instead
+	of <> for our own headers.
+	
+	* gnome/corba/guile-gnome-corba-primitives.c: Get rid of gh_*
+	usage.
+
+	* gnome/corba/guile-gnome-corba-primitives.h,
+	guile-gnome-corba-primitives.c, guile-gnome-corba-types.c,
+	guile-gnome-corba-types.h: Use scm_t_bits instead of scm_bits_t.
+
+	* gnome/corba/guile-gnome-corba-primitives.h,
+	guile-gnome-corba-primitives.c: Use SCM_VECTOR_SET and
+	SCM_VECTOR_REF instead of SCM_VELTS.
+
+2003-10-21  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/Makefile.am (SUBDIRS): Only include gtk and corba if we
+	have detected them.
+
+2002-04-13  Ariel Rios  <ariel@gnu.org>
+
+	* gnome/corba/guile-gnome-corba-types.c
+	(scm_c_corba_demarshal_any): Correctly use %ld instead of %d and
+	kill warning.
+
+2002-01-28  Ariel Rios  <ariel@gnu.org>
+
+	* gnome/corba/guile-gnome-corba-primitives.c
+	(guile_corba_sys_register_interface): Kill
+	interface->class.init_vepvmap since vepvmap cache is enabled by
+	default.
+
+2002-01-28  Ariel Rios  <ariel@gnu.org>
+
+	* gnome/corba/Makefile.am (INCLUDES): Added a
+	-DORBIT2_INTERNAL_API flag.
+
+2002-01-24  Ariel Rios  <ariel@gnu.org>
+
+	* gnome/corba/guile-gnome-corba-primitives.h: Some clean up. I
+	cannot track one warning, tho.
+
+2001-09-09  Martin Baulig  <baulig@suse.de>
+
+	* gnome/corba/Foo.idl: Make it a bit more "complicated" ....
+
+	* gnome/corba/guile-gnome-corba-primitives.[ch]: Moved the
+	low-level stuff here.
+
+	* gnome/corba/primitives.scm: The (gnome corba primitives) module.
+
+	* gnome/corba/types.scm: The (gnome corba types) module.
+
+2001-09-07  Martin Baulig  <baulig@suse.de>
+
+	* gnome/corba/Foo.idl: Moved here from ../../corba/.
+	
+	* gnome/corba/guile-corba.[ch]: Renamed to guile-gnome-corba.[ch].
+
+	* gnome/corba/guile-corba-types.[ch]: Renamed to
+	guile-gnome-corba-types.[ch].
+
+	* gnome/corba/guile-corba-generic.[ch]: Renamed to
+	guile-gnome-corba-generic.[ch].
+
+	* gnome/corba/gnomecorba.gwp: Renamed to gnome-corba.gwp.
+
+	* gnome/corba/orbit-idl-utils.c: Removed.
+
+2001-09-07  Martin Baulig  <baulig@suse.de>
+
+	* gnome/corba/Foo.idl: Moved to ../demos/corba/.
+
+2001-09-07  Martin Baulig  <baulig@suse.de>
+
+	* configure.in: Check for orbit-idl.
+	(ORBIT_IDL, BONOBO_IDL_DIR): Added.
+
+	* demos/: New directory.
+
+	* demos/corba/: New directory.
+
+2001-08-25  Martin Baulig  <baulig@suse.de>
+
+	* gnome/corba/guile-corba-generic.[ch]: New files. This contains
+	non-Scheme stuff which is generally useful.
+
+2001-07-09  Martin Baulig  <baulig@suse.de>
+
+	* gnome/corba/Makefile.am: Removed the g-wrap stuff for the
+	moment.
+
+	* gnome/corba/guile-corba.[ch]: We now use guile 1.5.x (from CVS)
+	here.
+
+	* gnome/corba/ChangeLog: Now we have a ChangeLog here :-)
+

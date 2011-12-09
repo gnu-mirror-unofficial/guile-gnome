@@ -1,0 +1,75 @@
+
+@c %start of fragment
+
+@deftp Class <gdk-display-manager>
+Derives from @code{<gobject>}.
+
+This class defines the following slots:
+
+@table @code
+@item default-display
+The default display for GDK
+
+@end table
+
+@end deftp
+
+@defop Signal <gdk-display-manager> display-opened  (arg0@tie{}@code{<gdk-display>})
+The ::display_opened signal is emitted when a display is opened.
+
+Since 2.2
+
+@end defop
+
+@deffn Function gdk-display-manager-get  @result{}@tie{} (ret@tie{}@code{<gdk-display-manager>})
+Returns the global @code{<gdk-display-manager>} singleton;
+@code{gdk-parse-pargs}, @code{gdk-init}, or @code{gdk-init-check} must have been
+called first.
+
+@table @var
+@item ret
+the singleton @code{<gdk-display-manager>} object.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-display-manager-list-displays  (self@tie{}@code{<gdk-display-manager>}) @result{}@tie{} (ret@tie{}@code{gslist-of})
+@deffnx Method list-displays
+List all currently open displays.
+
+@table @var
+@item display-manager
+a @code{<gdk-display-manager>}
+
+@item ret
+a newly allocated @code{<gs-list>} of @code{<gdk-display>} objects. Free this
+list with @code{g-slist-free} when you are done with it.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-display-get-core-pointer  (self@tie{}@code{<gdk-display>}) @result{}@tie{} (ret@tie{}@code{<gdk-device>})
+@deffnx Method get-core-pointer
+Returns the core pointer device for the given display
+
+@table @var
+@item display
+a @code{<gdk-display>}
+
+@item ret
+the core pointer device; this is owned by the display and should not be freed.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+
+@c %end of fragment

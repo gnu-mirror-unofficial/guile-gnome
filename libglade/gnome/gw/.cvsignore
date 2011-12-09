@@ -1,0 +1,13 @@
+Makefile.in
+Makefile
+*.lo
+*.la
+.deps
+.libs
+gtkwrap.c
+gtkwrap.h
+gtkwrap.html
+*.x
+gnomegtk.c
+gnomegtk.h
+gnomegtk.html

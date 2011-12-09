@@ -1,0 +1,134 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-radio-button>
+Derives from @code{<gtk-check-button>}.
+
+This class defines the following slots:
+
+@table @code
+@item group
+The radio button whose group this widget belongs to.
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-radio-button> group-changed 
+Emitted when the group of radio buttons that a radio button belongs to changes.
+This is emitted when a radio button switches from being alone to being part of a
+group of 2 or more buttons, or vice-versa, and when a buttton is moved from one
+group of 2 or more buttons to a different one, but not when the composition of
+the group that a button belongs to changes.
+
+Since 2.4
+
+@end defop
+
+@deffn Function gtk-radio-button-new  (group@tie{}@code{<gtk-radio-group*>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-radio-button>}. To be of any practical value, a widget
+should then be packed into the radio button.
+
+@table @var
+@item group
+an existing radio button group, or @samp{@code{#f}} if you are creating a new
+group.
+
+@item ret
+a new radio button.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-radio-button-new-from-widget  (group@tie{}@code{<gtk-radio-button>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-radio-button>}, adding it to the same group as
+@var{group}. As with @code{gtk-radio-button-new}, a widget should be packed into
+the radio button.
+
+@table @var
+@item group
+an existing @code{<gtk-radio-button>}.
+
+@item ret
+a new radio button.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-radio-button-new-with-label  (group@tie{}@code{<gtk-radio-group*>}) (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-radio-button>} with a text label.
+
+@table @var
+@item group
+an existing radio button group, or @samp{@code{#f}} if you are creating a new
+group.
+
+@item label
+the text label to display next to the radio button.
+
+@item ret
+a new radio button.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-radio-button-new-with-mnemonic  (group@tie{}@code{<gtk-radio-group*>}) (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-radio-button>} containing a label, adding it to the
+same group as @var{group}. The label will be created using
+@code{gtk-label-new-with-mnemonic}, so underscores in @var{label} indicate the
+mnemonic for the button.
+
+@table @var
+@item group
+the radio button group
+
+@item label
+the text of the button, with an underscore in front of the mnemonic character
+
+@item ret
+a new @code{<gtk-radio-button>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-radio-button-set-group  (self@tie{}@code{<gtk-radio-button>}) (group@tie{}@code{<gtk-radio-group*>})
+@deffnx Method set-group
+Sets a @code{<gtk-radio-button>}'s group. It should be noted that this does not
+change the layout of your interface in any way, so if you are changing the
+group, it is likely you will need to re-arrange the user interface to reflect
+these changes.
+
+@table @var
+@item radio-button
+a @code{<gtk-radio-button>}.
+
+@item group
+an existing radio button group, such as one returned from
+@code{gtk-radio-button-get-group}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-radio-button-get-group  (self@tie{}@code{<gtk-radio-button>}) @result{}@tie{} (ret@tie{}@code{<gtk-radio-group*>})
+@deffnx Method get-group
+Retrieves the group assigned to a radio button.
+
+@table @var
+@item radio-button
+a @code{<gtk-radio-button>}.
+
+@item ret
+a linked list containing all the radio buttons in the same group as
+@var{radio-button}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

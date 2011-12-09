@@ -1,0 +1,27 @@
+
+@c %start of fragment
+
+@deffn Function gdk-threads-init 
+Initializes GDK so that it can be used from multiple threads in conjunction with
+@code{gdk-threads-enter} and @code{gdk-threads-leave}. @code{g-thread-init} must
+be called previous to this function.
+
+This call must be made before any use of the main loop from GTK+; to be safe,
+call it before @code{gtk-init}.
+
+@end deffn
+
+@deffn Function gdk-threads-enter 
+This macro marks the beginning of a critical section in which GDK and GTK+
+functions can be called. Only one thread at a time can be in such a critial
+section.
+
+@end deffn
+
+@deffn Function gdk-threads-leave 
+Leaves a critical region begun with @code{gdk-threads-enter}.
+
+@end deffn
+
+
+@c %end of fragment

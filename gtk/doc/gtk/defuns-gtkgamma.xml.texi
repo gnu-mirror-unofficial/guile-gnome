@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-gamma-curve>
+Derives from @code{<gtk-vbox>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-gamma-curve-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-gamma-curve>}.
+
+@table @var
+@item ret
+a new @code{<gtk-gamma-curve>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node Utilities
+@chapter Utilities
+Utility and miscellaneous convenience functions.
+
+@section Overview
+These functions provide miscellaneous utilities for manipulating pixbufs. The
+pixel data in pixbufs may of course be manipulated directly by applications, but
+several common operations can be performed by these functions instead.
+
+@section Usage
+@include defuns-util.xml.texi
+
+@c %end of fragment

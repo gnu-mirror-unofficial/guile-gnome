@@ -1,0 +1,13 @@
+*-gw-*.[ch]
+Makefile
+Makefile.in
+.deps
+.libs
+*.log
+*.pc
+gnome/gw/gtk.scm
+gnome/gw/gdk.scm
+*.lo
+*.la
+*.info*
+texinfo.tex

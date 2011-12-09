@@ -1,0 +1,19 @@
+
+@c %start of fragment
+
+@node GnomeCanvasText
+@chapter GnomeCanvasText
+Text canvas item
+
+@section Overview
+A canvas item for displaying text. See @code{<gnome-canvas-rich-text>} for a
+more advanced text display and editing canvas item. NB: The
+@code{<gnome-canvas-text>} item doesn't scale with the zoom property of the
+@code{<gnome-canvas>}. A zoomable implementation could derive from
+@code{<gnome-canvas-text>} and check the zoom property for manual adjustments to
+the font size.
+
+@section Usage
+@include defuns-gnome-canvas-text.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node GtkRadioAction
+@chapter GtkRadioAction
+An action of which only one in a group can be active
+
+@section Overview
+A @code{<gtk-radio-action>} is similar to @code{<gtk-radio-menu-item>}. A number
+of radio actions can be linked together so that only one may be active at any
+one time.
+
+@section Usage
+@include defuns-gtkradioaction.xml.texi
+
+@c %end of fragment

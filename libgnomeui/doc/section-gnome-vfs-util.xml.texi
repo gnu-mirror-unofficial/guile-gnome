@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node gnome-vfs-util
+@chapter gnome-vfs-util
+
+
+@section Overview
+@section Usage
+@include defuns-gnome-vfs-util.xml.texi
+
+@c %end of fragment

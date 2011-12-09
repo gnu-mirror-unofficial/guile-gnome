@@ -1,0 +1,53 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-hscale>
+Derives from @code{<gtk-scale>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-hscale-new  (adjustment@tie{}@code{<gtk-adjustment>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-hscale>}.
+
+@table @var
+@item adjustment
+the @code{<gtk-adjustment>} which sets the range of the scale.
+
+@item ret
+a new @code{<gtk-hscale>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-hscale-new-with-range  (min@tie{}@code{double}) (max@tie{}@code{double}) (step@tie{}@code{double}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new horizontal scale widget that lets the user input a number between
+@var{min} and @var{max} (including @var{min} and @var{max}) with the increment
+@var{step}. @var{step} must be nonzero; it's the distance the slider moves when
+using the arrow keys to adjust the scale value.
+
+Note that the way in which the precision is derived works best if @var{step} is
+a power of ten. If the resulting precision is not suitable for your needs, use
+@code{gtk-scale-set-digits} to correct it.
+
+@table @var
+@item min
+minimum value
+
+@item max
+maximum value
+
+@item step
+step increment (tick size) used with keyboard shortcuts
+
+@item ret
+a new @code{<gtk-hscale>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

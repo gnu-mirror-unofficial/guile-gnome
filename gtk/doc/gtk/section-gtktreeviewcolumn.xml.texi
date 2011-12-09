@@ -1,0 +1,20 @@
+
+@c %start of fragment
+
+@node GtkTreeViewColumn
+@chapter GtkTreeViewColumn
+A visible column in a widget
+
+@section Overview
+The GtkTreeViewColumn object represents a visible column in a
+@code{<gtk-tree-view>} widget. It allows to set properties of the column header,
+and functions as a holding pen for the cell renderers which determine how the
+data in the column is displayed.
+
+Please refer to the tree widget conceptual overview for an overview of all the
+objects and data types related to the tree widget and how they work together.
+
+@section Usage
+@include defuns-gtktreeviewcolumn.xml.texi
+
+@c %end of fragment

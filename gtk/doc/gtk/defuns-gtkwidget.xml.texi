@@ -1,0 +1,2902 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-widget>
+Derives from @code{<atk-implementor-iface>}, @code{<gtk-buildable>},
+@code{<gtk-object>}.
+
+This class defines the following slots:
+
+@table @code
+@item name
+The name of the widget
+
+@item parent
+The parent widget of this widget. Must be a Container widget
+
+@item width-request
+Override for width request of the widget, or -1 if natural request should be
+used
+
+@item height-request
+Override for height request of the widget, or -1 if natural request should be
+used
+
+@item visible
+Whether the widget is visible
+
+@item sensitive
+Whether the widget responds to input
+
+@item app-paintable
+Whether the application will paint directly on the widget
+
+@item can-focus
+Whether the widget can accept the input focus
+
+@item has-focus
+Whether the widget has the input focus
+
+@item is-focus
+Whether the widget is the focus widget within the toplevel
+
+@item can-default
+Whether the widget can be the default widget
+
+@item has-default
+Whether the widget is the default widget
+
+@item receives-default
+If TRUE, the widget will receive the default action when it is focused
+
+@item composite-child
+Whether the widget is part of a composite widget
+
+@item style
+The style of the widget, which contains information about how it will look
+(colors etc)
+
+@item events
+The event mask that decides what kind of GdkEvents this widget gets
+
+@item extension-events
+The mask that decides what kind of extension events this widget gets
+
+@item no-show-all
+Whether gtk_widget_show_all() should not affect this widget
+
+@item has-tooltip
+Whether this widget has a tooltip
+
+@item tooltip-markup
+The contents of the tooltip for this widget
+
+@item tooltip-text
+The contents of the tooltip for this widget
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-widget> composited-changed 
+@end defop
+
+@defop Signal <gtk-widget> show 
+@end defop
+
+@defop Signal <gtk-widget> hide 
+@end defop
+
+@defop Signal <gtk-widget> map 
+@end defop
+
+@defop Signal <gtk-widget> unmap 
+@end defop
+
+@defop Signal <gtk-widget> realize 
+@end defop
+
+@defop Signal <gtk-widget> unrealize 
+@end defop
+
+@defop Signal <gtk-widget> size-request  (arg0@tie{}@code{<gtk-requisition>})
+@end defop
+
+@defop Signal <gtk-widget> size-allocate  (arg0@tie{}@code{<gdk-rectangle>})
+@end defop
+
+@defop Signal <gtk-widget> state-changed  (arg0@tie{}@code{<gtk-state-type>})
+@end defop
+
+@defop Signal <gtk-widget> parent-set  (arg0@tie{}@code{<gtk-widget>})
+The parent-set signal is emitted when a new parent has been set on a widget.
+
+@end defop
+
+@defop Signal <gtk-widget> hierarchy-changed  (arg0@tie{}@code{<gtk-widget>})
+Emitted when there is a chance in the hierarchy to which a widget belong. More
+precisely, a widget is @dfn{anchored} when its toplevel ancestor is a
+@code{<gtk-window>}. This signal is emitted when a widget changes from
+un-anchored to anchored or vice-versa.
+
+@end defop
+
+@defop Signal <gtk-widget> style-set  (arg0@tie{}@code{<gtk-style>})
+The style-set signal is emitted when a new style has been set on a widget. Note
+that style-modifying functions like @code{gtk-widget-modify-base} also cause
+this signal to be emitted.
+
+@end defop
+
+@defop Signal <gtk-widget> direction-changed  (arg0@tie{}@code{<gtk-text-direction>})
+@end defop
+
+@defop Signal <gtk-widget> grab-notify  (arg0@tie{}@code{<gboolean>})
+The ::grab-notify signal is emitted when a widget becomes shadowed by a GTK+
+grab (not a pointer or keyboard grab) on another widget, or when it becomes
+unshadowed due to a grab being removed.
+
+A widget is shadowed by a @code{gtk-grab-add} when the topmost grab widget in
+the grab stack of its window group is not its ancestor.
+
+@end defop
+
+@defop Signal <gtk-widget> child-notify  (arg0@tie{}@code{<gparam>})
+The ::child-notify signal is emitted for each child property that has changed on
+an object. The signal's detail holds the property name.
+
+@end defop
+
+@defop Signal <gtk-widget> mnemonic-activate  (arg0@tie{}@code{<gboolean>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> grab-focus 
+@end defop
+
+@defop Signal <gtk-widget> focus  (arg0@tie{}@code{<gtk-direction-type>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> move-focus  (arg0@tie{}@code{<gtk-direction-type>})
+undocumented
+@end defop
+
+@defop Signal <gtk-widget> event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> event-after  (arg0@tie{}@code{<gdk-event>})
+@end defop
+
+@defop Signal <gtk-widget> button-press-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> button-release-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> scroll-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> motion-notify-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> keynav-failed  (arg0@tie{}@code{<gtk-direction-type>}) @result{}@tie{}@code{<gboolean>}
+undocumented
+@end defop
+
+@defop Signal <gtk-widget> delete-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+The ::delete-event signal is emitted if a user requests that a toplevel window
+is closed. The default handler for this signal destroys the window. Connecting
+@code{gtk-widget-hide-on-delete} to this signal will cause the window to be
+hidden instead, so that it can later be shown again without reconstructing it.
+
+@end defop
+
+@defop Signal <gtk-widget> destroy-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+The ::destroy-event signal is emitted when a @code{<gdk-window>} is destroyed.
+You rarely get this signal, because most widgets disconnect themselves from
+their window before they destroy it, so no widget owns the window at destroy
+time.
+
+@end defop
+
+@defop Signal <gtk-widget> expose-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> key-press-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> key-release-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> enter-notify-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> leave-notify-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> configure-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> focus-in-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> focus-out-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> map-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> unmap-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> property-notify-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> selection-clear-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> selection-request-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> selection-notify-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> selection-received  (arg0@tie{}@code{<gtk-selection-data>}) (arg1@tie{}@code{<guint>})
+@end defop
+
+@defop Signal <gtk-widget> selection-get  (arg0@tie{}@code{<gtk-selection-data>}) (arg1@tie{}@code{<guint>}) (arg2@tie{}@code{<guint>})
+@end defop
+
+@defop Signal <gtk-widget> proximity-in-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> proximity-out-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> drag-leave  (arg0@tie{}@code{<gdk-drag-context>}) (arg1@tie{}@code{<guint>})
+The ::drag-leave signal is emitted on the drop site when the cursor leaves the
+widget. A typical reason to connect to this signal is to undo things done in
+::drag-motion, e.g. undo highlighting with @code{gtk-drag-unhighlight}
+
+@end defop
+
+@defop Signal <gtk-widget> drag-begin  (arg0@tie{}@code{<gdk-drag-context>})
+The ::drag-begin signal is emitted on the drag source when a drag is started. A
+typical reason to connect to this signal is to set up a custom drag icon with
+@code{gtk-drag-source-set-icon}.
+
+@end defop
+
+@defop Signal <gtk-widget> drag-end  (arg0@tie{}@code{<gdk-drag-context>})
+The ::drag-end signal is emitted on the drag source when a drag is finished. A
+typical reason to connect to this signal is to undo things done in ::drag-begin.
+
+@end defop
+
+@defop Signal <gtk-widget> drag-data-delete  (arg0@tie{}@code{<gdk-drag-context>})
+The ::drag-data-delete signal is emitted on the drag source when a drag with the
+action @samp{GDK_ACTION_MOVE} is successfully completed. The signal handler is
+responsible for deleting the data that has been dropped. What "delete" means,
+depends on the context of the drag operation.
+
+@end defop
+
+@defop Signal <gtk-widget> drag-failed  (arg0@tie{}@code{<gdk-drag-context>}) (arg1@tie{}@code{<gtk-drag-result>}) @result{}@tie{}@code{<gboolean>}
+undocumented
+@end defop
+
+@defop Signal <gtk-widget> drag-motion  (arg0@tie{}@code{<gdk-drag-context>}) (arg1@tie{}@code{<gint>}) (arg2@tie{}@code{<gint>}) (arg3@tie{}@code{<guint>}) @result{}@tie{}@code{<gboolean>}
+The ::drag-motion signal is emitted on the drop site when the user moves the
+cursor over the widget during a drag. The signal handler must determine whether
+the cursor position is in a drop zone or not. If it is not in a drop zone, it
+returns @samp{@code{#f}} and no further processing is necessary. Otherwise, the
+handler returns @samp{@code{#t}}. In this case, the handler is responsible for
+providing the necessary information for displaying feedback to the user, by
+calling @code{gdk-drag-status}. If the decision whether the drop will be
+accepted or rejected can't be made based solely on the cursor position and the
+type of the data, the handler may inspect the dragged data by calling
+@code{gtk-drag-get-data} and defer the @code{gdk-drag-status} call to the
+::drag-data-received handler.
+
+Note that there is no ::drag-enter signal. The drag receiver has to keep track
+of whether he has received any ::drag-motion signals since the last ::drag-leave
+and if not, treat the ::drag-motion signal as an "enter" signal. Upon an
+"enter", the handler will typically highlight the drop site with
+@code{gtk-drag-highlight}.
+
+@example 
+ 
+static void
+drag_motion (GtkWidget *widget,
+      	  GdkDragContext *context,
+             gint x,
+             gint y,
+             guint time)
+@{
+  GdkAtom target;
+ 
+  PrivateData *private_data = GET_PRIVATE_DATA (widget);
+ 
+  if (!private_data->drag_highlight) 
+   @{
+     private_data->drag_highlight = 1;
+     gtk_drag_highlight (widget);
+   @}
+ 
+  target = gtk_drag_dest_find_target (widget, context, NULL);
+  if (target == GDK_NONE)
+    gdk_drag_status (context, 0, time);
+  else 
+   @{
+     private_data->pending_status = context->suggested_action;
+     gtk_drag_get_data (widget, context, target, time);
+   @}
+ 
+  return TRUE;
+@}
+  
+static void
+drag_data_received (GtkWidget        *widget,
+                    GdkDragContext   *context,
+                    gint              x,
+                    gint              y,
+                    GtkSelectionData *selection_data,
+                    guint             info,
+                    guint             time)
+@{
+  PrivateData *private_data = GET_PRIVATE_DATA (widget);
+  
+  if (private_data->suggested_action) 
+   @{
+     private_data->suggested_action = 0;
+     
+    /* We are getting this data due to a request in drag_motion,
+     * rather than due to a request in drag_drop, so we are just
+     * supposed to call gdk_drag_status(), not actually paste in 
+     * the data.
+     */
+     str = gtk_selection_data_get_text (selection_data);
+     if (!data_is_acceptable (str)) 
+       gdk_drag_status (context, 0, time);
+     else
+       gdk_drag_status (context, private_data->suggested_action, time);
+   @}
+  else
+   @{
+     /* accept the drop */
+   @}
+@}
+@end example
+
+@end defop
+
+@defop Signal <gtk-widget> drag-drop  (arg0@tie{}@code{<gdk-drag-context>}) (arg1@tie{}@code{<gint>}) (arg2@tie{}@code{<gint>}) (arg3@tie{}@code{<guint>}) @result{}@tie{}@code{<gboolean>}
+The ::drag-drop signal is emitted on the drop site when the user drops the data
+onto the widget. The signal handler must determine whether the cursor position
+is in a drop zone or not. If it is not in a drop zone, it returns
+@samp{@code{#f}} and no further processing is necessary. Otherwise, the handler
+returns @samp{@code{#t}}. In this case, the handler must ensure that
+@code{gtk-drag-finish} is called to let the source know that the drop is done.
+The call to @code{gtk-drag-finish} can be done either directly or in a
+::drag-data-received handler which gets triggered by calling
+@code{gtk-drop-get-data} to receive the data for one or more of the supported
+targets.
+
+@end defop
+
+@defop Signal <gtk-widget> drag-data-get  (arg0@tie{}@code{<gdk-drag-context>}) (arg1@tie{}@code{<gtk-selection-data>}) (arg2@tie{}@code{<guint>}) (arg3@tie{}@code{<guint>})
+The ::drag-data-get signal is emitted on the drag source when the drop site
+requests the data which is dragged. It is the responsibility of the signal
+handler to fill @var{data} with the data in the format which is indicated by
+@var{info}. See @code{gtk-selection-data-set} and
+@code{gtk-selection-data-set-text}.
+
+@end defop
+
+@defop Signal <gtk-widget> drag-data-received  (arg0@tie{}@code{<gdk-drag-context>}) (arg1@tie{}@code{<gint>}) (arg2@tie{}@code{<gint>}) (arg3@tie{}@code{<gtk-selection-data>}) (arg4@tie{}@code{<guint>}) (arg5@tie{}@code{<guint>})
+The ::drag-data-received signal is emitted on the drop site when the dragged
+data has been received. If the data was received in order to determine whether
+the drop will be accepted, the handler is expected to call
+@code{gdk-drag-status} and @emph{not} finish the drag. If the data was received
+in response to a ::drag-drop signal (and this is the last target to be
+received), the handler for this signal is expected to process the received data
+and then call @code{gtk-drag-finish}, setting the @var{success} parameter
+depending on whether the data was processed successfully.
+
+The handler may inspect and modify @var{drag-context->action} before calling
+@code{gtk-drag-finish}, e.g. to implement @samp{GDK_ACTION_ASK} as shown in the
+following example:
+
+@example 
+
+void  
+drag_data_received (GtkWidget          *widget,
+                    GdkDragContext     *drag_context,
+                    gint                x,
+                    gint                y,
+                    GtkSelectionData   *data,
+                    guint               info,
+                    guint               time)
+@{
+  if ((data->length >= 0) && (data->format == 8))
+    @{
+      if (drag_context->action == GDK_ACTION_ASK) 
+        @{
+          GtkWidget *dialog;
+          gint response;
+          
+          dialog = gtk_message_dialog_new (NULL,
+                                           GTK_DIALOG_MODAL | 
+                                           GTK_DIALOG_DESTROY_WITH_PARENT,
+                                           GTK_MESSAGE_INFO,
+                                           GTK_BUTTONS_YES_NO,
+                                           "Move the data ?\n");
+          response = gtk_dialog_run (GTK_DIALOG (dialog));
+          gtk_widget_destroy (dialog);
+            
+          if (response == GTK_RESPONSE_YES)
+            drag_context->action = GDK_ACTION_MOVE;
+          else
+            drag_context->action = GDK_ACTION_COPY;
+         @}
+         
+      gtk_drag_finish (drag_context, TRUE, FALSE, time);
+      return;
+    @}
+      
+   gtk_drag_finish (drag_context, FALSE, FALSE, time);
+ @}
+@end example
+
+@end defop
+
+@defop Signal <gtk-widget> visibility-notify-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> client-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> no-expose-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> window-state-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> grab-broken-event  (arg0@tie{}@code{<gdk-event>}) @result{}@tie{}@code{<gboolean>}
+Emitted when a pointer or keyboard grab on a window belonging to @var{widget}
+gets broken.
+
+On X11, this happens when the grab window becomes unviewable (i.e. it or one of
+its ancestors is unmapped), or if the same application grabs the pointer or
+keyboard again.
+
+Since 2.8
+
+@end defop
+
+@defop Signal <gtk-widget> query-tooltip  (arg0@tie{}@code{<gint>}) (arg1@tie{}@code{<gint>}) (arg2@tie{}@code{<gboolean>}) (arg3@tie{}@code{<gtk-tooltip>}) @result{}@tie{}@code{<gboolean>}
+undocumented
+@end defop
+
+@defop Signal <gtk-widget> popup-menu  @result{}@tie{}@code{<gboolean>}
+This signal gets emitted whenever a widget should pop up a context-sensitive
+menu. This usually happens through the standard key binding mechanism; by
+pressing a certain key while a widget is focused, the user can cause the widget
+to pop up a menu. For example, the @code{<gtk-entry>} widget creates a menu with
+clipboard commands. See @emph{(the missing figure, checklist-popup-menu} for an
+example of how to use this signal.
+
+@end defop
+
+@defop Signal <gtk-widget> show-help  (arg0@tie{}@code{<gtk-widget-help-type>}) @result{}@tie{}@code{<gboolean>}
+@end defop
+
+@defop Signal <gtk-widget> accel-closures-changed 
+@end defop
+
+@defop Signal <gtk-widget> screen-changed  (arg0@tie{}@code{<gdk-screen>})
+@end defop
+
+@defop Signal <gtk-widget> can-activate-accel  (arg0@tie{}@code{<guint>}) @result{}@tie{}@code{<gboolean>}
+Determines whether an accelerator that activates the signal identified by
+@var{signal-id} can currently be activated. This signal is present to allow
+applications and derived widgets to override the default @code{<gtk-widget>}
+handling for determining whether an accelerator can be activated.
+
+@end defop
+
+@deftp Class <gtk-requisition>
+Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deftp Class <gtk-selection-data>
+Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-widget-destroy  (self@tie{}@code{<gtk-widget>})
+@deffnx Method destroy
+Destroys a widget. Equivalent to @code{gtk-object-destroy}, except that you
+don't have to cast the widget to @code{<gtk-object>}. When a widget is
+destroyed, it will break any references it holds to other objects. If the widget
+is inside a container, the widget will be removed from the container. If the
+widget is a toplevel (derived from @code{<gtk-window>}), it will be removed from
+the list of toplevels, and the reference GTK+ holds to it will be removed.
+Removing a widget from its container or the list of toplevels results in the
+widget being finalized, unless you've added additional references to the widget
+with @code{g-object-ref}.
+
+In most cases, only toplevel widgets (windows) require explicit destruction,
+because when you destroy a toplevel its children will be destroyed as well.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-unparent  (self@tie{}@code{<gtk-widget>})
+@deffnx Method unparent
+This function is only for use in widget implementations. Should be called by
+implementations of the remove method on @code{<gtk-container>}, to dissociate a
+child from the container.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-show  (self@tie{}@code{<gtk-widget>})
+@deffnx Method show
+Flags a widget to be displayed. Any widget that isn't shown will not appear on
+the screen. If you want to show all the widgets in a container, it's easier to
+call @code{gtk-widget-show-all} on the container, instead of individually
+showing the widgets.
+
+Remember that you have to show the containers containing a widget, in addition
+to the widget itself, before it will appear onscreen.
+
+When a toplevel container is shown, it is immediately realized and mapped; other
+shown widgets are realized and mapped when their toplevel container is realized
+and mapped.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-show-now  (self@tie{}@code{<gtk-widget>})
+@deffnx Method show-now
+Shows a widget. If the widget is an unmapped toplevel widget (i.e. a
+@code{<gtk-window>} that has not yet been shown), enter the main loop and wait
+for the window to actually be mapped. Be careful; because the main loop is
+running, anything can happen during this function.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-hide  (self@tie{}@code{<gtk-widget>})
+@deffnx Method hide
+Reverses the effects of @code{gtk-widget-show}, causing the widget to be hidden
+(invisible to the user).
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-show-all  (self@tie{}@code{<gtk-widget>})
+@deffnx Method show-all
+Recursively shows a widget, and any child widgets (if the widget is a
+container).
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-hide-all  (self@tie{}@code{<gtk-widget>})
+@deffnx Method hide-all
+Recursively hides a widget and any child widgets.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-map  (self@tie{}@code{<gtk-widget>})
+@deffnx Method map
+This function is only for use in widget implementations. Causes a widget to be
+mapped if it isn't already.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-unmap  (self@tie{}@code{<gtk-widget>})
+@deffnx Method unmap
+This function is only for use in widget implementations. Causes a widget to be
+unmapped if it's currently mapped.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-realize  (self@tie{}@code{<gtk-widget>})
+@deffnx Method realize
+Creates the GDK (windowing system) resources associated with a widget. For
+example, @var{widget->window} will be created when a widget is realized.
+Normally realization happens implicitly; if you show a widget and all its parent
+containers, then the widget will be realized and mapped automatically.
+
+Realizing a widget requires all the widget's parent widgets to be realized;
+calling @code{gtk-widget-realize} realizes the widget's parents in addition to
+@var{widget} itself. If a widget is not yet inside a toplevel window when you
+realize it, bad things will happen.
+
+This function is primarily used in widget implementations, and isn't very useful
+otherwise. Many times when you think you might need it, a better approach is to
+connect to a signal that will be called after the widget is realized
+automatically, such as "expose_event". Or simply @code{g-signal-connect-after}
+to the "realize" signal.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-unrealize  (self@tie{}@code{<gtk-widget>})
+@deffnx Method unrealize
+This function is only useful in widget implementations. Causes a widget to be
+unrealized (frees all GDK resources associated with the widget, such as
+@var{widget->window}).
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-queue-draw  (self@tie{}@code{<gtk-widget>})
+@deffnx Method queue-draw
+Equivalent to calling @code{gtk-widget-queue-draw-area} for the entire area of a
+widget.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-queue-resize  (self@tie{}@code{<gtk-widget>})
+@deffnx Method queue-resize
+This function is only for use in widget implementations. Flags a widget to have
+its size renegotiated; should be called when a widget for some reason has a new
+size request. For example, when you change the text in a @code{<gtk-label>},
+@code{<gtk-label>} queues a resize to ensure there's enough space for the new
+text.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-queue-resize-no-redraw  (self@tie{}@code{<gtk-widget>})
+@deffnx Method queue-resize-no-redraw
+This function works like @code{gtk-widget-queue-resize}, except that the widget
+is not invalidated.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-widget-size-request  (self@tie{}@code{<gtk-widget>}) (requisition@tie{}@code{<gtk-requisition>})
+@deffnx Method size-request
+This function is typically used when implementing a @code{<gtk-container>}
+subclass. Obtains the preferred size of a widget. The container uses this
+information to arrange its child widgets and decide what size allocations to
+give them with @code{gtk-widget-size-allocate}.
+
+You can also call this function from an application, with some caveats. Most
+notably, getting a size request requires the widget to be associated with a
+screen, because font information may be needed. Multihead-aware applications
+should keep this in mind.
+
+Also remember that the size request is not necessarily the size a widget will
+actually be allocated.
+
+See also @code{gtk-widget-get-child-requisition}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item requisition
+a @code{<gtk-requisition>} to be filled in
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-child-requisition  (self@tie{}@code{<gtk-widget>}) (requisition@tie{}@code{<gtk-requisition>})
+@deffnx Method get-child-requisition
+This function is only for use in widget implementations. Obtains
+@var{widget->requisition}, unless someone has forced a particular geometry on
+the widget (e.g. with @code{gtk-widget-set-usize}), in which case it returns
+that geometry instead of the widget's requisition.
+
+This function differs from @code{gtk-widget-size-request} in that it retrieves
+the last size request value from @var{widget->requisition}, while
+@code{gtk-widget-size-request} actually calls the "size_request" method on
+@var{widget} to compute the size request and fill in @var{widget->requisition},
+and only then returns @var{widget->requisition}.
+
+Because this function does not call the "size_request" method, it can only be
+used when you know that @var{widget->requisition} is up-to-date, that is,
+@code{gtk-widget-size-request} has been called since the last time a resize was
+queued. In general, only container implementations have this information;
+applications should use @code{gtk-widget-size-request}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item requisition
+a @code{<gtk-requisition>} to be filled in
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-size-allocate  (self@tie{}@code{<gtk-widget>}) (allocation@tie{}@code{<gdk-rectangle>})
+@deffnx Method size-allocate
+This function is only used by @code{<gtk-container>} subclasses, to assign a
+size and position to their child widgets.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item allocation
+position and size to be allocated to @var{widget}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-add-accelerator  (self@tie{}@code{<gtk-widget>}) (accel_signal@tie{}@code{mchars}) (accel_group@tie{}@code{<gtk-accel-group>}) (accel_key@tie{}@code{unsigned-int}) (accel_mods@tie{}@code{<gdk-modifier-type>}) (accel_flags@tie{}@code{<gtk-accel-flags>})
+@deffnx Method add-accelerator
+Installs an accelerator for this @var{widget} in @var{accel-group} that causes
+@var{accel-signal} to be emitted if the accelerator is activated. The
+@var{accel-group} needs to be added to the widget's toplevel via
+@code{gtk-window-add-accel-group}, and the signal must be of type
+@samp{G_RUN_ACTION}. Accelerators added through this function are not user
+changeable during runtime. If you want to support accelerators that can be
+changed by the user, use @code{gtk-accel-map-add-entry} and
+@code{gtk-widget-set-accel-path} or @code{gtk-menu-item-set-accel-path} instead.
+
+@table @var
+@item widget
+widget to install an accelerator on
+
+@item accel-signal
+widget signal to emit on accelerator activation
+
+@item accel-group
+accel group for this widget, added to its toplevel
+
+@item accel-key
+GDK keyval of the accelerator
+
+@item accel-mods
+modifier key combination of the accelerator
+
+@item accel-flags
+flag accelerators, e.g. @samp{GTK_ACCEL_VISIBLE}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-remove-accelerator  (self@tie{}@code{<gtk-widget>}) (accel_group@tie{}@code{<gtk-accel-group>}) (accel_key@tie{}@code{unsigned-int}) (accel_mods@tie{}@code{<gdk-modifier-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method remove-accelerator
+Removes an accelerator from @var{widget}, previously installed with
+@code{gtk-widget-add-accelerator}.
+
+@table @var
+@item widget
+widget to install an accelerator on
+
+@item accel-group
+accel group for this widget
+
+@item accel-key
+GDK keyval of the accelerator
+
+@item accel-mods
+modifier key combination of the accelerator
+
+@item ret
+whether an accelerator was installed and could be removed
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-accel-path  (self@tie{}@code{<gtk-widget>}) (accel_path@tie{}@code{mchars}) (accel_group@tie{}@code{<gtk-accel-group>})
+@deffnx Method set-accel-path
+Given an accelerator group, @var{accel-group}, and an accelerator path,
+@var{accel-path}, sets up an accelerator in @var{accel-group} so whenever the
+key binding that is defined for @var{accel-path} is pressed, @var{widget} will
+be activated. This removes any accelerators (for any accelerator group)
+installed by previous calls to @code{gtk-widget-set-accel-path}. Associating
+accelerators with paths allows them to be modified by the user and the
+modifications to be saved for future use. (See @code{gtk-accel-map-save}.)
+
+This function is a low level function that would most likely be used by a menu
+creation system like @code{<gtk-item-factory>}. If you use
+@code{<gtk-item-factory>}, setting up accelerator paths will be done
+automatically.
+
+Even when you you aren't using @code{<gtk-item-factory>}, if you only want to
+set up accelerators on menu items @code{gtk-menu-item-set-accel-path} provides a
+somewhat more convenient interface.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item accel-path
+path used to look up the accelerator
+
+@item accel-group
+a @code{<gtk-accel-group>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-list-accel-closures  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method list-accel-closures
+Lists the closures used by @var{widget} for accelerator group connections with
+@code{gtk-accel-group-connect-by-path} or @code{gtk-accel-group-connect}. The
+closures can be used to monitor accelerator changes on @var{widget}, by
+connecting to the ::accel_changed signal of the @code{<gtk-accel-group>} of a
+closure which can be found out with @code{gtk-accel-group-from-accel-closure}.
+
+@table @var
+@item widget
+widget to list accelerator closures for
+
+@item ret
+a newly allocated @code{<g-list>} of closures
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-can-activate-accel  (self@tie{}@code{<gtk-widget>}) (signal_id@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method can-activate-accel
+Determines whether an accelerator that activates the signal identified by
+@var{signal-id} can currently be activated. This is done by emitting the
+GtkWidget::can-activate-accel signal on @var{widget}; if the signal isn't
+overridden by a handler or in a derived widget, then the default check is that
+the widget must be sensitive, and the widget and all its ancestors mapped.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item signal-id
+the ID of a signal installed on @var{widget}
+
+@item ret
+@samp{@code{#t}} if the accelerator can be activated.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-widget-event  (self@tie{}@code{<gtk-widget>}) (event@tie{}@code{<gdk-event>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method event
+Rarely-used function. This function is used to emit the event signals on a
+widget (those signals should never be emitted without using this function to do
+so). If you want to synthesize an event though, don't use this function;
+instead, use @code{gtk-main-do-event} so the event will behave as if it were in
+the event queue. Don't synthesize expose events; instead, use
+@code{gdk-window-invalidate-rect} to invalidate a region of the window.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item event
+a @code{<gdk-event>}
+
+@item ret
+return from the event signal emission (@samp{@code{#t}} if the event was
+handled)
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-activate  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method activate
+For widgets that can be "activated" (buttons, menu items, etc.) this function
+activates them. Activation is what happens when you press Enter on a widget
+during key navigation. If @var{widget} isn't activatable, the function returns
+@samp{@code{#f}}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>} that's activatable
+
+@item ret
+@samp{@code{#t}} if the widget was activatable
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-reparent  (self@tie{}@code{<gtk-widget>}) (new_parent@tie{}@code{<gtk-widget>})
+@deffnx Method reparent
+Moves a widget from one @code{<gtk-container>} to another, handling reference
+count issues to avoid destroying the widget.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item new-parent
+a @code{<gtk-container>} to move the widget into
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-is-focus  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-focus
+Determines if the widget is the focus widget within its toplevel. (This does not
+mean that the @samp{HAS_FOCUS} flag is necessarily set; @samp{HAS_FOCUS} will
+only be set if the toplevel widget additionally has the global input focus.)
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+@samp{@code{#t}} if the widget is the focus widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-grab-focus  (self@tie{}@code{<gtk-widget>})
+@deffnx Method grab-focus
+Causes @var{widget} to have the keyboard focus for the @code{<gtk-window>} it's
+inside. @var{widget} must be a focusable widget, such as a @code{<gtk-entry>};
+something like @code{<gtk-frame>} won't work. (More precisely, it must have the
+@samp{GTK_CAN_FOCUS} flag set.)
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-grab-default  (self@tie{}@code{<gtk-widget>})
+@deffnx Method grab-default
+Causes @var{widget} to become the default widget. @var{widget} must have the
+@samp{GTK_CAN_DEFAULT} flag set; typically you have to set this flag yourself by
+calling @samp{GTK_WIDGET_SET_FLAGS (@var{widget}, GTK_CAN_DEFAULT)}. The default
+widget is activated when the user presses Enter in a window. Default widgets
+must be activatable, that is, @code{gtk-widget-activate} should affect them.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-name  (self@tie{}@code{<gtk-widget>}) (name@tie{}@code{mchars})
+@deffnx Method set-name
+Widgets can be named, which allows you to refer to them from a gtkrc file. You
+can apply a style to widgets with a particular name in the gtkrc file. See the
+documentation for gtkrc files (on the same page as the docs for
+@code{<gtk-rc-style>}).
+
+Note that widget names are separated by periods in paths (see
+@code{gtk-widget-path}), so names with embedded periods may cause confusion.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item name
+name for the widget
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-name  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-name
+Retrieves the name of a widget. See @code{gtk-widget-set-name} for the
+significance of widget names.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+name of the widget. This string is owned by GTK+ and should not be modified or
+freed
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-state  (self@tie{}@code{<gtk-widget>}) (state@tie{}@code{<gtk-state-type>})
+@deffnx Method set-state
+This function is for use in widget implementations. Sets the state of a widget
+(insensitive, prelighted, etc.) Usually you should set the state using wrapper
+functions such as @code{gtk-widget-set-sensitive}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item state
+new state for @var{widget}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-sensitive  (self@tie{}@code{<gtk-widget>}) (sensitive@tie{}@code{bool})
+@deffnx Method set-sensitive
+Sets the sensitivity of a widget. A widget is sensitive if the user can interact
+with it. Insensitive widgets are "grayed out" and the user can't interact with
+them. Insensitive widgets are known as "inactive", "disabled", or "ghosted" in
+some other toolkits.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item sensitive
+@samp{@code{#t}} to make the widget sensitive
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-parent  (self@tie{}@code{<gtk-widget>}) (parent@tie{}@code{<gtk-widget>})
+@deffnx Method set-parent
+This function is useful only when implementing subclasses of
+@code{<gtk-container>}. Sets the container as the parent of @var{widget}, and
+takes care of some details such as updating the state and style of the child to
+reflect its new location. The opposite function is @code{gtk-widget-unparent}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item parent
+parent container
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-parent-window  (self@tie{}@code{<gtk-widget>}) (parent_window@tie{}@code{<gdk-window>})
+@deffnx Method set-parent-window
+Sets a non default parent window for @var{widget}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}.
+
+@item parent-window
+the new parent window.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-parent-window  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gdk-window>})
+@deffnx Method get-parent-window
+Gets @var{widget}'s parent window.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}.
+
+@item ret
+the parent window of @var{widget}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-events  (self@tie{}@code{<gtk-widget>}) (events@tie{}@code{<gdk-event-mask>})
+@deffnx Method set-events
+Sets the event mask (see @code{<gdk-event-mask>}) for a widget. The event mask
+determines which events a widget will receive. Keep in mind that different
+widgets have different default event masks, and by changing the event mask you
+may disrupt a widget's functionality, so be careful. This function must be
+called while a widget is unrealized. Consider @code{gtk-widget-add-events} for
+widgets that are already realized, or if you want to preserve the existing event
+mask. This function can't be used with @code{<gtk-no-window>} widgets; to get
+events on those widgets, place them inside a @code{<gtk-event-box>} and receive
+events on the event box.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item events
+event mask
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-add-events  (self@tie{}@code{<gtk-widget>}) (events@tie{}@code{<gdk-event-mask>})
+@deffnx Method add-events
+Adds the events in the bitfield @var{events} to the event mask for @var{widget}.
+See @code{gtk-widget-set-events} for details.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item events
+an event mask, see @code{<gdk-event-mask>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-extension-events  (self@tie{}@code{<gtk-widget>}) (mode@tie{}@code{<gdk-extension-mode>})
+@deffnx Method set-extension-events
+Sets the extension events mask to @var{mode}. See @code{<gdk-extension-mode>}
+and @code{gdk-input-set-extension-events}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item mode
+bitfield of extension events to receive
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-extension-events  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gdk-extension-mode>})
+@deffnx Method get-extension-events
+Retrieves the extension events the widget will receive; see
+@code{gdk-input-set-extension-events}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+extension events for @var{widget}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-toplevel  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-toplevel
+This function returns the topmost widget in the container hierarchy @var{widget}
+is a part of. If @var{widget} has no parent widgets, it will be returned as the
+topmost widget. No reference will be added to the returned widget; it should not
+be unreferenced.
+
+Note the difference in behavior vs. @code{gtk-widget-get-ancestor};
+@samp{gtk_widget_get_ancestor (widget, GTK_TYPE_WINDOW)} would return
+@samp{@code{#f}} if @var{widget} wasn't inside a toplevel window, and if the
+window was inside a @code{<gtk-window-derived>} widget which was in turn inside
+the toplevel @code{<gtk-window>}. While the second case may seem unlikely, it
+actually happens when a @code{<gtk-plug>} is embedded inside a
+@code{<gtk-socket>} within the same application.
+
+To reliably find the toplevel @code{<gtk-window>}, use
+@code{gtk-widget-get-toplevel} and check if the @samp{TOPLEVEL} flags is set on
+the result.
+
+@example 
+
+ GtkWidget *toplevel = gtk_widget_get_toplevel (widget);
+ if (GTK_WIDGET_TOPLEVEL (toplevel))
+   @{
+     [ Perform action on toplevel. ]
+   @}
+@end example
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the topmost ancestor of @var{widget}, or @var{widget} itself if there's no
+ancestor.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-ancestor  (self@tie{}@code{<gtk-widget>}) (widget_type@tie{}@code{<gtype>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-ancestor
+Gets the first ancestor of @var{widget} with type @var{widget-type}. For
+example, @samp{gtk_widget_get_ancestor (widget, GTK_TYPE_BOX)} gets the first
+@code{<gtk-box>} that's an ancestor of @var{widget}. No reference will be added
+to the returned widget; it should not be unreferenced. See note about checking
+for a toplevel @code{<gtk-window>} in the docs for
+@code{gtk-widget-get-toplevel}.
+
+Note that unlike @code{gtk-widget-is-ancestor}, @code{gtk-widget-get-ancestor}
+considers @var{widget} to be an ancestor of itself.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item widget-type
+ancestor type
+
+@item ret
+the ancestor widget, or @samp{@code{#f}} if not found
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-colormap  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gdk-colormap>})
+@deffnx Method get-colormap
+Gets the colormap that will be used to render @var{widget}. No reference will be
+added to the returned colormap; it should not be unreferenced.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the colormap used by @var{widget}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-colormap  (self@tie{}@code{<gtk-widget>}) (colormap@tie{}@code{<gdk-colormap>})
+@deffnx Method set-colormap
+Sets the colormap for the widget to the given value. Widget must not have been
+previously realized. This probably should only be used from an
+@code{@code{init}} function (i.e. from the constructor for the widget).
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item colormap
+a colormap
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-visual  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gdk-visual>})
+@deffnx Method get-visual
+Gets the visual that will be used to render @var{widget}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the visual for @var{widget}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-events  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-events
+Returns the event mask for the widget (a bitfield containing flags from the
+@code{<gdk-event-mask>} enumeration). These are the events that the widget will
+receive.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+event mask for @var{widget}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-pointer  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method get-pointer
+Obtains the location of the mouse pointer in widget coordinates. Widget
+coordinates are a bit odd; for historical reasons, they are defined as
+@var{widget->window} coordinates for widgets that are not @code{<gtk-no-window>}
+widgets, and are relative to @var{widget->allocation.x},
+@var{widget->allocation.y} for widgets that are @code{<gtk-no-window>} widgets.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item x
+return location for the X coordinate, or @samp{@code{#f}}
+
+@item y
+return location for the Y coordinate, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-is-ancestor  (self@tie{}@code{<gtk-widget>}) (ancestor@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-ancestor
+Determines whether @var{widget} is somewhere inside @var{ancestor}, possibly
+with intermediate containers.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ancestor
+another @code{<gtk-widget>}
+
+@item ret
+@samp{@code{#t}} if @var{ancestor} contains @var{widget} as a child, grandchild,
+great grandchild, etc.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-translate-coordinates  (self@tie{}@code{<gtk-widget>}) (dest_widget@tie{}@code{<gtk-widget>}) (src_x@tie{}@code{int}) (src_y@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{bool}) (dest_x@tie{}@code{int}) (dest_y@tie{}@code{int})
+@deffnx Method translate-coordinates
+Translate coordinates relative to @var{src-widget}'s allocation to coordinates
+relative to @var{dest-widget}'s allocations. In order to perform this operation,
+both widgets must be realized, and must share a common toplevel.
+
+@table @var
+@item src-widget
+a @code{<gtk-widget>}
+
+@item dest-widget
+a @code{<gtk-widget>}
+
+@item src-x
+X position relative to @var{src-widget}
+
+@item src-y
+Y position relative to @var{src-widget}
+
+@item dest-x
+location to store X position relative to @var{dest-widget}
+
+@item dest-y
+location to store Y position relative to @var{dest-widget}
+
+@item ret
+@samp{@code{#f}} if either widget was not realized, or there was no common
+ancestor. In this case, nothing is stored in *@var{dest-x} and *@var{dest-y}.
+Otherwise @samp{@code{#t}}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-hide-on-delete  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method hide-on-delete
+Utility function; intended to be connected to the "delete_event" signal on a
+@code{<gtk-window>}. The function calls @code{gtk-widget-hide} on its argument,
+then returns @samp{@code{#t}}. If connected to "delete_event", the result is
+that clicking the close button for a window (on the window frame, top right
+corner usually) will hide but not destroy the window. By default, GTK+ destroys
+windows when "delete_event" is received.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+@samp{@code{#t}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-style  (self@tie{}@code{<gtk-widget>}) (style@tie{}@code{<gtk-style>})
+@deffnx Method set-style
+Sets the @code{<gtk-style>} for a widget (@var{widget->style}). You probably
+don't want to use this function; it interacts badly with themes, because themes
+work by replacing the @code{<gtk-style>}. Instead, use
+@code{gtk-widget-modify-style}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item style
+a @code{<gtk-style>}, or @samp{@code{#f}} to remove the effect of a previous
+@code{gtk-widget-set-style} and go back to the default style
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-ensure-style  (self@tie{}@code{<gtk-widget>})
+@deffnx Method ensure-style
+Ensures that @var{widget} has a style (@var{widget->style}). Not a very useful
+function; most of the time, if you want the style, the widget is realized, and
+realized widgets are guaranteed to have a style already.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-style  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gtk-style>})
+@deffnx Method get-style
+Simply an accessor function that returns @var{widget->style}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the widget's @code{<gtk-style>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-reset-rc-styles  (self@tie{}@code{<gtk-widget>})
+@deffnx Method reset-rc-styles
+Reset the styles of @var{widget} and all descendents, so when they are looked up
+again, they get the correct values for the currently loaded RC file settings.
+
+This function is not useful for applications.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-push-colormap  (cmap@tie{}@code{<gdk-colormap>})
+Pushes @var{cmap} onto a global stack of colormaps; the topmost colormap on the
+stack will be used to create all widgets. Remove @var{cmap} with
+@code{gtk-widget-pop-colormap}. There's little reason to use this function.
+
+@table @var
+@item cmap
+a @code{<gdk-colormap>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-pop-colormap 
+Removes a colormap pushed with @code{gtk-widget-push-colormap}.
+
+@end deffn
+
+@deffn Function gtk-widget-set-default-colormap  (colormap@tie{}@code{<gdk-colormap>})
+Sets the default colormap to use when creating widgets.
+@code{gtk-widget-push-colormap} is a better function to use if you only want to
+affect a few widgets, rather than all widgets.
+
+@table @var
+@item colormap
+a @code{<gdk-colormap>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-default-style  @result{}@tie{} (ret@tie{}@code{<gtk-style>})
+Returns the default style used by all widgets initially.
+
+@table @var
+@item ret
+the default style. This @code{<gtk-style>} object is owned by GTK+ and should
+not be modified or freed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-default-colormap  @result{}@tie{} (ret@tie{}@code{<gdk-colormap>})
+Obtains the default colormap used to create widgets.
+
+@table @var
+@item ret
+default widget colormap
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-default-visual  @result{}@tie{} (ret@tie{}@code{<gdk-visual>})
+Obtains the visual of the default colormap. Not really useful; used to be useful
+before @code{gdk-colormap-get-visual} existed.
+
+@table @var
+@item ret
+visual of the default colormap
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-direction  (self@tie{}@code{<gtk-widget>}) (dir@tie{}@code{<gtk-text-direction>})
+@deffnx Method set-direction
+Sets the reading direction on a particular widget. This direction controls the
+primary direction for widgets containing text, and also the direction in which
+the children of a container are packed. The ability to set the direction is
+present in order so that correct localization into languages with right-to-left
+reading directions can be done. Generally, applications will let the default
+reading direction present, except for containers where the containers are
+arranged in an order that is explicitely visual rather than logical (such as
+buttons for text justification).
+
+If the direction is set to @samp{GTK_TEXT_DIR_NONE}, then the value set by
+@code{gtk-widget-set-default-direction} will be used.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item dir
+the new direction
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-direction  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-direction>})
+@deffnx Method get-direction
+Gets the reading direction for a particular widget. See
+@code{gtk-widget-set-direction}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the reading direction for the widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-default-direction  (dir@tie{}@code{<gtk-text-direction>})
+Sets the default reading direction for widgets where the direction has not been
+explicitly set by @code{gtk-widget-set-direction}.
+
+@table @var
+@item dir
+the new default direction. This cannot be @samp{GTK_TEXT_DIR_NONE}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-default-direction  @result{}@tie{} (ret@tie{}@code{<gtk-text-direction>})
+Obtains the current default reading direction. See
+@code{gtk-widget-set-default-direction}.
+
+@table @var
+@item ret
+the current default direction.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-shape-combine-mask  (self@tie{}@code{<gtk-widget>}) (shape_mask@tie{}@code{<gdk-drawable>}) (offset_x@tie{}@code{int}) (offset_y@tie{}@code{int})
+@deffnx Method shape-combine-mask
+Sets a shape for this widget's GDK window. This allows for transparent windows
+etc., see @code{gdk-window-shape-combine-mask} for more information.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}.
+
+@item shape-mask
+shape to be added, or @samp{@code{#f}} to remove an existing shape.
+
+@item offset-x
+X position of shape mask with respect to @var{window}.
+
+@item offset-y
+Y position of shape mask with respect to @var{window}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-input-shape-combine-mask  (self@tie{}@code{<gtk-widget>}) (shape_mask@tie{}@code{<gdk-drawable>}) (offset_x@tie{}@code{int}) (offset_y@tie{}@code{int})
+@deffnx Method input-shape-combine-mask
+Sets an input shape for this widget's GDK window. This allows for windows which
+react to mouse click in a nonrectangular region, see
+@code{gdk-window-input-shape-combine-mask} for more information.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}.
+
+@item shape-mask
+shape to be added, or @samp{@code{#f}} to remove an existing shape.
+
+@item offset-x
+X position of shape mask with respect to @var{window}.
+
+@item offset-y
+Y position of shape mask with respect to @var{window}.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-widget-path  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (path_length@tie{}@code{unsigned-int}) (path@tie{}@code{mchars}) (path_reversed@tie{}@code{mchars})
+@deffnx Method path
+Obtains the full path to @var{widget}. The path is simply the name of a widget
+and all its parents in the container hierarchy, separated by periods. The name
+of a widget comes from @code{gtk-widget-get-name}. Paths are used to apply
+styles to a widget in gtkrc configuration files. Widget names are the type of
+the widget by default (e.g. "GtkButton") or can be set to an
+application-specific value with @code{gtk-widget-set-name}. By setting the name
+of a widget, you allow users or theme authors to apply styles to that specific
+widget in their gtkrc file. @var{path-reversed-p} fills in the path in reverse
+order, i.e. starting with @var{widget}'s name instead of starting with the name
+of @var{widget}'s outermost ancestor.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item path-length
+location to store length of the path, or @samp{@code{#f}}
+
+@item path
+location to store allocated path string, or @samp{@code{#f}}
+
+@item path-reversed
+location to store allocated reverse path string, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-class-path  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (path_length@tie{}@code{unsigned-int}) (path@tie{}@code{mchars}) (path_reversed@tie{}@code{mchars})
+@deffnx Method class-path
+Same as @code{gtk-widget-path}, but always uses the name of a widget's type,
+never uses a custom name set with @code{gtk-widget-set-name}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item path-length
+location to store the length of the class path, or @samp{@code{#f}}
+
+@item path
+location to store the class path as an allocated string, or @samp{@code{#f}}
+
+@item path-reversed
+location to store the reverse class path as an allocated string, or
+@samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-composite-name  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-composite-name
+Obtains the composite name of a widget.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}.
+
+@item ret
+the composite name of @var{widget}, or @samp{@code{#f}} if @var{widget} is not a
+composite child. The string should not be freed when it is no longer needed.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-modify-style  (self@tie{}@code{<gtk-widget>}) (style@tie{}@code{<gtk-rc-style>})
+@deffnx Method modify-style
+Modifies style values on the widget. Modifications made using this technique
+take precedence over style values set via an RC file, however, they will be
+overriden if a style is explicitely set on the widget using
+@code{gtk-widget-set-style}. The @code{<gtk-rc-style>} structure is designed so
+each field can either be set or unset, so it is possible, using this function,
+to modify some style values and leave the others unchanged.
+
+Note that modifications made with this function are not cumulative with previous
+calls to @code{gtk-widget-modify-style} or with such functions as
+@code{gtk-widget-modify-fg}. If you wish to retain previous values, you must
+first call @code{gtk-widget-get-modifier-style}, make your modifications to the
+returned style, then call @code{gtk-widget-modify-style} with that style. On the
+other hand, if you first call @code{gtk-widget-modify-style}, subsequent calls
+to such functions @code{gtk-widget-modify-fg} will have a cumulative effect with
+the initial modifications.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item style
+the @code{<gtk-rc-style>} holding the style modifications
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-modifier-style  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gtk-rc-style>})
+@deffnx Method get-modifier-style
+Returns the current modifier style for the widget. (As set by
+@code{gtk-widget-modify-style}.) If no style has previously set, a new
+@code{<gtk-rc-style>} will be created with all values unset, and set as the
+modifier style for the widget. If you make changes to this rc style, you must
+call @code{gtk-widget-modify-style}, passing in the returned rc style, to make
+sure that your changes take effect.
+
+Caution: passing the style back to @code{gtk-widget-modify-style} will normally
+end up destroying it, because @code{gtk-widget-modify-style} copies the
+passed-in style and sets the copy as the new modifier style, thus dropping any
+reference to the old modifier style. Add a reference to the modifier style if
+you want to keep it alive.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the modifier style for the widget. This rc style is owned by the widget. If you
+want to keep a pointer to value this around, you must add a refcount using
+@code{g-object-ref}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-modify-fg  (self@tie{}@code{<gtk-widget>}) (state@tie{}@code{<gtk-state-type>}) (color@tie{}@code{<gdk-color>})
+@deffnx Method modify-fg
+Sets the foreground color for a widget in a particular state. All other style
+values are left untouched. See also @code{gtk-widget-modify-style}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}.
+
+@item state
+the state for which to set the foreground color.
+
+@item color
+the color to assign (does not need to be allocated), or @samp{@code{#f}} to undo
+the effect of previous calls to of @code{gtk-widget-modify-fg}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-modify-bg  (self@tie{}@code{<gtk-widget>}) (state@tie{}@code{<gtk-state-type>}) (color@tie{}@code{<gdk-color>})
+@deffnx Method modify-bg
+Sets the background color for a widget in a particular state. All other style
+values are left untouched. See also @code{gtk-widget-modify-style}.
+
+Note that "no window" widgets (which have the @samp{GTK_NO_WINDOW} flag set)
+draw on their parent container's window and thus may not draw any background
+themselves. This is the case for e.g. @code{<gtk-label>}. To modify the
+background of such widgets, you have to set the background color on their
+parent; if you want to set the background of a rectangular area around a label,
+try placing the label in a @code{<gtk-event-box>} widget and setting the
+background color on that.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}.
+
+@item state
+the state for which to set the background color.
+
+@item color
+the color to assign (does not need to be allocated), or @samp{@code{#f}} to undo
+the effect of previous calls to of @code{gtk-widget-modify-bg}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-modify-text  (self@tie{}@code{<gtk-widget>}) (state@tie{}@code{<gtk-state-type>}) (color@tie{}@code{<gdk-color>})
+@deffnx Method modify-text
+Sets the text color for a widget in a particular state. All other style values
+are left untouched. The text color is the foreground color used along with the
+base color (see @code{gtk-widget-modify-base}) for widgets such as
+@code{<gtk-entry>} and @code{<gtk-text-view>}. See also
+@code{gtk-widget-modify-style}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}.
+
+@item state
+the state for which to set the text color.
+
+@item color
+the color to assign (does not need to be allocated), or @samp{@code{#f}} to undo
+the effect of previous calls to of @code{gtk-widget-modify-text}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-modify-base  (self@tie{}@code{<gtk-widget>}) (state@tie{}@code{<gtk-state-type>}) (color@tie{}@code{<gdk-color>})
+@deffnx Method modify-base
+Sets the base color for a widget in a particular state. All other style values
+are left untouched. The base color is the background color used along with the
+text color (see @code{gtk-widget-modify-text}) for widgets such as
+@code{<gtk-entry>} and @code{<gtk-text-view>}. See also
+@code{gtk-widget-modify-style}.
+
+Note that "no window" widgets (which have the @samp{GTK_NO_WINDOW} flag set)
+draw on their parent container's window and thus may not draw any background
+themselves. This is the case for e.g. @code{<gtk-label>}. To modify the
+background of such widgets, you have to set the base color on their parent; if
+you want to set the background of a rectangular area around a label, try placing
+the label in a @code{<gtk-event-box>} widget and setting the base color on that.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}.
+
+@item state
+the state for which to set the base color.
+
+@item color
+the color to assign (does not need to be allocated), or @samp{@code{#f}} to undo
+the effect of previous calls to of @code{gtk-widget-modify-base}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-modify-font  (self@tie{}@code{<gtk-widget>}) (font_desc@tie{}@code{<pango-font-description>})
+@deffnx Method modify-font
+Sets the font to use for a widget. All other style values are left untouched.
+See also @code{gtk-widget-modify-style}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item font-desc
+the font description to use, or @samp{@code{#f}} to undo the effect of previous
+calls to @code{gtk-widget-modify-font}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-create-pango-context  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<pango-context>})
+@deffnx Method create-pango-context
+Creates a new @code{<pango-context>} with the appropriate font map, font
+description, and base direction for drawing text for this widget. See also
+@code{gtk-widget-get-pango-context}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the new @code{<pango-context>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-pango-context  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<pango-context>})
+@deffnx Method get-pango-context
+Gets a @code{<pango-context>} with the appropriate font map, font description,
+and base direction for this widget. Unlike the context returned by
+@code{gtk-widget-create-pango-context}, this context is owned by the widget (it
+can be used until the screen for the widget changes or the widget is removed
+from its toplevel), and will be updated to match any changes to the widget's
+attributes.
+
+If you create and keep a @code{<pango-layout>} using this context, you must deal
+with changes to the context by calling @code{pango-layout-context-changed} on
+the layout in response to the ::style-set and ::direction-changed signals for
+the widget.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the @code{<pango-context>} for the widget.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-create-pango-layout  (self@tie{}@code{<gtk-widget>}) (text@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<pango-layout>})
+@deffnx Method create-pango-layout
+Creates a new @code{<pango-layout>} with the appropriate font map, font
+description, and base direction for drawing text for this widget.
+
+If you keep a @code{<pango-layout>} created in this way around, in order to
+notify the layout of changes to the base direction or font of this widget, you
+must call @code{pango-layout-context-changed} in response to the ::style-set and
+::direction-changed signals for the widget.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item text
+text to set on the layout (can be @samp{@code{#f}})
+
+@item ret
+the new @code{<pango-layout>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-render-icon  (self@tie{}@code{<gtk-widget>}) (stock_id@tie{}@code{mchars}) (size@tie{}@code{<gtk-icon-size>}) (detail@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method render-icon
+A convenience function that uses the theme engine and RC file settings for
+@var{widget} to look up @var{stock-id} and render it to a pixbuf. @var{stock-id}
+should be a stock icon ID such as @code{<gtk-stock-open>} or
+@code{<gtk-stock-ok>}. @var{size} should be a size such as
+@code{<gtk-icon-size-menu>}. @var{detail} should be a string that identifies the
+widget or code doing the rendering, so that theme engines can special-case
+rendering for that widget or code.
+
+The pixels in the returned @code{<gdk-pixbuf>} are shared with the rest of the
+application and should not be modified. The pixbuf should be freed after use
+with @code{g-object-unref}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item stock-id
+a stock ID
+
+@item size
+a stock size. A size of (GtkIconSize)-1 means render at the size of the source
+and don't scale (if there are multiple source sizes, GTK+ picks one of the
+available sizes).
+
+@item detail
+render detail to pass to theme engine
+
+@item ret
+a new pixbuf, or @samp{@code{#f}} if the stock ID wasn't known
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-pop-composite-child 
+Cancels the effect of a previous call to @code{gtk-widget-push-composite-child}.
+
+@end deffn
+
+@deffn Function gtk-widget-push-composite-child 
+Makes all newly-created widgets as composite children until the corresponding
+@code{gtk-widget-pop-composite-child} call.
+
+A composite child is a child that's an implementation detail of the container
+it's inside and should not be visible to people using the container. Composite
+children aren't treated differently by GTK (but see @code{gtk-container-foreach}
+vs. @code{gtk-container-forall}), but e.g. GUI builders might want to treat them
+in a different way.
+
+Here is a simple example:
+
+@example 
+
+  gtk_widget_push_composite_child ();
+  scrolled_window->hscrollbar = gtk_hscrollbar_new (hadjustment);
+  gtk_widget_set_composite_name (scrolled_window->hscrollbar, "hscrollbar");
+  gtk_widget_pop_composite_child ();
+  gtk_widget_set_parent (scrolled_window->hscrollbar, 
+                         GTK_WIDGET (scrolled_window));
+  g_object_ref (scrolled_window->hscrollbar);
+@end example
+
+@end deffn
+
+@deffn Function gtk-widget-queue-draw-area  (self@tie{}@code{<gtk-widget>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method queue-draw-area
+Invalidates the rectangular area of @var{widget} defined by @var{x}, @var{y},
+@var{width} and @var{height} by calling @code{gdk-window-invalidate-rect} on the
+widget's window and all its child windows. Once the main loop becomes idle
+(after the current batch of events has been processed, roughly), the window will
+receive expose events for the union of all regions that have been invalidated.
+
+Normally you would only use this function in widget implementations. You might
+also use it, or @code{gdk-window-invalidate-rect} directly, to schedule a redraw
+of a @code{<gtk-drawing-area>} or some portion thereof.
+
+Frequently you can just call @code{gdk-window-invalidate-rect} or
+@code{gdk-window-invalidate-region} instead of this function. Those functions
+will invalidate only a single window, instead of the widget and all its
+children.
+
+The advantage of adding to the invalidated region compared to simply drawing
+immediately is efficiency; using an invalid region ensures that you only have to
+redraw one time.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item x
+x coordinate of upper-left corner of rectangle to redraw
+
+@item y
+y coordinate of upper-left corner of rectangle to redraw
+
+@item width
+width of region to draw
+
+@item height
+height of region to draw
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-reset-shapes  (self@tie{}@code{<gtk-widget>})
+@deffnx Method reset-shapes
+Recursively resets the shape on this widget and its descendants.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-app-paintable  (self@tie{}@code{<gtk-widget>}) (app_paintable@tie{}@code{bool})
+@deffnx Method set-app-paintable
+Sets whether the application intends to draw on the widget in an ::expose-event
+handler.
+
+This is a hint to the widget and does not affect the behavior of the GTK+ core;
+many widgets ignore this flag entirely. For widgets that do pay attention to the
+flag, such as @code{<gtk-event-box>} and @code{<gtk-window>}, the effect is to
+suppress default themed drawing of the widget's background. (Children of the
+widget will still be drawn.) The application is then entirely responsible for
+drawing the widget background.
+
+Note that the background is still drawn when the widget is mapped. If this is
+not suitable (e.g. because you want to make a transparent window using an RGBA
+visual), you can work around this by doing:
+
+@example 
+
+ gtk_widget_realize (window);
+ gdk_window_set_back_pixmap (window->window, NULL, FALSE);
+ gtk_widget_show (window);
+@end example
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item app-paintable
+@samp{@code{#t}} if the application will paint on the widget
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-double-buffered  (self@tie{}@code{<gtk-widget>}) (double_buffered@tie{}@code{bool})
+@deffnx Method set-double-buffered
+Widgets are double buffered by default; you can use this function to turn off
+the buffering. "Double buffered" simply means that
+@code{gdk-window-begin-paint-region} and @code{gdk-window-end-paint} are called
+automatically around expose events sent to the widget.
+@code{gdk-window-begin-paint} diverts all drawing to a widget's window to an
+offscreen buffer, and @code{gdk-window-end-paint} draws the buffer to the
+screen. The result is that users see the window update in one smooth step, and
+don't see individual graphics primitives being rendered.
+
+In very simple terms, double buffered widgets don't flicker, so you would only
+use this function to turn off double buffering if you had special needs and
+really knew what you were doing.
+
+Note: if you turn off double-buffering, you have to handle expose events, since
+even the clearing to the background color or pixmap will not happen
+automatically (as it is done in @code{gdk-window-begin-paint}).
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item double-buffered
+@samp{@code{#t}} to double-buffer a widget
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-redraw-on-allocate  (self@tie{}@code{<gtk-widget>}) (redraw_on_allocate@tie{}@code{bool})
+@deffnx Method set-redraw-on-allocate
+Sets whether the entire widget is queued for drawing when its size allocation
+changes. By default, this setting is @samp{@code{#t}} and the entire widget is
+redrawn on every size change. If your widget leaves the upper left unchanged
+when made bigger, turning this setting on will improve performance.
+
+Note that for @samp{NO_WINDOW} widgets setting this flag to @samp{@code{#f}}
+turns off all allocation on resizing: the widget will not even redraw if its
+position changes; this is to allow containers that don't draw anything to avoid
+excess invalidations. If you set this flag on a @samp{NO_WINDOW} widget that
+@emph{does} draw on @var{widget->window}, you are responsible for invalidating
+both the old and new allocation of the widget when the widget is moved and
+responsible for invalidating regions newly when the widget increases size.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item redraw-on-allocate
+if @samp{@code{#t}}, the entire widget will be redrawn when it is allocated to a
+new size. Otherwise, only the new portion of the widget will be redrawn.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-composite-name  (self@tie{}@code{<gtk-widget>}) (name@tie{}@code{mchars})
+@deffnx Method set-composite-name
+Sets a widgets composite name. The widget must be a composite child of its
+parent; see @code{gtk-widget-push-composite-child}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}.
+
+@item name
+the name to set.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-scroll-adjustments  (self@tie{}@code{<gtk-widget>}) (hadjustment@tie{}@code{<gtk-adjustment>}) (vadjustment@tie{}@code{<gtk-adjustment>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method set-scroll-adjustments
+For widgets that support scrolling, sets the scroll adjustments and returns
+@samp{@code{#t}}. For widgets that don't support scrolling, does nothing and
+returns @samp{@code{#f}}. Widgets that don't support scrolling can be scrolled
+by placing them in a @code{<gtk-viewport>}, which does support scrolling.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item hadjustment
+an adjustment for horizontal scrolling, or @samp{@code{#f}}
+
+@item vadjustment
+an adjustment for vertical scrolling, or @samp{@code{#f}}
+
+@item ret
+@samp{@code{#t}} if the widget supports scrolling
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-mnemonic-activate  (self@tie{}@code{<gtk-widget>}) (group_cycling@tie{}@code{bool}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method mnemonic-activate
+@table @var
+@item widget
+
+
+@item group-cycling
+
+
+@item ret
+
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-region-intersect  (self@tie{}@code{<gtk-widget>}) (region@tie{}@code{<gdk-region>}) @result{}@tie{} (ret@tie{}@code{<gdk-region>})
+@deffnx Method region-intersect
+Computes the intersection of a @var{widget}'s area and @var{region}, returning
+the intersection. The result may be empty, use @code{gdk-region-empty} to check.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item region
+a @code{<gdk-region>}, in the same coordinate system as
+@var{widget->allocation}. That is, relative to @var{widget->window} for
+@samp{NO_WINDOW} widgets; relative to the parent window of @var{widget->window}
+for widgets with their own window.
+
+@item ret
+A newly allocated region holding the intersection of @var{widget} and
+@var{region}. The coordinates of the return value are relative to
+@var{widget->window} for @samp{NO_WINDOW} widgets, and relative to the parent
+window of @var{widget->window} for widgets with their own window.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-send-expose  (self@tie{}@code{<gtk-widget>}) (event@tie{}@code{<gdk-event>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method send-expose
+Very rarely-used function. This function is used to emit an expose event signals
+on a widget. This function is not normally used directly. The only time it is
+used is when propagating an expose event to a child @samp{NO_WINDOW} widget, and
+that is normally done using @code{gtk-container-propagate-expose}.
+
+If you want to force an area of a window to be redrawn, use
+@code{gdk-window-invalidate-rect} or @code{gdk-window-invalidate-region}. To
+cause the redraw to be done immediately, follow that call with a call to
+@code{gdk-window-process-updates}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item event
+a expose @code{<gdk-event>}
+
+@item ret
+return from the event signal emission (@samp{@code{#t}} if the event was
+handled)
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-style-get-property  (self@tie{}@code{<gtk-widget>}) (property_name@tie{}@code{mchars}) (value@tie{}@code{<gvalue>})
+@deffnx Method style-get-property
+Gets the value of a style property of @var{widget}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item property-name
+the name of a style property
+
+@item value
+location to return the property value
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-accessible  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deffnx Method get-accessible
+Returns the accessible object that describes the widget to an assistive
+technology.
+
+If no accessibility library is loaded (i.e. no ATK implementation library is
+loaded via @env{GTK_MODULES} or via another application library, such as
+libgnome), then this @code{<atk-object>} instance may be a no-op. Likewise, if
+no class-specific @code{<atk-object>} implementation is available for the widget
+instance in question, it will inherit an @code{<atk-object>} implementation from
+the first ancestor class for which such an implementation is defined.
+
+The documentation of the
+@uref{http://developer.gnome.org/doc/API/2.0/atk/index.html,ATK} library
+contains more information about accessible objects and their uses.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the @code{<atk-object>} associated with @var{widget}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-child-focus  (self@tie{}@code{<gtk-widget>}) (direction@tie{}@code{<gtk-direction-type>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method child-focus
+This function is used by custom widget implementations; if you're writing an
+app, you'd use @code{gtk-widget-grab-focus} to move the focus to a particular
+widget, and @code{gtk-container-set-focus-chain} to change the focus tab order.
+So you may want to investigate those functions instead.
+
+@code{gtk-widget-child-focus} is called by containers as the user moves around
+the window using keyboard shortcuts. @var{direction} indicates what kind of
+motion is taking place (up, down, left, right, tab forward, tab backward).
+@code{gtk-widget-child-focus} invokes the "focus" signal on @code{<gtk-widget>};
+widgets override the default handler for this signal in order to implement
+appropriate focus behavior.
+
+The "focus" default handler for a widget should return @samp{@code{#t}} if
+moving in @var{direction} left the focus on a focusable location inside that
+widget, and @samp{@code{#f}} if moving in @var{direction} moved the focus
+outside the widget. If returning @samp{@code{#t}}, widgets normally call
+@code{gtk-widget-grab-focus} to place the focus accordingly; if returning
+@samp{@code{#f}}, they don't modify the current focus location.
+
+This function replaces @code{gtk-container-focus} from GTK+ 1.2. It was
+necessary to check that the child was visible, sensitive, and focusable before
+calling @code{gtk-container-focus}. @code{gtk-widget-child-focus} returns
+@samp{@code{#f}} if the widget is not currently in a focusable state, so there's
+no need for those checks.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item direction
+direction of focus movement
+
+@item ret
+@samp{@code{#t}} if focus ended up inside @var{widget}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-child-notify  (self@tie{}@code{<gtk-widget>}) (child_property@tie{}@code{mchars})
+@deffnx Method child-notify
+Emits a "child-notify" signal for the child property@var{child-property} on
+@var{widget}.
+
+This is the analogue of @code{g-object-notify} for child properties.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item child-property
+the name of a child property installed on the class of @var{widget}'s parent.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-freeze-child-notify  (self@tie{}@code{<gtk-widget>})
+@deffnx Method freeze-child-notify
+Stops emission of "child-notify" signals on @var{widget}. The signals are queued
+until @code{gtk-widget-thaw-child-notify} is called on @var{widget}.
+
+This is the analogue of @code{g-object-freeze-notify} for child properties.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-child-visible  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-child-visible
+Gets the value set with @code{gtk-widget-set-child-visible}. If you feel a need
+to use this function, your code probably needs reorganization.
+
+This function is only useful for container implementations and never should be
+called by an application.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+@samp{@code{#t}} if the widget is mapped with the parent.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-parent  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-parent
+Returns the parent container of @var{widget}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the parent container of @var{widget}, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-settings  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gtk-settings>})
+@deffnx Method get-settings
+Gets the settings object holding the settings (global property settings, RC file
+information, etc) used for this widget.
+
+Note that this function can only be called when the @code{<gtk-widget>} is
+attached to a toplevel, since the settings object is specific to a particular
+@code{<gdk-screen>}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the relevant @code{<gtk-settings>} object
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-get-clipboard  (self@tie{}@code{<gtk-widget>}) (selection@tie{}@code{<gdk-atom>}) @result{}@tie{} (ret@tie{}@code{<gtk-clipboard>})
+@deffnx Method get-clipboard
+Returns the clipboard object for the given selection to be used with
+@var{widget}. @var{widget} must have a @code{<gdk-display>} associated with it,
+so must be attached to a toplevel window.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item selection
+a @code{<gdk-atom>} which identifies the clipboard to use.
+@samp{GDK_SELECTION_CLIPBOARD} gives the default clipboard. Another common value
+is @samp{GDK_SELECTION_PRIMARY}, which gives the primary X selection.
+
+@item ret
+the appropriate clipboard object. If no clipboard already exists, a new one will
+be created. Once a clipboard object has been created, it is persistent for all
+time.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-widget-get-display  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gdk-display>})
+@deffnx Method get-display
+Get the @code{<gdk-display>} for the toplevel window associated with this
+widget. This function can only be called after the widget has been added to a
+widget hierarchy with a @code{<gtk-window>} at the top.
+
+In general, you should only create display specific resources when a widget has
+been realized, and you should free those resources when the widget is
+unrealized.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the @code{<gdk-display>} for the toplevel for this widget.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-widget-get-root-window  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gdk-window>})
+@deffnx Method get-root-window
+Get the root window where this widget is located. This function can only be
+called after the widget has been added to a widget heirarchy with
+@code{<gtk-window>} at the top.
+
+The root window is useful for such purposes as creating a popup
+@code{<gdk-window>} associated with the window. In general, you should only
+create display specific resources when a widget has been realized, and you
+should free those resources when the widget is unrealized.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the @code{<gdk-window>} root window for the toplevel for this widget.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-widget-get-screen  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gdk-screen>})
+@deffnx Method get-screen
+Get the @code{<gdk-screen>} from the toplevel window associated with this
+widget. This function can only be called after the widget has been added to a
+widget hierarchy with a @code{<gtk-window>} at the top.
+
+In general, you should only create screen specific resources when a widget has
+been realized, and you should free those resources when the widget is
+unrealized.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the @code{<gdk-screen>} for the toplevel for this widget.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-widget-has-screen  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method has-screen
+Checks whether there is a @code{<gdk-screen>} is associated with this widget.
+All toplevel widgets have an associated screen, and all widgets added into a
+heirarchy with a toplevel window at the top.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+@samp{@code{#t}} if there is a @code{<gdk-screen>} associcated with the widget.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gtk-widget-get-size-request  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method get-size-request
+Gets the size request that was explicitly set for the widget using
+@code{gtk-widget-set-size-request}. A value of -1 stored in @var{width} or
+@var{height} indicates that that dimension has not been set explicitly and the
+natural requisition of the widget will be used intead. See
+@code{gtk-widget-set-size-request}. To get the size a widget will actually use,
+call @code{gtk-widget-size-request} instead of this function.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item width
+return location for width, or @samp{@code{#f}}
+
+@item height
+return location for height, or @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-child-visible  (self@tie{}@code{<gtk-widget>}) (is_visible@tie{}@code{bool})
+@deffnx Method set-child-visible
+Sets whether @var{widget} should be mapped along with its when its parent is
+mapped and @var{widget} has been shown with @code{gtk-widget-show}.
+
+The child visibility can be set for widget before it is added to a container
+with @code{gtk-widget-set-parent}, to avoid mapping children unnecessary before
+immediately unmapping them. However it will be reset to its default state of
+@samp{@code{#t}} when the widget is removed from a container.
+
+Note that changing the child visibility of a widget does not queue a resize on
+the widget. Most of the time, the size of a widget is computed from all visible
+children, whether or not they are mapped. If this is not the case, the container
+can queue a resize itself.
+
+This function is only useful for container implementations and never should be
+called by an application.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item is-visible
+if @samp{@code{#t}}, @var{widget} should be mapped along with its parent.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-size-request  (self@tie{}@code{<gtk-widget>}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method set-size-request
+Sets the minimum size of a widget; that is, the widget's size request will be
+@var{width} by @var{height}. You can use this function to force a widget to be
+either larger or smaller than it normally would be.
+
+In most cases, @code{gtk-window-set-default-size} is a better choice for
+toplevel windows than this function; setting the default size will still allow
+users to shrink the window. Setting the size request will force them to leave
+the window at least as large as the size request. When dealing with window
+sizes, @code{gtk-window-set-geometry-hints} can be a useful function as well.
+
+Note the inherent danger of setting any fixed size - themes, translations into
+other languages, different fonts, and user action can all change the appropriate
+size for a given widget. So, it's basically impossible to hardcode a size that
+will always be correct.
+
+The size request of a widget is the smallest size a widget can accept while
+still functioning well and drawing itself correctly. However in some strange
+cases a widget may be allocated less than its requested size, and in many cases
+a widget may be allocated more space than it requested.
+
+If the size request in a given direction is -1 (unset), then the "natural" size
+request of the widget will be used instead.
+
+Widgets can't actually be allocated a size less than 1 by 1, but you can pass
+0,0 to this function to mean "as small as possible."
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item width
+width @var{widget} should request, or -1 to unset
+
+@item height
+height @var{widget} should request, or -1 to unset
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-thaw-child-notify  (self@tie{}@code{<gtk-widget>})
+@deffnx Method thaw-child-notify
+Reverts the effect of a previous call to @code{gtk-widget-freeze-child-notify}.
+This causes all queued "child-notify" signals on @var{widget} to be emitted.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-widget-set-no-show-all  (self@tie{}@code{<gtk-widget>}) (no_show_all@tie{}@code{bool})
+@deffnx Method set-no-show-all
+Sets the "no_show_all" property, which determines whether calls to
+@code{gtk-widget-show-all} and @code{gtk-widget-hide-all} will affect this
+widget.
+
+This is mostly for use in constructing widget hierarchies with externally
+controlled visibility, see @code{<gtk-ui-manager>}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item no-show-all
+the new value for the "no_show_all" property
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-widget-get-no-show-all  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-no-show-all
+Returns the current value of the "no_show_all" property, which determines
+whether calls to @code{gtk-widget-show-all} and @code{gtk-widget-hide-all} will
+affect this widget.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the current value of the "no_show_all" property.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-widget-list-mnemonic-labels  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{glist-of})
+@deffnx Method list-mnemonic-labels
+Returns a newly allocated list of the widgets, normally labels, for which this
+widget is a the target of a mnemonic (see for example,
+@code{gtk-label-set-mnemonic-widget}).
+
+The widgets in the list are not individually referenced. If you want to iterate
+through the list and perform actions involving callbacks that might destroy the
+widgets, you @emph{must} call @samp{g_list_foreach (result, (GFunc)g_object_ref,
+NULL)} first, and then unref all the widgets afterwards.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the list of mnemonic labels; free this list with @code{g-list-free} when you are
+done with it.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-widget-add-mnemonic-label  (self@tie{}@code{<gtk-widget>}) (label@tie{}@code{<gtk-widget>})
+@deffnx Method add-mnemonic-label
+Adds a widget to the list of mnemonic labels for this widget. (See
+@code{gtk-widget-list-mnemonic-labels}). Note the list of mnemonic labels for
+the widget is cleared when the widget is destroyed, so the caller must make sure
+to update its internal state at this point as well, by using a connection to the
+::destroy signal or a weak notifier.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item label
+a @code{<gtk-widget>} that acts as a mnemonic label for @var{widget}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-widget-remove-mnemonic-label  (self@tie{}@code{<gtk-widget>}) (label@tie{}@code{<gtk-widget>})
+@deffnx Method remove-mnemonic-label
+Removes a widget from the list of mnemonic labels for this widget. (See
+@code{gtk-widget-list-mnemonic-labels}). The widget must have previously been
+added to the list with @code{gtk-widget-add-mnemonic-label}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item label
+a @code{<gtk-widget>} that was previously set as a mnemnic label for
+@var{widget} with @code{gtk-widget-add-mnemonic-label}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-widget-get-action  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{<gtk-action>})
+@deffnx Method get-action
+Returns the @code{<gtk-action>} that @var{widget} is a proxy for. See also
+@code{gtk-action-get-proxies}.
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+the action that a widget is a proxy for, or @samp{@code{#f}}, if it is not
+attached to an action.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-widget-is-composited  (self@tie{}@code{<gtk-widget>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-composited
+Whether @var{widget} can rely on having its alpha channel drawn correctly. On
+X11 this function returns whether a compositing manager is running for
+@var{widget}'s screen
+
+@table @var
+@item widget
+a @code{<gtk-widget>}
+
+@item ret
+@samp{@code{#t}} if the widget can rely on its alpha channel being drawn
+correctly.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-requisition-copy  (self@tie{}@code{<gtk-requisition>}) @result{}@tie{} (ret@tie{}@code{<gtk-requisition>})
+Copies a @code{<gtk-requisition>}.
+
+@table @var
+@item requisition
+a @code{<gtk-requisition>}.
+
+@item ret
+a copy of @var{requisition}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

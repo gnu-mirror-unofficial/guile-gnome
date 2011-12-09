@@ -1,0 +1,45 @@
+
+@c %start of fragment
+
+@deffn Function gnome-user-dir-get  @result{}@tie{} (ret@tie{}@code{mchars})
+Retrieves the user-specific directory for GNOME apps to use ($HOME/.gnome2 is
+the usual GNOME 2 value).
+
+@table @var
+@item ret
+An absolute path to the directory.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-user-private-dir-get  @result{}@tie{} (ret@tie{}@code{mchars})
+Differs from @code{gnome-user-dir-get} in that the directory returned here will
+have had permissions of 0700 (rwx------) enforced when it was created. Of
+course, the permissions may have been altered since creation, so care still
+needs to be taken.
+
+@table @var
+@item ret
+An absolute path to the user-specific private directory that GNOME apps can use.
+
+@end table
+
+@end deffn
+
+@deffn Function gnome-user-accels-dir-get  @result{}@tie{} (ret@tie{}@code{mchars})
+Retrieves the user-specific directory that stores the keyboard shortcut files
+for each GNOME app. Note that most applications should be using GConf for
+storing this information, but it may be necessary to use the
+@code{gnome-user-accels-dir-get} directory for legacy applications.
+
+@table @var
+@item ret
+The absolute path to the directory.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

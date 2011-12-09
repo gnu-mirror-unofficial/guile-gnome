@@ -1,0 +1,27 @@
+;; -*- scheme -*-
+
+(ignore-types
+  "GAsciiType"
+  "GConvertError"
+  "GDateDMY"
+  "GDateMonth"
+  "GDateWeekday"
+  "GErrorType"
+  "GHookFlagMask"
+  "GKeyFileError"
+  "GKeyFileFlags"
+  "GLogLevelFlags"
+  "GMarkupError"
+  "GMarkupParseFlags"
+  "GOnceStatus"
+  "GOptionArg"
+  "GOptionError"
+  "GOptionFlags"
+  "GShellError"
+  "GSliceConfig"
+  "GSpawnError"
+  "GSpawnFlags"
+  "GThreadError"
+  "GThreadPriority"
+  "GTraverseFlags"
+  "GTraverseType")

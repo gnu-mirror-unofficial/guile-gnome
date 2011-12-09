@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node GtkAssistant
+@chapter GtkAssistant
+A widget used to guide users through multi-step operations
+
+@section Overview
+A @code{<gtk-assistant>} is a widget used to represent a generally complex
+operation splitted in several steps, guiding the user through its pages and
+controlling the page flow to collect the necessary data.
+
+@section Usage
+@include defuns-gtkassistant.xml.texi
+
+@c %end of fragment

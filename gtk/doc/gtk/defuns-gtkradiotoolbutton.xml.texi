@@ -1,0 +1,70 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-radio-tool-button>
+Derives from @code{<gtk-toggle-tool-button>}.
+
+This class defines the following slots:
+
+@table @code
+@item group
+The radio tool button whose group this button belongs to.
+
+@end table
+
+@end deftp
+
+@deffn Function gtk-radio-tool-button-new  (group@tie{}@code{<gtk-radio-group*>}) @result{}@tie{} (ret@tie{}@code{<gtk-tool-item>})
+Creates a new @code{<gtk-radio-tool-button>}, adding it to @var{group}.
+
+@table @var
+@item group
+An existing radio button group, or @samp{@code{#f}} if you are creating a new
+group
+
+@item ret
+The new @code{<gtk-radio-tool-button>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-radio-tool-button-get-group  (self@tie{}@code{<gtk-radio-tool-button>}) @result{}@tie{} (ret@tie{}@code{<gtk-radio-group*>})
+@deffnx Method get-group
+Returns the radio button group @var{button} belongs to.
+
+@table @var
+@item button
+a @code{<gtk-radio-tool-button>}
+
+@item ret
+The group @var{button} belongs to.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-radio-tool-button-set-group  (self@tie{}@code{<gtk-radio-tool-button>}) (group@tie{}@code{<gtk-radio-group*>})
+@deffnx Method set-group
+Adds @var{button} to @var{group}, removing it from the group it belonged to
+before.
+
+@table @var
+@item button
+a @code{<gtk-radio-tool-button>}
+
+@item group
+an existing radio button group
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

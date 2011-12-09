@@ -1,0 +1,20 @@
+
+@c %start of fragment
+
+@node GtkToolItem
+@chapter GtkToolItem
+The base class of widgets that can be added to GtkToolbar
+
+@section Overview
+@code{<gtk-tool-item>}s are widgets that can appear on a toolbar. To create a
+toolbar item that contain something else than a button, use
+@code{gtk-tool-item-new}. Use @code{gtk-container-add} to add a child widget to
+the tool item.
+
+For toolbar items that contain buttons, see the @code{<gtk-tool-button>},
+@code{<gtk-toggle-tool-button>} and @code{<gtk-radio-tool-button>} classes.
+
+@section Usage
+@include defuns-gtktoolitem.xml.texi
+
+@c %end of fragment

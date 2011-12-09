@@ -1,0 +1,153 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-radio-action>
+Derives from @code{<gtk-toggle-action>}.
+
+This class defines the following slots:
+
+@table @code
+@item value
+The value returned by gtk_radio_action_get_current_value() when this action is
+the current action of its group.
+
+@item group
+The radio action whose group this action belongs to.
+
+@item current-value
+The value property of the currently active member of the group to which this
+action belongs.
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-radio-action> changed  (arg0@tie{}@code{<gtk-radio-action>})
+The ::changed signal is emitted on every member of a radio group when the active
+member is changed. The signal gets emitted after the ::activate signals for the
+previous and current active members.
+
+Since 2.4
+
+@end defop
+
+@deffn Function gtk-radio-action-new  (name@tie{}@code{mchars}) (label@tie{}@code{mchars}) (tooltip@tie{}@code{mchars}) (stock_id@tie{}@code{mchars}) (value@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-radio-action>})
+Creates a new @code{<gtk-radio-action>} object. To add the action to a
+@code{<gtk-action-group>} and set the accelerator for the action, call
+@code{gtk-action-group-add-action-with-accel}.
+
+@table @var
+@item name
+A unique name for the action
+
+@item label
+The label displayed in menu items and on buttons
+
+@item tooltip
+A tooltip for this action
+
+@item stock-id
+The stock icon to display in widgets representing this action
+
+@item value
+The value which @code{gtk-radio-action-get-current-value} should return if this
+action is selected.
+
+@item ret
+a new @code{<gtk-radio-action>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-radio-action-get-group  (self@tie{}@code{<gtk-radio-action>}) @result{}@tie{} (ret@tie{}@code{<gtk-radio-group*>})
+@deffnx Method get-group
+Returns the list representing the radio group for this object. Note that the
+returned list is only valid until the next change to the group.
+
+A common way to set up a group of radio group is the following:
+
+@example 
+
+  GSList *group = NULL;
+  GtkRadioAction *action;
+ 
+  while (/* more actions to add */)
+    @{
+       action = gtk_radio_action_new (...);
+       
+       gtk_radio_action_set_group (action, group);
+       group = gtk_radio_action_get_group (action);
+    @}
+@end example
+
+@table @var
+@item action
+the action object
+
+@item ret
+the list representing the radio group for this object
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-radio-action-set-group  (self@tie{}@code{<gtk-radio-action>}) (group@tie{}@code{<gtk-radio-group*>})
+@deffnx Method set-group
+Sets the radio group for the radio action object.
+
+@table @var
+@item action
+the action object
+
+@item group
+a list representing a radio group
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-radio-action-get-current-value  (self@tie{}@code{<gtk-radio-action>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-current-value
+Obtains the value property of the currently active member of the group to which
+@var{action} belongs.
+
+@table @var
+@item action
+a @code{<gtk-radio-action>}
+
+@item ret
+The value of the currently active group member
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-radio-action-set-current-value  (self@tie{}@code{<gtk-radio-action>}) (current_value@tie{}@code{int})
+@deffnx Method set-current-value
+Sets the currently active group member to the member with value property
+@var{current-value}.
+
+@table @var
+@item action
+a @code{<gtk-radio-action>}
+
+@item current-value
+the new value
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment

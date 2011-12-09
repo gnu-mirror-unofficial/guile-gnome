@@ -1,0 +1,116 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-text-mark>
+Derives from @code{<gobject>}.
+
+This class defines the following slots:
+
+@table @code
+@item name
+Mark name
+
+@item left-gravity
+Whether the mark has left gravity
+
+@end table
+
+@end deftp
+
+@deffn Function gtk-text-mark-set-visible  (self@tie{}@code{<gtk-text-mark>}) (setting@tie{}@code{bool})
+@deffnx Method set-visible
+Sets the visibility of @var{mark}; the insertion point is normally visible, i.e.
+you can see it as a vertical bar. Also, the text widget uses a visible mark to
+indicate where a drop will occur when dragging-and-dropping text. Most other
+marks are not visible. Marks are not visible by default.
+
+@table @var
+@item mark
+a @code{<gtk-text-mark>}
+
+@item setting
+visibility of mark
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-mark-get-visible  (self@tie{}@code{<gtk-text-mark>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-visible
+Returns @samp{@code{#t}} if the mark is visible (i.e. a cursor is displayed for
+it)
+
+@table @var
+@item mark
+a @code{<gtk-text-mark>}
+
+@item ret
+@samp{@code{#t}} if visible
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-mark-get-deleted  (self@tie{}@code{<gtk-text-mark>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-deleted
+Returns @samp{@code{#t}} if the mark has been removed from its buffer with
+@code{gtk-text-buffer-delete-mark}. Marks can't be used once deleted.
+
+@table @var
+@item mark
+a @code{<gtk-text-mark>}
+
+@item ret
+whether the mark is deleted
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-mark-get-name  (self@tie{}@code{<gtk-text-mark>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-name
+Returns the mark name; returns NULL for anonymous marks.
+
+@table @var
+@item mark
+a @code{<gtk-text-mark>}
+
+@item ret
+mark name
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-mark-get-buffer  (self@tie{}@code{<gtk-text-mark>}) @result{}@tie{} (ret@tie{}@code{<gtk-text-buffer>})
+@deffnx Method get-buffer
+Gets the buffer this mark is located inside, or NULL if the mark is deleted.
+
+@table @var
+@item mark
+a @code{<gtk-text-mark>}
+
+@item ret
+the mark's @code{<gtk-text-buffer>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-text-mark-get-left-gravity  (self@tie{}@code{<gtk-text-mark>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-left-gravity
+Determines whether the mark has left gravity.
+
+@table @var
+@item mark
+a @code{<gtk-text-mark>}
+
+@item ret
+@samp{@code{#t}} if the mark has left gravity, @samp{@code{#f}} otherwise
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

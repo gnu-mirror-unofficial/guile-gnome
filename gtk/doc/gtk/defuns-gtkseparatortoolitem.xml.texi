@@ -1,0 +1,68 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-separator-tool-item>
+Derives from @code{<gtk-tool-item>}.
+
+This class defines the following slots:
+
+@table @code
+@item draw
+Whether the separator is drawn, or just blank
+
+@end table
+
+@end deftp
+
+@deffn Function gtk-separator-tool-item-new  @result{}@tie{} (ret@tie{}@code{<gtk-tool-item>})
+Create a new @code{<gtk-separator-tool-item>}
+
+@table @var
+@item ret
+the new @code{<gtk-separator-tool-item>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-separator-tool-item-set-draw  (self@tie{}@code{<gtk-separator-tool-item>}) (draw@tie{}@code{bool})
+@deffnx Method set-draw
+When @var{separator-tool-items} is drawn as a vertical line, or just blank.
+Setting this @code{@code{#f}} along with @code{gtk-tool-item-set-expand} is
+useful to create an item that forces following items to the end of the toolbar.
+
+@table @var
+@item item
+a @code{<gtk-separator-tool-item>}
+
+@item draw
+whether @var{separator-tool-item} is drawn as a vertical line
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-separator-tool-item-get-draw  (self@tie{}@code{<gtk-separator-tool-item>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-draw
+Returns whether @var{separator-tool-item} is drawn as a line, or just blank. See
+@code{gtk-separator-tool-item-set-draw}.
+
+@table @var
+@item item
+a @code{<gtk-separator-tool-item>}
+
+@item ret
+@code{@code{#t}} if @var{separator-tool-item} is drawn as a line, or just blank.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,353 @@
+
+@c %start of fragment
+
+@deftp Class <pango-renderer>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function pango-renderer-draw-layout  (self@tie{}@code{<pango-renderer>}) (layout@tie{}@code{<pango-layout>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method draw-layout
+Draws @var{layout} with the specified @code{<pango-renderer>}.
+
+@table @var
+@item renderer
+a @code{<pango-renderer>}
+
+@item layout
+a @code{<pango-layout>}
+
+@item x
+X position of left edge of baseline, in user space coordinates in Pango units.
+
+@item y
+Y position of left edge of baseline, in user space coordinates in Pango units.
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-renderer-draw-layout-line  (self@tie{}@code{<pango-renderer>}) (line@tie{}@code{<pango-layout-line>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method draw-layout-line
+Draws @var{line} with the specified @code{<pango-renderer>}.
+
+@table @var
+@item renderer
+a @code{<pango-renderer>}
+
+@item line
+a @code{<pango-layout-line>}
+
+@item x
+X position of left edge of baseline, in user space coordinates in Pango units.
+
+@item y
+Y position of left edge of baseline, in user space coordinates in Pango units.
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-renderer-draw-glyphs  (self@tie{}@code{<pango-renderer>}) (font@tie{}@code{<pango-font>}) (glyphs@tie{}@code{<pango-glyph-string>}) (x@tie{}@code{int}) (y@tie{}@code{int})
+@deffnx Method draw-glyphs
+Draws the glyphs in @var{glyphs} with the specified @code{<pango-renderer>}.
+
+@table @var
+@item renderer
+a @code{<pango-renderer>}
+
+@item font
+a @code{<pango-font>}
+
+@item glyphs
+a @code{<pango-glyph-string>}
+
+@item x
+X position of left edge of baseline, in user space coordinates in Pango units.
+
+@item y
+Y position of left edge of baseline, in user space coordinates in Pango units.
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-renderer-draw-rectangle  (self@tie{}@code{<pango-renderer>}) (part@tie{}@code{<pango-render-part>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method draw-rectangle
+Draws an axis-aligned rectangle in user space coordinates with the specified
+@code{<pango-renderer>}.
+
+This should be called while @var{renderer} is already active. Use
+@code{pango-renderer-activate} to activate a renderer.
+
+@table @var
+@item renderer
+a @code{<pango-renderer>}
+
+@item part
+type of object this rectangle is part of
+
+@item x
+X position at which to draw rectangle, in user space coordinates in Pango units
+
+@item y
+Y position at which to draw rectangle, in user space coordinates in Pango units
+
+@item width
+width of rectangle in Pango units in user space coordinates
+
+@item height
+height of rectangle in Pango units in user space coordinates
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-renderer-draw-error-underline  (self@tie{}@code{<pango-renderer>}) (x@tie{}@code{int}) (y@tie{}@code{int}) (width@tie{}@code{int}) (height@tie{}@code{int})
+@deffnx Method draw-error-underline
+Draw a squiggly line that approximately covers the given rectangle in the style
+of an underline used to indicate a spelling error. (The width of the underline
+is rounded to an integer number of up/down segments and the resulting rectangle
+is centered in the original rectangle)
+
+This should be called while @var{renderer} is already active. Use
+@code{pango-renderer-activate} to activate a renderer.
+
+@table @var
+@item renderer
+a @code{<pango-renderer>}
+
+@item x
+X coordinate of underline, in Pango units in user coordinate system
+
+@item y
+Y coordinate of underline, in Pango units in user coordinate system
+
+@item width
+width of underline, in Pango units in user coordinate system
+
+@item height
+height of underline, in Pango units in user coordinate system
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-renderer-draw-trapezoid  (self@tie{}@code{<pango-renderer>}) (part@tie{}@code{<pango-render-part>}) (y1_@tie{}@code{double}) (x11@tie{}@code{double}) (x21@tie{}@code{double}) (y2@tie{}@code{double}) (x12@tie{}@code{double}) (x22@tie{}@code{double})
+@deffnx Method draw-trapezoid
+Draws a trapezoid with the parallel sides aligned with the X axis using the
+given @code{<pango-renderer>}; coordinates are in device space.
+
+@table @var
+@item renderer
+a @code{<pango-renderer>}
+
+@item part
+type of object this trapezoid is part of
+
+@item y1
+Y coordinate of top of trapezoid
+
+@item x11
+X coordinate of left end of top of trapezoid
+
+@item x21
+X coordinate of right end of top of trapezoid
+
+@item y2
+Y coordinate of bottom of trapezoid
+
+@item x12
+X coordinate of left end of bottom of trapezoid
+
+@item x22
+X coordinate of right end of bottom of trapezoid
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-renderer-draw-glyph  (self@tie{}@code{<pango-renderer>}) (font@tie{}@code{<pango-font>}) (glyph@tie{}@code{unsigned-int32}) (x@tie{}@code{double}) (y@tie{}@code{double})
+@deffnx Method draw-glyph
+Draws a single glyph with coordinates in device space.
+
+@table @var
+@item renderer
+a @code{<pango-renderer>}
+
+@item font
+a @code{<pango-font>}
+
+@item glyph
+the glyph index of a single glyph
+
+@item x
+X coordinate of left edge of baseline of glyph
+
+@item y
+Y coordinate of left edge of baseline of glyph
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-renderer-activate  (self@tie{}@code{<pango-renderer>})
+@deffnx Method activate
+Does initial setup before rendering operations on @var{renderer}.
+@code{pango-renderer-deactivate} should be called when done drawing. Calls such
+as @code{pango-renderer-draw-layout} automatically activate the layout before
+drawing on it. Calls to @code{pango-renderer-activate} and
+@code{pango-renderer-deactivate} can be nested and the renderer will only be
+initialized and deinitialized once.
+
+@table @var
+@item renderer
+a @code{<pango-renderer>}
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-renderer-deactivate  (self@tie{}@code{<pango-renderer>})
+@deffnx Method deactivate
+Cleans up after rendering operations on @var{renderer}. See docs for
+@code{pango-renderer-activate}.
+
+@table @var
+@item renderer
+a @code{<pango-renderer>}
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-renderer-part-changed  (self@tie{}@code{<pango-renderer>}) (part@tie{}@code{<pango-render-part>})
+@deffnx Method part-changed
+Informs Pango that the way that the rendering is done for @var{part} has changed
+in a way that would prevent multiple pieces being joined together into one
+drawing call. For instance, if a subclass of @code{<pango-renderer>} was to add
+a stipple option for drawing underlines, it needs to call
+
+@example 
+
+pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE);
+@end example
+
+When the stipple changes or underlines with different stipples might be joined
+together. Pango automatically calls this for changes to colors. (See
+@code{pango-renderer-set-color})
+
+@table @var
+@item renderer
+a @code{<pango-renderer>}
+
+@item part
+the part for which rendering has changed.
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-renderer-set-color  (self@tie{}@code{<pango-renderer>}) (part@tie{}@code{<pango-render-part>}) (color@tie{}@code{<pango-color>})
+@deffnx Method set-color
+Sets the color for part of the rendering.
+
+@table @var
+@item renderer
+a @code{<pango-renderer>}
+
+@item part
+the part to change the color of
+
+@item color
+the new color or @samp{@code{#f}} to unset the current color
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-renderer-get-color  (self@tie{}@code{<pango-renderer>}) (part@tie{}@code{<pango-render-part>}) @result{}@tie{} (ret@tie{}@code{<pango-color>})
+@deffnx Method get-color
+Gets the current rendering color for the specified part.
+
+@table @var
+@item renderer
+a @code{<pango-renderer>}
+
+@item part
+the part to get the color for
+
+@item ret
+the color for the specified part, or @samp{@code{#f}} if it hasn't been set and
+should be inherited from the environment.
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-renderer-set-matrix  (self@tie{}@code{<pango-renderer>}) (matrix@tie{}@code{<pango-matrix>})
+@deffnx Method set-matrix
+Sets the transformation matrix that will be applied when rendering.
+
+@table @var
+@item renderer
+a @code{<pango-renderer>}
+
+@item matrix
+a @code{<pango-matrix>}, or @samp{@code{#f}} to unset any existing matrix. (No
+matrix set is the same as setting the identity matrix.)
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+@deffn Function pango-renderer-get-matrix  (self@tie{}@code{<pango-renderer>}) @result{}@tie{} (ret@tie{}@code{<pango-matrix>})
+@deffnx Method get-matrix
+Gets the transformation matrix that will be applied when rendering. See
+@code{pango-renderer-set-matrix}.
+
+@table @var
+@item renderer
+a @code{<pango-renderer>}
+
+@item ret
+the matrix, or @samp{@code{#f}} if no matrix has been set (which is the same as
+the identity matrix). The returned matrix is owned by Pango and must not be
+modified or freed.
+
+@end table
+
+Since 1.8
+
+@end deffn
+
+
+@c %end of fragment

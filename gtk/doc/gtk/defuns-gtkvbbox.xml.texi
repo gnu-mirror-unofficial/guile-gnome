@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-vbutton-box>
+Derives from @code{<gtk-button-box>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-vbutton-box-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new vertical button box.
+
+@table @var
+@item ret
+a new button box @code{<gtk-widget>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

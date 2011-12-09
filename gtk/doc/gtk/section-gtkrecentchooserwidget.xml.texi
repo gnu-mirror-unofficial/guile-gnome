@@ -1,0 +1,24 @@
+
+@c %start of fragment
+
+@node GtkRecentChooserWidget
+@chapter GtkRecentChooserWidget
+Displays recently used files
+
+@section Overview
+@code{<gtk-recent-chooser-widget>} is a widget suitable for selecting recently
+used files. It is the main building block of a
+@code{<gtk-recent-chooser-dialog>}. Most applications will only need to use the
+latter; you can use @code{<gtk-recent-chooser-widget>} as part of a larger
+window if you have special needs.
+
+Note that @code{<gtk-recent-chooser-widget>} does not have any methods of its
+own. Instead, you should use the functions that work on a
+@code{<gtk-recent-chooser>}.
+
+Recently used files are supported since GTK+ 2.10.
+
+@section Usage
+@include defuns-gtkrecentchooserwidget.xml.texi
+
+@c %end of fragment

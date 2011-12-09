@@ -1,0 +1,29 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-hbox>
+Derives from @code{<gtk-box>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-hbox-new  (homogeneous@tie{}@code{bool}) (spacing@tie{}@code{int}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new GtkHBox.
+
+@table @var
+@item homogeneous
+@samp{@code{#t}} if all children are to be given equal space allotments.
+
+@item spacing
+the number of pixels to place by default between children.
+
+@item ret
+a new GtkHBox.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,26 @@
+
+@c %start of fragment
+
+@node Undocumented
+@chapter Undocumented
+The following symbols, if any, have not been properly documented.
+
+@section (gnome gnome)
+@defun gnome-program-init name version . properties
+@end defun
+
+@section (gnome gw libgnome)
+@defvar %gnome-program-init
+@end defvar
+
+@defvar gnome-gconf-get-app-settings-relative
+@end defvar
+
+@defvar gnome-gconf-get-gnome-libs-settings-relative
+@end defvar
+
+@defvar gnome-program-get-human-readable-name
+@end defvar
+
+
+@c %end of fragment

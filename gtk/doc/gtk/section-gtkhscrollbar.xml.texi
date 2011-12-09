@@ -1,0 +1,18 @@
+
+@c %start of fragment
+
+@node GtkHScrollbar
+@chapter GtkHScrollbar
+A horizontal scrollbar
+
+@section Overview
+The @code{<gtk-hscrollbar>} widget is a widget arranged horizontally creating a
+scrollbar. See @code{<gtk-scrollbar>} for details on scrollbars.
+@code{<gtk-adjustment>} pointers may be added to handle the adjustment of the
+scrollbar or it may be left @samp{@code{#f}} in which case one will be created
+for you. See @code{<gtk-adjustment>} for details.
+
+@section Usage
+@include defuns-gtkhscrollbar.xml.texi
+
+@c %end of fragment

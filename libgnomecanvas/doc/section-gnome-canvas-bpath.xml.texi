@@ -1,0 +1,14 @@
+
+@c %start of fragment
+
+@node GnomeCanvasBpath
+@chapter GnomeCanvasBpath
+Bezier path canvas item
+
+@section Overview
+A canvas item type for creating a "path" from curve and line segments.
+
+@section Usage
+@include defuns-gnome-canvas-bpath.xml.texi
+
+@c %end of fragment

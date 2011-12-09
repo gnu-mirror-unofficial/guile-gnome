@@ -1,0 +1,15 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-tree-sortable>
+Derives from @code{<ginterface>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@defop Signal <gtk-tree-sortable> sort-column-changed 
+@end defop
+
+
+@c %end of fragment

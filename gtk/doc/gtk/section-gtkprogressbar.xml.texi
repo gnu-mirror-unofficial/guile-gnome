@@ -1,0 +1,47 @@
+
+@c %start of fragment
+
+@node GtkProgressBar
+@chapter GtkProgressBar
+A widget which indicates progress visually
+
+@section Overview
+The @code{<gtk-progress-bar>} is typically used to display the progress of a
+long running operation. It provides a visual clue that processing is underway.
+The @code{<gtk-progress-bar>} can be used in two different modes: percentage
+mode and activity mode.
+
+When an application can determine how much work needs to take place (e.g. read a
+fixed number of bytes from a file) and can monitor its progress, it can use the
+@code{<gtk-progress-bar>} in percentage mode and the user sees a growing bar
+indicating the percentage of the work that has been completed. In this mode, the
+application is required to call @code{gtk-progress-bar-set-fraction}
+periodically to update the progress bar.
+
+When an application has no accurate way of knowing the amount of work to do, it
+can use the @code{<gtk-progress-bar>} in activity mode, which shows activity by
+a block moving back and forth within the progress area. In this mode, the
+application is required to call @code{gtk-progress-bar-pulse} perodically to
+update the progress bar.
+
+There is quite a bit of flexibility provided to control the appearance of the
+@code{<gtk-progress-bar>}. Functions are provided to control the orientation of
+the bar, optional text can be displayed along with the bar, and the step size
+used in activity mode can be set.
+
+The @code{<gtk-progress-bar>}/@code{<gtk-progress>} API in GTK 1.2 was bloated,
+needlessly complex and hard to use properly. Therefore @code{<gtk-progress>} has
+been deprecated completely and the @code{<gtk-progress-bar>} API has been
+reduced to the following 10 functions: @code{gtk-progress-bar-new},
+@code{gtk-progress-bar-pulse}, @code{gtk-progress-bar-set-text},
+@code{gtk-progress-bar-set-fraction}, @code{gtk-progress-bar-set-pulse-step},
+@code{gtk-progress-bar-set-orientation}, @code{gtk-progress-bar-get-text},
+@code{gtk-progress-bar-get-fraction}, @code{gtk-progress-bar-get-pulse-step},
+@code{gtk-progress-bar-get-orientation}. These have been grouped at the
+beginning of this section, followed by a large chunk of deprecated 1.2
+compatibility functions.
+
+@section Usage
+@include defuns-gtkprogressbar.xml.texi
+
+@c %end of fragment

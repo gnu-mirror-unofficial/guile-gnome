@@ -1,0 +1,175 @@
+2008-05-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gconf-support.c: Fix scm_with_guile + notify-add usage.
+
+	* doc/overview.texi (Overview): Add example code.
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.98 ==
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* doc/*.texi: Update docs.
+
+2008-04-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gconf-support.c (scm_c_gconf_value_to_scm)
+	(sniff_list_type, scm_c_scm_to_gconf_value, notify_proc): Fix
+	deprecation warnings.
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* == Released guile-gnome-platform version 2.15.97 ==
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* NEWS: Update NEWS.
+
+2008-04-08  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gconf-support.c (scm_c_gconf_value_to_scm): Use newer
+	GValue accessors.
+
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.96 ==
+
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* doc/guile-gnome-gconf.texi (Top): 
+	* doc/undocumented.texi: Add section for undocumented exports.
+
+	* doc/defuns-*.texi: Regenerated.
+
+	* tests/wrapset.api: Update.
+
+	* gnome/overrides/gconf.defs: Ignore functions that operate on
+	opaque types or are otherwise unsafe for scheme.
+
+	* doc/guile-gnome-gconf.texi (Top): Add type index.
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.95 ==
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* tests/Makefile.am:
+	* tests/wrapset.api:
+	* tests/wrapset.scm: Add API regression test suite.
+
+2007-11-01  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am:
+	* doc/: Add documentation, generated from upstream gtk-doc.
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.94 ==
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* NEWS: Updated.
+
+2007-06-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.93 ==
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.92 ==
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gconf.defs ("gconf_engine_get_for_addresses"):
+	Ignore gconf-engine-notify-add.
+
+2007-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.91 ==
+
+2007-05-04  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/gconf.defs (notify_add): Don't leave guile mode
+	for this one.
+
+2006-12-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.90 ==
+
+2006-11-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gconf-spec.scm: Use (gnome gw support g-wrap), the
+	g-wrap compatibility wrapper.
+
+2005-04-10  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/gconf-support.c: Use new SCM<->gpointer conversion
+	macros.
+
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.7.99 ==
+
+2005-01-11  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.98 ==
+
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Add record_check.
+
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* glib-checks.ac: 
+	* defs-checks.ac: Versioned pkg-config check.
+
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
+	versioned directory.
+
+2004-10-10  Andy Wingo  <wingo@pobox.com>
+
+	* {arch}/=tagging-method: Untagged-source = unrecognized.
+
+	* AUTHORS: Updated.
+
+	* gnome/gw/gconf-spec.scm: Add custom wrapper for GConfValue. 
+	(global-declarations-cg): Pull in the GConfClient headers.
+	(unwrap-value-cg, wrap-value-cg): GConfValue wrappers..
+	Alias GConfUnsetFlags as unsigned-int.
+
+	* gnome/gw/gconf-support.h: Define _GCONF_TYPE_SCHEMA,
+	_GCONF_TYPE_VALUE.
+
+	* gnome/gw/gconf-support.c (_gconf_schema_get_type) 
+	(_gconf_value_get_type): GType registration functions.
+	(scm_c_gconf_value_to_scm, sniff_list_type) 
+	(scm_c_scm_to_gconf_value): Helpers for conversion to and from
+	GConfValue.
+	(notify_proc, _wrap_gconf_client_notify_add): Custom wrapper for
+	add_notify. 
+
+	* gnome/overrides/gconf.defs-type-ignores: Fix all GType ids, it
+	seems h2defs chokes for gconf.
+
+	* gnome/overrides/gconf.defs (notify_add): Add notify_add wrapper.
+	(Schema): Define GConfSchema as a boxed type.
+	(gconf-client-all-entries, gconf-client-all-dirs)
+	(gconf-engine-all-entries, gconf-engine-all-dirs): Specify list
+	subtypes.
+	Ignore all type-specific get/set functions, because GConfValue is
+	represented naturally and unambiguously with native scheme values.
+	Ignore the listeners API for now, it requires custom wrappers.
+	Ignore deprecated/internal routines.
+
+	* gnome/gconf.scm: Don't pull in gtk.
+
+2004-10-09  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Check the right pkg-config file.
+
+	* Initial import, via guile-gnome-template's `templatize'.
+

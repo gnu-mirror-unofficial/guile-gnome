@@ -1,0 +1,14 @@
+To find out what should go in this file, see "Information For
+Maintainers of GNU Software" (maintain.texi), the section called
+"Recording Changes".
+
+
+<Name>:
+In the directory gnome/gw, wrote:
+    gnome-vfs-spec.scm gnome-vfs-support.c gnome-vfs-support.h
+In the directory gnome/overrides, wrote:
+    gnome-vfs.defs
+In the directory gnome, wrote:
+    gnome-vfs.scm
+In the directory examples/gnome-vfs, wrote:
+    ...

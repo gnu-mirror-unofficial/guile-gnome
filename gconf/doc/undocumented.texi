@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node Undocumented
+@chapter Undocumented
+The following symbols, if any, have not been properly documented.
+
+@section (gnome gw gconf)
+@defun gconf-client-get-default-from-schema 
+@end defun
+
+@defvar gconf-schema-set-default-value-nocopy
+@end defvar
+
+
+@c %end of fragment

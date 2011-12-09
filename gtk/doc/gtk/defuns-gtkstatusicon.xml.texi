@@ -1,0 +1,442 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-status-icon>
+Derives from @code{<gobject>}.
+
+This class defines the following slots:
+
+@table @code
+@item pixbuf
+A GdkPixbuf to display
+
+@item file
+Filename to load and display
+
+@item stock
+Stock ID for a stock image to display
+
+@item icon-name
+The name of the icon from the icon theme
+
+@item storage-type
+The representation being used for image data
+
+@item size
+The size of the icon
+
+@item screen
+The screen where this status icon will be displayed
+
+@item visible
+Whether or not the status icon is visible
+
+@item orientation
+The orientation of the tray
+
+@item embedded
+Whether or not the status icon is embedded
+
+@item blinking
+Whether or not the status icon is blinking
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-status-icon> size-changed  (arg0@tie{}@code{<gint>}) @result{}@tie{}@code{<gboolean>}
+Gets emitted when the size available for the image changes, e.g. because the
+notification area got resized.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-status-icon> popup-menu  (arg0@tie{}@code{<guint>}) (arg1@tie{}@code{<guint>})
+Gets emitted when the user brings up the context menu of the status icon.
+Whether status icons can have context menus and how these are activated is
+platform-dependent.
+
+The @var{button} and @var{activate-timeout} parameters should be passed as the
+last to arguments to @code{gtk-menu-popup}.
+
+Since 2.10
+
+@end defop
+
+@defop Signal <gtk-status-icon> activate 
+Gets emitted when the user activates the status icon. If and how status icons
+can activated is platform-dependent.
+
+Since 2.10
+
+@end defop
+
+@deffn Function gtk-status-icon-new  @result{}@tie{} (ret@tie{}@code{<gtk-status-icon>})
+Creates an empty status icon object.
+
+@table @var
+@item ret
+a new @code{<gtk-status-icon>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-new-from-pixbuf  (pixbuf@tie{}@code{<gdk-pixbuf>}) @result{}@tie{} (ret@tie{}@code{<gtk-status-icon>})
+Creates a status icon displaying @var{pixbuf}.
+
+The image will be scaled down to fit in the available space in the notification
+area, if necessary.
+
+@table @var
+@item pixbuf
+a @code{<gdk-pixbuf>}
+
+@item ret
+a new @code{<gtk-status-icon>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-new-from-file  (filename@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-status-icon>})
+Creates a status icon displaying the file @var{filename}.
+
+The image will be scaled down to fit in the available space in the notification
+area, if necessary.
+
+@table @var
+@item filename
+a filename
+
+@item ret
+a new @code{<gtk-status-icon>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-new-from-stock  (stock_id@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-status-icon>})
+Creates a status icon displaying a stock icon. Sample stock icon names are
+@code{<gtk-stock-open>}, @code{<gtk-stock-quit>}. You can register your own
+stock icon names, see @code{gtk-icon-factory-add-default} and
+@code{gtk-icon-factory-add}.
+
+@table @var
+@item stock-id
+a stock icon id
+
+@item ret
+a new @code{<gtk-status-icon>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-new-from-icon-name  (icon_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-status-icon>})
+Creates a status icon displaying an icon from the current icon theme. If the
+current icon theme is changed, the icon will be updated appropriately.
+
+@table @var
+@item icon-name
+an icon name
+
+@item ret
+a new @code{<gtk-status-icon>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-set-from-pixbuf  (self@tie{}@code{<gtk-status-icon>}) (pixbuf@tie{}@code{<gdk-pixbuf>})
+@deffnx Method set-from-pixbuf
+Makes @var{status-icon} display @var{pixbuf}. See
+@code{gtk-status-icon-new-from-pixbuf} for details.
+
+@table @var
+@item status-icon
+a @code{<gtk-status-icon>}
+
+@item pixbuf
+a @code{<gdk-pixbuf>} or @samp{@code{#f}}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-set-from-file  (self@tie{}@code{<gtk-status-icon>}) (filename@tie{}@code{mchars})
+@deffnx Method set-from-file
+Makes @var{status-icon} display the file @var{filename}. See
+@code{gtk-status-icon-new-from-file} for details.
+
+@table @var
+@item status-icon
+a @code{<gtk-status-icon>}
+
+@item filename
+a filename
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-set-from-stock  (self@tie{}@code{<gtk-status-icon>}) (stock_id@tie{}@code{mchars})
+@deffnx Method set-from-stock
+Makes @var{status-icon} display the stock icon with the id @var{stock-id}. See
+@code{gtk-status-icon-new-from-stock} for details.
+
+@table @var
+@item status-icon
+a @code{<gtk-status-icon>}
+
+@item stock-id
+a stock icon id
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-set-from-icon-name  (self@tie{}@code{<gtk-status-icon>}) (icon_name@tie{}@code{mchars})
+@deffnx Method set-from-icon-name
+Makes @var{status-icon} display the icon named @var{icon-name} from the current
+icon theme. See @code{gtk-status-icon-new-from-icon-name} for details.
+
+@table @var
+@item status-icon
+a @code{<gtk-status-icon>}
+
+@item icon-name
+an icon name
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-get-storage-type  (self@tie{}@code{<gtk-status-icon>}) @result{}@tie{} (ret@tie{}@code{<gtk-image-type>})
+@deffnx Method get-storage-type
+Gets the type of representation being used by the @code{<gtk-status-icon>} to
+store image data. If the @code{<gtk-status-icon>} has no image data, the return
+value will be @samp{GTK_IMAGE_EMPTY}.
+
+@table @var
+@item status-icon
+a @code{<gtk-status-icon>}
+
+@item ret
+the image representation being used
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-get-pixbuf  (self@tie{}@code{<gtk-status-icon>}) @result{}@tie{} (ret@tie{}@code{<gdk-pixbuf>})
+@deffnx Method get-pixbuf
+Gets the @code{<gdk-pixbuf>} being displayed by the @code{<gtk-status-icon>}.
+The storage type of the status icon must be @samp{GTK_IMAGE_EMPTY} or
+@samp{GTK_IMAGE_PIXBUF} (see @code{gtk-status-icon-get-storage-type}). The
+caller of this function does not own a reference to the returned pixbuf.
+
+@table @var
+@item status-icon
+a @code{<gtk-status-icon>}
+
+@item ret
+the displayed pixbuf, or @samp{@code{#f}} if the image is empty.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-get-stock  (self@tie{}@code{<gtk-status-icon>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-stock
+Gets the id of the stock icon being displayed by the @code{<gtk-status-icon>}.
+The storage type of the status icon must be @samp{GTK_IMAGE_EMPTY} or
+@samp{GTK_IMAGE_STOCK} (see @code{gtk-status-icon-get-storage-type}). The
+returned string is owned by the @code{<gtk-status-icon>} and should not be freed
+or modified.
+
+@table @var
+@item status-icon
+a @code{<gtk-status-icon>}
+
+@item ret
+stock id of the displayed stock icon, or @samp{@code{#f}} if the image is empty.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-get-icon-name  (self@tie{}@code{<gtk-status-icon>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-icon-name
+Gets the name of the icon being displayed by the @code{<gtk-status-icon>}. The
+storage type of the status icon must be @samp{GTK_IMAGE_EMPTY} or
+@samp{GTK_IMAGE_ICON_NAME} (see @code{gtk-status-icon-get-storage-type}). The
+returned string is owned by the @code{<gtk-status-icon>} and should not be freed
+or modified.
+
+@table @var
+@item status-icon
+a @code{<gtk-status-icon>}
+
+@item ret
+name of the displayed icon, or @samp{@code{#f}} if the image is empty.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-get-size  (self@tie{}@code{<gtk-status-icon>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-size
+Gets the size in pixels that is available for the image. Stock icons and named
+icons adapt their size automatically if the size of the notification area
+changes. For other storage types, the size-changed signal can be used to react
+to size changes.
+
+@table @var
+@item status-icon
+a @code{<gtk-status-icon>}
+
+@item ret
+the size that is available for the image
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-set-tooltip  (self@tie{}@code{<gtk-status-icon>}) (tooltip_text@tie{}@code{mchars})
+@deffnx Method set-tooltip
+Sets the tooltip of the status icon.
+
+@table @var
+@item status-icon
+a @code{<gtk-status-icon>}
+
+@item tooltip-text
+the tooltip text, or @samp{@code{#f}}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-set-visible  (self@tie{}@code{<gtk-status-icon>}) (visible@tie{}@code{bool})
+@deffnx Method set-visible
+Shows or hides a status icon.
+
+@table @var
+@item status-icon
+a @code{<gtk-status-icon>}
+
+@item visible
+@samp{@code{#t}} to show the status icon, @samp{@code{#f}} to hide it
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-get-visible  (self@tie{}@code{<gtk-status-icon>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-visible
+Returns whether the status icon is visible or not. Note that being visible does
+not guarantee that the user can actually see the icon, see also
+@code{gtk-status-icon-is-embedded}.
+
+@table @var
+@item status-icon
+a @code{<gtk-status-icon>}
+
+@item ret
+@samp{@code{#t}} if the status icon is visible
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-set-blinking  (self@tie{}@code{<gtk-status-icon>}) (blinking@tie{}@code{bool})
+@deffnx Method set-blinking
+Makes the status icon start or stop blinking. Note that blinking user interface
+elements may be problematic for some users, and thus may be turned off, in which
+case this setting has no effect.
+
+@table @var
+@item status-icon
+a @code{<gtk-status-icon>}
+
+@item blinking
+@samp{@code{#t}} to turn blinking on, @samp{@code{#f}} to turn it off
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-get-blinking  (self@tie{}@code{<gtk-status-icon>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-blinking
+Returns whether the icon is blinking, see @code{gtk-status-icon-set-blinking}.
+
+@table @var
+@item status-icon
+a @code{<gtk-status-icon>}
+
+@item ret
+@samp{@code{#t}} if the icon is blinking
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-status-icon-is-embedded  (self@tie{}@code{<gtk-status-icon>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-embedded
+Returns whether the status icon is embedded in a notification area.
+
+@table @var
+@item status-icon
+a @code{<gtk-status-icon>}
+
+@item ret
+@samp{@code{#t}} if the status icon is embedded in a notification area.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment

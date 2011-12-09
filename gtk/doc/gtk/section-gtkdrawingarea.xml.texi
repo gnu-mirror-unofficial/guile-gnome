@@ -1,0 +1,72 @@
+
+@c %start of fragment
+
+@node GtkDrawingArea
+@chapter GtkDrawingArea
+A widget for custom user interface elements
+
+@section Overview
+The @code{<gtk-drawing-area>} widget is used for creating custom user interface
+elements. It's essentially a blank widget; you can draw on
+@samp{widget->window}. After creating a drawing area, the application may want
+to connect to:
+
+Mouse and button press signals to respond to input from the user. (Use
+@code{gtk-widget-add-events} to enable events you wish to receive.)
+
+The "realize" signal to take any necessary actions when the widget is
+instantiated on a particular display. (Create GDK resources in response to this
+signal.)
+
+The "configure_event" signal to take any necessary actions when the widget
+changes size.
+
+The "expose_event" signal to handle redrawing the contents of the widget.
+
+The following code portion demonstrates using a drawing area to display a circle
+in the normal widget foreground color. Note that GDK automatically clears the
+exposed area to the background color before sending the expose event, and that
+drawing is implicitly clipped to the exposed area.
+
+@example 
+
+gboolean
+expose_event_callback (GtkWidget *widget, GdkEventExpose *event, gpointer data)
+@{
+  gdk_draw_arc (widget->window,
+                widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
+                TRUE,
+                0, 0, widget->allocation.width, widget->allocation.height,
+                0, 64 * 360);
+ 
+  return TRUE;
+@}
+[...]
+  GtkWidget *drawing_area = gtk_drawing_area_new ();
+  gtk_widget_set_size_request (drawing_area, 100, 100);
+  g_signal_connect (G_OBJECT (drawing_area), "expose_event",  
+                    G_CALLBACK (expose_event_callback), NULL);
+@end example
+
+Expose events are normally delivered when a drawing area first comes onscreen,
+or when it's covered by another window and then uncovered (exposed). You can
+also force an expose event by adding to the "damage region" of the drawing
+area's window; @code{gtk-widget-queue-draw-area} and
+@code{gdk-window-invalidate-rect} are equally good ways to do this. You'll then
+get an expose event for the invalid region.
+
+The available routines for drawing are documented on the GDK Drawing Primitives
+page. See also @code{gdk-pixbuf-render-to-drawable} for drawing a
+@code{<gdk-pixbuf>}.
+
+To receive mouse events on a drawing area, you will need to enable them with
+@code{gtk-widget-add-events}. To receive keyboard events, you will need to set
+the @code{<gtk-can-focus>} flag on the drawing area, and should probably draw
+some user-visible indication that the drawing area is focused. Use the
+@code{gtk-has-focus} macro in your expose event handler to decide whether to
+draw the focus indicator. See @code{gtk-paint-focus} for one way to draw focus.
+
+@section Usage
+@include defuns-gtkdrawingarea.xml.texi
+
+@c %end of fragment

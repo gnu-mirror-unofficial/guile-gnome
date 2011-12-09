@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node GtkFontButton
+@chapter GtkFontButton
+A button to launch a font selection dialog
+
+@section Overview
+The @code{<gtk-font-button>} is a button which displays the currently selected
+font an allows to open a font selection dialog to change the font. It is
+suitable widget for selecting a font in a preference dialog.
+
+@section Usage
+@include defuns-gtkfontbutton.xml.texi
+
+@c %end of fragment

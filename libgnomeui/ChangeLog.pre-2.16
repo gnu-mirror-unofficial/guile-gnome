@@ -1,0 +1,243 @@
+2008-05-01  Andy Wingo  <wingo@pobox.com>
+
+	* doc/overview.texi (Overview): Add overview docs.
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.98 ==
+
+2008-04-25  Andy Wingo  <wingo@pobox.com>
+
+	* doc/*.texi: Update docs.
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* == Released guile-gnome-platform version 2.15.97 ==
+
+2008-04-10  Andy Wingo  <wingo@unquote>
+
+	* NEWS: Update NEWS.
+
+2007-12-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.96 ==
+
+2007-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* tests/wrapset.api: Regnerated for massive API removal on
+	previous commit.
+
+	* doc/defuns-*.texi: Regenerated.
+
+	* doc/guile-gnome-libgnomeui.texi (Top): 
+	* doc/undocumented.texi: New section for undocumented exports.
+
+2007-11-30  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/libgnomeui.defs: Ignore lots of code which is
+	replaced by things in gtk+.
+
+	* gnome/gw/libgnomeui-spec.scm: Depend on libgnome.
+
+	* doc/guile-gnome-libgnomeui.texi (Top): Add type index.
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.95 ==
+
+2007-11-10  Andy Wingo  <wingo@pobox.com>
+
+	* tests/Makefile.am:
+	* tests/wrapset.api:
+	* tests/wrapset.scm: Add API regression test suite.
+
+2007-11-01  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am:
+	* doc/: Add documentation, generated from upstream gtk-doc.
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.94 ==
+
+2007-09-25  Andy Wingo  <wingo@pobox.com>
+
+	* NEWS: Updated.
+
+2007-06-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.93 ==
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.92 ==
+
+2007-05-24  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/Makefile.am: Rename ui.defs to libgnomeui.defs.
+
+	* gnome/gw/libgnomeui-spec.scm (initialize): Update for
+	ui->libgnomeui.defs. Don't add an alias for time_t, GLib does
+	that.
+
+2007-05-10  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.91 ==
+
+2006-12-15  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.15.90 ==
+
+2006-11-05  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/libgnomeui-spec.scm: Use (gnome gw support g-wrap), the
+	g-wrap compatibility wrapper.
+
+2005-03-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released guile-gnome-platform version 2.7.99 ==
+
+2005-02-17  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Follow --disable-deprecation for deprecation
+	handling.
+
+2005-01-11  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.98 ==
+
+2004-12-06  Andy Wingo  <wingo@pobox.com>
+
+	* == Released platform version 2.7.97 ==
+
+2004-11-15  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Add record_check.
+
+2004-11-07  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (all-local): Only make/install the pkg-config files
+	if we actually build the wrapset.
+
+2004-10-28  Andy Wingo  <wingo@pobox.com>
+
+	* guile-gnome-libgnomeui.pc.in (Requires): 
+	* guile-gnome-libgnomeui-uninstalled.pc.in (Requires): Require
+	* glib-checks.ac: 
+	* defs-checks.ac: Versioned pkg-config checks.
+
+	* Makefile.am (all-local): Versioned pkg-config files.
+
+2004-10-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (guilegnomelib_LTLIBRARIES): Install to
+	versioned directory.
+
+2004-10-16  Andy Wingo  <wingo@pobox.com>
+
+	* package.ac: Up required version of libgnomeui to 2.8.0.
+
+2004-10-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/Makefile.am: Dist/install type overrides.
+
+	* gnome/overrides/ui.defs: Adjust to ignore deprecated API.
+
+	* gnome/overrides/ui.defs-type-ignores: New file. Overrides
+	GnomeAppBar->GNOME_APPBAR, ignores deprecated types.
+
+	* Makefile.am:
+	* guile-gnome-libgnomeui-uninstalled.pc.in: 
+	* guile-gnome-libgnomeui.pc.in:
+	* files.ac: Add pkg-config files.
+
+2004-09-27  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/ui.defs: Ignore href_construct and
+	entry_construct, they have never been implemented.
+
+2004-09-26  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/Makefile.am (guilemodule_DATA): Install to the proper
+	directory.
+
+2004-09-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/Makefile.am (libgw_guile_gnome_libgnomeui_la_LIBADD):
+	Not G_WRAP_LINK_ARGS, it's G_WRAP_LIBS.
+
+2004-09-16  Andy Wingo  <wingo@pobox.com>
+
+	* Makefile.am (SUBDIRS): Dist fixes.
+
+	* README: Added.
+
+	* NEWS: Added.
+
+	* AUTHORS: Added.
+
+	* gtk-checks.ac: Check the right package.
+
+	* glib-checks.ac: Check the right package.
+
+2004-09-12  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/overrides/ui.defs, gnome/overrides/Makefile.am: Add
+	overrides.
+
+	* gnome/Makefile.am: Dist fixes, add overrides.
+
+	* gnome/gw/libgnomeui-spec.scm (initialize): Adapted to module
+	name changes, load-defs-with-overrides, real keywords.
+
+	* gnome/gw/Makefile.am
+	(nodist_libgw_guile_gnome_libgnomeui_la_SOURCES): Don't dist the
+	g-wrap generated C file.
+
+2004-08-06  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/Makefile.am: Distribute and install gnome-ui.scm.
+
+2004-07-01  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/libgnomeui-spec.scm (initialize): Fix for depends-on!.
+
+	* gnome/gw/gnome-ui-spec.scm, gnome/gw/Makefile.am: Reverted
+	previous name change.
+
+	* gnome/gnome-ui.scm: New file.
+
+2004-05-22  Andy Wingo  <wingo@pobox.com>
+
+	* ChangeLog: Merged all gnome-ui changelogs to here.
+
+2004-05-19  Andy Wingo  <wingo@pobox.com>
+
+	* gtk-checks.ac: New file.
+
+2004-05-19  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gnome-ui-spec.scm: Moved from libgnomeui-spec.scm.
+
+	* gnome/gw/Makefile.am: Adapted to name change.
+
+2004-04-03  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* configure.in: Depend on libgnomeui >= 2.6.0 and gtk+ >= 2.4.0.
+
+2004-01-14  Andy Wingo  <wingo@pobox.com>
+
+	* gnome/gw/gw-ui-spec.scm: New file.
+
+	* gnome/gw/gw-gnome-spec.scm: New file.
+
+	* gnome/gw/gw-canvas-spec.scm: New file.
+
+	* gnome/gw/Makefile.am: Add bindings for libgnomecanvas, libgnomeui, and
+	libgnome.
+
+2003-12-13  Andreas Rottmann  <a.rottmann@gmx.at>
+
+	* gnome/gw/gw-canvas-spec.scm, gw-ui-spec.scm, gw-canvas-spec.scm: Use
+	gw-standard instead of guile-gnome-gw-standard.
+	

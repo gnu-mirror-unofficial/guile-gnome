@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-drawing-area>
+Derives from @code{<gtk-widget>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-drawing-area-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new drawing area.
+
+@table @var
+@item ret
+a new @code{<gtk-drawing-area>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

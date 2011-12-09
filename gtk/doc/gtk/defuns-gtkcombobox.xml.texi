@@ -1,0 +1,565 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-combo-box>
+Derives from @code{<gtk-cell-layout>}, @code{<gtk-cell-editable>},
+@code{<gtk-bin>}.
+
+This class defines the following slots:
+
+@table @code
+@item model
+The model for the combo box
+
+@item wrap-width
+Wrap width for laying out the items in a grid
+
+@item row-span-column
+TreeModel column containing the row span values
+
+@item column-span-column
+TreeModel column containing the column span values
+
+@item active
+The item which is currently active
+
+@item add-tearoffs
+Whether dropdowns should have a tearoff menu item
+
+@item tearoff-title
+A title that may be displayed by the window manager when the popup is torn-off
+
+@item has-frame
+Whether the combo box draws a frame around the child
+
+@item focus-on-click
+Whether the combo box grabs focus when it is clicked with the mouse
+
+@item popup-shown
+Whether the combo's dropdown is shown
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-combo-box> changed 
+The changed signal is emitted when the active item is changed. The can be due to
+the user selecting a different item from the list, or due to a call to
+@code{gtk-combo-box-set-active-iter}. It will also be emitted while typing into
+a GtkComboBoxEntry, as well as when selecting an item from the
+GtkComboBoxEntry's list.
+
+Since 2.4
+
+@end defop
+
+@defop Signal <gtk-combo-box> move-active  (arg0@tie{}@code{<gtk-scroll-type>})
+undocumented
+@end defop
+
+@defop Signal <gtk-combo-box> popup 
+undocumented
+@end defop
+
+@defop Signal <gtk-combo-box> popdown  @result{}@tie{}@code{<gboolean>}
+undocumented
+@end defop
+
+@deffn Function gtk-combo-box-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new empty @code{<gtk-combo-box>}.
+
+@table @var
+@item ret
+A new @code{<gtk-combo-box>}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-new-with-model  (model@tie{}@code{<gtk-tree-model>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-combo-box>} with the model initialized to @var{model}.
+
+@table @var
+@item model
+A @code{<gtk-tree-model>}.
+
+@item ret
+A new @code{<gtk-combo-box>}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-get-wrap-width  (self@tie{}@code{<gtk-combo-box>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-wrap-width
+Returns the wrap width which is used to determine the number of columns for the
+popup menu. If the wrap width is larger than 1, the combo box is in table mode.
+
+@table @var
+@item combo-box
+A @code{<gtk-combo-box>}.
+
+@item ret
+the wrap width.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-combo-box-set-wrap-width  (self@tie{}@code{<gtk-combo-box>}) (width@tie{}@code{int})
+@deffnx Method set-wrap-width
+Sets the wrap width of @var{combo-box} to be @var{width}. The wrap width is
+basically the preferred number of columns when you want the popup to be layed
+out in a table.
+
+@table @var
+@item combo-box
+A @code{<gtk-combo-box>}.
+
+@item width
+Preferred number of columns.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-get-row-span-column  (self@tie{}@code{<gtk-combo-box>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-row-span-column
+Returns the column with row span information for @var{combo-box}.
+
+@table @var
+@item combo-box
+A @code{<gtk-combo-box>}.
+
+@item ret
+the row span column.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-combo-box-set-row-span-column  (self@tie{}@code{<gtk-combo-box>}) (row_span@tie{}@code{int})
+@deffnx Method set-row-span-column
+Sets the column with row span information for @var{combo-box} to be
+@var{row-span}. The row span column contains integers which indicate how many
+rows an item should span.
+
+@table @var
+@item combo-box
+A @code{<gtk-combo-box>}.
+
+@item row-span
+A column in the model passed during construction.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-get-active  (self@tie{}@code{<gtk-combo-box>}) @result{}@tie{} (ret@tie{}@code{int})
+@deffnx Method get-active
+Returns the index of the currently active item, or -1 if there's no active item.
+If the model is a non-flat treemodel, and the active item is not an immediate
+child of the root of the tree, this function returns
+@samp{gtk_tree_path_get_indices (path)[0]}, where @samp{path} is the
+@code{<gtk-tree-path>} of the active item.
+
+@table @var
+@item combo-box
+A @code{<gtk-combo-box>}.
+
+@item ret
+An integer which is the index of the currently active item, or -1 if there's no
+active item.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-set-active  (self@tie{}@code{<gtk-combo-box>}) (index_@tie{}@code{int})
+@deffnx Method set-active
+Sets the active item of @var{combo-box} to be the item at @var{index}.
+
+@table @var
+@item combo-box
+A @code{<gtk-combo-box>}.
+
+@item index
+An index in the model passed during construction, or -1 to have no active item.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-get-active-iter  (self@tie{}@code{<gtk-combo-box>}) (iter@tie{}@code{<gtk-tree-iter>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-active-iter
+Sets @var{iter} to point to the current active item, if it exists.
+
+@table @var
+@item combo-box
+A @code{<gtk-combo-box>}
+
+@item iter
+The uninitialized @code{<gtk-tree-iter>}.
+
+@item ret
+@samp{@code{#t}}, if @var{iter} was set
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-set-active-iter  (self@tie{}@code{<gtk-combo-box>}) (iter@tie{}@code{<gtk-tree-iter>})
+@deffnx Method set-active-iter
+Sets the current active item to be the one referenced by @var{iter}. @var{iter}
+must correspond to a path of depth one.
+
+@table @var
+@item combo-box
+A @code{<gtk-combo-box>}
+
+@item iter
+The @code{<gtk-tree-iter>}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-get-model  (self@tie{}@code{<gtk-combo-box>}) @result{}@tie{} (ret@tie{}@code{<gtk-tree-model>})
+@deffnx Method get-model
+Returns the @code{<gtk-tree-model>} which is acting as data source for
+@var{combo-box}.
+
+@table @var
+@item combo-box
+A @code{<gtk-combo-box>}.
+
+@item ret
+A @code{<gtk-tree-model>} which was passed during construction.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-set-model  (self@tie{}@code{<gtk-combo-box>}) (model@tie{}@code{<gtk-tree-model>})
+@deffnx Method set-model
+Sets the model used by @var{combo-box} to be @var{model}. Will unset a
+previously set model (if applicable). If model is @samp{@code{#f}}, then it will
+unset the model.
+
+Note that this function does not clear the cell renderers, you have to call
+@code{gtk-combo-box-cell-layout-clear} yourself if you need to set up different
+cell renderers for the new model.
+
+@table @var
+@item combo-box
+A @code{<gtk-combo-box>}.
+
+@item model
+A @code{<gtk-tree-model>}.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-new-text  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Convenience function which constructs a new text combo box, which is a
+@code{<gtk-combo-box>} just displaying strings. If you use this function to
+create a text combo box, you should only manipulate its data source with the
+following convenience functions: @code{gtk-combo-box-append-text},
+@code{gtk-combo-box-insert-text}, @code{gtk-combo-box-prepend-text} and
+@code{gtk-combo-box-remove-text}.
+
+@table @var
+@item ret
+A new text combo box.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-append-text  (self@tie{}@code{<gtk-combo-box>}) (text@tie{}@code{mchars})
+@deffnx Method append-text
+Appends @var{string} to the list of strings stored in @var{combo-box}. Note that
+you can only use this function with combo boxes constructed with
+@code{gtk-combo-box-new-text}.
+
+@table @var
+@item combo-box
+A @code{<gtk-combo-box>} constructed using @code{gtk-combo-box-new-text}.
+
+@item text
+A string.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-insert-text  (self@tie{}@code{<gtk-combo-box>}) (position@tie{}@code{int}) (text@tie{}@code{mchars})
+@deffnx Method insert-text
+Inserts @var{string} at @var{position} in the list of strings stored in
+@var{combo-box}. Note that you can only use this function with combo boxes
+constructed with @code{gtk-combo-box-new-text}.
+
+@table @var
+@item combo-box
+A @code{<gtk-combo-box>} constructed using @code{gtk-combo-box-new-text}.
+
+@item position
+An index to insert @var{text}.
+
+@item text
+A string.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-prepend-text  (self@tie{}@code{<gtk-combo-box>}) (text@tie{}@code{mchars})
+@deffnx Method prepend-text
+Prepends @var{string} to the list of strings stored in @var{combo-box}. Note
+that you can only use this function with combo boxes constructed with
+@code{gtk-combo-box-new-text}.
+
+@table @var
+@item combo-box
+A @code{<gtk-combo-box>} constructed with @code{gtk-combo-box-new-text}.
+
+@item text
+A string.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-remove-text  (self@tie{}@code{<gtk-combo-box>}) (position@tie{}@code{int})
+@deffnx Method remove-text
+Removes the string at @var{position} from @var{combo-box}. Note that you can
+only use this function with combo boxes constructed with
+@code{gtk-combo-box-new-text}.
+
+@table @var
+@item combo-box
+A @code{<gtk-combo-box>} constructed with @code{gtk-combo-box-new-text}.
+
+@item position
+Index of the item to remove.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-get-active-text  (self@tie{}@code{<gtk-combo-box>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-active-text
+Returns the currently active string in @var{combo-box} or @samp{@code{#f}} if
+none is selected. Note that you can only use this function with combo boxes
+constructed with @code{gtk-combo-box-new-text} and with
+@code{<gtk-combo-box-entry>}s.
+
+@table @var
+@item combo-box
+A @code{<gtk-combo-box>} constructed with @code{gtk-combo-box-new-text}.
+
+@item ret
+a newly allocated string containing the currently active text.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-combo-box-popup  (self@tie{}@code{<gtk-combo-box>})
+@deffnx Method popup
+Pops up the menu or dropdown list of @var{combo-box}.
+
+This function is mostly intended for use by accessibility technologies;
+applications should have little use for it.
+
+@table @var
+@item combo-box
+a @code{<gtk-combo-box>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-popdown  (self@tie{}@code{<gtk-combo-box>})
+@deffnx Method popdown
+Hides the menu or dropdown list of @var{combo-box}.
+
+This function is mostly intended for use by accessibility technologies;
+applications should have little use for it.
+
+@table @var
+@item combo-box
+a @code{<gtk-combo-box>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-combo-box-get-popup-accessible  (self@tie{}@code{<gtk-combo-box>}) @result{}@tie{} (ret@tie{}@code{<atk-object>})
+@deffnx Method get-popup-accessible
+Gets the accessible object corresponding to the combo box's popup.
+
+This function is mostly intended for use by accessibility technologies;
+applications should have little use for it.
+
+@table @var
+@item combo-box
+a @code{<gtk-combo-box>}
+
+@item ret
+the accessible object corresponding to the combo box's popup.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-combo-box-set-add-tearoffs  (self@tie{}@code{<gtk-combo-box>}) (add_tearoffs@tie{}@code{bool})
+@deffnx Method set-add-tearoffs
+Sets whether the popup menu should have a tearoff menu item.
+
+@table @var
+@item combo-box
+a @code{<gtk-combo-box>}
+
+@item add-tearoffs
+@samp{@code{#t}} to add tearoff menu items
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-combo-box-get-add-tearoffs  (self@tie{}@code{<gtk-combo-box>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-add-tearoffs
+Gets the current value of the :add-tearoffs property.
+
+@table @var
+@item combo-box
+a @code{<gtk-combo-box>}
+
+@item ret
+the current value of the :add-tearoffs property.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-combo-box-set-title  (self@tie{}@code{<gtk-combo-box>}) (title@tie{}@code{mchars})
+@deffnx Method set-title
+Sets the menu's title in tearoff mode.
+
+@table @var
+@item combo-box
+a @code{<gtk-combo-box>}
+
+@item title
+a title for the menu in tearoff mode.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-combo-box-get-title  (self@tie{}@code{<gtk-combo-box>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-title
+Gets the current title of the menu in tearoff mode. See
+@code{gtk-combo-box-set-add-tearoffs}.
+
+@table @var
+@item combo-box
+a @code{<gtk-combo-box>}
+
+@item ret
+the menu's title in tearoff mode. This is an internal copy of the string which
+must not be freed.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-combo-box-set-focus-on-click  (self@tie{}@code{<gtk-combo-box>}) (focus_on_click@tie{}@code{bool})
+@deffnx Method set-focus-on-click
+Sets whether the combo box will grab focus when it is clicked with the mouse.
+Making mouse clicks not grab focus is useful in places like toolbars where you
+don't want the keyboard focus removed from the main area of the application.
+
+@table @var
+@item combo
+a @code{<gtk-combo-box>}
+
+@item focus-on-click
+whether the combo box grabs focus when clicked with the mouse
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-combo-box-get-focus-on-click  (self@tie{}@code{<gtk-combo-box>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-focus-on-click
+Returns whether the combo box grabs focus when it is clicked with the mouse. See
+@code{gtk-combo-box-set-focus-on-click}.
+
+@table @var
+@item combo
+a @code{<gtk-combo-box>}
+
+@item ret
+@samp{@code{#t}} if the combo box grabs focus when it is clicked with the mouse.
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

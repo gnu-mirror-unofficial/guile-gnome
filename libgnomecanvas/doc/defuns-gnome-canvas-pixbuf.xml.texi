@@ -1,0 +1,51 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas-pixbuf>
+Derives from @code{<gnome-canvas-item>}.
+
+This class defines the following properties:
+
+@table @code
+@item pixbuf
+
+
+@item width
+
+
+@item width-set
+
+
+@item width-in-pixels
+
+
+@item height
+
+
+@item height-set
+
+
+@item height-in-pixels
+
+
+@item x
+
+
+@item x-in-pixels
+
+
+@item y
+
+
+@item y-in-pixels
+
+
+@item anchor
+
+
+@end table
+
+@end deftp
+
+
+@c %end of fragment

@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GtkWindow
+@chapter GtkWindow
+Toplevel which can contain other widgets
+
+@section Overview
+@section Usage
+@include defuns-gtkwindow.xml.texi
+
+@c %end of fragment

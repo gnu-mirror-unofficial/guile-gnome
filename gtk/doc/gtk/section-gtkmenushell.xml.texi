@@ -1,0 +1,20 @@
+
+@c %start of fragment
+
+@node GtkMenuShell
+@chapter GtkMenuShell
+A base class for menu objects
+
+@section Overview
+A @code{<gtk-menu-shell>} is the abstract base class used to derive the
+@code{<gtk-menu>} and @code{<gtk-menu-bar>} subclasses.
+
+A @code{<gtk-menu-shell>} is a container of @code{<gtk-menu-item>} objects
+arranged in a list which can be navigated, selected, and activated by the user
+to perform application functions. A @code{<gtk-menu-item>} can have a submenu
+associated with it, allowing for nested hierarchical menus.
+
+@section Usage
+@include defuns-gtkmenushell.xml.texi
+
+@c %end of fragment

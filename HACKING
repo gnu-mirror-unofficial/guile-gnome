@@ -1,0 +1,102 @@
+Guile-GNOME HACKING
+Copyright (C) 2004,2006,2009,2010 Free Software Foundation, Inc.
+See the end for copying conditions of this file.
+Last updated 13 August 2006.
+
+
+So, you want to hack Guile-GNOME?
+=================================
+
+Ah, good. Join the mailing list, guile-gtk-devel@gnu.org, and fire up
+your emacs.
+
+
+We use Git
+==========
+
+The canonical source for Guile-GNOME is our git archive, which can be
+retrieved as:
+
+   $ git clone git://git.sv.gnu.org/guile-gnome.git
+
+Guile-GNOME is developed as a set of modular source packages; the above
+command fetches all of them, and then checks out the wrapper module. The
+set of packages that can be built is given in the PACKAGES file in the
+toplevel source directory. To configure the directory you just fetched
+as Guile-GNOME-platform, try the following script:
+
+   $ cd guile-gnome
+   $ scripts/configure-packages guile-gnome-platform
+
+That will check out the GNOME platform modules into the guile-gnome/
+directory. At that point you can run `./autogen.sh --prefix=/usr &&
+make' just like any normal project.
+
+After hacking, you can run the `push-packages' script to publish your
+code.
+
+  $ scripts/push-packages
+
+Later, to update from the Guile-GNOME's canonical archive, you can do
+the following:
+
+  $ scripts/pull-packages
+
+
+We are wildebeests
+==================
+
+Guile-GNOME is part of the GNU project. As such, it is very important to
+us to keep our software Free. From perspective of you, the potential
+contributor, this entails a number of things:
+
+  * Give a complete change log entry for every change, in the git commit
+    message.
+
+  * If your change is visible to a user of the package, update the
+    appropriate NEWS file.
+
+  * In order to defend the freedom of users, the Free Software
+    Foundation needs to hold the copyright on Guile-GNOME. If you have
+    not signed a copyright assignment form for Guile-GNOME, you will
+    need to do so. Please contact me at wingo@pobox.com for more
+    information.
+
+  * Each file should have a standard GPL copyright header. If you change
+    a file, be sure it has a header, and that the copyright years are up
+    to date. Don't hyphenate a year range; e.g., say 2004,2005 rather
+    than 2004-5.
+
+
+Adding new bindings
+===================
+
+Guile-GNOME is in a strange state right now, as GNOME itself heads
+towards 3.0, and GObject Introspection seems to be the way to make
+libraries. But still we have good bindings here, so it seems useful to
+document existing practice, which is basically to create a new bindings
+module, and check it out under this directory. You can add an
+appropriate entry to PACKAGES, if you like.
+
+Actually creating the module is a bit of work, but we do have a template
+that can help. Check out the "template" branch from Guile-GNOME git,
+then run the "templatize" script that is included in that module.
+
+Also, for historical interest, see Neil Jerram's mail to the Guile-GNOME
+list entitled "How to customize a guile-gnome bzr distribution". A copy
+is archived here:
+
+  http://article.gmane.org/gmane.lisp.guile.gtk/562
+
+If you want to experiment with GObject-Introspection, see Zeeshan Ali's
+related project, guile-gir.
+
+
+Copying this file
+=================
+
+Copyright (C) 2006,2009 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice
+and this notice are preserved.

@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-vpaned>
+Derives from @code{<gtk-paned>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-vpaned-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Create a new @code{<gtk-vpaned>}
+
+@table @var
+@item ret
+the new @code{<gtk-vpaned>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

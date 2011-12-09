@@ -1,0 +1,8 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+
+Name: (gnome gtk)
+Description: Guile bindings for Gtk+
+Requires: guile-gnome-glib-@API_VERSION@ guile-cairo
+Version: @VERSION@

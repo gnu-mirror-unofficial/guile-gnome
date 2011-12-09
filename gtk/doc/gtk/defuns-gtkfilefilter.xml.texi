@@ -1,0 +1,144 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-file-filter>
+Derives from @code{<gtk-object>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-file-filter-new  @result{}@tie{} (ret@tie{}@code{<gtk-file-filter>})
+Creates a new @code{<gtk-file-filter>} with no rules added to it. Such a filter
+doesn't accept any files, so is not particularly useful until you add rules with
+@code{gtk-file-filter-add-mime-type}, @code{gtk-file-filter-add-pattern}, or
+@code{gtk-file-filter-add-custom}. To create a filter that accepts any file,
+use:
+
+@example 
+
+GtkFileFilter *filter = gtk_file_filter_new ();
+gtk_file_filter_add_pattern (filter, "*");
+@end example
+
+@table @var
+@item ret
+a new @code{<gtk-file-filter>}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-filter-set-name  (self@tie{}@code{<gtk-file-filter>}) (name@tie{}@code{mchars})
+@deffnx Method set-name
+Sets the human-readable name of the filter; this is the string that will be
+displayed in the file selector user interface if there is a selectable list of
+filters.
+
+@table @var
+@item filter
+a @code{<gtk-file-filter>}
+
+@item name
+the human-readable-name for the filter, or @samp{@code{#f}} to remove any
+existing name.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-filter-get-name  (self@tie{}@code{<gtk-file-filter>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-name
+Gets the human-readable name for the filter. See
+@code{gtk-file-filter-set-name}.
+
+@table @var
+@item filter
+a @code{<gtk-file-filter>}
+
+@item ret
+The human-readable name of the filter, or @samp{@code{#f}}. This value is owned
+by GTK+ and must not be modified or freed.
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-filter-add-mime-type  (self@tie{}@code{<gtk-file-filter>}) (mime_type@tie{}@code{mchars})
+@deffnx Method add-mime-type
+Adds a rule allowing a given mime type to @var{filter}.
+
+@table @var
+@item filter
+A @code{<gtk-file-filter>}
+
+@item mime-type
+name of a MIME type
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-filter-add-pattern  (self@tie{}@code{<gtk-file-filter>}) (pattern@tie{}@code{mchars})
+@deffnx Method add-pattern
+Adds a rule allowing a shell style glob to a filter.
+
+@table @var
+@item filter
+a @code{<gtk-file-filter>}
+
+@item pattern
+a shell style glob
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+@deffn Function gtk-file-filter-add-pixbuf-formats  (self@tie{}@code{<gtk-file-filter>})
+@deffnx Method add-pixbuf-formats
+Adds a rule allowing image files in the formats supported by GdkPixbuf.
+
+@table @var
+@item filter
+a @code{<gtk-file-filter>}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-file-filter-get-needed  (self@tie{}@code{<gtk-file-filter>}) @result{}@tie{} (ret@tie{}@code{<gtk-file-filter-flags>})
+@deffnx Method get-needed
+Gets the fields that need to be filled in for the structure passed to
+@code{gtk-file-filter-filter}
+
+This function will not typically be used by applications; it is intended
+principally for use in the implementation of @code{<gtk-file-chooser>}.
+
+@table @var
+@item filter
+a @code{<gtk-file-filter>}
+
+@item ret
+bitfield of flags indicating needed fields when calling
+@code{gtk-file-filter-filter}
+
+@end table
+
+Since 2.4
+
+@end deffn
+
+
+@c %end of fragment

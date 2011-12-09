@@ -1,0 +1,210 @@
+
+@c %start of fragment
+
+@deftp Class <gdk-keymap>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@defop Signal <gdk-keymap> direction-changed 
+The ::direction_changed signal gets emitted when the direction of the keymap
+changes.
+
+Since 2.0
+
+@end defop
+
+@defop Signal <gdk-keymap> keys-changed 
+The ::keys_changed signal is emitted when the mapping represented by
+@var{keymap} changes.
+
+Since 2.2
+
+@end defop
+
+@deffn Function gdk-keymap-get-default  @result{}@tie{} (ret@tie{}@code{<gdk-keymap>})
+Returns the @code{<gdk-keymap>} attached to the default display.
+
+@table @var
+@item ret
+the @code{<gdk-keymap>} attached to the default display.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-keymap-get-for-display  (display@tie{}@code{<gdk-display>}) @result{}@tie{} (ret@tie{}@code{<gdk-keymap>})
+Returns the @code{<gdk-keymap>} attached to @var{display}.
+
+@table @var
+@item display
+the @code{<gdk-display>}.
+
+@item ret
+the @code{<gdk-keymap>} attached to @var{display}.
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+@deffn Function gdk-keymap-get-direction  (self@tie{}@code{<gdk-keymap>}) @result{}@tie{} (ret@tie{}@code{<pango-direction>})
+@deffnx Method get-direction
+Returns the direction of the keymap.
+
+@table @var
+@item keymap
+a @code{<gdk-keymap>} or @samp{@code{#f}} to use the default keymap. Returns:
+@samp{PANGO_DIRECTION_LTR} or @samp{PANGO_DIRECTION_RTL}.
+
+@item ret
+the direction of the keymap.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-keyval-name  (keyval@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{mchars})
+Converts a key value into a symbolic name. The names are the same as those in
+the @file{<gdk/gdkkeysyms.h>} header file but without the leading "GDK_".
+
+@table @var
+@item keyval
+a key value.
+
+@item ret
+a string containing the name of the key, or @samp{@code{#f}} if @var{keyval} is
+not a valid key. The string should not be modified.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-keyval-from-name  (keyval_name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Converts a key name to a key value.
+
+@table @var
+@item keyval-name
+a key name.
+
+@item ret
+the corresponding key value, or @samp{GDK_VoidSymbol} if the key name is not a
+valid key.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-keyval-convert-case  (symbol@tie{}@code{unsigned-int}) @result{}@tie{} (lower@tie{}@code{unsigned-int}) (upper@tie{}@code{unsigned-int})
+Obtains the upper- and lower-case versions of the keyval @var{symbol}. Examples
+of keyvals are @code{<gdk-a>}, @code{<gdk--enter>}, @code{<gdk-f1>}, etc.
+
+@table @var
+@item symbol
+a keyval
+
+@item lower
+return location for lowercase version of @var{symbol}
+
+@item upper
+return location for uppercase version of @var{symbol}
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-keyval-to-upper  (keyval@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Converts a key value to upper case, if applicable.
+
+@table @var
+@item keyval
+a key value.
+
+@item ret
+the upper case form of @var{keyval}, or @var{keyval} itself if it is already in
+upper case or it is not subject to case conversion.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-keyval-to-lower  (keyval@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Converts a key value to lower case, if applicable.
+
+@table @var
+@item keyval
+a key value.
+
+@item ret
+the lower case form of @var{keyval}, or @var{keyval} itself if it is already in
+lower case or it is not subject to case conversion.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-keyval-is-upper  (keyval@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{bool})
+Returns @samp{@code{#t}} if the given key value is in upper case.
+
+@table @var
+@item keyval
+a key value.
+
+@item ret
+@samp{@code{#t}} if @var{keyval} is in upper case, or if @var{keyval} is not
+subject to case conversion.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-keyval-is-lower  (keyval@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{bool})
+Returns @samp{@code{#t}} if the given key value is in lower case.
+
+@table @var
+@item keyval
+a key value.
+
+@item ret
+@samp{@code{#t}} if @var{keyval} is in lower case, or if @var{keyval} is not
+subject to case conversion.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-keyval-to-unicode  (keyval@tie{}@code{unsigned-int}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
+Convert from a GDK key symbol to the corresponding ISO10646 (Unicode) character.
+
+@table @var
+@item keyval
+a GDK key symbol
+
+@item ret
+the corresponding unicode character, or 0 if there is no corresponding
+character.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-unicode-to-keyval  (wc@tie{}@code{unsigned-int32}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Convert from a ISO10646 character to a key symbol.
+
+@table @var
+@item wc
+a ISO10646 encoded character
+
+@item ret
+the corresponding GDK key symbol, if one exists. or, if there is no
+corresponding symbol, wc | 0x01000000
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

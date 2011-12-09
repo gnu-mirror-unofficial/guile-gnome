@@ -1,0 +1,21 @@
+
+@c %start of fragment
+
+@node GConfSchema
+@chapter GConfSchema
+A describes a
+
+@section Overview
+A "schema" describes a key-value pair in a GConf database. It may include
+information such as default value and value type, as well as documentation
+describing the pair, the name of the application that created the pair, etc.
+
+A @code{<g-conf-schema>} duplicates some of the information about the value it
+describes, such as type information. In these cases, the type information
+provided describes what the type of the value @emph{should be}, not what the
+type actually is.
+
+@section Usage
+@include defuns-gconf-schema.xml.texi
+
+@c %end of fragment

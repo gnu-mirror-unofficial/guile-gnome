@@ -1,0 +1,90 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-color-selection>
+Derives from @code{<gtk-vbox>}.
+
+This class defines the following slots:
+
+@table @code
+@item has-palette
+Whether a palette should be used
+
+@item has-opacity-control
+Whether the color selector should allow setting opacity
+
+@item current-color
+The current color
+
+@item current-alpha
+The current opacity value (0 fully transparent, 65535 fully opaque)
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-color-selection> color-changed 
+This signal is emitted when the color changes in the
+@code{<gtk-color-selection>} according to its update policy.
+
+@end defop
+
+@deffn Function gtk-color-selection-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new GtkColorSelection.
+
+@table @var
+@item ret
+a new @code{<gtk-color-selection>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-color-selection-set-has-palette  (self@tie{}@code{<gtk-color-selection>}) (has_palette@tie{}@code{bool})
+@deffnx Method set-has-palette
+Shows and hides the palette based upon the value of @var{has-palette}.
+
+@table @var
+@item colorsel
+a @code{<gtk-color-selection>}.
+
+@item has-palette
+@samp{@code{#t}} if palette is to be visible, @samp{@code{#f}} otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-color-selection-get-has-palette  (self@tie{}@code{<gtk-color-selection>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-has-palette
+Determines whether the color selector has a color palette.
+
+@table @var
+@item colorsel
+a @code{<gtk-color-selection>}.
+
+@item ret
+@samp{@code{#t}} if the selector has a palette. @samp{@code{#f}} if it hasn't.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-color-selection-is-adjusting  (self@tie{}@code{<gtk-color-selection>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-adjusting
+Gets the current state of the @var{colorsel}.
+
+@table @var
+@item colorsel
+a @code{<gtk-color-selection>}.
+
+@item ret
+@samp{@code{#t}} if the user is currently dragging a color around, and
+@samp{@code{#f}} if the selection has stopped.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

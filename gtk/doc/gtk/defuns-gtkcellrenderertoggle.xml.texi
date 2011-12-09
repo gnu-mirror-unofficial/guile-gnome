@@ -1,0 +1,118 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-cell-renderer-toggle>
+Derives from @code{<gtk-cell-renderer>}.
+
+This class defines the following slots:
+
+@table @code
+@item activatable
+The toggle button can be activated
+
+@item active
+The toggle state of the button
+
+@item radio
+Draw the toggle button as a radio button
+
+@item inconsistent
+The inconsistent state of the button
+
+@item indicator-size
+Size of check or radio indicator
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-cell-renderer-toggle> toggled  (arg0@tie{}@code{<gchararray>})
+The ::toggled signal is emitted when the cell is toggled.
+
+@end defop
+
+@deffn Function gtk-cell-renderer-toggle-new  @result{}@tie{} (ret@tie{}@code{<gtk-cell-renderer>})
+Creates a new @code{<gtk-cell-renderer-toggle>}. Adjust rendering parameters
+using object properties. Object properties can be set globally (with
+@code{g-object-set}). Also, with @code{<gtk-tree-view-column>}, you can bind a
+property to a value in a @code{<gtk-tree-model>}. For example, you can bind the
+"active" property on the cell renderer to a boolean value in the model, thus
+causing the check button to reflect the state of the model.
+
+@table @var
+@item ret
+the new cell renderer
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-cell-renderer-toggle-get-radio  (self@tie{}@code{<gtk-cell-renderer-toggle>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-radio
+Returns whether we're rendering radio toggles rather than checkboxes.
+
+@table @var
+@item toggle
+a @code{<gtk-cell-renderer-toggle>}
+
+@item ret
+@samp{@code{#t}} if we're rendering radio toggles rather than checkboxes
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-cell-renderer-toggle-set-radio  (self@tie{}@code{<gtk-cell-renderer-toggle>}) (radio@tie{}@code{bool})
+@deffnx Method set-radio
+If @var{radio} is @samp{@code{#t}}, the cell renderer renders a radio toggle
+(i.e. a toggle in a group of mutually-exclusive toggles). If @samp{@code{#f}},
+it renders a check toggle (a standalone boolean option). This can be set
+globally for the cell renderer, or changed just before rendering each cell in
+the model (for @code{<gtk-tree-view>}, you set up a per-row setting using
+@code{<gtk-tree-view-column>} to associate model columns with cell renderer
+properties).
+
+@table @var
+@item toggle
+a @code{<gtk-cell-renderer-toggle>}
+
+@item radio
+@samp{@code{#t}} to make the toggle look like a radio button
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-cell-renderer-toggle-get-active  (self@tie{}@code{<gtk-cell-renderer-toggle>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-active
+Returns whether the cell renderer is active. See
+@code{gtk-cell-renderer-toggle-set-active}.
+
+@table @var
+@item toggle
+a @code{<gtk-cell-renderer-toggle>}
+
+@item ret
+@samp{@code{#t}} if the cell renderer is active.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-cell-renderer-toggle-set-active  (self@tie{}@code{<gtk-cell-renderer-toggle>}) (setting@tie{}@code{bool})
+@deffnx Method set-active
+Activates or deactivates a cell renderer.
+
+@table @var
+@item toggle
+a @code{<gtk-cell-renderer-toggle>}.
+
+@item setting
+the value to set.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

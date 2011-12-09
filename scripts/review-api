@@ -1,0 +1,47 @@
+#!/bin/bash
+# -*- scheme -*-
+exec guile --debug -e main -s "$0" "$@"
+!#
+
+(use-modules (texinfo)
+             (texinfo serialize)
+             ((srfi srfi-1) #:select (append-map fold)))
+
+(define (extract-sectioned-defs stexi)
+  (let ((commands (fold (lambda (def rest)
+                          (if (string-prefix? "def" (symbol->string (car def)))
+                              (cons (car def) rest)
+                              rest))
+                        '() texi-command-specs)))
+    (define (push-section name seed)
+      (cons (list name) seed))
+    (define (push-def def seed)
+      (cons (cons (list (car def) (cadr def)) (car seed)) (cdr seed)))
+    (define (finish seed)
+      (reverse (map reverse seed)))
+    (finish
+     (fold (lambda (x seed)
+             (cond
+              ((not (pair? x)) seed)
+              ((memq (car x) commands) (push-def x seed))
+              ((eq? (car x) 'chapter) (push-section (cadr x) seed))
+              (else seed)))
+           '()
+           stexi))))
+
+(define (texi-extract-defs texi-file)
+  (display
+   (stexi->texi
+    `(texinfo
+      (% (title "API review")
+         (filename "api-review.info"))
+      ,@(append-map
+         (lambda (defs)
+           (cons (list 'section (car defs))
+                 (cdr defs)))
+         (extract-sectioned-defs
+          (call-with-file-and-dir texi-file texi->stexi))))))
+  (display "\n@bye\n"))
+
+(define (main args)
+  (apply texi-extract-defs (cdr args)))

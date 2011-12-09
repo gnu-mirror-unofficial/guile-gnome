@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-scrollbar>
+Derives from @code{<gtk-range>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+
+@c %end of fragment

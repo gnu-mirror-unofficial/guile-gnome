@@ -1,0 +1,244 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-paper-size>
+Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-paper-size-new  (name@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-paper-size>})
+Creates a new @code{<gtk-paper-size>} object by parsing a PWG 5101.1-2002 PWG
+paper name.
+
+If @var{name} is @samp{@code{#f}}, the default paper size is returned, see
+@code{gtk-paper-size-get-default}.
+
+@table @var
+@item name
+a paper size name, or @samp{@code{#f}}
+
+@item ret
+a new @code{<gtk-paper-size>}, use @code{gtk-paper-size-free} to free it
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-paper-size-new-from-ppd  (ppd_name@tie{}@code{mchars}) (ppd_display_name@tie{}@code{mchars}) (width@tie{}@code{double}) (height@tie{}@code{double}) @result{}@tie{} (ret@tie{}@code{<gtk-paper-size>})
+Creates a new @code{<gtk-paper-size>} object by using PPD information.
+
+If @var{ppd-name} is not a recognized PPD paper name, @var{ppd-display-name},
+@var{width} and @var{height} are used to construct a custom
+@code{<gtk-paper-size>} object.
+
+@table @var
+@item ppd-name
+a PPD paper name
+
+@item ppd-display-name
+the corresponding human-readable name
+
+@item width
+the paper width, in points
+
+@item height
+the paper height in points
+
+@item ret
+a new @code{<gtk-paper-size>}, use @code{gtk-paper-size-free} to free it
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-paper-size-new-custom  (name@tie{}@code{mchars}) (display_name@tie{}@code{mchars}) (width@tie{}@code{double}) (height@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{<gtk-paper-size>})
+Creates a new @code{<gtk-paper-size>} object with the given parameters.
+
+@table @var
+@item name
+the paper name
+
+@item display-name
+the human-readable name
+
+@item width
+the paper width, in units of @var{unit}
+
+@item height
+the paper height, in units of @var{unit}
+
+@item unit
+the unit for @var{width} and @var{height}
+
+@item ret
+a new @code{<gtk-paper-size>} object, use @code{gtk-paper-size-free} to free it
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-paper-size-is-equal  (self@tie{}@code{<gtk-paper-size>}) (size2@tie{}@code{<gtk-paper-size>}) @result{}@tie{} (ret@tie{}@code{bool})
+Compares two @code{<gtk-paper-size>} objects.
+
+@table @var
+@item size1
+a @code{<gtk-paper-size>} object
+
+@item size2
+another @code{<gtk-paper-size>} object
+
+@item ret
+@samp{@code{#t}}, if @var{size1} and @var{size2} represent the same paper size
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-paper-size-get-name  (self@tie{}@code{<gtk-paper-size>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the name of the @code{<gtk-paper-size>}.
+
+@table @var
+@item size
+a @code{<gtk-paper-size>} object
+
+@item ret
+the name of @var{size}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-paper-size-get-display-name  (self@tie{}@code{<gtk-paper-size>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the human-readable name of the @code{<gtk-paper-size>}.
+
+@table @var
+@item size
+a @code{<gtk-paper-size>} object
+
+@item ret
+the human-readable name of @var{size}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-paper-size-get-ppd-name  (self@tie{}@code{<gtk-paper-size>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the PPD name of the @code{<gtk-paper-size>}, which may be @samp{@code{#f}}.
+
+@table @var
+@item size
+a @code{<gtk-paper-size>} object
+
+@item ret
+the PPD name of @var{size}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-paper-size-get-width  (self@tie{}@code{<gtk-paper-size>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+Gets the paper width of the @code{<gtk-paper-size>}, in units of @var{unit}.
+
+@table @var
+@item size
+a @code{<gtk-paper-size>} object
+
+@item unit
+the unit for the return value
+
+@item ret
+the paper width
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-paper-size-get-height  (self@tie{}@code{<gtk-paper-size>}) (unit@tie{}@code{<gtk-unit>}) @result{}@tie{} (ret@tie{}@code{double})
+Gets the paper height of the @code{<gtk-paper-size>}, in units of @var{unit}.
+
+@table @var
+@item size
+a @code{<gtk-paper-size>} object
+
+@item unit
+the unit for the return value
+
+@item ret
+the paper height
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-paper-size-is-custom  (self@tie{}@code{<gtk-paper-size>}) @result{}@tie{} (ret@tie{}@code{bool})
+Returns @samp{@code{#t}} if @var{size} is not a standard paper size.
+
+@table @var
+@item size
+a @code{<gtk-paper-size>} object
+
+@item ret
+whether @var{size} is a custom paper size.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-paper-size-set-size  (self@tie{}@code{<gtk-paper-size>}) (width@tie{}@code{double}) (height@tie{}@code{double}) (unit@tie{}@code{<gtk-unit>})
+Changes the dimensions of a @var{size} to @var{width} x @var{height}.
+
+@table @var
+@item size
+a custom @code{<gtk-paper-size>} object
+
+@item width
+the new width in units of @var{unit}
+
+@item height
+the new height in units of @var{unit}
+
+@item unit
+the unit for @var{width} and @var{height}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+@deffn Function gtk-paper-size-get-default  @result{}@tie{} (ret@tie{}@code{mchars})
+Returns the name of the default paper size, which depends on the current locale.
+
+@table @var
+@item ret
+the name of the default paper size. The string is owned by GTK+ and should not
+be modified.
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment

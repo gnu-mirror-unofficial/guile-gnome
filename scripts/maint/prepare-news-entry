@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -e
+
+dir=$1
+release=$2
+version=$3
+prev=$4
+
+if test -z "$dir" -o -z "$release" -o -z "$version" -o -z "$prev"; then
+    echo "usage: $0 DIR RELEASE VERSION PREV-VERSIOn" >&2
+    exit 1
+fi
+
+cd $dir || ( echo "dir does not exist: $dir">&2; exit 1 )
+test -f NEWS || ( echo "no NEWS in $dir">&2; exit 1 )
+package=`perl -e 'local $/; $_=<>; ($foo) = /([\w-]+) [^=\n]*\n=+/s; print $foo;' < NEWS`
+
+echo "* preparing $package NEWS for $release $version"
+
+# header
+perl -e 'local $/; $_=<>; ($foo) = /(.*)\nLast updated/s; print $foo;' < NEWS > NEWS.new
+echo -e "\nLast updated `date +'%d %b %Y'`." >> NEWS.new
+echo >> NEWS.new
+echo >> NEWS.new
+# description
+perl -e 'local $/; $_=<>; ($foo) = /\n\n\n([^=]*)\n\n\n/s; print $foo;' < NEWS >> NEWS.new
+echo >> NEWS.new
+echo >> NEWS.new
+echo >> NEWS.new
+# new news
+heading="$package $version - `git config user.name`, `date +'%Y-%m-%d'`"
+echo $heading >> NEWS.new
+len=`echo $heading | wc -m`
+for ((i=1; $i<$len; i=$i+1)); do
+    echo -n = >> NEWS.new
+done
+echo >> NEWS.new
+echo >> NEWS.new
+echo "* ChangeLog diff (process this into NEWS):" >> NEWS.new
+git log $prev..HEAD >>NEWS.new
+echo >> NEWS.new
+echo >> NEWS.new
+# old news
+perl -e 'local $/; $_=<>; ($foo) = /([^=\n]*\n=+\n.*)/s; print $foo;' < NEWS >> NEWS.new
+
+mv NEWS.new NEWS

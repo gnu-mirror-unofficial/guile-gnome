@@ -1,0 +1,137 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-viewport>
+Derives from @code{<gtk-bin>}.
+
+This class defines the following slots:
+
+@table @code
+@item hadjustment
+The GtkAdjustment that determines the values of the horizontal position for this
+viewport
+
+@item vadjustment
+The GtkAdjustment that determines the values of the vertical position for this
+viewport
+
+@item shadow-type
+Determines how the shadowed box around the viewport is drawn
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-viewport> set-scroll-adjustments  (arg0@tie{}@code{<gtk-adjustment>}) (arg1@tie{}@code{<gtk-adjustment>})
+@end defop
+
+@deffn Function gtk-viewport-new  (hadjustment@tie{}@code{<gtk-adjustment>}) (vadjustment@tie{}@code{<gtk-adjustment>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-viewport>} with the given adjustments.
+
+@table @var
+@item hadjustment
+horizontal adjustment.
+
+@item vadjustment
+vertical adjustment.
+
+@item ret
+a new @code{<gtk-viewport>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-viewport-get-hadjustment  (self@tie{}@code{<gtk-viewport>}) @result{}@tie{} (ret@tie{}@code{<gtk-adjustment>})
+@deffnx Method get-hadjustment
+Returns the horizontal adjustment of the viewport.
+
+@table @var
+@item viewport
+a @code{<gtk-viewport>}.
+
+@item ret
+the horizontal adjustment of @var{viewport}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-viewport-get-vadjustment  (self@tie{}@code{<gtk-viewport>}) @result{}@tie{} (ret@tie{}@code{<gtk-adjustment>})
+@deffnx Method get-vadjustment
+Returns the vertical adjustment of the viewport.
+
+@table @var
+@item viewport
+a @code{<gtk-viewport>}.
+
+@item ret
+the vertical adjustment of @var{viewport}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-viewport-set-hadjustment  (self@tie{}@code{<gtk-viewport>}) (adjustment@tie{}@code{<gtk-adjustment>})
+@deffnx Method set-hadjustment
+Sets the horizontal adjustment of the viewport.
+
+@table @var
+@item viewport
+a @code{<gtk-viewport>}.
+
+@item adjustment
+a @code{<gtk-adjustment>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-viewport-set-vadjustment  (self@tie{}@code{<gtk-viewport>}) (adjustment@tie{}@code{<gtk-adjustment>})
+@deffnx Method set-vadjustment
+Sets the vertical adjustment of the viewport.
+
+@table @var
+@item viewport
+a @code{<gtk-viewport>}.
+
+@item adjustment
+a @code{<gtk-adjustment>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-viewport-set-shadow-type  (self@tie{}@code{<gtk-viewport>}) (type@tie{}@code{<gtk-shadow-type>})
+@deffnx Method set-shadow-type
+Sets the shadow type of the viewport.
+
+@table @var
+@item viewport
+a @code{<gtk-viewport>}.
+
+@item type
+the new shadow type.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-viewport-get-shadow-type  (self@tie{}@code{<gtk-viewport>}) @result{}@tie{} (ret@tie{}@code{<gtk-shadow-type>})
+@deffnx Method get-shadow-type
+Gets the shadow type of the @code{<gtk-viewport>}. See
+@code{gtk-viewport-set-shadow-type}.
+
+@table @var
+@item viewport
+a @code{<gtk-viewport>}
+
+@item ret
+the shadow type
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

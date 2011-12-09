@@ -1,0 +1,140 @@
+(module-api
+  (version 1 0)
+  ((gnome gconf)
+   (uses-interfaces (gnome gw gconf))
+   (typed-exports))
+  ((gnome gobject generics)
+   (uses-interfaces)
+   (typed-exports
+     (block generic (<gtype-instance> <top>))
+     (connect
+       generic
+       <top>
+       (<gtype-instance> <symbol> <procedure>))
+     (connect-after
+       generic
+       (<gtype-instance> <symbol> <procedure>))
+     (connected? generic (<gtype-instance> <top>))
+     (create-signal
+       generic
+       (<gtype-class> <symbol> <top> <top>))
+     (disconnect generic (<gtype-instance> <top>))
+     (emit generic
+           (<gtype-instance> <symbol> . <top>))
+     (find-property generic (<gtype-class> <symbol>))
+     (get generic (<gobject> <symbol>))
+     (get-properties generic (<gtype-class>))
+     (get-property-names generic (<gtype-class>))
+     (get-signals generic (<gtype-class>))
+     (invoke generic (<gclosure> . <top>))
+     (set generic (<gobject> <symbol> <top>))
+     (unblock generic (<gtype-instance> <top>))))
+  ((gnome gw gconf)
+   (uses-interfaces (gnome gw generics))
+   (typed-exports
+     (gconf-client-add-dir procedure (arity 3 0 #f))
+     (gconf-client-all-dirs procedure (arity 2 0 #f))
+     (gconf-client-clear-cache
+       procedure
+       (arity 0 0 #t))
+     (gconf-client-dir-exists
+       procedure
+       (arity 2 0 #f))
+     (gconf-client-get procedure (arity 2 0 #f))
+     (gconf-client-get-default
+       procedure
+       (arity 0 0 #t))
+     (gconf-client-get-default-from-schema
+       procedure
+       (arity 2 0 #f))
+     (gconf-client-get-without-default
+       procedure
+       (arity 2 0 #f))
+     (gconf-client-key-is-writable
+       procedure
+       (arity 2 0 #f))
+     (gconf-client-notify procedure (arity 0 0 #t))
+     (gconf-client-notify-add
+       procedure
+       (arity 3 0 #f))
+     (gconf-client-notify-remove
+       procedure
+       (arity 0 0 #t))
+     (gconf-client-preload procedure (arity 3 0 #f))
+     (gconf-client-recursive-unset
+       procedure
+       (arity 3 0 #f))
+     (gconf-client-remove-dir
+       procedure
+       (arity 2 0 #f))
+     (gconf-client-set procedure (arity 3 0 #f))
+     (gconf-client-set-error-handling
+       procedure
+       (arity 0 0 #t))
+     (gconf-client-suggest-sync
+       procedure
+       (arity 1 0 #f))
+     (gconf-client-unset procedure (arity 2 0 #f))
+     (gconf-client-value-changed
+       procedure
+       (arity 0 0 #t))
+     (gconf-concat-dir-and-key
+       procedure
+       (arity 0 0 #t))
+     (gconf-escape-key procedure (arity 0 0 #t))
+     (gconf-key-is-below procedure (arity 0 0 #t))
+     (gconf-schema-get-car-type
+       procedure
+       (arity 0 0 #t))
+     (gconf-schema-get-cdr-type
+       procedure
+       (arity 0 0 #t))
+     (gconf-schema-get-default-value
+       procedure
+       (arity 0 0 #t))
+     (gconf-schema-get-list-type
+       procedure
+       (arity 0 0 #t))
+     (gconf-schema-get-locale
+       procedure
+       (arity 0 0 #t))
+     (gconf-schema-get-long-desc
+       procedure
+       (arity 0 0 #t))
+     (gconf-schema-get-owner procedure (arity 0 0 #t))
+     (gconf-schema-get-short-desc
+       procedure
+       (arity 0 0 #t))
+     (gconf-schema-new procedure (arity 0 0 #t))
+     (gconf-schema-set-car-type
+       procedure
+       (arity 0 0 #t))
+     (gconf-schema-set-cdr-type
+       procedure
+       (arity 0 0 #t))
+     (gconf-schema-set-default-value
+       procedure
+       (arity 0 0 #t))
+     (gconf-schema-set-default-value-nocopy
+       procedure
+       (arity 0 0 #t))
+     (gconf-schema-set-list-type
+       procedure
+       (arity 0 0 #t))
+     (gconf-schema-set-locale
+       procedure
+       (arity 0 0 #t))
+     (gconf-schema-set-long-desc
+       procedure
+       (arity 0 0 #t))
+     (gconf-schema-set-owner procedure (arity 0 0 #t))
+     (gconf-schema-set-short-desc
+       procedure
+       (arity 0 0 #t))
+     (gconf-schema-set-type procedure (arity 0 0 #t))
+     (gconf-unescape-key procedure (arity 0 0 #t))
+     (gconf-unique-key procedure (arity 0 0 #t))
+     (gconf-valid-key procedure (arity 1 0 #f))))
+  ((gnome gw generics)
+   (uses-interfaces (gnome gobject generics))
+   (typed-exports)))

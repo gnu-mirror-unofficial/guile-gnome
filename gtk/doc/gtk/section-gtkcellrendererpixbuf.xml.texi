@@ -1,0 +1,23 @@
+
+@c %start of fragment
+
+@node GtkCellRendererPixbuf
+@chapter GtkCellRendererPixbuf
+Renders a pixbuf in a cell
+
+@section Overview
+A @code{<gtk-cell-renderer-pixbuf>} can be used to render an image in a cell. It
+allows to render either a given @code{<gdk-pixbuf>} (set via the pixbuf
+property) or a stock icon (set via the stock-id property).
+
+To support the tree view, @code{<gtk-cell-renderer-pixbuf>} also supports
+rendering two alternative pixbufs, when the is-expander property is
+@samp{@code{#t}}. If the is-expanded property is @samp{@code{#t}} and the
+pixbuf-expander-open property is set to a pixbuf, it renders that pixbuf, if the
+is-expanded property is @samp{@code{#f}} and the pixbuf-expander-closed property
+is set to a pixbuf, it renders that one.
+
+@section Usage
+@include defuns-gtkcellrendererpixbuf.xml.texi
+
+@c %end of fragment

@@ -1,0 +1,17 @@
+@node Overview
+@chapter Overview
+
+@code{(gnome gnome)} wraps some pieces of the libgnome library for
+Guile. It is a part of Guile-GNOME.
+
+Libgnome historically was a staging ground for code meant to go
+elsewhere. In the modern environment, it has largely been replaced,
+its functionality having been pushed into GLib, GTK+, and other
+lower-level libraries.
+
+However, as of 2008 it still has some utility. The help functions are
+useful. @code{(gnome gnome)} wraps those parts that have not been
+replaced yet.
+
+See the documentation for @code{(gnome gobject)} for more information
+on Guile-GNOME.

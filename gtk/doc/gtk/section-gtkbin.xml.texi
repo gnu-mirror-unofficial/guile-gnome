@@ -1,0 +1,20 @@
+
+@c %start of fragment
+
+@node GtkBin
+@chapter GtkBin
+A container with just one child
+
+@section Overview
+The @code{<gtk-bin>} widget is a container with just one child. It is not very
+useful itself, but it is useful for deriving subclasses, since it provides
+common code needed for handling a single child widget.
+
+Many GTK+ widgets are subclasses of @code{<gtk-bin>}, including
+@code{<gtk-window>}, @code{<gtk-button>}, @code{<gtk-frame>},
+@code{<gtk-handle-box>}, and @code{<gtk-scrolled-window>}.
+
+@section Usage
+@include defuns-gtkbin.xml.texi
+
+@c %end of fragment

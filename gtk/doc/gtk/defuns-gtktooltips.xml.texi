@@ -1,0 +1,88 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-tooltips>
+Derives from @code{<gtk-object>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-tooltips-new  @result{}@tie{} (ret@tie{}@code{<gtk-tooltips>})
+Creates an empty group of tooltips. This function initialises a
+@code{<gtk-tooltips>} structure. Without at least one such structure, you can
+not add tips to your application.
+
+@table @var
+@item ret
+a new @code{<gtk-tooltips>} group for you to use.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tooltips-enable  (self@tie{}@code{<gtk-tooltips>})
+@deffnx Method enable
+Allows the user to see your tooltips as they navigate your application.
+
+@table @var
+@item tooltips
+a @code{<gtk-tooltips>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tooltips-disable  (self@tie{}@code{<gtk-tooltips>})
+@deffnx Method disable
+Causes all tooltips in @var{tooltips} to become inactive. Any widgets that have
+tips associated with that group will no longer display their tips until they are
+enabled again with @code{gtk-tooltips-enable}.
+
+@table @var
+@item tooltips
+a @code{<gtk-tooltips>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tooltips-set-tip  (self@tie{}@code{<gtk-tooltips>}) (widget@tie{}@code{<gtk-widget>}) (tip_text@tie{}@code{mchars}) (tip_private@tie{}@code{mchars})
+@deffnx Method set-tip
+Adds a tooltip containing the message @var{tip-text} to the specified
+@code{<gtk-widget>}.
+
+@table @var
+@item tooltips
+a @code{<gtk-tooltips>}.
+
+@item widget
+the @code{<gtk-widget>} you wish to associate the tip with.
+
+@item tip-text
+a string containing the tip itself.
+
+@item tip-private
+a string of any further information that may be useful if the user gets stuck.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-tooltips-force-window  (self@tie{}@code{<gtk-tooltips>})
+@deffnx Method force-window
+Ensures that the window used for displaying the given @var{tooltips} is created.
+
+Applications should never have to call this function, since GTK+ takes care of
+this.
+
+@table @var
+@item tooltips
+a @code{<gtk-tool-tips>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

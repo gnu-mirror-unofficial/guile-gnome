@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas-ellipse>
+Derives from @code{<gnome-canvas-re>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+
+@c %end of fragment

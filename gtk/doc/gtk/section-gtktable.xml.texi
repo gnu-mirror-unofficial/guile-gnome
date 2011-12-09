@@ -1,0 +1,32 @@
+
+@c %start of fragment
+
+@node GtkTable
+@chapter GtkTable
+Pack widgets in regular patterns
+
+@section Overview
+The @code{<gtk-table>} functions allow the programmer to arrange widgets in rows
+and columns, making it easy to align many widgets next to each other,
+horizontally and vertically.
+
+Tables are created with a call to @code{gtk-table-new}, the size of which can
+later be changed with @code{gtk-table-resize}.
+
+Widgets can be added to a table using @code{gtk-table-attach} or the more
+convenient (but slightly less flexible) @code{gtk-table-attach-defaults}.
+
+To alter the space next to a specific row, use @code{gtk-table-set-row-spacing},
+and for a column, @code{gtk-table-set-col-spacing}.
+
+The gaps between @emph{all} rows or columns can be changed by calling
+@code{gtk-table-set-row-spacings} or @code{gtk-table-set-col-spacings}
+respectively.
+
+@code{gtk-table-set-homogeneous}, can be used to set whether all cells in the
+table will resize themselves to the size of the largest widget in the table.
+
+@section Usage
+@include defuns-gtktable.xml.texi
+
+@c %end of fragment

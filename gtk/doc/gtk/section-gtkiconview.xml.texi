@@ -1,0 +1,19 @@
+
+@c %start of fragment
+
+@node GtkIconView
+@chapter GtkIconView
+A widget which displays a list of icons in a grid
+
+@section Overview
+@code{<gtk-icon-view>} provides an alternative view on a list model. It displays
+the model as a grid of icons with labels. Like @code{<gtk-tree-view>}, it allows
+to select one or multiple items (depending on the selection mode, see
+@code{gtk-icon-view-set-selection-mode}). In addition to selection with the
+arrow keys, @code{<gtk-icon-view>} supports rubberband selection, which is
+controlled by dragging the pointer.
+
+@section Usage
+@include defuns-gtkiconview.xml.texi
+
+@c %end of fragment

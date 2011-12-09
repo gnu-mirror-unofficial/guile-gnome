@@ -1,0 +1,142 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-statusbar>
+Derives from @code{<gtk-hbox>}.
+
+This class defines the following slots:
+
+@table @code
+@item has-resize-grip
+Whether the statusbar has a grip for resizing the toplevel
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-statusbar> text-pushed  (arg0@tie{}@code{<guint>}) (arg1@tie{}@code{<gchararray>})
+Is emitted whenever a new message gets pushed onto a statusbar's stack.
+
+@end defop
+
+@defop Signal <gtk-statusbar> text-popped  (arg0@tie{}@code{<guint>}) (arg1@tie{}@code{<gchararray>})
+Is emitted whenever a new message is popped off a statusbar's stack.
+
+@end defop
+
+@deffn Function gtk-statusbar-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-statusbar>} ready for messages.
+
+@table @var
+@item ret
+the new @code{<gtk-statusbar>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-statusbar-get-context-id  (self@tie{}@code{<gtk-statusbar>}) (context_description@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+@deffnx Method get-context-id
+Returns a new context identifier, given a description of the actual context.
+
+@table @var
+@item statusbar
+a @code{<gtk-statusbar>}.
+
+@item context-description
+textual description of what context the new message is being used in.
+
+@item ret
+an integer id.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-statusbar-push  (self@tie{}@code{<gtk-statusbar>}) (context_id@tie{}@code{unsigned-int}) (text@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+@deffnx Method push
+Pushes a new message onto a statusbar's stack.
+
+@table @var
+@item statusbar
+a @code{<gtk-statusbar>}.
+
+@item context-id
+the message's context id, as returned by @code{gtk-statusbar-get-context-id}.
+
+@item text
+the message to add to the statusbar.
+
+@item ret
+the message's new message id for use with @code{gtk-statusbar-remove}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-statusbar-pop  (self@tie{}@code{<gtk-statusbar>}) (context_id@tie{}@code{unsigned-int})
+@deffnx Method pop
+Removes the message at the top of a @code{<gtk-status-bar>}'s stack.
+
+@table @var
+@item statusbar
+a @code{<gtk-status-bar>}.
+
+@item context-id
+a context identifier.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-statusbar-remove  (self@tie{}@code{<gtk-statusbar>}) (context_id@tie{}@code{unsigned-int}) (message_id@tie{}@code{unsigned-int})
+@deffnx Method remove
+Forces the removal of a message from a statusbar's stack. The exact
+@var{context-id} and @var{message-id} must be specified.
+
+@table @var
+@item statusbar
+a @code{<gtk-status-bar>}.
+
+@item context-id
+a context identifier.
+
+@item message-id
+a message identifier, as returned by @code{gtk-statusbar-push}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-statusbar-set-has-resize-grip  (self@tie{}@code{<gtk-statusbar>}) (setting@tie{}@code{bool})
+@deffnx Method set-has-resize-grip
+Sets whether the statusbar has a resize grip. @samp{@code{#t}} by default.
+
+@table @var
+@item statusbar
+a @code{<gtk-status-bar>}.
+
+@item setting
+@samp{@code{#t}} to have a resize grip.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-statusbar-get-has-resize-grip  (self@tie{}@code{<gtk-statusbar>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-has-resize-grip
+Returns whether the statusbar has a resize grip.
+
+@table @var
+@item statusbar
+a @code{<gtk-status-bar>}.
+
+@item ret
+@samp{@code{#t}} if the statusbar has a resize grip.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

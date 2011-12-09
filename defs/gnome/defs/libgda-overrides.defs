@@ -1,0 +1,22 @@
+;; -*- scheme -*-
+
+(ignore-glob
+
+ "*_get_type"
+ "*_free"
+ 
+ "gda_value_new_*" ;; Not needed, we have (make <gda-value>)
+ 
+ "gda_export_*"
+
+ "gda_*_binary"
+ 
+ ;; these have complicated GList* semantics
+ "gda_config_*"
+
+ "gda_server_provider_*" ;; ignore for now
+
+ "gda_error_list_*" ;; shouldn't need this
+ 
+ "*_to_xml"
+ )

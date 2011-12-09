@@ -1,0 +1,26 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-recent-chooser-widget>
+Derives from @code{<gtk-recent-chooser>}, @code{<gtk-vbox>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function gtk-recent-chooser-widget-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-recent-chooser-widget>} object. This is an embeddable
+widget used to access the recently used resources list.
+
+@table @var
+@item ret
+a new @code{<gtk-recent-chooser-widget>}
+
+@end table
+
+Since 2.10
+
+@end deffn
+
+
+@c %end of fragment

@@ -1,0 +1,100 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-check-menu-item>
+Derives from @code{<gtk-menu-item>}.
+
+This class defines the following slots:
+
+@table @code
+@item active
+Whether the menu item is checked
+
+@item inconsistent
+Whether to display an "inconsistent" state
+
+@item draw-as-radio
+Whether the menu item looks like a radio menu item
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-check-menu-item> toggled 
+This signal is emitted when the state of the check box is changed.
+
+A signal handler can examine the @c (structfield "active") field of the
+@code{<gtk-check-menu-item>} struct to discover the new state.
+
+@end defop
+
+@deffn Function gtk-check-menu-item-new  @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-check-menu-item>}.
+
+@table @var
+@item ret
+a new @code{<gtk-check-menu-item>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-check-menu-item-new-with-label  (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+Creates a new @code{<gtk-check-menu-item>} with a label.
+
+@table @var
+@item label
+the string to use for the label.
+
+@item ret
+a new @code{<gtk-check-menu-item>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-check-menu-item-get-active  (self@tie{}@code{<gtk-check-menu-item>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method get-active
+Returns whether the check menu item is active. See
+@code{gtk-check-menu-item-set-active}.
+
+@table @var
+@item check-menu-item
+a @code{<gtk-check-menu-item>}
+
+@item ret
+@samp{@code{#t}} if the menu item is checked.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-check-menu-item-set-active  (self@tie{}@code{<gtk-check-menu-item>}) (is_active@tie{}@code{bool})
+@deffnx Method set-active
+Sets the active state of the menu item's check box.
+
+@table @var
+@item check-menu-item
+a @code{<gtk-check-menu-item>}.
+
+@item is-active
+boolean value indicating whether the check box is active.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-check-menu-item-toggled  (self@tie{}@code{<gtk-check-menu-item>})
+@deffnx Method toggled
+Emits the GtkCheckMenuItem::toggled signal.
+
+@table @var
+@item check-menu-item
+a @code{<gtk-check-menu-item>}.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

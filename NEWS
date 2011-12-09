@@ -1,0 +1,122 @@
+guile-gnome-pkg NEWS --- history of user-visible changes.
+Copyright (C) 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+See the end for copying conditions of this file.
+Last updated 03 Jul 2008.
+
+
+guile-gnome-pkg is the umbrella package for guile-gnome, which can
+contain any number of sub-packages. This file documents the user-visible
+changes in guile-gnome-pkg only.
+
+
+guile-gnome-pkg 2.16.1 - Andy Wingo, 2008-07-03
+===============================================
+
+* Add guile-clutter to the set of configurable packages.
+
+
+guile-gnome-pkg 2.16.0 - Andy Wingo, 2008-06-12
+===============================================
+
+* Removed the "docs" module; its content, the tutorial, is now folded
+  into the documentation for all of the relevant modules (e.g. GLib,
+  GTK+, CORBA, etc.)
+
+* Changelogs have all been archived to ChangeLog.pre-2.16, because now
+  we will just use revision control logs.
+
+* Suppress some automake warnings.
+
+
+guile-gnome-pkg 2.15.98 - Andy Wingo, 2008-04-25
+================================================
+
+* Formally require Guile 1.8, as has been the case for a while now.
+
+* Bump the API_VERSION to 2, as a test before going stable.
+
+This will change all library names, pkg-config names, installed header
+names, etc. (use-modules (gnome-0)) in user code should be changed to
+(use-modules (gnome-2)). guile-gnome-0 is now guile-gnome-2.
+
+The purpose of this change is to shake out any bugs in the API_VERSION
+mechanism. The intention is for the next release to be 2.16.0, with
+API_VERSION=2.
+
+
+guile-gnome-pkg 2.15.97 - Andy Wingo, 2008-04-10
+================================================
+
+* No user-visible changes.
+
+
+guile-gnome-pkg 2.15.96 - Andy Wingo, 2007-12-10
+================================================
+
+* Support a variant of check-coverage that generates a texinfo file with
+  the missing functions.
+
+* Various buildfixes for building out-of-tree modules such as
+  guile-gnome-gstreamer.
+
+
+guile-gnome-pkg 2.15.95 - Andy Wingo, 2007-11-10
+================================================
+
+* Build system work: add common makefile include for unit tests and a
+  new check-coverage target to documentation builds.
+
+
+guile-gnome-pkg 2.15.94 - Andy Wingo, 2007-09-25
+================================================
+
+* Added infrastructure to make documentation.
+
+
+guile-gnome-pkg 2.15.93 - Andy Wingo, 2007-06-15
+================================================
+
+* No user-visible changes.
+
+
+guile-gnome-pkg 2.15.92 - Andy Wingo, 2007-05-24
+================================================
+
+* Updates to h2defs.py to automatically handle more cases.
+
+* Add cairo to guile-gnome-platform.
+
+
+guile-gnome-pkg 2.15.91 - Andy Wingo, 2007-05-10
+================================================
+
+* Require G-Wrap 1.9.8.
+
+
+guile-gnome-pkg 2.15.90 - Andy Wingo, 2006-12-15
+================================================
+
+* Require G-Wrap 1.9.7.
+
+* Update to use bzr as the version control system, instead of tla.
+
+
+guile-gnome-pkg 2.7.99 - Andy Wingo, 2005-03-06
+===============================================
+
+* Require g-wrap >= 1.9.4.
+
+* Add a general option to disable wrapping deprecated functions.
+
+
+guile-gnome-pkg 2.7.98 - Andy Wingo, 2005-01-11
+===============================================
+
+* Initial release with NEWS.
+
+
+Copyright (C) 2004,2005,2006,2007 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice
+and this notice are preserved.

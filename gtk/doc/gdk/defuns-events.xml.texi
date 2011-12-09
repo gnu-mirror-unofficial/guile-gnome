@@ -1,0 +1,211 @@
+
+@c %start of fragment
+
+@deffn Function gdk-events-pending  @result{}@tie{} (ret@tie{}@code{bool})
+Checks if any events are ready to be processed for any display.
+
+@table @var
+@item ret
+@samp{@code{#t}} if any events are pending.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-event-peek  @result{}@tie{} (ret@tie{}@code{<gdk-event>})
+If there is an event waiting in the event queue of some open display, returns a
+copy of it. See @code{gdk-display-peek-event}.
+
+@table @var
+@item ret
+a copy of the first @code{<gdk-event>} on some event queue, or @samp{@code{#f}}
+if no events are in any queues. The returned @code{<gdk-event>} should be freed
+with @code{gdk-event-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-event-get  @result{}@tie{} (ret@tie{}@code{<gdk-event>})
+Checks all open displays for a @code{<gdk-event>} to process,to be processed on,
+fetching events from the windowing system if necessary. See
+@code{gdk-display-get-event}.
+
+@table @var
+@item ret
+the next @code{<gdk-event>} to be processed, or @samp{@code{#f}} if no events
+are pending. The returned @code{<gdk-event>} should be freed with
+@code{gdk-event-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-event-get-graphics-expose  (window@tie{}@code{<gdk-window>}) @result{}@tie{} (ret@tie{}@code{<gdk-event>})
+Waits for a GraphicsExpose or NoExpose event from the X server. This is used in
+the @code{<gtk-text>} and @code{<gtk-clist>} widgets in GTK+ to make sure any
+GraphicsExpose events are handled before the widget is scrolled.
+
+@table @var
+@item window
+the @code{<gdk-window>} to wait for the events for.
+
+@item ret
+a @code{<gdk-event-expose>} if a GraphicsExpose was received, or
+@samp{@code{#f}} if a NoExpose event was received.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-event-put  (self@tie{}@code{<gdk-event>})
+Appends a copy of the given event onto the front of the event queue for
+event->any.window's display, or the default event queue if event->any.window is
+@samp{@code{#f}}. See @code{gdk-display-put-event}.
+
+@table @var
+@item event
+a @code{<gdk-event>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-event-copy  (self@tie{}@code{<gdk-event>}) @result{}@tie{} (ret@tie{}@code{<gdk-event>})
+Copies a @code{<gdk-event>}, copying or incrementing the reference count of the
+resources associated with it (e.g. @code{<gdk-window>}'s and strings).
+
+@table @var
+@item event
+a @code{<gdk-event>}
+
+@item ret
+a copy of @var{event}. The returned @code{<gdk-event>} should be freed with
+@code{gdk-event-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-event-get-time  (self@tie{}@code{<gdk-event>}) @result{}@tie{} (ret@tie{}@code{unsigned-int32})
+Returns the time stamp from @var{event}, if there is one; otherwise returns
+@code{<gdk-current-time>}. If @var{event} is @samp{@code{#f}}, returns
+@code{<gdk-current-time>}.
+
+@table @var
+@item event
+a @code{<gdk-event>}
+
+@item ret
+time stamp field from @var{event}
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-event-get-axis  (self@tie{}@code{<gdk-event>}) (axis_use@tie{}@code{<gdk-axis-use>}) @result{}@tie{} (ret@tie{}@code{bool}) (value@tie{}@code{double})
+Extract the axis value for a particular axis use from an event structure.
+
+@table @var
+@item event
+a @code{<gdk-event>}
+
+@item axis-use
+the axis use to look for
+
+@item value
+location to store the value found
+
+@item ret
+@samp{@code{#t}} if the specified axis was found, otherwise @samp{@code{#f}}
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-event-get-coords  (self@tie{}@code{<gdk-event>}) @result{}@tie{} (ret@tie{}@code{bool}) (x_win@tie{}@code{double}) (y_win@tie{}@code{double})
+Extract the event window relative x/y coordinates from an event.
+
+@table @var
+@item event
+a @code{<gdk-event>}
+
+@item x-win
+location to put event window x coordinate
+
+@item y-win
+location to put event window y coordinate
+
+@item ret
+@samp{@code{#t}} if the event delivered event window coordinates
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-event-get-root-coords  (self@tie{}@code{<gdk-event>}) @result{}@tie{} (ret@tie{}@code{bool}) (x_root@tie{}@code{double}) (y_root@tie{}@code{double})
+Extract the root window relative x/y coordinates from an event.
+
+@table @var
+@item event
+a @code{<gdk-event>}
+
+@item x-root
+location to put root window x coordinate
+
+@item y-root
+location to put root window y coordinate
+
+@item ret
+@samp{@code{#t}} if the event delivered root window coordinates
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-get-show-events  @result{}@tie{} (ret@tie{}@code{bool})
+Gets whether event debugging output is enabled.
+
+@table @var
+@item ret
+@samp{@code{#t}} if event debugging output is enabled.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-set-show-events  (show_events@tie{}@code{bool})
+Sets whether a trace of received events is output. Note that GTK+ must be
+compiled with debugging (that is, configured using the @c (option
+"--enable-debug") option) to use this option.
+
+@table @var
+@item show-events
+@samp{@code{#t}} to output event debugging information.
+
+@end table
+
+@end deffn
+
+@deffn Function gdk-event-get-screen  (self@tie{}@code{<gdk-event>}) @result{}@tie{} (ret@tie{}@code{<gdk-screen>})
+Returns the screen for the event. The screen is typically the screen for
+@samp{event->any.window}, but for events such as mouse events, it is the screen
+where the pointer was when the event occurs - that is, the screen which has the
+root window to which @samp{event->motion.x_root} and @samp{event->motion.y_root}
+are relative.
+
+@table @var
+@item event
+a @code{<gdk-event>}
+
+@item ret
+the screen for the event
+
+@end table
+
+Since 2.2
+
+@end deffn
+
+
+@c %end of fragment

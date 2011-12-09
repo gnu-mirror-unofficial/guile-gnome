@@ -1,0 +1,25 @@
+
+@c %start of fragment
+
+@node Selections
+@chapter Selections
+Functions for handling inter-process communication via selections
+
+@section Overview
+The selection mechanism provides the basis for different types of communication
+between processes. In particular, drag and drop and @code{<gtk-clipboard>} work
+via selections. You will very seldom or never need to use most of the functions
+in this section directly; @code{<gtk-clipboard>} provides a nicer interface to
+the same functionality.
+
+Some of the datatypes defined this section are used in the
+@code{<gtk-clipboard>} and drag-and-drop API's as well. The
+@code{<gtk-target-entry>} structure and @code{<gtk-target-list>} objects
+represent lists of data types that are supported when sending or receiving data.
+The @code{<gtk-selection-data>} object is used to store a chunk of data along
+with the data type and other associated information.
+
+@section Usage
+@include defuns-gtkselection.xml.texi
+
+@c %end of fragment

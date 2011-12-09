@@ -1,0 +1,33 @@
+guile-gnome-cairo README
+Copyright (C) 2007 Free Software Foundation, Inc.
+See the end for copying conditions of this file.
+Last updated 6 December 2007.
+
+
+About guile-gnome-cairo
+==========================
+
+guile-gnome-cairo integrates the Guile-Cairo bindings with G-Wrap,
+providing other guile-gnome wrappers with the ability to automatically
+wrap Cairo types. It is not a cairo wrapper in and of itself, and does
+not provide any API for the end user.
+
+guile-gnome-cairo is a part of GNU guile-gnome. See the README file in
+the toplevel source directory for more information.
+
+
+Build dependencies
+==================
+
+guile-gnome-cairo requires Guile-Cairo, available from
+http://home.gna.org/guile-cairo/.
+
+
+Copying this file
+=================
+
+Copyright (C) 2007 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice
+and this notice are preserved.

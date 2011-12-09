@@ -1,0 +1,16 @@
+
+@c %start of fragment
+
+@node Rendering
+@chapter Rendering
+Functions to run the rendering pipeline
+
+@section Overview
+The Pango rendering pipeline takes a string of Unicode characters and converts
+it into glyphs. The functions described in this section accomplish various steps
+of this process.
+
+@section Usage
+@include defuns-main.xml.texi
+
+@c %end of fragment

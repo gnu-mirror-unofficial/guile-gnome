@@ -1,0 +1,94 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-menu-tool-button>
+Derives from @code{<gtk-tool-button>}.
+
+This class defines the following slots:
+
+@table @code
+@item menu
+The dropdown menu
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-menu-tool-button> show-menu 
+@end defop
+
+@deffn Function gtk-menu-tool-button-new  (icon_widget@tie{}@code{<gtk-widget>}) (label@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-tool-item>})
+Creates a new @code{<gtk-menu-tool-button>} using @var{icon-widget} as icon and
+@var{label} as label.
+
+@table @var
+@item icon-widget
+a widget that will be used as icon widget, or @samp{@code{#f}}
+
+@item label
+a string that will be used as label, or @samp{@code{#f}}
+
+@item ret
+the new @code{<gtk-menu-tool-button>}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-menu-tool-button-new-from-stock  (stock_id@tie{}@code{mchars}) @result{}@tie{} (ret@tie{}@code{<gtk-tool-item>})
+Creates a new @code{<gtk-menu-tool-button>}. The new
+@code{<gtk-menu-tool-button>} will contain an icon and label from the stock item
+indicated by @var{stock-id}.
+
+@table @var
+@item stock-id
+the name of a stock item
+
+@item ret
+the new @code{<gtk-menu-tool-button>}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-menu-tool-button-set-menu  (self@tie{}@code{<gtk-menu-tool-button>}) (menu@tie{}@code{<gtk-widget>})
+@deffnx Method set-menu
+Sets the @code{<gtk-menu>} that is popped up when the user clicks on the arrow.
+If @var{menu} is NULL, the arrow button becomes insensitive.
+
+@table @var
+@item button
+a @code{<gtk-menu-tool-button>}
+
+@item menu
+the @code{<gtk-menu>} associated with @code{<gtk-menu-tool-button>}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+@deffn Function gtk-menu-tool-button-get-menu  (self@tie{}@code{<gtk-menu-tool-button>}) @result{}@tie{} (ret@tie{}@code{<gtk-widget>})
+@deffnx Method get-menu
+Gets the @code{<gtk-menu>} associated with @code{<gtk-menu-tool-button>}.
+
+@table @var
+@item button
+a @code{<gtk-menu-tool-button>}
+
+@item ret
+the @code{<gtk-menu>} associated with @code{<gtk-menu-tool-button>}
+
+@end table
+
+Since 2.6
+
+@end deffn
+
+
+@c %end of fragment

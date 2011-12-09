@@ -1,0 +1,12 @@
+
+@c %start of fragment
+
+@node GnomeMultiScreen
+@chapter GnomeMultiScreen
+
+
+@section Overview
+@section Usage
+@include defuns-gnome-multi-screen.xml.texi
+
+@c %end of fragment

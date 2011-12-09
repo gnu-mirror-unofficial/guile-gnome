@@ -1,0 +1,36 @@
+
+@c %start of fragment
+
+@deftp Class <gnome-canvas-widget>
+Derives from @code{<gnome-canvas-item>}.
+
+This class defines the following properties:
+
+@table @code
+@item widget
+
+
+@item x
+
+
+@item y
+
+
+@item width
+
+
+@item height
+
+
+@item anchor
+
+
+@item size-pixels
+
+
+@end table
+
+@end deftp
+
+
+@c %end of fragment

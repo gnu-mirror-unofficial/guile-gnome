@@ -1,0 +1,158 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-adjustment>
+Derives from @code{<gtk-object>}.
+
+This class defines the following slots:
+
+@table @code
+@item value
+The value of the adjustment
+
+@item lower
+The minimum value of the adjustment
+
+@item upper
+The maximum value of the adjustment
+
+@item step-increment
+The step increment of the adjustment
+
+@item page-increment
+The page increment of the adjustment
+
+@item page-size
+The page size of the adjustment
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-adjustment> changed 
+Emitted when one or more of the @code{<gtk-adjustment>} fields have been
+changed, other than the value field.
+
+@end defop
+
+@defop Signal <gtk-adjustment> value-changed 
+Emitted when the @code{<gtk-adjustment>} value field has been changed.
+
+@end defop
+
+@deffn Function gtk-adjustment-new  (value@tie{}@code{double}) (lower@tie{}@code{double}) (upper@tie{}@code{double}) (step_increment@tie{}@code{double}) (page_increment@tie{}@code{double}) (page_size@tie{}@code{double}) @result{}@tie{} (ret@tie{}@code{<gtk-object>})
+Creates a new @code{<gtk-adjustment>}.
+
+@table @var
+@item value
+the initial value.
+
+@item lower
+the minimum value.
+
+@item upper
+the maximum value.
+
+@item step-increment
+the step increment.
+
+@item page-increment
+the page increment.
+
+@item page-size
+the page size.
+
+@item ret
+a new @code{<gtk-adjustment>}.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-adjustment-get-value  (self@tie{}@code{<gtk-adjustment>}) @result{}@tie{} (ret@tie{}@code{double})
+@deffnx Method get-value
+Gets the current value of the adjustment. See @code{gtk-adjustment-set-value}.
+
+@table @var
+@item adjustment
+a @code{<gtk-adjustment>}
+
+@item ret
+The current value of the adjustment.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-adjustment-set-value  (self@tie{}@code{<gtk-adjustment>}) (value@tie{}@code{double})
+@deffnx Method set-value
+Sets the @code{<gtk-adjustment>} value. The value is clamped to lie between
+@samp{adjustment->lower} and @samp{adjustment->upper}.
+
+Note that for adjustments which are used in a @code{<gtk-scrollbar>}, the
+effective range of allowed values goes from @samp{adjustment->lower} to
+@samp{adjustment->upper - adjustment->page_size}.
+
+@table @var
+@item adjustment
+a @code{<gtk-adjustment>}.
+
+@item value
+the new value.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-adjustment-clamp-page  (self@tie{}@code{<gtk-adjustment>}) (lower@tie{}@code{double}) (upper@tie{}@code{double})
+@deffnx Method clamp-page
+Updates the @code{<gtk-adjustment>}@var{value} to ensure that the range between
+@var{lower} and @var{upper} is in the current page (i.e. between @var{value} and
+@var{value} + @var{page-size}). If the range is larger than the page size, then
+only the start of it will be in the current page. A "changed" signal will be
+emitted if the value is changed.
+
+@table @var
+@item adjustment
+a @code{<gtk-adjustment>}.
+
+@item lower
+the lower value.
+
+@item upper
+the upper value.
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-adjustment-changed  (self@tie{}@code{<gtk-adjustment>})
+@deffnx Method changed
+Emits a "changed" signal from the @code{<gtk-adjustment>}. This is typically
+called by the owner of the @code{<gtk-adjustment>} after it has changed any of
+the @code{<gtk-adjustment>} fields other than the value.
+
+@table @var
+@item adjustment
+a @code{<gtk-adjustment>}
+
+@end table
+
+@end deffn
+
+@deffn Function gtk-adjustment-value-changed  (self@tie{}@code{<gtk-adjustment>})
+@deffnx Method value-changed
+Emits a "value_changed" signal from the @code{<gtk-adjustment>}. This is
+typically called by the owner of the @code{<gtk-adjustment>} after it has
+changed the @code{<gtk-adjustment>} value field.
+
+@table @var
+@item adjustment
+a @code{<gtk-adjustment>}
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment

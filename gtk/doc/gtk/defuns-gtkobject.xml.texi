@@ -1,0 +1,25 @@
+
+@c %start of fragment
+
+@deftp Class <gtk-object>
+Derives from @code{<g-initially-unowned>}.
+
+This class defines the following slots:
+
+@table @code
+@item user-data
+Anonymous User Data Pointer
+
+@end table
+
+@end deftp
+
+@defop Signal <gtk-object> destroy 
+Signals that all holders of a reference to the @code{<gtk-object>} should
+release the reference that they hold. May result in finalization of the object
+if all references are released.
+
+@end defop
+
+
+@c %end of fragment

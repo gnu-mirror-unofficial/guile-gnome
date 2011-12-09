@@ -1,0 +1,41 @@
+@node Overview
+@chapter Overview
+
+@code{(gnome glade)} wraps the libglade interface XML interface
+definition library for Guile. It is a part of Guile-GNOME.
+
+Glade files are XML descriptions of a GTK+ widget hierarchy. They are
+usually created with the Glade user interface editor. A simple example
+might look like this:
+
+@lisp
+(define xml-buf "<?xml version=\"1.0\" standalone=\"no\"?>
+<!DOCTYPE glade-interface SYSTEM \"http://glade.gnome.org/glade-2.0.dtd\">
+
+<glade-interface>
+
+<widget class=\"GtkWindow\" id=\"window1\">
+  <property name=\"title\" translatable=\"yes\">window1</property>
+  <child>
+    <widget class=\"GtkLabel\" id=\"label1\">
+      <property name=\"label\" translatable=\"yes\">Hello world!</property>
+    </widget>
+  </child>
+</widget>
+
+</glade-interface>")
+
+(define glade-xml (glade-xml-new-from-buffer xml-buf))
+(define main-window (get-widget glade-xml "window1"))
+(show-all main-window)
+(g-main-loop-run (g-main-loop-new))
+@end lisp
+
+Of course, in practice you are more likely to load the XML from a
+file; in that case you would use @code{glade-xml-new}.
+
+Also interesting are the @code{signal-connect} and
+@code{signal-autoconnect} implementations; read on for more details.
+
+See the documentation for @code{(gnome gobject)} for more information
+on Guile-GNOME.

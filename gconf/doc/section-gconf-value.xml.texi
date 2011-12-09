@@ -1,0 +1,26 @@
+
+@c %start of fragment
+
+@node GConfValue GConfEntry GConfMetaInfo
+@chapter GConfValue, GConfEntry, GConfMetaInfo
+A stores a dynamically-typed value. A stores a key-value pair. A stores
+metainformation about a key.
+
+@section Overview
+@code{<g-conf-value>} stores one of the value types GConf understands; GConf
+uses @code{<g-conf-value>} to pass values around because it doesn't know the
+type of its values at compile time.
+
+A @code{<g-conf-entry>} pairs a relative key name with a value, for example if
+the value "10" is stored at the key "/foo/bar/baz", the @code{<g-conf-entry>}
+will store "baz" and "10".
+
+A @code{<g-conf-meta-info>} object holds metainformation about a key, such as
+its last modification time and the name of the schema associated with it. You
+should rarely if ever need to use @code{<g-conf-meta-info>}. (In fact you can't
+get the metainfo for a key using the current API.)
+
+@section Usage
+@include defuns-gconf-value.xml.texi
+
+@c %end of fragment

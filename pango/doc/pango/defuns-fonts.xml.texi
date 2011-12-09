@@ -1,0 +1,708 @@
+
+@c %start of fragment
+
+@deftp Class <pango-font-description>
+Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deftp Class <pango-font-metrics>
+Derives from @code{<gboxed>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deftp Class <pango-font>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deftp Class <pango-font-family>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deftp Class <pango-font-face>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deftp Class <pango-font-map>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deftp Class <pango-fontset>
+Derives from @code{<gobject>}.
+
+This class defines no direct slots.
+
+@end deftp
+
+@deffn Function pango-font-description-new  @result{}@tie{} (ret@tie{}@code{<pango-font-description>})
+Creates a new font description structure with all fields unset.
+
+@table @var
+@item ret
+the newly allocated @code{<pango-font-description>}, which should be freed using
+@code{pango-font-description-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-copy  (self@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{<pango-font-description>})
+Make a copy of a @code{<pango-font-description>}.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item ret
+the newly allocated @code{<pango-font-description>}, which should be freed with
+@code{pango-font-description-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-hash  (self@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{unsigned-int})
+Computes a hash of a @code{<pango-font-description>} structure suitable to be
+used, for example, as an argument to @code{g-hash-table-new}. The hash value is
+independent of @var{desc->mask}.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item ret
+the hash value.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-equal  (self@tie{}@code{<pango-font-description>}) (desc2@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{bool})
+Compares two font descriptions for equality. Two font descriptions are
+considered equal if the fonts they describe are provably identical. This means
+that their masks do not have to match, as long as other fields are all the same.
+(Two font descriptions may result in identical fonts being loaded, but still
+compare @samp{@code{#f}}.)
+
+@table @var
+@item desc1
+a @code{<pango-font-description>}
+
+@item desc2
+another @code{<pango-font-description>}
+
+@item ret
+@samp{@code{#t}} if the two font descriptions are identical, @samp{@code{#f}}
+otherwise.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-set-family  (self@tie{}@code{<pango-font-description>}) (family@tie{}@code{mchars})
+Sets the family name field of a font description. The family name represents a
+family of related font styles, and will resolve to a particular
+@code{<pango-font-family>}. In some uses of @code{<pango-font-description>}, it
+is also possible to use a comma separated list of family names for this field.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}.
+
+@item family
+a string representing the family name.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-get-family  (self@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Gets the family name field of a font description. See
+@code{pango-font-description-set-family}.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}.
+
+@item ret
+the family name field for the font description, or @samp{@code{#f}} if not
+previously set. This has the same life-time as the font description itself and
+should not be freed.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-set-style  (self@tie{}@code{<pango-font-description>}) (style@tie{}@code{<pango-style>})
+Sets the style field of a @code{<pango-font-description>}. The
+@code{<pango-style>} enumeration describes whether the font is slanted and the
+manner in which it is slanted; it can be either @code{<pango-style-normal>},
+@code{<pango-style-italic>}, or @code{<pango-style-oblique>}. Most fonts will
+either have a italic style or an oblique style, but not both, and font matching
+in Pango will match italic specifications with oblique fonts and vice-versa if
+an exact match is not found.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item style
+the style for the font description
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-get-style  (self@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{<pango-style>})
+Gets the style field of a @code{<pango-font-description>}. See
+@code{pango-font-description-set-style}.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item ret
+the style field for the font description. Use
+@code{pango-font-description-get-set-fields} to find out if the field was
+explicitly set or not.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-set-variant  (self@tie{}@code{<pango-font-description>}) (variant@tie{}@code{<pango-variant>})
+Sets the variant field of a font description. The @code{<pango-variant>} can
+either be @samp{PANGO_VARIANT_NORMAL} or @samp{PANGO_VARIANT_SMALL_CAPS}.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item variant
+the variant type for the font description.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-get-variant  (self@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{<pango-variant>})
+Gets the variant field of a @code{<pango-font-description>}. See
+@code{pango-font-description-set-variant}.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}.
+
+@item ret
+the variant field for the font description. Use
+@code{pango-font-description-get-set-fields} to find out if the field was
+explicitly set or not.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-set-weight  (self@tie{}@code{<pango-font-description>}) (weight@tie{}@code{<pango-weight>})
+Sets the weight field of a font description. The weight field specifies how bold
+or light the font should be. In addition to the values of the
+@code{<pango-weight>} enumeration, other intermediate numeric values are
+possible.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item weight
+the weight for the font description.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-get-weight  (self@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{<pango-weight>})
+Gets the weight field of a font description. See
+@code{pango-font-description-set-weight}.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item ret
+the weight field for the font description. Use
+@code{pango-font-description-get-set-fields} to find out if the field was
+explicitly set or not.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-set-stretch  (self@tie{}@code{<pango-font-description>}) (stretch@tie{}@code{<pango-stretch>})
+Sets the stretch field of a font description. The stretch field specifies how
+narrow or wide the font should be.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item stretch
+the stretch for the font description
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-get-stretch  (self@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{<pango-stretch>})
+Gets the stretch field of a font description. See
+@code{pango-font-description-set-stretch}.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}.
+
+@item ret
+the stretch field for the font description. Use
+@code{pango-font-description-get-set-fields} to find out if the field was
+explicitly set or not.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-set-size  (self@tie{}@code{<pango-font-description>}) (size@tie{}@code{int})
+Sets the size field of a font description in fractional points. This is mutually
+exclusive with @code{pango-font-description-set-absolute-size}.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item size
+the size of the font in points, scaled by PANGO_SCALE. (That is, a @var{size}
+value of 10 * PANGO_SCALE is a 10 point font. The conversion factor between
+points and device units depends on system configuration and the output device.
+For screen display, a logical DPI of 96 is common, in which case a 10 point font
+corresponds to a 10 * (96 / 72) = 13.3 pixel font. Use
+@code{pango-font-description-set-absolute-size} if you need a particular size in
+device units.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-get-size  (self@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the size field of a font description. See
+@code{pango-font-description-set-size}.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item ret
+the size field for the font description in points or device units. You must call
+@code{pango-font-description-get-size-is-absolute} to find out which is the
+case. Returns 0 if the size field has not previously been set or it has been set
+to 0 explicitly. Use @code{pango-font-description-get-set-fields} to find out if
+the field was explicitly set or not.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-unset-fields  (self@tie{}@code{<pango-font-description>}) (to_unset@tie{}@code{<pango-font-mask>})
+Unsets some of the fields in a @code{<pango-font-description>}. The unset fields
+will get back to their default values.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item to-unset
+bitmask of fields in the @var{desc} to unset.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-merge  (self@tie{}@code{<pango-font-description>}) (desc_to_merge@tie{}@code{<pango-font-description>}) (replace_existing@tie{}@code{bool})
+Merges the fields that are set in @var{desc-to-merge} into the fields in
+@var{desc}. If @var{replace-existing} is @samp{@code{#f}}, only fields in
+@var{desc} that are not already set are affected. If @samp{@code{#t}}, then
+fields that are already set will be replaced as well.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item desc-to-merge
+the @code{<pango-font-description>} to merge from
+
+@item replace-existing
+if @samp{@code{#t}}, replace fields in @var{desc} with the corresponding values
+from @var{desc-to-merge}, even if they are already exist.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-merge-static  (self@tie{}@code{<pango-font-description>}) (desc_to_merge@tie{}@code{<pango-font-description>}) (replace_existing@tie{}@code{bool})
+Like @code{pango-font-description-merge}, but only a shallow copy is made of the
+family name and other allocated fields. @var{desc} can only be used until
+@var{desc-to-merge} is modified or freed. This is meant to be used when the
+merged font description is only needed temporarily.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item desc-to-merge
+the @code{<pango-font-description>} to merge from
+
+@item replace-existing
+if @samp{@code{#t}}, replace fields in @var{desc} with the corresponding values
+from @var{desc-to-merge}, even if they are already exist.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-better-match  (self@tie{}@code{<pango-font-description>}) (old_match@tie{}@code{<pango-font-description>}) (new_match@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{bool})
+Determines if the style attributes of @var{new-match} are a closer match for
+@var{desc} than @var{old-match}, or if @var{old-match} is @samp{@code{#f}},
+determines if @var{new-match} is a match at all. Approximate matching is done
+for weight and style; other attributes must match exactly.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item old-match
+a @code{<pango-font-description>}, or @samp{@code{#f}}
+
+@item new-match
+a @code{<pango-font-description>}
+
+@item ret
+@samp{@code{#t}} if @var{new-match} is a better match
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-to-string  (self@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Creates a string representation of a font description. See
+@code{pango-font-description-from-string} for a description of the format of the
+string representation. The family list in the string description will only have
+a terminating comma if the last word of the list is a valid style option.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item ret
+a new string that must be freed with @code{g-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-description-to-filename  (self@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{mchars})
+Creates a filename representation of a font description. The filename is
+identical to the result from calling @code{pango-font-description-to-string},
+but with underscores instead of characters that are untypical in filenames, and
+in lower case only.
+
+@table @var
+@item desc
+a @code{<pango-font-description>}
+
+@item ret
+a new string that must be freed with @code{g-free}.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-metrics-get-ascent  (self@tie{}@code{<pango-font-metrics>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the ascent from a font metrics structure. The ascent is the distance from
+the baseline to the logical top of a line of text. (The logical top may be above
+or below the top of the actual drawn ink. It is necessary to lay out the text to
+figure where the ink will be.)
+
+@table @var
+@item metrics
+a @code{<pango-font-metrics>} structure
+
+@item ret
+the ascent, in Pango units. (1 point == @samp{PANGO_SCALE} Pango units.)
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-metrics-get-descent  (self@tie{}@code{<pango-font-metrics>}) @result{}@tie{} (ret@tie{}@code{int})
+Gets the descent from a font metrics structure. The descent is the distance from
+the baseline to the logical bottom of a line of text. (The logical bottom may be
+above or below the bottom of the actual drawn ink. It is necessary to lay out
+the text to figure where the ink will be.)
+
+@table @var
+@item metrics
+a @code{<pango-font-metrics>} structure
+
+@item ret
+the descent, in Pango units. (1 point == @samp{PANGO_SCALE} Pango units.)
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-describe  (self@tie{}@code{<pango-font>}) @result{}@tie{} (ret@tie{}@code{<pango-font-description>})
+@deffnx Method describe
+Returns a description of the font, with font size set in points. Use
+@code{pango-font-describe-with-absolute-size} if you want the font size in
+device units.
+
+@table @var
+@item font
+a @code{<pango-font>}
+
+@item ret
+a newly-allocated @code{<pango-font-description>} object.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-get-coverage  (self@tie{}@code{<pango-font>}) (language@tie{}@code{<pango-language>}) @result{}@tie{} (ret@tie{}@code{<pango-coverage>})
+@deffnx Method get-coverage
+Computes the coverage map for a given font and language tag.
+
+@table @var
+@item font
+a @code{<pango-font>}
+
+@item language
+the language tag
+
+@item ret
+a newly-allocated @code{<pango-coverage>} object.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-get-glyph-extents  (self@tie{}@code{<pango-font>}) (glyph@tie{}@code{unsigned-int32}) @result{}@tie{} (ink_rect@tie{}@code{<pango-rectangle>}) (logical_rect@tie{}@code{<pango-rectangle>})
+@deffnx Method get-glyph-extents
+Gets the logical and ink extents of a glyph within a font. The coordinate system
+for each rectangle has its origin at the base line and horizontal origin of the
+character with increasing coordinates extending to the right and down. The
+macros @code{pango-ascent}, @code{pango-descent}, @code{pango-lbearing}, and
+@code{pango-rbearing} can be used to convert from the extents rectangle to more
+traditional font metrics. The units of the rectangles are in 1/PANGO_SCALE of a
+device unit.
+
+@table @var
+@item font
+a @code{<pango-font>}
+
+@item glyph
+the glyph index
+
+@item ink-rect
+rectangle used to store the extents of the glyph as drawn or @samp{@code{#f}} to
+indicate that the result is not needed.
+
+@item logical-rect
+rectangle used to store the logical extents of the glyph or @samp{@code{#f}} to
+indicate that the result is not needed.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-get-metrics  (self@tie{}@code{<pango-font>}) (language@tie{}@code{<pango-language>}) @result{}@tie{} (ret@tie{}@code{<pango-font-metrics>})
+@deffnx Method get-metrics
+Gets overall metric information for a font. Since the metrics may be
+substantially different for different scripts, a language tag can be provided to
+indicate that the metrics should be retrieved that correspond to the script(s)
+used by that language.
+
+@table @var
+@item font
+a @code{<pango-font>}
+
+@item language
+language tag used to determine which script to get the metrics for, or
+@samp{@code{#f}} to indicate to get the metrics for the entire font.
+
+@item ret
+a @code{<pango-font-metrics>} object. The caller must call
+@code{pango-font-metrics-unref} when finished using the object.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-get-font-map  (self@tie{}@code{<pango-font>}) @result{}@tie{} (ret@tie{}@code{<pango-font-map>})
+@deffnx Method get-font-map
+Gets the font map for which the font was created.
+
+@table @var
+@item font
+a @code{<pango-font>}
+
+@item ret
+the @code{<pango-font-map>} for the font
+
+@end table
+
+Since 1.10
+
+@end deffn
+
+@deffn Function pango-font-family-get-name  (self@tie{}@code{<pango-font-family>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-name
+Gets the name of the family. The name is unique among all fonts for the font
+backend and can be used in a @code{<pango-font-description>} to specify that a
+face from this family is desired.
+
+@table @var
+@item family
+a @code{<pango-font-family>}
+
+@item ret
+the name of the family. This string is owned by the family object and must not
+be modified or freed.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-family-is-monospace  (self@tie{}@code{<pango-font-family>}) @result{}@tie{} (ret@tie{}@code{bool})
+@deffnx Method is-monospace
+A monospace font is a font designed for text display where the the characters
+form a regular grid. For Western languages this would mean that the advance
+width of all characters are the same, but this categorization also includes
+Asian fonts which include double-width characters: characters that occupy two
+grid cells. @code{g-unichar-iswide} returns a result that indicates whether a
+character is typically double-width in a monospace font.
+
+The best way to find out the grid-cell size is to call
+@code{pango-font-metrics-get-approximate-digit-width}, since the results of
+@code{pango-font-metrics-get-approximate-char-width} may be affected by
+double-width characters.
+
+@table @var
+@item family
+a @code{<pango-font-family>}
+
+@item ret
+@samp{@code{#t}} if the family is monospace.
+
+@end table
+
+Since 1.4
+
+@end deffn
+
+@deffn Function pango-font-face-get-face-name  (self@tie{}@code{<pango-font-face>}) @result{}@tie{} (ret@tie{}@code{mchars})
+@deffnx Method get-face-name
+Gets a name representing the style of this face among the different faces in the
+@code{<pango-font-family>} for the face. This name is unique among all faces in
+the family and is suitable for displaying to users.
+
+@table @var
+@item face
+a @code{<pango-font-face>}.
+
+@item ret
+the face name for the face. This string is owned by the face object and must not
+be modified or freed.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-face-describe  (self@tie{}@code{<pango-font-face>}) @result{}@tie{} (ret@tie{}@code{<pango-font-description>})
+@deffnx Method describe
+Returns the family, style, variant, weight and stretch of a
+@code{<pango-font-face>}. The size field of the resulting font description will
+be unset.
+
+@table @var
+@item face
+a @code{<pango-font-face>}
+
+@item ret
+a newly-created @code{<pango-font-description>} structure holding the
+description of the face. Use @code{pango-font-description-free} to free the
+result.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-map-load-font  (self@tie{}@code{<pango-font-map>}) (context@tie{}@code{<pango-context>}) (desc@tie{}@code{<pango-font-description>}) @result{}@tie{} (ret@tie{}@code{<pango-font>})
+@deffnx Method load-font
+Load the font in the fontmap that is the closest match for @var{desc}.
+
+@table @var
+@item fontmap
+a @code{<pango-font-map>}
+
+@item context
+the @code{<pango-context>} the font will be used with
+
+@item desc
+a @code{<pango-font-description>} describing the font to load
+
+@item ret
+the font loaded, or @samp{@code{#f}} if no font matched.
+
+@end table
+
+@end deffn
+
+@deffn Function pango-font-map-load-fontset  (self@tie{}@code{<pango-font-map>}) (context@tie{}@code{<pango-context>}) (desc@tie{}@code{<pango-font-description>}) (language@tie{}@code{<pango-language>}) @result{}@tie{} (ret@tie{}@code{<pango-fontset>})
+@deffnx Method load-fontset
+Load a set of fonts in the fontmap that can be used to render a font matching
+@var{desc}.
+
+@table @var
+@item fontmap
+a @code{<pango-font-map>}
+
+@item context
+the @code{<pango-context>} the font will be used with
+
+@item desc
+a @code{<pango-font-description>} describing the font to load
+
+@item language
+a @code{<pango-language>} the fonts will be used for
+
+@item ret
+the fontset, or @samp{@code{#f}} if no font matched.
+
+@end table
+
+@end deffn
+
+
+@c %end of fragment
