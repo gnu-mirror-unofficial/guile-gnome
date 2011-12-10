@@ -116,7 +116,7 @@
        (arity 1 1 #f))
      (gtype-instance-signal-connect
        procedure
-       (arity 3 0 #t))
+       (arity 3 2 #f))
      (gtype-instance-signal-connect-after
        procedure
        (arity 3 0 #f))
@@ -198,7 +198,7 @@
   ((gnome gw support defs)
    (uses-interfaces)
    (typed-exports
-     (load-defs procedure (arity 2 0 #t))
+     (load-defs procedure (arity 2 1 #f))
      (load-defs-with-overrides
        procedure
        (arity 2 0 #f))))

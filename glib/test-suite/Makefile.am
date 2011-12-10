@@ -41,6 +41,8 @@ TESTS_ENVIRONMENT=\
 	DOC_SCM=$(srcdir)/../doc/gobject/guile-gnome-gobject.scm \
 	WRAPSET_MODULES="$(wrapset_modules)" \
 	WRAPSET_API_FILE=$(srcdir)/wrapset.api \
+	LTDL_LIBRARY_PATH=.:${LTDL_LIBRARY_PATH} \
+	GUILE_LOAD_PATH=".:${srcdir:-.}/..:..:${GUILE_LOAD_PATH}" \
 	$(top_builddir)/dev-environ guile --debug -e main -s
 
 script := '(load (getenv "DOC_SCM"))\
