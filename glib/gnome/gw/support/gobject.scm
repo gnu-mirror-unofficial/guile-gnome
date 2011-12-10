@@ -895,8 +895,8 @@ invoked manually in a wrapset as needed."
    (wrap-func type) ", " (unwrap-func type) ");\n"))
 
 (define-macro (make-custom-wrapper type wrap-form)
-  `(let ((ctype (,c-type-name ,type))
-         (wrap-func (,wrap-func ,type)))
+  `(let ((ctype ((@@ (gnome gw support gobject) c-type-name) ,type))
+         (wrap-func ((@@ (gnome gw support gobject) wrap-func) ,type)))
      (lambda (scm-var c-var)
        (list
         "static SCM " wrap-func " (const GValue* gvalue) {\n"
@@ -907,8 +907,8 @@ invoked manually in a wrapset as needed."
         "}\n"))))
      
 (define-macro (make-custom-unwrapper type unwrap-form)
-  `(let ((ctype (,c-type-name ,type))
-         (unwrap-func (,unwrap-func ,type)))
+  `(let ((ctype ((@@ (gnome gw support gobject) c-type-name) ,type))
+         (unwrap-func ((@@ (gnome gw support gobject) unwrap-func) ,type)))
      (lambda (scm-var c-var)
        (list
         "static void " unwrap-func " (SCM " scm-var ", GValue* gvalue) {\n"
