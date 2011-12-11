@@ -40,6 +40,11 @@
 (module-use! (module-public-interface (current-module))
              (resolve-interface '(gnome gobject generics)))
 
+(module-for-each 
+ (lambda (k v)
+   (module-add! (current-module) k v))
+ (resolve-interface '(gnome gobject generics)))
+
 (let ((mod (current-module)))
   (set-module-binder!
    (module-public-interface mod)
