@@ -33,7 +33,7 @@
 ;; however can pop up any number of these dialog boxes and answer them
 ;; in any order he likes.  The main application stays alive as well.
 
-(use-modules (gnome gtk))
+(use-modules (oop goops) (gnome gtk))
 
 ;; The callbacks that have been delayed
 
