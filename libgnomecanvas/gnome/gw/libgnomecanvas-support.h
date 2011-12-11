@@ -37,12 +37,6 @@ void _wrap_gnome_canvas_item_affine_relative (GnomeCanvasItem *item,
 
 GnomeCanvasPoints *guile_gnome_scm_to_canvas_points (SCM scm);
 SCM guile_gnome_canvas_points_to_scm (GnomeCanvasPoints *points);
-#ifndef SCM_GNOME_CANVAS_POINTS
-GnomeCanvasPoints *_wrap_gnome_canvas_points_new (SCM scm);
-#else
-SCM _wrap_gnome_canvas_points_new (SCM scm);
-#endif
-GnomeCanvasPoints *guile_gnome_canvas_points_copy (GnomeCanvasPoints *points);
 
 #endif /* LIBGNOMECANVAS_SUPPORT_H */
 

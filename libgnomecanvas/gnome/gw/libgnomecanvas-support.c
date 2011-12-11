@@ -121,38 +121,3 @@ guile_gnome_canvas_points_to_scm (GnomeCanvasPoints *points)
 		    scm_from_double ((points->coords)[i]));
   return scm;
 }
-
-#ifndef SCM_GNOME_CANVAS_POINTS
-// arg -Werror breaks this nice trick
-//#message POINTS-POINTER
-GnomeCanvasPoints *
-_wrap_gnome_canvas_points_new (SCM scm)
-#define FUNC_NAME "gnome-canvas-points-new"
-{
-  SCM_ASSERT_TYPE (scm_vector_p (scm) == SCM_BOOL_T, scm, SCM_ARG1, FUNC_NAME,
-		   "points");
-  return guile_gnome_scm_to_canvas_points (scm);
-}
-#undef FUNC_NAME
-#else
-//#warning POINTS-SCM
-SCM
-_wrap_gnome_canvas_points_new (SCM scm)
-#define FUNC_NAME "gnome-canvas-points-new"
-{
-  GnomeCanvasPoints *points;
-  SCM spoints;
-  SCM_ASSERT_TYPE (scm_vector_p (scm) == SCM_BOOL_T, scm, SCM_ARG1, FUNC_NAME,
-		   "points");
-  points = guile_gnome_scm_to_canvas_points (scm);
-  return scm_c_gvalue_new_take_boxed (GNOME_TYPE_CANVAS_POINTS, points);
-}
-#endif
-
-GnomeCanvasPoints *
-guile_gnome_canvas_points_copy (GnomeCanvasPoints *points)
-{
-  SCM scm = guile_gnome_canvas_points_to_scm (points);
-  return guile_gnome_scm_to_canvas_points (scm);
-}
-#undef FUNC_NAME
