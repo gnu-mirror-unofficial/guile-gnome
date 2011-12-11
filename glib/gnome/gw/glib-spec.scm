@@ -134,6 +134,7 @@
      ("none" void . #f)))
 
   (add-type-rule! ws "gchar**" '(mchars caller-owned out))
+  (add-type-rule! ws "const-gchar**" '(mchars callee-owned out))
 
   (add-type! ws (make <glist-of-type> #:name 'glist-of
                       #:type-cname "GList*" #:func-prefix "g_list"))
