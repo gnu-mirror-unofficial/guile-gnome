@@ -1,5 +1,5 @@
 # guile-gnome
-# Copyright (C) 2007 Free Software Foundation, Inc.
+# Copyright (C) 2007, 2011 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or    
 # modify it under the terms of the GNU General Public License as   
@@ -32,7 +32,7 @@ extra_module_names =
 wrapset_modules = ($(top_module_name) $(gw_module_name) $(extra_module_names))
 WRAPSET_TESTS_ENV = WRAPSET_MODULES="$(wrapset_modules)" WRAPSET_API_FILE=$(srcdir)/wrapset.api
 DEV_ENV = $(top_builddir)/dev-environ
-GUILE=$(if $(findstring glib,$(AG_PACKAGES)),guile,guile-gnome-$(API_VERSION))
+GUILE = guile
 
 TESTS_ENVIRONMENT=$(WRAPSET_TESTS_ENV) $(DEV_ENV) $(GUILE) $(GUILE_FLAGS) -e main -s
 

@@ -38,12 +38,10 @@ SUFFIXES = .x .doc
 
 GUILE_SNARF_CFLAGS = $(DEFS) $(AM_CFLAGS) $(GUILE_CFLAGS) $(G_WRAP_CFLAGS)
 
-PKG_PATH = $(shell echo $(AG_PACKAGES:%=$(top_srcdir)/%) $(srcdir) | sed 's, ,:,g')
-@MK@ifneq ($(top_srcdir),$(top_builddir))
-	PKG_PATH += $(shell echo $(AG_PACKAGES:%=$(top_builddir)/%) | sed 's, ,:,g')
-@MK@endif
-
-GUILE_LOAD_PATH := $(PKG_PATH):${G_WRAP_MODULE_DIR}:${GUILE_LOAD_PATH}
+PACKAGES = atk cairo corba defs gconf glib gnome-vfs gtk libglade libgnome libgnomecanvas libgnomeui pango
+SOURCE_GUILE_PATH=$(shell echo $(addprefix $(top_srcdir)/,$(PACKAGES)) | sed -e 's/ /:/g'):$(srcdir)
+BUILD_GUILE_PATH=$(if $(filter-out $(top_srcdir),$(top_builddir)),$(shell echo $(addprefix $(top_builddir)/,$(PACKAGES)) | sed -e 's/ /:/g'),)
+GUILE_LOAD_PATH:=$(BUILD_GUILE_PATH)$(SOURCE_GUILE_PATH):${G_WRAP_MODULE_DIR}:${GUILE_LOAD_PATH}
 export GUILE_LOAD_PATH
 
 .c.x:

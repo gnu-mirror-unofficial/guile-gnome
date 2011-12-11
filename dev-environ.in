@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # guile-gnome
-# Copyright (C) 2003,2004 Free Software Foundation, Inc.
+# Copyright (C) 2003,2004,2011 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or    
 # modify it under the terms of the GNU General Public License as   
@@ -29,7 +29,7 @@ cd $this_dir
 src_dir=`readlink -f $src_dir`
 cd $pwd
 
-ALL_PKGS="@AG_PACKAGES@"
+ALL_PKGS="atk cairo corba defs gconf glib gnome-vfs gtk libglade libgnome libgnomecanvas libgnomeui pango"
 
 for pkg in $ALL_PKGS; do
   if [ -d $src_dir/$pkg ]; then
@@ -41,16 +41,12 @@ for pkg in $ALL_PKGS; do
     if [ -d $this_dir/$pkg/bin ]; then
       PATH=$this_dir/$pkg/bin:$PATH
     fi
-    if [ -f $src_dir/$pkg/shlib-dirs.ac ]; then
-      for dir in `cat $src_dir/$pkg/shlib-dirs.ac`; do
-	LTDL_LIBRARY_PATH=$this_dir/$pkg/$dir:$LTDL_LIBRARY_PATH
-      done
-    else
-      LTDL_LIBRARY_PATH=$this_dir/$pkg/gnome/gw:$LTDL_LIBRARY_PATH
-    fi
+    LTDL_LIBRARY_PATH=$this_dir/$pkg/gnome/gw:$LTDL_LIBRARY_PATH
     PKG_CONFIG_PATH=$this_dir/$pkg:$PKG_CONFIG_PATH
   fi
 done
+
+LTDL_LIBRARY_PATH=$this_dir/glib/gnome/gobject:$LTDL_LIBRARY_PATH
 
 export GUILE_LOAD_PATH LTDL_LIBRARY_PATH PKG_CONFIG_PATH PATH
 

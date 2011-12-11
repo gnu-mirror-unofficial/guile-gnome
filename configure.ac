@@ -46,8 +46,6 @@ AC_STDC_HEADERS
 AC_PROG_LIBTOOL
 
 AC_SUBST(AG_PKG_CONFIG_PATH, [$pkg_config_path])
-AG_PACKAGES="atk cairo corba defs gconf glib gnome-vfs gtk libglade libgnome libgnomecanvas libgnomeui pango"
-AC_SUBST(AG_PACKAGES)
 
 if test "x$prefix" = xNONE; then
    AC_MSG_ERROR([No explicit prefix given.
@@ -65,7 +63,6 @@ you will need to modify GUILE_LOAD_PATH and LD_LIBRARY_PATH every time
 you run guile. (Which is a pain.)])
 fi
 
-MK=""; AC_SUBST(MK)
 WARN_CFLAGS=-Wall
 AC_ARG_ENABLE([Werror], AC_HELP_STRING([--enable-Werror],[Stop the build on warnings]),
         [WARN_CFLAGS="-Wall -Werror"], [])
