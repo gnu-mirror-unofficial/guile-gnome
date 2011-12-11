@@ -124,6 +124,8 @@ _wrap_gtk_action_group_add_actions (GtkActionGroup *action_group,
                                     (scm_c_resolve_module ("gnome gobject"),
                                      "gtype-instance-signal-connect"));
 
+    scm_dynwind_begin (0);
+
     for (; SCM_NNULLP (entries); entries = SCM_CDR (entries)) {
         entry = SCM_CAR (entries);
         SCM_VALIDATE_NONEMPTYLIST (1, entry);
@@ -149,6 +151,8 @@ _wrap_gtk_action_group_add_actions (GtkActionGroup *action_group,
         gtk_action_group_add_action_with_accel (action_group, action, accelerator);
         g_object_unref (action);
     }
+
+    scm_dynwind_end ();
 }
 #undef FUNC_NAME
 
@@ -170,6 +174,8 @@ _wrap_gtk_action_group_add_toggle_actions (GtkActionGroup *action_group,
         connect = SCM_VARIABLE_REF (scm_c_module_lookup
                                     (scm_c_resolve_module ("gnome gobject"),
                                      "gtype-instance-signal-connect"));
+
+    scm_dynwind_begin (0);
 
     for (; SCM_NNULLP (entries); entries = SCM_CDR (entries)) {
         entry = SCM_CAR (entries);
@@ -199,6 +205,8 @@ _wrap_gtk_action_group_add_toggle_actions (GtkActionGroup *action_group,
         gtk_action_group_add_action_with_accel (action_group, GTK_ACTION (action), accelerator);
         g_object_unref (action);
     }
+
+    scm_dynwind_end ();
 }
 #undef FUNC_NAME
 
@@ -234,6 +242,8 @@ _wrap_gtk_action_group_add_radio_actions (GtkActionGroup *action_group,
     len = scm_ilength (entries);
     raes = g_new0 (GtkRadioActionEntry, len);
 
+    scm_dynwind_begin (0);
+
     for (i=0; SCM_NNULLP (entries); entries = SCM_CDR (entries), i++) {
         entry = SCM_CAR (entries);
         SCM_VALIDATE_NONEMPTYLIST (1, entry);
@@ -252,6 +262,8 @@ _wrap_gtk_action_group_add_radio_actions (GtkActionGroup *action_group,
     gtk_action_group_add_radio_actions (action_group, raes, len, value,
                                         G_CALLBACK (action_group_radio_actions_callback),
                                         SCM_TO_GPOINTER (on_change));
+
+    scm_dynwind_end ();
 
     g_free (raes);
 }
