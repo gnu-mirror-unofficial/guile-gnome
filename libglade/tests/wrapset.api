@@ -38,15 +38,7 @@
      (unblock generic (<gtype-instance> <top>))))
   ((gnome gw generics)
    (uses-interfaces (gnome gobject generics))
-   (typed-exports
-     (set generic
-          (<gobject> <symbol> <top>)
-          (<gtk-alignment> <real> <real> <real> <real>)
-          (<gtk-arrow> <top> <top>)
-          (<gtk-aspect-frame> . <top>)
-          (<gtk-list-store> <gtk-tree-iter> . <top>)
-          (<gtk-print-settings> <string> <string>)
-          (<gtk-tree-store> <gtk-tree-iter> . <top>))))
+   (typed-exports))
   ((gnome gw libglade)
    (uses-interfaces (gnome gw generics))
    (typed-exports
