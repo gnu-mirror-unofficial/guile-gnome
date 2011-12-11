@@ -14,8 +14,8 @@
 (define (activate-action action)
   (let* ((name     (get-name action))
 	 (dialog   (make <gtk-message-dialog> 
-		     :parent window
-		     :flags 'destroy-with-parent
+                     :transient-for window
+                     :destroy-with-parent #t
 		     :message-type 'info
 		     :buttons 'close
 		     :text (format 
@@ -31,8 +31,8 @@
 (define (activate-radio-action action current)
   (if (get-active current)
       (let ((dialog (make <gtk-message-dialog>
-		      :parent window
-		      :flags 'destroy-with-parent
+                      :transient-for window
+                      :destroy-with-parent #t
 		      :message-type 'info
 		      :buttons 'close
 		      :text (format 

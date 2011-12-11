@@ -11,8 +11,9 @@
   (let ((i 0))
     (lambda (parent)
       (let ((dialog (make <gtk-message-dialog> 
-		      :parent parent
-		      :flags '(modal destroy-with-parent)
+                      :transient-for parent
+                      :destroy-with-parent #t
+                      :modal #t
 		      :message-type 'info
 		      :buttons 'ok
 		      :text (string-append
