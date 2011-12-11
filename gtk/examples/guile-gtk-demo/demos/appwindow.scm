@@ -39,8 +39,7 @@
 			     #f
 			     "You activated radio action: \"~A\" of type \"~A\".\nCurrent value: ~A"
 			     (get-name current)
-			     (gtype-name 
-			      (gtype-class->type (class-of action)))
+                             (class-of action)
 			     (get-current-value current)))))
 	;; close dialog on user response
 	(connect dialog 'response (lambda (d arg1)
