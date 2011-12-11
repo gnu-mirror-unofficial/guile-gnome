@@ -1,6 +1,6 @@
 ;; guile-gnome
 ;; Copyright (C) 2001 Martin Baulig <martin@gnome.org>
-;;               2003,2004 Andy Wingo <wingo at pobox dot com>
+;;               2003,2004,2011 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -270,12 +270,7 @@
       (set-struct-vtable-name! struct type-name)
       struct)))
 
-(define the-environment
-  (procedure->syntax
-   (lambda (x e)
-     e)))
-
-(define the-corba-environment (the-environment))
+(define the-corba-environment (current-module))
 
 (define (corba-record-type? obj)
   (and (struct? obj) (eq? corba-record-type-vtable (struct-vtable obj))))
@@ -292,33 +287,33 @@
 
 (define (corba-record-constructor rtd . opt)
   (let ((field-names (if (pair? opt) (car opt) (corba-record-type-fields rtd))))
-    (local-eval `(lambda ,field-names
-		   (let ((struct (make-corba-struct (corba-record-typecode ',rtd) 1)))
-		     (struct-set! struct %corba-struct-vtable-offset-printer
-				  (struct-ref ',rtd %corba-struct-vtable-offset-printer))
-		     (struct-set! struct (+ 1 %corba-struct-vtable-offset-user) ',rtd)
-		     (let loop ((fields (list ,@(map (lambda (f)
-						       (if (memq f field-names)
-							   f
-							   #f))
-						     (corba-record-type-fields `,rtd))))
-				(off 0))
-		       (cond
-			((not (null? fields))
-			 (corba-struct-set! struct off (car fields))
-			 (loop (cdr fields) (+ 1 off)))))
-		     struct))
-		the-corba-environment)))
+    (eval `(lambda ,field-names
+             (let ((struct (make-corba-struct (corba-record-typecode ',rtd) 1)))
+               (struct-set! struct %corba-struct-vtable-offset-printer
+                            (struct-ref ',rtd %corba-struct-vtable-offset-printer))
+               (struct-set! struct (+ 1 %corba-struct-vtable-offset-user) ',rtd)
+               (let loop ((fields (list ,@(map (lambda (f)
+                                                 (if (memq f field-names)
+                                                     f
+                                                     #f))
+                                               (corba-record-type-fields `,rtd))))
+                          (off 0))
+                 (cond
+                  ((not (null? fields))
+                   (corba-struct-set! struct off (car fields))
+                   (loop (cdr fields) (+ 1 off)))))
+               struct))
+          the-corba-environment)))
 
 (define (corba-record-constructor-from-struct rtd)
   (let ((field-names (corba-record-type-fields rtd)))
-    (local-eval `(lambda (corba-struct)
-		   (let ((struct (make-corba-struct (corba-record-typecode ',rtd) 1 corba-struct)))
-		     (struct-set! struct %corba-struct-vtable-offset-printer
-				  (struct-ref ',rtd %corba-struct-vtable-offset-printer))
-		     (struct-set! struct (+ 1 %corba-struct-vtable-offset-user) ',rtd)
-		     struct))
-		the-corba-environment)))
+    (eval `(lambda (corba-struct)
+             (let ((struct (make-corba-struct (corba-record-typecode ',rtd) 1 corba-struct)))
+               (struct-set! struct %corba-struct-vtable-offset-printer
+                            (struct-ref ',rtd %corba-struct-vtable-offset-printer))
+               (struct-set! struct (+ 1 %corba-struct-vtable-offset-user) ',rtd)
+               struct))
+          the-corba-environment)))
 
 (define (corba-record-predicate rtd)
   (lambda (obj) (and (corba-struct? obj) (eq? rtd (corba-record-type-descriptor obj)))))
@@ -327,19 +322,19 @@
   (let* ((pos (list-index (corba-record-type-fields rtd) field-name)))
     (if (not pos)
 	(error 'no-such-field field-name))
-    (local-eval `(lambda (obj)
-		   (and (eq? ',rtd (corba-record-type-descriptor obj))
-			(corba-struct-ref obj ,pos)))
-		the-corba-environment)))
+    (eval `(lambda (obj)
+             (and (eq? ',rtd (corba-record-type-descriptor obj))
+                  (corba-struct-ref obj ,pos)))
+          the-corba-environment)))
 
 (define (corba-record-modifier rtd field-name)
   (let* ((pos (list-index (corba-record-type-fields rtd) field-name)))
     (if (not pos)
 	(error 'no-such-field field-name))
-    (local-eval `(lambda (obj val)
-		   (and (eq? ',rtd (corba-record-type-descriptor obj))
-			(corba-struct-set! obj ,pos val)))
-		the-corba-environment)))
+    (eval `(lambda (obj val)
+             (and (eq? ',rtd (corba-record-type-descriptor obj))
+                  (corba-struct-set! obj ,pos val)))
+          the-corba-environment)))
 
 (define (corba-record? obj)
   (and (corba-struct? obj) (corba-record-type? (corba-record-type-descriptor obj))))

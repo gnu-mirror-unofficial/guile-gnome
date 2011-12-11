@@ -1,6 +1,6 @@
 /* guile-gnome
- * Copyright (C) 2001, 2009 Martin Baulig <martin@gnome.org>
- * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
+ * Copyright (C) 2003, 2009, 2011 Andy Wingo <wingo at pobox dot com>
  *
  * guile-gnome-corba-primitives.c:
  *
@@ -55,6 +55,7 @@ CORBA_ORB guile_corba_orb;
 static SCM _scm_make_class;
 static SCM scm_class_slot_set_x;
 static SCM make_marshal_func;
+static SCM make_dispatch_method;
 static SCM make_method;
 static SCM add_method;
 
@@ -623,7 +624,7 @@ guile_corba_sys_register_interface (ORBit_IInterface *iinterface)
 
 	SCM_NEWSMOB (imethod_smob, scm_tc16_orbit_imethod, imethod);
 
-        method_proc = scm_call_3 (make_method, method_gsubr, 
+        method_proc = scm_call_3 (make_dispatch_method, method_gsubr, 
                                   scm_symbol_to_string (method_name), imethod_smob);
 
 	specializers = SCM_LIST1 (stub_class);
@@ -817,7 +818,7 @@ scm_init_gnome_corba_primitives (void)
 
     make_marshal_func = scm_permanent_object
       (scm_c_eval_string ("(lambda (proc args) (lambda () (apply proc args)))"));
-    make_method = scm_permanent_object
+    make_dispatch_method = scm_permanent_object
       (scm_c_eval_string ("(lambda (gsubr name imethod)"
                           "  (lambda (object . args)"
                           "    (gsubr name imethod object args)))"));
