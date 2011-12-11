@@ -33,10 +33,6 @@ typedef off_t scm_t_off;
 #endif
 
 
-#define LOCK scm_i_pthread_mutex_lock (&scm_i_port_table_mutex)
-#define UNLOCK scm_i_pthread_mutex_unlock (&scm_i_port_table_mutex)
-
-
 static scm_t_bits scm_tc16_vport = 0;
 
 #define CHECK_RESULT(res) \
@@ -106,8 +102,6 @@ scm_gnome_vfs_handle_to_port (GnomeVFSHandle *handle, GnomeVFSOpenMode mode,
     SCM port;
     scm_t_port *pt;
 
-    LOCK;
-
     port = scm_new_port_table_entry (scm_tc16_vport);
     SCM_SET_CELL_TYPE(port, scm_tc16_vport | mode_bits);
     pt = SCM_PTAB_ENTRY(port);
@@ -118,8 +112,6 @@ scm_gnome_vfs_handle_to_port (GnomeVFSHandle *handle, GnomeVFSOpenMode mode,
     else
         scm_vport_buffer_add (port, -1, -1);
     SCM_SET_FILENAME (port, scm_from_locale_string (uri));
-
-    UNLOCK;
 
     return port;
 }
@@ -331,10 +323,6 @@ vport_write (SCM port, const void *data, size_t size)
         vport_flush (port);
 }
 
-/* becomes 1 when process is exiting: normal exception handling won't
-   work by this time.  */
-extern int scm_i_terminating; 
-
 static void
 vport_flush (SCM port)
 {
@@ -361,11 +349,7 @@ vport_flush (SCM port)
                     *(pt->write_buf + i) = *(pt->write_buf + done + i);
                 pt->write_pos = pt->write_buf + remaining;
             }
-            if (scm_i_terminating) {
-                fprintf (stderr, "Error: could not flush gnome-vfs handle %p",
-                         handle);
-                count = remaining;
-            } else if (scm_gc_running_p) {
+            if (scm_gc_running_p) {
                 /* silently ignore the error.  scm_error would abort if we
                    called it now.  */
                 count = remaining;
