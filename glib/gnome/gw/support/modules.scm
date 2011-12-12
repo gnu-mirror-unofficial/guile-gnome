@@ -40,6 +40,27 @@
         '(begin)))
   (export eval-when)))
 
+(define (force-bindings module)
+  (cond
+   ((and (eq? (module-kind module) 'interface) (module-binder module))
+    (force-bindings (resolve-module (module-name module))))
+   ((module-variable module '%gw-latent-variables-hash)
+    => (lambda (var)
+         (for-each
+          (lambda (k)
+            (module-variable (module-public-interface module) k))
+          ;; copy list of syms because the module binder mutates the hash
+          (hash-map->list (lambda (k v) k) (variable-ref var)))))
+   (else
+    (for-each force-bindings (module-uses module)))))
+
+(and=> (and (not (batch-mode?))
+            (module-variable (resolve-module '(ice-9 session))
+                             'apropos-hook))
+       (lambda (v)
+         (add-hook! (variable-ref v)
+                    (lambda (mod pat) (force-bindings mod)))))
+
 (define-macro (re-export-modules . args)
   "Re-export the public interface of a module; used like
 @code{use-modules}."
@@ -96,6 +117,7 @@ procedure on the public interface, which allows lazy binding to work."
       (set-module-binder!
        (module-public-interface mod)
        (lambda (interface sym define?)
-         (let ((var (module-local-variable mod sym)))
-           (if var (module-add! interface sym var))
-           var)))))))
+         (and (memq sym symbols)
+              (let ((var (module-local-variable mod sym)))
+                (if var (module-add! interface sym var))
+                var))))))))

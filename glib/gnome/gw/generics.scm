@@ -49,6 +49,9 @@
   (set-module-binder!
    (module-public-interface mod)
    (lambda (interface sym define?)
-     (let ((var (module-local-variable mod sym)))
-       (if var (module-add! interface sym var))
-       var))))
+     (case sym
+       ((%gw-latent-variables-hash %module-public-interface) #f)
+       (else
+        (let ((var (module-local-variable mod sym)))
+          (if var (module-add! interface sym var))
+          var))))))
