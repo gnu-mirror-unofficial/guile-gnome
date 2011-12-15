@@ -48,7 +48,11 @@
   
 (define-method (initializations-cg (self <gdk-wrapset>) err)
   (list (next-method)
-        "gdk_init (NULL, NULL);\n"))
+        "if (!gdk_init_check (NULL, NULL))\n"
+        "  scm_misc_error (\"gdk-init\","
+        "                  \"GDK failed to initialize; is $DISPLAY set correctly?\","
+        "                  SCM_EOL);\n"
+        ))
   
 (define-class <gdk-event-type> (<gobject-classed-pointer-type>))
 
