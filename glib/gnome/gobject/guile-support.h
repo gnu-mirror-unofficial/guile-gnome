@@ -34,6 +34,7 @@ G_BEGIN_DECLS
 #define SCM_VERSION_17X 1
 
 char* scm_to_locale_string_dynwind (SCM s);
+char* scm_to_utf8_stringn_dynwind (SCM s, size_t *lenp);
 char* scm_symbol_chars (SCM s);
 char* scm_symbol_chars_dynwind (SCM s);
 char* scm_keyword_chars (SCM s);

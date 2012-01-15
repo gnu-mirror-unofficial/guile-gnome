@@ -529,9 +529,13 @@ void
 _wrap_gtk_text_buffer_set_text (GtkTextBuffer *buf, SCM stext)
 #define FUNC_NAME "gtk-text-buffer-set-text"
 {
+    char *utf8_text;
+    size_t utf8_len;
+
     SCM_VALIDATE_STRING (2, stext);
     scm_dynwind_begin (0);
-    gtk_text_buffer_set_text (buf, scm_to_locale_string_dynwind (stext), scm_c_string_length (stext));
+    utf8_text = scm_to_utf8_stringn_dynwind (stext, &utf8_len);
+    gtk_text_buffer_set_text (buf, utf8_text, utf8_len);
     scm_dynwind_end ();
 }
 #undef FUNC_NAME
@@ -540,9 +544,13 @@ void
 _wrap_gtk_text_buffer_insert (GtkTextBuffer *buf, GtkTextIter* iter, SCM stext)
 #define FUNC_NAME "gtk-text-buffer-insert"
 {
+    char *utf8_text;
+    size_t utf8_len;
+
     SCM_VALIDATE_STRING (3, stext);
     scm_dynwind_begin (0);
-    gtk_text_buffer_insert (buf, iter, scm_to_locale_string_dynwind (stext), scm_c_string_length (stext));
+    utf8_text = scm_to_utf8_stringn_dynwind (stext, &utf8_len);
+    gtk_text_buffer_insert (buf, iter, utf8_text, utf8_len);
     scm_dynwind_end ();
 }
 #undef FUNC_NAME
@@ -551,9 +559,13 @@ void
 _wrap_gtk_text_buffer_insert_at_cursor (GtkTextBuffer *buf, SCM stext)
 #define FUNC_NAME "gtk-text-buffer-insert-at-cursor"
 {
+    char *utf8_text;
+    size_t utf8_len;
+
     SCM_VALIDATE_STRING (2, stext);
     scm_dynwind_begin (0);
-    gtk_text_buffer_insert_at_cursor (buf, scm_to_locale_string_dynwind (stext), scm_c_string_length (stext));
+    utf8_text = scm_to_utf8_stringn_dynwind (stext, &utf8_len);
+    gtk_text_buffer_insert_at_cursor (buf, utf8_text, utf8_len);
     scm_dynwind_end ();
 }
 #undef FUNC_NAME
@@ -563,12 +575,15 @@ _wrap_gtk_text_buffer_insert_interactive (GtkTextBuffer *buf, GtkTextIter* iter,
                                                    SCM stext, gboolean default_editable)
 #define FUNC_NAME "gtk-text-buffer-insert-interactive"
 {
+    char *utf8_text;
+    size_t utf8_len;
     gboolean ret;
 
     SCM_VALIDATE_STRING (3, stext);
     scm_dynwind_begin (0);
-    ret = gtk_text_buffer_insert_interactive (buf, iter, scm_to_locale_string_dynwind (stext),
-                                              scm_c_string_length (stext), default_editable);
+    utf8_text = scm_to_utf8_stringn_dynwind (stext, &utf8_len);
+    ret = gtk_text_buffer_insert_interactive (buf, iter, utf8_text, utf8_len,
+					      default_editable);
     scm_dynwind_end ();
     return ret;
 }
@@ -579,11 +594,14 @@ _wrap_gtk_text_buffer_insert_interactive_at_cursor (GtkTextBuffer *buf, SCM stex
                                                     gboolean default_editable)
 #define FUNC_NAME "gtk-text-buffer-insert-interactive-at-cursor"
 {
+    char *utf8_text;
+    size_t utf8_len;
     gboolean ret;
+
     SCM_VALIDATE_STRING (2, stext);
     scm_dynwind_begin (0);
-    ret = gtk_text_buffer_insert_interactive_at_cursor (buf, scm_to_locale_string_dynwind (stext),
-                                                        scm_c_string_length (stext),
+    utf8_text = scm_to_utf8_stringn_dynwind (stext, &utf8_len);
+    ret = gtk_text_buffer_insert_interactive_at_cursor (buf, utf8_text, utf8_len,
                                                         default_editable);
     scm_dynwind_end ();
     return ret;
@@ -595,6 +613,8 @@ _wrap_gtk_text_buffer_insert_with_tags (GtkTextBuffer *buf, GtkTextIter* iter,
                                         SCM stext, GList* tag_list)
 #define FUNC_NAME "gtk-text-buffer-insert-with-tags"
 {
+    char *utf8_text;
+    size_t utf8_len;
     GtkTextIter start;
     GList *walk;
     gint start_offset;
@@ -604,8 +624,8 @@ _wrap_gtk_text_buffer_insert_with_tags (GtkTextBuffer *buf, GtkTextIter* iter,
     SCM_VALIDATE_STRING (3, stext);
     scm_dynwind_begin (0);
     start_offset = gtk_text_iter_get_offset (iter);
-    gtk_text_buffer_insert (buf, iter, scm_to_locale_string_dynwind (stext),
-                            scm_c_string_length (stext));
+    utf8_text = scm_to_utf8_stringn_dynwind (stext, &utf8_len);
+    gtk_text_buffer_insert (buf, iter, utf8_text, utf8_len);
     gtk_text_buffer_get_iter_at_offset (buf, &start, start_offset);
     
     for (walk = tag_list; walk; walk = walk->next)
@@ -620,6 +640,8 @@ _wrap_gtk_text_buffer_insert_with_tags_by_name (GtkTextBuffer *buf, GtkTextIter*
                                                 SCM stext, GList* tag_list)
 #define FUNC_NAME "gtk-text-buffer-insert-with-tags-by-name"
 {
+    char *utf8_text;
+    size_t utf8_len;
     GtkTextIter start;
     GList *walk;
     gint start_offset;
@@ -629,8 +651,8 @@ _wrap_gtk_text_buffer_insert_with_tags_by_name (GtkTextBuffer *buf, GtkTextIter*
     SCM_VALIDATE_STRING (3, stext);
     scm_dynwind_begin (0);
     start_offset = gtk_text_iter_get_offset (iter);
-    gtk_text_buffer_insert (buf, iter, scm_to_locale_string_dynwind (stext),
-                            scm_c_string_length (stext));
+    utf8_text = scm_to_utf8_stringn_dynwind (stext, &utf8_len);
+    gtk_text_buffer_insert (buf, iter, utf8_text, utf8_len);
     gtk_text_buffer_get_iter_at_offset (buf, &start, start_offset);
     
     for (walk = tag_list; walk; walk = walk->next)

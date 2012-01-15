@@ -34,6 +34,14 @@ scm_to_locale_string_dynwind (SCM s)
 }
 
 char*
+scm_to_utf8_stringn_dynwind (SCM s, size_t *lenp)
+{
+    char *ret = scm_to_utf8_stringn (s, lenp);
+    scm_dynwind_free (ret);
+    return ret;
+}
+
+char*
 scm_symbol_chars (SCM s)
 {
     return scm_to_locale_string (scm_symbol_to_string (s));
