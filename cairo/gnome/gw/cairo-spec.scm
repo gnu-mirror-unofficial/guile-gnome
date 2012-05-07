@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2007 Free Software Foundation, Inc.
+;; Copyright (C) 2007, 2012 Free Software Foundation, Inc.
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -140,7 +140,15 @@
                   #:unwrap "scm_to_cairo_font_options"
                   #:copy "cairo_font_options_copy"
                   #:take "scm_take_cairo_font_options"))
-  (add-type-alias! ws "cairo_font_options_t*" 'cairo-font-options-t))
+  (add-type-alias! ws "cairo_font_options_t*" 'cairo-font-options-t)
+
+  (add-type! ws (make <cairo-opaque-type>
+                  #:name 'cairo-path-t
+                  #:c-type-name "cairo_path_t*"
+                  #:unwrap "scm_to_cairo_path"
+                  #:copy "cairo_copy_path"
+                  #:take "scm_take_cairo_path"))
+  (add-type-alias! ws "cairo_path_t*" 'cairo-path-t))
 
 (define-method (global-declarations-cg (ws <cairo-wrapset>))
   (list (next-method)
