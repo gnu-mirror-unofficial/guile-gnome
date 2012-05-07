@@ -260,6 +260,25 @@ exported by the module, although it can contain other things."
             (if (string-null? entry)
                 #f
                 `(cindex (% (entry ,entry)))))))
+    (emphasis
+     *preorder*
+     . ,(lambda (tag . body)
+          (if (and (pair? body)
+                   (pair? (car body))
+                   (eq? (caar body) '@))
+              (if (assq 'role (cdar body))
+                  ;; Ignore role = annotation.
+                  ""
+                  (begin
+                    (warn "Ignoring emphasis attributes" (car body))
+                    (cons 'emph
+                          (map (lambda (x)
+                                 (pre-post-order x *gtk-doc-sdocbook->stexi-rules*))
+                               (cdr body)))))
+              (cons 'emph
+                    (map (lambda (x)
+                           (pre-post-order x *gtk-doc-sdocbook->stexi-rules*))
+                         body)))))
     (*text*
      . ,(lambda (tag text)
           (or (assoc-ref '(("NULL" . (code "#f"))
