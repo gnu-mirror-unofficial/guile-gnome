@@ -104,6 +104,10 @@
      ("GClosure*" <gclosure>)
      ("GParamSpec*" <gparam>)))
   
+  (wrap-gobject-class!
+   ws
+   #:ctype "GObjectClass" #:gtype-id "G_TYPE_OBJECT")
+
   ;; Wrap the pariah function of gobject.
   (wrap-function!
    ws
