@@ -25,6 +25,23 @@
 #include <string.h>
 
 
+#if SCM_MAJOR_VERSION < 2
+char *
+scm_to_utf8_string (SCM str)
+{
+  return scm_to_utf8_stringn (str, NULL);
+}
+
+/* This fallback is for Guile 1.8, where we don't know the encoding of the
+ * strings.  We just have to assume that the user is running in a UTF-8 locale,
+ * and that the string is encoded correctly.  Cross your fingers!  */
+char *
+scm_to_utf8_stringn (SCM str, size_t *lenp)
+{
+  return scm_to_locale_stringn (str, NULL);
+}
+#endif
+
 char*
 scm_to_locale_string_dynwind (SCM s)
 {

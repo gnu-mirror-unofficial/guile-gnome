@@ -33,6 +33,11 @@ G_BEGIN_DECLS
 /* We have Guile >= 1.8.0, so we certainly have Guile 1.7.x.  */
 #define SCM_VERSION_17X 1
 
+#if SCM_MAJOR_VERSION < 2
+char* scm_to_utf8_string (SCM s);
+char* scm_to_utf8_stringn (SCM s, size_t *lenp);
+#endif
+
 char* scm_to_locale_string_dynwind (SCM s);
 char* scm_to_utf8_stringn_dynwind (SCM s, size_t *lenp);
 char* scm_symbol_chars (SCM s);
