@@ -1,10 +1,62 @@
 guile-gnome-platform NEWS --- history of user-visible changes.
-Copyright (C) 2004,2005,2006,2007,2008,2011 Free Software Foundation, Inc.
+Copyright (C) 2004,2005,2006,2007,2008,2011,2012 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
 
 
 guile-gnome-platform is a binding between Guile Scheme and the Gnome
 stack of libraries.  See the README, for more information.
+
+
+guile-gnome-platform 2.16.2 -- 2012-09-05
+=========================================
+
+packaging changes
+-----------------
+* Instead of the terribly complicated revision control configuration
+  that we had before, now all code is in git, and in just one branch.
+  The build files like Makefile.am and configure.ac are no longer
+  generated from other files.
+
+* Update to support Guile 2.0 in addition to 1.8.  (We don't currently
+  install compiled .go files yet.)
+
+* Require G-Wrap 1.9.14.
+
+* If Guile is new enough, tab completion at the REPL will cause all
+  "latent" bindings to become present.  This makes it easier to explore
+  the API.
+
+glib
+----
+* Fix generation of code that produces errors when compiled when
+  wrapping GList* types.
+
+gtk
+---
+* Fix some instances of allocating boxed types with g_new0 instead of
+  the boxed type's own copy function.  Thanks to Greg Benison and
+  Patrick Bernaud.
+
+* Fix linking error regarding libgw-guile-gnome-gtk and libguile-cairo.
+  Thanks to Andreas Rottmann.
+
+* Add overrides with parameter annotations for methods of
+  GtkPrintOperation (bug #603211).  Thanks to Patrick Bernaud.
+
+* Add wrapper for gtk_tree_view_get_path_at_pos().  Thanks to Patrick
+  Bernaud.
+
+* Fix up some of the example files for 2.16.0 API.  Thanks to Patrick
+  Bernaud.
+
+* The GtkTextBuffer API now uses UTF-8 for Guile 2.0.  Thanks to Mark
+  Weaver.  There is more work to do regarding UTF-8 and Guile 2.0,
+  though.
+
+libglade
+--------
+* Fix automatic connection of signals to handlers (bug #605248).  Thanks
+  to Patrick Bernaud.
 
 
 guile-gnome-platform 2.16.1 - Andy Wingo, 2008-07-03
