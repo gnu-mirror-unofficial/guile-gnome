@@ -45,7 +45,7 @@
                 <gparam-uint> <gparam-long> <gparam-ulong> <gparam-int64>
                 <gparam-uint64> <gparam-float> <gparam-double>
                 <gparam-unichar> <gparam-pointer> <gparam-string>
-                <gparam-boxed> <gparam-enum> <gparam-flags>
+                <gparam-boxed> <gparam-enum> <gparam-flags> <gparam-gtype>
                 ;; Helper class
                 <gparam-spec-flags>
                 ;; Limits
@@ -326,6 +326,14 @@ values."
    #:pred (lambda (x) (or (not x) (is-a? x <gparam>))))
   #:value-type <gvalue-array>
   #:gtype-name "GParamValueArray")
+
+(define-class-with-docs <gparam-gtype> (<gparam>)
+  "Parameter for @code{<gtype>} values."
+  (is-a-type
+   #:init-keyword #:is-a-type #:allocation #:checked
+   #:pred (lambda (x) (or (not x) (is-a? x <gtype-class>))))
+  #:value-type <gtype-class>
+  #:gtype-name "GParamGType")
 
 ;;;
 ;;; {Instance Initialization}

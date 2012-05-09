@@ -67,6 +67,7 @@ SCM_SYMBOL (sym_boxed_type, "boxed-type");
 SCM_SYMBOL (sym_enum_type, "enum-type");
 SCM_SYMBOL (sym_flags_type, "flags-type");
 SCM_SYMBOL (sym_element_spec, "element-spec");
+SCM_SYMBOL (sym_is_a_type, "is-a-type");
 
 
 
@@ -218,6 +219,12 @@ static void scm_c_gparam_initialize_scm (SCM param, gpointer ppspec)
         SET (default_value, scm_from_uint (p->default_value));
     }
     
+    else if (G_IS_PARAM_SPEC_GTYPE (pspec)) {
+        GParamSpecGType *p = (GParamSpecGType *) pspec;
+        SET (is_a_type, ((p->is_a_type == G_TYPE_NONE)
+                         ? SCM_BOOL_F : scm_c_gtype_to_class (p->is_a_type)));
+    }
+
     else {
         g_warning ("param type not implemented: %s",
                    g_type_name (G_TYPE_FROM_INSTANCE (pspec)));
@@ -391,6 +398,12 @@ scm_c_gparam_construct (SCM instance, SCM initargs)
         pspec = g_param_spec_unichar (name, nick, blurb,
                                       scm_to_uint (REF (default_value)),
                                       flags);
+    }
+    else if (param_type == G_TYPE_PARAM_GTYPE) {
+        SCM type = REF (is_a_type);
+        if (scm_is_true (type))
+            type = scm_c_gtype_class_to_gtype (type);
+        pspec = g_param_spec_gtype (name, nick, blurb, type, flags);
     }
     else {
         scm_c_gruntime_error ("%gparam-construct",
