@@ -35,7 +35,7 @@ uninstall-local:
 	rm -f $(DESTDIR)$(guilesite)/gnome-@API_VERSION@.scm
 
 EXTRA_DIST = guile-gnome-glib.pc.in guile-gnome-glib-uninstalled.pc.in \
-	AUTHORS NEWS TODO WARTS REFCOUNTING THREADING NEWS.guile-gobject \
-	README $(wildcard *.ac) gnome.scm.in VERSION ChangeLog.pre-2.16
+	AUTHORS TODO WARTS REFCOUNTING THREADING NEWS.guile-gobject \
+	README gnome.scm.in ChangeLog.pre-2.16
 
 CLEANFILES = $(pcifiles) $(pcufiles) $(bin_SCRIPTS) gnome-@API_VERSION@.scm
