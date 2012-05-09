@@ -1,7 +1,7 @@
 /* -*- Mode: C; c-basic-offset: 4 -*- */
 /* guile-gnome
- * Copyright (C) 2001, 2009 Martin Baulig <martin@gnome.org>
- * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2003,2004,2009,2012 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
  *
  * gtype.c: Base support for the GLib type system
  *
@@ -696,6 +696,13 @@ void scm_c_gruntime_error (const char *subr, const char *message,
  * Initialization
  **********************************************************************/
 
+static void
+sink_initially_unowned (gpointer i)
+{
+    if (g_object_is_floating (i))
+        g_object_ref_sink (i);
+}
+
 void
 scm_init_gnome_gobject_types (void)
 {
@@ -725,6 +732,9 @@ scm_init_gnome_gobject_types (void)
         scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("allocate-instance")));
     _initialize =
         scm_permanent_object (SCM_VARIABLE_REF (scm_c_lookup ("initialize")));
+
+    scm_register_gtype_instance_sinkfunc (G_TYPE_INITIALLY_UNOWNED,
+                                          sink_initially_unowned);
 }
 
 void
