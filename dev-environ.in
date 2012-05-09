@@ -21,32 +21,22 @@
 # Boston, MA  02111-1307,  USA       gnu@gnu.org
 
 
-pwd=`pwd`
-this_dir=`dirname $0`
-this_dir=`readlink -f $this_dir`
-src_dir=@top_srcdir@
-cd $this_dir
-src_dir=`readlink -f $src_dir`
-cd $pwd
+srcdir=@abs_top_srcdir@
+builddir=@abs_top_builddir@
 
-ALL_PKGS="atk cairo corba defs gconf glib gnome-vfs gtk libglade libgnome libgnomecanvas libgnomeui pango"
-
-for pkg in $ALL_PKGS; do
-  if [ -d $src_dir/$pkg ]; then
-    if [ $src_dir != $this_dir ]; then
-      GUILE_LOAD_PATH=$src_dir/$pkg:$this_dir/$pkg:$GUILE_LOAD_PATH
-    else
-      GUILE_LOAD_PATH=$this_dir/$pkg:$GUILE_LOAD_PATH
-    fi
-    if [ -d $this_dir/$pkg/bin ]; then
-      PATH=$this_dir/$pkg/bin:$PATH
-    fi
-    LTDL_LIBRARY_PATH=$this_dir/$pkg/gnome/gw:$LTDL_LIBRARY_PATH
-    PKG_CONFIG_PATH=$this_dir/$pkg:$PKG_CONFIG_PATH
+for pkg in atk cairo corba defs gconf glib gnome-vfs gtk libglade libgnome libgnomecanvas libgnomeui pango; do
+  GUILE_LOAD_PATH=$srcdir/$pkg:$GUILE_LOAD_PATH
+  if [ $srcdir != $builddir ]; then
+    GUILE_LOAD_PATH=$builddir/$pkg:$GUILE_LOAD_PATH
   fi
+  if [ -d $builddir/$pkg/bin ]; then
+    PATH=$builddir/$pkg/bin:$PATH
+  fi
+  LTDL_LIBRARY_PATH=$builddir/$pkg/gnome/gw:$LTDL_LIBRARY_PATH
+  PKG_CONFIG_PATH=$builddir/$pkg:$PKG_CONFIG_PATH
 done
 
-LTDL_LIBRARY_PATH=$this_dir/glib/gnome/gobject:$LTDL_LIBRARY_PATH
+LTDL_LIBRARY_PATH=$builddir/glib/gnome/gobject:$LTDL_LIBRARY_PATH
 
 export GUILE_LOAD_PATH LTDL_LIBRARY_PATH PKG_CONFIG_PATH PATH
 
