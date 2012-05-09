@@ -1,7 +1,11 @@
 Guile-GNOME HACKING
-Copyright (C) 2004,2006,2009,2010,2011 Free Software Foundation, Inc.
-See the end for copying conditions of this file.
-Last updated 7 December 2011.
+Copyright (C) 2004,2006,2009,2010,2011,2012 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice
+and this notice are preserved.
+
+Last updated 9 May 2012.
 
 
 So, you want to hack Guile-GNOME?
@@ -36,16 +40,15 @@ contributor, this entails a number of things:
   * If your change is visible to a user of the package, update the
     appropriate NEWS file.
 
-  * In order to defend the freedom of users, the Free Software
-    Foundation needs to hold the copyright on Guile-GNOME. If you have
+  * Like many other GNU packages, we currently assign copyright to all
+    changes to Guile-GNOME to the Free Software Foundation.  If you have
     not signed a copyright assignment form for Guile-GNOME, you will
-    need to do so. Please contact me at wingo@pobox.com for more
+    need to do so.  Please contact me at wingo@pobox.com for more
     information.
 
   * Each file should have a standard GPL copyright header. If you change
     a file, be sure it has a header, and that the copyright years are up
-    to date. Don't hyphenate a year range; e.g., say 2004,2005 rather
-    than 2004-5.
+    to date.
 
 
 Adding new bindings
@@ -72,11 +75,123 @@ If you want to experiment with GObject-Introspection, see Zeeshan Ali's
 related project, guile-gir.
 
 
-Copying this file
-=================
+Updating an existing binding
+============================
 
-Copyright (C) 2006,2009 Free Software Foundation, Inc.
+Although allowing that GObject-Introspection is probably the right way
+forward in the future, for a change to a library that you have already
+wrapped, within a stable API series, it is usually less work just to
+update that library's bindings by hand.  Here's an incomplete checklist
+of things to do, in order to update a binding.  Let's take Clutter as an
+example.
 
-Copying and distribution of this file, with or without modification, are
-permitted in any medium without royalty provided the copyright notice
-and this notice are preserved.
+  1) Remove development packages for the library from your system.  For
+     example, apt-get remove libclutter-1.0-dev.
+
+  2) Ideally, install the original version that you wrapped to some
+     location outside of /usr.  For example if you last wrapped Clutter
+     1.10, download the latest clutter-1.10.x tarball and build and
+     install it with --prefix=/opt/clutter.
+
+  3) Build the binding in an environment with /opt/clutter/lib/pkgconfig
+     in the PKG_CONFIG_PATH, and /opt/clutter/lib in the
+     LD_LIBRARY_PATH.  Run make check.  Everything should work.
+
+These first three steps ensure you are starting from a known-good
+configuration.
+
+  4) "make uninstall" to remove the current version of Clutter.
+
+  5) Download the next stable version of Clutter, for example 1.12.0.
+     Install it to /opt/clutter as you did before with the previous
+     clutter version.
+
+  6) In guile-clutter, run ./dev-environ guile-gnome-2, and (use-modules
+     (gnome clutter)).  That should work without problems.  If it
+     didn't, then perhaps Clutter changed ABI incompatibly.
+
+  7) Run ./config.status --recheck, make clean, and make.  This rebuilds
+     guile-clutter against the new Clutter library.  If this didn't
+     work, it means Clutter changed API incompatibly.   This has
+     happened a couple times in the past -- Guile-GNOME's header scanner
+     can wrap types and funcitons that are not meant to be public.
+     Ideally this would never happen.  If it does happen, and it is
+     serious, let the upstream library authors know.
+
+These next steps are a basic sanity check.  Now we move on to update the
+binding.
+
+  8) Visit clutter/gnome/defs/.  The Makefile.am usually has some rules
+     to re-scan header files, and update the defs.  Check to see that
+     the path that it will scan exists on your system, and build that
+     make target.  For example in Clutter there are three targets,
+     "clutter", "clutter-glx", and "clutter-x11".
+
+  9) Make clean, making sure that the guile-gnome-gw-*.[ch] files are
+     removed from clutter/gnome/gw/.  Make.  This may or may not
+     succeed.  In this step we are trying to build new bindings.  The
+     bindings generator will spit out a progress report: first on the
+     wrapsets that guile-clutter uses, then for guile-clutter itself.
+
+     If it builds, great!  There are a few ways it can go wrong though.
+
+     Any warning of the form "Opaque type for function clutter-foo:
+     Foo*" will need to be fixed, but is not immediately an error.
+
+     New functions that accept or return GList* or GSList* arguments
+     will need to be overridden to specify the item type.  See
+     clutter/gnome/overrides/clutter.defs to see how this is done.
+
+     Some functions will need to be skipped entirely.  See the
+     ignore-glob section in overrides/clutter.defs for examples.
+
+     Some functions will need special wrappers.  Those wrappers
+     typically go in clutter/gnome/gw/clutter-support.[ch].  There are a
+     few examples in clutter as well.
+
+     Some types can also need special wrappers -- boxed types that have
+     a special representation, for example.  Those need support.[ch]
+     wrappers in addition to a declaration in
+     clutter/gnome/gw/clutter-spec.scm.
+
+     Sometimes "out" arguments provoke warnings or errors.  In some
+     cases you can get around these by adding a type alias.  See
+     clutter-spec.scm for some examples.
+
+     Finally, the bindings generator can miss some types.  This happens
+     especially often with boxed and interface types.  See
+     overrides/clutter.defs for some examples.  You also might need to
+     ignore some types; in that case you will need to add to the
+     corresponding type-ignores file, as in
+     overrides/clutter.defs-type-ignores.
+
+ 10) OK does it build?  Super!  Now run "make check".  This will check
+     that any API that was present in a previous release is still
+     present.  If this fails, it can mean that when you updated the defs
+     files, you missed some entries that were there previously.  For
+     example, Clutter moved a bunch of headers into a subdirectory, at
+     one point.  Check to see that the functions were not removed from
+     your defs file.  You might need to update h2defs.py if something
+     really strange happened to the header, as was the case with the
+     CLUTTER_DEPRECATED_IN_1_10_FOR() annotations.
+
+ 11) Does it pass make check?  Great!  Update the wrapset.api to ensure
+     that future versions will not regress.  Go into the tests directory
+     and "make wrapset.api.update".
+
+ 12) Now it's time to update the documentation.  This is a tricky
+     process.  The documentation is generated from a combination of the
+     wrapset itself, and the upstream XML files that gtk-doc produces.
+     Visit the doc directory and check that the Makefile.am gives a
+     proper path to the XML files.  Then run "make generate-defuns", and
+     the same for generate-stubs and generate-undocumented.  This might
+     produce new files.  If it does, add the sections to the main .texi
+     file, and add entries to the menus.  Make sure it still builds.  If
+     it doesn't, you might need to update the docbook-to-texinfo
+     pipeline.  Good luck!
+
+ 13) Hey it works?  Update the version in configure.ac, remake, make
+     distcheck, and then commit.  Then go back to step 4, as
+     appropriate.
+
+ 14) Remember to release!
