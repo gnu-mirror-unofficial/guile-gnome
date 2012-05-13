@@ -1,49 +1,23 @@
 How releases work
 -----------------
 
-Why (is this so complicated)
-----------------------------
-Guile-gnome can be configured in many ways, with many different
-subpackages. Certain sets of subpackages form release sets, such as
-guile-gnome-platform or guile-gnome-gstreamer. The set of checked-out
-subpackages determines what release set will be configured, if any.
-
-What
-----
-The package to be released is determined by listing all subpackages, and
-seeing if the set matches one of the sets in PACKAGES. In any given
-release set, one and only one subpackage will have a file VERSION
-located in its root, which determines the package version. The tarball
-will then be named $package-$version.tar.gz.
-
-Who
----
-Anyone can make a release. Only one person, however, is the release
-manager. The release manager is the one who rolls the official packages
-and posts them on gnu.org. When a release is made by someone who is not
-the release manager (checked via `git config user.email`), "+unofficial"
-is appended to the version.
-
-How
----
 1) Stabilize everything, etc.
 
 2) Re-autogen and make distcheck to make sure everything works.
 
-3) Figure out the package name (e.g. guile-gnome-platform) and the new
-   version. Run scripts/maint/prepare-release PACKAGE VERSION
-   PREV-VERSION. That will prepare NEWS files for each package, which
-   will include the difference in the ChangeLogs for you to process into
-   proper release notes.
+3) Edit the NEWS file and update the version in configure.ac.
 
-4) Edit the NEWS files. Don't forget the toplevel NEWS file.
+4) git tag -s vx.y.z
 
-5) Run scripts/maint/commit-release PACKAGE VERSION.
+5) Re-autogen and make dist.
 
-6) Re-autogen and make dist.
-
-7) Run make-release-note, and edit if necessary. Send to
+6) Run make-release-note, and edit if necessary. Send to
    guile-gtk-general and guile-user.
 
-9) Upload tarball:
-   scripts/maint/upload-to-ftp.gnu.org tarball ftp://anonymous@ftp-upload.gnu.org/incoming/ftp
+7) Upload tarball:
+   build-aux/gnupload --to ftp.gnu.org:guile-gnome/platform guile-gnome-platform-x.y.z.tar.gz
+
+8) Update web site, adding news entry to news/index.scm in the CVS www
+   repo.
+
+9) Update documentation on web site (FIXME: easy procedure needed.)
