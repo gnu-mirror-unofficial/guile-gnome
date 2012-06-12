@@ -138,7 +138,12 @@ AM_CONDITIONAL(HAVE_ATK, $HAVE_ATK)
 record_check atk $HAVE_ATK
 
 # cairo
-PKG_CHECK_MODULES(GUILE_CAIRO, guile-cairo, HAVE_CAIRO=true, HAVE_CAIRO=false)
+
+# Cairo-GObject defines some integration between Cairo and the GObject
+# type system.  It has only been around since Cairo 1.10, but without
+# there's no sane way to pass Cairo values through callbacks, so we
+# require it to build the Cairo integration for Guile-GNOME.
+PKG_CHECK_MODULES(GUILE_CAIRO, guile-cairo cairo-gobject, HAVE_CAIRO=true, HAVE_CAIRO=false)
 AC_SUBST(GUILE_CAIRO_CFLAGS)
 AC_SUBST(GUILE_CAIRO_LIBS)
 AM_CONDITIONAL(HAVE_CAIRO, $HAVE_CAIRO)
