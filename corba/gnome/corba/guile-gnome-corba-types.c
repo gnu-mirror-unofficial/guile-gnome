@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2001, 2009 Martin Baulig <martin@gnome.org>
+ * Copyright (C) 2001, 2009, 2013 Martin Baulig <martin@gnome.org>
  * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
  *
  * guile-gnome-corba-types.c: Support routines for the GLib wrapper
@@ -53,6 +53,10 @@ SCM_GLOBAL_SYMBOL (scm_sym_corba_user_exception, "corba-user-exception");
 
 
 
+#ifndef scm_vtable_index_instance_printer
+#define scm_vtable_index_instance_printer scm_vtable_index_printer
+#endif
+
 static SCM
 print_corba_struct (SCM corba_struct, SCM port)
 {
@@ -60,7 +64,7 @@ print_corba_struct (SCM corba_struct, SCM port)
     CORBA_TypeCode tc;
     gchar *message;
 
-    printer = SCM_PACK (SCM_STRUCT_DATA (corba_struct) [scm_vtable_index_printer]);
+    printer = SCM_PACK (SCM_STRUCT_DATA (corba_struct) [scm_vtable_index_instance_printer]);
     if (SCM_NIMP (printer) && scm_procedure_p (printer))
 	return scm_call_2 (printer, corba_struct, port);
 
@@ -80,7 +84,7 @@ print_corba_sequence (SCM corba_sequence, SCM port)
     CORBA_TypeCode tc;
     gchar *message;
 
-    printer = SCM_PACK (SCM_STRUCT_DATA (corba_sequence) [scm_vtable_index_printer]);
+    printer = SCM_PACK (SCM_STRUCT_DATA (corba_sequence) [scm_vtable_index_instance_printer]);
     if (SCM_NIMP (printer) && scm_procedure_p (printer))
 	return scm_call_2 (printer, corba_sequence, port);
 
@@ -822,7 +826,7 @@ scm_init_gnome_corba_types (void)
     SCM_SET_CORBA_STRUCT_TYPECODE (scm_corba_struct_vtable, TC_CORBA_TypeCode);
     scm_c_define ("%corba-struct-vtable", scm_corba_struct_vtable);
     scm_c_define ("%corba-struct-vtable-offset-user", scm_from_int (scm_corba_struct_vtable_offset_user));
-    scm_c_define ("%corba-struct-vtable-offset-printer", scm_from_int (scm_vtable_index_printer));
+    scm_c_define ("%corba-struct-vtable-offset-printer", scm_from_int (scm_vtable_index_instance_printer));
 
     gsubr = scm_c_make_gsubr ("%print-corba-sequence", 2, 0, 0, print_corba_sequence);
     scm_corba_sequence_vtable = scm_permanent_object
@@ -831,7 +835,7 @@ scm_init_gnome_corba_types (void)
     SCM_SET_CORBA_SEQUENCE_TYPECODE (scm_corba_sequence_vtable, TC_CORBA_TypeCode);
     scm_c_define ("%corba-sequence-vtable", scm_corba_sequence_vtable);
     scm_c_define ("%corba-sequence-vtable-offset-user", scm_from_int (scm_corba_sequence_vtable_offset_user));
-    scm_c_define ("%corba-sequence-vtable-offset-printer", scm_from_int (scm_vtable_index_printer));
+    scm_c_define ("%corba-sequence-vtable-offset-printer", scm_from_int (scm_vtable_index_instance_printer));
 
     scm_c_export ("%corba-struct-vtable",
 		  "%corba-struct-vtable-offset-user",
