@@ -1,5 +1,5 @@
 # guile-gnome
-# Copyright (C) 2003,2004,2009,2012 Free Software Foundation, Inc.
+# Copyright (C) 2003,2004,2009,2012,2013 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or    
 # modify it under the terms of the GNU General Public License as   
@@ -39,9 +39,9 @@ SUFFIXES = .x .doc
 GUILE_SNARF_CFLAGS = $(DEFS) $(AM_CFLAGS) $(GUILE_CFLAGS) $(G_WRAP_CFLAGS)
 
 PACKAGES = atk cairo corba defs gconf glib gnome-vfs gtk libglade libgnome libgnomecanvas libgnomeui pango
-SOURCE_GUILE_PATH=$(shell echo $(addprefix $(top_srcdir)/,$(PACKAGES)) | sed -e 's/ /:/g'):$(srcdir)
-BUILD_GUILE_PATH=$(if $(filter-out $(top_srcdir),$(top_builddir)),$(shell echo -n $(addprefix $(top_builddir)/,$(PACKAGES)): | sed -e 's/ /:/g'),)
-GUILE_LOAD_PATH:=$(BUILD_GUILE_PATH)$(SOURCE_GUILE_PATH):${G_WRAP_MODULE_DIR}:${GUILE_LOAD_PATH}
+SOURCE_GUILE_PATH=$(shell echo $(addprefix $(abs_top_srcdir)/,$(PACKAGES)) | sed -e 's/ /:/g'):$(srcdir)
+BUILD_GUILE_PATH=$(if $(filter-out $(abs_top_srcdir),$(abs_top_builddir)),$(shell echo -n $(addprefix $(abs_top_builddir)/,$(PACKAGES)): | sed -e 's/ /:/g'),)
+GUILE_LOAD_PATH:=$(BUILD_GUILE_PATH)$(SOURCE_GUILE_PATH):${G_WRAP_MODULE_DIR}$(if ${GUILE_LOAD_PATH},:${GUILE_LOAD_PATH})
 export GUILE_LOAD_PATH
 
 .c.x:

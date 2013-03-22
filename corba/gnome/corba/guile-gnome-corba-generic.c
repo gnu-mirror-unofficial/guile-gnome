@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
+ * Copyright (C) 2001, 2013 Martin Baulig <martin@gnome.org>
  * Copyright (C) 2003 Andy Wingo <wingo at pobox dot com>
  *
  * guile-gnome-corba-generic.c:
@@ -24,7 +24,7 @@
 
 #include <guile-gnome-corba-generic.h>
 #include <guile-gnome-gobject.h>
-#include <glib/gstrfuncs.h>
+#include <glib.h>
 #include <string.h>
 
 static GQuark quark_corba_typecode = 0;

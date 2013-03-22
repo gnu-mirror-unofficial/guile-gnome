@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2003,2004,2011 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2003,2004,2011,2013 Andy Wingo <wingo at pobox dot com>
  *
  * guile-support.h: Support routines for old Guile versions
  *
@@ -24,7 +24,7 @@
 #ifndef __GUILE_SUPPORT_H__
 #define __GUILE_SUPPORT_H__
 
-#include <glib/gmacros.h>
+#include <glib.h>
 
 #include <libguile.h>
 
