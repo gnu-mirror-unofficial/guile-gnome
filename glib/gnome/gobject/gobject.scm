@@ -132,18 +132,19 @@
     ;; We parse a #:gsignal initialization argument to install signals.
     (let loop ((args initargs))
       (if (not (null? args))
-          (if (eq? (car args) #:gsignal)
-              (let ((signal (cadr args)))
-                (if (not (and (list? signal) (>= (length signal) 2)))
-                    (gruntime-error "Invalid signal specification: ~A" signal))
-                (let* ((name (car signal))
-                       (return-type (cadr signal))
-                       (param-types (cddr signal))
-                       (generic (gtype-class-create-signal class name return-type param-types)))
-                  ;; Some magic to define the generic
-                  (module-define! (current-module)
-                                  (generic-function-name generic) generic)))
-              (loop (cddr args))))))
+          (begin
+            (if (eq? (car args) #:gsignal)
+                (let ((signal (cadr args)))
+                  (if (not (and (list? signal) (>= (length signal) 2)))
+                      (gruntime-error "Invalid signal specification: ~A" signal))
+                  (let* ((name (car signal))
+                         (return-type (cadr signal))
+                         (param-types (cddr signal))
+                         (generic (gtype-class-create-signal class name return-type param-types)))
+                    ;; Some magic to define the generic
+                    (module-define! (current-module)
+                                    (generic-function-name generic) generic))))
+            (loop (cddr args))))))
 
   (define (first pred list)
     (cond ((null? list) #f)
