@@ -32,7 +32,8 @@
   #:use-module (g-wrap scm-codegen)
   #:use-module (gnome gw support modules))
 
-(re-export-modules (g-wrap)
-                   (g-wrap guile)
-                   (g-wrap c-codegen)
-                   (g-wrap scm-codegen))
+(eval-when (expand load eval)
+  (re-export-modules (g-wrap)
+		     (g-wrap guile)
+		     (g-wrap c-codegen)
+		     (g-wrap scm-codegen)))

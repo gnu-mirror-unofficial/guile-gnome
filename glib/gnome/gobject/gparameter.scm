@@ -113,8 +113,10 @@
   #:gtype-name "GParam"
   #:metaclass <gparam-class>)
 
-(dynamic-call "scm_init_gnome_gobject_parameters"
-              (dynamic-link *guile-gnome-gobject-lib-path*))
+
+(eval-when (expand load eval)
+  (dynamic-call "scm_init_gnome_gobject_parameters"
+		(dynamic-link *guile-gnome-gobject-lib-path*)))
 
 (define-class-with-docs <gparam-char> (<gparam>)
   "Parameter for @code{<gchar>} values."

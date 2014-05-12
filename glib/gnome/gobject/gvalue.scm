@@ -84,10 +84,12 @@
   #:gtype-name #t
   #:metaclass <gvalue-class>)
 
-(dynamic-call "scm_init_gnome_gobject_values"
-              (dynamic-link *guile-gnome-gobject-lib-path*))
+(eval-when (expand load eval)
+  (dynamic-call "scm_init_gnome_gobject_values"
+		(dynamic-link *guile-gnome-gobject-lib-path*)))
 
-(%bless-gvalue-class <gvalue>)
+(eval-when (load eval)
+  (%bless-gvalue-class <gvalue>))
 
 (define-method (allocate-instance (class <gvalue-class>) initargs)
   (let ((instance (next-method)))

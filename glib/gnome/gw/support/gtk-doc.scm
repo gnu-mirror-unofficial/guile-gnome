@@ -133,28 +133,29 @@
           (car default)
           (error "missing attribute" name))))
 
-;; Make SSAX understand &nbsp; and &percnt; -- nasty, but that's how it
-;; is
-(for-each
- (lambda (pair)
-   (cond-expand
-    (guile-2
-     (define-parsed-entity! (car pair) (cdr pair)))
-    (else
-     (set! ssax:predefined-parsed-entities
-           (assoc-set! ssax:predefined-parsed-entities
-                       (car pair) (cdr pair))))))
- '((nbsp . " ")
-   (percnt . "%")
-   (oacute . "ó")
-   (sol . "/")
-   (mdash . "&#x2014;")
-   (ast . "&#x002A;")
-   (num . "&#x0023;")
-   (times . "✕")
-   (ldquo . "“")
-   (rdquo . "”")
-   (hash . "#")))
+(eval-when (expand load eval)
+  ;; Make SSAX understand &nbsp; and &percnt; -- nasty, but that's how it
+  ;; is
+  (for-each
+      (lambda (pair)
+	(cond-expand
+	 (guile-2
+	  (define-parsed-entity! (car pair) (cdr pair)))
+	 (else
+	  (set! ssax:predefined-parsed-entities
+		(assoc-set! ssax:predefined-parsed-entities
+			    (car pair) (cdr pair))))))
+      '((nbsp . " ")
+	(percnt . "%")
+	(oacute . "ó")
+	(sol . "/")
+	(mdash . "&#x2014;")
+	(ast . "&#x002A;")
+	(num . "&#x0023;")
+	(times . "✕")
+	(ldquo . "“")
+	(rdquo . "”")
+	(hash . "#"))))
 
 (define (zap-whitespace sxml)
   (define (not-whitespace x)

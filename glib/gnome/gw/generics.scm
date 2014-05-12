@@ -36,22 +36,23 @@
   #:use-module (gnome gobject)
   #:use-module (gnome gobject generics))
 
-;; Re-export (gnome gobject generics)
-(module-use! (module-public-interface (current-module))
-             (resolve-interface '(gnome gobject generics)))
+(eval-when (expand load eval)
+  ;; Re-export (gnome gobject generics)
+  (module-use! (module-public-interface (current-module))
+	       (resolve-interface '(gnome gobject generics)))
 
-(module-for-each 
- (lambda (k v)
-   (module-add! (current-module) k v))
- (resolve-interface '(gnome gobject generics)))
+  (module-for-each
+   (lambda (k v)
+     (module-add! (current-module) k v))
+   (resolve-interface '(gnome gobject generics)))
 
-(let ((mod (current-module)))
-  (set-module-binder!
-   (module-public-interface mod)
-   (lambda (interface sym define?)
-     (case sym
-       ((%gw-latent-variables-hash %module-public-interface) #f)
-       (else
-        (let ((var (module-local-variable mod sym)))
-          (if var (module-add! interface sym var))
-          var))))))
+  (let ((mod (current-module)))
+    (set-module-binder!
+     (module-public-interface mod)
+     (lambda (interface sym define?)
+       (case sym
+	 ((%gw-latent-variables-hash %module-public-interface) #f)
+	 (else
+	  (let ((var (module-local-variable mod sym)))
+	    (if var (module-add! interface sym var))
+	    var)))))))

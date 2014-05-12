@@ -49,10 +49,11 @@
                 gruntime-error
                 gtype-instance-destroy!))
 
-(dynamic-call "scm_init_gnome_gobject_gc"
-              (dynamic-link *guile-gnome-gobject-lib-path*))
-(dynamic-call "scm_init_gnome_gobject_types"
-              (dynamic-link *guile-gnome-gobject-lib-path*))
+(eval-when (expand load eval)
+  (dynamic-call "scm_init_gnome_gobject_gc"
+		(dynamic-link *guile-gnome-gobject-lib-path*))
+  (dynamic-call "scm_init_gnome_gobject_types"
+		(dynamic-link *guile-gnome-gobject-lib-path*)))
 
 (define (gruntime-error format-string . args)
   "Signal a runtime error. The error will be thrown to the key
@@ -64,7 +65,6 @@
 ;;;
 ;;; {Base Class Hierarchy]
 ;;;
-
 
 (define-class-with-docs <gtype-class> (<class>)
   "The metaclass of all GType classes. Ensures that GType classes have a
@@ -87,8 +87,9 @@ this class."
 (define-method (write (class <gtype-class>) file)
   (format file "#<~a ~a>" (class-name (class-of class)) (class-name class)))
 
-(dynamic-call "scm_init_gnome_gobject_types_gtype_class"
-              (dynamic-link *guile-gnome-gobject-lib-path*))
+(eval-when (expand load eval)
+  (dynamic-call "scm_init_gnome_gobject_types_gtype_class"
+		(dynamic-link *guile-gnome-gobject-lib-path*)))
 
 (define-class-with-docs <gtype-instance> ()
   "The root class of all instantiatable GType classes. Adds a slot,
@@ -102,13 +103,14 @@ value."
   (next-method)
   (%gtype-instance-construct instance initargs))
 
-(dynamic-call "scm_init_gnome_gobject_types_gtype_instance"
-              (dynamic-link *guile-gnome-gobject-lib-path*))
+(eval-when (expand load eval)
+  (dynamic-call "scm_init_gnome_gobject_types_gtype_instance"
+		(dynamic-link *guile-gnome-gobject-lib-path*)))
+
 
 ;;;
 ;;; {Misc]
 ;;;
-
 
 (define (class-name->gtype-name class-name)
   "Convert the name of a class into a suitable name for a GType. For

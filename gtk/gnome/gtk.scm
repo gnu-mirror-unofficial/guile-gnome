@@ -43,10 +43,11 @@
 (define-macro (time-debug . forms)
   `(begin ,@forms))
 
-(time-debug (use-modules (gnome gw gdk)))
-(time-debug (use-modules (gnome gw gtk)))
-(re-export-modules (gnome gw gdk)
-                   (gnome gw gtk))
+(eval-when (expand load eval)
+  (time-debug (use-modules (gnome gw gdk)))
+  (time-debug (use-modules (gnome gw gtk)))
+  (re-export-modules (gnome gw gdk)
+		     (gnome gw gtk)))
 
 ;; Support explicit object destruction.
 (define-method (initialize (instance <gtk-object>) initargs)
@@ -116,7 +117,9 @@
             (loop (cddr props)))))))
 (define-method (create-tag (buffer <gtk-text-buffer>) tag-name . properties)
   (apply gtk-text-buffer-create-tag buffer tag-name properties))
-(export create-tag)
+
+(eval-when (expand load eval)
+  (export create-tag))
 
 (define (gtk-stock-id nick)
   (string-append "gtk-" (symbol->string nick)))

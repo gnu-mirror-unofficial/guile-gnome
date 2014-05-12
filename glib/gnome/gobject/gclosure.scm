@@ -55,8 +55,9 @@
 
   #:export     (<gclosure> gclosure-invoke))
 
-(dynamic-call "scm_init_gnome_gobject_closures"
-              (dynamic-link *guile-gnome-gobject-lib-path*))
+(eval-when (expand load eval)
+  (dynamic-call "scm_init_gnome_gobject_closures"
+		(dynamic-link *guile-gnome-gobject-lib-path*)))
 
 (define-class-with-docs <gclosure> (<gboxed>)
   "The Scheme representation of a GLib closure: a typed procedure

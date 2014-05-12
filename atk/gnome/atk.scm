@@ -29,4 +29,5 @@
   #:use-module (gnome gw atk)
   #:use-module (gnome gw support modules))
 
-(re-export-modules (gnome gw atk))
+(eval-when (expand load eval)
+  (re-export-modules (gnome gw atk)))

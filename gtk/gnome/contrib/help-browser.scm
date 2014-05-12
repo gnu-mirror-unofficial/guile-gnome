@@ -66,10 +66,11 @@
   #:export (set-default-help-document! add-help-root! show-help
             populate-help-hook the-help-window))
 
-(warn "(gnome contrib help-browser) is still in development. ")
-(warn "It might eat your baby! In any case, don't rely on it yet.")
+(eval-when (expand load eval)
+  (warn "(gnome contrib help-browser) is still in development. ")
+  (warn "It might eat your baby! In any case, don't rely on it yet.")
 
-(pk "mmm, babies taste good")
+  (pk "mmm, babies taste good"))
 
 ;; Add a `buffer' column to a normal delay-tree-model
 (define-class <help-tree> (<delay-tree-model>))
@@ -349,4 +350,5 @@ top of the manual."
         (select-node (find-node node-name manual-name) node-name))
     (present window)))
 
-(add-hook! stexi-buffer-xref-activated-hook show-help)
+(eval-when (expand load eval)
+  (add-hook! stexi-buffer-xref-activated-hook show-help))

@@ -54,12 +54,13 @@
    (else
     (for-each force-bindings (module-uses module)))))
 
-(and=> (and (not (batch-mode?))
-            (module-variable (resolve-module '(ice-9 session))
-                             'apropos-hook))
-       (lambda (v)
-         (add-hook! (variable-ref v)
-                    (lambda (mod pat) (force-bindings mod)))))
+(eval-when (expand load eval)
+  (and=> (and (not (batch-mode?))
+	      (module-variable (resolve-module '(ice-9 session))
+			       'apropos-hook))
+	 (lambda (v)
+	   (add-hook! (variable-ref v)
+		      (lambda (mod pat) (force-bindings mod))))))
 
 (define-macro (re-export-modules . args)
   "Re-export the public interface of a module; used like

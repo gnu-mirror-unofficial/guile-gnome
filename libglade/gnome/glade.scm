@@ -32,4 +32,5 @@
   #:use-module (gnome gw libglade)
   #:use-module (gnome gw support modules))
 
-(re-export-modules (gnome gw libglade))
+(eval-when (expand load eval)
+  (re-export-modules (gnome gw libglade)))

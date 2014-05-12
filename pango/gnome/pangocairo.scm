@@ -29,4 +29,5 @@
   #:use-module (gnome gw pangocairo)
   #:use-module (gnome gw support modules))
 
-(re-export-modules (gnome gw pangocairo))
+(eval-when (expand load eval)
+  (re-export-modules (gnome gw pangocairo)))

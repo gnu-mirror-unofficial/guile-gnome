@@ -28,7 +28,8 @@
 (define-module (gnome gobject gw-utils)
   #:use-module (gnome gw support modules))
 
-(begin-deprecated
- (issue-deprecation-warning
-  "`(gnome gobject gw-utils)' is deprecated. Use `(gnome gw support modules)' instead.")
- (re-export-modules (gnome gw support modules)))
+(eval-when (expand load eval)
+  (begin-deprecated
+   (issue-deprecation-warning
+    "`(gnome gobject gw-utils)' is deprecated. Use `(gnome gw support modules)' instead.")
+   (re-export-modules (gnome gw support modules))))

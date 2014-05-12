@@ -29,4 +29,5 @@
   #:use-module (gnome gw pango)
   #:use-module (gnome gw support modules))
 
-(re-export-modules (gnome gw pango))
+(eval-when (expand load eval)
+  (re-export-modules (gnome gw pango)))

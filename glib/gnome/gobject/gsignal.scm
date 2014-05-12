@@ -94,8 +94,9 @@ its name, and how it should be called."
             (class-name (class-of obj)) (name obj) (return-type obj)
             (cons (interface-type obj) (param-types obj)))))
 
-(dynamic-call "scm_init_gnome_gobject_signals"
-              (dynamic-link *guile-gnome-gobject-lib-path*))
+(eval-when (expand load eval)
+  (dynamic-call "scm_init_gnome_gobject_signals"
+		(dynamic-link *guile-gnome-gobject-lib-path*)))
 
 (define (gtype-class-get-signal-names class)
   "Returns a vector of signal names belonging to @var{class} and all

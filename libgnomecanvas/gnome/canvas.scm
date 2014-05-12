@@ -31,5 +31,6 @@
   #:use-module (gnome gw generics)
   #:use-module (gnome gw support modules))
 
-(re-export-modules (gnome gw canvas))
+(eval-when (expand load eval)
+  (re-export-modules (gnome gw canvas)))
 

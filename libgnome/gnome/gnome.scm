@@ -31,7 +31,8 @@
   #:use-module (gnome gw support modules)
   #:export (gnome-program-init))
 
-(re-export-modules (gnome gw libgnome))
+(eval-when (expand load eval)
+  (re-export-modules (gnome gw libgnome)))
 
 (define (gnome-program-init name version . properties)
   (let ((program (%gnome-program-init name version)))

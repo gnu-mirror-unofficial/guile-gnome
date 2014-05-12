@@ -30,4 +30,5 @@
   #:use-module (gnome gw gconf)
   #:use-module (gnome gw support modules))
 
-(re-export-modules (gnome gw gconf))
+(eval-when (expand load eval)
+  (re-export-modules (gnome gw gconf)))

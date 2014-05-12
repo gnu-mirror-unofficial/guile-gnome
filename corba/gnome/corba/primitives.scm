@@ -39,7 +39,8 @@
   (corba-typecode #:allocation #:each-subclass)
   (corba-objref))
 
-(%init-gnome-corba-primitives)
+(eval-when (load eval)
+  (%init-gnome-corba-primitives))
 
 (define-method (allocate-instance (class <PortableServer-ServantBase>) initargs)
   (corba-primitive-make-poa-instance class))
@@ -66,5 +67,5 @@
 	  (display #\> file))
 	(next-method))))
 
-(export <PortableServer-ServantBase> <CORBA:Object>)
-
+(eval-when (expand load eval)
+  (export <PortableServer-ServantBase> <CORBA:Object>))

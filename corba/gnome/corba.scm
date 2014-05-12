@@ -217,13 +217,15 @@
   :use-module (gnome gobject)
   :use-module (oop goops))
 
-(re-export <PortableServer-ServantBase> <CORBA:Object>
-	   gnome-corba-error)
+(eval-when (expand load eval)
+  (re-export <PortableServer-ServantBase> <CORBA:Object>
+	     gnome-corba-error))
 
-(%init-gnome-corba)
+(eval-when (load eval)
+  (%init-gnome-corba)
 
-(or (corba-primitive-open-module "Bonobo")
-    (gnome-corba-error "Can't open `Bonobo' module"))
+  (or (corba-primitive-open-module "Bonobo")
+      (gnome-corba-error "Can't open `Bonobo' module")))
 
 
 ;;; {Records}
@@ -359,11 +361,12 @@
 	(and (corba-struct? this) (set! this (corba-struct->record this)))
 	(set! thelist (append! thelist (list this)))))))
 
-(provide 'corba-record)
+(eval-when (expand load eval)
+  (provide 'corba-record)
 
-(export corba-record-type-vtable
-	corba-record-type? make-corba-record-type corba-record-typecode
-	corba-record-type-fields corba-record-constructor corba-record-predicate
-	corba-record-accessor corba-record-modifier corba-record?
-	corba-record-type-descriptor corba-record-constructor-from-struct
-	corba-struct->record corba-sequence->list)
+  (export corba-record-type-vtable
+	  corba-record-type? make-corba-record-type corba-record-typecode
+	  corba-record-type-fields corba-record-constructor corba-record-predicate
+	  corba-record-accessor corba-record-modifier corba-record?
+	  corba-record-type-descriptor corba-record-constructor-from-struct
+	  corba-struct->record corba-sequence->list))

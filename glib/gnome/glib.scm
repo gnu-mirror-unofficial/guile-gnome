@@ -33,7 +33,8 @@
 
   #:re-export (g-source-set-closure))
 
-(re-export-modules (gnome gw glib))
+(eval-when (expand load eval)
+  (re-export-modules (gnome gw glib)))
 
 (define-public (g-idle-add proc)
   (let ((closure (make <gclosure>
@@ -53,7 +54,8 @@
     (g-source-set-priority source 200) ; G_PRIORITY_DEFAULT_IDLE
     (g-source-attach source #f)))
 
-(use-modules (gnome gobject event-repl))
+(eval-when (expand load eval)
+  (use-modules (gnome gobject event-repl)))
 
 ;; taken from gnome-guile 0.10.0
 

@@ -29,4 +29,5 @@
   #:use-module (gnome gw libgnomeui)
   #:use-module (gnome gw support modules))
 
-(re-export-modules (gnome gw libgnomeui))
+(eval-when (expand load eval)
+  (re-export-modules (gnome gw libgnomeui)))

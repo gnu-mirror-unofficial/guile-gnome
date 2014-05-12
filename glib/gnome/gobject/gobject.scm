@@ -84,8 +84,10 @@
                 gobject-class-get-property-names
                 gobject-get-property gobject-set-property))
 
-(dynamic-call "scm_init_gnome_gobject"
-              (dynamic-link *guile-gnome-gobject-lib-path*))
+(eval-when (expand load eval)
+  (dynamic-call "scm_init_gnome_gobject"
+		(dynamic-link *guile-gnome-gobject-lib-path*)))
+
 
 ;;;
 ;;; {Class Initialization}
@@ -232,6 +234,7 @@ defined on the class, if such a slot is not already defined.
   #:value-type <gobject>
   #:gtype-name "GParamObject")
 
+
 ;;;
 ;;; {GObject Properties}
 ;;;
@@ -278,4 +281,5 @@ calls @code{(slot-ref obj name)}."
       (slot-ref object name)
       (gruntime-error "Properties added after object definition must be accessed via custom property methods: ~A" name)))
 
-(%gnome-gobject-object-post-init)
+(eval-when (load eval)
+  (%gnome-gobject-object-post-init))

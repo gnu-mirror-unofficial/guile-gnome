@@ -30,4 +30,5 @@
   #:use-module (gnome gw gnome-vfs)
   #:use-module (gnome gw support modules))
 
-(re-export-modules (gnome gw gnome-vfs))
+(eval-when (expand load eval)
+  (re-export-modules (gnome gw gnome-vfs)))

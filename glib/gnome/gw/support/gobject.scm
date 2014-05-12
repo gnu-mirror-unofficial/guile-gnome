@@ -1114,7 +1114,7 @@ example:
 
            (let ((wrapset-name-c-sym (any-str->c-sym-str
                                       (symbol->string (name wrapset)))))
-             `(eval-when (eval load compile)
+             `(eval-when (expand load eval)
                 (load-extension ,(if (slot-ref wrapset 'shlib-abs?)
                                      `(string-append
                                        *g-wrap-shlib-dir*
