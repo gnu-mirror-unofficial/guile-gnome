@@ -36,6 +36,9 @@ top_module_name = (gnome $(wrapset_stem))
 gw_module_name = (gnome gw $(wrapset_stem))
 extra_module_names =
 wrapset_modules = ($(top_module_name) $(gw_module_name) $(extra_module_names))
+DEV_ENV = $(top_builddir)/dev-environ
+GUILE=guile
+
 TESTS_ENVIRONMENT=\
 	API_FILE=$(srcdir)/gobject.api \
 	DOC_SCM=$(srcdir)/../doc/gobject/guile-gnome-gobject.scm \
@@ -43,7 +46,9 @@ TESTS_ENVIRONMENT=\
 	WRAPSET_API_FILE=$(srcdir)/wrapset.api \
 	LTDL_LIBRARY_PATH=.:${LTDL_LIBRARY_PATH} \
 	GUILE_LOAD_PATH=".:${srcdir:-.}/..:..:${GUILE_LOAD_PATH}" \
-	$(top_builddir)/dev-environ guile --debug -e main -s
+	$(DEV_ENV)
+SCM_LOG_COMPILER = $(GUILE) $(GUILE_FLAGS) -e main -s
+TEST_EXTENSIONS = .scm
 
 script := '(load (getenv "DOC_SCM"))\
 (for-each \

@@ -34,7 +34,9 @@ WRAPSET_TESTS_ENV = WRAPSET_MODULES="$(wrapset_modules)" WRAPSET_API_FILE=$(srcd
 DEV_ENV = $(top_builddir)/dev-environ
 GUILE = guile
 
-TESTS_ENVIRONMENT=$(WRAPSET_TESTS_ENV) $(DEV_ENV) $(GUILE) $(GUILE_FLAGS) -e main -s
+TESTS_ENVIRONMENT=$(WRAPSET_TESTS_ENV) $(DEV_ENV)
+SCM_LOG_COMPILER = $(GUILE) $(GUILE_FLAGS) -e main -s
+TEST_EXTENSIONS = .scm
 
 wrapset.api.update:
 	$(WRAPSET_TESTS_ENV) $(DEV_ENV)	$(GUILE) -e update-api -s $(srcdir)/wrapset.scm

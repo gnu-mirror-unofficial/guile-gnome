@@ -190,7 +190,6 @@
        (arity 1 0 #f))
      (gtype-name->scheme-name-alist <pair>)
      (re-export-modules macro)
-     (unless macro)
      (with-accessors macro)))
   ((gnome gw generics)
    (uses-interfaces (gnome gobject generics))

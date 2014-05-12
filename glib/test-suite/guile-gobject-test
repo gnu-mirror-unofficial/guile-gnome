@@ -1,5 +1,5 @@
 #!/bin/sh
-exec ${srcdir:-.}/guile-test-env guile --debug -e main -s "$0" "$@"
+exec ${builddir:-.}/guile-test-env guile --debug -e main -s "$0" "$@"
 !#
 ;;;; guile-gobject-test --- run the guile-gobject test suite
 ;;;;
