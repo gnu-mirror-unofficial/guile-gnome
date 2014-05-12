@@ -35,7 +35,7 @@
                 re-export-modules
                 define-macro-with-docs define-with-docs
                 define-generic-with-docs define-class-with-docs
-                unless with-accessors))
+                with-accessors))
 
 ;;;
 ;;; {Miscellaneous}
@@ -54,7 +54,10 @@
   (define-macro (define-macro-with-docs form docs . body)
   `(begin
      (define-macro ,form ,@body)
-     (set-object-property! ,(car form) 'documentation ,docs)))))
+     (set-object-property! ,(car form) 'documentation ,docs)))
+  (define-macro (unless test . body)
+    `(if (not ,test) (begin ,@body)))
+  (export unless)))
 
 (define-macro-with-docs (define-with-docs name docs val)
   "Define @var{name} as @var{val}, documenting the value with
