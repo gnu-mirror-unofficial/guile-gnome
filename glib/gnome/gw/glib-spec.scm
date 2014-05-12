@@ -375,7 +375,7 @@
     (set! remainder (delq 'null-ok remainder))
     (if (not (null? remainder))
         (raise (condition
-                (&gw:bad-typespec (type type) (options options)))))))
+                (&gw-bad-typespec (type type) (options options)))))))
     
 (define-method (destroy-value-cg (t <gerror-type>)
                                   (value <gw-value>)
