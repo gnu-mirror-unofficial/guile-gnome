@@ -89,7 +89,7 @@
 
 ;; Miscellany.
 (define (gtk-tree-or-list-store-set store iter . args)
-  (or (even? (length args)) (scm-error 'gruntime-error "Invalid arguments"))
+  (or (even? (length args)) (scm-error 'gruntime-error #f "Invalid arguments" '() #f))
   (let loop ((args args))
     (if (eq? args '())
         *unspecified*
@@ -106,7 +106,7 @@
 (define (gtk-text-buffer-create-tag buffer tag-name . properties)
   (let ((tag (make <gtk-text-tag> #:name tag-name)))
     (if (not (even? (length properties)))
-        (scm-error 'gruntime-error "Invalid property list: ~A" properties))
+	(scm-error 'gruntime-error #f "Invalid property list: ~A" properties #f))
     (add (get-tag-table buffer) tag)
     (let loop ((props properties))
       (if (null? props)
