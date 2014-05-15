@@ -242,7 +242,7 @@ scm_c_gparam_construct (SCM instance, SCM initargs)
 {
     GParamSpec *pspec = NULL;
     GParamFlags flags;
-    GType param_type;
+    GType param_type, param_gtype;
     char *name, *nick, *blurb;
 
     param_type = scm_c_gtype_class_to_gtype (scm_class_of (instance));
@@ -402,8 +402,10 @@ scm_c_gparam_construct (SCM instance, SCM initargs)
     else if (param_type == G_TYPE_PARAM_GTYPE) {
         SCM type = REF (is_a_type);
         if (scm_is_true (type))
-            type = scm_c_gtype_class_to_gtype (type);
-        pspec = g_param_spec_gtype (name, nick, blurb, type, flags);
+	    param_gtype = scm_c_gtype_class_to_gtype (type);
+	else
+	    param_gtype = G_TYPE_NONE;
+        pspec = g_param_spec_gtype (name, nick, blurb, param_gtype, flags);
     }
     else {
         scm_c_gruntime_error ("%gparam-construct",
