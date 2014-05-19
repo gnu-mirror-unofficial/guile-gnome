@@ -37,7 +37,7 @@
 (define (gnome-program-init name version . properties)
   (let ((program (%gnome-program-init name version)))
     (if (not (even? (length properties)))
-        (scm-error 'gruntime-error "Invalid property list: ~A" properties))
+        (scm-error 'gruntime-error #f "Invalid property list: ~A" properties #f))
     (let loop ((props properties))
       (if (null? props)
           program
