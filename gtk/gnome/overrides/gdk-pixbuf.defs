@@ -64,7 +64,8 @@
               "*_valist"
               "*_setv")
 
-(ignore "gdk_pixbuf_get_pixels"
+(ignore ;; "gdk_pixbuf_get_pixels"      ; it has to be wrapped,
+					; clutter_image_set_data needs those pixels :)
         "gdk_pixbuf_new_from_data"
         "gdk_pixbuf_new_from_inline"
         "gdk_pixbuf_new_from_xpm_data"
