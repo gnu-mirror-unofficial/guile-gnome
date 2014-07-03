@@ -74,6 +74,7 @@
      ("void" void . #f)
      ("int" int)
      ("char" char . #f)
+     ("char*" mchars . #f)
      ("float" float)
      ("double" double)
      ("short" short)
@@ -101,15 +102,14 @@
      ;; GLib type aliases
      ("gboolean" bool)
      ("gchar" char . #f)
-     ("guchar" unsigned-char . #f)
-     ("char*" mchars . #f)
      ("gchar*" mchars . #f)
+     ("guchar" unsigned-char . #f)
      ("gdouble" double)
      ("gfloat" float)
      ("gshort" short)
      ("gushort" unsigned-short)
      ("gint8" int8)
-     ("guint8" unsigned-int8)
+     ("guint8" unsigned-int8 . #f)
      ("gint" int)
      ("gint16" int16)
      ("guint" unsigned-int)
@@ -129,12 +129,18 @@
      
      ("gssize" ssize_t)
      ("gsize" size_t)
-     ("gunichar" unsigned-int32)
-     
+     ("gunichar" unsigned-int32 . #f)
+     ("gunichar2" unsigned-int16 . #f)
+
      ("none" void . #f)))
 
   (add-type-rule! ws "gchar**" '(mchars caller-owned out))
   (add-type-rule! ws "const-gchar**" '(mchars callee-owned out))
+
+  (wrap-opaque-pointer! ws "guint8*")
+  (wrap-opaque-pointer! ws "guchar*")
+  (wrap-opaque-pointer! ws "gunichar*")
+  (wrap-opaque-pointer! ws "gunichar2*")
 
   (add-type! ws (make <glist-of-type> #:name 'glist-of
                       #:type-cname "GList*" #:func-prefix "g_list"))

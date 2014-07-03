@@ -348,47 +348,56 @@ _wrap_g_utf8_strrchr (const gchar *p, gunichar c)
     return g_utf8_strrchr (p, -1, c);
 }
 
-char* _wrap_g_utf8_strreverse (const gchar *p)
+char*
+_wrap_g_utf8_strreverse (const gchar *p)
 {
     return g_utf8_strreverse (p, -1);
 }
 
-gboolean _wrap_g_utf8_validate (const gchar *p)
+gboolean
+_wrap_g_utf8_validate (const gchar *p)
 {
     return g_utf8_validate (p, -1, NULL);
 }
 
-char* _wrap_g_utf8_strup (const gchar *p)
+char*
+_wrap_g_utf8_strup (const gchar *p)
 {
     return g_utf8_strup (p, -1);
 }
 
-char* _wrap_g_utf8_strdown (const gchar *p)
+char*
+_wrap_g_utf8_strdown (const gchar *p)
 {
     return g_utf8_strdown (p, -1);
 }
 
-char* _wrap_g_utf8_casefold (const gchar *p)
+char*
+_wrap_g_utf8_casefold (const gchar *p)
 {
     return g_utf8_casefold (p, -1);
 }
 
-char* _wrap_g_utf8_normalize (const gchar *p, GNormalizeMode mode)
+char*
+_wrap_g_utf8_normalize (const gchar *p, GNormalizeMode mode)
 {
     return g_utf8_normalize (p, -1, mode);
 }
 
-char* _wrap_g_utf8_collate_key (const gchar *p)
+char*
+_wrap_g_utf8_collate_key (const gchar *p)
 {
     return g_utf8_collate_key (p, -1);
 }
 
-char* _wrap_g_utf8_collate_key_for_filename (const gchar *p)
+char*
+_wrap_g_utf8_collate_key_for_filename (const gchar *p)
 {
     return g_utf8_collate_key_for_filename (p, -1);
 }
 
-char* _wrap_g_unichar_to_utf8 (gunichar c)
+char*
+_wrap_g_unichar_to_utf8 (gunichar c)
 {
     char *ret;
     int n;
@@ -412,25 +421,25 @@ _wrap_g_utf8_to_ucs4 (const gchar *str, GError **error)
 }
 
 gunichar*
-_wrap_g_utf16_to_ucs4 (const gunichar2* str, GError **error) 
+_wrap_g_utf16_to_ucs4 (const gunichar2 *str, GError **error) 
 {
     return g_utf16_to_ucs4 (str, -1, NULL, NULL, error);
 }
 
 gchar*
-_wrap_g_utf16_to_utf8 (const gunichar2* str, GError **error)
+_wrap_g_utf16_to_utf8 (const gunichar2 *str, GError **error)
 {
     return g_utf16_to_utf8 (str, -1, NULL, NULL, error);
 }
 
 gunichar2*
-_wrap_g_ucs4_to_utf16 (const gunichar* str, GError **error)
+_wrap_g_ucs4_to_utf16 (const gunichar *str, GError **error)
 {
     return g_ucs4_to_utf16 (str, -1, NULL, NULL, error);
 }
 
 gchar*
-_wrap_g_ucs4_to_utf8 (const gunichar* str, GError **error) 
+_wrap_g_ucs4_to_utf8 (const gunichar *str, GError **error) 
 {
     return g_ucs4_to_utf8 (str, -1, NULL, NULL, error);
 }

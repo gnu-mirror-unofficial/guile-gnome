@@ -52,8 +52,7 @@ SCM  _wrap_g_string_get_str (GString *str);
 guint _wrap_g_io_add_watch (GIOChannel *channel, GIOCondition condition, SCM func);
 GIOStatus _wrap_g_io_channel_read_line (GIOChannel *channel, gchar **str_return,
                                         GError **error);
-gunichar
-_wrap_g_utf8_get_char (const gchar *p);
+gunichar _wrap_g_utf8_get_char (const gchar *p);
 const char* _wrap_g_utf8_find_next_char (const gchar *p);
 long _wrap_g_utf8_strlen (const gchar *p);
 const char* _wrap_g_utf8_strchr (const gchar *p, gunichar c);
@@ -69,10 +68,10 @@ char* _wrap_g_utf8_collate_key_for_filename (const gchar *p);
 char* _wrap_g_unichar_to_utf8 (gunichar c);
 gunichar2* _wrap_g_utf8_to_utf16 (const gchar *str, GError **error);
 gunichar* _wrap_g_utf8_to_ucs4 (const gchar *str, GError **error);
-gunichar* _wrap_g_utf16_to_ucs4 (const gunichar2* str, GError **error);
-gchar* _wrap_g_utf16_to_utf8 (const gunichar2* str, GError **error);
-gunichar2* _wrap_g_ucs4_to_utf16 (const gunichar* str, GError **error);
-gchar* _wrap_g_ucs4_to_utf8 (const gunichar* str, GError **error);
+gunichar* _wrap_g_utf16_to_ucs4 (const gunichar2 *str, GError **error);
+gchar* _wrap_g_utf16_to_utf8 (const gunichar2 *str, GError **error);
+gunichar2* _wrap_g_ucs4_to_utf16 (const gunichar *str, GError **error);
+gchar* _wrap_g_ucs4_to_utf8 (const gunichar *str, GError **error);
 
 G_END_DECLS
 
