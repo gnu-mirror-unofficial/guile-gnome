@@ -26,6 +26,9 @@ autom4te.cache/
 *.log
 *.la
 *.lo
+*.trs
+/build-aux/compile
+/build-aux/test-driver
 /build-aux/config.guess
 /build-aux/config.sub
 /build-aux/depcomp
