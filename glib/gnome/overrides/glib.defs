@@ -522,6 +522,7 @@
         "g_getenv"
         "g_get_charset"
         "g_get_current_dir"
+        "g_get_current_time" ;; GTimeVal*
         "g_get_filename_charsets"
         "g_get_language_names"
         "g_get_system_data_dirs"
