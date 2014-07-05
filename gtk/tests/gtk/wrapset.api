@@ -4003,7 +4003,7 @@
      (gtk-recent-info-get-age
        procedure
        (arity 0 0 #t))
-     (gtk-recent-info-get-application-info
+     #;(gtk-recent-info-get-application-info
        procedure
        (arity 2 0 #f))
      (gtk-recent-info-get-description
