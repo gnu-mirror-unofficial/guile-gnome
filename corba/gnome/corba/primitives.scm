@@ -1,6 +1,7 @@
 ;; guile-gnome
 ;; Copyright (C) 2001 Martin Baulig <martin@gnome.org>
-;;               2003,2004 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2014 David Pirotte <david at altosw dot be>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -29,7 +30,10 @@
   :use-module (gnome gw corba)
   :use-module (gnome corba types)
   :use-module (gnome gobject)
-  :use-module (oop goops))
+  :use-module (oop goops)
+
+  :export (<PortableServer-ServantBase>
+	   <CORBA:Object>))
 
 (define-class <PortableServer-ServantBase> (<class>)
   (%orbit-iinterface #:allocation #:each-subclass)
@@ -39,19 +43,19 @@
   (corba-typecode #:allocation #:each-subclass)
   (corba-objref))
 
-(eval-when (load eval)
+(eval-when (expand load eval)
   (%init-gnome-corba-primitives))
 
 (define-method (allocate-instance (class <PortableServer-ServantBase>) initargs)
   (corba-primitive-make-poa-instance class))
 
-(define-method (allocate-instance (class <CORBA:Object>) initargs)
-  (if (or (get-keyword #:dsupers initargs #f))
-    (next-method)
-    (let* ((object (next-method))
-	   (servant (get-keyword #:servant initargs *unspecified*))
-	   (ior (get-keyword #:ior initargs *unspecified*)))
-      (gnome-corba-error "Can't make instances of this type: ~A" type))))
+(define-method (allocate-instance (type <CORBA:Object>) initargs)
+  (if (get-keyword #:dsupers initargs #f)
+      (next-method)
+      (let* ((object (next-method))
+	     (servant (get-keyword #:servant initargs *unspecified*))
+	     (ior (get-keyword #:ior initargs *unspecified*)))
+	(gnome-corba-error "Can't make instances of this type: ~A" type))))
 
 (define (display-address o file)
   (display (number->string (object-address o) 16) file))
@@ -66,6 +70,3 @@
 	  (display-address o file)
 	  (display #\> file))
 	(next-method))))
-
-(eval-when (expand load eval)
-  (export <PortableServer-ServantBase> <CORBA:Object>))
