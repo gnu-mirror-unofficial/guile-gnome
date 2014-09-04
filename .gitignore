@@ -27,6 +27,7 @@ autom4te.cache/
 *.la
 *.lo
 *.trs
+*.html
 /build-aux/compile
 /build-aux/test-driver
 /build-aux/config.guess
