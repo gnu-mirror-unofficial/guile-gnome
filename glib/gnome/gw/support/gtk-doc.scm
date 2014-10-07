@@ -138,13 +138,7 @@
   ;; is
   (for-each
       (lambda (pair)
-	(cond-expand
-	 (guile-2
 	  (define-parsed-entity! (car pair) (cdr pair)))
-	 (else
-	  (set! ssax:predefined-parsed-entities
-		(assoc-set! ssax:predefined-parsed-entities
-			    (car pair) (cdr pair))))))
       '((nbsp . " ")
 	(percnt . "%")
 	(oacute . "ó")

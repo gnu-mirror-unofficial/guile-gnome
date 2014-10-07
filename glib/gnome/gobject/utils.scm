@@ -41,8 +41,7 @@
 ;;; {Miscellaneous}
 ;;;
 
-(cond-expand
- (guile-2
+(eval-when (expand load eval)
   (define-syntax define-macro-with-docs
     (lambda (x)
       "Define a defmacro with documentation."
@@ -50,14 +49,6 @@
         ((_ (f . args) doc b0 b* ...)
          #'(define-macro (f . args)
              doc b0 b* ...))))))
- (else
-  (define-macro (define-macro-with-docs form docs . body)
-  `(begin
-     (define-macro ,form ,@body)
-     (set-object-property! ,(car form) 'documentation ,docs)))
-  (define-macro (unless test . body)
-    `(if (not ,test) (begin ,@body)))
-  (export unless)))
 
 (define-macro-with-docs (define-with-docs name docs val)
   "Define @var{name} as @var{val}, documenting the value with
@@ -202,24 +193,11 @@ Uses @code{gtype-name->scheme-name}."
                                  (resolve-interface ',mod)))
                  args))))
 
-(define-macro (unless test . body)
-  `(if (not ,test) (begin ,@body)))
-
-(cond-expand
- (guile-2
-  (define-macro (with-accessors names . body)
-    `(let (,@(map (lambda (name)
-                    ;; Ew, fixme.
-                    `(,name (make-procedure-with-setter
-                             (lambda (x) (slot-ref x ',name))
-                             (lambda (x y) (slot-set! x ',name y)))))
-                  names))
-       ,@body)))
- (else
-  (define-macro (with-accessors names . body)
-    `(let (,@(map (lambda (name)
-                    `(,name ,(make-procedure-with-setter
-                              (lambda (x) (slot-ref x name))
-                              (lambda (x y) (slot-set! x name y)))))
-                  names))
-       ,@body))))
+(define-macro (with-accessors names . body)
+  `(let (,@(map (lambda (name)
+		  ;; Ew, fixme.
+		  `(,name (make-procedure-with-setter
+			   (lambda (x) (slot-ref x ',name))
+			   (lambda (x y) (slot-set! x ',name y)))))
+	     names))
+     ,@body))

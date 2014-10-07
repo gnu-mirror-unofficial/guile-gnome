@@ -30,16 +30,6 @@
   #:export-syntax (re-export-modules)
   #:export (export-all-lazy!))
 
-(cond-expand
- (guile-2)
- (else
-  (define-macro (eval-when conditions . forms)
-    (if (or (memq 'eval conditions)
-            (memq 'load conditions))
-        `(begin . ,forms)
-        '(begin)))
-  (export eval-when)))
-
 (define (force-bindings module)
   (cond
    ((and (eq? (module-kind module) 'interface) (module-binder module))

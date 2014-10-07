@@ -77,7 +77,7 @@ AC_HELP_STRING([--disable-deprecated],[Disable wrapping of functions deprecated 
 # Check for Guile
 #
 GUILE_EFFECTIVE_VERSION=no
-all_versions="2.2 2.0 1.8"
+all_versions="2.2 2.0"
 for v in $all_versions; do
   if test $GUILE_EFFECTIVE_VERSION = no; then
     AC_MSG_NOTICE([checking for Guile $v.x])

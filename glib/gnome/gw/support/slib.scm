@@ -33,12 +33,6 @@
 (define (require feature) #f) ; noop
 (define (require-if condition feature) #f) ; noop
 
-(cond-expand
- (guile-2
-  (include-from-path "gnome/gw/support/glob.scm")
-  (include-from-path "gnome/gw/support/genwrite.scm")
-  (include-from-path "gnome/gw/support/printf.scm"))
- (else
-  (load "glob.scm")
-  (load "genwrite.scm")
-  (load "printf.scm")))
+(include-from-path "gnome/gw/support/glob.scm")
+(include-from-path "gnome/gw/support/genwrite.scm")
+(include-from-path "gnome/gw/support/printf.scm")
