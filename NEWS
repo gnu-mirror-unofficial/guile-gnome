@@ -7,6 +7,58 @@ guile-gnome-platform is a binding between Guile Scheme and the Gnome
 stack of libraries.  See the README, for more information.
 
 
+guile-gnome-platform 2.16.3 - David Pirotte, 2014-10-08
+=======================================================
+
+The primary objectives, working towards this release, were (1) to
+remove all code specific to the support of guile versions prior to
+guile 2, (2) getting rid of all guile related deprecated messages
+[that second part of the mission almost completed, there is still one
+corba related deprecated warning message, help to resolve that last
+one is welcome!], and (3) wrap gdk_pixbuf_get_pixels requested by
+guile-clutter 1.12.
+
+None 'specific' changes
+-----------------------
+
+* scm-error incorrect arg list, various calls, all fixed.
+
+* Toplevel calls moved into an eval-when conditions exp...
+
+* make check has been fixed to work with recent automake versions
+  [thanks to Ludovic Courtés]
+
+corba
+-----
+
+* fixing allocate-instance for <CORBA:Object>
+
+glib
+----
+
+* g_get_current_time now [temporarily] ignored, it was not properly
+  wrapped anyway.
+
+* <glib-wrapset> missing some basic pointer types: guint8*, guchar*,
+  gunichar*, gunichar2* added and wrapped as opaque pointers.
+
+* scm_c_gparam_construct 4th argument type definition fixed
+
+* use &gw-bad-typespec, not &gw:bad-typespec, fixed.
+
+gdk-pixbuf
+----------
+
+* gdk_pixbuf_get_pixels removed from the ignore list, it returns a
+  guchar*, just added, no specific wrapper needed.
+
+gtk
+---
+
+* gtk_recent_info_get_application_info should [temporarily] be
+  ignored, it needs a special wrapper, to be done still.
+
+
 guile-gnome-platform 2.16.2 -- 2012-09-05
 =========================================
 
