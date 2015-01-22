@@ -1,7 +1,6 @@
 /* -*- Mode: C; c-basic-offset: 4 -*- */
 /* guile-gnome
- * Copyright (C) 2001, 2009 Martin Baulig <martin@gnome.org>
- * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+ * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
  *
  * gtype.c: Base support for the GLib type system
  *
@@ -197,38 +196,20 @@ SCM_DEFINE (scm_gtype_name_to_class, "gtype-name->class", 1, 0, 0,
 }
 #undef FUNC_NAME
 
-/* from goops.c */
-static int
-gtype_struct_offset (SCM class)
-{
-    register SCM slots = SCM_SLOT (scm_class_of (class), scm_si_getters_n_setters);
-  for (; !scm_is_null (slots); slots = SCM_CDR (slots))
-      if (SCM_CAAR (slots) == scm_sym_gtype)
-          return scm_to_int (SCM_CDDR (SCM_CAR (slots)));
-          
-  scm_c_gruntime_error ("%gtype-class-bind",
-                        "`gtype' not allocated a slot in struct!",
-                        SCM_LIST1 (class));
-  return -1;
-}
-
 SCM_DEFINE_STATIC (scm_sys_gtype_class_bind, "%gtype-class-bind", 2, 0, 0,
                    (SCM class, SCM type_name))
 #define FUNC_NAME s_scm_sys_gtype_class_bind
 {
     GType gtype;
     char *c_type_name;
-    scm_t_bits *slots;
 
     SCM_VALIDATE_GTYPE_CLASS (1, class);
-
-    if (SCM_FALSEP (type_name)) {
-        /* hack for the <gtype-instance> case */
-        SCM_STRUCT_DATA (class)[gtype_struct_offset (class)] = 0;
-        return SCM_UNSPECIFIED;
-    }
-
     SCM_VALIDATE_STRING (2, type_name);
+
+    if (scm_c_gtype_class_to_gtype (class))
+        scm_c_gruntime_error (FUNC_NAME,
+                              "Class ~A already has a GType",
+                              SCM_LIST1 (type_name));
 
     scm_dynwind_begin (0);
     c_type_name = scm_to_locale_string (type_name);
@@ -247,8 +228,7 @@ SCM_DEFINE_STATIC (scm_sys_gtype_class_bind, "%gtype-class-bind", 2, 0, 0,
                               SCM_LIST1 (type_name));
     
     g_type_set_qdata (gtype, quark_class, scm_permanent_object (class));
-    slots = SCM_STRUCT_DATA (class);
-    slots[gtype_struct_offset (class)] = gtype;
+    scm_slot_set_x (class, scm_sym_gtype, scm_from_ulong (gtype));
         
     scm_dynwind_end ();
 
@@ -318,11 +298,7 @@ scm_c_gtype_class_to_gtype (SCM klass)
 {
     SCM_VALIDATE_GTYPE_CLASS (1, klass);
     
-    /* FIXME: the following code should work, but slot-ref on 'u' slots was
-       busted until guile 1.8.5 
-       return scm_to_ulong (scm_slot_ref (klass, scm_sym_gtype));
-    */
-    return SCM_STRUCT_DATA (klass)[gtype_struct_offset (klass)];
+    return scm_to_ulong (scm_slot_ref (klass, scm_sym_gtype));
 }
 #undef FUNC_NAME
 

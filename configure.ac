@@ -1,6 +1,6 @@
 define(GUILE_GNOME_PLATFORM_CONFIGURE_COPYRIGHT,[[
 
-Copyright (C) 2011, 2012  Free Software Foundation, Inc.
+Copyright (C) 2011, 2012, 2015  Free Software Foundation, Inc.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as
@@ -77,7 +77,7 @@ AC_HELP_STRING([--disable-deprecated],[Disable wrapping of functions deprecated 
 # Check for Guile
 #
 GUILE_EFFECTIVE_VERSION=no
-all_versions="2.2 2.0 1.8"
+all_versions="2.2 2.0"
 for v in $all_versions; do
   if test $GUILE_EFFECTIVE_VERSION = no; then
     AC_MSG_NOTICE([checking for Guile $v.x])
