@@ -24,7 +24,7 @@ AC_CONFIG_SRCDIR(ChangeLog.pre-2.16)
 AC_CONFIG_AUX_DIR([build-aux])
 AC_COPYRIGHT(GUILE_GNOME_PLATFORM_CONFIGURE_COPYRIGHT)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(-Wno-portability -Wno-syntax)
+AM_INIT_AUTOMAKE(-Wno-portability -Wno-syntax serial-tests)
 
 AC_SUBST(VERSION,2.16.2)
 
