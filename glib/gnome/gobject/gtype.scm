@@ -57,7 +57,6 @@
 (define (gruntime-error format-string . args)
   "Signal a runtime error. The error will be thrown to the key
 @code{gruntime-error}."
-  (save-stack)
   (scm-error 'gruntime-error #f format-string args '()))
 
 
