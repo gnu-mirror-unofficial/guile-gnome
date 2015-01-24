@@ -1,5 +1,5 @@
 /* guile-gnome
- * Copyright (C) 2001 Martin Baulig <martin@gnome.org>
+ * Copyright (C) 2001, 2015 Martin Baulig <martin@gnome.org>
  * Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
  *
  * gobject.c: Support for GObject (and GInterface)
@@ -36,6 +36,7 @@ static SCM _initialize;
 static SCM _gobject_set_property;
 static SCM _gobject_get_property;
 static SCM _in_construction_from_scheme;
+static SCM _slot_definition_options;
 
 static GQuark quark_guile_gtype_class = 0;
 
@@ -113,8 +114,9 @@ is_init_keyword (SCM slots, SCM kw)
 {
     SCM defs;
     
-    for (; SCM_CONSP (slots); slots = scm_cdr (slots))
-        for (defs = scm_cdar (slots); SCM_CONSP (defs);
+    for (; scm_is_pair (slots); slots = scm_cdr (slots))
+        for (defs = scm_call_1 (_slot_definition_options, scm_car (slots));
+             scm_is_pair (defs);
              defs = scm_cddr (defs))
             if (scm_is_eq (scm_car (defs), kw_init_keyword)
                 && scm_is_eq (scm_cadr (defs), kw))
@@ -695,6 +697,9 @@ scm_init_gnome_gobject (void)
 
     scm_register_gtype_instance_sinkfunc (G_TYPE_INITIALLY_UNOWNED,
                                           sink_initially_unowned);
+
+    _slot_definition_options =
+      scm_variable_ref (scm_c_lookup ("slot-definition-options"));
 
     quark_guile_gtype_class = g_quark_from_static_string ("%scm-guile-gtype-class");
 }

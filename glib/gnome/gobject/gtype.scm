@@ -1,5 +1,5 @@
 ;; guile-gnome
-;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
+;; Copyright (C) 2003,2004,2015 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -58,7 +58,6 @@
 (define (gruntime-error format-string . args)
   "Signal a runtime error. The error will be thrown to the key
 @code{gruntime-error}."
-  (save-stack)
   (scm-error 'gruntime-error #f format-string args '()))
 
 
@@ -70,7 +69,7 @@
   "The metaclass of all GType classes. Ensures that GType classes have a
 @code{gtype} slot, which records the primitive GType information for
 this class."
-  (gtype #:class <read-only-slot>))
+  (gtype #:class <foreign-slot>))
 
 (define-method (initialize (class <gtype-class>) initargs)
   (let ((gtype-name (or (get-keyword #:gtype-name initargs #f)
@@ -78,9 +77,8 @@ this class."
                                         (pk initargs)))))
     ;; allow gtype-name of #t for base classes without gtypes (e.g.
     ;; <gtype-instance>)
-    (%gtype-class-bind class (if (eq? gtype-name #t)
-                                 #f
-                                 gtype-name))
+    (if (not (eq? gtype-name #t))
+        (%gtype-class-bind class gtype-name))
     (next-method)
     (%gtype-class-inherit-magic class)))
 

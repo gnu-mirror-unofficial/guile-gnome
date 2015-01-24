@@ -1,6 +1,6 @@
 define(GUILE_GNOME_PLATFORM_CONFIGURE_COPYRIGHT,[[
 
-Copyright (C) 2011, 2012  Free Software Foundation, Inc.
+Copyright (C) 2011, 2012, 2015  Free Software Foundation, Inc.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as
@@ -24,7 +24,7 @@ AC_CONFIG_SRCDIR(ChangeLog.pre-2.16)
 AC_CONFIG_AUX_DIR([build-aux])
 AC_COPYRIGHT(GUILE_GNOME_PLATFORM_CONFIGURE_COPYRIGHT)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(-Wno-portability -Wno-syntax)
+AM_INIT_AUTOMAKE(-Wno-portability -Wno-syntax serial-tests)
 
 AC_SUBST(VERSION,2.16.3)
 

@@ -1,6 +1,6 @@
 ;; guile-gnome
+;; Copyright (C) 2003,2004,2015 Andy Wingo <wingo at pobox dot com>
 ;; Copyright (C) 2001 Martin Baulig <martin@gnome.org>
-;;               2003,2004 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -32,7 +32,6 @@
   :export (gnome-corba-error))
 
 (define (gnome-corba-error format-string . args)
-  (save-stack)
   (scm-error 'gnome-corba-error #f format-string args '()))
 
 (eval-when (load eval)

@@ -1,6 +1,6 @@
 ;; guile-gnome
+;; Copyright (C) 2003,2004,2015 Andy Wingo <wingo at pobox dot com>
 ;; Copyright (C) 2001 Martin Baulig <martin@gnome.org>
-;; Copyright (C) 2003,2004 Andy Wingo <wingo at pobox dot com>
 
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
@@ -96,10 +96,16 @@
 (define-class <gobject-class> (<gtype-class>))
 
 (define-method (compute-slots (class <gobject-class>))
+  (define (has-slot? name slots)
+    (and (pair? slots)
+         (or (eq? name (slot-definition-name (car slots)))
+             (has-slot? name (cdr slots)))))
   (define (compute-extra-slots props slots)
     (filter-map (lambda (prop)
-                  (and (not (assq prop slots))
-                       `(,prop #:allocation #:gproperty)))
+                  (and (not (has-slot? prop slots))
+                       (if (defined? '<slot>)
+                           (make <slot> #:name prop #:allocation #:gproperty)
+                           `(,prop #:allocation #:gproperty))))
                 props))
   (let* ((slots (next-method))
          (extra (compute-extra-slots
