@@ -1,5 +1,5 @@
 # guile-gnome
-# Copyright (C) 2007, 2011 Free Software Foundation, Inc.
+# Copyright (C) 2007, 2011, 2015 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or    
 # modify it under the terms of the GNU General Public License as   
@@ -22,7 +22,9 @@
 #
 # Makefile snippet
 #
-EXTRA_DIST = wrapset.api wrapset.scm
+EXTRA_DIST = \
+	wrapset.api	\
+	wrapset.scm
 
 wrapset_stem = set-wrapset_stem-in-your-makefile
 
@@ -30,16 +32,24 @@ top_module_name = (gnome $(wrapset_stem))
 gw_module_name = (gnome gw $(wrapset_stem))
 extra_module_names =
 wrapset_modules = ($(top_module_name) $(gw_module_name) $(extra_module_names))
-WRAPSET_TESTS_ENV = WRAPSET_MODULES="$(wrapset_modules)" WRAPSET_API_FILE=$(srcdir)/wrapset.api
+
+WRAPSET_TESTS_ENV = \
+	WRAPSET_MODULES="$(wrapset_modules)" \
+	WRAPSET_API_FILE=$(srcdir)/wrapset.api
+
 DEV_ENV = $(top_builddir)/dev-environ
 GUILE = guile
-
-TESTS_ENVIRONMENT=$(WRAPSET_TESTS_ENV) $(DEV_ENV)
+GUILE_FLAGS = --debug
 SCM_LOG_COMPILER = $(GUILE) $(GUILE_FLAGS) -e main -s
+
+TESTS_ENVIRONMENT = \
+	$(WRAPSET_TESTS_ENV) $(DEV_ENV) $(SCM_LOG_COMPILER)
+
 TEST_EXTENSIONS = .scm
 
 wrapset.api.update:
-	$(WRAPSET_TESTS_ENV) $(DEV_ENV)	$(GUILE) -e update-api -s $(srcdir)/wrapset.scm
+	$(WRAPSET_TESTS_ENV) $(DEV_ENV)	\
+	$(GUILE) $(GUILE_FLAGS) -e update-api -s $(srcdir)/wrapset.scm
 
 %.check: %
 	$(TESTS_ENVIRONMENT) $(srcdir)/$*

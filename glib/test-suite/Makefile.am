@@ -1,4 +1,27 @@
+# guile-gnome
+
+# Copyright (C) 2007, 2011, 2015
+# Free Software Foundation, Inc.
+
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of
+# the License, or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, contact:
+
+# Free Software Foundation           Voice:  +1-617-542-5942
+# 59 Temple Place - Suite 330        Fax:    +1-617-542-2652
+# Boston, MA  02111-1307,  USA       gnu@gnu.org
+
 include $(top_srcdir)/common.mk
+include $(top_srcdir)/tests.mk
 
 noinst_LTLIBRARIES = libgw-guile-test-gobject.la libgw-guile-test-glib.la 
 
@@ -22,9 +45,16 @@ noinst_HEADERS = test-gobject.h test-glib.h
 
 SCM_TESTS = gobject.test gw-gobject.test
 
-EXTRA_DIST = lib.scm exceptions.scm gw-test-gobject-spec.scm \
-	     gw-test-glib-spec.scm test-gobject.defs test-glib.defs \
-	     guile-test-env guile-gobject-test $(SCM_TESTS)
+EXTRA_DIST+= \
+	lib.scm 			\
+	exceptions.scm 			\
+	gw-test-gobject-spec.scm 	\
+	gw-test-glib-spec.scm 		\
+	test-gobject.defs		\
+	test-glib.defs			\
+	guile-test-env			\
+	guile-gobject-test		\
+	$(SCM_TESTS)
 
 CLEANFILES = $(wildcard gnome-*.log test-*.log) 		\
              $(wildcard gw-test-gobject.* gw-test-glib.*) 	\
@@ -32,23 +62,15 @@ CLEANFILES = $(wildcard gnome-*.log test-*.log) 		\
 
 wrapset_stem = glib
 
-top_module_name = (gnome $(wrapset_stem))
-gw_module_name = (gnome gw $(wrapset_stem))
-extra_module_names =
-wrapset_modules = ($(top_module_name) $(gw_module_name) $(extra_module_names))
-DEV_ENV = $(top_builddir)/dev-environ
-GUILE=guile
-
-TESTS_ENVIRONMENT=\
-	API_FILE=$(srcdir)/gobject.api \
-	DOC_SCM=$(srcdir)/../doc/gobject/guile-gnome-gobject.scm \
-	WRAPSET_MODULES="$(wrapset_modules)" \
-	WRAPSET_API_FILE=$(srcdir)/wrapset.api \
-	LTDL_LIBRARY_PATH=.:${LTDL_LIBRARY_PATH} \
-	GUILE_LOAD_PATH=".:${srcdir:-.}/..:..:${GUILE_LOAD_PATH}" \
-	$(DEV_ENV)
-SCM_LOG_COMPILER = $(GUILE) $(GUILE_FLAGS) -e main -s
-TEST_EXTENSIONS = .scm
+# it is not possible to prepend a previously defined variable
+# so we redefine it [see $(top_srcdir)/tests.mk]
+TESTS_ENVIRONMENT = \
+	API_FILE=$(srcdir)/gobject.api					\
+	DOC_SCM=$(srcdir)/../doc/gobject/guile-gnome-gobject.scm	\
+	$(WRAPSET_TESTS_ENV)						\
+	LTDL_LIBRARY_PATH=.:${LTDL_LIBRARY_PATH}			\
+	GUILE_LOAD_PATH=".:${srcdir:-.}/..:..:${GUILE_LOAD_PATH}"	\
+	$(DEV_ENV) $(SCM_LOG_COMPILER)
 
 script := '(load (getenv "DOC_SCM"))\
 (for-each \
@@ -61,24 +83,21 @@ gobject.api.update:
 	  $(shell DOC_SCM=$(srcdir)/../doc/gobject/guile-gnome-gobject.scm \
 	     guile -c $(script)) > $(srcdir)/gobject.api
 
-wrapset.api.update:
-	WRAPSET_MODULES="$(wrapset_modules)" \
-	WRAPSET_API_FILE=$(srcdir)/wrapset.api \
-	$(top_builddir)/dev-environ guile --debug -e update-api -s $(srcdir)/wrapset.scm
-
 %.check: %
 	$(TESTS_ENVIRONMENT) $(srcdir)/$*
 
-EXTRA_DIST+=gobject.api api.scm wrapset.api wrapset.scm
+EXTRA_DIST+= \
+	gobject.api	\
+	api.scm
 
-TESTS = guile-gobject-test \
-	api.scm \
-	wrapset.scm
+TESTS+= \
+	guile-gobject-test \
+	api.scm
 
 gw-test-%.scm gw-test-%.c: gw-test-%-spec.scm
 	echo GLP=$(GUILE_LOAD_PATH)
 	guile $(GUILE_FLAGS) -c \
-	  "(use-modules (g-wrap)) \
-	   (use-modules (g-wrap guile)) \
-	   (use-modules (gw-test-$*-spec)) \
+	  "(use-modules (g-wrap) \
+	                (g-wrap guile) \
+	                (gw-test-$*-spec)) \
 	   (generate-wrapset 'guile 'test-$* \"gw-test-$*\")"

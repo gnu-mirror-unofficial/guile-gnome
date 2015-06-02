@@ -1,5 +1,8 @@
 guile-gnome-platform NEWS --- history of user-visible changes.
-Copyright (C) 2004,2005,2006,2007,2008,2011,2012 Free Software Foundation, Inc.
+
+
+Copyright (C) 2004-2008, 2011-2012, 2014-2015
+Free Software Foundation, Inc.
 See the end for copying conditions of this file.
 
 
@@ -7,7 +10,7 @@ guile-gnome-platform is a binding between Guile Scheme and the Gnome
 stack of libraries.  See the README, for more information.
 
 
-guile-gnome-platform 2.16.3 - David Pirotte, 2014-10-08
+guile-gnome-platform 2.16.3 - David Pirotte, 2015-06-02
 =======================================================
 
 The primary objectives, working towards this release, were (1) to
@@ -25,8 +28,9 @@ None 'specific' changes
 
 * Toplevel calls moved into an eval-when conditions exp...
 
-* make check has been fixed to work with recent automake versions
-  [thanks to Ludovic Courtés]
+* make check and make distcheck both have been fixed to work with
+  recent automake versions [thanks to Ludovic Courtés for his help wrt
+  to make check]
 
 corba
 -----
