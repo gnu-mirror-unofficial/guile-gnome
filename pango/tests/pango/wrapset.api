@@ -7,7 +7,12 @@
      (connect
        generic
        <top>
-       (<gtype-instance> <symbol> <procedure>))
+       (<gtype-instance> <symbol> <procedure>)
+       (<gtype-instance>
+         <symbol>
+         <procedure>
+         <boolean>
+         <symbol>))
      (connect-after
        generic
        (<gtype-instance> <symbol> <procedure>))
@@ -292,7 +297,7 @@
      (pango-font-metrics-get-underline-thickness
        procedure
        (arity 0 0 #t))
-     (pango-get-mirror-char procedure (arity 1 0 #f))
+     (pango-get-mirror-char procedure (arity 0 0 #t))
      (pango-glyph-string-copy
        procedure
        (arity 0 0 #t))
@@ -473,7 +478,7 @@
        (arity 0 0 #t))
      (pango-layout-set-markup-with-accel
        procedure
-       (arity 4 0 #f))
+       (arity 0 0 #t))
      (pango-layout-set-single-paragraph-mode
        procedure
        (arity 0 0 #t))

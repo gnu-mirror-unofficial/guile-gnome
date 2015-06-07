@@ -7,7 +7,12 @@
      (connect
        generic
        <top>
-       (<gtype-instance> <symbol> <procedure>))
+       (<gtype-instance> <symbol> <procedure>)
+       (<gtype-instance>
+         <symbol>
+         <procedure>
+         <boolean>
+         <symbol>))
      (connect-after
        generic
        (<gtype-instance> <symbol> <procedure>))
@@ -34,22 +39,22 @@
    (typed-exports
      (pango-cairo-context-get-font-options
        procedure
-       (arity 1 0 #f))
+       (arity 0 0 #t))
      (pango-cairo-context-get-resolution
        procedure
        (arity 0 0 #t))
      (pango-cairo-context-set-font-options
        procedure
-       (arity 2 0 #f))
+       (arity 0 0 #t))
      (pango-cairo-context-set-resolution
        procedure
        (arity 0 0 #t))
      (pango-cairo-create-layout
        procedure
-       (arity 1 0 #f))
+       (arity 0 0 #t))
      (pango-cairo-error-underline-path
        procedure
-       (arity 5 0 #f))
+       (arity 0 0 #t))
      (pango-cairo-font-map-create-context
        procedure
        (arity 0 0 #t))
@@ -67,28 +72,28 @@
        (arity 0 0 #t))
      (pango-cairo-glyph-string-path
        procedure
-       (arity 3 0 #f))
+       (arity 0 0 #t))
      (pango-cairo-layout-line-path
        procedure
-       (arity 2 0 #f))
+       (arity 0 0 #t))
      (pango-cairo-layout-path
        procedure
-       (arity 2 0 #f))
+       (arity 0 0 #t))
      (pango-cairo-show-error-underline
        procedure
-       (arity 5 0 #f))
+       (arity 0 0 #t))
      (pango-cairo-show-glyph-string
        procedure
-       (arity 3 0 #f))
+       (arity 0 0 #t))
      (pango-cairo-show-layout
        procedure
-       (arity 2 0 #f))
+       (arity 0 0 #t))
      (pango-cairo-show-layout-line
        procedure
-       (arity 2 0 #f))
+       (arity 0 0 #t))
      (pango-cairo-update-context
        procedure
-       (arity 2 0 #f))
+       (arity 0 0 #t))
      (pango-cairo-update-layout
        procedure
-       (arity 2 0 #f)))))
+       (arity 0 0 #t)))))

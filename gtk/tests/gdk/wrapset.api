@@ -7,7 +7,12 @@
      (connect
        generic
        <top>
-       (<gtype-instance> <symbol> <procedure>))
+       (<gtype-instance> <symbol> <procedure>)
+       (<gtype-instance>
+         <symbol>
+         <procedure>
+         <boolean>
+         <symbol>))
      (connect-after
        generic
        (<gtype-instance> <symbol> <procedure>))
@@ -1410,18 +1415,18 @@
      (gdk-bitmap-create-from-data
        procedure
        (arity 0 0 #t))
-     (gdk-cairo-create procedure (arity 1 0 #f))
-     (gdk-cairo-rectangle procedure (arity 2 0 #f))
-     (gdk-cairo-region procedure (arity 2 0 #f))
+     (gdk-cairo-create procedure (arity 0 0 #t))
+     (gdk-cairo-rectangle procedure (arity 0 0 #t))
+     (gdk-cairo-region procedure (arity 0 0 #t))
      (gdk-cairo-set-source-color
        procedure
-       (arity 2 0 #f))
+       (arity 0 0 #t))
      (gdk-cairo-set-source-pixbuf
        procedure
-       (arity 4 0 #f))
+       (arity 0 0 #t))
      (gdk-cairo-set-source-pixmap
        procedure
-       (arity 4 0 #f))
+       (arity 0 0 #t))
      (gdk-char-height procedure (arity 0 0 #t))
      (gdk-char-measure procedure (arity 0 0 #t))
      (gdk-char-width procedure (arity 0 0 #t))
@@ -1788,6 +1793,7 @@
        procedure
        (arity 0 0 #t))
      (gdk-pixbuf-get-option procedure (arity 0 0 #t))
+     (gdk-pixbuf-get-pixels procedure (arity 0 0 #t))
      (gdk-pixbuf-get-rowstride
        procedure
        (arity 0 0 #t))
@@ -1919,7 +1925,7 @@
      (gdk-screen-get-display procedure (arity 0 0 #t))
      (gdk-screen-get-font-options
        procedure
-       (arity 1 0 #f))
+       (arity 0 0 #t))
      (gdk-screen-get-height procedure (arity 0 0 #t))
      (gdk-screen-get-height-mm
        procedure
@@ -1988,7 +1994,7 @@
        (arity 0 0 #t))
      (gdk-screen-set-font-options
        procedure
-       (arity 2 0 #f))
+       (arity 0 0 #t))
      (gdk-screen-set-resolution
        procedure
        (arity 0 0 #t))

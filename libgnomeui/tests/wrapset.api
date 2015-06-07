@@ -10,7 +10,18 @@
      (connect
        generic
        <top>
-       (<gtype-instance> <symbol> <procedure>))
+       (<gnome-client>)
+       (<gtk-accel-group>
+         <integer>
+         <top>
+         <top>
+         <gclosure>)
+       (<gtype-instance> <symbol> <procedure>)
+       (<gtype-instance>
+         <symbol>
+         <procedure>
+         <boolean>
+         <symbol>))
      (connect-after
        generic
        (<gtype-instance> <symbol> <procedure>))
@@ -18,11 +29,17 @@
      (create-signal
        generic
        (<gtype-class> <symbol> <top> <top>))
-     (disconnect generic (<gtype-instance> <top>))
+     (disconnect
+       generic
+       (<gnome-client>)
+       (<gtk-accel-group> <gclosure>)
+       (<gtype-instance> <top>))
      (emit generic
            (<gtype-instance> <symbol> . <top>))
      (find-property generic (<gtype-class> <symbol>))
-     (get generic (<gobject> <symbol>))
+     (get generic
+          (<gobject> <symbol>)
+          (<gtk-print-settings> <string>))
      (get-properties generic (<gtype-class>))
      (get-property-names generic (<gtype-class>))
      (get-signals generic (<gtype-class>))
@@ -42,6 +59,7 @@
   ((gnome gw libgnomeui)
    (uses-interfaces (gnome gw generics))
    (typed-exports
+     (<gnome-client> class)
      (gnome-authentication-manager-dialog-is-visible
        procedure
        (arity 0 0 #t))

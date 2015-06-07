@@ -1,5 +1,14 @@
 (module-api
   (version 1 0)
+  ((gnome gobject)
+   (uses-interfaces
+     (gnome gobject gclosure)
+     (gnome gobject gobject)
+     (gnome gobject gparameter)
+     (gnome gobject gsignal)
+     (gnome gobject gtype)
+     (gnome gobject gvalue))
+   (typed-exports))
   ((gnome gobject gclosure)
    (uses-interfaces)
    (typed-exports
@@ -12,7 +21,12 @@
      (connect
        generic
        <top>
-       (<gtype-instance> <symbol> <procedure>))
+       (<gtype-instance> <symbol> <procedure>)
+       (<gtype-instance>
+         <symbol>
+         <procedure>
+         <boolean>
+         <symbol>))
      (connect-after
        generic
        (<gtype-instance> <symbol> <procedure>))
@@ -65,6 +79,7 @@
      (<gparam-enum> class)
      (<gparam-flags> class)
      (<gparam-float> class)
+     (<gparam-gtype> class)
      (<gparam-int64> class)
      (<gparam-int> class)
      (<gparam-long> class)
@@ -119,7 +134,7 @@
        (arity 3 2 #f))
      (gtype-instance-signal-connect-after
        procedure
-       (arity 3 0 #f))
+       (arity 3 1 #f))
      (gtype-instance-signal-emit
        procedure
        (arity 2 0 #t))))
@@ -277,4 +292,5 @@
    (uses-interfaces)
    (typed-exports
      (export-all-lazy! procedure (arity 1 0 #f))
-     (re-export-modules macro))))
+     (re-export-modules macro)))
+  ((gnome-2) (uses-interfaces) (typed-exports)))

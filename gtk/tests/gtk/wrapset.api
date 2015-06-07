@@ -7,7 +7,17 @@
      (connect
        generic
        <top>
-       (<gtype-instance> <symbol> <procedure>))
+       (<gtk-accel-group>
+         <integer>
+         <top>
+         <top>
+         <gclosure>)
+       (<gtype-instance> <symbol> <procedure>)
+       (<gtype-instance>
+         <symbol>
+         <procedure>
+         <boolean>
+         <symbol>))
      (connect-after
        generic
        (<gtype-instance> <symbol> <procedure>))
@@ -15,11 +25,16 @@
      (create-signal
        generic
        (<gtype-class> <symbol> <top> <top>))
-     (disconnect generic (<gtype-instance> <top>))
+     (disconnect
+       generic
+       (<gtk-accel-group> <gclosure>)
+       (<gtype-instance> <top>))
      (emit generic
            (<gtype-instance> <symbol> . <top>))
      (find-property generic (<gtype-class> <symbol>))
-     (get generic (<gobject> <symbol>))
+     (get generic
+          (<gobject> <symbol>)
+          (<gtk-print-settings> <string>))
      (get-properties generic (<gtype-class>))
      (get-property-names generic (<gtype-class>))
      (get-signals generic (<gtype-class>))
@@ -72,18 +87,18 @@
      (gdk-bitmap-create-from-data
        procedure
        (arity 0 0 #t))
-     (gdk-cairo-create procedure (arity 1 0 #f))
-     (gdk-cairo-rectangle procedure (arity 2 0 #f))
-     (gdk-cairo-region procedure (arity 2 0 #f))
+     (gdk-cairo-create procedure (arity 0 0 #t))
+     (gdk-cairo-rectangle procedure (arity 0 0 #t))
+     (gdk-cairo-region procedure (arity 0 0 #t))
      (gdk-cairo-set-source-color
        procedure
-       (arity 2 0 #f))
+       (arity 0 0 #t))
      (gdk-cairo-set-source-pixbuf
        procedure
-       (arity 4 0 #f))
+       (arity 0 0 #t))
      (gdk-cairo-set-source-pixmap
        procedure
-       (arity 4 0 #f))
+       (arity 0 0 #t))
      (gdk-char-height procedure (arity 0 0 #t))
      (gdk-char-measure procedure (arity 0 0 #t))
      (gdk-char-width procedure (arity 0 0 #t))
@@ -450,6 +465,7 @@
        procedure
        (arity 0 0 #t))
      (gdk-pixbuf-get-option procedure (arity 0 0 #t))
+     (gdk-pixbuf-get-pixels procedure (arity 0 0 #t))
      (gdk-pixbuf-get-rowstride
        procedure
        (arity 0 0 #t))
@@ -581,7 +597,7 @@
      (gdk-screen-get-display procedure (arity 0 0 #t))
      (gdk-screen-get-font-options
        procedure
-       (arity 1 0 #f))
+       (arity 0 0 #t))
      (gdk-screen-get-height procedure (arity 0 0 #t))
      (gdk-screen-get-height-mm
        procedure
@@ -650,7 +666,7 @@
        (arity 0 0 #t))
      (gdk-screen-set-font-options
        procedure
-       (arity 2 0 #f))
+       (arity 0 0 #t))
      (gdk-screen-set-resolution
        procedure
        (arity 0 0 #t))
@@ -925,9 +941,13 @@
      (%gtk-message-dialog-new
        procedure
        (arity 1 4 #f))
+     (<gtk-accel-group> class)
+     (<gtk-alignment> class)
+     (<gtk-arrow> class)
      (<gtk-binding-set*> <gw:wct>)
      (<gtk-list-store> class)
      (<gtk-object> class)
+     (<gtk-print-settings> class)
      (<gtk-radio-group*> <gw:wct>)
      (<gtk-text-buffer> class)
      (<gtk-tree-iter> class)
@@ -3410,7 +3430,7 @@
        (arity 0 0 #t))
      (gtk-print-context-get-cairo-context
        procedure
-       (arity 1 0 #f))
+       (arity 0 0 #t))
      (gtk-print-context-get-dpi-x
        procedure
        (arity 0 0 #t))
@@ -3431,7 +3451,7 @@
        (arity 0 0 #t))
      (gtk-print-context-set-cairo-context
        procedure
-       (arity 4 0 #f))
+       (arity 0 0 #t))
      (gtk-print-error-quark procedure (arity 0 0 #t))
      (gtk-print-operation-cancel
        procedure
@@ -4003,9 +4023,6 @@
      (gtk-recent-info-get-age
        procedure
        (arity 0 0 #t))
-     #;(gtk-recent-info-get-application-info
-       procedure
-       (arity 2 0 #f))
      (gtk-recent-info-get-description
        procedure
        (arity 0 0 #t))
@@ -5744,6 +5761,9 @@
        procedure
        (arity 0 0 #t))
      (gtk-tree-view-get-model
+       procedure
+       (arity 0 0 #t))
+     (gtk-tree-view-get-path-at-pos
        procedure
        (arity 0 0 #t))
      (gtk-tree-view-get-reorderable

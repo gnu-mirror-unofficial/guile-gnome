@@ -10,7 +10,17 @@
      (connect
        generic
        <top>
-       (<gtype-instance> <symbol> <procedure>))
+       (<gtk-accel-group>
+         <integer>
+         <top>
+         <top>
+         <gclosure>)
+       (<gtype-instance> <symbol> <procedure>)
+       (<gtype-instance>
+         <symbol>
+         <procedure>
+         <boolean>
+         <symbol>))
      (connect-after
        generic
        (<gtype-instance> <symbol> <procedure>))
@@ -18,16 +28,26 @@
      (create-signal
        generic
        (<gtype-class> <symbol> <top> <top>))
-     (disconnect generic (<gtype-instance> <top>))
+     (disconnect
+       generic
+       (<gtk-accel-group> <gclosure>)
+       (<gtype-instance> <top>))
      (emit generic
            (<gtype-instance> <symbol> . <top>))
      (find-property generic (<gtype-class> <symbol>))
-     (get generic (<gobject> <symbol>))
+     (get generic
+          (<gobject> <symbol>)
+          (<gtk-print-settings> <string>))
      (get-properties generic (<gtype-class>))
      (get-property-names generic (<gtype-class>))
      (get-signals generic (<gtype-class>))
      (invoke generic (<gclosure> . <top>))
-     (set generic (<gobject> <symbol> <top>))
+     (set generic
+          (<gobject> <symbol> <top>)
+          (<gtk-alignment> <real> <real> <real> <real>)
+          (<gtk-arrow> <top> <top>)
+          (<gtk-aspect-frame> . <top>)
+          (<gtk-print-settings> <string> <string>))
      (unblock generic (<gtype-instance> <top>))))
   ((gnome gw canvas)
    (uses-interfaces (gnome gw generics))

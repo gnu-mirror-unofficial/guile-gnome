@@ -19,7 +19,12 @@
      (connect
        generic
        <top>
-       (<gtype-instance> <symbol> <procedure>))
+       (<gtype-instance> <symbol> <procedure>)
+       (<gtype-instance>
+         <symbol>
+         <procedure>
+         <boolean>
+         <symbol>))
      (connect-after
        generic
        (<gtype-instance> <symbol> <procedure>))
@@ -45,6 +50,10 @@
    (uses-interfaces (gnome gw generics))
    (typed-exports
      (<g-string*> <gw:wct>)
+     (<guchar*> <gw:wct>)
+     (<guint8*> <gw:wct>)
+     (<gunichar*> <gw:wct>)
+     (<gunichar2*> <gw:wct>)
      (enum-<g-bookmark-file-error>-val->int
        procedure
        (arity 1 0 #f))
@@ -362,11 +371,13 @@
      (g-string-get-str procedure (arity 0 0 #t))
      (g-string-new procedure (arity 0 1 #f))
      (g-timeout-source-new procedure (arity 0 0 #t))
+     (g-ucs4-to-utf16 procedure (arity 1 0 #f))
+     (g-ucs4-to-utf8 procedure (arity 1 0 #f))
      (g-unichar-break-type procedure (arity 0 0 #t))
      (g-unichar-digit-value procedure (arity 0 0 #t))
      (g-unichar-get-mirror-char
        procedure
-       (arity 1 0 #f))
+       (arity 0 0 #t))
      (g-unichar-isalnum procedure (arity 0 0 #t))
      (g-unichar-isalpha procedure (arity 0 0 #t))
      (g-unichar-iscntrl procedure (arity 0 0 #t))
@@ -389,6 +400,8 @@
      (g-unichar-type procedure (arity 0 0 #t))
      (g-unichar-validate procedure (arity 0 0 #t))
      (g-unichar-xdigit-value procedure (arity 0 0 #t))
+     (g-utf16-to-ucs4 procedure (arity 1 0 #f))
+     (g-utf16-to-utf8 procedure (arity 1 0 #f))
      (g-utf8-casefold procedure (arity 0 0 #t))
      (g-utf8-collate procedure (arity 0 0 #t))
      (g-utf8-collate-key procedure (arity 0 0 #t))
@@ -404,4 +417,6 @@
      (g-utf8-strrchr procedure (arity 0 0 #t))
      (g-utf8-strreverse procedure (arity 0 0 #t))
      (g-utf8-strup procedure (arity 0 0 #t))
+     (g-utf8-to-ucs4 procedure (arity 1 0 #f))
+     (g-utf8-to-utf16 procedure (arity 1 0 #f))
      (g-utf8-validate procedure (arity 0 0 #t)))))
