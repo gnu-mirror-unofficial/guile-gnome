@@ -18,13 +18,13 @@ License along with this program.  If not, see
 
 ]])
 
-AC_PREREQ(2.52)
-AC_INIT(guile-gnome-platform, 2.16.3)
+AC_PREREQ(2.61)
+AC_INIT([guile-gnome-platform], [2.16.3], [guile-gtk-general atgnu.org])
 AC_CONFIG_SRCDIR(ChangeLog.pre-2.16)
 AC_CONFIG_AUX_DIR([build-aux])
 AC_COPYRIGHT(GUILE_GNOME_PLATFORM_CONFIGURE_COPYRIGHT)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(-Wno-portability -Wno-syntax serial-tests)
+AM_INIT_AUTOMAKE(1.12 -Wno-portability -Wno-syntax serial-tests)
 
 AC_SUBST(VERSION,2.16.3)
 
@@ -95,7 +95,7 @@ fi
 
 # Check for g-wrap
 
-PKG_CHECK_MODULES(G_WRAP, g-wrap-2.0-guile >= 1.9.14)
+PKG_CHECK_MODULES(G_WRAP, g-wrap-2.0-guile >= 1.9.15)
 AC_SUBST(G_WRAP_CFLAGS)
 AC_SUBST(G_WRAP_LIBS)
 AC_SUBST(G_WRAP_MODULE_DIR, `${PKG_CONFIG} --variable=module_directory g-wrap-2.0-guile`)
