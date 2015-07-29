@@ -56,11 +56,11 @@ handler of this signal use the functions to find out what the toolbar should
 look like and change themselves accordingly.
 
 @itemize 
-@item
-@code{gtk-toolbar-get-orientation}@item
-@code{gtk-toolbar-get-style}@item
-@code{gtk-toolbar-get-icon-size}@item
-@code{gtk-toolbar-get-relief-style}@end itemize
+@item @code{gtk-toolbar-get-orientation}
+@item @code{gtk-toolbar-get-style}
+@item @code{gtk-toolbar-get-icon-size}
+@item @code{gtk-toolbar-get-relief-style}
+@end itemize
 
 @end defop
 
