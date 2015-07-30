@@ -1,72 +1,140 @@
-guile-gnome-pkg README
-Copyright (C) 2004,2006 Free Software Foundation, Inc.
-See the end for copying conditions of this file.
-Last updated 13 August 2006.
 
 
-About guile-gnome
-=================
-
-guile-gnome is a Guile wrapper collection for the GNOME library stack.
-It ships with an wrapper engine that allows semi-automatic wrapping of
-GObject-based C APIs.
+Copyright (C) 2004, 2006, 2015 Free Software Foundation, Inc.
+Last updated 26 July 2015.
 
 
-Copying guile-gnome
-===================
+About
+=====
 
-Distribution of guile-gnome libraries and components is under the GPL.
-See the COPYING file for more information.
+Guile-Gnome is a Guile wrapper collection for most of the GNOME core
+libraries. Guile-Gnome brings the power of Scheme to your graphical
+application: from Pango to GnomeCanvas, Gtk+ to GStreamer, Glade to
+GtkSourceView, you will find in Guile-Gnome a comprehensive
+environment for developing modern applications:
+
+		(cons 'guile 'gnome)
+
+Each wrapper is contained within its own subdirectory, for instance
+glib/ or gstreamer/.  For information on the individual wrappers, see
+the documentation in their subdirs.
 
 
-Contact info
-============
+Installing
+==========
+
+Guile-Gnome will try to build the following wrappers:
+
+    atk, cairo, corba, gconf, glib, gnome-vfs, gtk, libglade,
+    libgnome, libgnomecanvas, libgnomeui, pango.
+
+Prerequisites
+-------------
+
+* All wrappers:
+
+    - Autoconf >= 2.61
+    - Automake >= 1.12
+    - Guile-2.0 or Guile-2.2
+    - Guile-Lib >= 0.2.2	http://www.nongnu.org/guile-lib/
+    - G-Wrap >= 1.9.15 		http://www.nongnu.org/g-wrap/
+    - Guile-Cairo >= 1.10	http://www.nongnu.org/guile-cairo/
+
+
+    Note that at the time we write, Guile-Cairo 1.10 has not been
+    released yey, it will hopefully soon be the case.  In the mean
+    time, the required bleeding edge Guile-Cairo stable version must
+    be obtained from the source, see:
+
+      http://www.nongnu.org/guile-cairo/dev/
+
+* Specific wrappers:
+
+Here are the dependencies Guile-Gnome will check, during its
+configurestep, in order to decide which wrappers it can build. Some
+GNU Linux distributions require you to install corresponding '-dev'
+packages, not just the core libraries packages.
+
+    - Atk >= 1.12
+    - Corba [(and libbonobo-2.0 Orbit-2.0)]
+    - gconf-2.0 >= 2.18
+    - glib-2.0 >= 2.10.0
+    - gobject-2.0
+    - gthread-2.0
+    - gnome-vfs-2.0 >= 2.16.0
+    - gdk-pixbuf-2.0 >= 2.10.0
+    - gdk-2.0 >= 2.10.0
+    - gtk+-2.0 >= 2.10.0
+    - libglade-2.0 >= 2.6
+    - libgnome-2.0 >= 2.16
+    - libgnomecanvas-2.0 >= 2.14
+    - libgnomeui-2.0 >= 2.16.0
+    - pango >= 1.14
+    - pangocairo >= 1.14
+
+Instructions
+------------
+
+For detailed, general instructions, see the file INSTALL.
+
+* Building from a tarball
+
+Once all [or the appropriate subset of the GNOME core libraries you
+wish to wrap] dependencies are statisfied, open a terminal and:
+
+    cd <download-path>
+    tar zxf guile-gnome-<version>.tar.gz
+    cd guile-gnome-<version>
+    ./configure [--prefix=/your/prefix]
+    make
+    make install
+
+Notes:
+
+(1) During the configure step, Guile-Gnome will list the wrappers it
+    will buid.  You have to scroll-up or edit the config.log file and
+    search for 'available wrappers' to see this important feedback
+
+(2) In the above configure step, --prefix=/your/prefix is
+    optional. The default value is /usr/local.
+
+(3) To install Guile-Gnome, you must have write permissions to the
+    following directories:
+
+	- $prefix and its subdirs
+	- Guile's global site directory
+
+    You may check Guile's global site directory using:
+
+	guile -c "(display (%global-site-dir)) (newline)"
+
+Guile-Gnome's modules will be installed in
+    $prefix/share/guile-gnome-2, and the file gnome-2.scm will be
+    installed in Guile's globasl site directory.
+
+(4) In case you need to augment Guile's load paths [for your own
+    Guile-Gnome application(s) for example], you can: (a)
+    create/update your personnal ~/.guile file, (b) update Guile's
+    global site located init.scm file or (c) define/update your
+    GUILE_LOAD_PATH shell environment variable.
+
+(5) Like for any other GNU Tool Chain compatible software, you may
+    install the documentation locally using make install-info, make
+    install-html and/or make install-pdf.
+
+
+Contact
+=======
 
   Mailing List: guile-gtk-general@gnu.org
   Homepage:     http://www.gnu.org/software/guile-gnome/
   Download:     http://www.gnu.org/software/guile-gnome/download/
 
 
-Build dependencies
-==================
+License
+=======
 
-* Guile 1.6.4 or newer
-  http://www.gnu.org/software/guile/
-* G-Wrap 1.9.1 or above, but not 1.9.2
-  http://www.nongnu.org/g-wrap/
-* Development packages for individual wrapsets
-  See README files in the wrapset subdirectories for more information.
-
-
-Installation quickstart
-=======================
-
-Install using the standard autotools incantation:
-  ./configure && make && make install.
-
-Build from CVS or Arch using ./autogen.sh && make.
-
-You can run without installing, just run './dev-environ guile'.
-
-
-About the packaging
-===================
-
-guile-gnome is developed as a number of modular packages. Each wrapper
-is contained within its own subdirectory, for instance glib/ or
-gstreamer/.
-
-You are reading this document from the toplevel umbrella package,
-guile-gnome-pkg, which has no knowledge of packages contained within it.
-For information on the individual wrappers contained in this package,
-see the documentation in the subdirectories.
-
-
-Copying this file
-=================
-
-Copyright (C) 2004,2006 Free Software Foundation, Inc.
-
-Copying and distribution of this file, with or without modification, are
-permitted in any medium without royalty provided the copyright notice
-and this notice are preserved.
+Guile-Gnome is a free software, distributed under the terms of the GNU
+General Public License GPL v2 or higher. You must be aware there is no
+warranty whatsoever for Guile-Gnome. This is described in full in the
+licenses.

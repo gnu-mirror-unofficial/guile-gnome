@@ -6,11 +6,13 @@ Free Software Foundation, Inc.
 See the end for copying conditions of this file.
 
 
-guile-gnome-platform is a binding between Guile Scheme and the Gnome
-stack of libraries.  See the README, for more information.
+Guile-Gnome is a Guile wrapper collection for most of the GNOME core
+libraries.
+
+See the README, for more information.
 
 
-guile-gnome-platform 2.16.3 - David Pirotte, 2015-06-02
+guile-gnome-platform 2.16.3 - David Pirotte, 2015-07-30
 =======================================================
 
 The primary objectives, working towards this release, were (1) to
@@ -18,45 +20,56 @@ remove all code specific to the support of guile versions prior to
 guile 2, (2) getting rid of all guile related deprecated messages
 [that second part of the mission almost completed, there is still one
 corba related deprecated warning message, help to resolve that last
-one is welcome!], and (3) wrap gdk_pixbuf_get_pixels requested by
+one is welcome!], and (3) wrap gdk_pixbuf_get_pixels required by
 guile-clutter 1.12.
 
-None 'specific' changes
------------------------
+All modules
+-----------
 
+* Guile-Gnome now requires Guile 2.0, allows Guile 2.2
+* Requires G-Wrap >= 1.9.15
+* Requires Guile-Cairo >= 1.10
+
+    Note that at the time we write, Guile-Cairo 1.10 has not been
+    released yey, it will hopefully soon be the case.  In the mean
+    time, the required bleeding edge Guile-Cairo stable version must
+    be obtained from the source, see:
+
+       http://www.nongnu.org/guile-cairo/dev/
+
+* toplevel calls moved into an eval-when conditions exp...
 * scm-error incorrect arg list, various calls, all fixed.
-
-* Toplevel calls moved into an eval-when conditions exp...
-
+* all [but 1 Corba related] Guile deprecated calls removed
+* remove use of some undocumented GOOPS internals
+* adapt to GOOPS changes in Guile 2.2
 * make check and make distcheck both have been fixed to work with
   recent automake versions [thanks to Ludovic Courtés for his help wrt
   to make check]
 
-corba
+Corba
 -----
 
 * fixing allocate-instance for <CORBA:Object>
+* gnome-corba-error, gruntime-error, don't call save-stack
+  [deprecated]
 
-glib
+Glib
 ----
 
 * g_get_current_time now [temporarily] ignored, it was not properly
   wrapped anyway.
-
 * <glib-wrapset> missing some basic pointer types: guint8*, guchar*,
   gunichar*, gunichar2* added and wrapped as opaque pointers.
-
 * scm_c_gparam_construct 4th argument type definition fixed
-
 * use &gw-bad-typespec, not &gw:bad-typespec, fixed.
 
-gdk-pixbuf
+Gdk-Pixbuf
 ----------
 
 * gdk_pixbuf_get_pixels removed from the ignore list, it returns a
   guchar*, just added, no specific wrapper needed.
 
-gtk
+Gtk
 ---
 
 * gtk_recent_info_get_application_info should [temporarily] be
