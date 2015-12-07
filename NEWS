@@ -12,6 +12,19 @@ libraries.
 See the README, for more information.
 
 
+Guile-Gnome-Platform 2.16.4 - David Pirotte, 2015-12-08
+=======================================================
+
+This release fixes a serious bug, leading to a runtime error for
+Guile-Gnome built against Gcc >= 5.0.
+
+Glib
+----
+
+* glib/gnome/gobject/gclosure.c: gcc_please_look_the_other_way must be
+  declared volatile.
+
+
 guile-gnome-platform 2.16.3 - David Pirotte, 2015-07-30
 =======================================================
 
