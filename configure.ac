@@ -19,14 +19,14 @@ License along with this program.  If not, see
 ]])
 
 AC_PREREQ(2.61)
-AC_INIT([guile-gnome-platform], [2.16.3], [guile-gtk-general atgnu.org])
+AC_INIT([guile-gnome-platform], [2.16.4], [guile-gtk-general atgnu.org])
 AC_CONFIG_SRCDIR(ChangeLog.pre-2.16)
 AC_CONFIG_AUX_DIR([build-aux])
 AC_COPYRIGHT(GUILE_GNOME_PLATFORM_CONFIGURE_COPYRIGHT)
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(1.12 -Wno-portability -Wno-syntax serial-tests)
 
-AC_SUBST(VERSION,2.16.3)
+AC_SUBST(VERSION,2.16.4)
 
 # Meaning of the API version
 # --------------------------
