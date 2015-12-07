@@ -232,7 +232,7 @@ SCM_DEFINE (scm_gclosure_invoke, "gclosure-invoke", 2, 0, 1,
 }
 #undef FUNC_NAME
 
-static GType gcc_please_look_the_other_way;
+volatile static GType gcc_please_look_the_other_way;
 void
 scm_init_gnome_gobject_closures (void)
 {
