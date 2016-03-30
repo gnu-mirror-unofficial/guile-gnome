@@ -15,7 +15,10 @@ How releases work
    guile-gtk-general and guile-user.
 
 7) Upload tarball:
-   build-aux/gnupload --to ftp.gnu.org:guile-gnome/platform guile-gnome-platform-x.y.z.tar.gz
+
+     build-aux/gnupload \
+       --to ftp.gnu.org:guile-gnome/guile-gnome-platform \
+       guile-gnome-platform-x.y.z.tar.gz
 
 8) Update web site, adding news entry to news/index.scm in the CVS www
    repo.
