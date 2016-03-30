@@ -1,6 +1,6 @@
 define(GUILE_GNOME_PLATFORM_CONFIGURE_COPYRIGHT,[[
 
-Copyright (C) 2011, 2012, 2015  Free Software Foundation, Inc.
+Copyright (C) 2011, 2012, 2015, 2016  Free Software Foundation, Inc.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as
@@ -18,15 +18,17 @@ License along with this program.  If not, see
 
 ]])
 
-AC_PREREQ(2.61)
-AC_INIT([guile-gnome-platform], [2.16.4], [guile-gtk-general atgnu.org])
+AC_PREREQ(2.69)
+
+AC_INIT([guile-gnome-platform],
+	[2.16.5-dev],
+	[guile-gtk-general at gnu dot org])
+
 AC_CONFIG_SRCDIR(ChangeLog.pre-2.16)
 AC_CONFIG_AUX_DIR([build-aux])
 AC_COPYRIGHT(GUILE_GNOME_PLATFORM_CONFIGURE_COPYRIGHT)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(1.12 -Wno-portability -Wno-syntax serial-tests)
-
-AC_SUBST(VERSION,2.16.4)
+AM_INIT_AUTOMAKE(1.14 -Wno-portability -Wno-syntax serial-tests)
 
 # Meaning of the API version
 # --------------------------
