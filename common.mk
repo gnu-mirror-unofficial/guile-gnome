@@ -38,7 +38,9 @@ SUFFIXES = .x .doc
 
 GUILE_SNARF_CFLAGS = $(DEFS) $(AM_CFLAGS) $(GUILE_CFLAGS) $(G_WRAP_CFLAGS)
 
-PACKAGES = atk cairo corba defs gconf glib gnome-vfs gtk libglade libgnome libgnomecanvas libgnomeui pango
+PACKAGES = atk cairo defs gconf glib gtk libglade libgnome libgnomecanvas libgnomeui pango
+# gnome-vfs corba
+
 SOURCE_GUILE_PATH=$(shell echo $(addprefix $(abs_top_srcdir)/,$(PACKAGES)) | sed -e 's/ /:/g'):$(srcdir)
 BUILD_GUILE_PATH=$(if $(filter-out $(abs_top_srcdir),$(abs_top_builddir)),$(shell echo -n $(addprefix $(abs_top_builddir)/,$(PACKAGES)): | sed -e 's/ /:/g'),)
 GUILE_LOAD_PATH:=$(BUILD_GUILE_PATH)$(SOURCE_GUILE_PATH):${G_WRAP_MODULE_DIR}$(if ${GUILE_LOAD_PATH},:${GUILE_LOAD_PATH})

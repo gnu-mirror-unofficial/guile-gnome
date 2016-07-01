@@ -152,15 +152,20 @@ AM_CONDITIONAL(HAVE_CAIRO, $HAVE_CAIRO)
 record_check cairo $HAVE_CAIRO
 
 # corba
-PKG_CHECK_MODULES(CORBA, libbonobo-2.0, HAVE_CORBA=true, HAVE_CORBA=false)
-AC_SUBST(CORBA_CFLAGS)
-AC_SUBST(CORBA_LIBS)
-AM_CONDITIONAL(HAVE_CORBA, $HAVE_CORBA)
-ORBIT_IDL="`pkg-config --variable=orbit_idl ORBit-2.0`"
-AC_SUBST(ORBIT_IDL)
-BONOBO_IDL_DIR="`pkg-config --variable=idldir libbonobo-2.0`"
-AC_SUBST(BONOBO_IDL_DIR)
-record_check corba $HAVE_CORBA
+
+# Uses scm_make_vtable_vtable, deprecated in 2.0 and removed from 2.2:
+# till someone has the wish, the time and the skill to fix this, we
+# won't build the corba wrapper.
+
+# PKG_CHECK_MODULES(CORBA, libbonobo-2.0, HAVE_CORBA=true, HAVE_CORBA=false)
+# AC_SUBST(CORBA_CFLAGS)
+# AC_SUBST(CORBA_LIBS)
+# AM_CONDITIONAL(HAVE_CORBA, $HAVE_CORBA)
+# ORBIT_IDL="`pkg-config --variable=orbit_idl ORBit-2.0`"
+# AC_SUBST(ORBIT_IDL)
+# BONOBO_IDL_DIR="`pkg-config --variable=idldir libbonobo-2.0`"
+# AC_SUBST(BONOBO_IDL_DIR)
+# record_check corba $HAVE_CORBA
 
 # gconf
 PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.18, HAVE_GCONF=true, HAVE_GCONF=false)
@@ -191,17 +196,23 @@ AC_CONFIG_COMMANDS([glib/gnome/gobject/guile-gnome-gobject],
 record_check glib true
 
 # gnome-vfs
-PKG_CHECK_MODULES(GNOME_VFS, gnome-vfs-2.0 >= 2.16.0, HAVE_GNOME_VFS=true, HAVE_GNOME_VFS=false)
-AC_SUBST(GNOME_VFS_CFLAGS)
-AC_SUBST(GNOME_VFS_LIBS)
-AM_CONDITIONAL(HAVE_GNOME_VFS, $HAVE_GNOME_VFS)
-if $DISABLE_DEPRECATED; then
-  GNOME_VFS_DEPRECATED_CFLAGS=-DGNOME_VFS_DISABLE_DEPRECATED
-else
-  GNOME_VFS_DEPRECATED_CFLAGS=
-fi
-AC_SUBST(GNOME_VFS_DEPRECATED_CFLAGS)
-record_check gnome-vfs $HAVE_GNOME_VFS
+
+# This wrapper needs updates wrt C port API, which has changed in
+# Guile-2.2. See 'API to define new port types from C has changed' in
+# the NEWS file for Guile 2.2: till someone has the wish, time and
+# skill to fix this, we won't build the gnome-vfs wrapper.
+
+# PKG_CHECK_MODULES(GNOME_VFS, gnome-vfs-2.0 >= 2.16.0, HAVE_GNOME_VFS=true, HAVE_GNOME_VFS=false)
+# AC_SUBST(GNOME_VFS_CFLAGS)
+# AC_SUBST(GNOME_VFS_LIBS)
+# AM_CONDITIONAL(HAVE_GNOME_VFS, $HAVE_GNOME_VFS)
+# if $DISABLE_DEPRECATED; then
+#   GNOME_VFS_DEPRECATED_CFLAGS=-DGNOME_VFS_DISABLE_DEPRECATED
+# else
+#   GNOME_VFS_DEPRECATED_CFLAGS=
+# fi
+# AC_SUBST(GNOME_VFS_DEPRECATED_CFLAGS)
+# record_check gnome-vfs $HAVE_GNOME_VFS
 
 # gtk
 PKG_CHECK_MODULES(GDK_PIXBUF, gdk-pixbuf-2.0 >= 2.10.0, HAVE_GDK_PIXBUF=true, HAVE_GDK_PIBXUF=false)
@@ -309,6 +320,30 @@ on the prerequisites of a package.
 fi
 
 AC_CONFIG_FILES(dev-environ, [chmod +x ./dev-environ])
+
+# if someone fixes it, files below should be added
+# below cairo
+# corba/doc/Makefile
+# corba/tests/Makefile
+# corba/gnome/gw/Makefile
+# corba/gnome/Makefile
+# corba/gnome/corba/Makefile
+# corba/Makefile
+# corba/demos/Makefile
+# corba/demos/corba/Makefile
+
+# if someone fixes it, files below should be added
+# below glib
+# gnome-vfs/examples/gnome-vfs/Makefile
+# gnome-vfs/examples/Makefile
+# gnome-vfs/doc/Makefile
+# gnome-vfs/tests/Makefile
+# gnome-vfs/gnome/gw/Makefile
+# gnome-vfs/gnome/Makefile
+# gnome-vfs/gnome/overrides/Makefile
+# gnome-vfs/Makefile
+
+
 AC_CONFIG_FILES(
 Makefile
 atk/doc/Makefile
@@ -320,14 +355,6 @@ atk/Makefile
 cairo/gnome/gw/Makefile
 cairo/gnome/Makefile
 cairo/Makefile
-corba/doc/Makefile
-corba/tests/Makefile
-corba/gnome/gw/Makefile
-corba/gnome/Makefile
-corba/gnome/corba/Makefile
-corba/Makefile
-corba/demos/Makefile
-corba/demos/corba/Makefile
 defs/tools/Makefile
 defs/gnome/Makefile
 defs/gnome/defs/Makefile
@@ -352,14 +379,6 @@ glib/gnome/gobject/Makefile
 glib/test-suite/Makefile
 glib/Makefile
 glib/bin/Makefile
-gnome-vfs/examples/gnome-vfs/Makefile
-gnome-vfs/examples/Makefile
-gnome-vfs/doc/Makefile
-gnome-vfs/tests/Makefile
-gnome-vfs/gnome/gw/Makefile
-gnome-vfs/gnome/Makefile
-gnome-vfs/gnome/overrides/Makefile
-gnome-vfs/Makefile
 gtk/examples/Makefile
 gtk/doc/gtk/Makefile
 gtk/doc/gdk/Makefile
