@@ -21,7 +21,7 @@ License along with this program.  If not, see
 AC_PREREQ(2.69)
 
 AC_INIT([guile-gnome-platform],
-	[2.16.5-dev],
+	[2.16.5],
 	[guile-gtk-general at gnu dot org])
 
 AC_CONFIG_SRCDIR(ChangeLog.pre-2.16)
