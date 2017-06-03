@@ -1,6 +1,6 @@
 define(GUILE_GNOME_PLATFORM_CONFIGURE_COPYRIGHT,[[
 
-Copyright (C) 2011, 2012, 2015, 2016  Free Software Foundation, Inc.
+Copyright (C) 2011-2012, 2015-2017  Free Software Foundation, Inc.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as
@@ -26,6 +26,7 @@ AC_INIT([guile-gnome-platform],
 
 AC_CONFIG_SRCDIR(ChangeLog.pre-2.16)
 AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
 AC_COPYRIGHT(GUILE_GNOME_PLATFORM_CONFIGURE_COPYRIGHT)
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(1.14 -Wno-portability -Wno-syntax serial-tests)
@@ -75,27 +76,20 @@ AC_ARG_ENABLE([deprecated],
 AC_HELP_STRING([--disable-deprecated],[Disable wrapping of functions deprecated upstream]),
         DISABLE_DEPRECATED=true, DISABLE_DEPRECATED=false)
 
-#
-# Check for Guile
-#
-GUILE_EFFECTIVE_VERSION=no
-all_versions="2.2 2.0"
-for v in $all_versions; do
-  if test $GUILE_EFFECTIVE_VERSION = no; then
-    AC_MSG_NOTICE([checking for Guile $v.x])
-    PKG_CHECK_MODULES(GUILE, guile-$v, [GUILE_EFFECTIVE_VERSION=$v], [true])
-  fi
-done
 
-AC_SUBST(GUILE_EFFECTIVE_VERSION)
+###
+### Check for Guile
+###
 
-if test $GUILE_EFFECTIVE_VERSION = no; then
-  AC_MSG_ERROR([Failed to find Guile.  Is it installed?])
-else
-  AC_MSG_NOTICE([found Guile $GUILE_EFFECTIVE_VERSION.x])
-fi
+GUILE_PKG([2.2 2.0])
+GUILE_PROGS([2.0.14])
+GUILE_SITE_DIR
+GUILE_FLAGS
 
-# Check for g-wrap
+
+###
+### Check for g-wrap
+###
 
 PKG_CHECK_MODULES(G_WRAP, g-wrap-2.0-guile >= 1.9.15)
 AC_SUBST(G_WRAP_CFLAGS)

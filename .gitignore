@@ -38,6 +38,7 @@ autom4te.cache/
 /build-aux/mdate-sh
 /build-aux/missing
 /build-aux/texinfo.tex
+build-aux/config.rpath
 /INSTALL
 /atk/doc/guile-gnome-atk.info
 /atk/doc/version.texi
