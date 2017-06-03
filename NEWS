@@ -1,7 +1,7 @@
 guile-gnome-platform NEWS --- history of user-visible changes.
 
 
-Copyright (C) 2004-2008, 2011-2012, 2014-2015
+Copyright (C) 2004-2008, 2011-2012, 2014-2017
 Free Software Foundation, Inc.
 See the end for copying conditions of this file.
 
@@ -10,6 +10,28 @@ Guile-Gnome is a Guile wrapper collection for most of the GNOME core
 libraries.
 
 See the README, for more information.
+
+
+Guile-Gnome-Platform 2.16.5 - David Pirotte, 2017-06-02
+=======================================================
+
+* Changes since 2.16.4
+
+  Guile-Gnome is now compatible with Guile-2.2
+
+  But don't hail, this is a maintainance release, which actually
+  merely comment the build of the Corba and Gnome-VFS modules, due to
+  incompatible changes in Guile-2.2 (see their corresponding entry in
+  configure.ac for a better explanation):
+
+  This is reversible though, if you think you have the skill and some
+  free time to fix these two, please do! And get in touch with us of
+  course...
+
+  Dependencies
+  ------------
+
+  Guile-Gnome now allows Guile-2.2, and requires Guile >= 2.0.14
 
 
 Guile-Gnome-Platform 2.16.4 - David Pirotte, 2015-12-08

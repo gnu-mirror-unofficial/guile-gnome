@@ -25,8 +25,8 @@ Installing
 
 Guile-Gnome will try to build the following wrappers:
 
-    atk, cairo, corba, gconf, glib, gnome-vfs, gtk, libglade,
-    libgnome, libgnomecanvas, libgnomeui, pango.
+    atk, cairo, gconf, glib, gtk, libglade, libgnome, libgnomecanvas,
+    libgnomeui, pango.
 
 Prerequisites
 -------------
@@ -35,18 +35,28 @@ Prerequisites
 
     - Autoconf >= 2.61
     - Automake >= 1.12
-    - Guile-2.0 or Guile-2.2
-    - Guile-Lib >= 0.2.2	http://www.nongnu.org/guile-lib/
+    - Guile-2.0 >= 2.0.14 or Guile-2.2
     - G-Wrap >= 1.9.15 		http://www.nongnu.org/g-wrap/
     - Guile-Cairo >= 1.10	http://www.nongnu.org/guile-cairo/
 
+      Note that at the time we write, Guile-Cairo 1.10 has not been
+      officially released yet, but either you clone its source tree
+      from here: http://www.nongnu.org/guile-cairo/dev/
 
-    Note that at the time we write, Guile-Cairo 1.10 has not been
-    released yey, it will hopefully soon be the case.  In the mean
-    time, the required bleeding edge Guile-Cairo stable version must
-    be obtained from the source, see:
+      Or, if you prefer, you may download the pre-release I made for
+      this purpose, you will find it here:
 
-      http://www.nongnu.org/guile-cairo/dev/
+	http://download.savannah.nongnu.org/releases/grip/guile-cairo/
+		guile-cairo-1.10.0.tar.gz
+		guile-cairo-1.10.0.tar.gz.sig
+
+    - Guile-Lib >= 0.2.2
+      http://www.nongnu.org/guile-lib/
+
+      Strictly speaking, you only need Guile-Lib if you intend to
+      locally build the documentation and/or run make check,
+      Guile-Gnome's test suite, which is recommended but not
+      mandatory.
 
 * Specific wrappers:
 
@@ -56,12 +66,10 @@ GNU Linux distributions require you to install corresponding '-dev'
 packages, not just the core libraries packages.
 
     - Atk >= 1.12
-    - Corba [(and libbonobo-2.0 Orbit-2.0)]
     - gconf-2.0 >= 2.18
     - glib-2.0 >= 2.10.0
     - gobject-2.0
     - gthread-2.0
-    - gnome-vfs-2.0 >= 2.16.0
     - gdk-pixbuf-2.0 >= 2.10.0
     - gdk-2.0 >= 2.10.0
     - gtk+-2.0 >= 2.10.0
